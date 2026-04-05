@@ -1,12 +1,17 @@
 package twilightforest.datagen.helpers.models;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.mojang.math.Quadrant;
 import net.minecraft.client.data.models.ItemModelOutput;
+import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.*;
 import net.minecraft.client.data.models.model.*;
+import net.minecraft.client.renderer.block.dispatch.Variant;
+import net.minecraft.client.renderer.block.dispatch.VariantMutator;
 import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.properties.select.DisplayContext;
+import net.minecraft.client.renderer.special.ChestSpecialRenderer;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -26,7 +31,6 @@ import twilightforest.client.model.block.forcefield.ForceFieldModelBuilder;
 import twilightforest.client.renderer.block.JarRenderer;
 import twilightforest.client.renderer.special.MasonJarSpecialRenderer;
 import twilightforest.client.renderer.special.SkullCandleSpecialRenderer;
-import twilightforest.client.renderer.special.TFChestSpecialRenderer;
 import twilightforest.client.renderer.special.TrophySpecialRenderer;
 import twilightforest.datagen.assets.models.TFExtendedModelTemplates;
 import twilightforest.datagen.assets.models.TFModelTemplates;
@@ -47,7 +51,7 @@ import java.util.function.Function;
 
 public abstract class BlockModelBuilders extends WoodBlockBuilders {
 
-	public BlockModelBuilders(Consumer<BlockStateGenerator> stateOutput, ItemModelOutput itemOutput, BiConsumer<Identifier, ModelInstance> modelOutput) {
+	public BlockModelBuilders(Consumer<BlockModelDefinitionGenerator> stateOutput, ItemModelOutput itemOutput, BiConsumer<Identifier, ModelInstance> modelOutput) {
 		super(stateOutput, itemOutput, modelOutput);
 	}
 
@@ -56,7 +60,7 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 	}
 
 	public void generateTrophy(TrophyBlock floor, TrophyWallBlock wall, ItemModel.Unbaked backplate, String existingTrophy) {
-		Identifier template = ModelLocationUtils.decorateBlockModelLocation("skull");
+		MultiVariant template = plainVariant(ModelLocationUtils.decorateBlockModelLocation("skull"));
 		this.blockStateOutput.accept(createSimpleBlock(floor, template));
 		this.blockStateOutput.accept(createSimpleBlock(wall, template));
 		var itemTrophy = ItemModelUtils.specialModel(ModelLocationUtils.decorateItemModelLocation("twilightforest:" + existingTrophy), new TrophySpecialRenderer.Unbaked(floor.getVariant()));
@@ -65,31 +69,31 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 	}
 
 	public void generateSkullCandle(AbstractSkullCandleBlock floor, AbstractSkullCandleBlock wall) {
-		Identifier template = ModelLocationUtils.decorateBlockModelLocation("skull");
+		MultiVariant template = plainVariant(ModelLocationUtils.decorateBlockModelLocation("skull"));
 		this.blockStateOutput.accept(createSimpleBlock(floor, template));
 		this.blockStateOutput.accept(createSimpleBlock(wall, template));
 		this.itemModelOutput.accept(floor.asItem(), ItemModelUtils.specialModel(TwilightForestMod.prefix("item/template_skull_candle"), new SkullCandleSpecialRenderer.Unbaked(floor.getType())));
 	}
 
 	public void spawner(Block block, String texture) {
-		TextureMapping texturemapping = TextureMapping.cube(TwilightForestMod.prefix(texture));
-		this.blockStateOutput.accept(createSimpleBlock(block, ModelTemplates.CUBE_ALL_INNER_FACES.extend().renderType("cutout").build().create(block, texturemapping, this.modelOutput)));
+		TextureMapping texturemapping = TextureMapping.cube(new Material(TwilightForestMod.prefix(texture)));
+		this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(ModelTemplates.CUBE_ALL_INNER_FACES.extend().build().create(block, texturemapping, this.modelOutput))));
 		this.generateBlockItem(block);
 	}
 
 	public void basicCtmBlock(Block block) {
-		this.blockStateOutput.accept(createSimpleBlock(block, TFModelTemplates.CTM_NO_BASE.extend().customLoader(ConnectedTextureBuilder::new, builder -> builder.connectsTo(block)).build().create(block, TFTextureMapping.ctmBlock(block), this.modelOutput)));
+		this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(TFModelTemplates.CTM_NO_BASE.extend().customLoader(ConnectedTextureBuilder::new, builder -> builder.connectsTo(block)).build().create(block, TFTextureMapping.ctmBlock(block), this.modelOutput))));
 		this.generateBlockItem(block);
 	}
 
 	public void castleDoor(Block block, int tint) {
-		Function<Boolean, Identifier> door = bool -> TFModelTemplates.CTM.extend().customLoader(ConnectedTextureBuilder::new, builder -> builder.connectsTo(TFBlocks.BLUE_CASTLE_DOOR.get(), TFBlocks.PINK_CASTLE_DOOR.get(), TFBlocks.VIOLET_CASTLE_DOOR.get(), TFBlocks.YELLOW_CASTLE_DOOR.get()).setOverlayEmissivity(15).setOverlayTintIndex(0)).renderType("cutout").build().createWithSuffix(block, bool ? "_vanished" : "", TFTextureMapping.ctmBlock(TwilightForestMod.prefix("block/castle_door" + (bool ? "_vanished" : "")), TwilightForestMod.prefix("block/castle_door_runes")), this.modelOutput);
-		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block).with(PropertyDispatch.property(CastleDoorBlock.VANISHED).select(true, Variant.variant().with(VariantProperties.MODEL, door.apply(true))).select(false, Variant.variant().with(VariantProperties.MODEL, door.apply(false)))));
+		Function<Boolean, Identifier> door = bool -> TFModelTemplates.CTM.extend().customLoader(ConnectedTextureBuilder::new, builder -> builder.connectsTo(TFBlocks.BLUE_CASTLE_DOOR.get(), TFBlocks.PINK_CASTLE_DOOR.get(), TFBlocks.VIOLET_CASTLE_DOOR.get(), TFBlocks.YELLOW_CASTLE_DOOR.get()).setOverlayEmissivity(15).setOverlayTintIndex(0)).build().createWithSuffix(block, bool ? "_vanished" : "", TFTextureMapping.ctmBlock(TwilightForestMod.prefix("block/castle_door" + (bool ? "_vanished" : "")), TwilightForestMod.prefix("block/castle_door_runes")), this.modelOutput);
+		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(block).with(PropertyDispatch.initial(CastleDoorBlock.VANISHED).select(true, plainVariant(door.apply(true))).select(false, plainVariant(door.apply(false)))));
 		this.registerSimpleTintedItemModel(block, BuiltInRegistries.BLOCK.getKey(block).withPrefix("block/"), ItemModelUtils.constantTint(tint));
 	}
 
 	public void giantBlock(Block block, TextureMapping mapping) {
-		this.blockStateOutput.accept(createSimpleBlock(block, TFModelTemplates.GIANT_BLOCK.create(block, mapping, this.modelOutput)));
+		this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(TFModelTemplates.GIANT_BLOCK.create(block, mapping, this.modelOutput))));
 		this.generateGiantBlockItem(block, mapping);
 	}
 
@@ -99,8 +103,8 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		this.itemModelOutput.accept(giantBlock.asItem(), ItemModelUtils.select(new DisplayContext(), base, ItemModelUtils.when(ItemDisplayContext.GUI, gui)));
 	}
 
-	public void giantBlock(Block block, String renderType, TextureMapping mapping, int tint) {
-		this.blockStateOutput.accept(createSimpleBlock(block, TFModelTemplates.GIANT_BLOCK.extend().renderType(renderType).build().create(block, mapping, this.modelOutput)));
+	public void giantBlock(Block block, TextureMapping mapping, int tint) {
+		this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(TFModelTemplates.GIANT_BLOCK.create(block, mapping, this.modelOutput))));
 		this.generateGiantBlockItem(block, mapping, tint);
 	}
 
@@ -110,65 +114,51 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		this.itemModelOutput.accept(giantBlock.asItem(), ItemModelUtils.select(new DisplayContext(), base, ItemModelUtils.when(ItemDisplayContext.GUI, gui)));
 	}
 
-	public void simpleBlockWithRenderType(Block block, String type) {
-		this.blockWithRenderType(block, type, ModelTemplates.CUBE_ALL, TextureMapping::cube);
-	}
-
-	public void blockWithRenderType(Block block, String type, ModelTemplate template, Function<Block, TextureMapping> mapping) {
-		this.blockStateOutput.accept(createSimpleBlock(block, template.extend().renderType(type).build().create(block, mapping.apply(block), this.modelOutput)));
-	}
-
 	public void nagaStone() {
 		TextureMapping mapping = TextureMapping.cube(TFBlocks.NAGASTONE.get());
 
 		TextureMapping solidMapping = TextureMapping.cube(TFBlocks.NAGASTONE.get())
-			.put(TextureSlot.SIDE, TwilightForestMod.prefix("block/nagastone_long_side"))
-			.put(TextureSlot.BOTTOM, TwilightForestMod.prefix("block/nagastone_bottom_long"))
-			.put(TextureSlot.TOP, TwilightForestMod.prefix("block/nagastone_turn_top"));
+			.put(TextureSlot.SIDE, new Material(TwilightForestMod.prefix("block/nagastone_long_side")))
+			.put(TextureSlot.BOTTOM, new Material(TwilightForestMod.prefix("block/nagastone_bottom_long")))
+			.put(TextureSlot.TOP, new Material(TwilightForestMod.prefix("block/nagastone_turn_top")));
 
 		Identifier solid = TFModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(TFBlocks.NAGASTONE.get(), "_solid", solidMapping, this.modelOutput);
-		// todo 1.21.x cleanup: generate these models as well instead of ModelTemplates.create().extend().parent-ing them
-		Identifier down = ModelTemplates.create("twilightforest:naga_segment_down").extend().parent(TwilightForestMod.prefix("block/naga_segment/down")).build().createWithSuffix(TFBlocks.NAGASTONE.get(), "_down", mapping, this.modelOutput);
-		Identifier up = ModelTemplates.create("twilightforest:naga_segment_up").extend().parent(TwilightForestMod.prefix("block/naga_segment/up")).build().createWithSuffix(TFBlocks.NAGASTONE.get(), "_up", mapping, this.modelOutput);
-		Identifier horizontal = ModelTemplates.create("twilightforest:naga_segment_horizontal").extend().parent(TwilightForestMod.prefix("block/naga_segment/horizontal")).build().createWithSuffix(TFBlocks.NAGASTONE.get(), "_horizontal", mapping, this.modelOutput);
-		Identifier vertical = ModelTemplates.create("twilightforest:naga_segment_vertical").extend().parent(TwilightForestMod.prefix("block/naga_segment/vertical")).build().createWithSuffix(TFBlocks.NAGASTONE.get(), "_vertical", mapping, this.modelOutput);
+		// todo 1.21.x cleanup: generate these models as well
+		Identifier down = TwilightForestMod.prefix("block/naga_segment/down");
+		Identifier up = TwilightForestMod.prefix("block/naga_segment/up");
+		Identifier horizontal = TwilightForestMod.prefix("block/naga_segment/horizontal");
+		Identifier vertical = TwilightForestMod.prefix("block/naga_segment/vertical");
 
 		this.itemModelOutput.accept(TFBlocks.NAGASTONE.asItem(), ItemModelUtils.plainModel(solid));
-		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(TFBlocks.NAGASTONE.get()).with(
-			PropertyDispatch.property(NagastoneBlock.VARIANT)
-				.select(NagastoneVariant.NORTH_DOWN, Variant.variant().with(VariantProperties.MODEL, down).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
-				.select(NagastoneVariant.SOUTH_DOWN, Variant.variant().with(VariantProperties.MODEL, down).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-				.select(NagastoneVariant.WEST_DOWN, Variant.variant().with(VariantProperties.MODEL, down).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-				.select(NagastoneVariant.EAST_DOWN, Variant.variant().with(VariantProperties.MODEL, down))
+		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(TFBlocks.NAGASTONE.get()).with(
+			PropertyDispatch.initial(NagastoneBlock.VARIANT)
+				.select(NagastoneVariant.NORTH_DOWN, plainVariant(down).with(Y_ROT_270))
+				.select(NagastoneVariant.SOUTH_DOWN, plainVariant(down).with(Y_ROT_90))
+				.select(NagastoneVariant.WEST_DOWN, plainVariant(down).with(Y_ROT_180))
+				.select(NagastoneVariant.EAST_DOWN, plainVariant(down))
 
-				.select(NagastoneVariant.NORTH_UP, Variant.variant().with(VariantProperties.MODEL, up).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
-				.select(NagastoneVariant.SOUTH_UP, Variant.variant().with(VariantProperties.MODEL, up).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-				.select(NagastoneVariant.WEST_UP, Variant.variant().with(VariantProperties.MODEL, up).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-				.select(NagastoneVariant.EAST_UP, Variant.variant().with(VariantProperties.MODEL, up))
+				.select(NagastoneVariant.NORTH_UP, plainVariant(up).with(Y_ROT_270))
+				.select(NagastoneVariant.SOUTH_UP, plainVariant(up).with(Y_ROT_90))
+				.select(NagastoneVariant.WEST_UP, plainVariant(up).with(Y_ROT_180))
+				.select(NagastoneVariant.EAST_UP, plainVariant(up))
 
-				.select(NagastoneVariant.AXIS_X, Variant.variant().with(VariantProperties.MODEL, horizontal))
-				.select(NagastoneVariant.AXIS_Y, Variant.variant().with(VariantProperties.MODEL, vertical))
-				.select(NagastoneVariant.AXIS_Z, Variant.variant().with(VariantProperties.MODEL, horizontal).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-				.select(NagastoneVariant.SOLID, Variant.variant().with(VariantProperties.MODEL, solid))
+				.select(NagastoneVariant.AXIS_X, plainVariant(horizontal))
+				.select(NagastoneVariant.AXIS_Y, plainVariant(vertical))
+				.select(NagastoneVariant.AXIS_Z, plainVariant(horizontal).with(Y_ROT_90))
+				.select(NagastoneVariant.SOLID, plainVariant(solid))
 		));
 
 		TextureMapping faceMapping = TextureMapping.cube(TFBlocks.NAGASTONE_HEAD.get())
-			.put(TextureSlot.UP, TwilightForestMod.prefix("block/nagastone_top_tip"))
-			.put(TextureSlot.DOWN, TwilightForestMod.prefix("block/nagastone_bottom_tip"))
-			.put(TextureSlot.SOUTH, TwilightForestMod.prefix("block/nagastone_face_left"))
-			.put(TextureSlot.NORTH, TwilightForestMod.prefix("block/nagastone_face_right"))
-			.put(TextureSlot.WEST, TwilightForestMod.prefix("block/nagastone_face_front"))
-			.put(TextureSlot.EAST, TwilightForestMod.prefix("block/nagastone_cross_section"))
-			.put(TextureSlot.PARTICLE, TwilightForestMod.prefix("block/nagastone_face_front"));
+			.put(TextureSlot.UP, new Material(TwilightForestMod.prefix("block/nagastone_top_tip")))
+			.put(TextureSlot.DOWN, new Material(TwilightForestMod.prefix("block/nagastone_bottom_tip")))
+			.put(TextureSlot.SOUTH, new Material(TwilightForestMod.prefix("block/nagastone_face_left")))
+			.put(TextureSlot.NORTH, new Material(TwilightForestMod.prefix("block/nagastone_face_right")))
+			.put(TextureSlot.WEST, new Material(TwilightForestMod.prefix("block/nagastone_face_front")))
+			.put(TextureSlot.EAST, new Material(TwilightForestMod.prefix("block/nagastone_cross_section")))
+			.put(TextureSlot.PARTICLE, new Material(TwilightForestMod.prefix("block/nagastone_face_front")));
 		Identifier model = TFModelTemplates.CUBE.create(TFBlocks.NAGASTONE_HEAD.get(), faceMapping, this.modelOutput);
 
-		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(TFBlocks.NAGASTONE_HEAD.get()).with(
-			PropertyDispatch.property(BlockStateProperties.HORIZONTAL_FACING)
-				.select(Direction.SOUTH, Variant.variant().with(VariantProperties.MODEL, model).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
-				.select(Direction.NORTH, Variant.variant().with(VariantProperties.MODEL, model).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-				.select(Direction.WEST, Variant.variant().with(VariantProperties.MODEL, model).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R0))
-				.select(Direction.EAST, Variant.variant().with(VariantProperties.MODEL, model).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-		));
+		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(TFBlocks.NAGASTONE_HEAD.get(), plainVariant(model)).with(ROTATION_HORIZONTAL_FACING));
 		this.itemModelOutput.accept(TFBlocks.NAGASTONE_HEAD.asItem(), ItemModelUtils.plainModel(model));
 
 		nagastonePillar(TFBlocks.NAGASTONE_PILLAR.get(), "");
@@ -188,59 +178,59 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 
 	private void nagastonePillar(Block block, String suffix) {
 		TextureMapping mapping = TextureMapping.cube(TFBlocks.NAGASTONE.get())
-			.put(TextureSlot.END, TwilightForestMod.prefix("block/nagastone_pillar_end" + suffix))
-			.put(TextureSlot.SIDE, TwilightForestMod.prefix("block/nagastone_pillar_side" + suffix));
+			.put(TextureSlot.END, new Material(TwilightForestMod.prefix("block/nagastone_pillar_end" + suffix)))
+			.put(TextureSlot.SIDE, new Material(TwilightForestMod.prefix("block/nagastone_pillar_side" + suffix)));
 		Identifier model = TFModelTemplates.CUBE_COLUMN.create(block, mapping, this.modelOutput);
 
 		TextureMapping altMapping = TextureMapping.cube(TFBlocks.NAGASTONE.get())
-			.put(TextureSlot.END, TwilightForestMod.prefix("block/nagastone_pillar_end" + suffix))
-			.put(TextureSlot.SIDE, TwilightForestMod.prefix("block/nagastone_pillar_side" + suffix + "_alt"));
+			.put(TextureSlot.END, new Material(TwilightForestMod.prefix("block/nagastone_pillar_end" + suffix)))
+			.put(TextureSlot.SIDE, new Material(TwilightForestMod.prefix("block/nagastone_pillar_side" + suffix + "_alt")));
 		Identifier reversed = TFModelTemplates.CUBE_COLUMN.createWithSuffix(block, "_alt", altMapping, this.modelOutput);
 
-		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block).with(
-			PropertyDispatch.properties(RotatedPillarBlock.AXIS, DirectionalRotatedPillarBlock.REVERSED)
-				.select(Direction.Axis.X, true, Variant.variant().with(VariantProperties.MODEL, reversed).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
-				.select(Direction.Axis.Y, true, Variant.variant().with(VariantProperties.MODEL, reversed))
-				.select(Direction.Axis.Z, true, Variant.variant().with(VariantProperties.MODEL, reversed).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270))
+		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(block).with(
+			PropertyDispatch.initial(RotatedPillarBlock.AXIS, DirectionalRotatedPillarBlock.REVERSED)
+				.select(Direction.Axis.X, true, plainVariant(reversed).with(X_ROT_270).with(Y_ROT_270))
+				.select(Direction.Axis.Y, true, plainVariant(reversed))
+				.select(Direction.Axis.Z, true, plainVariant(reversed).with(X_ROT_270))
 
-				.select(Direction.Axis.X, false, Variant.variant().with(VariantProperties.MODEL, model).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
-				.select(Direction.Axis.Y, false, Variant.variant().with(VariantProperties.MODEL, model))
-				.select(Direction.Axis.Z, false, Variant.variant().with(VariantProperties.MODEL, model).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270))
+				.select(Direction.Axis.X, false, plainVariant(model).with(X_ROT_270).with(Y_ROT_270))
+				.select(Direction.Axis.Y, false, plainVariant(model))
+				.select(Direction.Axis.Z, false, plainVariant(model).with(X_ROT_270))
 		));
 		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(model));
 	}
 
 	private void etchedNagastone(Block block, String suffix) {
 		TextureMapping mapping = TextureMapping.cube(TFBlocks.NAGASTONE.get())
-			.put(TextureSlot.END, TwilightForestMod.prefix("block/stone_tiles" + suffix))
-			.put(TextureSlot.SIDE, TwilightForestMod.prefix("block/etched_nagastone_up" + suffix))
-			.put(TextureSlot.PARTICLE, TwilightForestMod.prefix("block/stone_tiles" + suffix));
+			.put(TextureSlot.END, new Material(TwilightForestMod.prefix("block/stone_tiles" + suffix)))
+			.put(TextureSlot.SIDE, new Material(TwilightForestMod.prefix("block/etched_nagastone_up" + suffix)))
+			.put(TextureSlot.PARTICLE, new Material(TwilightForestMod.prefix("block/stone_tiles" + suffix)));
 		Identifier model = ModelTemplates.CUBE_COLUMN.create(block, mapping, this.modelOutput);
 
-		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block).with(
-			PropertyDispatch.property(DirectionalBlock.FACING)
-				.select(Direction.UP, Variant.variant().with(VariantProperties.MODEL, model))
-				.select(Direction.DOWN, Variant.variant().with(VariantProperties.MODEL, model).with(VariantProperties.X_ROT, VariantProperties.Rotation.R180))
-				.select(Direction.SOUTH, Variant.variant().with(VariantProperties.MODEL, model).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270))
-				.select(Direction.NORTH, Variant.variant().with(VariantProperties.MODEL, model).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90))
-				.select(Direction.WEST, Variant.variant().with(VariantProperties.MODEL, model).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270))
-				.select(Direction.EAST, Variant.variant().with(VariantProperties.MODEL, model).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90))
+		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(block).with(
+			PropertyDispatch.initial(DirectionalBlock.FACING)
+				.select(Direction.UP, plainVariant(model))
+				.select(Direction.DOWN, plainVariant(model).with(X_ROT_180))
+				.select(Direction.SOUTH, plainVariant(model).with(X_ROT_270))
+				.select(Direction.NORTH, plainVariant(model).with(X_ROT_90))
+				.select(Direction.WEST, plainVariant(model).with(Y_ROT_90).with(X_ROT_270))
+				.select(Direction.EAST, plainVariant(model).with(Y_ROT_90).with(X_ROT_90))
 		));
 		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(model));
 	}
 
 	protected void bisectedStairsBlock(Block block, Identifier side, Identifier end, Identifier middle) {
 		TextureMapping mapping = TextureMapping.cube(block)
-			.put(TextureSlot.BOTTOM, end)
-			.put(TextureSlot.TOP, end)
-			.put(TextureSlot.SIDE, side)
-			.put(TFTextureSlot.MIDDLE, middle)
-			.put(TextureSlot.PARTICLE, middle);
+			.put(TextureSlot.BOTTOM, new Material(end))
+			.put(TextureSlot.TOP, new Material(end))
+			.put(TextureSlot.SIDE, new Material(side))
+			.put(TFTextureSlot.MIDDLE, new Material(middle))
+			.put(TextureSlot.PARTICLE, new Material(middle));
 
 		Identifier inner = TFModelTemplates.BISECTED_STAIRS_INNER.createWithSuffix(block, "_inner", mapping, this.modelOutput);
 		Identifier straight = TFModelTemplates.BISECTED_STAIRS_STRAIGHT.create(block, mapping, this.modelOutput);
 		Identifier outer = TFModelTemplates.BISECTED_STAIRS_OUTER.createWithSuffix(block, "_outer", mapping, this.modelOutput);
-		this.blockStateOutput.accept(createStairs(block, inner, straight, outer));
+		this.blockStateOutput.accept(createStairs(block, plainVariant(inner), plainVariant(straight), plainVariant(outer)));
 		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(straight));
 	}
 
@@ -257,68 +247,68 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 			MultiPartGenerator.multiPart(TFBlocks.TWISTED_STONE_PILLAR.get())
 				// X
 				.with(
-					Condition.condition().term(WallPillarBlock.AXIS, Direction.Axis.X),
-					Variant.variant().with(VariantProperties.MODEL, base).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+					condition(WallPillarBlock.AXIS, Direction.Axis.X),
+					plainVariant(base).with(X_ROT_90).with(Y_ROT_90)
 				)
 				.with(
-					Condition.and(Condition.condition().term(WallPillarBlock.AXIS, Direction.Axis.X), Condition.condition().term(PipeBlock.EAST, false)),
-					Variant.variant().with(VariantProperties.MODEL, top).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+					and(condition(WallPillarBlock.AXIS, Direction.Axis.X), condition(PipeBlock.EAST, false)),
+					plainVariant(top).with(X_ROT_90).with(Y_ROT_90)
 				)
 				.with(
-					Condition.and(Condition.condition().term(WallPillarBlock.AXIS, Direction.Axis.X), Condition.condition().term(PipeBlock.WEST, false)),
-					Variant.variant().with(VariantProperties.MODEL, bottom).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+					and(condition(WallPillarBlock.AXIS, Direction.Axis.X), condition(PipeBlock.WEST, false)),
+					plainVariant(bottom).with(X_ROT_90).with(Y_ROT_90)
 				)
 				.with(
-					Condition.and(Condition.condition().term(WallPillarBlock.AXIS, Direction.Axis.Y, Direction.Axis.Z), Condition.condition().term(PipeBlock.EAST, true)),
-					Variant.variant().with(VariantProperties.MODEL, up).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+					and(condition(WallPillarBlock.AXIS, Direction.Axis.Y, Direction.Axis.Z), condition(PipeBlock.EAST, true)),
+					plainVariant(up).with(X_ROT_90).with(Y_ROT_90)
 				)
 				.with(
-					Condition.and(Condition.condition().term(WallPillarBlock.AXIS, Direction.Axis.Y, Direction.Axis.Z), Condition.condition().term(PipeBlock.WEST, true)),
-					Variant.variant().with(VariantProperties.MODEL, down).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+					and(condition(WallPillarBlock.AXIS, Direction.Axis.Y, Direction.Axis.Z), condition(PipeBlock.WEST, true)),
+					plainVariant(down).with(X_ROT_90).with(Y_ROT_90)
 				)
 
 				// Y
 				.with(
-					Condition.condition().term(WallPillarBlock.AXIS, Direction.Axis.Y),
-					Variant.variant().with(VariantProperties.MODEL, base)
+					condition(WallPillarBlock.AXIS, Direction.Axis.Y),
+					plainVariant(base)
 				)
 				.with(
-					Condition.and(Condition.condition().term(WallPillarBlock.AXIS, Direction.Axis.Y), Condition.condition().term(PipeBlock.UP, false)),
-					Variant.variant().with(VariantProperties.MODEL, top)
+					and(condition(WallPillarBlock.AXIS, Direction.Axis.Y), condition(PipeBlock.UP, false)),
+					plainVariant(top)
 				)
 				.with(
-					Condition.and(Condition.condition().term(WallPillarBlock.AXIS, Direction.Axis.Y), Condition.condition().term(PipeBlock.DOWN, false)),
-					Variant.variant().with(VariantProperties.MODEL, bottom)
+					and(condition(WallPillarBlock.AXIS, Direction.Axis.Y), condition(PipeBlock.DOWN, false)),
+					plainVariant(bottom)
 				)
 				.with(
-					Condition.and(Condition.condition().term(WallPillarBlock.AXIS, Direction.Axis.X, Direction.Axis.Z), Condition.condition().term(PipeBlock.UP, true)),
-					Variant.variant().with(VariantProperties.MODEL, up)
+					and(condition(WallPillarBlock.AXIS, Direction.Axis.X, Direction.Axis.Z), condition(PipeBlock.UP, true)),
+					plainVariant(up)
 				)
 				.with(
-					Condition.and(Condition.condition().term(WallPillarBlock.AXIS, Direction.Axis.X, Direction.Axis.Z), Condition.condition().term(PipeBlock.DOWN, true)),
-					Variant.variant().with(VariantProperties.MODEL, down)
+					and(condition(WallPillarBlock.AXIS, Direction.Axis.X, Direction.Axis.Z), condition(PipeBlock.DOWN, true)),
+					plainVariant(down)
 				)
 
 				// Z
 				.with(
-					Condition.condition().term(WallPillarBlock.AXIS, Direction.Axis.Z),
-					Variant.variant().with(VariantProperties.MODEL, base).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
+					condition(WallPillarBlock.AXIS, Direction.Axis.Z),
+					plainVariant(base).with(X_ROT_90)
 				)
 				.with(
-					Condition.and(Condition.condition().term(WallPillarBlock.AXIS, Direction.Axis.Z), Condition.condition().term(PipeBlock.NORTH, false)),
-					Variant.variant().with(VariantProperties.MODEL, top).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
+					and(condition(WallPillarBlock.AXIS, Direction.Axis.Z), condition(PipeBlock.NORTH, false)),
+					plainVariant(top).with(X_ROT_90)
 				)
 				.with(
-					Condition.and(Condition.condition().term(WallPillarBlock.AXIS, Direction.Axis.Z), Condition.condition().term(PipeBlock.SOUTH, false)),
-					Variant.variant().with(VariantProperties.MODEL, bottom).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
+					and(condition(WallPillarBlock.AXIS, Direction.Axis.Z), condition(PipeBlock.SOUTH, false)),
+					plainVariant(bottom).with(X_ROT_90)
 				)
 				.with(
-					Condition.and(Condition.condition().term(WallPillarBlock.AXIS, Direction.Axis.X, Direction.Axis.Y), Condition.condition().term(PipeBlock.NORTH, true)),
-					Variant.variant().with(VariantProperties.MODEL, up).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
+					and(condition(WallPillarBlock.AXIS, Direction.Axis.X, Direction.Axis.Y), condition(PipeBlock.NORTH, true)),
+					plainVariant(up).with(X_ROT_90)
 				)
 				.with(
-					Condition.and(Condition.condition().term(WallPillarBlock.AXIS, Direction.Axis.X, Direction.Axis.Y), Condition.condition().term(PipeBlock.SOUTH, true)),
-					Variant.variant().with(VariantProperties.MODEL, down).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
+					and(condition(WallPillarBlock.AXIS, Direction.Axis.X, Direction.Axis.Y), condition(PipeBlock.SOUTH, true)),
+					plainVariant(down).with(X_ROT_90)
 				)
 		);
 	}
@@ -333,28 +323,28 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		Identifier bottom = ModelLocationUtils.getModelLocation(block, "_bottom");
 
 		this.blockStateOutput.accept(MultiPartGenerator.multiPart(block)
-			.with(Condition.condition().term(WroughtIronFenceBlock.POST, WroughtIronFenceBlock.PostState.POST), Variant.variant().with(VariantProperties.MODEL, post))
-			.with(Condition.condition().term(WroughtIronFenceBlock.POST, WroughtIronFenceBlock.PostState.CAPPED), Variant.variant().with(VariantProperties.MODEL, capped))
+			.with(condition(WroughtIronFenceBlock.POST, WroughtIronFenceBlock.PostState.POST), plainVariant(post))
+			.with(condition(WroughtIronFenceBlock.POST, WroughtIronFenceBlock.PostState.CAPPED), plainVariant(capped))
 
-			.with(Condition.condition().term(WroughtIronFenceBlock.NORTH_FENCE, WroughtIronFenceBlock.FenceSide.FULL), Variant.variant().with(VariantProperties.MODEL, full))
-			.with(Condition.condition().term(WroughtIronFenceBlock.NORTH_FENCE, WroughtIronFenceBlock.FenceSide.TOP), Variant.variant().with(VariantProperties.MODEL, top))
-			.with(Condition.condition().term(WroughtIronFenceBlock.NORTH_FENCE, WroughtIronFenceBlock.FenceSide.MIDDLE), Variant.variant().with(VariantProperties.MODEL, middle))
-			.with(Condition.condition().term(WroughtIronFenceBlock.NORTH_FENCE, WroughtIronFenceBlock.FenceSide.BOTTOM), Variant.variant().with(VariantProperties.MODEL, bottom))
+			.with(condition(WroughtIronFenceBlock.NORTH_FENCE, WroughtIronFenceBlock.FenceSide.FULL), plainVariant(full))
+			.with(condition(WroughtIronFenceBlock.NORTH_FENCE, WroughtIronFenceBlock.FenceSide.TOP), plainVariant(top))
+			.with(condition(WroughtIronFenceBlock.NORTH_FENCE, WroughtIronFenceBlock.FenceSide.MIDDLE), plainVariant(middle))
+			.with(condition(WroughtIronFenceBlock.NORTH_FENCE, WroughtIronFenceBlock.FenceSide.BOTTOM), plainVariant(bottom))
 
-			.with(Condition.condition().term(WroughtIronFenceBlock.EAST_FENCE, WroughtIronFenceBlock.FenceSide.FULL), Variant.variant().with(VariantProperties.MODEL, full).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-			.with(Condition.condition().term(WroughtIronFenceBlock.EAST_FENCE, WroughtIronFenceBlock.FenceSide.TOP), Variant.variant().with(VariantProperties.MODEL, top).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-			.with(Condition.condition().term(WroughtIronFenceBlock.EAST_FENCE, WroughtIronFenceBlock.FenceSide.MIDDLE), Variant.variant().with(VariantProperties.MODEL, middle).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
-			.with(Condition.condition().term(WroughtIronFenceBlock.EAST_FENCE, WroughtIronFenceBlock.FenceSide.BOTTOM), Variant.variant().with(VariantProperties.MODEL, bottom).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+			.with(condition(WroughtIronFenceBlock.EAST_FENCE, WroughtIronFenceBlock.FenceSide.FULL), plainVariant(full).with(Y_ROT_90))
+			.with(condition(WroughtIronFenceBlock.EAST_FENCE, WroughtIronFenceBlock.FenceSide.TOP), plainVariant(top).with(Y_ROT_90))
+			.with(condition(WroughtIronFenceBlock.EAST_FENCE, WroughtIronFenceBlock.FenceSide.MIDDLE), plainVariant(middle).with(Y_ROT_90))
+			.with(condition(WroughtIronFenceBlock.EAST_FENCE, WroughtIronFenceBlock.FenceSide.BOTTOM), plainVariant(bottom).with(Y_ROT_90))
 
-			.with(Condition.condition().term(WroughtIronFenceBlock.SOUTH_FENCE, WroughtIronFenceBlock.FenceSide.FULL), Variant.variant().with(VariantProperties.MODEL, full).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-			.with(Condition.condition().term(WroughtIronFenceBlock.SOUTH_FENCE, WroughtIronFenceBlock.FenceSide.TOP), Variant.variant().with(VariantProperties.MODEL, top).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-			.with(Condition.condition().term(WroughtIronFenceBlock.SOUTH_FENCE, WroughtIronFenceBlock.FenceSide.MIDDLE), Variant.variant().with(VariantProperties.MODEL, middle).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
-			.with(Condition.condition().term(WroughtIronFenceBlock.SOUTH_FENCE, WroughtIronFenceBlock.FenceSide.BOTTOM), Variant.variant().with(VariantProperties.MODEL, bottom).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+			.with(condition(WroughtIronFenceBlock.SOUTH_FENCE, WroughtIronFenceBlock.FenceSide.FULL), plainVariant(full).with(Y_ROT_180))
+			.with(condition(WroughtIronFenceBlock.SOUTH_FENCE, WroughtIronFenceBlock.FenceSide.TOP), plainVariant(top).with(Y_ROT_180))
+			.with(condition(WroughtIronFenceBlock.SOUTH_FENCE, WroughtIronFenceBlock.FenceSide.MIDDLE), plainVariant(middle).with(Y_ROT_180))
+			.with(condition(WroughtIronFenceBlock.SOUTH_FENCE, WroughtIronFenceBlock.FenceSide.BOTTOM), plainVariant(bottom).with(Y_ROT_180))
 
-			.with(Condition.condition().term(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.FULL), Variant.variant().with(VariantProperties.MODEL, full).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
-			.with(Condition.condition().term(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.TOP), Variant.variant().with(VariantProperties.MODEL, top).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
-			.with(Condition.condition().term(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.MIDDLE), Variant.variant().with(VariantProperties.MODEL, middle).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
-			.with(Condition.condition().term(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.BOTTOM), Variant.variant().with(VariantProperties.MODEL, bottom).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
+			.with(condition(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.FULL), plainVariant(full).with(Y_ROT_270))
+			.with(condition(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.TOP), plainVariant(top).with(Y_ROT_270))
+			.with(condition(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.MIDDLE), plainVariant(middle).with(Y_ROT_270))
+			.with(condition(WroughtIronFenceBlock.WEST_FENCE, WroughtIronFenceBlock.FenceSide.BOTTOM), plainVariant(bottom).with(Y_ROT_270))
 		);
 
 		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(block.asItem())));
@@ -363,25 +353,25 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 	public void terrorcotta() {
 		this.rotationallySpecialColumn(TFBlocks.TERRORCOTTA_ARCS.get());
 
-		PropertyDispatch.C1<Direction> directionDispach = PropertyDispatch.property(GlazedTerracottaBlock.FACING);
+		PropertyDispatch.C1<MultiVariant, Direction> directionDispach = PropertyDispatch.initial(GlazedTerracottaBlock.FACING);
 		boolean firstCurve = true;
 		for (Direction direction : new Direction[]{Direction.SOUTH, Direction.NORTH, Direction.WEST, Direction.EAST}) {
 			Identifier location = this.makeTerrorcottaCurvesModel("terrorcotta_curves", direction.get2DDataValue());
-			directionDispach = directionDispach.select(direction, Variant.variant().with(VariantProperties.MODEL, location));
+			directionDispach = directionDispach.select(direction, plainVariant(location));
 			if (firstCurve) {
 				this.itemModelOutput.accept(TFBlocks.TERRORCOTTA_CURVES.asItem(), ItemModelUtils.plainModel(location));
 				firstCurve = false;
 			}
 		}
-		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(TFBlocks.TERRORCOTTA_CURVES.get()).with(directionDispach));
+		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(TFBlocks.TERRORCOTTA_CURVES.get()).with(directionDispach));
 
 		Identifier rotated = this.makeTerrorcottaLinesModel("terrorcotta_lines", true);
 		Identifier unRotated = this.makeTerrorcottaLinesModel("terrorcotta_lines", false);
 
-		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(TFBlocks.TERRORCOTTA_LINES.get()).with(
-			PropertyDispatch.property(BinaryRotatedBlock.ROTATED)
-				.select(true, Variant.variant().with(VariantProperties.MODEL, rotated))
-				.select(false, Variant.variant().with(VariantProperties.MODEL, unRotated))
+		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(TFBlocks.TERRORCOTTA_LINES.get()).with(
+			PropertyDispatch.initial(BinaryRotatedBlock.ROTATED)
+				.select(true, plainVariant(rotated))
+				.select(false, plainVariant(unRotated))
 		));
 
 		this.itemModelOutput.accept(TFBlocks.TERRORCOTTA_LINES.asItem(), ItemModelUtils.plainModel(rotated));
@@ -389,13 +379,13 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 
 	private Identifier makeTerrorcottaCurvesModel(String type, int rotation) {
 		TextureMapping mapping = TextureMapping.cube(TFBlocks.TERRORCOTTA_CURVES.get())
-			.put(TextureSlot.UP, TwilightForestMod.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.UP)))
-			.put(TextureSlot.DOWN, TwilightForestMod.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.DOWN)))
-			.put(TextureSlot.SOUTH, TwilightForestMod.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.SOUTH)))
-			.put(TextureSlot.NORTH, TwilightForestMod.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.NORTH)))
-			.put(TextureSlot.WEST, TwilightForestMod.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.WEST)))
-			.put(TextureSlot.EAST, TwilightForestMod.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.EAST)))
-			.put(TextureSlot.PARTICLE, TwilightForestMod.prefix("block/" + type + "_a"));
+			.put(TextureSlot.UP, new Material(TwilightForestMod.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.UP))))
+			.put(TextureSlot.DOWN, new Material(TwilightForestMod.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.DOWN))))
+			.put(TextureSlot.SOUTH, new Material(TwilightForestMod.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.SOUTH))))
+			.put(TextureSlot.NORTH, new Material(TwilightForestMod.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.NORTH))))
+			.put(TextureSlot.WEST, new Material(TwilightForestMod.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.WEST))))
+			.put(TextureSlot.EAST, new Material(TwilightForestMod.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.EAST))))
+			.put(TextureSlot.PARTICLE, new Material(TwilightForestMod.prefix("block/" + type + "_a")));
 
 		return TFModelTemplates.CUBE.create(TwilightForestMod.prefix("block/" + type + "_" + (rotation * 90)), mapping, this.modelOutput);
 	}
@@ -441,44 +431,44 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 
 	private Identifier makeTerrorcottaLinesModel(String type, boolean rotated) {
 		TextureMapping mapping = TextureMapping.cube(TFBlocks.TERRORCOTTA_CURVES.get())
-			.put(TextureSlot.UP, TwilightForestMod.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.UP)))
-			.put(TextureSlot.DOWN, TwilightForestMod.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.DOWN)))
-			.put(TextureSlot.SOUTH, TwilightForestMod.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.SOUTH)))
-			.put(TextureSlot.NORTH, TwilightForestMod.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.NORTH)))
-			.put(TextureSlot.WEST, TwilightForestMod.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.WEST)))
-			.put(TextureSlot.EAST, TwilightForestMod.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.EAST)))
-			.put(TextureSlot.PARTICLE, TwilightForestMod.prefix("block/" + type + "_a"));
+			.put(TextureSlot.UP, new Material(TwilightForestMod.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.UP))))
+			.put(TextureSlot.DOWN, new Material(TwilightForestMod.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.DOWN))))
+			.put(TextureSlot.SOUTH, new Material(TwilightForestMod.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.SOUTH))))
+			.put(TextureSlot.NORTH, new Material(TwilightForestMod.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.NORTH))))
+			.put(TextureSlot.WEST, new Material(TwilightForestMod.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.WEST))))
+			.put(TextureSlot.EAST, new Material(TwilightForestMod.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.EAST))))
+			.put(TextureSlot.PARTICLE, new Material(TwilightForestMod.prefix("block/" + type + "_a")));
 
 		return TFModelTemplates.CUBE.create(TwilightForestMod.prefix("block/" + type + "_" + (rotated ? 90 : 0)), mapping, this.modelOutput);
 	}
 
 	public void makeJars() {
 		TextureMapping spawnerMapping = TextureMapping.cube(TFBlocks.MASON_JAR.get())
-			.put(TextureSlot.TOP, TwilightForestMod.prefix("block/jar_top"))
-			.put(TextureSlot.BOTTOM, TwilightForestMod.prefix("block/jar_bottom"))
-			.put(TextureSlot.SIDE, TwilightForestMod.prefix("block/jar_side"))
-			.put(TextureSlot.PARTICLE, TwilightForestMod.prefix("block/jar_side"))
-			.put(TFTextureSlot.SOIL, Identifier.withDefaultNamespace("block/composter_compost"))
-			.put(TFTextureSlot.PLANT, Identifier.withDefaultNamespace("block/poppy"));
+			.put(TextureSlot.TOP, new Material(TwilightForestMod.prefix("block/jar_top")))
+			.put(TextureSlot.BOTTOM, new Material(TwilightForestMod.prefix("block/jar_bottom")))
+			.put(TextureSlot.SIDE, new Material(TwilightForestMod.prefix("block/jar_side")))
+			.put(TextureSlot.PARTICLE, new Material(TwilightForestMod.prefix("block/jar_side")))
+			.put(TFTextureSlot.SOIL, new Material(Identifier.withDefaultNamespace("block/composter_compost")))
+			.put(TFTextureSlot.PLANT, new Material(Identifier.withDefaultNamespace("block/poppy")));
 
 		Identifier spawnerLocation = TFExtendedModelTemplates.FIREFLY_PARTICLE_SPAWNER.create(TwilightForestMod.prefix("block/" + TFBlocks.FIREFLY_SPAWNER.getId().getPath()), spawnerMapping, this.modelOutput);
-		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.FIREFLY_SPAWNER.get(), spawnerLocation));
+		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.FIREFLY_SPAWNER.get(), plainVariant(spawnerLocation)));
 		this.itemModelOutput.accept(TFBlocks.FIREFLY_SPAWNER.get().asItem(), ItemModelUtils.plainModel(spawnerLocation));
 
 		TextureMapping mapping = TextureMapping.cube(TFBlocks.MASON_JAR.get())
-			.put(TextureSlot.TOP, TwilightForestMod.prefix("block/jar_top"))
-			.put(TextureSlot.BOTTOM, TwilightForestMod.prefix("block/jar_bottom"))
-			.put(TextureSlot.SIDE, TwilightForestMod.prefix("block/jar_side"))
-			.put(TextureSlot.PARTICLE, TwilightForestMod.prefix("block/jar_side"));
+			.put(TextureSlot.TOP, new Material(TwilightForestMod.prefix("block/jar_top")))
+			.put(TextureSlot.BOTTOM, new Material(TwilightForestMod.prefix("block/jar_bottom")))
+			.put(TextureSlot.SIDE, new Material(TwilightForestMod.prefix("block/jar_side")))
+			.put(TextureSlot.PARTICLE, new Material(TwilightForestMod.prefix("block/jar_side")));
 
-		Identifier location = TFExtendedModelTemplates.MASON_JAR.create(TwilightForestMod.prefix("block/" + TFBlocks.MASON_JAR.getId().getPath()), mapping, this.modelOutput);
-		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.MASON_JAR.get(), location));
-		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.CICADA_JAR.get(), location));
-		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.FIREFLY_JAR.get(), location));
+		Identifier jar = TFExtendedModelTemplates.MASON_JAR.create(TwilightForestMod.prefix("block/" + TFBlocks.MASON_JAR.getId().getPath()), mapping, this.modelOutput);
+		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.MASON_JAR.get(), plainVariant(jar)));
+		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.CICADA_JAR.get(), plainVariant(jar)));
+		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.FIREFLY_JAR.get(), plainVariant(jar)));
 
-		this.itemModelOutput.accept(TFItems.MASON_JAR.get(), ItemModelUtils.composite(ItemModelUtils.plainModel(location), ItemModelUtils.specialModel(location, new MasonJarSpecialRenderer.Unbaked(TFBlocks.TWILIGHT_OAK_LOG.asItem()))));
-		this.itemModelOutput.accept(TFItems.FIREFLY_JAR.get(), ItemModelUtils.composite(ItemModelUtils.plainModel(location), ItemModelUtils.specialModel(location, new MasonJarSpecialRenderer.Unbaked(TFBlocks.TWILIGHT_OAK_LOG.asItem()))));
-		this.itemModelOutput.accept(TFItems.CICADA_JAR.get(), ItemModelUtils.composite(ItemModelUtils.plainModel(location), ItemModelUtils.specialModel(location, new MasonJarSpecialRenderer.Unbaked(TFBlocks.CANOPY_LOG.asItem()))));
+		this.itemModelOutput.accept(TFItems.MASON_JAR.get(), ItemModelUtils.composite(ItemModelUtils.plainModel(jar), ItemModelUtils.specialModel(jar, new MasonJarSpecialRenderer.Unbaked(TFBlocks.TWILIGHT_OAK_LOG.asItem()))));
+		this.itemModelOutput.accept(TFItems.FIREFLY_JAR.get(), ItemModelUtils.composite(ItemModelUtils.plainModel(jar), ItemModelUtils.specialModel(jar, new MasonJarSpecialRenderer.Unbaked(TFBlocks.TWILIGHT_OAK_LOG.asItem()))));
+		this.itemModelOutput.accept(TFItems.CICADA_JAR.get(), ItemModelUtils.composite(ItemModelUtils.plainModel(jar), ItemModelUtils.specialModel(jar, new MasonJarSpecialRenderer.Unbaked(TFBlocks.CANOPY_LOG.asItem()))));
 
 		for (JarRenderer.LidResource lid : JarRenderer.LID_LOCATION_LIST.get()) {
 			Identifier item = lid.identifier();
@@ -486,16 +476,16 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 
 			if (lid.lid() == Items.PUMPKIN) {
 				TextureMapping lidMapping = TextureMapping.cube(TFBlocks.MASON_JAR.get())
-					.put(TextureSlot.SIDE, Identifier.withDefaultNamespace("block/pumpkin_side"))
-					.put(TextureSlot.END, Identifier.withDefaultNamespace("block/pumpkin_top"));
+					.put(TextureSlot.SIDE, new Material(Identifier.withDefaultNamespace("block/pumpkin_side")))
+					.put(TextureSlot.END, new Material(Identifier.withDefaultNamespace("block/pumpkin_top")));
 
 				TFModelTemplates.JAR_LID.create(TwilightForestMod.prefix("block/lid/" + name), lidMapping, this.modelOutput);
 				continue;
 			}
 			if (lid.customPath() != null) name = lid.customPath();
 			TextureMapping lidMapping = TextureMapping.cube(TFBlocks.MASON_JAR.get())
-				.put(TextureSlot.SIDE, Identifier.fromNamespaceAndPath(item.getNamespace(), "block/" + item.getPath()))
-				.put(TextureSlot.END, Identifier.fromNamespaceAndPath(item.getNamespace(), "block/" + item.getPath() + "_top"));
+				.put(TextureSlot.SIDE, new Material(Identifier.fromNamespaceAndPath(item.getNamespace(), "block/" + item.getPath())))
+				.put(TextureSlot.END, new Material(Identifier.fromNamespaceAndPath(item.getNamespace(), "block/" + item.getPath() + "_top")));
 
 			TFModelTemplates.JAR_LID.create(TwilightForestMod.prefix("block/lid/" + name), lidMapping, this.modelOutput);
 		}
@@ -510,26 +500,26 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 	}
 
 	public void rotationallySpecialColumn(Block block) {
-		Identifier sideA = TextureMapping.getBlockTexture(block, "_side_a");
-		Identifier sideB = TextureMapping.getBlockTexture(block, "_side_b");
-		Identifier end = TextureMapping.getBlockTexture(block, "_end");
+		Material sideA = TextureMapping.getBlockTexture(block, "_side_a");
+		Material sideB = TextureMapping.getBlockTexture(block, "_side_b");
+		Material end = TextureMapping.getBlockTexture(block, "_end");
 
 		Identifier xModel = TFModelTemplates.CUBE_COLUMN_ROTATIONALLY_SPECIAL_X.create(block, TextureMapping.cube(block).put(TextureSlot.END, end).put(TFTextureSlot.SIDE_A, sideA).put(TFTextureSlot.SIDE_B, sideB), this.modelOutput);
 		Identifier yModel = TFModelTemplates.CUBE_COLUMN.create(block, TextureMapping.cube(block).put(TextureSlot.END, end).put(TextureSlot.SIDE, sideA), this.modelOutput);
 		Identifier zModel = TFModelTemplates.CUBE_COLUMN_ROTATIONALLY_SPECIAL_Z.create(block, TextureMapping.cube(block).put(TextureSlot.END, end).put(TFTextureSlot.SIDE_A, sideA).put(TFTextureSlot.SIDE_B, sideB), this.modelOutput);
 
-		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block).with(
-			PropertyDispatch.property(RotatedPillarBlock.AXIS)
-				.select(Direction.Axis.X, Variant.variant().with(VariantProperties.MODEL, xModel))
-				.select(Direction.Axis.Y, Variant.variant().with(VariantProperties.MODEL, yModel))
-				.select(Direction.Axis.Z, Variant.variant().with(VariantProperties.MODEL, zModel))
+		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(block).with(
+			PropertyDispatch.initial(RotatedPillarBlock.AXIS)
+				.select(Direction.Axis.X, plainVariant(xModel))
+				.select(Direction.Axis.Y, plainVariant(yModel))
+				.select(Direction.Axis.Z, plainVariant(zModel))
 		));
 		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(yModel));
 	}
 
 	public void thorns(Block block, Block potted) {
 		TextureMapping mapping = TextureMapping.column(block);
-		this.blockStateOutput.accept(createSimpleBlock(potted, TFModelTemplates.POTTED_THORN.create(potted, mapping, this.modelOutput)));
+		this.blockStateOutput.accept(createSimpleBlock(potted, plainVariant(TFModelTemplates.POTTED_THORN.create(potted, mapping, this.modelOutput))));
 
 		Identifier main = TFModelTemplates.THORNS_MAIN.createWithSuffix(block, "_main", mapping, this.modelOutput);
 		Identifier thorns = TFModelTemplates.THORNS.createWithSuffix(block, "_thorns", mapping, this.modelOutput);
@@ -544,121 +534,121 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 			MultiPartGenerator.multiPart(block)
 				// MAIN
 				.with(
-					Condition.condition().term(RotatedPillarBlock.AXIS, Direction.Axis.Y),
-					Variant.variant().with(VariantProperties.MODEL, thorns)
+					condition(RotatedPillarBlock.AXIS, Direction.Axis.Y),
+					plainVariant(thorns)
 				)
 				.with(
-					Condition.condition().term(RotatedPillarBlock.AXIS, Direction.Axis.Z),
-					Variant.variant().with(VariantProperties.MODEL, thorns).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
+					condition(RotatedPillarBlock.AXIS, Direction.Axis.Z),
+					plainVariant(thorns).with(X_ROT_90)
 				)
 				.with(
-					Condition.condition().term(RotatedPillarBlock.AXIS, Direction.Axis.X),
-					Variant.variant().with(VariantProperties.MODEL, thorns).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+					condition(RotatedPillarBlock.AXIS, Direction.Axis.X),
+					plainVariant(thorns).with(X_ROT_90).with(Y_ROT_90)
 				)
 
 				// UP
 				.with(
-					Condition.condition().term(PipeBlock.UP, true),
-					Variant.variant().with(VariantProperties.MODEL, top).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
+					condition(PipeBlock.UP, true),
+					plainVariant(top).with(X_ROT_90)
 				)
 				.with(
-					Condition.and(Condition.condition().term(PipeBlock.UP, false), Condition.condition().term(RotatedPillarBlock.AXIS, Direction.Axis.Z, Direction.Axis.Y)),
-					Variant.variant().with(VariantProperties.MODEL, noSection).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270)
+					and(condition(PipeBlock.UP, false), condition(RotatedPillarBlock.AXIS, Direction.Axis.Z, Direction.Axis.Y)),
+					plainVariant(noSection).with(X_ROT_270)
 				)
 				.with(
-					Condition.and(Condition.condition().term(PipeBlock.UP, false), Condition.condition().term(RotatedPillarBlock.AXIS, Direction.Axis.X)),
-					Variant.variant().with(VariantProperties.MODEL, noSection).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+					and(condition(PipeBlock.UP, false), condition(RotatedPillarBlock.AXIS, Direction.Axis.X)),
+					plainVariant(noSection).with(X_ROT_270).with(Y_ROT_90)
 				)
 
 				// DOWN
 				.with(
-					Condition.condition().term(PipeBlock.DOWN, true),
-					Variant.variant().with(VariantProperties.MODEL, bottom).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
+					condition(PipeBlock.DOWN, true),
+					plainVariant(bottom).with(X_ROT_90)
 				)
 				.with(
-					Condition.and(Condition.condition().term(PipeBlock.DOWN, false), Condition.condition().term(RotatedPillarBlock.AXIS, Direction.Axis.Z, Direction.Axis.Y)),
-					Variant.variant().with(VariantProperties.MODEL, noSection).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
+					and(condition(PipeBlock.DOWN, false), condition(RotatedPillarBlock.AXIS, Direction.Axis.Z, Direction.Axis.Y)),
+					plainVariant(noSection).with(X_ROT_90)
 				)
 				.with(
-					Condition.and(Condition.condition().term(PipeBlock.DOWN, false), Condition.condition().term(RotatedPillarBlock.AXIS, Direction.Axis.X)),
-					Variant.variant().with(VariantProperties.MODEL, noSection).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+					and(condition(PipeBlock.DOWN, false), condition(RotatedPillarBlock.AXIS, Direction.Axis.X)),
+					plainVariant(noSection).with(X_ROT_90).with(Y_ROT_90)
 				)
 
 				// EAST
 				.with(
-					Condition.condition().term(PipeBlock.EAST, true),
-					Variant.variant().with(VariantProperties.MODEL, top).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
+					condition(PipeBlock.EAST, true),
+					plainVariant(top).with(Y_ROT_270)
 				)
 				.with(
-					Condition.and(Condition.condition().term(PipeBlock.EAST, false), Condition.condition().term(RotatedPillarBlock.AXIS, Direction.Axis.Y, Direction.Axis.X)),
-					Variant.variant().with(VariantProperties.MODEL, noSection).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+					and(condition(PipeBlock.EAST, false), condition(RotatedPillarBlock.AXIS, Direction.Axis.Y, Direction.Axis.X)),
+					plainVariant(noSection).with(Y_ROT_90)
 				)
 				.with(
-					Condition.and(Condition.condition().term(PipeBlock.EAST, false), Condition.condition().term(RotatedPillarBlock.AXIS, Direction.Axis.Z)),
-					Variant.variant().with(VariantProperties.MODEL, noSectionAlt).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+					and(condition(PipeBlock.EAST, false), condition(RotatedPillarBlock.AXIS, Direction.Axis.Z)),
+					plainVariant(noSectionAlt).with(Y_ROT_90)
 				)
 
 				// WEST
 				.with(
-					Condition.condition().term(PipeBlock.WEST, true),
-					Variant.variant().with(VariantProperties.MODEL, bottom).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
+					condition(PipeBlock.WEST, true),
+					plainVariant(bottom).with(Y_ROT_270)
 				)
 				.with(
-					Condition.and(Condition.condition().term(PipeBlock.WEST, false), Condition.condition().term(RotatedPillarBlock.AXIS, Direction.Axis.Y, Direction.Axis.X)),
-					Variant.variant().with(VariantProperties.MODEL, noSection).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
+					and(condition(PipeBlock.WEST, false), condition(RotatedPillarBlock.AXIS, Direction.Axis.Y, Direction.Axis.X)),
+					plainVariant(noSection).with(Y_ROT_270)
 				)
 				.with(
-					Condition.and(Condition.condition().term(PipeBlock.WEST, false), Condition.condition().term(RotatedPillarBlock.AXIS, Direction.Axis.Z)),
-					Variant.variant().with(VariantProperties.MODEL, noSectionAlt).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
+					and(condition(PipeBlock.WEST, false), condition(RotatedPillarBlock.AXIS, Direction.Axis.Z)),
+					plainVariant(noSectionAlt).with(Y_ROT_270)
 				)
 
 				// SOUTH
 				.with(
-					Condition.condition().term(PipeBlock.SOUTH, true),
-					Variant.variant().with(VariantProperties.MODEL, top)
+					condition(PipeBlock.SOUTH, true),
+					plainVariant(top)
 				)
 				.with(
-					Condition.and(Condition.condition().term(PipeBlock.SOUTH, false), Condition.condition().term(RotatedPillarBlock.AXIS, Direction.Axis.Y, Direction.Axis.Z)),
-					Variant.variant().with(VariantProperties.MODEL, noSection).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
+					and(condition(PipeBlock.SOUTH, false), condition(RotatedPillarBlock.AXIS, Direction.Axis.Y, Direction.Axis.Z)),
+					plainVariant(noSection).with(Y_ROT_180)
 				)
 				.with(
-					Condition.and(Condition.condition().term(PipeBlock.SOUTH, false), Condition.condition().term(RotatedPillarBlock.AXIS, Direction.Axis.X)),
-					Variant.variant().with(VariantProperties.MODEL, noSectionAlt).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
+					and(condition(PipeBlock.SOUTH, false), condition(RotatedPillarBlock.AXIS, Direction.Axis.X)),
+					plainVariant(noSectionAlt).with(Y_ROT_180)
 				)
 
 				// NORTH
 				.with(
-					Condition.condition().term(PipeBlock.NORTH, true),
-					Variant.variant().with(VariantProperties.MODEL, bottom)
+					condition(PipeBlock.NORTH, true),
+					plainVariant(bottom)
 				)
 				.with(
-					Condition.and(Condition.condition().term(PipeBlock.NORTH, false), Condition.condition().term(RotatedPillarBlock.AXIS, Direction.Axis.Y, Direction.Axis.Z)),
-					Variant.variant().with(VariantProperties.MODEL, noSection)
+					and(condition(PipeBlock.NORTH, false), condition(RotatedPillarBlock.AXIS, Direction.Axis.Y, Direction.Axis.Z)),
+					plainVariant(noSection)
 				)
 				.with(
-					Condition.and(Condition.condition().term(PipeBlock.NORTH, false), Condition.condition().term(RotatedPillarBlock.AXIS, Direction.Axis.X)),
-					Variant.variant().with(VariantProperties.MODEL, noSectionAlt)
+					and(condition(PipeBlock.NORTH, false), condition(RotatedPillarBlock.AXIS, Direction.Axis.X)),
+					plainVariant(noSectionAlt)
 				)
 		);
 	}
 
 	public void directionalCrossModel(Block block, PlantType type) {
-		Identifier identifier = type.getCross().extend().renderType("cutout").build().create(block, TextureMapping.cross(block), this.modelOutput);
+		Identifier identifier = type.getCross().extend().build().create(block, TextureMapping.cross(block), this.modelOutput);
 
 		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(this.createFlatItemModelWithBlockTexture(block.asItem(), block)));
-		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block).with(
-			PropertyDispatch.property(DirectionalBlock.FACING)
-				.select(Direction.UP, Variant.variant().with(VariantProperties.MODEL, identifier))
-				.select(Direction.DOWN, Variant.variant().with(VariantProperties.MODEL, identifier).with(VariantProperties.X_ROT, VariantProperties.Rotation.R180))
-				.select(Direction.SOUTH, Variant.variant().with(VariantProperties.MODEL, identifier).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270))
-				.select(Direction.NORTH, Variant.variant().with(VariantProperties.MODEL, identifier).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90))
-				.select(Direction.WEST, Variant.variant().with(VariantProperties.MODEL, identifier).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90).with(VariantProperties.X_ROT, VariantProperties.Rotation.R270))
-				.select(Direction.EAST, Variant.variant().with(VariantProperties.MODEL, identifier).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90).with(VariantProperties.X_ROT, VariantProperties.Rotation.R90))
+		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(block).with(
+			PropertyDispatch.initial(DirectionalBlock.FACING)
+				.select(Direction.UP, plainVariant(identifier))
+				.select(Direction.DOWN, plainVariant(identifier).with(X_ROT_180))
+				.select(Direction.SOUTH, plainVariant(identifier).with(X_ROT_270))
+				.select(Direction.NORTH, plainVariant(identifier).with(X_ROT_90))
+				.select(Direction.WEST, plainVariant(identifier).with(Y_ROT_90).with(X_ROT_270))
+				.select(Direction.EAST, plainVariant(identifier).with(Y_ROT_90).with(X_ROT_90))
 		));
 	}
 
 	public void forcefield(Block block, int tint) {
-		this.blockStateOutput.accept(createSimpleBlock(block, TFModelTemplates.FORCEFIELD.extend().customLoader(ForceFieldModelBuilder::new, builder -> {
+		this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(TFModelTemplates.FORCEFIELD.extend().customLoader(ForceFieldModelBuilder::new, builder -> {
 			builder.tintAll(0).brightnessOverride(15).disableShade()
 			//WEST
 			.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.WEST, true).from(0, 7, 7).to(7, 9, 9).face(Direction.WEST).cullface(Direction.WEST).uvs(7, 7, 9, 9).texture("#pane").end()
@@ -791,42 +781,42 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 					.face(Direction.UP).uvs(0, 9, 7, 16).end().faces((direction, face) -> face.texture("#pane"))
 				.ifElse().from(7, 7, 9).to(9, 9, 16).parents(ForceFieldModel.ExtraDirection.SOUTH).face(Direction.EAST).uvs(9, 7, 16, 9).texture("#pane").end()
 				.ifSame().from(9, 7, 7).to(16, 9, 9).parents(ForceFieldModel.ExtraDirection.EAST).face(Direction.SOUTH).uvs(0, 7, 7, 9).texture("#pane").end().end();
-		}).build().create(block, TFTextureMapping.forcefield(), this.modelOutput)));
-		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.extend().renderType("translucent").build().create(ModelLocationUtils.getModelLocation(block.asItem()), TextureMapping.layer0(TwilightForestMod.prefix("block/forcefield")), this.modelOutput), ItemModelUtils.constantTint(tint)));
+		}).build().create(block, TFTextureMapping.forcefield(), this.modelOutput))));
+		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.extend().build().create(ModelLocationUtils.getModelLocation(block.asItem()), TextureMapping.layer0(new Material(TwilightForestMod.prefix("block/forcefield"))), this.modelOutput), ItemModelUtils.constantTint(tint)));
 	}
 
 	public void generatePaneBlock(Block glassBlock, Block paneBlock) {
 		TextureMapping mapping = new TextureMapping().put(TextureSlot.PANE, TextureMapping.getBlockTexture(glassBlock)).put(TextureSlot.EDGE, TextureMapping.getBlockTexture(glassBlock));
-		Identifier post = ModelTemplates.STAINED_GLASS_PANE_POST.extend().renderType("translucent").build().create(paneBlock, mapping, this.modelOutput);
-		Identifier side = ModelTemplates.STAINED_GLASS_PANE_SIDE.extend().renderType("translucent").build().create(paneBlock, mapping, this.modelOutput);
-		Identifier sideAlt = ModelTemplates.STAINED_GLASS_PANE_SIDE_ALT.extend().renderType("translucent").build().create(paneBlock, mapping, this.modelOutput);
-		Identifier noSide = ModelTemplates.STAINED_GLASS_PANE_NOSIDE.extend().renderType("translucent").build().create(paneBlock, mapping, this.modelOutput);
-		Identifier noSideAlt = ModelTemplates.STAINED_GLASS_PANE_NOSIDE_ALT.extend().renderType("translucent").build().create(paneBlock, mapping, this.modelOutput);
+		Identifier post = ModelTemplates.STAINED_GLASS_PANE_POST.extend().build().create(paneBlock, mapping, this.modelOutput);
+		Identifier side = ModelTemplates.STAINED_GLASS_PANE_SIDE.extend().build().create(paneBlock, mapping, this.modelOutput);
+		Identifier sideAlt = ModelTemplates.STAINED_GLASS_PANE_SIDE_ALT.extend().build().create(paneBlock, mapping, this.modelOutput);
+		Identifier noSide = ModelTemplates.STAINED_GLASS_PANE_NOSIDE.extend().build().create(paneBlock, mapping, this.modelOutput);
+		Identifier noSideAlt = ModelTemplates.STAINED_GLASS_PANE_NOSIDE_ALT.extend().build().create(paneBlock, mapping, this.modelOutput);
 		Item item = paneBlock.asItem();
 		this.registerSimpleItemModel(item, this.createFlatItemModelWithBlockTexture(item, glassBlock));
 		this.blockStateOutput
 			.accept(
 				MultiPartGenerator.multiPart(paneBlock)
-					.with(Variant.variant().with(VariantProperties.MODEL, post))
-					.with(Condition.condition().term(BlockStateProperties.NORTH, true), Variant.variant().with(VariantProperties.MODEL, side))
+					.with(plainVariant(post))
+					.with(condition(BlockStateProperties.NORTH, true), plainVariant(side))
 					.with(
-						Condition.condition().term(BlockStateProperties.EAST, true),
-						Variant.variant().with(VariantProperties.MODEL, side).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+						condition(BlockStateProperties.EAST, true),
+						plainVariant(side).with(Y_ROT_90)
 					)
-					.with(Condition.condition().term(BlockStateProperties.SOUTH, true), Variant.variant().with(VariantProperties.MODEL, sideAlt))
+					.with(condition(BlockStateProperties.SOUTH, true), plainVariant(sideAlt))
 					.with(
-						Condition.condition().term(BlockStateProperties.WEST, true),
-						Variant.variant().with(VariantProperties.MODEL, sideAlt).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+						condition(BlockStateProperties.WEST, true),
+						plainVariant(sideAlt).with(Y_ROT_90)
 					)
-					.with(Condition.condition().term(BlockStateProperties.NORTH, false), Variant.variant().with(VariantProperties.MODEL, noSide))
-					.with(Condition.condition().term(BlockStateProperties.EAST, false), Variant.variant().with(VariantProperties.MODEL, noSideAlt))
+					.with(condition(BlockStateProperties.NORTH, false), plainVariant(noSide))
+					.with(condition(BlockStateProperties.EAST, false), plainVariant(noSideAlt))
 					.with(
-						Condition.condition().term(BlockStateProperties.SOUTH, false),
-						Variant.variant().with(VariantProperties.MODEL, noSideAlt).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+						condition(BlockStateProperties.SOUTH, false),
+						plainVariant(noSideAlt).with(Y_ROT_90)
 					)
 					.with(
-						Condition.condition().term(BlockStateProperties.WEST, false),
-						Variant.variant().with(VariantProperties.MODEL, noSide).with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
+						condition(BlockStateProperties.WEST, false),
+						plainVariant(noSide).with(Y_ROT_270)
 					)
 			);
 	}
@@ -834,9 +824,9 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 	public void generateRuneBlock(Block runeBlock, int tint) {
 		Variant[] variants = new Variant[8];
 		for (int i = 0; i < 8; i++) {
-			variants[i] = Variant.variant().with(VariantProperties.MODEL, TFModelTemplates.CASTLE_RUNE_TEMPLATE.createWithSuffix(runeBlock, "_" + i, TextureMapping.cube(TFBlocks.CASTLE_BRICK.get()).put(TFTextureSlot.RUNE, TwilightForestMod.prefix("block/castleblock_magic_" + i)), this.modelOutput));
+			variants[i] = plainModel(TFModelTemplates.CASTLE_RUNE_TEMPLATE.createWithSuffix(runeBlock, "_" + i, TextureMapping.cube(TFBlocks.CASTLE_BRICK.get()).put(TFTextureSlot.RUNE, new Material(TwilightForestMod.prefix("block/castleblock_magic_" + i))), this.modelOutput));
 		}
-		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(runeBlock, variants));
+		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(runeBlock, variants(variants)));
 		this.itemModelOutput.accept(runeBlock.asItem(), ItemModelUtils.tintedModel(ModelLocationUtils.getModelLocation(runeBlock).withSuffix("_0"), ItemModelUtils.constantTint(tint)));
 	}
 
@@ -855,12 +845,12 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 			Identifier model = TFModelTemplates.TROPHY_PEDESTAL.createWithSuffix(pedestal, i == 0 ? "" : ("_" + i), TFTextureMapping.trophyPedestal(pedestal, false, variantList[i][0], variantList[i][1], variantList[i][2], variantList[i][3]), this.modelOutput);
 			Identifier activeModel = TFModelTemplates.TROPHY_PEDESTAL_ACTIVE.createWithSuffix(pedestal, i == 0 ? "_active" : ("_active_" + i), TFTextureMapping.trophyPedestal(pedestal, true, variantList[i][0], variantList[i][1], variantList[i][2], variantList[i][3]), this.modelOutput);
 
-			for (VariantProperties.Rotation rot : VariantProperties.Rotation.values()) {
-				variants.add(Variant.variant().with(VariantProperties.MODEL, model).with(VariantProperties.Y_ROT, rot));
-				activeVariants.add(Variant.variant().with(VariantProperties.MODEL, activeModel).with(VariantProperties.Y_ROT, rot));
+			for (Quadrant rot : Quadrant.values()) {
+				variants.add(plainModel(model).with(VariantMutator.Y_ROT.withValue(rot)));
+				activeVariants.add(plainModel(activeModel).with(VariantMutator.Y_ROT.withValue(rot)));
 			}
 		}
-		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(pedestal).with(PropertyDispatch.property(TrophyPedestalBlock.ACTIVE).select(true, activeVariants).select(false, variants)));
+		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(pedestal).with(PropertyDispatch.initial(TrophyPedestalBlock.ACTIVE).select(true, variants(activeVariants.toArray(new Variant[0]))).select(false, variants(variants.toArray(new Variant[0])))));
 		this.generateBlockItem(pedestal);
 	}
 
@@ -870,20 +860,20 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		Identifier leftConnect = ModelLocationUtils.getModelLocation(TFBlocks.IRON_LADDER.get(), "_left_connection");
 		Identifier right = ModelLocationUtils.getModelLocation(TFBlocks.IRON_LADDER.get(), "_right");
 		Identifier rightConnect = ModelLocationUtils.getModelLocation(TFBlocks.IRON_LADDER.get(), "_right_connection");
-		for (Direction d : Direction.Plane.HORIZONTAL) {
-			model.with(Condition.and(
-				Condition.condition().term(IronLadderBlock.LEFT, false),
-				Condition.condition().term(LadderBlock.FACING, d)), Variant.variant().with(VariantProperties.MODEL, left).with(VariantProperties.Y_ROT, getYRotationFromDirection(d)));
-			model.with(Condition.and(
-				Condition.condition().term(IronLadderBlock.LEFT, true),
-				Condition.condition().term(LadderBlock.FACING, d)), Variant.variant().with(VariantProperties.MODEL, leftConnect).with(VariantProperties.Y_ROT, getYRotationFromDirection(d)));
-			model.with(Condition.and(
-				Condition.condition().term(IronLadderBlock.RIGHT, false),
-				Condition.condition().term(LadderBlock.FACING, d)), Variant.variant().with(VariantProperties.MODEL, right).with(VariantProperties.Y_ROT, getYRotationFromDirection(d)));
-			model.with(Condition.and(
-				Condition.condition().term(IronLadderBlock.RIGHT, true),
-				Condition.condition().term(LadderBlock.FACING, d)), Variant.variant().with(VariantProperties.MODEL, rightConnect).with(VariantProperties.Y_ROT, getYRotationFromDirection(d)));
-		}
+		forEachHorizontalDirection((d, mutator) -> {
+			model.with(and(
+				condition(IronLadderBlock.LEFT, false),
+				condition(LadderBlock.FACING, d)), plainVariant(left).with(mutator));
+			model.with(and(
+				condition(IronLadderBlock.LEFT, true),
+				condition(LadderBlock.FACING, d)), plainVariant(leftConnect).with(mutator));
+			model.with(and(
+				condition(IronLadderBlock.RIGHT, false),
+				condition(LadderBlock.FACING, d)), plainVariant(right).with(mutator));
+			model.with(and(
+				condition(IronLadderBlock.RIGHT, true),
+				condition(LadderBlock.FACING, d)), plainVariant(rightConnect).with(mutator));
+		});
 		this.blockStateOutput.accept(model);
 		this.itemModelOutput.accept(TFBlocks.IRON_LADDER.asItem(), ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(TFBlocks.IRON_LADDER.asItem())));
 	}
@@ -891,58 +881,18 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 	public void createMultifaceBlock(Block mushroomBlock, Identifier inside, boolean invertConditions) {
 		Identifier outside = ModelTemplates.SINGLE_FACE.create(mushroomBlock, TextureMapping.defaultTexture(mushroomBlock), this.modelOutput);
 		this.blockStateOutput.accept(MultiPartGenerator.multiPart(mushroomBlock)
-			.with(Condition.condition().term(BlockStateProperties.NORTH, !invertConditions), Variant.variant().with(VariantProperties.MODEL, outside))
-			.with(Condition.condition().term(BlockStateProperties.EAST, !invertConditions), Variant.variant()
-				.with(VariantProperties.MODEL, outside)
-				.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
-				.with(VariantProperties.UV_LOCK, true)
-			)
-			.with(Condition.condition().term(BlockStateProperties.SOUTH, !invertConditions), Variant.variant()
-				.with(VariantProperties.MODEL, outside)
-				.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
-				.with(VariantProperties.UV_LOCK, true)
-			)
-			.with(Condition.condition().term(BlockStateProperties.WEST, !invertConditions), Variant.variant()
-				.with(VariantProperties.MODEL, outside)
-				.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
-				.with(VariantProperties.UV_LOCK, true)
-			)
-			.with(Condition.condition().term(BlockStateProperties.UP, !invertConditions), Variant.variant()
-				.with(VariantProperties.MODEL, outside)
-				.with(VariantProperties.X_ROT, VariantProperties.Rotation.R270)
-				.with(VariantProperties.UV_LOCK, true)
-			)
-			.with(Condition.condition().term(BlockStateProperties.DOWN, !invertConditions), Variant.variant()
-				.with(VariantProperties.MODEL, outside)
-				.with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
-				.with(VariantProperties.UV_LOCK, true)
-			)
-			.with(Condition.condition().term(BlockStateProperties.NORTH, invertConditions), Variant.variant().with(VariantProperties.MODEL, inside))
-			.with(Condition.condition().term(BlockStateProperties.EAST, invertConditions), Variant.variant()
-				.with(VariantProperties.MODEL, inside)
-				.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
-				.with(VariantProperties.UV_LOCK, false)
-			)
-			.with(Condition.condition().term(BlockStateProperties.SOUTH, invertConditions), Variant.variant()
-				.with(VariantProperties.MODEL, inside)
-				.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
-				.with(VariantProperties.UV_LOCK, false)
-			)
-			.with(Condition.condition().term(BlockStateProperties.WEST, invertConditions), Variant.variant()
-				.with(VariantProperties.MODEL, inside)
-				.with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
-				.with(VariantProperties.UV_LOCK, false)
-			)
-			.with(Condition.condition().term(BlockStateProperties.UP, invertConditions), Variant.variant()
-				.with(VariantProperties.MODEL, inside)
-				.with(VariantProperties.X_ROT, VariantProperties.Rotation.R270)
-				.with(VariantProperties.UV_LOCK, false)
-			)
-			.with(Condition.condition().term(BlockStateProperties.DOWN, invertConditions), Variant.variant()
-				.with(VariantProperties.MODEL, inside)
-				.with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
-				.with(VariantProperties.UV_LOCK, false)
-			)
+			.with(condition(BlockStateProperties.NORTH, !invertConditions), plainVariant(outside))
+			.with(condition(BlockStateProperties.EAST, !invertConditions), plainVariant(outside).with(Y_ROT_90).with(VariantMutator.UV_LOCK.withValue(true)))
+			.with(condition(BlockStateProperties.SOUTH, !invertConditions), plainVariant(outside).with(Y_ROT_180).with(VariantMutator.UV_LOCK.withValue(true)))
+			.with(condition(BlockStateProperties.WEST, !invertConditions), plainVariant(outside).with(Y_ROT_270).with(VariantMutator.UV_LOCK.withValue(true)))
+			.with(condition(BlockStateProperties.UP, !invertConditions), plainVariant(outside).with(X_ROT_270).with(VariantMutator.UV_LOCK.withValue(true)))
+			.with(condition(BlockStateProperties.DOWN, !invertConditions), plainVariant(outside).with(X_ROT_90).with(VariantMutator.UV_LOCK.withValue(true)))
+			.with(condition(BlockStateProperties.NORTH, invertConditions), plainVariant(inside))
+			.with(condition(BlockStateProperties.EAST, invertConditions), plainVariant(inside).with(Y_ROT_90).with(VariantMutator.UV_LOCK.withValue(false)))
+			.with(condition(BlockStateProperties.SOUTH, invertConditions), plainVariant(inside).with(Y_ROT_180).with(VariantMutator.UV_LOCK.withValue(false)))
+			.with(condition(BlockStateProperties.WEST, invertConditions), plainVariant(inside).with(Y_ROT_270).with(VariantMutator.UV_LOCK.withValue(false)))
+			.with(condition(BlockStateProperties.UP, invertConditions), plainVariant(inside).with(X_ROT_270).with(VariantMutator.UV_LOCK.withValue(false)))
+			.with(condition(BlockStateProperties.DOWN, invertConditions), plainVariant(inside).with(X_ROT_90).with(VariantMutator.UV_LOCK.withValue(false)))
 		);
 		this.registerSimpleItemModel(mushroomBlock, TexturedModel.CUBE.createWithSuffix(mushroomBlock, "_inventory", this.modelOutput));
 	}
@@ -952,7 +902,7 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		Identifier[] models = new Identifier[4];
 		for (int i = 0; i < models.length; i++) {
 			Identifier texture = ModelLocationUtils.getModelLocation(block, "_" + i);
-			models[i] = TFModelTemplates.create(texture.toString(), TextureSlot.TEXTURE).extend().renderType("cutout").parent(ModelLocationUtils.getModelLocation(Blocks.LILY_PAD)).build().create(texture, TextureMapping.defaultTexture(texture), this.modelOutput);
+			models[i] = TFModelTemplates.create(texture.toString(), TextureSlot.TEXTURE).extend().parent(ModelLocationUtils.getModelLocation(Blocks.LILY_PAD)).build().create(texture, TextureMapping.defaultTexture(new Material(texture)), this.modelOutput);
 		}
 
 		Map<Direction, Map<HugeLilypadPiece, Identifier>> stateMap = ImmutableMap.of(
@@ -962,7 +912,7 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 			Direction.EAST, ImmutableMap.of(HugeLilypadPiece.NW, models[3], HugeLilypadPiece.NE, models[0], HugeLilypadPiece.SE, models[1], HugeLilypadPiece.SW, models[2])
 		);
 
-		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block).with(PropertyDispatch.properties(HugeLilyPadBlock.PIECE, HugeLilyPadBlock.FACING).generate((piece, facing) -> Variant.variant().with(VariantProperties.MODEL, stateMap.get(facing).get(piece)).with(VariantProperties.Y_ROT, getYRotationFromDirection(facing)))));
+		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(block).with(PropertyDispatch.initial(HugeLilyPadBlock.PIECE, HugeLilyPadBlock.FACING).generate((piece, facing) -> plainVariant(stateMap.get(facing).get(piece)).with(getYRotationFromDirection(facing)))));
 		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(block.asItem()), TextureMapping.layer0(block), this.modelOutput), ItemModelUtils.constantTint(-9321636)));
 	}
 
@@ -972,14 +922,14 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		for (int i = 0; i < auroras.length; i++) {
 			auroras[i] = TFModelTemplates.TINTED_BLOCK.createWithSuffix(TFBlocks.AURORA_BLOCK.get(), "_" + i, TextureMapping.cube(TextureMapping.getBlockTexture(base, i == 0 ? "" : "_" + i)), this.modelOutput);
 		}
-		this.wrapTintedBlockItem(base, ItemModelUtils.constantTint(-16711758), block -> this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, Variant.variant().with(VariantProperties.MODEL, TFModelTemplates.create("block").extend().customLoader(NoiseVaryingModelBuilder::new, builder -> builder.addAll(auroras)).build().create(block, new TextureMapping(), this.modelOutput)))));
+		this.wrapTintedBlockItem(base, ItemModelUtils.constantTint(-16711758), block -> this.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, plainVariant(TFModelTemplates.create("block").extend().customLoader(NoiseVaryingModelBuilder::new, builder -> builder.addAll(auroras)).build().create(block, new TextureMapping(), this.modelOutput)))));
 
 		Block pillar = TFBlocks.AURORA_PILLAR.get();
-		this.wrapTintedBlockItem(pillar, ItemModelUtils.constantTint(-9181501), block -> this.blockStateOutput.accept(createAxisAlignedPillarBlock(block, TexturedModel.createDefault(block1 -> new TextureMapping()
+		this.wrapTintedBlockItem(pillar, ItemModelUtils.constantTint(-9181501), block -> this.blockStateOutput.accept(createAxisAlignedPillarBlock(block, plainVariant(TexturedModel.createDefault(block1 -> new TextureMapping()
 				.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block))
 				.put(TextureSlot.TOP, TextureMapping.getBlockTexture(block, "_top"))
 				.put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block, "_top")), TFModelTemplates.TINTED_CUBE_BOTTOM_TOP)
-			.create(block, this.modelOutput))));
+			.create(block, this.modelOutput)))));
 
 		Block slab = TFBlocks.AURORA_SLAB.get();
 		TextureMapping slabMap = new TextureMapping()
@@ -989,51 +939,14 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 
 		Identifier bottom = TFModelTemplates.TINTED_SLAB_BOTTOM.create(slab, slabMap, this.modelOutput);
 		Identifier top = TFModelTemplates.TINTED_SLAB_TOP.create(slab, slabMap, this.modelOutput);
-		this.wrapTintedBlockItem(slab, ItemModelUtils.constantTint(-9181501), block -> this.blockStateOutput.accept(createSlab(block, bottom, top, ModelLocationUtils.getModelLocation(pillar))));
+		this.wrapTintedBlockItem(slab, ItemModelUtils.constantTint(-9181501), block -> this.blockStateOutput.accept(createSlab(block, plainVariant(bottom), plainVariant(top), plainVariant(ModelLocationUtils.getModelLocation(pillar)))));
 
-		this.wrapTintedBlockItem(TFBlocks.AURORALIZED_GLASS.get(), ItemModelUtils.constantTint(-9181501), block -> this.blockStateOutput.accept(createSimpleBlock(block, TFModelTemplates.CTM_NO_BASE.extend().renderType("translucent").customLoader(ConnectedTextureBuilder::new, builder -> builder.setOverlayTintIndex(0).connectsTo(block)).build().create(block, TFTextureMapping.ctmBlock(block), this.modelOutput))));
+		this.wrapTintedBlockItem(TFBlocks.AURORALIZED_GLASS.get(), ItemModelUtils.constantTint(-9181501), block -> this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(TFModelTemplates.CTM_NO_BASE.extend().customLoader(ConnectedTextureBuilder::new, builder -> builder.setOverlayTintIndex(0).connectsTo(block)).build().create(block, TFTextureMapping.ctmBlock(block), this.modelOutput)))));
 	}
 
 	public void createTFChest(Block chestBlock, Block particleBlock, Identifier texture) {
 		this.createParticleOnlyBlock(chestBlock, particleBlock);
 		Item item = chestBlock.asItem();
-		this.itemModelOutput.accept(item, ItemModelUtils.specialModel(ModelTemplates.CHEST_INVENTORY.create(item, TextureMapping.particle(particleBlock), this.modelOutput), new TFChestSpecialRenderer.Unbaked(texture)));
-	}
-
-	@Override
-	public void createCrossBlock(Block block, PlantType plantType, TextureMapping textureMapping) {
-		Identifier identifier = plantType.getCross().extend().renderType("cutout").build().create(block, textureMapping, this.modelOutput);
-		this.blockStateOutput.accept(createSimpleBlock(block, identifier));
-	}
-
-	@Override
-	public List<Identifier> createFloorFireModels(Block fireBlock) {
-		Identifier identifier = ModelTemplates.FIRE_FLOOR.extend().renderType("cutout").build()
-			.create(ModelLocationUtils.getModelLocation(fireBlock, "_floor0"), TextureMapping.fire0(fireBlock), this.modelOutput);
-		Identifier identifier1 = ModelTemplates.FIRE_FLOOR.extend().renderType("cutout").build()
-			.create(ModelLocationUtils.getModelLocation(fireBlock, "_floor1"), TextureMapping.fire1(fireBlock), this.modelOutput);
-		return ImmutableList.of(identifier, identifier1);
-	}
-
-	@Override
-	public List<Identifier> createSideFireModels(Block fireBlock) {
-		Identifier identifier = ModelTemplates.FIRE_SIDE.extend().renderType("cutout").build()
-			.create(ModelLocationUtils.getModelLocation(fireBlock, "_side0"), TextureMapping.fire0(fireBlock), this.modelOutput);
-		Identifier identifier1 = ModelTemplates.FIRE_SIDE.extend().renderType("cutout").build()
-			.create(ModelLocationUtils.getModelLocation(fireBlock, "_side1"), TextureMapping.fire1(fireBlock), this.modelOutput);
-		Identifier identifier2 = ModelTemplates.FIRE_SIDE_ALT.extend().renderType("cutout").build()
-			.create(ModelLocationUtils.getModelLocation(fireBlock, "_side_alt0"), TextureMapping.fire0(fireBlock), this.modelOutput);
-		Identifier identifier3 = ModelTemplates.FIRE_SIDE_ALT.extend().renderType("cutout").build()
-			.create(ModelLocationUtils.getModelLocation(fireBlock, "_side_alt1"), TextureMapping.fire1(fireBlock), this.modelOutput);
-		return ImmutableList.of(identifier, identifier1, identifier2, identifier3);
-	}
-
-	public static VariantProperties.Rotation getYRotationFromDirection(Direction direction) {
-		return switch (direction) {
-			case EAST -> VariantProperties.Rotation.R90;
-			case SOUTH -> VariantProperties.Rotation.R180;
-			case WEST -> VariantProperties.Rotation.R270;
-			default -> VariantProperties.Rotation.R0;
-		};
+		this.itemModelOutput.accept(item, ItemModelUtils.specialModel(ModelTemplates.CHEST_INVENTORY.create(item, TextureMapping.particle(particleBlock), this.modelOutput), new ChestSpecialRenderer.Unbaked(texture)));
 	}
 }

@@ -1,13 +1,19 @@
 package twilightforest.datagen.helpers.models;
 
 import com.mojang.datafixers.util.Pair;
+import com.mojang.math.Quadrant;
 import net.minecraft.client.color.item.ItemTintSource;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelOutput;
+import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.*;
 import net.minecraft.client.data.models.model.*;
 import net.minecraft.client.renderer.block.dispatch.Variant;
+import net.minecraft.client.renderer.block.dispatch.VariantMutator;
+import net.minecraft.client.renderer.block.dispatch.multipart.CombinedCondition;
+import net.minecraft.client.renderer.block.dispatch.multipart.Condition;
 import net.minecraft.client.renderer.item.ItemModel;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
@@ -15,7 +21,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.neoforged.neoforge.client.model.generators.template.FaceRotation;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BanisterBlock;
 import twilightforest.block.ClimbableHollowLogBlock;
@@ -46,22 +51,22 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 		// we create 4 variants of leaves and choose 1 of 4 flowing direction for each face of each variant
 		int[][] CHOSEN_VARIANTS = {{0, 2, 2, 3, 0, 0}, {2, 0, 3, 0, 2, 1}, {3, 3, 1, 2, 3, 2}, {1, 1, 0, 1, 1, 3}};
 		Variant[] modelFiles = new Variant[CHOSEN_VARIANTS.length];
-		for(int i = 0; i < CHOSEN_VARIANTS.length; i++) {
+		for (int i = 0; i < CHOSEN_VARIANTS.length; i++) {
 			int finalI = i;
 			Identifier model = TFModelTemplates.CUBE_ALL.extend().element(builder -> builder.from(0, 0, 0).to(16, 16, 16).allFaces((direction, faceBuilder) -> {
-				FaceRotation rotation = FaceRotation.values()[CHOSEN_VARIANTS[finalI][direction.ordinal()]];
+				Quadrant rotation = Quadrant.values()[CHOSEN_VARIANTS[finalI][direction.ordinal()]];
 				faceBuilder.cullface(direction).texture(TextureSlot.ALL).rotation(rotation).tintindex(0);
 			})).build().createWithSuffix(block, (i > 0 ? "_" + i : ""), TextureMapping.cube(block), this.modelOutput);
 
-			modelFiles[i] = Variant.variant().with(VariantProperties.MODEL, model);
+			modelFiles[i] = plainModel(model);
 		}
 
-		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, modelFiles));
+		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, variants(modelFiles)));
 
 	}
 
 	public void generateMagicLeaves(Block leaves, int rotation, int tint) {
-		FaceRotation faceRotation = rotation % 180 == 0 ? FaceRotation.ZERO : FaceRotation.values()[rotation / 90];
+		Quadrant faceRotation = rotation % 180 == 0 ? Quadrant.R0 : Quadrant.values()[rotation / 90];
 		boolean isRotation180 = rotation == 180;
 		float u1 = isRotation180 ? 16 : 0;
 		float v1 = isRotation180 ? 16 : 0;
@@ -69,110 +74,28 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 		float v2 = isRotation180 ? 0 : 16;
 
 		Identifier model = ModelTemplates.CUBE_ALL.extend().element(builder -> builder.from(0, 0, 0).to(16, 16, 16).allFaces(((dir, faceBuilder) -> faceBuilder.cullface(dir).uvs(u1, v1, u2, v2).tintindex(0).rotation(faceRotation).texture(TextureSlot.ALL)))).build().create(leaves, TextureMapping.cube(leaves), this.modelOutput);
-		this.wrapTintedBlockItem(leaves, ItemModelUtils.constantTint(tint), block -> this.blockStateOutput.accept(createSimpleBlock(block, model)));
+		this.wrapTintedBlockItem(leaves, ItemModelUtils.constantTint(tint), block -> this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(model))));
 	}
 
 	public void generateSapling(Block block, Block pottedBlock, BlockModelGenerators.PlantType type) {
-		Identifier sapling = type.getCross().extend().renderType("cutout").build().create(block, type.getTextureMapping(block), this.modelOutput);
-		this.blockStateOutput.accept(createSimpleBlock(block, sapling));
-		Identifier potted = type.getCrossPot().extend().renderType("cutout").build().create(pottedBlock, type.getPlantTextureMapping(block), this.modelOutput);
-		this.blockStateOutput.accept(createSimpleBlock(pottedBlock, potted));
+		Identifier sapling = type.getCross().extend().build().create(block, type.getTextureMapping(block), this.modelOutput);
+		this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(sapling)));
+		Identifier potted = type.getCrossPot().extend().build().create(pottedBlock, type.getPlantTextureMapping(block), this.modelOutput);
+		this.blockStateOutput.accept(createSimpleBlock(pottedBlock, plainVariant(potted)));
 		this.registerSimpleItemModel(block.asItem(), type.createItemModel(this, block));
 	}
 
-	public void generateWood(Block woodBlock, TextureMapping mapping) {
-		TextureMapping texturemapping = mapping.copyAndUpdate(TextureSlot.END, mapping.get(TextureSlot.SIDE));
-		Identifier model = ModelTemplates.CUBE_COLUMN.create(woodBlock, texturemapping, this.modelOutput);
-		this.blockStateOutput.accept(BlockModelGenerators.createAxisAlignedPillarBlock(woodBlock, model));
-	}
-
-	public void generateLog(Block logBlock, TextureMapping mapping) {
-		Identifier vertical = ModelTemplates.CUBE_COLUMN.create(logBlock, mapping, this.modelOutput);
-		Identifier horizontal = ModelTemplates.CUBE_COLUMN_HORIZONTAL.create(logBlock, mapping, this.modelOutput);
-		this.blockStateOutput.accept(BlockModelGenerators.createRotatedPillarWithHorizontalVariant(logBlock, vertical, horizontal));
-	}
-
-	public void generateButton(Block button, TextureMapping mapping) {
-		Identifier unpressed = ModelTemplates.BUTTON.create(button, mapping, this.modelOutput);
-		Identifier pressed = ModelTemplates.BUTTON_PRESSED.create(button, mapping, this.modelOutput);
-		this.blockStateOutput.accept(BlockModelGenerators.createButton(button, unpressed, pressed));
-		Identifier inventory = ModelTemplates.BUTTON_INVENTORY.create(button, mapping, this.modelOutput);
-		this.registerSimpleItemModel(button, inventory);
-	}
-
-	public void generateFence(Block fence, TextureMapping mapping) {
-		Identifier post = ModelTemplates.FENCE_POST.create(fence, mapping, this.modelOutput);
-		Identifier side = ModelTemplates.FENCE_SIDE.create(fence, mapping, this.modelOutput);
-		this.blockStateOutput.accept(BlockModelGenerators.createFence(fence, post, side));
-		Identifier inventory = ModelTemplates.FENCE_INVENTORY.create(fence, mapping, this.modelOutput);
-		this.registerSimpleItemModel(fence, inventory);
-	}
-
-	public void generateFenceGate(Block fenceGate, TextureMapping mapping) {
-		Identifier open = ModelTemplates.FENCE_GATE_OPEN.create(fenceGate, mapping, this.modelOutput);
-		Identifier closed = ModelTemplates.FENCE_GATE_CLOSED.create(fenceGate, mapping, this.modelOutput);
-		Identifier wallOpen = ModelTemplates.FENCE_GATE_WALL_OPEN.create(fenceGate, mapping, this.modelOutput);
-		Identifier wallClosed = ModelTemplates.FENCE_GATE_WALL_CLOSED.create(fenceGate, mapping, this.modelOutput);
-		this.blockStateOutput.accept(BlockModelGenerators.createFenceGate(fenceGate, open, closed, wallOpen, wallClosed, true));
-		this.registerSimpleItemModel(fenceGate, closed);
-	}
-
-	public void generatePressurePlate(Block pressurePlate, TextureMapping mapping) {
-		Identifier unpressed = ModelTemplates.PRESSURE_PLATE_UP.create(pressurePlate, mapping, this.modelOutput);
-		Identifier pressed = ModelTemplates.PRESSURE_PLATE_DOWN.create(pressurePlate, mapping, this.modelOutput);
-		this.blockStateOutput.accept(BlockModelGenerators.createPressurePlate(pressurePlate, unpressed, pressed));
-		this.registerSimpleItemModel(pressurePlate, unpressed);
-	}
-
-	public void generateSign(Block floor, Block wall, TextureMapping mapping) {
-		Identifier model = ModelTemplates.PARTICLE_ONLY.create(floor, mapping, this.modelOutput);
-		this.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(floor, model));
-		this.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(wall, model));
-		this.registerSimpleFlatItemModel(floor.asItem());
-	}
-
-	public void generateHangingSign(Block ceiling, Block wall, Block particle) {
-		Identifier identifier = ModelTemplates.PARTICLE_ONLY.create(ceiling, new TextureMapping().put(TextureSlot.PARTICLE, TextureMapping.getBlockTexture(particle)), this.modelOutput);
-		this.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(ceiling, identifier));
-		this.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(wall, identifier));
-		this.registerSimpleFlatItemModel(ceiling.asItem());
-	}
-
-	public void generateSlab(Block slab, Block full, TextureMapping mapping) {
-		Identifier bottom = ModelTemplates.SLAB_BOTTOM.create(slab, mapping, this.modelOutput);
-		Identifier top = ModelTemplates.SLAB_TOP.create(slab, mapping, this.modelOutput);
-		this.blockStateOutput.accept(createSlab(slab, bottom, top, ModelLocationUtils.getModelLocation(full)));
-		this.registerSimpleItemModel(slab, bottom);
-	}
-
-	public void generateStairs(Block stairs, TextureMapping mapping) {
-		Identifier inner = ModelTemplates.STAIRS_INNER.createWithSuffix(stairs, "_inner", mapping, this.modelOutput);
-		Identifier straight = ModelTemplates.STAIRS_STRAIGHT.create(stairs, mapping, this.modelOutput);
-		Identifier outer = ModelTemplates.STAIRS_OUTER.createWithSuffix(stairs, "_outer", mapping, this.modelOutput);
-		this.blockStateOutput.accept(BlockModelGenerators.createStairs(stairs, inner, straight, outer));
-		this.registerSimpleItemModel(stairs, straight);
-	}
-
-	public void generateTrapdoor(Block trapdoor, boolean orientable, String renderType) {
-		TextureMapping texturemapping = TextureMapping.defaultTexture(trapdoor);
-		Identifier top = (orientable ? ModelTemplates.ORIENTABLE_TRAPDOOR_TOP : ModelTemplates.TRAPDOOR_TOP).extend().renderType(renderType).build().create(trapdoor, texturemapping, this.modelOutput);
-		Identifier bottom = (orientable ? ModelTemplates.ORIENTABLE_TRAPDOOR_BOTTOM : ModelTemplates.TRAPDOOR_BOTTOM).extend().renderType(renderType).build().create(trapdoor, texturemapping, this.modelOutput);
-		Identifier open = (orientable ? ModelTemplates.ORIENTABLE_TRAPDOOR_OPEN : ModelTemplates.TRAPDOOR_OPEN).extend().renderType(renderType).build().create(trapdoor, texturemapping, this.modelOutput);
-		this.blockStateOutput.accept(createTrapdoor(trapdoor, top, bottom, open));
-		this.registerSimpleItemModel(trapdoor, bottom);
-	}
-
 	//holy ternary batman
-	public void generateDoor(Block door, boolean useSideTexture, String renderType) {
+	public void generateDoor(Block door, boolean useSideTexture) {
 		TextureMapping texturemapping = useSideTexture ? TFTextureMapping.sideDoor(door) : TextureMapping.door(door);
-		Identifier bottomLeft = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_BOTTOM_LEFT : ModelTemplates.DOOR_BOTTOM_LEFT).extend().renderType(renderType).build().create(door, texturemapping, this.modelOutput);
-		Identifier bottomLeftOpen = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_BOTTOM_LEFT_OPEN : ModelTemplates.DOOR_BOTTOM_LEFT_OPEN).extend().renderType(renderType).build().create(door, texturemapping, this.modelOutput);
-		Identifier bottomRight = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_BOTTOM_RIGHT : ModelTemplates.DOOR_BOTTOM_RIGHT).extend().renderType(renderType).build().create(door, texturemapping, this.modelOutput);
-		Identifier bottomRightOpen = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_BOTTOM_RIGHT_OPEN : ModelTemplates.DOOR_BOTTOM_RIGHT_OPEN).extend().renderType(renderType).build().create(door, texturemapping, this.modelOutput);
-		Identifier topLeft = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_TOP_LEFT : ModelTemplates.DOOR_TOP_LEFT).extend().renderType(renderType).build().create(door, texturemapping, this.modelOutput);
-		Identifier topLeftOpen = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_TOP_LEFT_OPEN : ModelTemplates.DOOR_TOP_LEFT_OPEN).extend().renderType(renderType).build().create(door, texturemapping, this.modelOutput);
-		Identifier topRight = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_TOP_RIGHT : ModelTemplates.DOOR_TOP_RIGHT).extend().renderType(renderType).build().create(door, texturemapping, this.modelOutput);
-		Identifier topRightOpen = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_TOP_RIGHT_OPEN : ModelTemplates.DOOR_TOP_RIGHT_OPEN).extend().renderType(renderType).build().create(door, texturemapping, this.modelOutput);
+		Identifier bottomLeft = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_BOTTOM_LEFT : ModelTemplates.DOOR_BOTTOM_LEFT).extend().build().create(door, texturemapping, this.modelOutput);
+		Identifier bottomLeftOpen = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_BOTTOM_LEFT_OPEN : ModelTemplates.DOOR_BOTTOM_LEFT_OPEN).extend().build().create(door, texturemapping, this.modelOutput);
+		Identifier bottomRight = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_BOTTOM_RIGHT : ModelTemplates.DOOR_BOTTOM_RIGHT).extend().build().create(door, texturemapping, this.modelOutput);
+		Identifier bottomRightOpen = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_BOTTOM_RIGHT_OPEN : ModelTemplates.DOOR_BOTTOM_RIGHT_OPEN).extend().build().create(door, texturemapping, this.modelOutput);
+		Identifier topLeft = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_TOP_LEFT : ModelTemplates.DOOR_TOP_LEFT).extend().build().create(door, texturemapping, this.modelOutput);
+		Identifier topLeftOpen = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_TOP_LEFT_OPEN : ModelTemplates.DOOR_TOP_LEFT_OPEN).extend().build().create(door, texturemapping, this.modelOutput);
+		Identifier topRight = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_TOP_RIGHT : ModelTemplates.DOOR_TOP_RIGHT).extend().build().create(door, texturemapping, this.modelOutput);
+		Identifier topRightOpen = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_TOP_RIGHT_OPEN : ModelTemplates.DOOR_TOP_RIGHT_OPEN).extend().build().create(door, texturemapping, this.modelOutput);
 		this.registerSimpleFlatItemModel(door.asItem());
 		this.blockStateOutput.accept(createDoor(door, bottomLeft, bottomLeftOpen, bottomRight, bottomRightOpen, topLeft, topLeftOpen, topRight, topRightOpen));
 	}
@@ -189,124 +112,111 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 		this.registerSimpleItemModel(banister, inventory);
 	}
 
-	public static BlockStateGenerator createBanister(Block banister, Identifier connected, Identifier connectedExtended, Identifier shorty, Identifier shortExtended, Identifier tall, Identifier tallExtended) {
-		return MultiVariantGenerator.multiVariant(banister).with(
-				PropertyDispatch.properties(BanisterBlock.EXTENDED, BanisterBlock.SHAPE).generate((extended, shape) -> {
-					Identifier model = switch (shape) {
-						case SHORT -> extended ? shortExtended : shorty;
-						case TALL -> extended ? tallExtended : tall;
-						case CONNECTED -> extended ? connectedExtended : connected;
-					};
-					return Variant.variant().with(VariantProperties.MODEL, model);
-				})
-		).with(createHorizontalFacingDispatchAlt());
+	public static BlockModelDefinitionGenerator createBanister(Block banister, Identifier connected, Identifier connectedExtended, Identifier shorty, Identifier shortExtended, Identifier tall, Identifier tallExtended) {
+		return MultiVariantGenerator.dispatch(banister).with(
+			PropertyDispatch.initial(BanisterBlock.EXTENDED, BanisterBlock.SHAPE).generate((extended, shape) -> {
+				Identifier model = switch (shape) {
+					case SHORT -> extended ? shortExtended : shorty;
+					case TALL -> extended ? tallExtended : tall;
+					case CONNECTED -> extended ? connectedExtended : connected;
+				};
+				return plainVariant(model);
+			})
+		).with(ROTATION_HORIZONTAL_FACING_ALT);
 	}
 
 	public void generateHollowLog(Block log, Block stripped, Block horizontal, Block vertical, Block climbable) {
 		TextureMapping base = TextureMapping.logColumn(log).put(TextureSlot.INSIDE, TextureMapping.getBlockTexture(stripped));
 		Identifier horizModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG.create(horizontal, base, this.modelOutput);
-		Identifier mossModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG_CARPET.createWithSuffix(horizontal, "_moss", base.put(TFTextureSlot.CARPET, TextureMapping.getBlockTexture(TFBlocks.MOSS_PATCH.get())).put(TFTextureSlot.OVERHANG, TwilightForestMod.prefix("block/moss_overhang")), this.modelOutput);
-		Identifier grassModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG_PLANT.createWithSuffix(horizontal, "_grass", base.put(TextureSlot.PLANT, TextureMapping.getBlockTexture(Blocks.SHORT_GRASS)).put(TFTextureSlot.CARPET, TextureMapping.getBlockTexture(TFBlocks.MOSS_PATCH.get())).put(TFTextureSlot.OVERHANG, TwilightForestMod.prefix("block/moss_overhang")), this.modelOutput);
-		Identifier snowModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG_CARPET.createWithSuffix(horizontal, "_snow", base.put(TFTextureSlot.CARPET, TextureMapping.getBlockTexture(Blocks.SNOW)).put(TFTextureSlot.OVERHANG, TwilightForestMod.prefix("block/snow_overhang")), this.modelOutput);
+		Identifier mossModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG_CARPET.createWithSuffix(horizontal, "_moss", base.put(TFTextureSlot.CARPET, TextureMapping.getBlockTexture(TFBlocks.MOSS_PATCH.get())).put(TFTextureSlot.OVERHANG, new Material(TwilightForestMod.prefix("block/moss_overhang"))), this.modelOutput);
+		Identifier grassModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG_PLANT.createWithSuffix(horizontal, "_grass", base.put(TextureSlot.PLANT, TextureMapping.getBlockTexture(Blocks.SHORT_GRASS)).put(TFTextureSlot.CARPET, TextureMapping.getBlockTexture(TFBlocks.MOSS_PATCH.get())).put(TFTextureSlot.OVERHANG, new Material(TwilightForestMod.prefix("block/moss_overhang"))), this.modelOutput);
+		Identifier snowModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG_CARPET.createWithSuffix(horizontal, "_snow", base.put(TFTextureSlot.CARPET, TextureMapping.getBlockTexture(Blocks.SNOW)).put(TFTextureSlot.OVERHANG, new Material(TwilightForestMod.prefix("block/snow_overhang"))), this.modelOutput);
 		Identifier vertModel = TFModelTemplates.VERTICAL_HOLLOW_LOG.create(vertical, base, this.modelOutput);
 		Identifier ladderModel = TFModelTemplates.CLIMBABLE_HOLLOW_LOG.createWithSuffix(climbable, "_ladder", base.put(TFTextureSlot.CLIMBABLE, TextureMapping.getBlockTexture(Blocks.LADDER)), this.modelOutput);
 		Identifier vineModel = TFModelTemplates.CLIMBABLE_HOLLOW_LOG.createWithSuffix(climbable, "_vine", base.put(TFTextureSlot.CLIMBABLE, TextureMapping.getBlockTexture(Blocks.VINE)), this.modelOutput);
 		this.blockStateOutput.accept(createHorizontalHollowLog(horizontal, horizModel, mossModel, grassModel, snowModel));
-		this.blockStateOutput.accept(createSimpleBlock(vertical, vertModel));
+		this.blockStateOutput.accept(createSimpleBlock(vertical, plainVariant(vertModel)));
 		this.blockStateOutput.accept(createClimableHollowLog(climbable, ladderModel, vineModel));
 		this.registerSimpleItemModel(horizontal, horizModel);
 	}
 
-	public static BlockStateGenerator createHorizontalHollowLog(Block horizontal, Identifier base, Identifier moss, Identifier grass, Identifier snow) {
-		return MultiVariantGenerator.multiVariant(horizontal).with(
-				PropertyDispatch.property(HorizontalHollowLogBlock.VARIANT).generate(variant -> {
-					Identifier model = switch (variant) {
-						case MOSS -> moss;
-						case MOSS_AND_GRASS -> grass;
-						case SNOW -> snow;
-						default -> base;
-					};
-					return Variant.variant().with(VariantProperties.MODEL, model);
-				})
-		).with(PropertyDispatch.property(BlockStateProperties.HORIZONTAL_AXIS)
-				.select(Direction.Axis.Z, Variant.variant())
-				.select(Direction.Axis.X, Variant.variant().with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)));
+	public static BlockModelDefinitionGenerator createHorizontalHollowLog(Block horizontal, Identifier base, Identifier moss, Identifier grass, Identifier snow) {
+		return MultiVariantGenerator.dispatch(horizontal).with(
+			PropertyDispatch.initial(HorizontalHollowLogBlock.VARIANT).generate(variant -> {
+				Identifier model = switch (variant) {
+					case MOSS -> moss;
+					case MOSS_AND_GRASS -> grass;
+					case SNOW -> snow;
+					default -> base;
+				};
+				return plainVariant(model);
+			})
+		).with(PropertyDispatch.modify(BlockStateProperties.HORIZONTAL_AXIS)
+			.select(Direction.Axis.Z, NOP)
+			.select(Direction.Axis.X, Y_ROT_90));
 	}
 
-	public static BlockStateGenerator createClimableHollowLog(Block climbable, Identifier ladder, Identifier vine) {
-		return MultiVariantGenerator.multiVariant(climbable).with(
-				PropertyDispatch.property(ClimbableHollowLogBlock.VARIANT).generate(variant -> {
-					Identifier model = switch (variant) {
-						case VINE -> vine;
-						case LADDER, LADDER_WATERLOGGED -> ladder;
-					};
-					return Variant.variant().with(VariantProperties.MODEL, model);
-				})
-		).with(createHorizontalFacingDispatchAlt());
+	public static BlockModelDefinitionGenerator createClimableHollowLog(Block climbable, Identifier ladder, Identifier vine) {
+		return MultiVariantGenerator.dispatch(climbable).with(
+			PropertyDispatch.initial(ClimbableHollowLogBlock.VARIANT).generate(variant -> {
+				Identifier model = switch (variant) {
+					case VINE -> vine;
+					case LADDER, LADDER_WATERLOGGED -> ladder;
+				};
+				return plainVariant(model);
+			})
+		).with(ROTATION_HORIZONTAL_FACING_ALT);
 	}
 
 	public void generateTreeCore(Block log, Block core) {
 		Identifier off = ModelTemplates.CUBE_COLUMN.create(core, TextureMapping.column(TextureMapping.getBlockTexture(core), TextureMapping.getBlockTexture(log, "_top")), this.modelOutput);
 		Identifier on = ModelTemplates.CUBE_COLUMN.createWithSuffix(core, "_on", TextureMapping.column(TextureMapping.getBlockTexture(core, "_on"), TextureMapping.getBlockTexture(log, "_top")), this.modelOutput);
-		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(core).with(PropertyDispatch.property(SpecialMagicLogBlock.ACTIVE).generate(active -> Variant.variant().with(VariantProperties.MODEL, active ? on : off))));
+		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(core).with(PropertyDispatch.initial(SpecialMagicLogBlock.ACTIVE).generate(active -> plainVariant(active ? on : off))));
 		this.generateBlockItem(core);
 	}
 
 	public void generateChiseledBookshelf(Block shelf) {
-		Identifier identifier = ModelLocationUtils.getModelLocation(shelf);
+		MultiVariant variant = plainVariant(ModelLocationUtils.getModelLocation(shelf));
 		MultiPartGenerator multipartgenerator = MultiPartGenerator.multiPart(shelf);
-		List.of(
-						Pair.of(Direction.NORTH, VariantProperties.Rotation.R0),
-						Pair.of(Direction.EAST, VariantProperties.Rotation.R90),
-						Pair.of(Direction.SOUTH, VariantProperties.Rotation.R180),
-						Pair.of(Direction.WEST, VariantProperties.Rotation.R270))
-				.forEach(
-						pair -> {
-							Direction direction = pair.getFirst();
-							VariantProperties.Rotation rotation = pair.getSecond();
-							Condition.TerminalCondition condition = Condition.condition().term(BlockStateProperties.HORIZONTAL_FACING, direction);
-							multipartgenerator.with(condition,
-									Variant.variant()
-											.with(VariantProperties.MODEL, identifier)
-											.with(VariantProperties.Y_ROT, rotation)
-											.with(VariantProperties.UV_LOCK, true)
-							);
-							this.addSlotStateAndRotationVariants(shelf, multipartgenerator, condition, rotation);
-						}
-				);
+		forEachHorizontalDirection((direction, mutator) -> {
+				Condition condition = condition(BlockStateProperties.HORIZONTAL_FACING, direction).build();
+				multipartgenerator.with(condition, variant.with(mutator).with(UV_LOCK));
+				this.addSlotStateAndRotationVariants(shelf, multipartgenerator, condition, mutator);
+			}
+		);
 		this.blockStateOutput.accept(multipartgenerator);
 		this.registerSimpleItemModel(shelf, ModelTemplates.CUBE_ORIENTABLE.createWithSuffix(shelf, "_inventory", new TextureMapping()
-				.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(shelf, "_side"))
-				.put(TextureSlot.FRONT, TextureMapping.getBlockTexture(shelf, "_empty"))
-				.put(TextureSlot.TOP, TextureMapping.getBlockTexture(shelf, "_top")), this.modelOutput));
+			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(shelf, "_side"))
+			.put(TextureSlot.FRONT, TextureMapping.getBlockTexture(shelf, "_empty"))
+			.put(TextureSlot.TOP, TextureMapping.getBlockTexture(shelf, "_top")), this.modelOutput));
 		CHISELED_BOOKSHELF_SLOT_MODEL_CACHE.clear();
 	}
 
-	public void addSlotStateAndRotationVariants(Block shelf, MultiPartGenerator generator, Condition.TerminalCondition condition, VariantProperties.Rotation rotation) {
+	public void addSlotStateAndRotationVariants(Block shelf, MultiPartGenerator generator, Condition condition, VariantMutator rotation) {
 		List.of(
-						Pair.of(BlockStateProperties.CHISELED_BOOKSHELF_SLOT_0_OCCUPIED, ModelTemplates.CHISELED_BOOKSHELF_SLOT_TOP_LEFT),
-						Pair.of(BlockStateProperties.CHISELED_BOOKSHELF_SLOT_1_OCCUPIED, ModelTemplates.CHISELED_BOOKSHELF_SLOT_TOP_MID),
-						Pair.of(BlockStateProperties.CHISELED_BOOKSHELF_SLOT_2_OCCUPIED, ModelTemplates.CHISELED_BOOKSHELF_SLOT_TOP_RIGHT),
-						Pair.of(BlockStateProperties.CHISELED_BOOKSHELF_SLOT_3_OCCUPIED, ModelTemplates.CHISELED_BOOKSHELF_SLOT_BOTTOM_LEFT),
-						Pair.of(BlockStateProperties.CHISELED_BOOKSHELF_SLOT_4_OCCUPIED, ModelTemplates.CHISELED_BOOKSHELF_SLOT_BOTTOM_MID),
-						Pair.of(BlockStateProperties.CHISELED_BOOKSHELF_SLOT_5_OCCUPIED, ModelTemplates.CHISELED_BOOKSHELF_SLOT_BOTTOM_RIGHT)
-				)
-				.forEach(pair -> {
-					BooleanProperty occupied = pair.getFirst();
-					ModelTemplate template = pair.getSecond();
-					this.addBookSlotModel(shelf, generator, condition, rotation, occupied, template, true);
-					this.addBookSlotModel(shelf, generator, condition, rotation, occupied, template, false);
-				});
+				Pair.of(BlockStateProperties.SLOT_0_OCCUPIED, ModelTemplates.CHISELED_BOOKSHELF_SLOT_TOP_LEFT),
+				Pair.of(BlockStateProperties.SLOT_1_OCCUPIED, ModelTemplates.CHISELED_BOOKSHELF_SLOT_TOP_MID),
+				Pair.of(BlockStateProperties.SLOT_2_OCCUPIED, ModelTemplates.CHISELED_BOOKSHELF_SLOT_TOP_RIGHT),
+				Pair.of(BlockStateProperties.SLOT_3_OCCUPIED, ModelTemplates.CHISELED_BOOKSHELF_SLOT_BOTTOM_LEFT),
+				Pair.of(BlockStateProperties.SLOT_4_OCCUPIED, ModelTemplates.CHISELED_BOOKSHELF_SLOT_BOTTOM_MID),
+				Pair.of(BlockStateProperties.SLOT_5_OCCUPIED, ModelTemplates.CHISELED_BOOKSHELF_SLOT_BOTTOM_RIGHT)
+			)
+			.forEach(pair -> {
+				BooleanProperty occupied = pair.getFirst();
+				ModelTemplate template = pair.getSecond();
+				this.addBookSlotModel(shelf, generator, condition, rotation, occupied, template, true);
+				this.addBookSlotModel(shelf, generator, condition, rotation, occupied, template, false);
+			});
 	}
 
-	public void addBookSlotModel(Block shelf, MultiPartGenerator generator, Condition.TerminalCondition condition, VariantProperties.Rotation rotation, BooleanProperty property, ModelTemplate template, boolean occupied) {
+	public void addBookSlotModel(Block shelf, MultiPartGenerator generator, Condition condition, VariantMutator rotation, BooleanProperty property, ModelTemplate template, boolean occupied) {
 		String suffix = occupied ? "_occupied" : "_empty";
 		TextureMapping texturemapping = new TextureMapping().put(TextureSlot.TEXTURE, TextureMapping.getBlockTexture(shelf, suffix));
 		BlockModelGenerators.BookSlotModelCacheKey cache = new BlockModelGenerators.BookSlotModelCacheKey(template, suffix);
-		Identifier identifier = CHISELED_BOOKSHELF_SLOT_MODEL_CACHE.computeIfAbsent(cache, key -> template.createWithSuffix(shelf, suffix, texturemapping, this.modelOutput));
+		MultiVariant variant = plainVariant(CHISELED_BOOKSHELF_SLOT_MODEL_CACHE.computeIfAbsent(cache, key -> template.createWithSuffix(shelf, suffix, texturemapping, this.modelOutput)));
 		generator.with(
-				Condition.and(condition, Condition.condition().term(property, occupied)),
-				Variant.variant().with(VariantProperties.MODEL, identifier).with(VariantProperties.Y_ROT, rotation)
+			new CombinedCondition(CombinedCondition.Operation.AND, List.of(condition, condition().term(property, occupied).build())),
+			variant.with(rotation)
 		);
 	}
 

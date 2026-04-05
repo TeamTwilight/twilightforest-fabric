@@ -56,23 +56,23 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.WEATHERED_DEADROCK.get(), this::createTrivialCube);
 
 		this.createCrossBlock(TFBlocks.FIDDLEHEAD.get(), PlantType.TINTED);
-		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.POTTED_FIDDLEHEAD.get(), ModelTemplates.TINTED_FLOWER_POT_CROSS.extend().renderType("cutout").build().create(TFBlocks.POTTED_FIDDLEHEAD.get(), TextureMapping.singleSlot(TextureSlot.PLANT, TwilightForestMod.prefix("block/potted_fiddlehead")), this.modelOutput)));
+		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.POTTED_FIDDLEHEAD.get(), ModelTemplates.TINTED_FLOWER_POT_CROSS.extend().build().create(TFBlocks.POTTED_FIDDLEHEAD.get(), TextureMapping.singleSlot(TextureSlot.PLANT, TwilightForestMod.prefix("block/potted_fiddlehead")), this.modelOutput)));
 		this.createItemWithGrassTint(TFBlocks.FIDDLEHEAD.get());
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.MAYAPPLE.get(), ModelLocationUtils.getModelLocation(TFBlocks.MAYAPPLE.get())));
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.POTTED_MAYAPPLE.get(), ModelLocationUtils.getModelLocation(TFBlocks.POTTED_MAYAPPLE.get())));
 		this.registerSimpleFlatItemModel(TFBlocks.MAYAPPLE.get());
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.CLOVER_PATCH.get(), TFModelTemplates.create("block", TextureSlot.TEXTURE, TextureSlot.PARTICLE).extend().customLoader(PatchBuilder::new, builder -> {
-		}).renderType("cutout").build().create(TFBlocks.CLOVER_PATCH.get(), TextureMapping.defaultTexture(TFBlocks.CLOVER_PATCH.get()), this.modelOutput)));
+		}).build().create(TFBlocks.CLOVER_PATCH.get(), TextureMapping.defaultTexture(TFBlocks.CLOVER_PATCH.get()), this.modelOutput)));
 		this.registerSimpleFlatItemModel(TFBlocks.CLOVER_PATCH.asItem());
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.MOSS_PATCH.get(), TFModelTemplates.create("block", TextureSlot.TEXTURE, TextureSlot.PARTICLE).extend().customLoader(PatchBuilder::new, PatchBuilder::shaggify).build().create(TFBlocks.MOSS_PATCH.get(), TextureMapping.defaultTexture(TFBlocks.MOSS_PATCH.get()), this.modelOutput)));
 		this.registerSimpleFlatItemModel(TFBlocks.MOSS_PATCH.asItem());
 		this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(TFBlocks.TORCHBERRY_PLANT.get()).with(createBooleanModelDispatch(TorchberryPlantBlock.HAS_BERRIES,
-			ModelTemplates.CROSS_EMISSIVE.extend().renderType("cutout").build().createWithSuffix(TFBlocks.TORCHBERRY_PLANT.get(), "_berries", TextureMapping.crossEmissive(TFBlocks.TORCHBERRY_PLANT.get()), this.modelOutput),
-			ModelTemplates.CROSS.extend().renderType("cutout").build().create(TFBlocks.TORCHBERRY_PLANT.get(), TextureMapping.cross(TFBlocks.TORCHBERRY_PLANT.get()), this.modelOutput))));
+			ModelTemplates.CROSS_EMISSIVE.extend().build().createWithSuffix(TFBlocks.TORCHBERRY_PLANT.get(), "_berries", TextureMapping.crossEmissive(TFBlocks.TORCHBERRY_PLANT.get()), this.modelOutput),
+			ModelTemplates.CROSS.extend().build().create(TFBlocks.TORCHBERRY_PLANT.get(), TextureMapping.cross(TFBlocks.TORCHBERRY_PLANT.get()), this.modelOutput))));
 		this.registerSimpleFlatItemModel(TFBlocks.TORCHBERRY_PLANT.get());
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.MUSHGLOOM.get(), ModelLocationUtils.getModelLocation(TFBlocks.MUSHGLOOM.get())));
 		this.registerTwoLayerFlatItemModel(TFBlocks.MUSHGLOOM.get(), "_head");
-		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.POTTED_MUSHGLOOM.get(), ModelTemplates.FLOWER_POT_CROSS.extend().renderType("cutout").build().create(TFBlocks.POTTED_MUSHGLOOM.get(), TextureMapping.singleSlot(TextureSlot.PLANT, TwilightForestMod.prefix("block/potted_mushgloom")), this.modelOutput)));
+		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.POTTED_MUSHGLOOM.get(), ModelTemplates.FLOWER_POT_CROSS.extend().build().create(TFBlocks.POTTED_MUSHGLOOM.get(), TextureMapping.singleSlot(TextureSlot.PLANT, TwilightForestMod.prefix("block/potted_mushgloom")), this.modelOutput)));
 		this.wrapBlockItem(TFBlocks.HEDGE.get(), block -> this.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block,
 			Variant.variant().with(VariantProperties.MODEL, ModelTemplates.CUBE_ALL.create(block, TextureMapping.cube(block), this.modelOutput)).with(VariantProperties.WEIGHT, 10),
 			Variant.variant().with(VariantProperties.MODEL, ModelTemplates.CUBE_ALL.createWithSuffix(block, "_rose", TextureMapping.cube(TextureMapping.getBlockTexture(block, "_rose")), this.modelOutput)))));
@@ -128,7 +128,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateHugeLilyPad();
 		this.createCrossBlockWithDefaultItem(TFBlocks.HUGE_WATER_LILY.get(), PlantType.NOT_TINTED);
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.RED_THREAD.get(), ModelTemplates.PARTICLE_ONLY.create(TFBlocks.RED_THREAD.get(), TextureMapping.particle(TwilightForestMod.prefix("block/blank")), this.modelOutput)));
-		this.wrapBlockItem(TFBlocks.MAZE_SLIME_BLOCK.get(), block -> this.blockStateOutput.accept(createSimpleBlock(block, ModelTemplates.create(TwilightForestMod.prefix("maze_slime_block").toString(), TextureSlot.TEXTURE, TextureSlot.PARTICLE).extend().parent(Identifier.withDefaultNamespace("block/slime_block")).renderType("translucent").build().create(block, TextureMapping.cube(block).put(TextureSlot.PARTICLE, TextureMapping.getBlockTexture(block)), this.modelOutput))));
+		this.wrapBlockItem(TFBlocks.MAZE_SLIME_BLOCK.get(), block -> this.blockStateOutput.accept(createSimpleBlock(block, ModelTemplates.create(TwilightForestMod.prefix("maze_slime_block").toString(), TextureSlot.TEXTURE, TextureSlot.PARTICLE).extend().parent(Identifier.withDefaultNamespace("block/slime_block")).build().create(block, TextureMapping.cube(block).put(TextureSlot.PARTICLE, TextureMapping.getBlockTexture(block)), this.modelOutput))));
 		this.wrapBlockItem(TFBlocks.MAZESTONE.get(), this::createTrivialCube);
 		this.wrapBlockItem(TFBlocks.MAZESTONE_BRICK.get(), this::createTrivialCube);
 		this.wrapBlockItem(TFBlocks.CRACKED_MAZESTONE.get(), this::createTrivialCube);
@@ -235,7 +235,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 
 		this.giantBlock(TFBlocks.GIANT_COBBLESTONE.get(), TFTextureMapping.giantBlock(Blocks.COBBLESTONE));
 		this.giantBlock(TFBlocks.GIANT_LOG.get(), TFTextureMapping.giantBlock(TextureMapping.getBlockTexture(Blocks.OAK_LOG), TextureMapping.getBlockTexture(Blocks.OAK_LOG, "_top")));
-		this.giantBlock(TFBlocks.GIANT_LEAVES.get(), "cutout_mipped", TFTextureMapping.giantBlock(Blocks.OAK_LEAVES), -12012264);
+		this.giantBlock(TFBlocks.GIANT_LEAVES.get(), TFTextureMapping.giantBlock(Blocks.OAK_LEAVES), -12012264);
 		this.giantBlock(TFBlocks.GIANT_OBSIDIAN.get(), TFTextureMapping.giantBlock(Blocks.OBSIDIAN));
 
 		this.wrapBlockItem(TFBlocks.CASTLE_BRICK.get(), this::createTrivialCube);
@@ -343,6 +343,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 	}
 
 	private void generateWoodBlocks() {
+		//TODO use BlockFamilies
 		this.wrapBlockItem(TFBlocks.ROOT_BLOCK.get(), this::createTrivialCube);
 		this.wrapBlockItem(TFBlocks.LIVEROOT_BLOCK.get(), this::createTrivialCube);
 
@@ -362,7 +363,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateFenceGate(TFBlocks.TWILIGHT_OAK_GATE.get(), twilightOak);
 		this.generatePressurePlate(TFBlocks.TWILIGHT_OAK_PLATE.get(), twilightOak);
 		this.generateTrapdoor(TFBlocks.TWILIGHT_OAK_TRAPDOOR.get(), true, "solid");
-		this.generateDoor(TFBlocks.TWILIGHT_OAK_DOOR.get(), false, "solid");
+		this.generateDoor(TFBlocks.TWILIGHT_OAK_DOOR.get(), false);
 		this.generateSign(TFBlocks.TWILIGHT_OAK_SIGN.get(), TFBlocks.TWILIGHT_WALL_SIGN.get(), twilightOak);
 		this.generateHangingSign(TFBlocks.TWILIGHT_OAK_HANGING_SIGN.get(), TFBlocks.TWILIGHT_OAK_WALL_HANGING_SIGN.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get());
 		this.generateBanister(TFBlocks.TWILIGHT_OAK_BANISTER.get(), twilightOak);
@@ -383,7 +384,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateFenceGate(TFBlocks.CANOPY_GATE.get(), canopy);
 		this.generatePressurePlate(TFBlocks.CANOPY_PLATE.get(), canopy);
 		this.generateTrapdoor(TFBlocks.CANOPY_TRAPDOOR.get(), true, "solid");
-		this.generateDoor(TFBlocks.CANOPY_DOOR.get(), false, "solid");
+		this.generateDoor(TFBlocks.CANOPY_DOOR.get(), false);
 		this.generateSign(TFBlocks.CANOPY_SIGN.get(), TFBlocks.CANOPY_WALL_SIGN.get(), canopy);
 		this.generateHangingSign(TFBlocks.CANOPY_HANGING_SIGN.get(), TFBlocks.CANOPY_WALL_HANGING_SIGN.get(), TFBlocks.STRIPPED_CANOPY_LOG.get());
 		this.generateBanister(TFBlocks.CANOPY_BANISTER.get(), canopy);
@@ -409,7 +410,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateFenceGate(TFBlocks.MANGROVE_GATE.get(), mangrove);
 		this.generatePressurePlate(TFBlocks.MANGROVE_PLATE.get(), mangrove);
 		this.generateTrapdoor(TFBlocks.MANGROVE_TRAPDOOR.get(), true, "solid");
-		this.generateDoor(TFBlocks.MANGROVE_DOOR.get(), false, "solid");
+		this.generateDoor(TFBlocks.MANGROVE_DOOR.get(), false);
 		this.generateSign(TFBlocks.MANGROVE_SIGN.get(), TFBlocks.MANGROVE_WALL_SIGN.get(), mangrove);
 		this.generateHangingSign(TFBlocks.MANGROVE_HANGING_SIGN.get(), TFBlocks.MANGROVE_WALL_HANGING_SIGN.get(), TFBlocks.STRIPPED_MANGROVE_LOG.get());
 		this.generateBanister(TFBlocks.MANGROVE_BANISTER.get(), mangrove);
@@ -431,7 +432,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateFenceGate(TFBlocks.DARK_GATE.get(), dark);
 		this.generatePressurePlate(TFBlocks.DARK_PLATE.get(), dark);
 		this.generateTrapdoor(TFBlocks.DARK_TRAPDOOR.get(), true, "solid");
-		this.generateDoor(TFBlocks.DARK_DOOR.get(), false, "solid");
+		this.generateDoor(TFBlocks.DARK_DOOR.get(), false);
 		this.generateSign(TFBlocks.DARK_SIGN.get(), TFBlocks.DARK_WALL_SIGN.get(), dark);
 		this.generateHangingSign(TFBlocks.DARK_HANGING_SIGN.get(), TFBlocks.DARK_WALL_HANGING_SIGN.get(), TFBlocks.STRIPPED_DARK_LOG.get());
 		this.generateBanister(TFBlocks.DARK_BANISTER.get(), dark);
@@ -453,7 +454,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateFenceGate(TFBlocks.TIME_GATE.get(), time);
 		this.generatePressurePlate(TFBlocks.TIME_PLATE.get(), time);
 		this.generateTrapdoor(TFBlocks.TIME_TRAPDOOR.get(), true, "cutout");
-		this.generateDoor(TFBlocks.TIME_DOOR.get(), false, "cutout");
+		this.generateDoor(TFBlocks.TIME_DOOR.get(), false);
 		this.generateSign(TFBlocks.TIME_SIGN.get(), TFBlocks.TIME_WALL_SIGN.get(), time);
 		this.generateHangingSign(TFBlocks.TIME_HANGING_SIGN.get(), TFBlocks.TIME_WALL_HANGING_SIGN.get(), TFBlocks.STRIPPED_TIME_LOG.get());
 		this.generateBanister(TFBlocks.TIME_BANISTER.get(), time);
@@ -475,7 +476,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateFenceGate(TFBlocks.TRANSFORMATION_GATE.get(), transformation);
 		this.generatePressurePlate(TFBlocks.TRANSFORMATION_PLATE.get(), transformation);
 		this.generateTrapdoor(TFBlocks.TRANSFORMATION_TRAPDOOR.get(), true, "cutout");
-		this.generateDoor(TFBlocks.TRANSFORMATION_DOOR.get(), false, "cutout");
+		this.generateDoor(TFBlocks.TRANSFORMATION_DOOR.get(), false);
 		this.generateSign(TFBlocks.TRANSFORMATION_SIGN.get(), TFBlocks.TRANSFORMATION_WALL_SIGN.get(), transformation);
 		this.generateHangingSign(TFBlocks.TRANSFORMATION_HANGING_SIGN.get(), TFBlocks.TRANSFORMATION_WALL_HANGING_SIGN.get(), TFBlocks.STRIPPED_TRANSFORMATION_LOG.get());
 		this.generateBanister(TFBlocks.TRANSFORMATION_BANISTER.get(), transformation);
@@ -497,7 +498,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateFenceGate(TFBlocks.MINING_GATE.get(), mining);
 		this.generatePressurePlate(TFBlocks.MINING_PLATE.get(), mining);
 		this.generateTrapdoor(TFBlocks.MINING_TRAPDOOR.get(), true, "solid");
-		this.generateDoor(TFBlocks.MINING_DOOR.get(), false, "solid");
+		this.generateDoor(TFBlocks.MINING_DOOR.get(), false);
 		this.generateSign(TFBlocks.MINING_SIGN.get(), TFBlocks.MINING_WALL_SIGN.get(), mining);
 		this.generateHangingSign(TFBlocks.MINING_HANGING_SIGN.get(), TFBlocks.MINING_WALL_HANGING_SIGN.get(), TFBlocks.STRIPPED_MINING_LOG.get());
 		this.generateBanister(TFBlocks.MINING_BANISTER.get(), mining);
@@ -519,7 +520,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateFenceGate(TFBlocks.SORTING_GATE.get(), sorting);
 		this.generatePressurePlate(TFBlocks.SORTING_PLATE.get(), sorting);
 		this.generateTrapdoor(TFBlocks.SORTING_TRAPDOOR.get(), true, "cutout");
-		this.generateDoor(TFBlocks.SORTING_DOOR.get(), true, "cutout");
+		this.generateDoor(TFBlocks.SORTING_DOOR.get(), true);
 		this.generateSign(TFBlocks.SORTING_SIGN.get(), TFBlocks.SORTING_WALL_SIGN.get(), sorting);
 		this.generateHangingSign(TFBlocks.SORTING_HANGING_SIGN.get(), TFBlocks.SORTING_WALL_HANGING_SIGN.get(), TFBlocks.STRIPPED_SORTING_LOG.get());
 		this.generateBanister(TFBlocks.SORTING_BANISTER.get(), sorting);

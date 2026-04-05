@@ -54,7 +54,6 @@ import twilightforest.client.*;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.*;
 import twilightforest.client.model.block.BrazierModel;
-import twilightforest.client.model.block.ConditionalMippedModel;
 import twilightforest.client.model.block.ReactorDebrisModel;
 import twilightforest.client.model.block.aurorablock.NoiseVaryingModelLoader;
 import twilightforest.client.model.block.carpet.RoyalRagsModelLoader;
