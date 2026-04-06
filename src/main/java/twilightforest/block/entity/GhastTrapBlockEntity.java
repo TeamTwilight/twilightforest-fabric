@@ -2,6 +2,7 @@ package twilightforest.block.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Mob;
@@ -158,7 +159,7 @@ public class GhastTrapBlockEntity extends BlockEntity {
 					ghast.setDeltaMovement(mx, my, mz);
 
 					if (te.rand.nextInt(10) == 0) {
-						ghast.hurt(level.damageSources().generic(), 7);
+						ghast.hurtServer((ServerLevel) level, level.damageSources().generic(), 7);
 						urghast.resetDamageUntilNextPhase();
 					}
 
@@ -170,7 +171,7 @@ public class GhastTrapBlockEntity extends BlockEntity {
 					ghast.setDeltaMovement(mx, my, mz);
 
 					if (te.rand.nextInt(10) == 0) {
-						ghast.hurt(level.damageSources().generic(), 10);
+						ghast.hurtServer((ServerLevel) level, level.damageSources().generic(), 10);
 					}
 				}
 

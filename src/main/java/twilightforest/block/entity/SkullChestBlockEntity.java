@@ -2,14 +2,12 @@ package twilightforest.block.entity;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.permissions.Permissions;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.entity.ContainerUser;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -21,8 +19,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.*;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFSounds;
 
@@ -47,10 +46,9 @@ public class SkullChestBlockEntity extends RandomizableContainerBlockEntity impl
 		}
 
 		@Override
-		protected boolean isOwnContainer(Player player) {
-			if (player.containerMenu instanceof ChestMenu) {
-				Container container = ((ChestMenu)player.containerMenu).getContainer();
-				return container == SkullChestBlockEntity.this;
+		public boolean isOwnContainer(Player player) {
+			if (player.containerMenu instanceof ChestMenu chest) {
+				return chest.getContainer() == SkullChestBlockEntity.this;
 			} else {
 				return false;
 			}
@@ -102,28 +100,22 @@ public class SkullChestBlockEntity extends RandomizableContainerBlockEntity impl
 	}
 
 	@Override
-	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-		super.saveAdditional(tag, provider);
-		if (!this.trySaveLootTable(tag)) {
-			ContainerHelper.saveAllItems(tag, this.contents, provider);
+	protected void saveAdditional(ValueOutput output) {
+		super.saveAdditional(output);
+		if (!this.trySaveLootTable(output)) {
+			ContainerHelper.saveAllItems(output, this.contents);
 		}
-		if (this.owner != null) {
-			tag.put("owner", ResolvableProfile.CODEC.encodeStart(NbtOps.INSTANCE, this.owner).getOrThrow());
-		}
+		output.storeNullable("owner", ResolvableProfile.CODEC, this.owner);
 	}
 
 	@Override
-	protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-		super.loadAdditional(tag, provider);
+	protected void loadAdditional(ValueInput input) {
+		super.loadAdditional(input);
 		this.contents = NonNullList.withSize(SIZE, ItemStack.EMPTY);
-		if (!this.tryLoadLootTable(tag)) {
-			ContainerHelper.loadAllItems(tag, this.contents, provider);
+		if (!this.tryLoadLootTable(input)) {
+			ContainerHelper.loadAllItems(input, this.contents);
 		}
-		if (tag.contains("owner")) {
-			ResolvableProfile.CODEC.parse(NbtOps.INSTANCE, tag.get("owner"))
-				.resultOrPartial(s -> TwilightForestMod.LOGGER.error("Failed to load owner for casket: {}", s))
-				.ifPresent(resolvableProfile -> this.owner = resolvableProfile);
-		}
+		this.owner = input.read("owner", ResolvableProfile.CODEC).orElse(null);
 	}
 
 	@Override
@@ -137,16 +129,16 @@ public class SkullChestBlockEntity extends RandomizableContainerBlockEntity impl
 	}
 
 	@Override
-	public void startOpen(Player player) {
-		if (!this.remove && !player.isSpectator()) {
-			this.getOpenersCounter().incrementOpeners(player, this.getLevel(), this.getBlockPos(), this.getBlockState());
+	public void startOpen(ContainerUser containerUser) {
+		if (!this.remove && !containerUser.getLivingEntity().isSpectator()) {
+			this.getOpenersCounter().incrementOpeners(containerUser.getLivingEntity(), this.getLevel(), this.getBlockPos(), this.getBlockState(), containerUser.getContainerInteractionRange());
 		}
 	}
 
 	@Override
-	public void stopOpen(Player player) {
-		if (!this.remove && !player.isSpectator()) {
-			this.getOpenersCounter().decrementOpeners(player, this.getLevel(), this.getBlockPos(), this.getBlockState());
+	public void stopOpen(ContainerUser containerUser) {
+		if (!this.remove && !containerUser.getLivingEntity().isSpectator()) {
+			this.getOpenersCounter().decrementOpeners(containerUser.getLivingEntity(), this.getLevel(), this.getBlockPos(), this.getBlockState());
 		}
 	}
 
@@ -165,7 +157,7 @@ public class SkullChestBlockEntity extends RandomizableContainerBlockEntity impl
 	@Override
 	public boolean stillValid(Player player) {
 		if (this.owner != null) {
-			if (player.hasPermissions(3) || player.getGameProfile().equals(this.owner.gameProfile())) {
+			if (player.permissions().hasPermission(Permissions.COMMANDS_ADMIN) || player.getGameProfile().equals(this.owner.partialProfile())) {
 				return super.stillValid(player);
 			} else {
 				return false;
@@ -178,7 +170,7 @@ public class SkullChestBlockEntity extends RandomizableContainerBlockEntity impl
 	@Override
 	public boolean canOpen(Player player) {
 		if (this.owner != null) {
-			if (player.hasPermissions(3) || player.getGameProfile().equals(this.owner.gameProfile())) {
+			if (player.permissions().hasPermission(Permissions.COMMANDS_ADMIN) || player.getGameProfile().equals(this.owner.partialProfile())) {
 				return super.canOpen(player);
 			} else {
 				this.displayLockedInfo(player);
@@ -190,8 +182,8 @@ public class SkullChestBlockEntity extends RandomizableContainerBlockEntity impl
 	}
 
 	public void displayLockedInfo(Player player) {
-		player.playNotifySound(TFSounds.SKULL_CHEST_LOCKED.get(), SoundSource.BLOCKS, 0.5F, 0.5F);
-		player.displayClientMessage(Component.translatable("block.twilightforest.skull_chest.locked", this.owner.gameProfile().getName()).withStyle(ChatFormatting.RED), true);
+		player.level().playLocalSound(this.getBlockPos(), TFSounds.SKULL_CHEST_LOCKED.get(), SoundSource.BLOCKS, 0.5F, 0.5F, false);
+		player.sendOverlayMessage(Component.translatable("block.twilightforest.skull_chest.locked", this.owner.name().orElse("???")).withStyle(ChatFormatting.RED));
 	}
 
 	//remove stored player when chest is broken

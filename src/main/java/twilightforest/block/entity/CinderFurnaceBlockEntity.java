@@ -1,28 +1,28 @@
 package twilightforest.block.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.AbstractFurnaceBlock;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.Tags;
-import twilightforest.block.CinderFurnaceBlock;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFBlocks;
 
@@ -38,80 +38,82 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 		return TFBlockEntities.CINDER_FURNACE.get();
 	}
 
-	// [VanillaCopy] of superclass, edits noted
-	public static void tick(Level level, BlockPos pos, BlockState state, CinderFurnaceBlockEntity te) {
-		boolean flag = te.isBurning();
-		boolean flag1 = false;
-
-		if (te.isBurning()) {
-			--te.litTime;
+	// [VanillaCopy] AbstactFurnaceBlockEntity.serverTick, edits noted
+	public static void serverTick(Level level, BlockPos pos, BlockState state, CinderFurnaceBlockEntity entity) {
+		boolean changed = false;
+		boolean isLit;
+		boolean wasLit;
+		if (entity.litTimeRemaining > 0) {
+			wasLit = true;
+			entity.litTimeRemaining--;
+			isLit = entity.litTimeRemaining > 0;
+		} else {
+			wasLit = false;
+			isLit = false;
 		}
 
-		if (!level.isClientSide()) {
-			ItemStack itemstack = te.items.get(1);
-
-			if (te.isBurning() || !itemstack.isEmpty() && !te.items.get(0).isEmpty()) {
-				RecipeHolder<?> recipe = level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(te.items.getFirst()), level).orElse(null);
-				if (recipe != null && !te.isBurning() && te.canBurn(level, recipe.value())) {
-					te.litTime = te.getBurnDuration(itemstack);
-					te.litDuration = te.litTime;
-
-					if (te.isBurning()) {
-						flag1 = true;
-
-						if (!itemstack.isEmpty()) {
-							Item item = itemstack.getItem();
-							itemstack.shrink(1);
-
-							if (itemstack.isEmpty()) {
-								ItemStack item1 = item.getCraftingRemainingItem(itemstack);
-								te.items.set(1, item1);
+		ItemStack fuel = entity.items.get(1);
+		ItemStack ingredient = entity.items.get(0);
+		boolean hasIngredient = !ingredient.isEmpty();
+		boolean hasFuel = !fuel.isEmpty();
+		if (isLit || hasFuel && hasIngredient) {
+			if (hasIngredient) {
+				SingleRecipeInput input = new SingleRecipeInput(ingredient);
+				RecipeHolder<? extends AbstractCookingRecipe> recipe = entity.quickCheck.getRecipeFor(input, (ServerLevel) level).orElse(null);
+				if (recipe != null) {
+					int maxStackSize = entity.getMaxStackSize();
+					ItemStack burnResult = recipe.value().assemble(input);
+					if (!burnResult.isEmpty() && entity.canBurn(level, maxStackSize, burnResult)) {
+						if (!isLit) {
+							int newLitTime = entity.getBurnDuration(level.fuelValues(), fuel);
+							entity.litTimeRemaining = newLitTime;
+							entity.litTotalTime = newLitTime;
+							if (newLitTime > 0) {
+								consumeFuel(entity.items, fuel);
+								isLit = true;
+								changed = true;
 							}
 						}
+
+						if (isLit) {
+							// TF - cook faster
+							entity.cookingTimer += entity.getCurrentSpeedMultiplier(level);
+							if (entity.cookingTimer >= entity.cookingTotalTime) { // TF - change to geq since we can increment by >1
+								entity.cookingTimer = 0;
+								entity.cookingTotalTime = recipe.value().cookingTime();
+								entity.burn(ingredient, burnResult);
+								entity.setRecipeUsed(recipe);
+								changed = true;
+							}
+						} else {
+							entity.cookingTimer = 0;
+						}
+					} else {
+						entity.cookingTimer = 0;
 					}
 				}
-
-				if (recipe != null && te.isBurning() && te.canBurn(level, recipe.value())) {
-					// TF - cook faster
-					te.cookingProgress += te.getCurrentSpeedMultiplier(level);
-
-					if (te.cookingProgress >= te.cookingTotalTime) { // TF - change to geq since we can increment by >1
-						te.cookingProgress = 0;
-						te.cookingTotalTime = te.getRecipeBurnTime(level);
-						te.smeltItem(level, recipe.value());
-						flag1 = true;
-					}
-				} else {
-					te.cookingProgress = 0;
-				}
-			} else if (te.cookingProgress > 0) {
-				te.cookingProgress = Mth.clamp(te.cookingProgress - 2, 0, te.cookingTotalTime);
+			} else {
+				entity.cookingTimer = 0;
 			}
-
-			if (flag != te.isBurning()) {
-				flag1 = true;
-				level.setBlock(pos, level.getBlockState(pos).setValue(CinderFurnaceBlock.LIT, te.isBurning()), Block.UPDATE_ALL); // TF - use our furnace
-			}
-
-			// TF - occasionally cinderize nearby logs
-			if (te.isBurning() && te.litTime % 5 == 0) {
-				te.cinderizeNearbyLog(level, pos);
-			}
+		} else if (entity.cookingTimer > 0) {
+			entity.cookingTimer = Mth.clamp(entity.cookingTimer - 2, 0, entity.cookingTotalTime);
 		}
 
-		if (flag1) {
-			te.setChanged();
+		if (wasLit != isLit) {
+			changed = true;
+			state = state.setValue(AbstractFurnaceBlock.LIT, isLit);
+			level.setBlock(pos, state, 3);
 		}
-	}
 
-	// [VanillaCopy] of super
-	private boolean isBurning() {
-		return this.litTime > 0;
-	}
+		// TF - occasionally cinderize nearby logs
+		if (isLit && entity.litTimeRemaining % 5 == 0) {
+			entity.cinderizeNearbyLog(level, pos);
+		}
 
-	// [VanillaCopy] of super, only using SMELTING IRecipeType
-	protected int getRecipeBurnTime(Level level) {
-		return level.getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(this.items.getFirst()), level).map(recipeHolder -> recipeHolder.value().getCookingTime()).orElse(200);
+		if (changed) {
+			setChanged(level, pos, state);
+		}
+
 	}
 
 	@SuppressWarnings("deprecation")
@@ -173,23 +175,18 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 		return count;
 	}
 
-	// [VanillaCopy] of superclass ver, changes noted
-	//@Override
-	protected boolean canBurn(Level level, Recipe<?> recipe) {
-		if (this.items.get(0).isEmpty()) {
+	// [VanillaCopy] AbstractFuranceBlockEntity.canBurn, edits noted
+	protected boolean canBurn(Level level, int maxStackSize, ItemStack burnResult) {
+		ItemStack resultItemStack = this.items.get(2);
+		if (resultItemStack.isEmpty()) {
+			return true;
+		} else if (!ItemStack.isSameItemSameComponents(resultItemStack, burnResult)) {
 			return false;
 		} else {
-			ItemStack itemstack = recipe.getResultItem(level.registryAccess());
-
-			if (itemstack.isEmpty()) {
-				return false;
-			} else {
-				ItemStack itemstack1 = this.items.get(2);
-				if (itemstack1.isEmpty()) return true;
-				if (!itemstack1.is(itemstack.getItem())) return false;
-				int result = itemstack1.getCount() + getMaxOutputStacks(level, this.items.getFirst(), itemstack); // TF - account for multiplying
-				return result <= this.getMaxStackSize() && result <= itemstack1.getMaxStackSize(); // Forge fix: make furnace respect stack sizes in furnace recipes
-			}
+			// TF - account for multiplying, clamp to max stack size so we don't overstack things
+			int resultCount = Math.min(burnResult.getMaxStackSize(), resultItemStack.getCount() + this.getMaxOutputStacks(level, this.items.getFirst(), burnResult));
+			int maxResultCount = Math.min(maxStackSize, burnResult.getMaxStackSize());
+			return resultCount <= maxResultCount;
 		}
 	}
 
@@ -204,26 +201,29 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 		}
 	}
 
-	// [VanillaCopy] superclass, using our own canSmelt and multiplying output
-	public void smeltItem(Level level, Recipe<?> recipe) {
-		if (this.canBurn(level, recipe)) {
-			ItemStack itemstack = this.items.getFirst();
-			ItemStack itemstack1 = recipe.getResultItem(level.registryAccess());
-			itemstack1.setCount(itemstack1.getCount() * this.getCurrentSmeltMultiplier(level));
-			ItemStack itemstack2 = this.items.get(2);
-
-			if (itemstack2.isEmpty()) {
-				this.items.set(2, itemstack1.copy());
-			} else if (itemstack2.getItem() == itemstack1.getItem()) {
-				itemstack2.grow(itemstack1.getCount());
-			}
-
-			if (itemstack.getItem() == Blocks.WET_SPONGE.asItem() && !this.items.get(1).isEmpty() && this.items.get(1).getItem() == Items.BUCKET) {
-				this.items.set(1, new ItemStack(Items.WATER_BUCKET));
-			}
-
-			itemstack.shrink(1);
+	// [VanillaCopy] AbstractFuranceBlockEntity.consumeFuel
+	private static void consumeFuel(NonNullList<ItemStack> items, ItemStack fuel) {
+		fuel.shrink(1);
+		if (fuel.isEmpty()) {
+			ItemStackTemplate remainder = fuel.getCraftingRemainder();
+			items.set(1, remainder != null ? remainder.create() : ItemStack.EMPTY);
 		}
+	}
+
+	// [VanillaCopy] AbstractFuranceBlockEntity.burn
+	private void burn(ItemStack inputItemStack, ItemStack result) {
+		ItemStack resultItemStack = this.items.get(2);
+		if (resultItemStack.isEmpty()) {
+			this.items.set(2, result.copy());
+		} else {
+			resultItemStack.grow(result.getCount());
+		}
+
+		if (inputItemStack.is(Items.WET_SPONGE) && !this.items.get(1).isEmpty() && this.items.get(1).is(Items.BUCKET)) {
+			this.items.set(1, new ItemStack(Items.WATER_BUCKET));
+		}
+
+		inputItemStack.shrink(1);
 	}
 
 	private boolean canMultiply(ItemStack input) {

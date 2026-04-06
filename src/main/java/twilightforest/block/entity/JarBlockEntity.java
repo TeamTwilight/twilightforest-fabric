@@ -1,21 +1,23 @@
 package twilightforest.block.entity;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.Util;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.JarBlock;
 import twilightforest.components.item.JarLid;
@@ -23,7 +25,6 @@ import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataComponents;
 
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
@@ -45,7 +46,6 @@ public class JarBlockEntity extends BlockEntity {
 		addLid(item, () -> true);
 	}
 
-	@NotNull
 	public Item lid = TFBlocks.TWILIGHT_OAK_LOG.asItem();
 	public long wobbleStartedAtTick;
 	@Nullable
@@ -61,15 +61,15 @@ public class JarBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-		super.saveAdditional(tag, registries);
-		tag.put(TAG_LID, ITEM_CODEC.encodeStart(NbtOps.INSTANCE, this.lid).getOrThrow());
+	protected void saveAdditional(ValueOutput output) {
+		super.saveAdditional(output);
+		output.store(TAG_LID, ITEM_CODEC, this.lid);
 	}
 
 	@Override
-	protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-		super.loadAdditional(tag, registries);
-		this.lid = tag.contains(TAG_LID) ? ITEM_CODEC.parse(NbtOps.INSTANCE, tag.get(TAG_LID)).result().orElse(TFBlocks.TWILIGHT_OAK_LOG.asItem()) : TFBlocks.TWILIGHT_OAK_LOG.asItem();
+	protected void loadAdditional(ValueInput input) {
+		super.loadAdditional(input);
+		this.lid = input.read(TAG_LID, ITEM_CODEC).orElse(TFBlocks.TWILIGHT_OAK_LOG.asItem());
 	}
 
 	public ItemStack getJarAsItem() {
@@ -93,16 +93,15 @@ public class JarBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	protected void applyImplicitComponents(DataComponentInput input) {
-		super.applyImplicitComponents(input);
-		this.lid = input.getOrDefault(TFDataComponents.JAR_LID, new JarLid(TFBlocks.TWILIGHT_OAK_LOG.asItem())).lid();
+	protected void applyImplicitComponents(DataComponentGetter components) {
+		super.applyImplicitComponents(components);
+		this.lid = components.getOrDefault(TFDataComponents.JAR_LID, new JarLid(TFBlocks.TWILIGHT_OAK_LOG.asItem())).lid();
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
-	public void removeComponentsFromTag(CompoundTag tag) {
-		super.removeComponentsFromTag(tag);
-		tag.remove(TAG_LID);
+	public void removeComponentsFromTag(ValueOutput output) {
+		super.removeComponentsFromTag(output);
+		output.discard(TAG_LID);
 	}
 
 	public void wobble(WobbleStyle style) {

@@ -5,12 +5,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.random.SimpleWeightedRandomList;
-import net.minecraft.util.random.WeightedEntry;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.item.ItemStack;
@@ -23,10 +21,13 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.TagValueInput;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.common.extensions.IOwnedSpawner;
 import net.neoforged.neoforge.event.EventHooks;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.ChiseledCanopyShelfBlock;
 
@@ -37,17 +38,17 @@ import java.util.Optional;
 
 public abstract class BookshelfSpawner implements IOwnedSpawner {
 	public static final List<Pair<Integer, BooleanProperty>> SLOT_PROPERTIES_AND_INDEXES = List.of(
-		Pair.of(0, BlockStateProperties.CHISELED_BOOKSHELF_SLOT_0_OCCUPIED),
-		Pair.of(1, BlockStateProperties.CHISELED_BOOKSHELF_SLOT_1_OCCUPIED),
-		Pair.of(2, BlockStateProperties.CHISELED_BOOKSHELF_SLOT_2_OCCUPIED),
-		Pair.of(3, BlockStateProperties.CHISELED_BOOKSHELF_SLOT_3_OCCUPIED),
-		Pair.of(4, BlockStateProperties.CHISELED_BOOKSHELF_SLOT_4_OCCUPIED),
-		Pair.of(5, BlockStateProperties.CHISELED_BOOKSHELF_SLOT_5_OCCUPIED));
+		Pair.of(0, BlockStateProperties.SLOT_0_OCCUPIED),
+		Pair.of(1, BlockStateProperties.SLOT_1_OCCUPIED),
+		Pair.of(2, BlockStateProperties.SLOT_2_OCCUPIED),
+		Pair.of(3, BlockStateProperties.SLOT_3_OCCUPIED),
+		Pair.of(4, BlockStateProperties.SLOT_4_OCCUPIED),
+		Pair.of(5, BlockStateProperties.SLOT_5_OCCUPIED));
 	public int maxNearbyEntities = 4;
 	public int spawnRange = 4;
 	public int spawnCheckRange = 12;
 	private int spawnDelay = 20;
-	private SimpleWeightedRandomList<SpawnData> spawnPotentials = SimpleWeightedRandomList.empty();
+	private WeightedList<SpawnData> spawnPotentials = WeightedList.of();
 	@Nullable
 	private SpawnData nextSpawnData;
 	private int minSpawnDelay = 200;
@@ -110,70 +111,32 @@ public abstract class BookshelfSpawner implements IOwnedSpawner {
 			this.spawnDelay = this.minSpawnDelay + randomsource.nextInt(this.maxSpawnDelay - this.minSpawnDelay);
 		}
 
-		this.spawnPotentials.getRandom(randomsource).ifPresent(p_337965_ -> this.setNextSpawnData(level, pos, p_337965_.data()));
+		this.spawnPotentials.getRandom(randomsource).ifPresent(data -> this.setNextSpawnData(level, pos, data));
 		this.broadcastEvent(level, pos, 1);
 	}
 
-	public void load(@Nullable Level level, BlockPos pos, CompoundTag tag) {
-		this.spawnDelay = tag.getShort("Delay");
-		boolean flag = tag.contains("SpawnData", 10);
-		if (flag) {
-			SpawnData spawndata = SpawnData.CODEC
-				.parse(NbtOps.INSTANCE, tag.getCompound("SpawnData"))
-				.resultOrPartial(p_186391_ -> TwilightForestMod.LOGGER.warn("Death Tome Spawner: Invalid SpawnData: {}", p_186391_))
-				.orElseGet(SpawnData::new);
-			this.setNextSpawnData(level, pos, spawndata);
-		}
-
-		boolean flag1 = tag.contains("SpawnPotentials", 9);
-		if (flag1) {
-			ListTag listtag = tag.getList("SpawnPotentials", 10);
-			this.spawnPotentials = SpawnData.LIST_CODEC
-				.parse(NbtOps.INSTANCE, listtag)
-				.resultOrPartial(p_186388_ -> TwilightForestMod.LOGGER.warn("Death Tome Spawner: Invalid SpawnPotentials list: {}", p_186388_))
-				.orElseGet(SimpleWeightedRandomList::empty);
-		} else {
-			this.spawnPotentials = SimpleWeightedRandomList.single(this.nextSpawnData != null ? this.nextSpawnData : new SpawnData());
-		}
-
-		if (tag.contains("MinSpawnDelay", 99)) {
-			this.minSpawnDelay = tag.getShort("MinSpawnDelay");
-			this.maxSpawnDelay = tag.getShort("MaxSpawnDelay");
-		}
-
-		if (tag.contains("MaxNearbyEntities", 99)) {
-			this.maxNearbyEntities = tag.getShort("MaxNearbyEntities");
-			this.requiredPlayerRange = tag.getShort("RequiredPlayerRange");
-		}
-
-		if (tag.contains("SpawnRange", 99)) {
-			this.spawnRange = tag.getShort("SpawnRange");
-		}
-
-		if (tag.contains("SpawnCheckRange", 99)) {
-			this.spawnCheckRange = tag.getShort("SpawnCheckRange");
-		}
+	public void load(@Nullable Level level, BlockPos pos, ValueInput input) {
+		this.spawnDelay = input.getShortOr("Delay", (short) 20);
+		input.read("SpawnData", SpawnData.CODEC).ifPresent(nextSpawnData -> this.setNextSpawnData(level, pos, nextSpawnData));
+		this.spawnPotentials = input.read("SpawnPotentials", SpawnData.LIST_CODEC).orElseGet(() -> WeightedList.of(this.nextSpawnData != null ? this.nextSpawnData : new SpawnData()));
+		this.minSpawnDelay = input.getShortOr("MinSpawnDelay", (short) 200);
+		this.maxSpawnDelay = input.getShortOr("MaxSpawnDelay", (short) 400);
+		this.maxNearbyEntities = input.getShortOr("MaxNearbyEntities", (short) 4);
+		this.requiredPlayerRange = input.getShortOr("RequiredPlayerRange", (short) 8);
+		this.spawnRange = input.getShortOr("SpawnRange", (short) 4);
+		this.spawnCheckRange = input.getShortOr("SpawnCheckRange", (short) 12);
 	}
 
-	public CompoundTag save(CompoundTag tag) {
-		tag.putShort("Delay", (short) this.spawnDelay);
-		tag.putShort("MinSpawnDelay", (short) this.minSpawnDelay);
-		tag.putShort("MaxSpawnDelay", (short) this.maxSpawnDelay);
-		tag.putShort("MaxNearbyEntities", (short) this.maxNearbyEntities);
-		tag.putShort("RequiredPlayerRange", (short) this.requiredPlayerRange);
-		tag.putShort("SpawnRange", (short) this.spawnRange);
-		tag.putShort("SpawnCheckRange", (short) this.spawnCheckRange);
-		if (this.nextSpawnData != null) {
-			tag.put(
-				"SpawnData",
-				SpawnData.CODEC
-					.encodeStart(NbtOps.INSTANCE, this.nextSpawnData)
-					.getOrThrow(p_337966_ -> new IllegalStateException("Invalid SpawnData: " + p_337966_))
-			);
-		}
-
-		tag.put("SpawnPotentials", SpawnData.LIST_CODEC.encodeStart(NbtOps.INSTANCE, this.spawnPotentials).getOrThrow());
-		return tag;
+	public void save(ValueOutput output) {
+		output.putShort("Delay", (short) this.spawnDelay);
+		output.putShort("MinSpawnDelay", (short) this.minSpawnDelay);
+		output.putShort("MaxSpawnDelay", (short) this.maxSpawnDelay);
+		output.putShort("MaxNearbyEntities", (short) this.maxNearbyEntities);
+		output.putShort("RequiredPlayerRange", (short) this.requiredPlayerRange);
+		output.putShort("SpawnRange", (short) this.spawnRange);
+		output.putShort("SpawnCheckRange", (short) this.spawnCheckRange);
+		output.storeNullable("SpawnData", SpawnData.CODEC, this.nextSpawnData);
+		output.store("SpawnPotentials", SpawnData.LIST_CODEC, this.spawnPotentials);
 	}
 
 	public boolean onEventTriggered(Level level, int id) {
@@ -199,7 +162,7 @@ public abstract class BookshelfSpawner implements IOwnedSpawner {
 
 	private SpawnData getOrCreateNextSpawnData(@Nullable Level level, RandomSource pRandom, BlockPos pos) {
 		if (this.nextSpawnData == null) {
-			this.setNextSpawnData(level, pos, this.spawnPotentials.getRandom(pRandom).map(WeightedEntry.Wrapper::data).orElseGet(SpawnData::new));
+			this.setNextSpawnData(level, pos, this.spawnPotentials.getRandom(pRandom).orElseGet(SpawnData::new));
 		}
 		return this.nextSpawnData;
 	}
@@ -212,88 +175,91 @@ public abstract class BookshelfSpawner implements IOwnedSpawner {
 		CompoundTag tag = data.entityToSpawn();
 		BlockState shelf = level.getBlockState(pos);
 		Direction facing = shelf.getValue(HorizontalDirectionalBlock.FACING);
-		Optional<EntityType<?>> optional = EntityType.by(tag);
-		//if the assigned entity doesn't exist or the bookshelf is blocked off, fail early
-		if (optional.isEmpty() || !level.getBlockState(pos.relative(facing)).canBeReplaced()) {
-			this.delay(level, pos);
-			return false;
-		}
+		try (ProblemReporter.ScopedCollector reporter = new ProblemReporter.ScopedCollector(this::toString, TwilightForestMod.LOGGER)) {
+			ValueInput input = TagValueInput.create(reporter, level.registryAccess(), this.nextSpawnData.getEntityToSpawn());
+			Optional<EntityType<?>> entityType = EntityType.by(input);
+			//if the assigned entity doesn't exist or the bookshelf is blocked off, fail early
+			if (entityType.isEmpty() || !level.getBlockState(pos.relative(facing)).canBeReplaced()) {
+				this.delay(level, pos);
+				return false;
+			}
 
-		//pick random spot in front of the shelf
-		double x = pos.relative(facing).getX() + (random.nextDouble() - random.nextDouble()) * 2.0D;
-		double y = (double) pos.getY() + (random.nextDouble() - random.nextDouble());
-		double z = pos.relative(facing).getZ() + (random.nextDouble() - random.nextDouble()) * 2.0D;
+			//pick random spot in front of the shelf
+			double x = pos.relative(facing).getX() + (random.nextDouble() - random.nextDouble()) * 2.0D;
+			double y = (double) pos.getY() + (random.nextDouble() - random.nextDouble());
+			double z = pos.relative(facing).getZ() + (random.nextDouble() - random.nextDouble()) * 2.0D;
 
-		//apply spawning logic like vanilla spawners do
-		if (level.noCollision(optional.get().getSpawnAABB(x, y, z))) {
-			boolean difficultyPreventsSpawn = !optional.get().getCategory().isFriendly() && level.getDifficulty() == Difficulty.PEACEFUL;
+			//apply spawning logic like vanilla spawners do
+			if (level.noCollision(entityType.get().getSpawnAABB(x, y, z))) {
+				boolean difficultyPreventsSpawn = !entityType.get().getCategory().isFriendly() && level.getDifficulty() == Difficulty.PEACEFUL;
 
-			BlockPos blockpos = BlockPos.containing(x, y, z);
-			if (data.getCustomSpawnRules().isPresent()) {
-				if (difficultyPreventsSpawn) {
+				BlockPos blockpos = BlockPos.containing(x, y, z);
+				if (data.getCustomSpawnRules().isPresent()) {
+					if (difficultyPreventsSpawn) {
+						return false;
+					}
+
+					SpawnData.CustomSpawnRules rules = data.getCustomSpawnRules().get();
+					if (!rules.isValidPosition(blockpos, level) && !fire) {
+						return false;
+					}
+				} else if (difficultyPreventsSpawn) {
+					this.delay(level, pos);
 					return false;
 				}
 
-				SpawnData.CustomSpawnRules rules = data.getCustomSpawnRules().get();
-				if (!rules.isValidPosition(blockpos, level) && !fire) {
+				Entity entity = EntityType.loadEntityRecursive(tag, level, EntitySpawnReason.SPAWNER, processed -> {
+					processed.snapTo(x, y, z, processed.getYRot(), processed.getXRot());
+					//set entity on fire if told to do so
+					if (fire) {
+						processed.setRemainingFireTicks(200);
+					}
+
+					//target whoever was responsible for spawning the mob
+					if (assailant != null && processed instanceof Mob mob) {
+						mob.setTarget(assailant);
+					}
+
+					return processed;
+				});
+				if (entity == null) {
+					this.delay(level, pos);
 					return false;
 				}
-			} else if (difficultyPreventsSpawn) {
-				this.delay(level, pos);
-				return false;
-			}
 
-			Entity entity = EntityType.loadEntityRecursive(tag, level, processed -> {
-				processed.moveTo(x, y, z, processed.getYRot(), processed.getXRot());
-				//set entity on fire if told to do so
-				if (fire) {
-					processed.setRemainingFireTicks(200);
+				int k = level.getEntities(EntityTypeTest.forExactClass(entity.getClass()), new AABB(pos).inflate(this.spawnCheckRange), EntitySelector.NO_SPECTATORS).size();
+				if (k >= this.maxNearbyEntities && !fire) {
+					this.delay(level, pos);
+					return false;
 				}
 
-				//target whoever was responsible for spawning the mob
-				if (assailant != null && processed instanceof Mob mob) {
-					mob.setTarget(assailant);
+				entity.snapTo(entity.getX(), entity.getY(), entity.getZ(), random.nextFloat() * 360.0F, 0.0F);
+				if (entity instanceof Mob mob) {
+					boolean hasNoConfiguration = data.getEntityToSpawn().size() == 1 && data.getEntityToSpawn().getString("id").isPresent();
+					EventHooks.finalizeMobSpawnSpawner(mob, level, level.getCurrentDifficultyAt(entity.blockPosition()), EntitySpawnReason.SPAWNER, null, this, hasNoConfiguration);
+
+					data.getEquipment().ifPresent(mob::equip);
 				}
 
-				return processed;
-			});
-			if (entity == null) {
-				this.delay(level, pos);
-				return false;
-			}
+				if (!level.tryAddFreshEntityWithPassengers(entity)) {
+					this.delay(level, pos);
+					return false;
+				}
 
-			int k = level.getEntities(EntityTypeTest.forExactClass(entity.getClass()), new AABB(pos).inflate(this.spawnCheckRange), EntitySelector.NO_SPECTATORS).size();
-			if (k >= this.maxNearbyEntities && !fire) {
-				this.delay(level, pos);
-				return false;
-			}
+				level.gameEvent(entity, GameEvent.ENTITY_PLACE, blockpos);
+				if (entity instanceof Mob mob) {
+					mob.spawnAnim();
+				}
 
-			entity.moveTo(entity.getX(), entity.getY(), entity.getZ(), random.nextFloat() * 360.0F, 0.0F);
-			if (entity instanceof Mob mob) {
-				boolean flag1 = data.getEntityToSpawn().size() == 1 && data.getEntityToSpawn().contains("id", 8);
-				EventHooks.finalizeMobSpawnSpawner(mob, level, level.getCurrentDifficultyAt(entity.blockPosition()), MobSpawnType.SPAWNER, null, this, flag1);
-
-				data.getEquipment().ifPresent(mob::equip);
-			}
-
-			if (!level.tryAddFreshEntityWithPassengers(entity)) {
-				this.delay(level, pos);
-				return false;
-			}
-
-			level.gameEvent(entity, GameEvent.ENTITY_PLACE, blockpos);
-			if (entity instanceof Mob mob) {
-				mob.spawnAnim();
-			}
-
-			//after mob is spawned, clear that book's spot from the shelf
-			if (level.getBlockEntity(pos) instanceof ChiseledCanopyShelfBlockEntity be) {
-				be.setItem(slot, ItemStack.EMPTY);
-			}
-			return true;
-		} else {
-			if (maxTries != 0) {
-				this.attemptSpawnTome(slot, level, pos, fire, assailant, maxTries - 1);
+				//after mob is spawned, clear that book's spot from the shelf
+				if (level.getBlockEntity(pos) instanceof ChiseledCanopyShelfBlockEntity be) {
+					be.setItem(slot, ItemStack.EMPTY);
+				}
+				return true;
+			} else {
+				if (maxTries != 0) {
+					this.attemptSpawnTome(slot, level, pos, fire, assailant, maxTries - 1);
+				}
 			}
 		}
 		return false;

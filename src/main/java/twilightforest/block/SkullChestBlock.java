@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -21,6 +22,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -175,6 +177,14 @@ public class SkullChestBlock extends BaseEntityBlock implements BlockLoggingEnum
 					}
 				}
 			}
+		}
+	}
+
+	@Override
+	protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+		BlockEntity blockEntity = level.getBlockEntity(pos);
+		if (blockEntity instanceof SkullChestBlockEntity chest) {
+			chest.recheckOpen();
 		}
 	}
 

@@ -3,7 +3,6 @@ package twilightforest.block.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
@@ -16,6 +15,8 @@ import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -46,17 +47,17 @@ public class DryingRackBlockEntity extends BlockEntity {
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, DryingRackBlockEntity entity) {
-		if (!state.getValue(DryingRackBlock.WATERLOGGED) && !level.isClientSide()) {
+		if (!state.getValue(DryingRackBlock.WATERLOGGED) && level instanceof ServerLevel serverLevel) {
 			if (!entity.getTheItem().isEmpty()) {
 				SingleRecipeInput input = new SingleRecipeInput(entity.getTheItem());
-				RecipeHolder<DryingRecipe> recipeholder = entity.quickCheck.getRecipeFor(input, level).orElse(null);
+				RecipeHolder<DryingRecipe> recipeholder = entity.quickCheck.getRecipeFor(input, serverLevel).orElse(null);
 				boolean recipeHolderExists = recipeholder != null;
 				entity.updateDryingTime(recipeHolderExists);
 				if (recipeHolderExists) {
 					entity.dryTime++;
 
 					if (entity.dryTime >= entity.totalDryTime) {
-						entity.setTheItem(recipeholder.value().assemble(input, level.registryAccess()));
+						entity.setTheItem(recipeholder.value().assemble(input));
 						setChanged(level, pos, state);
 					}
 				}
@@ -91,15 +92,15 @@ public class DryingRackBlockEntity extends BlockEntity {
 		this.stack = newItem;
 		this.stack.limitSize(1);
 		if (updateDryTime) {
-			this.totalDryTime = getDryingTime();
+			this.totalDryTime = this.getDryingTime();
 			this.dryTime = 0;
 			this.setChanged();
 
-			if (this.level != null && !this.level.isClientSide) {
+			if (this.level instanceof ServerLevel serverLevel) {
 				if (newItem.isEmpty() || this.getBlockState().getValue(DryingRackBlock.WATERLOGGED)) {
 					this.drying = false;
 				} else {
-					this.drying = this.quickCheck.getRecipeFor(new SingleRecipeInput(newItem), this.level).isPresent();
+					this.drying = this.quickCheck.getRecipeFor(new SingleRecipeInput(newItem), serverLevel).isPresent();
 				}
 			}
 		}
@@ -123,17 +124,17 @@ public class DryingRackBlockEntity extends BlockEntity {
 
 		LootParams params = new LootParams.Builder(serverLevel).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(this.getBlockPos())).create(LootContextParamSets.CHEST);
 
-		lootTable.getRandomItemsRaw(new LootContext.Builder(params).withOptionalRandomSeed(seed).create(Optional.of(lootTableKey.location())), lootStack -> this.stack = lootStack);
+		lootTable.getRandomItems(new LootContext.Builder(params).withOptionalRandomSeed(seed).create(Optional.of(lootTableKey.identifier())), lootStack -> this.stack = lootStack);
 
 		return true;
 	}
 
 	private int getDryingTime() {
 		SingleRecipeInput singlerecipeinput = new SingleRecipeInput(this.getTheItem());
-		Level level = getLevel();
-		if (level == null)
-			return DEFAULT_DRYING_TIME;
-		return this.quickCheck.getRecipeFor(singlerecipeinput, level).map(holder -> holder.value().getDryingTime()).orElse(DEFAULT_DRYING_TIME);
+		if (this.level instanceof ServerLevel serverLevel) {
+			return this.quickCheck.getRecipeFor(singlerecipeinput, serverLevel).map(holder -> holder.value().getDryingTime()).orElse(DEFAULT_DRYING_TIME);
+		}
+		return DEFAULT_DRYING_TIME;
 	}
 
 	public boolean isDrying() {
@@ -141,29 +142,20 @@ public class DryingRackBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-		super.saveAdditional(tag, registries);
-		if (!this.stack.isEmpty()) {
-			tag.put("item", this.stack.save(registries));
-		}
-		tag.putInt("dry_time", this.dryTime);
-		tag.putInt("total_dry_time", this.totalDryTime);
+	protected void saveAdditional(ValueOutput output) {
+		super.saveAdditional(output);
+		output.storeNullable("item", ItemStack.CODEC, this.stack);
+		output.putInt("dry_time", this.dryTime);
+		output.putInt("total_dry_time", this.totalDryTime);
 	}
 
 	@Override
-	protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-		super.loadAdditional(tag, registries);
-		if (tag.contains("item", Tag.TAG_COMPOUND)) {
-			this.stack = ItemStack.parse(registries, tag.getCompound("item")).orElse(ItemStack.EMPTY);
-		} else {
-			this.stack = ItemStack.EMPTY;
-		}
-		this.dryTime = tag.getInt("dry_time");
-		this.totalDryTime = tag.getInt("total_dry_time");
-
-		if (tag.contains("drying")) {
-			this.drying = tag.getBoolean("drying");
-		}
+	protected void loadAdditional(ValueInput input) {
+		super.loadAdditional(input);
+		this.stack = input.read("item", ItemStack.CODEC).orElse(ItemStack.EMPTY);
+		this.dryTime = input.getIntOr("dry_time", 0);
+		this.totalDryTime = input.getIntOr("total_dry_time", DEFAULT_DRYING_TIME);
+		this.drying = input.getBooleanOr("drying", false);
 	}
 
 	@Override
@@ -173,16 +165,10 @@ public class DryingRackBlockEntity extends BlockEntity {
 
 	@Override
 	public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-		CompoundTag tag = super.getUpdateTag(registries);
-		tag.putBoolean("drying", this.drying);
-
-		if (!this.stack.isEmpty()) {
-			tag.put("item", this.stack.save(registries));
-		}
-
-		return tag;
+		return this.saveCustomOnly(registries);
 	}
 
+	//TODO oh my goddddddddddddddd
 	public record DryingRackHandler(DryingRackBlockEntity inventory) implements IItemHandlerModifiable {
 		@Override
 		public int getSlots() {

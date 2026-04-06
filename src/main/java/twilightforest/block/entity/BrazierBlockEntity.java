@@ -21,7 +21,7 @@ public class BrazierBlockEntity extends BlockEntity {
 			if (state.getValue(BrazierBlock.LIGHT).isLit() && state.getValue(BrazierBlock.LIGHT).getSmokeRate() > 0) {
 				if (BrazierBlockEntity.tick % state.getValue(BrazierBlock.LIGHT).getSmokeRate() == 0) {
 					BlockPos above = pos.above();
-					level.addParticle(ParticleTypes.SMOKE, above.getX() + level.random.nextFloat() * 0.4F + 0.3F, above.getY() + 0.9F, above.getZ() + level.random.nextFloat() * 0.4F + 0.3F,
+					level.addParticle(ParticleTypes.SMOKE, above.getX() + level.getRandom().nextFloat() * 0.4F + 0.3F, above.getY() + 0.9F, above.getZ() + level.getRandom().nextFloat() * 0.4F + 0.3F,
 						0.0D, 0.05D, 0.0D);
 				}
 			}

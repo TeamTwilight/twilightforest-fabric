@@ -4,7 +4,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.level.Level;
@@ -34,10 +33,9 @@ public class KeepsakeCasketBlockEntity extends SkullChestBlockEntity {
 		}
 
 		@Override
-		protected boolean isOwnContainer(Player player) {
-			if (player.containerMenu instanceof ChestMenu) {
-				Container container = ((ChestMenu)player.containerMenu).getContainer();
-				return container == KeepsakeCasketBlockEntity.this;
+		public boolean isOwnContainer(Player player) {
+			if (player.containerMenu instanceof ChestMenu chest) {
+				return chest.getContainer() == KeepsakeCasketBlockEntity.this;
 			} else {
 				return false;
 			}
@@ -55,7 +53,7 @@ public class KeepsakeCasketBlockEntity extends SkullChestBlockEntity {
 
 	@Override
 	public void displayLockedInfo(Player player) {
-		player.playNotifySound(TFSounds.CASKET_LOCKED.get(), SoundSource.BLOCKS, 0.5F, 0.5F);
-		player.displayClientMessage(Component.translatable("block.twilightforest.casket.locked", this.owner.gameProfile().getName()).withStyle(ChatFormatting.RED), true);
+		player.level().playLocalSound(this.getBlockPos(), TFSounds.CASKET_LOCKED.get(), SoundSource.BLOCKS, 0.5F, 0.5F, false);
+		player.sendOverlayMessage(Component.translatable("block.twilightforest.casket.locked", this.owner.name().orElse("???")).withStyle(ChatFormatting.RED));
 	}
 }

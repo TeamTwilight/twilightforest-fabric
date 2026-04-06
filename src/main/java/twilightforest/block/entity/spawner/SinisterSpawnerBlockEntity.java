@@ -7,7 +7,6 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -18,8 +17,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.Spawner;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.LootTable;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFBlockEntities;
 
 import java.util.List;
@@ -38,25 +39,17 @@ public class SinisterSpawnerBlockEntity extends BlockEntity implements Spawner {
 	}
 
 	@Override
-	protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-		super.loadAdditional(tag, registries);
-		this.spawner.load(this.level, this.worldPosition, tag);
-
-		if (tag.contains("LootTable")) {
-			this.lootTable = ResourceKey.create(Registries.LOOT_TABLE, Identifier.parse(tag.getString("LootTable")));
-		} else {
-			this.lootTable = null;
-		}
+	protected void loadAdditional(ValueInput input) {
+		super.loadAdditional(input);
+		this.spawner.load(this.level, this.worldPosition, input);
+		this.lootTable = input.read("LootTable", ResourceKey.codec(Registries.LOOT_TABLE)).orElse(null);
 	}
 
 	@Override
-	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-		super.saveAdditional(tag, registries);
-		this.spawner.save(tag);
-
-		if (this.lootTable != null) {
-			tag.putString("LootTable", this.lootTable.location().toString());
-		}
+	protected void saveAdditional(ValueOutput output) {
+		super.saveAdditional(output);
+		this.spawner.save(output);
+		output.storeNullable("LootTable", ResourceKey.codec(Registries.LOOT_TABLE), this.lootTable);
 	}
 
 	public static void clientTick(Level level, BlockPos pos, BlockState state, SinisterSpawnerBlockEntity blockEntity) {
@@ -82,11 +75,6 @@ public class SinisterSpawnerBlockEntity extends BlockEntity implements Spawner {
 	@Override
 	public boolean triggerEvent(int id, int type) {
 		return this.spawner.onEventTriggered(this.level, id) || super.triggerEvent(id, type);
-	}
-
-	@Override
-	public boolean onlyOpCanSetNbt() {
-		return true;
 	}
 
 	@Override

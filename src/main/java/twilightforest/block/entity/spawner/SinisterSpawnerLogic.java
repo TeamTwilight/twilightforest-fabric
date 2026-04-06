@@ -2,15 +2,13 @@ package twilightforest.block.entity.spawner;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.*;
@@ -21,8 +19,13 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.TagValueInput;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
-import org.jetbrains.annotations.Nullable;
+import net.neoforged.neoforge.event.EventHooks;
+import org.jspecify.annotations.Nullable;
+import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.BoundingBoxUtils;
 
@@ -31,12 +34,12 @@ import java.util.*;
 public abstract class SinisterSpawnerLogic extends BaseSpawner {
 	private static final Codec<List<ParticleOptions>> PARTICLES_CODEC = ParticleTypes.CODEC.listOf();
 
-	private @Nullable BlockPos.MutableBlockPos checkPos = null;
+	private BlockPos.@Nullable MutableBlockPos checkPos = null;
 	private final List<BlockPos> spawnBuffer = new ArrayList<>();
 	private int countNextToSpawn = 0;
 	public int entityScanRange = 4;
 
-	private Set<ParticleOptions> particleOptions = new HashSet<>();
+	private final Set<ParticleOptions> particleOptions = new HashSet<>();
 
 	public void setChanged() {
 		Either<BlockEntity, Entity> owner = this.getOwner();
@@ -116,95 +119,93 @@ public abstract class SinisterSpawnerLogic extends BaseSpawner {
 
 				for (BlockPos spawnAt : this.spawnBuffer) {
 					CompoundTag entityData = spawndata.getEntityToSpawn();
-					Optional<EntityType<?>> possibleEntityType = EntityType.by(entityData);
-					if (possibleEntityType.isEmpty()) {
-						this.delay(serverLevel, blockEntityPos);
-						return;
+					try (ProblemReporter.ScopedCollector reporter = new ProblemReporter.ScopedCollector(this::toString, TwilightForestMod.LOGGER)) {
+						ValueInput input = TagValueInput.create(reporter, serverLevel.registryAccess(), entityData);
+						Optional<EntityType<?>> entityType = EntityType.by(input);
+						if (entityType.isEmpty()) {
+							this.delay(serverLevel, blockEntityPos);
+							return;
+						}
+
+						final double spawnX = spawnAt.getX() + 0.5;
+						final double spawnY = spawnAt.getY();
+						final double spawnZ = spawnAt.getZ() + 0.5;
+						if (serverLevel.noCollision(entityType.get().getSpawnAABB(spawnX, spawnY, spawnZ))) {
+							if (spawndata.getCustomSpawnRules().isPresent()) {
+								if (!entityType.get().getCategory().isFriendly() && serverLevel.getDifficulty() == Difficulty.PEACEFUL) {
+									continue;
+								}
+
+								SpawnData.CustomSpawnRules spawndata$customspawnrules = spawndata.getCustomSpawnRules().get();
+								if (!spawndata$customspawnrules.isValidPosition(spawnAt, serverLevel)) {
+									continue;
+								}
+							} else if (!SpawnPlacements.checkSpawnRules(entityType.get(), serverLevel, EntitySpawnReason.SPAWNER, spawnAt, serverLevel.getRandom())) {
+								continue;
+							}
+
+							Entity entity = EntityType.loadEntityRecursive(entityData, serverLevel, EntitySpawnReason.SPAWNER, spawnedEntity -> {
+								spawnedEntity.snapTo(spawnX, spawnY, spawnZ, spawnedEntity.getYRot(), spawnedEntity.getXRot());
+								return spawnedEntity;
+							});
+							if (entity == null) {
+								this.delay(serverLevel, blockEntityPos);
+								return;
+							}
+
+							int likeEntities = serverLevel.getEntities(
+									EntityTypeTest.forExactClass(entity.getClass()),
+									new AABB(
+										blockEntityPos.getX(),
+										blockEntityPos.getY(),
+										blockEntityPos.getZ(),
+										blockEntityPos.getX() + 1,
+										blockEntityPos.getY() + 1,
+										blockEntityPos.getZ() + 1
+									).inflate(this.entityScanRange),
+									EntitySelector.NO_SPECTATORS
+								)
+								.size();
+							if (likeEntities >= this.maxNearbyEntities) {
+								this.delay(serverLevel, blockEntityPos);
+								return;
+							}
+
+							entity.snapTo(entity.getX(), entity.getY(), entity.getZ(), randomsource.nextFloat() * 360.0F, 0.0F);
+							if (entity instanceof Mob mob) {
+								if (!EventHooks.checkSpawnPositionSpawner(mob, serverLevel, EntitySpawnReason.SPAWNER, spawndata, this)) {
+									continue;
+								}
+								boolean hasNoConfiguration = spawndata.getEntityToSpawn().size() == 1 && spawndata.getEntityToSpawn().getString("id").isPresent();
+								EventHooks.finalizeMobSpawnSpawner(mob, serverLevel, serverLevel.getCurrentDifficultyAt(entity.blockPosition()), EntitySpawnReason.SPAWNER, null, this, hasNoConfiguration);
+								spawndata.getEquipment().ifPresent(mob::equip);
+								this.checkPos = blockEntityPos.mutable();
+							}
+
+							if (!serverLevel.tryAddFreshEntityWithPassengers(entity)) {
+								this.delay(serverLevel, blockEntityPos);
+								return;
+							}
+
+							for (ParticleOptions particle : this.particleOptions) {
+								serverLevel.sendParticles(particle, entity.getX(), entity.getY(0.5f), entity.getZ(), 10, entity.getBbWidth() * 0.5f, entity.getBbHeight() * 0.5f, entity.getBbWidth() * 0.5f, 0);
+							}
+							serverLevel.gameEvent(entity, GameEvent.ENTITY_PLACE, spawnAt);
+							if (entity instanceof Mob) {
+								((Mob) entity).spawnAnim();
+							}
+
+							spawned = true;
+						}
 					}
+					this.spawnBuffer.clear(); // Loop iterated, now reset
 
-					final double spawnX = spawnAt.getX() + 0.5;
-					final double spawnY = spawnAt.getY();
-					final double spawnZ = spawnAt.getZ() + 0.5;
-					if (serverLevel.noCollision(possibleEntityType.get().getSpawnAABB(spawnX, spawnY, spawnZ))) {
-						if (spawndata.getCustomSpawnRules().isPresent()) {
-							if (!possibleEntityType.get().getCategory().isFriendly() && serverLevel.getDifficulty() == Difficulty.PEACEFUL) {
-								continue;
-							}
-
-							SpawnData.CustomSpawnRules spawndata$customspawnrules = spawndata.getCustomSpawnRules().get();
-							if (!spawndata$customspawnrules.isValidPosition(spawnAt, serverLevel)) {
-								continue;
-							}
-						} else if (!SpawnPlacements.checkSpawnRules(possibleEntityType.get(), serverLevel, MobSpawnType.SPAWNER, spawnAt, serverLevel.getRandom())) {
-							continue;
-						}
-
-						Entity entity = EntityType.loadEntityRecursive(entityData, serverLevel, spawnedEntity -> {
-							spawnedEntity.moveTo(spawnX, spawnY, spawnZ, spawnedEntity.getYRot(), spawnedEntity.getXRot());
-							return spawnedEntity;
-						});
-						if (entity == null) {
-							this.delay(serverLevel, blockEntityPos);
-							return;
-						}
-
-						int likeEntities = serverLevel.getEntities(
-								EntityTypeTest.forExactClass(entity.getClass()),
-								new AABB(
-									blockEntityPos.getX(),
-									blockEntityPos.getY(),
-									blockEntityPos.getZ(),
-									blockEntityPos.getX() + 1,
-									blockEntityPos.getY() + 1,
-									blockEntityPos.getZ() + 1
-								).inflate(this.entityScanRange),
-								EntitySelector.NO_SPECTATORS
-							)
-							.size();
-						if (likeEntities >= this.maxNearbyEntities) {
-							this.delay(serverLevel, blockEntityPos);
-							return;
-						}
-
-						entity.moveTo(entity.getX(), entity.getY(), entity.getZ(), randomsource.nextFloat() * 360.0F, 0.0F);
-						if (entity instanceof Mob mob) {
-							if (!net.neoforged.neoforge.event.EventHooks.checkSpawnPositionSpawner(mob, serverLevel, MobSpawnType.SPAWNER, spawndata, this)) {
-								continue;
-							}
-
-							boolean flag1 = spawndata.getEntityToSpawn().size() == 1 && spawndata.getEntityToSpawn().contains("id", 8);
-							// Neo: Patch in FinalizeSpawn for spawners so it may be fired unconditionally, instead of only when vanilla would normally call it.
-							// The local flag1 is the conditions under which the spawner will normally call Mob#finalizeSpawn.
-							net.neoforged.neoforge.event.EventHooks.finalizeMobSpawnSpawner(mob, serverLevel, serverLevel.getCurrentDifficultyAt(entity.blockPosition()), MobSpawnType.SPAWNER, null, this, flag1);
-
-							spawndata.getEquipment().ifPresent(mob::equip);
-
-							this.checkPos = blockEntityPos.mutable();
-						}
-
-						if (!serverLevel.tryAddFreshEntityWithPassengers(entity)) {
-							this.delay(serverLevel, blockEntityPos);
-							return;
-						}
-
+					if (spawned) {
 						for (ParticleOptions particle : this.particleOptions) {
-							serverLevel.sendParticles(particle, entity.getX(), entity.getY(0.5f), entity.getZ(), 10, entity.getBbWidth() * 0.5f, entity.getBbHeight() * 0.5f, entity.getBbWidth() * 0.5f, 0);
+							serverLevel.sendParticles(particle, blockEntityPos.getX() + 0.5f, blockEntityPos.getY() + 0.5f, blockEntityPos.getZ() + 0.5f, 10, 1, 1, 1, 0);
 						}
-						serverLevel.gameEvent(entity, GameEvent.ENTITY_PLACE, spawnAt);
-						if (entity instanceof Mob) {
-							((Mob)entity).spawnAnim();
-						}
-
-						spawned = true;
+						this.delay(serverLevel, blockEntityPos);
 					}
-				}
-				this.spawnBuffer.clear(); // Loop iterated, now reset
-
-				if (spawned) {
-					for (ParticleOptions particle : this.particleOptions) {
-						serverLevel.sendParticles(particle, blockEntityPos.getX() + 0.5f, blockEntityPos.getY() + 0.5f, blockEntityPos.getZ() + 0.5f, 10, 1, 1, 1, 0);
-					}
-					this.delay(serverLevel, blockEntityPos);
 				}
 			} else if (this.spawnDelay == 0) {
 				// Spawn buffer is empty, let spawnDelay tick over into resetting delay
@@ -253,33 +254,19 @@ public abstract class SinisterSpawnerLogic extends BaseSpawner {
 	}
 
 	@Override
-	public void load(@Nullable Level level, BlockPos pos, CompoundTag tag) {
-		super.load(level, pos, tag);
+	public void load(@Nullable Level level, BlockPos pos, ValueInput input) {
+		super.load(level, pos, input);
 
 		this.particleOptions.clear();
-		DataResult<List<ParticleOptions>> particleOptions = PARTICLES_CODEC.parse(NbtOps.INSTANCE, tag.get("ParticleOptions"));
-		if (particleOptions.isSuccess()) {
-			this.particleOptions.addAll(particleOptions.getPartialOrThrow());
-		}
-
-		if (tag.contains("EntityScanRange"))
-			this.entityScanRange = tag.getInt("EntityScanRange");
-		else
-			this.entityScanRange = this.spawnRange;
+		this.particleOptions.addAll(input.read("ParticleOptions", PARTICLES_CODEC).orElse(new ArrayList<>()));
+		this.entityScanRange = input.getIntOr("EntityScanRange", this.spawnRange);
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag) {
-		CompoundTag saved = super.save(tag);
-
-		DataResult<Tag> encoded = PARTICLES_CODEC.encodeStart(NbtOps.INSTANCE, List.copyOf(this.particleOptions));
-		if (encoded.isSuccess()) {
-			saved.put("ParticleOptions", encoded.getPartialOrThrow());
-		}
-
-		tag.putInt("EntityScanRange", this.entityScanRange);
-
-		return saved;
+	public void save(ValueOutput output) {
+		super.save(output);
+		output.store("ParticleOptions", PARTICLES_CODEC, List.copyOf(this.particleOptions));
+		output.putInt("EntityScanRange", this.entityScanRange);
 	}
 
 	@Override

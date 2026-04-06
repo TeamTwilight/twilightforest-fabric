@@ -6,19 +6,21 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.FloatTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import twilightforest.init.TFBlockEntities;
 
+import java.util.Optional;
 import java.util.Random;
 
 public class ReactorDebrisBlockEntity extends BlockEntity {
@@ -93,18 +95,14 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 		}
 	}
 
-	@NotNull
-	private static Identifier nonEmptyNotNull(String texturesString) {
-		if (texturesString.isBlank()) {
-			return ReactorDebrisBlockEntity.DEFAULT_TEXTURE;
-		}
-		return MoreObjects.firstNonNull(Identifier.tryParse(texturesString), ReactorDebrisBlockEntity.DEFAULT_TEXTURE);
+	private static Identifier nonEmptyNotNull(Optional<String> texturesString) {
+		return texturesString.map(s -> MoreObjects.firstNonNull(Identifier.tryParse(s), ReactorDebrisBlockEntity.DEFAULT_TEXTURE)).orElse(ReactorDebrisBlockEntity.DEFAULT_TEXTURE);
 	}
 
 	@Override
-	protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-		super.loadAdditional(tag, registries);
-		CompoundTag textures = tag.getCompound("textures");
+	protected void loadAdditional(ValueInput input) {
+		super.loadAdditional(input);
+		ValueInput textures = input.childOrEmpty("textures");
 		this.textures[0] = nonEmptyNotNull(textures.getString("west"));
 		this.textures[1] = nonEmptyNotNull(textures.getString("east"));
 		this.textures[2] = nonEmptyNotNull(textures.getString("bottom"));
@@ -112,44 +110,30 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 		this.textures[4] = nonEmptyNotNull(textures.getString("north"));
 		this.textures[5] = nonEmptyNotNull(textures.getString("south"));
 
-		ListTag posTag = tag.getList("pos", Tag.TAG_FLOAT);
-		if (posTag.size() == 3) {
-			this.minPos = new Vector3f(posTag.getFloat(0), posTag.getFloat(1), posTag.getFloat(2));
-		}
-		if (!new AABB(0, 0, 0, 1, 1, 1).contains(this.minPos.x, this.minPos.y, this.minPos.z)) {
-			this.minPos = new Vector3f();
-		}
+		this.minPos = (Vector3f) input.read("pos", ExtraCodecs.VECTOR3F).orElse(new Vector3f());
+		this.maxPos = input.read("sizes", ExtraCodecs.VECTOR3F).map(size -> ((Vector3f) size).add(this.minPos)).orElse(new Vector3f(1));
 
-		ListTag sizeTag = tag.getList("sizes", Tag.TAG_FLOAT);
-		if (sizeTag.size() == 3) {
-			this.maxPos = new Vector3f(sizeTag.getFloat(0), sizeTag.getFloat(1), sizeTag.getFloat(2)).add(this.minPos);
-		}
-		if (!new AABB(0, 0, 0, 1, 1, 1).contains(this.minPos.x, this.minPos.y, this.minPos.z)) {
-			this.maxPos = new Vector3f(1);
-		}
-
-		this.shape = Shapes.box(this.minPos.x, this.minPos.y, this.minPos.z, this.maxPos.x, this.maxPos.y, this.maxPos.z);
-		this.rerolls = tag.getBoolean("rerolls");
-		this.willDisappear = tag.getBoolean("will_disappear");
-		this.timeAlive = tag.getByte("timeAlive");
+		this.shape = Shapes.box(this.minPos.x(), this.minPos.y(), this.minPos.z(), this.maxPos.x(), this.maxPos.y(), this.maxPos.z());
+		this.rerolls = input.getBooleanOr("rerolls", false);
+		this.willDisappear = input.getBooleanOr("will_disappear", true);
+		this.timeAlive = input.getByteOr("time_alive", (byte) 0);
 	}
 
 	@Override
-	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-		super.saveAdditional(tag, registries);
-		CompoundTag textures = new CompoundTag();
+	protected void saveAdditional(ValueOutput output) {
+		super.saveAdditional(output);
+		ValueOutput textures = output.child("textures");
 		textures.putString("west", this.textures[0].toString());
 		textures.putString("east", this.textures[1].toString());
 		textures.putString("bottom", this.textures[2].toString());
 		textures.putString("top", this.textures[3].toString());
 		textures.putString("north", this.textures[4].toString());
 		textures.putString("south", this.textures[5].toString());
-		tag.put("textures", textures);
-		tag.put("pos", this.newFloatList(this.minPos.x, this.minPos.y, this.minPos.z));
-		tag.put("sizes", this.newFloatList(this.maxPos.x - this.minPos.x, this.maxPos.y - this.minPos.y, this.maxPos.z - this.minPos.z));
-		tag.putBoolean("rerolls", this.rerolls);
-		tag.putBoolean("will_disappear", this.willDisappear);
-		tag.putByte("timeAlive", this.timeAlive);
+		output.store("pos", ExtraCodecs.VECTOR3F, this.minPos);
+		output.store("sizes", ExtraCodecs.VECTOR3F, this.maxPos.sub(this.minPos));
+		output.putBoolean("rerolls", this.rerolls);
+		output.putBoolean("will_disappear", this.willDisappear);
+		output.putByte("time_alive", this.timeAlive);
 	}
 
 	protected ListTag newFloatList(float... values) {

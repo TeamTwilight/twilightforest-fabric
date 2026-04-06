@@ -1,6 +1,7 @@
 package twilightforest;
 
 import com.google.common.reflect.Reflection;
+import com.mojang.logging.LogUtils;
 import net.minecraft.resources.Identifier;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -11,7 +12,8 @@ import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tamaized.beanification.BeanContext;
 import tamaized.beanification.Configurable;
 import twilightforest.compat.CosmeticArmorCompat;
@@ -33,7 +35,7 @@ public final class TwilightForestMod {
 	private static final String GUI_DIR = "textures/gui/";
 	private static final String ENVIRO_DIR = "textures/environment/";
 
-	public static final Logger LOGGER = LogManager.getLogger(ID);
+	public static final Logger LOGGER = LoggerFactory.getLogger(ID);
 
 	static {
 		BeanContext.init(ID);

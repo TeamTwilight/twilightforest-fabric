@@ -18,7 +18,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChiseledBookShelfBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import org.jspecify.annotations.Nullable;
 import twilightforest.block.ChiseledCanopyShelfBlock;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFBlocks;
@@ -67,15 +69,15 @@ public class ChiseledCanopyShelfBlockEntity extends ChiseledBookShelfBlockEntity
 	}
 
 	@Override
-	protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-		super.loadAdditional(tag, provider);
-		this.spawner.load(this.level, this.worldPosition, tag);
+	protected void loadAdditional(ValueInput input) {
+		super.loadAdditional(input);
+		this.spawner.load(this.level, this.worldPosition, input);
 	}
 
 	@Override
-	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-		super.saveAdditional(tag, provider);
-		this.spawner.save(tag);
+	protected void saveAdditional(ValueOutput output) {
+		super.saveAdditional(output);
+		this.spawner.save(output);
 	}
 
 	@Override
@@ -93,11 +95,6 @@ public class ChiseledCanopyShelfBlockEntity extends ChiseledBookShelfBlockEntity
 	@Override
 	public boolean triggerEvent(int id, int type) {
 		return this.spawner.onEventTriggered(this.level, id) || super.triggerEvent(id, type);
-	}
-
-	@Override
-	public boolean onlyOpCanSetNbt() {
-		return true;
 	}
 
 	@Override

@@ -9,7 +9,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.block.BuilderBlock;
 import twilightforest.block.TranslucentBuiltBlock;
 import twilightforest.enums.TowerDeviceVariant;

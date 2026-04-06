@@ -2,6 +2,7 @@ package twilightforest.block.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -11,6 +12,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import twilightforest.block.CandelabraBlock;
 import twilightforest.block.LightableBlock;
 import twilightforest.components.item.CandelabraData;
@@ -57,15 +60,15 @@ public class CandelabraBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-		super.saveAdditional(tag, provider);
-		this.data.save(tag);
+	protected void saveAdditional(ValueOutput output) {
+		super.saveAdditional(output);
+		output.store("Candles", CandelabraData.CODEC, this.data);
 	}
 
 	@Override
-	protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-		super.loadAdditional(tag, provider);
-		this.data = CandelabraData.load(tag);
+	protected void loadAdditional(ValueInput input) {
+		super.loadAdditional(input);
+		this.data = input.read("Candles", CandelabraData.CODEC).orElse(CandelabraData.EMPTY);
 	}
 
 	public void updateState(int index) {
@@ -94,15 +97,15 @@ public class CandelabraBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	protected void applyImplicitComponents(BlockEntity.DataComponentInput componentInput) {
-		super.applyImplicitComponents(componentInput);
-		this.data = componentInput.getOrDefault(TFDataComponents.CANDELABRA_DATA, CandelabraData.EMPTY);
+	protected void applyImplicitComponents(DataComponentGetter components) {
+		super.applyImplicitComponents(components);
+		this.data = components.getOrDefault(TFDataComponents.CANDELABRA_DATA, CandelabraData.EMPTY);
 	}
 
 	@Override
-	public void removeComponentsFromTag(CompoundTag tag) {
-		super.removeComponentsFromTag(tag);
-		tag.remove("Candles");
+	public void removeComponentsFromTag(ValueOutput output) {
+		super.removeComponentsFromTag(output);
+		output.discard("Candles");
 	}
 
 	@Override

@@ -45,18 +45,7 @@ public record CandelabraData(Optional<Block> one, Optional<Block> two, Optional<
 		}
 	}
 
-	public CompoundTag save(CompoundTag tag) {
-		if (!this.equals(EMPTY)) {
-			tag.put("Candles", CODEC.encodeStart(NbtOps.INSTANCE, this).getOrThrow());
-		}
-		return tag;
-	}
-
 	public List<Block> ordered() {
 		return Stream.of(this.one, this.two, this.three).map(block -> block.orElse(Blocks.AIR)).toList();
-	}
-
-	public static CandelabraData load(@Nullable CompoundTag tag) {
-		return tag != null && tag.contains("Candles") ? CODEC.parse(NbtOps.INSTANCE, tag.get("Candles")).result().orElse(EMPTY) : EMPTY;
 	}
 }

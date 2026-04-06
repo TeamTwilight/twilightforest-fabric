@@ -8,10 +8,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Nullable;
-import twilightforest.data.tags.BlockTagGenerator;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFBlocks;
+import twilightforest.tags.TFBlockTags;
 
 public class AntibuilderBlockEntity extends BlockEntity {
 	private static final int REVERT_CHANCE = 10;
@@ -25,7 +25,7 @@ public class AntibuilderBlockEntity extends BlockEntity {
 	private int tickCount;
 	private boolean slowScan;
 	private int ticksSinceChange;
-	private BlockState @Nullable[] blockData;
+	private BlockState @Nullable [] blockData;
 
 	public AntibuilderBlockEntity(BlockPos pos, BlockState state) {
 		super(TFBlockEntities.ANTIBUILDER.get(), pos, state);
@@ -230,7 +230,7 @@ public class AntibuilderBlockEntity extends BlockEntity {
 	}
 
 	private boolean isUnrevertable(BlockState stateThere, BlockState replaceWith) {
-		return stateThere.is(BlockTagGenerator.ANTIBUILDER_IGNORES) || replaceWith.is(BlockTagGenerator.ANTIBUILDER_IGNORES);
+		return stateThere.is(TFBlockTags.ANTIBUILDER_IGNORES) || replaceWith.is(TFBlockTags.ANTIBUILDER_IGNORES);
 	}
 
 	private void captureBlockData(Level level, BlockPos pos) {

@@ -21,17 +21,16 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.apache.commons.lang3.tuple.Pair;
+import org.jspecify.annotations.Nullable;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFParticleType;
 import twilightforest.network.ParticlePacket;
 
-import javax.annotation.Nullable;
-
 public class CloudBlock extends Block {
-	@Nullable
-	protected final Biome.Precipitation precipitation;
 
-	public CloudBlock(@Nullable Biome.Precipitation precipitation, Properties properties) {
+	protected final Biome.@Nullable Precipitation precipitation;
+
+	public CloudBlock(Biome.@Nullable Precipitation precipitation, Properties properties) {
 		super(properties);
 		this.precipitation = precipitation;
 	}
@@ -72,8 +71,7 @@ public class CloudBlock extends Block {
 	 * SNOW: If the cloud always snows.
 	 * Additionally, if the method returns null, the precipitation is instead dynamic, equal to the current weather at the block's position.
 	 */
-	@Nullable
-	public Biome.Precipitation getPrecipitation() {
+	public Biome.@Nullable Precipitation getPrecipitation() {
 		return this.precipitation;
 	}
 

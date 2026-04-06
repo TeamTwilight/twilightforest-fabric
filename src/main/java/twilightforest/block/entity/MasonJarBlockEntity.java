@@ -1,10 +1,9 @@
 package twilightforest.block.entity;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.ReloadableServerRegistries;
@@ -13,8 +12,9 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -22,9 +22,11 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.world.AuxiliaryLightManager;
-import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.network.SetMasonJarItemPacket;
 
@@ -34,7 +36,6 @@ import java.util.Optional;
 import static net.minecraft.world.level.block.entity.DecoratedPotBlockEntity.WobbleStyle;
 
 public class MasonJarBlockEntity extends JarBlockEntity {
-	public static final String TAG_ITEM = "item";
 	public static final String TAG_ANGLE = "rotation";
 
 	protected final MasonJarItemStackHandler item;
@@ -50,17 +51,17 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 	}
 
 	@Override
-	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-		super.saveAdditional(tag, registries);
-		tag.put(TAG_ITEM, this.item.serializeNBT(registries));
-		tag.putInt(TAG_ANGLE, this.itemRotation);
+	protected void saveAdditional(ValueOutput output) {
+		super.saveAdditional(output);
+		this.item.serialize(output);
+		output.putInt(TAG_ANGLE, this.itemRotation);
 	}
 
 	@Override
-	protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-		super.loadAdditional(tag, registries);
-		this.item.deserializeNBT(registries, tag.getCompound(TAG_ITEM));
-		this.itemRotation = tag.getInt(TAG_ANGLE);
+	protected void loadAdditional(ValueInput input) {
+		super.loadAdditional(input);
+		this.item.deserialize(input);
+		this.itemRotation = input.getIntOr(TAG_ANGLE, 0);
 	}
 
 	public boolean fillFromLootTable(ResourceKey<LootTable> lootTableKey, long seed, ServerLevel level) {
@@ -74,9 +75,7 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 		if (lootTable == LootTable.EMPTY) return false;
 
 		LootParams params = new LootParams.Builder(serverLevel).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(this.getBlockPos())).create(LootContextParamSets.CHEST);
-
-		lootTable.getRandomItemsRaw(new LootContext.Builder(params).withOptionalRandomSeed(seed).create(Optional.of(lootTableKey.location())), this::acceptLootTable);
-
+		lootTable.getRandomItems(new LootContext.Builder(params).withOptionalRandomSeed(seed).create(Optional.of(lootTableKey.identifier())), this::acceptLootTable);
 		return true;
 	}
 
@@ -104,15 +103,15 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 	}
 
 	@Override
-	protected void applyImplicitComponents(BlockEntity.DataComponentInput input) {
-		super.applyImplicitComponents(input);
-		this.item.setItem(input.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).copyOne());
+	protected void applyImplicitComponents(DataComponentGetter components) {
+		super.applyImplicitComponents(components);
+		this.item.setItem(components.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).copyOne());
 	}
 
 	@Override
-	public void removeComponentsFromTag(CompoundTag tag) {
-		super.removeComponentsFromTag(tag);
-		tag.remove(TAG_ITEM);
+	public void removeComponentsFromTag(ValueOutput output) {
+		super.removeComponentsFromTag(output);
+		output.discard(ItemStacksResourceHandler.VALUE_IO_KEY);
 	}
 
 	@Override
@@ -128,7 +127,7 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 			this.level.getLightEngine().checkBlock(pos);
 		}
 		if (this.level instanceof ServerLevel serverLevel) {
-			PacketDistributor.sendToPlayersTrackingChunk(serverLevel, new ChunkPos(this.getBlockPos()), new SetMasonJarItemPacket(this.getBlockPos(), this.item.getItem(), this.itemRotation));
+			PacketDistributor.sendToPlayersTrackingChunk(serverLevel, ChunkPos.containing(this.getBlockPos()), new SetMasonJarItemPacket(this.getBlockPos(), this.item.getItem(), this.itemRotation));
 		}
 	}
 
@@ -140,7 +139,7 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 		this.itemRotation = itemRotation;
 	}
 
-	public static class MasonJarItemStackHandler extends ItemStackHandler {
+	public static class MasonJarItemStackHandler extends ItemStacksResourceHandler {
 		protected final MasonJarBlockEntity jarEntity;
 
 		public MasonJarItemStackHandler(MasonJarBlockEntity jarEntity) {
@@ -164,31 +163,28 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 		}
 
 		@Override
-		public boolean isItemValid(int slot, ItemStack stack) {
-			return stack.canFitInsideContainerItems();
+		public boolean isValid(int index, ItemResource resource) {
+			return resource.toStack().canFitInsideContainerItems();
 		}
 
 		@Override
-		public ItemStack extractItem(int slot, int amount, boolean simulate) {
-			if (simulate) return super.extractItem(slot, amount, true);
-			ItemStack extractedStack = super.extractItem(slot, amount, false);
-			if (!extractedStack.isEmpty()) {
+		public int extract(int index, ItemResource resource, int amount, TransactionContext transaction) {
+			int extracted = super.extract(index, resource, amount, transaction);
+			if (extracted > 0) {
 				this.jarEntity.wobble(WobbleStyle.NEGATIVE);
 				this.jarEntity.setChanged();
 			}
-			return extractedStack;
+			return extracted;
 		}
 
 		@Override
-		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-			if (simulate) return super.insertItem(slot, stack, true);
-			ItemStack inserted = stack.copy();
-			ItemStack returned = super.insertItem(slot, stack, false);
-			if (!ItemStack.isSameItemSameComponents(inserted, returned) || inserted.getCount() != returned.getCount()) {
+		public int insert(int index, ItemResource resource, int amount, TransactionContext transaction) {
+			int inserted = super.insert(index, resource, amount, transaction);
+			if (inserted > 0) {
 				this.jarEntity.wobble(WobbleStyle.POSITIVE);
 				this.jarEntity.setChanged();
 			}
-			return returned;
+			return inserted;
 		}
 
 		public boolean isEmpty() {
