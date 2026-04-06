@@ -4,7 +4,7 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.BushBlock;
+import net.minecraft.world.level.block.VegetationBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -19,7 +19,7 @@ public class FiddleheadBlock extends TFPlantBlock {
 	}
 
 	@Override
-	protected MapCodec<? extends BushBlock> codec() {
+	protected MapCodec<? extends VegetationBlock> codec() {
 		return CODEC;
 	}
 

@@ -2,15 +2,15 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.TintedParticleLeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class DarkLeavesBlock extends LeavesBlock {
+public class DarkLeavesBlock extends TintedParticleLeavesBlock {
 
 	public DarkLeavesBlock(Properties properties) {
-		super(properties);
+		super(0.01F, properties);
 	}
 
 	@Override
@@ -19,7 +19,7 @@ public class DarkLeavesBlock extends LeavesBlock {
 	}
 
 	@Override
-	public int getLightBlock(BlockState state, BlockGetter getter, BlockPos pos) {
+	public int getLightDampening(BlockState state) {
 		return 15;
 	}
 }

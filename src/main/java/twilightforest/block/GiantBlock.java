@@ -1,13 +1,14 @@
 package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class GiantBlock extends Block {
 
@@ -24,6 +25,7 @@ public class GiantBlock extends Block {
 		);
 	}
 
+	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		for (BlockPos dPos : getVolume(context.getClickedPos())) {
@@ -44,9 +46,9 @@ public class GiantBlock extends Block {
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		super.onRemove(state, level, pos, newState, isMoving);
-		if (!this.isSelfDestructing && !isVolumeFilled(level, pos)) {
+	protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
+		super.affectNeighborsAfterRemoval(state, level, pos, movedByPiston);
+		if (!this.isSelfDestructing && !this.isVolumeFilled(level, pos)) {
 			this.setGiantBlockToAir(level, pos);
 		}
 	}

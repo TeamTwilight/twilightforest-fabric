@@ -125,7 +125,7 @@ public class CloudEvents {
 										yetToMakeASound = false;
 									}
 
-									if (highestRainyPos.getY() > mc.level.getMinBuildHeight() && highestRainyPos.getY() <= camPos.getY() + 10 && highestRainyPos.getY() >= camPos.getY() - 10) {
+									if (highestRainyPos.getY() > mc.level.getMinY() && highestRainyPos.getY() <= camPos.getY() + 10 && highestRainyPos.getY() >= camPos.getY() - 10) {
 										particlePos = highestRainyPos.below();
 										if (mc.options.particles().get() == ParticleStatus.MINIMAL) break;
 

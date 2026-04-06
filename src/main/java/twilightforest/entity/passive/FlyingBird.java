@@ -99,7 +99,7 @@ public abstract class FlyingBird extends Bird {
 			this.currentFlightTime++;
 
 			// [VanillaCopy] Modified version of last half of Bat.customServerAiStep(). Edits noted
-			if (this.targetPosition != null && (!this.level().isEmptyBlock(this.targetPosition) || this.targetPosition.getY() <= this.level().getMinBuildHeight())) {
+			if (this.targetPosition != null && (!this.level().isEmptyBlock(this.targetPosition) || this.targetPosition.getY() <= this.level().getMinY())) {
 				this.targetPosition = null;
 			}
 

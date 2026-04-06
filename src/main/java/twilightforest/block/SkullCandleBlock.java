@@ -6,9 +6,9 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.util.Util;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
@@ -73,16 +73,16 @@ public class SkullCandleBlock extends AbstractSkullCandleBlock {
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext ctx) {
 		boolean piglin = this.getType() == SkullBlock.Types.PIGLIN;
 		return switch (state.getValue(CANDLES)) {
-			default -> piglin ? PIGLIN_SKULL_WITH_ONE : SKULL_WITH_ONE;
 			case 2 -> piglin ? PIGLIN_SKULL_WITH_TWO : SKULL_WITH_TWO;
 			case 3 -> piglin ? PIGLIN_SKULL_WITH_THREE : SKULL_WITH_THREE;
 			case 4 -> piglin ? PIGLIN_SKULL_WITH_FOUR : SKULL_WITH_FOUR;
+			default -> piglin ? PIGLIN_SKULL_WITH_ONE : SKULL_WITH_ONE;
 		};
 	}
 
 	@Override
 	public Iterable<Vec3> getParticleOffsets(BlockState state, LevelAccessor accessor, BlockPos pos) {
-		return PARTICLE_OFFSETS.get(state.getValue(CANDLES));
+		return PARTICLE_OFFSETS.get(state.getValue(CANDLES).intValue());
 	}
 
 	@Override
@@ -99,7 +99,6 @@ public class SkullCandleBlock extends AbstractSkullCandleBlock {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation") // Fine for override
 	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.setValue(ROTATION, mirror.mirror(state.getValue(ROTATION), 16));
 	}

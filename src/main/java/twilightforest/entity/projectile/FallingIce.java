@@ -130,7 +130,7 @@ public class FallingIce extends Entity {
 				}
 
 				if (!this.onGround() && !flag1) {
-					if (!this.level().isClientSide() && (this.time > 100 && (blockpos.getY() <= this.level().getMinBuildHeight() || blockpos.getY() > this.level().getMaxBuildHeight()) || this.time > 1000)) {
+					if (!this.level().isClientSide() && (this.time > 100 && (blockpos.getY() <= this.level().getMinY() || blockpos.getY() > this.level().getMaxBuildHeight()) || this.time > 1000)) {
 						this.discard();
 					}
 				} else {

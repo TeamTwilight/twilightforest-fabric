@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.function.Supplier;
 
@@ -24,7 +24,7 @@ public class SpecialFlowerPotBlock extends FlowerPotBlock {
 		if (!this.isEmpty()) {
 			level.setBlock(pos, getEmptyPot().defaultBlockState(), Block.UPDATE_ALL);
 			level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
-			return InteractionResult.sidedSuccess(level.isClientSide());
+			return InteractionResult.SUCCESS;
 		} else {
 			return super.useWithoutItem(state, level, pos, player, result);
 		}

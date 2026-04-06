@@ -56,7 +56,7 @@ public class UndergroundPlantFeature extends Feature<BlockStateConfiguration> {
 		int z = origin.getZ();
 		int placed = 0;
 
-		for (int y = origin.getY(); y > world.getMinBuildHeight(); y--) {
+		for (int y = origin.getY(); y > world.getMinY(); y--) {
 			if (placed >= maxCount)
 				break;
 

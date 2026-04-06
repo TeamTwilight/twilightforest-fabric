@@ -2,9 +2,11 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
@@ -33,10 +35,10 @@ public class SpiralBrickBlock extends Block implements SimpleWaterloggedBlock {
 
 	private static Diagonals convertVerticalDirectionToDiagonal(Direction facing) {
 		return switch (facing) {
-			default -> Diagonals.TOP_RIGHT;
 			case SOUTH -> Diagonals.BOTTOM_LEFT;
 			case EAST -> Diagonals.TOP_LEFT;
 			case WEST -> Diagonals.BOTTOM_RIGHT;
+			default -> Diagonals.TOP_RIGHT;
 		};
 	}
 
@@ -71,9 +73,9 @@ public class SpiralBrickBlock extends Block implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor accessor, BlockPos currentPos, BlockPos facingPos) {
-		if (state.getValue(WATERLOGGED)) accessor.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(accessor));
-		return super.updateShape(state, facing, facingState, accessor, currentPos, facingPos);
+	protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction directionToNeighbor, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
+		if (state.getValue(WATERLOGGED)) ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+		return super.updateShape(state, level, ticks, pos, directionToNeighbor, neighborPos, neighborState, random);
 	}
 
 	@Override
@@ -102,7 +104,6 @@ public class SpiralBrickBlock extends Block implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.setValue(DIAGONAL, Diagonals.mirrorOn(state.getValue(AXIS_FACING), state.getValue(DIAGONAL), mirror));
 	}

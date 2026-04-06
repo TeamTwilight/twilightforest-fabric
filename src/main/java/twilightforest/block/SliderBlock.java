@@ -5,11 +5,13 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
@@ -60,12 +62,12 @@ public class SliderBlock extends RotatedPillarBlock implements SimpleWaterlogged
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor accessor, BlockPos currentPos, BlockPos facingPos) {
+	protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction directionToNeighbor, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
 		if (state.getValue(WATERLOGGED)) {
-			accessor.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(accessor));
+			ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 		}
 
-		return super.updateShape(state, facing, facingState, accessor, currentPos, facingPos);
+		return super.updateShape(state, level, ticks, pos, directionToNeighbor, neighborPos, neighborState, random);
 	}
 
 	@Override
@@ -134,13 +136,14 @@ public class SliderBlock extends RotatedPillarBlock implements SimpleWaterlogged
 	}
 
 	@Override
-	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		entity.hurt(TFDamageTypes.getDamageSource(level, TFDamageTypes.SLIDER), BLOCK_DAMAGE);
-		if (entity instanceof LivingEntity living) {
-			double kx = (pos.getX() + 0.5 - entity.getX()) * 2.0;
-			double kz = (pos.getZ() + 0.5 - entity.getZ()) * 2.0;
-
-			living.knockback(2, kx, kz);
+	protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier, boolean isPrecise) {
+		if (level instanceof ServerLevel sl) {
+			entity.hurtServer(sl, TFDamageTypes.getDamageSource(level, TFDamageTypes.SLIDER), BLOCK_DAMAGE);
+			if (entity instanceof LivingEntity living) {
+				double kx = (pos.getX() + 0.5D - entity.getX()) * 2.0D;
+				double kz = (pos.getZ() + 0.5D - entity.getZ()) * 2.0D;
+				living.knockback(2.0D, kx, kz);
+			}
 		}
 	}
 }

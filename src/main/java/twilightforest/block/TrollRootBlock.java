@@ -5,14 +5,15 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -40,6 +41,7 @@ public class TrollRootBlock extends Block {
 		return state.is(BlockTags.BASE_STONE_OVERWORLD) || state.is(TFBlocks.TROLLVIDR) || state.is(TFBlocks.TROLLBER) || state.is(TFBlocks.UNRIPE_TROLLBER);
 	}
 
+	//TODO loot table
 	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult result) {
 		if (state.is(TFBlocks.TROLLBER)) {
@@ -48,7 +50,7 @@ public class TrollRootBlock extends Block {
 			ItemEntity torchberries = new ItemEntity(level, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F, new ItemStack(TFItems.TORCHBERRIES.get()));
 			level.addFreshEntity(torchberries);
 			if (player instanceof ServerPlayer) player.awardStat(TFStats.TORCHBERRIES_HARVESTED.get());
-			return InteractionResult.sidedSuccess(level.isClientSide());
+			return InteractionResult.SUCCESS;
 		}
 		return super.useWithoutItem(state, level, pos, player, result);
 	}
@@ -64,9 +66,9 @@ public class TrollRootBlock extends Block {
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction dirToNeighbor, BlockState neighborState, LevelAccessor accessor, BlockPos pos, BlockPos neighborPos) {
-		if (dirToNeighbor == Direction.UP) {
-			return this.canSurvive(state, accessor, pos) ? state : Blocks.AIR.defaultBlockState();
+	protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction directionToNeighbor, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
+		if (directionToNeighbor == Direction.UP) {
+			return this.canSurvive(state, level, pos) ? state : Blocks.AIR.defaultBlockState();
 		}
 		return state;
 	}

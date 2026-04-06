@@ -10,7 +10,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -18,12 +17,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.pathfinder.PathType;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.block.entity.FireJetBlockEntity;
-import twilightforest.data.tags.BlockTagGenerator;
-import twilightforest.data.tags.FluidTagGenerator;
 import twilightforest.enums.FireJetVariant;
 import twilightforest.init.TFBlockEntities;
+import twilightforest.tags.TFBlockTags;
 
 public class FireJetBlock extends BaseEntityBlock {
 
@@ -41,19 +39,14 @@ public class FireJetBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
-	public RenderShape getRenderShape(BlockState state) {
-		return RenderShape.MODEL;
-	}
-
-	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(STATE);
 	}
 
+	@Nullable
 	@Override
-	public @Nullable  PathType getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob mob) {
-		return state.getValue(STATE) == FireJetVariant.IDLE ? null : PathType.DAMAGE_FIRE;
+	public PathType getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob mob) {
+		return state.getValue(STATE) == FireJetVariant.IDLE ? null : PathType.FIRE;
 	}
 
 	@Override
@@ -88,7 +81,7 @@ public class FireJetBlock extends BaseEntityBlock {
 
 	private boolean isLava(Level level, BlockPos pos) {
 		BlockState state = level.getBlockState(pos);
-		return state.is(BlockTagGenerator.FIRE_JET_FUEL) || state.getFluidState().is(FluidTagGenerator.FIRE_JET_FUEL);
+		return state.is(TFBlockTags.FIRE_JET_FUEL);
 	}
 
 	@Override
@@ -96,6 +89,7 @@ public class FireJetBlock extends BaseEntityBlock {
 		return new FireJetBlockEntity(pos, state);
 	}
 
+	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
 		return createTickerHelper(type, TFBlockEntities.FLAME_JET.get(), FireJetBlockEntity::tick);

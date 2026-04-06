@@ -273,10 +273,10 @@ public final class TFConfiguredFeatures {
 		context.register(MYCELIUM_BLOB, new ConfiguredFeature<>(TFFeatures.MYCELIUM_BLOB.get(), new DiskConfiguration(RuleBasedBlockStateProvider.simple(Blocks.MYCELIUM), BlockPredicate.matchesBlocks(Blocks.GRASS_BLOCK), UniformInt.of(4, 6), 3)));
 		context.register(OUTSIDE_STALAGMITE, new ConfiguredFeature<>(TFFeatures.CAVE_STALACTITE.get(), NoneFeatureConfiguration.NONE));
 		context.register(PLANT_ROOTS, new ConfiguredFeature<>(TFFeatures.UNDERGROUND_PLANTS.get(), new BlockStateConfiguration(TFBlocks.ROOT_STRAND.get().defaultBlockState())));
-		context.register(IRON_OREBERRIES, new ConfiguredFeature<>(TFFeatures.OREBERRY_BUSHES.get(), new BlockStateConfiguration(TFBlocks.IRON_OREBERRY.get().defaultBlockState().setValue(BlockStateProperties.AGE_3, 3))));
-		context.register(GOLD_OREBERRIES, new ConfiguredFeature<>(TFFeatures.OREBERRY_BUSHES.get(), new BlockStateConfiguration(TFBlocks.GOLD_OREBERRY.get().defaultBlockState().setValue(BlockStateProperties.AGE_3, 3))));
-		context.register(COPPER_OREBERRIES, new ConfiguredFeature<>(TFFeatures.OREBERRY_BUSHES.get(), new BlockStateConfiguration(TFBlocks.COPPER_OREBERRY.get().defaultBlockState().setValue(BlockStateProperties.AGE_3, 3))));
-		context.register(ESSENCE_OREBERRIES, new ConfiguredFeature<>(TFFeatures.OREBERRY_BUSHES.get(), new BlockStateConfiguration(TFBlocks.ESSENCE_OREBERRY.get().defaultBlockState().setValue(BlockStateProperties.AGE_3, 3))));
+		context.register(IRON_OREBERRIES, new ConfiguredFeature<>(TFFeatures.OREBERRY_BUSHES.get(), new BlockStateConfiguration(TFBlocks.IRON_OREBERRY_BUSH.get().defaultBlockState().setValue(BlockStateProperties.AGE_3, 3))));
+		context.register(GOLD_OREBERRIES, new ConfiguredFeature<>(TFFeatures.OREBERRY_BUSHES.get(), new BlockStateConfiguration(TFBlocks.GOLD_OREBERRY_BUSH.get().defaultBlockState().setValue(BlockStateProperties.AGE_3, 3))));
+		context.register(COPPER_OREBERRIES, new ConfiguredFeature<>(TFFeatures.OREBERRY_BUSHES.get(), new BlockStateConfiguration(TFBlocks.COPPER_OREBERRY_BUSH.get().defaultBlockState().setValue(BlockStateProperties.AGE_3, 3))));
+		context.register(ESSENCE_OREBERRIES, new ConfiguredFeature<>(TFFeatures.OREBERRY_BUSHES.get(), new BlockStateConfiguration(TFBlocks.ESSENCE_OREBERRY_BUSH.get().defaultBlockState().setValue(BlockStateProperties.AGE_3, 3))));
 		context.register(PUMPKIN_LAMPPOST, new ConfiguredFeature<>(TFFeatures.LAMPPOSTS.get(), new BlockStateConfiguration(Blocks.JACK_O_LANTERN.defaultBlockState())));
 		context.register(RASPBERRY_BUSHES, new ConfiguredFeature<>(TFFeatures.BERRY_BUSH.get(), new BerryBushConfig(TFBlocks.RASPBERRY_BUSH.get().defaultBlockState(), BlockTagGenerator.TF_BERRY_BUSHES_SURVIVE, true)));
 		context.register(BLUEBERRY_BUSHES, new ConfiguredFeature<>(TFFeatures.BERRY_BUSH.get(), new BerryBushConfig(TFBlocks.BLUEBERRY_BUSH.get().defaultBlockState(), BlockTagGenerator.TF_BERRY_BUSHES_SURVIVE, true)));

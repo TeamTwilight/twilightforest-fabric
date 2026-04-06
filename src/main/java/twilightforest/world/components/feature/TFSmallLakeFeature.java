@@ -33,7 +33,7 @@ public class TFSmallLakeFeature extends Feature<TFSmallLakeFeature.Configuration
 		RandomSource randomsource = context.random();
 		TFSmallLakeFeature.Configuration config = context.config();
 
-		if (blockpos.getY() <= worldgenlevel.getMinBuildHeight() + 4) {
+		if (blockpos.getY() <= worldgenlevel.getMinY() + 4) {
 			return false;
 		} else {
 			blockpos = blockpos.below(4);

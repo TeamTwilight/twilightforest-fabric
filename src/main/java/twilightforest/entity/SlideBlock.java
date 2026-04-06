@@ -147,7 +147,7 @@ public class SlideBlock extends Entity {
 					} else {
 						this.spawnAtLocation(new ItemStack(this.myState.getBlock()), 0.0F);
 					}
-				} else if (this.slideTime > 100 && (pos.getY() < this.level().getMinBuildHeight() + 1 || pos.getY() > this.level().getMaxBuildHeight()) || this.slideTime > 600) {
+				} else if (this.slideTime > 100 && (pos.getY() < this.level().getMinY() + 1 || pos.getY() > this.level().getMaxBuildHeight()) || this.slideTime > 600) {
 					this.spawnAtLocation(new ItemStack(this.myState.getBlock()), 0.0F);
 					this.discard();
 				}

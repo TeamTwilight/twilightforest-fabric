@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jspecify.annotations.Nullable;
 import twilightforest.block.entity.spawner.BossSpawnerBlockEntity;
 import twilightforest.enums.BossVariant;
 
@@ -36,7 +37,6 @@ public class BossSpawnerBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public RenderShape getRenderShape(BlockState state) {
 		return RenderShape.MODEL;
 	}
@@ -46,6 +46,7 @@ public class BossSpawnerBlock extends BaseEntityBlock {
 		return this.boss.getType().create(pos, state);
 	}
 
+	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
 		return createTickerHelper(type, this.boss.getType(), BossSpawnerBlockEntity::tick);

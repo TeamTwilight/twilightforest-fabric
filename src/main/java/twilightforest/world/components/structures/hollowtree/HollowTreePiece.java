@@ -79,7 +79,7 @@ public abstract class HollowTreePiece extends StructurePiece {
 
 		if (!pBox.isInside(worldPos)) return;
 
-		while (this.isReplaceableByStructures(pLevel.getBlockState(worldPos)) && worldPos.getY() > pLevel.getMinBuildHeight() + 1) {
+		while (this.isReplaceableByStructures(pLevel.getBlockState(worldPos)) && worldPos.getY() > pLevel.getMinY() + 1) {
 			pLevel.setBlock(worldPos, possibleBlocks.getState(random, worldPos), PLACE_FLAG);
 			worldPos.move(Direction.DOWN);
 		}
@@ -91,7 +91,7 @@ public abstract class HollowTreePiece extends StructurePiece {
 
 		if (!pBox.isInside(worldPos)) return;
 
-		while (this.nonFluidAndReplaceableByStructures(pLevel, worldPos) && worldPos.getY() > pLevel.getMinBuildHeight() + 1) {
+		while (this.nonFluidAndReplaceableByStructures(pLevel, worldPos) && worldPos.getY() > pLevel.getMinY() + 1) {
 			pLevel.setBlock(worldPos, possibleBlocks.getState(random, worldPos).setValue(VineBlock.getPropertyForFace(direction), true), PLACE_FLAG);
 			worldPos.move(Direction.DOWN);
 		}

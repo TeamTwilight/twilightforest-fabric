@@ -3,11 +3,13 @@ package twilightforest.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,7 +21,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock {
 	public static final BooleanProperty DOWN = PipeBlock.DOWN;
@@ -58,8 +60,8 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock {
 	}
 
 	public static boolean cornerConnects(BlockGetter getter, BlockPos pos, Direction dir1, Direction dir2) {
-		Vec3i vec31 = dir1.getNormal();
-		Vec3i vec32 = dir2.getNormal();
+		Vec3i vec31 = dir1.getUnitVec3i();
+		Vec3i vec32 = dir2.getUnitVec3i();
 
 		return fullFaceOrSimilarForceField(getter, pos.offset(vec31), dir1, dir2) ||
 			fullFaceOrSimilarForceField(getter, pos.offset(vec32), dir2, dir1);
@@ -123,7 +125,7 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	public boolean propagatesSkylightDown(BlockState state, BlockGetter getter, BlockPos pos) {
+	public boolean propagatesSkylightDown(BlockState state) {
 		return true;
 	}
 
@@ -168,9 +170,11 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction direction, BlockState facingState, LevelAccessor accessor, BlockPos pos, BlockPos facingPos) {
-		if (state.getValue(WATERLOGGED)) accessor.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(accessor));
-		return this.canConnectTo(state, accessor, pos, direction) ? state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction), true) : state;
+	protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction directionToNeighbor, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
+		if (state.getValue(WATERLOGGED)) {
+			ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+		}
+		return this.canConnectTo(state, level, pos, directionToNeighbor) ? state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(directionToNeighbor), true) : state;
 	}
 
 	@Override

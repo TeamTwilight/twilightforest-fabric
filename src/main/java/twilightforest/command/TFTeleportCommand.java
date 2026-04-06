@@ -42,7 +42,7 @@ public class TFTeleportCommand {
 
 		Vec3 pos = source.getPosition();
 		Level level = player.level();
-		double yConverted = (pos.y - level.getMinBuildHeight()) / (level.getMaxBuildHeight() - level.getMinBuildHeight()) * (twilight.getMaxBuildHeight() - twilight.getMinBuildHeight()) + twilight.getMinBuildHeight();
+		double yConverted = (pos.y - level.getMinY()) / (level.getMaxBuildHeight() - level.getMinY()) * (twilight.getMaxBuildHeight() - twilight.getMinY()) + twilight.getMinY();
 		Vec3 teleportPos = new Vec3(pos.x, yConverted, pos.z);
 		if (!twilight.isInWorldBounds(BlockPos.containing(teleportPos)))
 			throw INVALID_POSITION.create();

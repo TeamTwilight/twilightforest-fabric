@@ -54,7 +54,7 @@ public class StructureTreeGrower extends TreeGrower {
 				level.getRandom(),
 				new BoundingBox(
 					chunkPos.getMinBlockX(),
-					level.getMinBuildHeight(),
+					level.getMinY(),
 					chunkPos.getMinBlockZ(),
 					chunkPos.getMaxBlockX(),
 					level.getMaxBuildHeight(),

@@ -75,7 +75,7 @@ public class TFSkyRenderer {
 		RenderSystem.defaultBlendFunc();
 		stack.popPose();
 		RenderSystem.setShaderColor(0.0F, 0.0F, 0.0F, 1.0F);
-		double d0 = camera.getEntity().getEyePosition(partialTicks).y() - level.getMinBuildHeight(); // TF: Lower Void Horizon Y-Threshold from 63 to actual void location (-32)
+		double d0 = camera.getEntity().getEyePosition(partialTicks).y() - level.getMinY(); // TF: Lower Void Horizon Y-Threshold from 63 to actual void location (-32)
 		if (d0 < 0.0D) {
 			stack.pushPose();
 			stack.translate(0.0F, 12.0F, 0.0F);

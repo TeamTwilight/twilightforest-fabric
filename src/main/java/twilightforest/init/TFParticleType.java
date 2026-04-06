@@ -1,9 +1,12 @@
 package twilightforest.init;
 
 import com.mojang.serialization.MapCodec;
+import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ColorParticleOption;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -11,6 +14,8 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.data.LeafParticleData;
+
+import java.util.function.Function;
 
 public class TFParticleType {
 
@@ -33,36 +38,30 @@ public class TFParticleType {
 	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> FIREFLY = PARTICLE_TYPES.register("firefly", () -> new SimpleParticleType(false));
 	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> WANDERING_FIREFLY = PARTICLE_TYPES.register("wandering_firefly", () -> new SimpleParticleType(false));
 	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> PARTICLE_SPAWNER_FIREFLY = PARTICLE_TYPES.register("particle_spawner_firefly", () -> new SimpleParticleType(false));
-	public static final DeferredHolder<ParticleType<?>, ParticleType<LeafParticleData>> FALLEN_LEAF = PARTICLE_TYPES.register("fallen_leaf", () -> new ParticleType<>(false) {
-		@Override
-		public MapCodec<LeafParticleData> codec() {
-			return LeafParticleData.CODEC;
-		}
-
-		@Override
-		public StreamCodec<? super RegistryFriendlyByteBuf, LeafParticleData> streamCodec() {
-			return LeafParticleData.STREAM_CODEC;
-		}
-	});
+	public static final DeferredHolder<ParticleType<?>, ParticleType<ColorParticleOption>> FALLEN_LEAF = register("fallen_leaf", false, ColorParticleOption::codec, ColorParticleOption::streamCodec);
 	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> DIM_FLAME = PARTICLE_TYPES.register("dim_flame", () -> new SimpleParticleType(false));
 	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> OMINOUS_FLAME = PARTICLE_TYPES.register("ominous_flame", () -> new SimpleParticleType(false));
 	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> SORTING_PARTICLE = PARTICLE_TYPES.register("sorting_particle", () -> new SimpleParticleType(false));
 	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> TRANSFORMATION_PARTICLE = PARTICLE_TYPES.register("transformation_particle", () -> new SimpleParticleType(false));
 	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> LOG_CORE_PARTICLE = PARTICLE_TYPES.register("log_core_particle", () -> new SimpleParticleType(false));
 	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> CLOUD_PUFF = PARTICLE_TYPES.register("cloud_puff", () -> new SimpleParticleType(false));
-	public static final DeferredHolder<ParticleType<?>, ParticleType<ColorParticleOption>> MAGIC_EFFECT = PARTICLE_TYPES.register("magic_effect", () -> new ParticleType<>(false) {
-		@Override
-		public MapCodec<ColorParticleOption> codec() {
-			return ColorParticleOption.codec(MAGIC_EFFECT.get());
-		}
-
-		@Override
-		public StreamCodec<? super RegistryFriendlyByteBuf, ColorParticleOption> streamCodec() {
-			return ColorParticleOption.streamCodec(MAGIC_EFFECT.get());
-		}
-	});
+	public static final DeferredHolder<ParticleType<?>, ParticleType<ColorParticleOption>> MAGIC_EFFECT = register("magic_effect", false, ColorParticleOption::codec, ColorParticleOption::streamCodec);
 	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> ANGRY_LICH = PARTICLE_TYPES.register("angry_lich", () -> new SimpleParticleType(false));
 	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> TWILIGHT_ORB = PARTICLE_TYPES.register("twilight_orb", () -> new SimpleParticleType(false));
 	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> SHIELD_BREAK = PARTICLE_TYPES.register("shield_break", () -> new SimpleParticleType(false));
 	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> DRYING_RACK = PARTICLE_TYPES.register("drying_rack", () -> new SimpleParticleType(false));
+
+	private static <T extends ParticleOptions> DeferredHolder<ParticleType<?>, ParticleType<T>> register(String name, boolean overrideLimiter, Function<ParticleType<T>, MapCodec<T>> codec, Function<ParticleType<T>, StreamCodec<? super RegistryFriendlyByteBuf, T>> streamCodec) {
+		return PARTICLE_TYPES.register(name, () -> new ParticleType<T>(overrideLimiter) {
+			@Override
+			public MapCodec<T> codec() {
+				return codec.apply(this);
+			}
+
+			@Override
+			public StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec() {
+				return streamCodec.apply(this);
+			}
+		});
+	}
 }

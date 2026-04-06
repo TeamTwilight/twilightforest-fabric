@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jspecify.annotations.Nullable;
 import twilightforest.block.entity.GrowingBeanstalkBlockEntity;
 import twilightforest.init.TFBlockEntities;
 
@@ -49,6 +50,7 @@ public class GrowingBeanstalkBlock extends BaseEntityBlock {
 		return new GrowingBeanstalkBlockEntity(pos, state);
 	}
 
+	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
 		return createTickerHelper(type, TFBlockEntities.BEANSTALK_GROWER.get(), GrowingBeanstalkBlockEntity::tick);

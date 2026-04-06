@@ -4,9 +4,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -16,7 +16,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -116,7 +117,7 @@ public class HorizontalHollowLogBlock extends Block implements WaterloggedBlock 
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
-		return super.getStateForPlacement(context).setValue(HORIZONTAL_AXIS, context.getClickedFace().getAxis()).setValue(VARIANT, context.getLevel().getBlockState(context.getClickedPos()).getFluidState().getType() == Fluids.WATER ? HollowLogVariants.Horizontal.WATERLOGGED : HollowLogVariants.Horizontal.EMPTY);
+		return this.defaultBlockState().setValue(HORIZONTAL_AXIS, context.getClickedFace().getAxis()).setValue(VARIANT, context.getLevel().getBlockState(context.getClickedPos()).getFluidState().getType() == Fluids.WATER ? HollowLogVariants.Horizontal.WATERLOGGED : HollowLogVariants.Horizontal.EMPTY);
 	}
 
 	@Override
@@ -125,16 +126,16 @@ public class HorizontalHollowLogBlock extends Block implements WaterloggedBlock 
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState neighborState, LevelAccessor accessor, BlockPos pos, BlockPos neighborPos) {
+	protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction directionToNeighbor, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
 		if (this.isStateWaterlogged(state)) {
-			accessor.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(accessor));
+			ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 		}
 
-		return super.updateShape(state, facing, neighborState, accessor, pos, neighborPos);
+		return super.updateShape(state, level, ticks, pos, directionToNeighbor, neighborPos, neighborState, random);
 	}
 
 	@Override
-	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+	protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		Direction.Axis stateAxis = state.getValue(HORIZONTAL_AXIS);
 		if (!isInside(hit, stateAxis, pos)) return super.useItemOn(stack, state, level, pos, player, hand, hit);
 
@@ -146,7 +147,7 @@ public class HorizontalHollowLogBlock extends Block implements WaterloggedBlock 
 				playPlaceSound(TFBlocks.MOSS_PATCH.get().defaultBlockState(), level, pos, player);
 				stack.consume(1, player);
 
-				return ItemInteractionResult.sidedSuccess(level.isClientSide());
+				return InteractionResult.SUCCESS;
 			}
 		} else if (stack.is(Blocks.SHORT_GRASS.asItem())) {
 			if (variant == HollowLogVariants.Horizontal.MOSS) {
@@ -154,7 +155,7 @@ public class HorizontalHollowLogBlock extends Block implements WaterloggedBlock 
 				playPlaceSound(Blocks.SHORT_GRASS.defaultBlockState(), level, pos, player);
 				stack.consume(1, player);
 
-				return ItemInteractionResult.sidedSuccess(level.isClientSide());
+				return InteractionResult.SUCCESS;
 			}
 		} else if (stack.is(Items.SNOWBALL)) {
 			if (canChangeVariant(variant, level, pos, stateAxis)) {
@@ -162,9 +163,9 @@ public class HorizontalHollowLogBlock extends Block implements WaterloggedBlock 
 				playPlaceSound(Blocks.SNOW.defaultBlockState(), level, pos, player);
 				stack.consume(1, player);
 
-				return ItemInteractionResult.sidedSuccess(level.isClientSide());
+				return InteractionResult.SUCCESS;
 			}
-		} else if (stack.canPerformAction(ItemAbilities.SHOVEL_DIG)) {
+		} else if (stack.canPerformAction(ItemAbilities.SHOVEL_FLATTEN)) {
 			if (variant == HollowLogVariants.Horizontal.SNOW) {
 				level.setBlock(pos, state.setValue(VARIANT, HollowLogVariants.Horizontal.EMPTY), Block.UPDATE_ALL);
 				playBreakSound(Blocks.SNOW.defaultBlockState(), level, pos, player);
@@ -173,7 +174,7 @@ public class HorizontalHollowLogBlock extends Block implements WaterloggedBlock 
 					level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(Items.SNOWBALL)));
 				}
 
-				return ItemInteractionResult.sidedSuccess(level.isClientSide());
+				return InteractionResult.SUCCESS;
 			}
 		} else if (stack.canPerformAction(ItemAbilities.SHEARS_HARVEST)) {
 			if (variant == HollowLogVariants.Horizontal.MOSS || variant == HollowLogVariants.Horizontal.MOSS_AND_GRASS) {
@@ -187,7 +188,7 @@ public class HorizontalHollowLogBlock extends Block implements WaterloggedBlock 
 						level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, new ItemStack(Blocks.SHORT_GRASS)));
 				}
 
-				return ItemInteractionResult.sidedSuccess(level.isClientSide());
+				return InteractionResult.SUCCESS;
 			}
 		}
 

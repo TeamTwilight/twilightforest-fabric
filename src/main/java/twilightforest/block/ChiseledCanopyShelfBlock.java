@@ -1,16 +1,12 @@
 package twilightforest.block;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -19,7 +15,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChiseledBookShelfBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -28,7 +23,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.block.entity.bookshelf.ChiseledCanopyShelfBlockEntity;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFSounds;
@@ -54,7 +49,7 @@ public class ChiseledCanopyShelfBlock extends ChiseledBookShelfBlock {
 	}
 
 	@Override
-	public void onCaughtFire(BlockState state, Level level, BlockPos pos, @Nullable Direction face, @Nullable LivingEntity igniter) {
+	public boolean onCaughtFire(BlockState state, Level level, BlockPos pos, @Nullable Direction face, @Nullable LivingEntity igniter) {
 		if (level.getBlockState(pos).getValue(SPAWNER) && level instanceof ServerLevel serverLevel && level.getBlockEntity(pos) instanceof ChiseledCanopyShelfBlockEntity shelf) {
 			for (int i = 0; i < ChiseledCanopyShelfBlock.SLOT_OCCUPIED_PROPERTIES.size(); i++) {
 				BooleanProperty property = ChiseledCanopyShelfBlock.SLOT_OCCUPIED_PROPERTIES.get(i);
@@ -62,23 +57,23 @@ public class ChiseledCanopyShelfBlock extends ChiseledBookShelfBlock {
 					shelf.getSpawner().attemptSpawnTome(i, serverLevel, pos, true, igniter, 5);
 				}
 			}
-			level.destroyBlock(pos, false);
+			return level.destroyBlock(pos, false);
 		}
-		super.onCaughtFire(state, level, pos, face, igniter);
+		return super.onCaughtFire(state, level, pos, face, igniter);
 	}
 
 	@Override
-	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+	protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		//always allow spawn eggs to be clicked so spawns can be set
 		if (level.getBlockEntity(pos) instanceof ChiseledCanopyShelfBlockEntity shelf && stack.getItem() instanceof SpawnEggItem) {
 			//dont swing our hand if the shelf is empty
 			if (shelf.isEmpty()) {
-				return ItemInteractionResult.CONSUME;
+				return InteractionResult.CONSUME;
 			}
 			level.playSound(null, pos, TFSounds.BOOKSHELF_CONVERTS.get(), SoundSource.BLOCKS, 0.35F, 0.6F + level.getRandom().nextFloat() * 0.4F);
-			return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+			return InteractionResult.SUCCESS;
 		}
-		if (state.getValue(SPAWNER)) return ItemInteractionResult.FAIL;
+		if (state.getValue(SPAWNER)) return InteractionResult.FAIL;
 		return super.useItemOn(stack, state, level, pos, player, hand, result);
 	}
 
@@ -105,17 +100,12 @@ public class ChiseledCanopyShelfBlock extends ChiseledBookShelfBlock {
 		super.playerDestroy(level, player, pos, state, entity, stack);
 	}
 
-	@SuppressWarnings("deprecation")
-	@Override
-	public RenderShape getRenderShape(BlockState state) {
-		return RenderShape.MODEL;
-	}
-
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new ChiseledCanopyShelfBlockEntity(pos, state);
 	}
 
+	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
 		return createTickerHelper(type, TFBlockEntities.CHISELED_CANOPY_BOOKSHELF.get(), ChiseledCanopyShelfBlockEntity::tick);

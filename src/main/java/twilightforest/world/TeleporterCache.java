@@ -7,10 +7,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ColumnPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
-import net.minecraft.world.level.storage.DimensionDataStorage;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -19,7 +20,7 @@ import java.util.Map;
 public class TeleporterCache extends SavedData {
 
 	// destinationCoordinateCache is (src -> dest) [DestWorld, [SrcPos, DestPos]]
-	private final Map<Identifier, Map<ColumnPos, TFTeleporter.PortalPosition>> destinationCoordinateCache = new HashMap<>();
+	private final Map<ResourceKey<Level>, Map<ColumnPos, TFTeleporter.PortalPosition>> destinationCoordinateCache = new HashMap<>();
 
 	private TeleporterCache() {
 		this.setDirty();
@@ -35,7 +36,7 @@ public class TeleporterCache extends SavedData {
 		return new SavedData.Factory<>(TeleporterCache::new, TeleporterCache::load, null);
 	}
 
-	public void addBlockToCache(Identifier dimension, ColumnPos columnPos, TFTeleporter.PortalPosition position) {
+	public void addBlockToCache(ResourceKey<Level> dimension, ColumnPos columnPos, TFTeleporter.PortalPosition position) {
 		this.destinationCoordinateCache.putIfAbsent(dimension, Maps.newHashMapWithExpectedSize(4096));
 		this.destinationCoordinateCache.get(dimension).put(columnPos, position);
 		this.setDirty();

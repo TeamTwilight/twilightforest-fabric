@@ -5,7 +5,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
@@ -16,7 +15,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.init.TFBlocks;
 
-public class ThornRoseBlock extends BushBlock {
+public class ThornRoseBlock extends VegetationBlock {
 
 	public static final MapCodec<ThornRoseBlock> CODEC = simpleCodec(ThornRoseBlock::new);
 	private static final float RADIUS = 0.4F;
@@ -28,7 +27,7 @@ public class ThornRoseBlock extends BushBlock {
 	}
 
 	@Override
-	protected MapCodec<? extends BushBlock> codec() {
+	protected MapCodec<? extends VegetationBlock> codec() {
 		return CODEC;
 	}
 

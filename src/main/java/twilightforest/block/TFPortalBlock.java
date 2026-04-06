@@ -7,15 +7,13 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -32,7 +30,8 @@ import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.portal.DimensionTransition;
+import net.minecraft.world.level.portal.TeleportTransition;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -40,11 +39,11 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.apache.commons.lang3.mutable.MutableInt;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.config.TFConfig;
-import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.*;
 import twilightforest.network.MissingAdvancementToastPacket;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.util.PlayerHelper;
 import twilightforest.util.landmarks.LandmarkUtil;
 import twilightforest.world.TFTeleporter;
@@ -113,11 +112,11 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	}
 
 	private static boolean isNatureBlock(BlockState state) {
-		return state.is(BlockTagGenerator.PORTAL_DECO);
+		return state.is(TFBlockTags.PORTAL_DECO);
 	}
 
 	private static boolean isGrassOrDirt(BlockState state) {
-		return state.is(BlockTagGenerator.PORTAL_EDGE);
+		return state.is(TFBlockTags.PORTAL_EDGE);
 	}
 
 	public static boolean isPlayerNotifiedOfRequirement(ServerPlayer player) {
@@ -166,7 +165,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 					if (!TFTeleporter.isSafeAround(level, pos, catalyst, checkProgression)) {
 						// TODO: "failure" effect - particles?
 						if (player != null) {
-							player.displayClientMessage(Component.translatable("misc.twilightforest.portal_unsafe"), true);
+							player.sendOverlayMessage(Component.translatable("misc.twilightforest.portal_unsafe"));
 						}
 						return false;
 					}
@@ -189,11 +188,11 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	}
 
 	public boolean canFormPortal(BlockState state) {
-		return state.is(BlockTagGenerator.PORTAL_POOL) || state.getBlock() == this && state.getValue(DISALLOW_RETURN);
+		return state.is(TFBlockTags.PORTAL_POOL) || state.getBlock() == this && state.getValue(DISALLOW_RETURN);
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+	protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, @Nullable Orientation orientation, boolean movedByPiston) {
 		boolean good = level.getBlockState(pos.below()).isFaceSturdy(level, pos, Direction.UP);
 
 		for (Direction facing : Direction.Plane.HORIZONTAL) {
@@ -211,18 +210,18 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	}
 
 	@Override
-	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		if (state == this.defaultBlockState()) {
+	protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier, boolean isPrecise) {
+		if (!state.getValue(DISALLOW_RETURN)) {
 			if (entity instanceof ServerPlayer player && !player.isCreative() && !player.isSpectator() && TFConfig.getPortalLockingAdvancement(player) != null) {
 				AdvancementHolder requirement = PlayerHelper.getAdvancement(player, Objects.requireNonNull(TFConfig.getPortalLockingAdvancement(player)));
 
 				if (requirement != null && !PlayerHelper.doesPlayerHaveRequiredAdvancement(player, requirement)) {
-					player.displayClientMessage(PORTAL_UNWORTHY, true);
+					player.sendOverlayMessage(PORTAL_UNWORTHY);
 
 					if (!TFPortalBlock.isPlayerNotifiedOfRequirement(player)) {
 						// .doesPlayerHaveRequiredAdvancement null-checks already, so we can skip null-checking the `requirement`
 						DisplayInfo info = requirement.value().display().orElse(null);
-						PacketDistributor.sendToPlayer(player, info == null ? new MissingAdvancementToastPacket(Component.translatable("twilightforest.ui.advancement.no_title"), new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get())) : new MissingAdvancementToastPacket(info.getTitle(), info.getIcon()));
+						PacketDistributor.sendToPlayer(player, info == null ? new MissingAdvancementToastPacket(Component.translatable("twilightforest.ui.advancement.no_title"), new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get())) : new MissingAdvancementToastPacket(info.getTitle(), info.getIcon().create()));
 						TFPortalBlock.playerNotifiedOfRequirement(player);
 					}
 
@@ -260,7 +259,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	}
 
 	@Override
-	public boolean canPlaceLiquid(@Nullable Player player, BlockGetter getter, BlockPos pos, BlockState state, Fluid fluid) {
+	public boolean canPlaceLiquid(@Nullable LivingEntity user, BlockGetter level, BlockPos pos, BlockState state, Fluid fluid) {
 		return false;
 	}
 
@@ -274,15 +273,15 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 		if (!(entity instanceof Player player))
 			return 0;
 		return player.getAbilities().invulnerable
-			? level.getGameRules().getInt(TFGameRules.RULE_PLAYERS_TF_PORTAL_CREATIVE_DELAY.get())
-			: level.getGameRules().getInt(TFGameRules.RULE_PLAYERS_TF_PORTAL_DEFAULT_DELAY.get());
+			? level.getGameRules().get(TFGameRules.RULE_PLAYERS_TF_PORTAL_CREATIVE_DELAY.get())
+			: level.getGameRules().get(TFGameRules.RULE_PLAYERS_TF_PORTAL_DEFAULT_DELAY.get());
 	}
 
 	@Nullable
 	@Override
-	public DimensionTransition getPortalDestination(ServerLevel level, Entity entity, BlockPos pos) {
+	public TeleportTransition getPortalDestination(ServerLevel level, Entity entity, BlockPos pos) {
 		if (cachedOriginDimension == null) cachedOriginDimension = ResourceKey.create(Registries.DIMENSION, Identifier.parse(TFConfig.originDimension));
-		ResourceKey<Level> newDimension = !level.dimension().location().equals(TFDimension.DIMENSION) ? TFDimension.DIMENSION_KEY : cachedOriginDimension;
+		ResourceKey<Level> newDimension = !level.dimension().identifier().equals(TFDimension.DIMENSION) ? TFDimension.DIMENSION_KEY : cachedOriginDimension;
 		ServerLevel serverlevel = level.getServer().getLevel(newDimension);
 		if (serverlevel == null) {
 			return null;

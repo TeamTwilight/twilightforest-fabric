@@ -7,15 +7,16 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.TintedParticleLeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.function.Predicate;
 
-public class SpecialStemLeavesBlock extends LeavesBlock {
+public class SpecialStemLeavesBlock extends TintedParticleLeavesBlock {
 	protected final Predicate<BlockState> stemPredicate;
 
-	public SpecialStemLeavesBlock(Properties properties, Predicate<BlockState> stemPredicate) {
-		super(properties);
+	public SpecialStemLeavesBlock(Predicate<BlockState> stemPredicate, Properties properties) {
+		super(0.01F, properties);
 		this.stemPredicate = stemPredicate;
 	}
 

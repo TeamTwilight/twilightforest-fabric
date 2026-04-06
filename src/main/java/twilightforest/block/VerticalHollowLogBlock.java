@@ -3,16 +3,16 @@ package twilightforest.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
@@ -46,7 +46,7 @@ public class VerticalHollowLogBlock extends Block implements SimpleWaterloggedBl
 
 	private final Holder<Block> climbable;
 
-	public VerticalHollowLogBlock(Properties properties, Holder<Block> climbable) {
+	public VerticalHollowLogBlock(Holder<Block> climbable, Properties properties) {
 		super(properties);
 		this.climbable = climbable;
 
@@ -75,7 +75,7 @@ public class VerticalHollowLogBlock extends Block implements SimpleWaterloggedBl
 	}
 
 	@Override
-	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+	protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (!isInside(hit, pos)) return super.useItemOn(stack, state, level, pos, player, hand, hit);
 
 		if (stack.is(Blocks.VINE.asItem())) {
@@ -83,14 +83,14 @@ public class VerticalHollowLogBlock extends Block implements SimpleWaterloggedBl
 			HorizontalHollowLogBlock.playPlaceSound(Blocks.VINE.defaultBlockState(), level, pos, player);
 			stack.consume(1, player);
 
-			return ItemInteractionResult.sidedSuccess(level.isClientSide());
+			return InteractionResult.SUCCESS;
 
 		} else if (stack.is(Blocks.LADDER.asItem())) {
 			level.setBlock(pos, this.climbable.value().defaultBlockState().setValue(ClimbableHollowLogBlock.VARIANT, state.getValue(WATERLOGGED) ? HollowLogVariants.Climbable.LADDER_WATERLOGGED : HollowLogVariants.Climbable.LADDER).setValue(ClimbableHollowLogBlock.FACING, directionUtil.horizontalOrElse(hit.getDirection(), player.getDirection().getOpposite())), 3);
 			HorizontalHollowLogBlock.playPlaceSound(Blocks.LADDER.defaultBlockState(), level, pos, player);
 			stack.consume(1, player);
 
-			return ItemInteractionResult.sidedSuccess(level.isClientSide());
+			return InteractionResult.SUCCESS;
 		}
 
 		return super.useItemOn(stack, state, level, pos, player, hand, hit);
@@ -107,11 +107,11 @@ public class VerticalHollowLogBlock extends Block implements SimpleWaterloggedBl
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState neighborState, LevelAccessor accessor, BlockPos pos, BlockPos neighborPos) {
+	protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction directionToNeighbor, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
 		if (state.getValue(WATERLOGGED)) {
-			accessor.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(accessor));
+			ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 		}
 
-		return super.updateShape(state, facing, neighborState, accessor, pos, neighborPos);
+		return super.updateShape(state, level, ticks, pos, directionToNeighbor, neighborPos, neighborState, random);
 	}
 }

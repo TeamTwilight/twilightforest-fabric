@@ -8,10 +8,10 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.Util;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -19,10 +19,11 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jspecify.annotations.Nullable;
 import twilightforest.components.item.SkullCandles;
 import twilightforest.init.TFDataComponents;
 
@@ -31,7 +32,7 @@ import java.util.Map;
 
 public class WallSkullCandleBlock extends AbstractSkullCandleBlock {
 
-	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+	public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
 	public static final MapCodec<WallSkullCandleBlock> CODEC = RecordCodecBuilder.mapCodec(
 		instance -> instance.group(SkullBlock.Type.CODEC.fieldOf("kind").forGetter(AbstractSkullCandleBlock::getType), propertiesCodec())
 			.apply(instance, WallSkullCandleBlock::new)
@@ -76,9 +77,10 @@ public class WallSkullCandleBlock extends AbstractSkullCandleBlock {
 
 	@Override
 	public Iterable<Vec3> getParticleOffsets(BlockState state, LevelAccessor accessor, BlockPos pos) {
-		return PARTICLE_OFFSETS.get(state.getValue(CANDLES));
+		return PARTICLE_OFFSETS.get(state.getValue(CANDLES).intValue());
 	}
 
+	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
 		BlockState state = this.defaultBlockState();

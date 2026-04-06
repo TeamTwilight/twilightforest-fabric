@@ -5,7 +5,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.MultifaceBlock;
-import net.minecraft.world.level.block.MultifaceSpreader;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.block.entity.RedThreadBlockEntity;
@@ -27,11 +26,6 @@ public class RedThreadBlock extends MultifaceBlock implements EntityBlock {
 	@Override
 	public boolean canBeReplaced(BlockState state, BlockPlaceContext ctx) {
 		return ctx.getItemInHand().is(TFBlocks.RED_THREAD.asItem());
-	}
-
-	@Override
-	public MultifaceSpreader getSpreader() {
-		return new MultifaceSpreader(this);
 	}
 
 	@Override

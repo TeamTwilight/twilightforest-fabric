@@ -5,11 +5,11 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootTable;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 
 public class DarkTowerBerryBushBlock extends BerryBushBlock {
 
@@ -25,16 +25,16 @@ public class DarkTowerBerryBushBlock extends BerryBushBlock {
 	}
 
 	@Override
-	protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
-		if (this.shouldDie(level, currentPos))
-			level.scheduleTick(currentPos, this, 1);
+	protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction directionToNeighbor, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
+		if (this.shouldDie(level, pos))
+			ticks.scheduleTick(pos, this, 1);
 
-		return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+		return super.updateShape(state, level, ticks, pos, directionToNeighbor, neighborPos, neighborState, random);
 	}
 
 	@Override
 	public boolean canBePlacedAt(BlockState state) {
-		return state.is(BlockTagGenerator.DARK_TOWER_BERRY_BUSHES_SURVIVE);
+		return state.is(TFBlockTags.DARK_TOWER_BERRY_BUSHES_SURVIVE);
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class DarkTowerBerryBushBlock extends BerryBushBlock {
 		return super.canGrowAt(state, level, pos) && state.getValue(SNOW_LAYERS) == 0;
 	}
 
-	protected boolean shouldDie(LevelAccessor level, BlockPos pos) {
-		return level.getBlockState(pos.below()).is(BlockTagGenerator.DARK_TOWER_BERRY_BUSHES_DIE);
+	protected boolean shouldDie(LevelReader level, BlockPos pos) {
+		return level.getBlockState(pos.below()).is(TFBlockTags.DARK_TOWER_BERRY_BUSHES_DIE);
 	}
 }

@@ -4,9 +4,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.Spider;
+import net.minecraft.world.entity.monster.spider.Spider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -22,7 +23,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.util.entities.EntityUtil;
 
 import java.util.List;
@@ -42,29 +43,30 @@ public class HedgeBlock extends Block {
 		return HEDGE_BB;
 	}
 
+	@Nullable
 	@Override
-	public @Nullable PathType getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob mob) {
-		return mob != null && this.shouldDamage(mob) ? PathType.DANGER_OTHER : null;
+	public PathType getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob mob) {
+		return mob != null && this.shouldDamage(mob) ? PathType.DAMAGING : null;
 	}
 
 	@Override
-	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		if (this.shouldDamage(entity)) {
-			entity.hurt(level.damageSources().cactus(), DAMAGE);
+	protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier, boolean isPrecise) {
+		if (this.shouldDamage(entity) && level instanceof ServerLevel sl) {
+			entity.hurtServer(sl, level.damageSources().cactus(), DAMAGE);
 		}
 	}
 
 	@Override
 	public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
-		if (this.shouldDamage(entity)) {
-			entity.hurt(level.damageSources().cactus(), DAMAGE);
+		if (this.shouldDamage(entity) && level instanceof ServerLevel sl) {
+			entity.hurtServer(sl, level.damageSources().cactus(), DAMAGE);
 		}
 	}
 
 	@Override
 	public void attack(BlockState state, Level level, BlockPos pos, Player player) {
-		if (!level.isClientSide()) {
-			player.hurt(level.damageSources().cactus(), DAMAGE);
+		if (level instanceof ServerLevel sl) {
+			player.hurtServer(sl, level.damageSources().cactus(), DAMAGE);
 			level.scheduleTick(pos, this, 10);
 		}
 	}
@@ -72,7 +74,9 @@ public class HedgeBlock extends Block {
 	@Override
 	public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity te, ItemStack stack) {
 		super.playerDestroy(level, player, pos, state, te, stack);
-		player.hurt(level.damageSources().cactus(), DAMAGE);
+		if (level instanceof ServerLevel sl) {
+			player.hurtServer(sl, level.damageSources().cactus(), DAMAGE);
+		}
 	}
 
 	@Override
@@ -87,7 +91,7 @@ public class HedgeBlock extends Block {
 				// are they pointing at this block?
 				if (ray.getType() == HitResult.Type.BLOCK && pos.equals(ray.getBlockPos())) {
 					// prick them! prick them hard!
-					player.hurt(level.damageSources().cactus(), DAMAGE);
+					player.hurtServer(level, level.damageSources().cactus(), DAMAGE);
 
 					// trigger this again!
 					level.scheduleTick(pos, this, 10);
@@ -96,6 +100,7 @@ public class HedgeBlock extends Block {
 		}
 	}
 
+	//TODO tag
 	private boolean shouldDamage(Entity entity) {
 		return !(entity instanceof Spider || entity instanceof ItemEntity || entity.isIgnoringBlockTriggers() || entity.getVehicle() != null && !this.shouldDamage(entity.getVehicle()));
 	}

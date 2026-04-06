@@ -1,23 +1,21 @@
 package twilightforest.block;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
@@ -34,11 +32,9 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.common.ItemAbilities;
-import org.jetbrains.annotations.Nullable;
-import twilightforest.data.tags.BlockTagGenerator;
+import org.jspecify.annotations.Nullable;
 import twilightforest.enums.BanisterShape;
-
-import java.util.List;
+import twilightforest.tags.TFBlockTags;
 
 public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
 
@@ -133,7 +129,7 @@ public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleW
 
 		return this.defaultBlockState()
 			.setValue(FACING, context.getHorizontalDirection())
-			.setValue(SHAPE, context.getLevel().getBlockState(pos.above()).is(BlockTagGenerator.BANISTERS) ? BanisterShape.CONNECTED : BanisterShape.TALL)
+			.setValue(SHAPE, context.getLevel().getBlockState(pos.above()).is(TFBlockTags.BANISTERS) ? BanisterShape.CONNECTED : BanisterShape.TALL)
 			.setValue(WATERLOGGED, context.getLevel().getFluidState(pos).getType() == Fluids.WATER);
 	}
 
@@ -193,13 +189,15 @@ public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleW
 		};
 	}
 
-	@Override
-	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-		tooltip.add(Component.translatable("block.twilightforest.banister.cycle").withStyle(ChatFormatting.GRAY));
-	}
+	//TODO can no longer be done via block, move to item
+//	@Override
+//	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+//		tooltip.add(Component.translatable("block.twilightforest.banister.cycle").withStyle(ChatFormatting.GRAY));
+//	}
 
+	@Nullable
 	@Override
-	public @Nullable PathType getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob) {
+	public PathType getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob) {
 		return PathType.FENCE;
 	}
 
@@ -214,7 +212,7 @@ public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleW
 	}
 
 	@Override
-	protected ItemInteractionResult useItemOn(ItemStack held, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+	protected InteractionResult useItemOn(ItemStack held, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		if (held.canPerformAction(ItemAbilities.AXE_WAX_OFF)) {
 			BlockState newState = state.cycle(SHAPE);
 			BlockState belowState = level.getBlockState(pos.below());
@@ -229,18 +227,18 @@ public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleW
 			}
 
 
-			return ItemInteractionResult.SUCCESS;
+			return InteractionResult.SUCCESS;
 		}
 
 		return super.useItemOn(held, state, level, pos, player, hand, result);
 	}
 
 	@Override
-	protected BlockState updateShape(BlockState thisState, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos thisPos, BlockPos neighborPos) {
+	protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction directionToNeighbor, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
 		// If a non-short banister gets placed below this banister, while it is extended, un-extend
-		if (direction == Direction.DOWN && neighborState.getBlock() instanceof BanisterBlock && neighborState.getValue(SHAPE) != BanisterShape.SHORT && thisState.getValue(EXTENDED)) {
-			return thisState.setValue(EXTENDED, false);
+		if (directionToNeighbor == Direction.DOWN && neighborState.getBlock() instanceof BanisterBlock && neighborState.getValue(SHAPE) != BanisterShape.SHORT && state.getValue(EXTENDED)) {
+			return state.setValue(EXTENDED, false);
 		}
-		return super.updateShape(thisState, direction, neighborState, level, thisPos, neighborPos);
+		return super.updateShape(state, level, ticks, pos, directionToNeighbor, neighborPos, neighborState, random);
 	}
 }

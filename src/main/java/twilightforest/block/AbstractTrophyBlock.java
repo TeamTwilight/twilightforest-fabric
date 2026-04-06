@@ -7,10 +7,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Equipable;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -23,8 +20,10 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.jspecify.annotations.Nullable;
 import twilightforest.block.entity.TrophyBlockEntity;
 import twilightforest.enums.BossVariant;
 import twilightforest.init.TFBlockEntities;
@@ -34,7 +33,7 @@ import twilightforest.init.TFSounds;
 import twilightforest.network.ParticlePacket;
 
 //[VanillaCopy] of AbstractSkullBlock except uses Variants instead of ISkullType and adds Sounds when clicked or powered
-public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equipable {
+public abstract class AbstractTrophyBlock extends BaseEntityBlock {
 
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	private final BossVariant variant;
@@ -52,7 +51,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equ
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+	protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, @Nullable Orientation orientation, boolean movedByPiston) {
 		if (!level.isClientSide()) {
 			boolean flag = level.hasNeighborSignal(pos);
 			if (flag != state.getValue(POWERED)) {
@@ -68,7 +67,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equ
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
 		this.playSound(level, pos);
 		this.createParticle(level, pos);
-		return InteractionResult.sidedSuccess(level.isClientSide());
+		return InteractionResult.SUCCESS;
 	}
 
 	@Override
@@ -76,6 +75,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equ
 		return new TrophyBlockEntity(pos, state);
 	}
 
+	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
 		return createTickerHelper(type, TFBlockEntities.TROPHY.get(), TrophyBlockEntity::tick);
@@ -182,7 +182,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equ
 					}
 					break;
 				case KNIGHT_PHANTOM:
-					ParticleOptions knightPhantomParticle = new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(TFItems.KNIGHTMETAL_SWORD.get()));
+					ParticleOptions knightPhantomParticle = new ItemParticleOption(ParticleTypes.ITEM, TFItems.KNIGHTMETAL_SWORD.get());
 					for (int brek = 0; brek < 10; brek++) {
 						particlePacket.queueParticle(knightPhantomParticle, false,
 							pos.getX() + 0.5D + (rand.nextFloat() - 0.5D),
@@ -233,10 +233,5 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equ
 
 			PacketDistributor.sendToPlayersNear(server, null, pos.getX(), pos.getY(), pos.getZ(), 32.0F, particlePacket);
 		}
-	}
-
-	@Override
-	public EquipmentSlot getEquipmentSlot() {
-		return EquipmentSlot.HEAD;
 	}
 }

@@ -45,7 +45,6 @@ public class StrongholdShieldBlock extends DirectionalBlock {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public float getDestroyProgress(BlockState state, Player player, BlockGetter getter, BlockPos pos) {
 		BlockHitResult ray = EntityUtil.rayTrace(player, range -> range + 1.0);
 
@@ -55,7 +54,7 @@ public class StrongholdShieldBlock extends DirectionalBlock {
 		Direction upFace = state.getValue(DirectionalBlock.FACING);
 
 		if (hitFace == (upOrDown ? upFace : sideFace)) {
-			return player.getDigSpeed(Blocks.STONE.defaultBlockState(), pos) / 1.5F / 100F;
+			return player.getDestroySpeed(Blocks.STONE.defaultBlockState(), pos) / 1.5F / 100F;
 		} else {
 			return super.getDestroyProgress(state, player, getter, pos);
 		}

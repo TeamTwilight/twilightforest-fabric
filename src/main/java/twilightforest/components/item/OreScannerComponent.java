@@ -76,7 +76,7 @@ public class OreScannerComponent {
 	}
 
 	public OreScannerComponent tickScan(BlockGetter reader) {
-		BlockPos originPos = this.origin.atY(reader.getMinBuildHeight());
+		BlockPos originPos = this.origin.atY(reader.getMinY());
 		int volume = this.area * reader.getMaxBuildHeight();
 		int march = Mth.ceil((float) volume / Mth.abs(this.scanDurationTicks));
 		int totalProgress = this.ticksProgressed * march;

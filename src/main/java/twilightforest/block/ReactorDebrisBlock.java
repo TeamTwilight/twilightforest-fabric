@@ -15,18 +15,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.block.entity.ReactorDebrisBlockEntity;
 import twilightforest.init.TFBlockEntities;
 
 public class ReactorDebrisBlock extends BaseEntityBlock {
 
-	public VoxelShape SHAPE;
 	public static final MapCodec<ReactorDebrisBlock> CODEC = simpleCodec(ReactorDebrisBlock::new);
 
 	public ReactorDebrisBlock(Properties properties) {
 		super(properties);
-		SHAPE = Shapes.empty();
 	}
 
 	@Override
@@ -48,7 +46,7 @@ public class ReactorDebrisBlock extends BaseEntityBlock {
 
 	@Override
 	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moving) {
-		if(!level.isClientSide() && level.getBlockEntity(pos) instanceof ReactorDebrisBlockEntity blockEntity) {  //  blockEntity should always be
+		if(!level.isClientSide() && level.getBlockEntity(pos) instanceof ReactorDebrisBlockEntity blockEntity) {  //  blockEntity should always exist
 			blockEntity.randomizeDimensions();
 			blockEntity.randomizeTextures();
 		}

@@ -7,9 +7,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
@@ -22,7 +20,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.ItemAbilities;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFParticleType;
 
 import java.util.Locale;
@@ -33,16 +31,16 @@ public interface LightableBlock {
 
 	EnumProperty<Lighting> LIGHTING = EnumProperty.create("lighting", Lighting.class);
 
-	default ItemInteractionResult tryLightCandles(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player) {
+	default InteractionResult tryLightCandles(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player) {
 		if (stack.isEmpty() && player.getAbilities().mayBuild && state.getValue(LIGHTING) != Lighting.NONE) {
 			this.extinguish(player, state, level, pos);
-			return ItemInteractionResult.sidedSuccess(level.isClientSide());
+			return InteractionResult.SUCCESS;
 		} else if (this.canBeLit(state)) {
 			if (stack.canPerformAction(ItemAbilities.FIRESTARTER_LIGHT)) {
-				return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+				return InteractionResult.SUCCESS;
 			}
 		}
-		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+		return InteractionResult.TRY_WITH_EMPTY_HAND;
 	}
 
 	default void lightCandlesWithProjectile(Level level, BlockState state, BlockHitResult result, Projectile projectile) {
@@ -72,9 +70,9 @@ public interface LightableBlock {
 		}
 
 		ParticleOptions particle = switch (lighting) {
-			default -> ParticleTypes.SMALL_FLAME;
 			case DIM -> TFParticleType.DIM_FLAME.get();
 			case OMINOUS -> TFParticleType.OMINOUS_FLAME.get();
+			default -> ParticleTypes.SMALL_FLAME;
 		};
 
 		level.addParticle(particle, x, y, z, 0.0D, 0.0D, 0.0D);

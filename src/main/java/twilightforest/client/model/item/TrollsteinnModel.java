@@ -30,7 +30,7 @@ public class TrollsteinnModel extends BakedModelWrapper<BakedModel> {
 				return super.resolve(TrollsteinnModel.this.originalModel, stack, level, entity, seed);
 			}
 
-			int brightness = level.getMaxLocalRawBrightness(itemEntity.blockPosition(), TrollsteinnBlock.calculateServerSkyDarken(level));
+			int brightness = level.getMaxLocalRawBrightness(itemEntity.blockPosition(), level.getSkyDarken());
 			if (brightness > TrollsteinnBlock.LIGHT_THRESHOLD) {
 				return super.resolve(TrollsteinnModel.this.litTrollsteinnModel, stack, level, entity, seed);
 			} else {

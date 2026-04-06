@@ -1,18 +1,14 @@
 package twilightforest.block;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -27,7 +23,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import java.util.List;
 import java.util.Locale;
 
 public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlock {
@@ -83,10 +78,11 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
 		return finalShape;
 	}
 
-	@Override
-	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-		tooltip.add(Component.translatable("block.twilightforest.wrought_iron_fence.cap").withStyle(ChatFormatting.GRAY));
-	}
+	//TODO can no longer be done via block, move to item
+//	@Override
+//	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+//		tooltip.add(Component.translatable("block.twilightforest.wrought_iron_fence.cap").withStyle(ChatFormatting.GRAY));
+//	}
 
 	@Override
 	protected boolean isPathfindable(BlockState state, PathComputationType computationType) {
@@ -118,11 +114,11 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction direction, BlockState neighbor, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+	protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction directionToNeighbor, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
 		if (state.getValue(WATERLOGGED)) {
-			level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+			ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 		}
-		return direction.getAxis() == Direction.Axis.Y ? this.updateTop(level, state, pos) : this.updateSide(level, pos, state, neighborPos, neighbor, direction);
+		return directionToNeighbor.getAxis() == Direction.Axis.Y ? this.updateTop(level, state, pos) : this.updateSide(level, pos, state, neighborPos, neighborState, directionToNeighbor);
 	}
 
 	private BlockState updateSide(LevelReader level, BlockPos pos, BlockState firstState, BlockPos secondPos, BlockState secondState, Direction direction) {
@@ -217,8 +213,8 @@ public class WroughtIronFenceBlock extends Block implements SimpleWaterloggedBlo
 	}
 
 	@Override
-	public boolean propagatesSkylightDown(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
-		return !pState.getValue(WATERLOGGED);
+	public boolean propagatesSkylightDown(BlockState state) {
+		return !state.getValue(WATERLOGGED);
 	}
 
 	@Override

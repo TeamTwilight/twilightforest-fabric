@@ -132,7 +132,7 @@ public class TFWeatherRenderer {
 
 					Optional<Restriction> restriction = Restriction.getRestrictionForBiome(biome, player);
 					if (restriction.isPresent()) {
-						int groundY = level.getMinBuildHeight();
+						int groundY = level.getMinY();
 						int minY = py - range;
 						int maxY = py + range;
 
@@ -445,7 +445,7 @@ public class TFWeatherRenderer {
 				int l = randomsource.nextInt(21) - 10;
 				BlockPos blockpos2 = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, blockpos.offset(k, 0, l));
 				Biome biome = level.getBiome(blockpos2).value();
-				if (blockpos2.getY() > level.getMinBuildHeight() && blockpos2.getY() <= blockpos.getY() + 10 && blockpos2.getY() >= blockpos.getY() - 10 && biome.hasPrecipitation() && biome.warmEnoughToRain(blockpos2)) {
+				if (blockpos2.getY() > level.getMinY() && blockpos2.getY() <= blockpos.getY() + 10 && blockpos2.getY() >= blockpos.getY() - 10 && biome.hasPrecipitation() && biome.warmEnoughToRain(blockpos2)) {
 					blockpos1 = blockpos2.below();
 					if (Minecraft.getInstance().options.particles().get() == ParticleStatus.MINIMAL) {
 						break;

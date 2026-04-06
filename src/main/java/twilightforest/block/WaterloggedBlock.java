@@ -2,7 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -27,7 +27,7 @@ public interface WaterloggedBlock extends BucketPickup, LiquidBlockContainer {
 	BlockState setWaterlog(BlockState prior, boolean doWater);
 
 	@Override
-	default boolean canPlaceLiquid(@Nullable Player player, BlockGetter getter, BlockPos pos, BlockState state, Fluid fluid) {
+	default boolean canPlaceLiquid(@Nullable LivingEntity user, BlockGetter level, BlockPos pos, BlockState state, Fluid fluid) {
 		return !this.isStateWaterlogged(state) && fluid == Fluids.WATER;
 	}
 
@@ -46,7 +46,7 @@ public interface WaterloggedBlock extends BucketPickup, LiquidBlockContainer {
 	}
 
 	@Override
-	default ItemStack pickupBlock(@Nullable Player player, LevelAccessor accessor, BlockPos pos, BlockState state) {
+	default ItemStack pickupBlock(@Nullable LivingEntity user, LevelAccessor accessor, BlockPos pos, BlockState state) {
 		if (this.isStateWaterlogged(state)) {
 			accessor.setBlock(pos, this.setWaterlog(state, false), Block.UPDATE_ALL);
 			if (!state.canSurvive(accessor, pos)) {

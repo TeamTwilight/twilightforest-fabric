@@ -2,6 +2,7 @@ package twilightforest.client;
 
 import com.google.common.collect.MapMaker;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
@@ -53,13 +54,14 @@ public final class FoliageColorHandler {
 		return handler.apply(o, x, z);
 	}
 
-	@FunctionalInterface
-	private interface Handler {
-
-		Handler DEFAULT = (o, x, z) -> o;
-
-		int apply(int o, double x, double z);
+	public static int getTintColorAtPosition(BlockPos pos) {
 
 	}
 
+	@FunctionalInterface
+	private interface Handler {
+		Handler DEFAULT = (o, x, z) -> o;
+
+		int apply(int o, double x, double z);
+	}
 }

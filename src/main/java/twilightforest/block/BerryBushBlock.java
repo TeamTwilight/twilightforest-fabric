@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.neoforged.neoforge.common.ItemAbilities;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 
 import java.util.stream.IntStream;
 
@@ -41,7 +41,7 @@ public class BerryBushBlock extends TFBushBlock implements BonemealableBlock {
 
 	@Override
 	public boolean canBePlacedAt(BlockState state) {
-		return state.is(BlockTagGenerator.TF_BERRY_BUSHES_SURVIVE);
+		return state.is(TFBlockTags.TF_BERRY_BUSHES_SURVIVE);
 	}
 
 	protected void tryGrowUpwards(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {

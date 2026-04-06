@@ -10,14 +10,15 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.AABB;
+import org.jspecify.annotations.Nullable;
 import twilightforest.block.entity.GhastTrapBlockEntity;
 import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFBlockEntities;
@@ -41,18 +42,12 @@ public class GhastTrapBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
-	public RenderShape getRenderShape(BlockState state) {
-		return RenderShape.MODEL;
-	}
-
-	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(ACTIVE);
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+	protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, @Nullable Orientation orientation, boolean movedByPiston) {
 		if (level.isClientSide()) {
 			return;
 		}
@@ -69,7 +64,6 @@ public class GhastTrapBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int event, int id) {
 		BlockEntity te = level.getBlockEntity(pos);
 		return te != null && te.triggerEvent(event, id);
@@ -88,7 +82,7 @@ public class GhastTrapBlock extends BaseEntityBlock {
 
 		for (Direction direction : Direction.values()) {
 			BlockPos blockpos = pos.relative(direction);
-			if (!level.getBlockState(blockpos).isSolidRender(level, blockpos)) {
+			if (!level.getBlockState(blockpos).isSolidRender()) {
 				Direction.Axis axis = direction.getAxis();
 				double d1 = axis == Direction.Axis.X ? 0.5 + 0.5625 * (double) direction.getStepX() : (double) random.nextFloat();
 				double d2 = axis == Direction.Axis.Y ? 0.5 + 0.5625 * (double) direction.getStepY() : (double) random.nextFloat();
@@ -103,6 +97,7 @@ public class GhastTrapBlock extends BaseEntityBlock {
 		return new GhastTrapBlockEntity(pos, state);
 	}
 
+	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
 		return createTickerHelper(type, TFBlockEntities.GHAST_TRAP.get(), GhastTrapBlockEntity::tick);

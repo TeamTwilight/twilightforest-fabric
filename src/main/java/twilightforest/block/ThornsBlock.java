@@ -2,14 +2,19 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.PipeBlock;
@@ -24,10 +29,10 @@ import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
-import twilightforest.data.tags.ItemTagGenerator;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDamageTypes;
+import twilightforest.tags.TFItemTags;
 
 public class ThornsBlock extends ConnectableRotatedPillarBlock implements SimpleWaterloggedBlock {
 
@@ -74,38 +79,38 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 		return shape;
 	}
 
+	@Nullable
 	@Override
-	public @Nullable PathType getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob entity) {
-		return PathType.DAMAGE_OTHER;
+	public PathType getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob entity) {
+		return PathType.DAMAGING;
 	}
 
 	@Override
-	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		if (!(entity instanceof ItemEntity item) || !item.getItem().is(ItemTagGenerator.IMMUNE_TO_THORNS)) {
-			entity.hurt(TFDamageTypes.getDamageSource(level, TFDamageTypes.THORNS), THORN_DAMAGE);
+	protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier, boolean isPrecise) {
+		if ((!(entity instanceof ItemEntity item) || !item.getItem().is(TFItemTags.IMMUNE_TO_THORNS)) && level instanceof ServerLevel sl) {
+			entity.hurtServer(sl, TFDamageTypes.getDamageSource(level, TFDamageTypes.THORNS), THORN_DAMAGE);
 		}
 	}
 
 	@Override
 	public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
-
 		if (state.getBlock() instanceof ThornsBlock && state.getValue(AXIS) == Direction.Axis.Y) {
-			entityInside(state, level, pos, entity);
+			this.entityInside(state, level, pos, entity, InsideBlockEffectApplier.NOOP, true);
 		}
 
 		super.stepOn(level, pos, state, entity);
 	}
 
 	@Override
-	public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
-		if (!player.getAbilities().instabuild) {
+	public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, ItemStack toolStack, boolean willHarvest, FluidState fluid) {
+		if (!player.isCreative()) {
 			if (!level.isClientSide()) {
 				// grow more
 				this.doThornBurst(level, pos, state);
 			}
 			return false;
 		} else {
-			return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
+			return super.onDestroyedByPlayer(state, level, pos, player, toolStack, willHarvest, fluid);
 		}
 	}
 
@@ -172,11 +177,11 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor accessor, BlockPos currentPos, BlockPos facingPos) {
-		if (state.getValue(WATERLOGGED)) accessor.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(accessor));
-		if (facingState.is(Blocks.AIR)) return state;
+	protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction directionToNeighbor, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
+		if (state.getValue(WATERLOGGED)) ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+		if (neighborState.is(Blocks.AIR)) return state;
 
-		return super.updateShape(state, facing, facingState, accessor, currentPos, facingPos);
+		return super.updateShape(state, level, ticks, pos, directionToNeighbor, neighborPos, neighborState, random);
 	}
 
 	@Override

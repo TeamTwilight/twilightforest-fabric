@@ -3,6 +3,7 @@ package twilightforest.block;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -11,14 +12,16 @@ import net.minecraft.stats.Stats;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.Consumable;
+import net.minecraft.world.item.component.Consumables;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -31,7 +34,6 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFStats;
 
@@ -53,26 +55,26 @@ public class Experiment115Block extends Block {
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		return switch (state.getValue(BITES_TAKEN)) {
-			default -> FULL_SHAPE;
 			case 2, 3 -> THREE_QUARTER_SHAPE;
 			case 4, 5 -> HALF_SHAPE;
 			case 6, 7 -> QUARTER_SHAPE;
+			default -> FULL_SHAPE;
 		};
 	}
 
 	@Override
-	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+	protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		int bitesTaken = state.getValue(BITES_TAKEN);
 
 		if (!player.isSecondaryUseActive()) {
 			if (stack.is(TFItems.EXPERIMENT_115.get())) {
-				if (bitesTaken == 0) return ItemInteractionResult.FAIL;
+				if (bitesTaken == 0) return InteractionResult.FAIL;
 				level.setBlockAndUpdate(pos, state.setValue(BITES_TAKEN, bitesTaken - 1));
 				level.playSound(null, pos, state.getSoundType(level, pos, player).getPlaceSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
 				stack.consume(1, player);
 				if (player instanceof ServerPlayer)
 					CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer) player, pos, stack);
-				return ItemInteractionResult.sidedSuccess(level.isClientSide());
+				return InteractionResult.SUCCESS;
 			} else if (!state.getValue(REGENERATE) && bitesTaken == 0 && stack.is(Items.REDSTONE)) {
 				level.setBlockAndUpdate(pos, state.setValue(REGENERATE, true));
 				level.playSound(null, pos, state.getSoundType(level, pos, player).getPlaceSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -80,7 +82,7 @@ public class Experiment115Block extends Block {
 				if (player instanceof ServerPlayer) {
 					player.awardStat(Stats.ITEM_USED.get(Items.REDSTONE));
 				}
-				return ItemInteractionResult.sidedSuccess(level.isClientSide());
+				return InteractionResult.SUCCESS;
 			}
 		} else {
 			if (!state.getValue(REGENERATE)) {
@@ -90,21 +92,25 @@ public class Experiment115Block extends Block {
 					level.removeBlock(pos, false);
 				}
 				player.playSound(SoundEvents.ITEM_PICKUP, 0.5F, 1.0F);
-				if (!player.isCreative())
-					ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFItems.EXPERIMENT_115.get()));
-				return ItemInteractionResult.sidedSuccess(level.isClientSide());
+				if (!player.isCreative()) {
+					if (player.getInventory().add(new ItemStack(TFItems.EXPERIMENT_115.get()))) {
+						player.drop(new ItemStack(TFItems.EXPERIMENT_115.get()), false);
+					}
+				}
+				return InteractionResult.SUCCESS;
 			}
 		}
-		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+		return InteractionResult.PASS;
 	}
 
 	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-		if (!player.canEat(false)) return InteractionResult.PASS;
-		else {
-			player.awardStat(TFStats.E115_SLICES_EATEN.get());
-			player.getFoodData().eat(4, 0.3F);
-			level.playSound(null, pos, SoundEvents.GENERIC_EAT, SoundSource.PLAYERS, 0.5F, level.random.nextFloat() * 0.1F + 0.9F);
+		ItemStack experStack = new ItemStack(TFItems.EXPERIMENT_115.get());
+		FoodProperties props = experStack.get(DataComponents.FOOD);
+		Consumable consumable = experStack.getOrDefault(DataComponents.CONSUMABLE, Consumables.DEFAULT_FOOD);
+		if (props != null && consumable.canConsume(player, experStack.copy())) {
+			props.onConsume(level, player, experStack.copy(), consumable);
+			consumable.onConsume(level, player, experStack.copy());
 			int i = state.getValue(BITES_TAKEN);
 
 			if (i < 7) {
@@ -114,12 +120,15 @@ public class Experiment115Block extends Block {
 			}
 
 			if (player instanceof ServerPlayer) {
-				CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer) player, new ItemStack(TFItems.EXPERIMENT_115.get(), 8 - i));
-				player.awardStat(Stats.ITEM_USED.get(TFItems.EXPERIMENT_115.get()));
+				CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer) player, experStack);
+				player.awardStat(Stats.ITEM_USED.get(experStack.getItem()));
+				player.awardStat(TFStats.E115_SLICES_EATEN.get());
+
 			}
 
-			return InteractionResult.sidedSuccess(level.isClientSide());
+			return InteractionResult.SUCCESS;
 		}
+		return InteractionResult.PASS;
 	}
 
 	@Override
@@ -136,8 +145,8 @@ public class Experiment115Block extends Block {
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
-		return facing == Direction.DOWN && !state.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+	protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction directionToNeighbor, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
+		return directionToNeighbor == Direction.DOWN && !state.canSurvive(level, pos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, level, ticks, pos, directionToNeighbor, neighborPos, neighborState, random);
 	}
 
 	@Override
@@ -146,25 +155,21 @@ public class Experiment115Block extends Block {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation") // Fine to override
-	public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+	public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos, Direction direction) {
 		return (8 - state.getValue(BITES_TAKEN)) + (state.getValue(REGENERATE) ? 7 : 0);
 	}
 
 	@Override
-	@SuppressWarnings("deprecation") // Fine to override
 	public boolean hasAnalogOutputSignal(BlockState state) {
 		return true;
 	}
 
 	@Override
-	@SuppressWarnings("deprecation") // Fine to override
 	public boolean isSignalSource(BlockState state) {
 		return state.getValue(REGENERATE);
 	}
 
 	@Override
-	@SuppressWarnings("deprecation") // Fine to override
 	public int getSignal(BlockState state, BlockGetter blockAccess, BlockPos pos, Direction side) {
 		return state.getValue(REGENERATE) ? 15 - (state.getValue(BITES_TAKEN) * 2) : 0;
 	}

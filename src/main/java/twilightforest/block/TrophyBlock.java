@@ -7,7 +7,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
@@ -48,9 +47,9 @@ public class TrophyBlock extends AbstractTrophyBlock {
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
-		if (((AbstractTrophyBlock) state.getBlock()).getVariant() == BossVariant.UR_GHAST) {
+		if (this.getVariant() == BossVariant.UR_GHAST) {
 			return GHAST_SHAPE;
-		} else if (((AbstractTrophyBlock) state.getBlock()).getVariant() == BossVariant.ALPHA_YETI) {
+		} else if (this.getVariant() == BossVariant.ALPHA_YETI) {
 			return switch (state.getValue(ROTATION)) {
 				case 3, 4, 5, 11, 12, 13 -> YETI_Z_SHAPE;
 				case 2, 6, 10, 14 -> YETI_CORNER_SHAPE;
@@ -61,7 +60,7 @@ public class TrophyBlock extends AbstractTrophyBlock {
 	}
 
 	@Override
-	public VoxelShape getOcclusionShape(BlockState state, BlockGetter getter, BlockPos pos) {
+	public VoxelShape getOcclusionShape(BlockState state) {
 		return Shapes.empty();
 	}
 
@@ -76,7 +75,6 @@ public class TrophyBlock extends AbstractTrophyBlock {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.setValue(ROTATION, mirror.mirror(state.getValue(ROTATION), 16));
 	}

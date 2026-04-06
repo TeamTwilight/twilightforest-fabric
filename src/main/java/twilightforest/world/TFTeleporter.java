@@ -19,19 +19,19 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import net.minecraft.world.level.portal.DimensionTransition;
+import net.minecraft.world.level.portal.TeleportTransition;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.config.TFConfig;
-import twilightforest.data.tags.BlockTagGenerator;
-import twilightforest.data.tags.StructureTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDimension;
+import twilightforest.tags.TFBlockTags;
+import twilightforest.tags.TFStructureTags;
 import twilightforest.util.iterators.DiagonalSpiralIterator;
 import twilightforest.util.iterators.XZQuadrantIterator;
 import twilightforest.util.landmarks.LandmarkUtil;
@@ -45,9 +45,9 @@ public class TFTeleporter {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
-	public static DimensionTransition createTransition(Entity entity, ServerLevel dest, BlockPos pos, boolean forcedEntry) {
+	public static TeleportTransition createTransition(Entity entity, ServerLevel dest, BlockPos pos, boolean forcedEntry) {
 		TeleporterCache cache = TeleporterCache.get(dest);
-		DimensionTransition transition = placeInExistingPortal(cache, dest, entity, pos);
+		TeleportTransition transition = placeInExistingPortal(cache, dest, entity, pos);
 
 		if (transition == null) {
 			LOGGER.debug("Did not find existing portal, making a new one.");
@@ -57,23 +57,23 @@ public class TFTeleporter {
 		if (transition != null)
 			return transition;
 
-		return new DimensionTransition(dest, Vec3.atCenterOf(dest.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos)), Vec3.ZERO, entity.getYRot(), entity.getXRot(), DimensionTransition.PLACE_PORTAL_TICKET);
+		return new TeleportTransition(dest, Vec3.atCenterOf(dest.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos)), Vec3.ZERO, entity.getYRot(), entity.getXRot(), TeleportTransition.PLACE_PORTAL_TICKET);
 	}
 
 	@Nullable
-	protected static DimensionTransition createPosition(ServerLevel dest, Entity entity, BlockPos destPos, TeleporterCache cache, boolean locked) {
+	protected static TeleportTransition createPosition(ServerLevel dest, Entity entity, BlockPos destPos, TeleporterCache cache, boolean locked) {
 		Vec3 safePos = moveToSafeCoords(dest, entity, destPos);
 		BlockPos portalPos = makePortal(cache, entity, dest, safePos, locked);
 		return placeInExistingPortal(cache, dest, entity, portalPos);
 	}
 
 	@Nullable
-	protected static DimensionTransition placeInExistingPortal(TeleporterCache cache, ServerLevel destDim, Entity entity, BlockPos pos) {
+	protected static TeleportTransition placeInExistingPortal(TeleporterCache cache, ServerLevel destDim, Entity entity, BlockPos pos) {
 		boolean flag = true;
 		BlockPos blockpos;
 		ColumnPos columnPos = new ColumnPos(entity.blockPosition().getX(), entity.blockPosition().getZ()); // Must be the position from the src dim
 
-		PortalPosition portalPosition = cache.getPortalPosition(destDim.dimension().location(), columnPos);
+		PortalPosition portalPosition = cache.getPortalPosition(destDim.dimension().identifier(), columnPos);
 		if (portalPosition != null) {
 			blockpos = portalPosition.pos;
 			portalPosition.lastUpdateTime = destDim.getGameTime();
@@ -84,7 +84,7 @@ public class TFTeleporter {
 				// Portal was broken, we need to recreate it.
 				LOGGER.debug("Portal Invalid, recreating.");
 				blockpos = null;
-				cache.removeInvalidPos(destDim.dimension().location(), columnPos);
+				cache.removeInvalidPos(destDim.dimension().identifier(), columnPos);
 			}
 		} else {
 			blockpos = getPortalPosition(destDim, pos);
@@ -102,11 +102,10 @@ public class TFTeleporter {
 				portalBlocks.forEach((blockPos, b) -> {
 					if (b) {
 						LOGGER.debug("Caching {}", blockPos);
-						cache.addBlockToCache(destDim.dimension().location(), new ColumnPos(blockPos.getX(), blockPos.getZ()), new PortalPosition(finalBlockpos, destDim.getGameTime()));
+						cache.addBlockToCache(destDim.dimension(), new ColumnPos(blockPos.getX(), blockPos.getZ()), new PortalPosition(finalBlockpos, destDim.getGameTime()));
 					}
 				});
-				// the last param is just an object for tracking, don't worry about it using columnPos instead of blockpos
-				destDim.getChunkSource().addRegionTicket(TicketType.PORTAL, new ChunkPos(blockpos), 3, new BlockPos(columnPos.x(), blockpos.getY(), columnPos.z()));
+				destDim.getChunkSource().addTicketWithRadius(TicketType.PORTAL, ChunkPos.containing(blockpos), 3);
 			}
 
 			// replace with our own placement logic
@@ -142,15 +141,15 @@ public class TFTeleporter {
 					continue;
 				}
 
-				ChunkPos chunkPos = new ChunkPos(pos.offset(i1, 0, j1));
-				LevelChunk chunk = destDim.getChunkSource().getChunkNow(chunkPos.x, chunkPos.z);
+				ChunkPos chunkPos = ChunkPos.containing(pos.offset(i1, 0, j1));
+				LevelChunk chunk = destDim.getChunkSource().getChunkNow(chunkPos.x(), chunkPos.z());
 
 				// skip chunks that aren't generated
 				if (chunk == null || chunk.getFullStatus() == FullChunkStatus.INACCESSIBLE) {
 					continue;
 				}
 
-				for (BlockPos blockpos1 = pos.offset(i1, getScanHeight(destDim, pos) - pos.getY(), j1); blockpos1.getY() >= destDim.getMinBuildHeight(); blockpos1 = blockpos2) {
+				for (BlockPos blockpos1 = pos.offset(i1, getScanHeight(destDim, pos) - pos.getY(), j1); blockpos1.getY() >= destDim.getMinY(); blockpos1 = blockpos2) {
 					blockpos2 = blockpos1.below();
 
 					// don't lookup state if inner condition would fail
@@ -183,7 +182,7 @@ public class TFTeleporter {
 	}
 
 	private static int getScanHeight(ServerLevel world, int x, int z) {
-		int worldHeight = world.getMaxBuildHeight() - 1;
+		int worldHeight = world.getMaxY() - 1;
 		//FIXME find an alternative to getHighestSectionPosition, its marked for removal
 		@SuppressWarnings("removal")
 		int chunkHeight = world.getChunk(x >> 4, z >> 4).getHighestSectionPosition() + 15;
@@ -309,8 +308,8 @@ public class TFTeleporter {
 	}
 
 	public static boolean posOverlapsRestrictedStructureChunk(Level destLevel, BlockPos pos) {
-		Iterator<Holder<Structure>> landmarksInChunk = destLevel.registryAccess().registry(Registries.STRUCTURE)
-			.flatMap(r -> r.getTag(StructureTagGenerator.LANDMARK))
+		Iterator<Holder<Structure>> landmarksInChunk = destLevel.registryAccess().lookup(Registries.STRUCTURE)
+			.flatMap(r -> r.get(TFStructureTags.LANDMARK))
 			.map(HolderSet.ListBacked::iterator)
 			.orElse(Collections.emptyIterator());
 
@@ -416,7 +415,7 @@ public class TFTeleporter {
 			for (int rz = entityZ - range; rz <= entityZ + range; rz++) {
 				double zWeight = (rz + 0.5D) - loc.z();
 
-				for (int ry = getScanHeight(world, rx, rz); ry >= world.getMinBuildHeight(); ry--) {
+				for (int ry = getScanHeight(world, rx, rz); ry >= world.getMinY(); ry--) {
 
 
 					pos.set(rx, ry, rz);
@@ -425,12 +424,12 @@ public class TFTeleporter {
 					}
 
 					if (makePortalInAir) {
-						while (ry > world.getMinBuildHeight() && world.isEmptyBlock(pos.set(rx, ry - 1, rz)) && predicate.test(pos)) {
+						while (ry > world.getMinY() && world.isEmptyBlock(pos.set(rx, ry - 1, rz)) && predicate.test(pos)) {
 							ry--;
 						}
 						pos.set(rx, ry, rz);
 					} else {
-						while (ry > world.getMinBuildHeight() && world.isEmptyBlock(pos.set(rx, ry - 1, rz))) {
+						while (ry > world.getMinY() && world.isEmptyBlock(pos.set(rx, ry - 1, rz))) {
 							ry--;
 						}
 					}
@@ -453,7 +452,7 @@ public class TFTeleporter {
 	}
 
 	protected static double getYFactor(ServerLevel world) {
-		return world.dimension().location().equals(Level.OVERWORLD.location()) ? 2.0 : 0.5;
+		return world.dimension().equals(Level.OVERWORLD) ? 2.0 : 0.5;
 	}
 
 	private static void cacheNewPortalCoords(TeleporterCache cache, @Nullable ServerLevel srcDim, BlockPos pos, BlockPos srcPos) {
@@ -464,10 +463,10 @@ public class TFTeleporter {
 		if (exitPos == null)
 			return;
 		LOGGER.debug("Caching Dest Portal Blocks to {}", exitPos);
-		cache.addBlockToCache(srcDim.dimension().location(), new ColumnPos(pos.getX(), pos.getZ()), new TFTeleporter.PortalPosition(exitPos, srcDim.getGameTime()));
-		cache.addBlockToCache(srcDim.dimension().location(), new ColumnPos(pos.south().getX(), pos.south().getZ()), new TFTeleporter.PortalPosition(exitPos, srcDim.getGameTime()));
-		cache.addBlockToCache(srcDim.dimension().location(), new ColumnPos(pos.east().getX(), pos.east().getZ()), new TFTeleporter.PortalPosition(exitPos, srcDim.getGameTime()));
-		cache.addBlockToCache(srcDim.dimension().location(), new ColumnPos(pos.south().east().getX(), pos.south().east().getZ()), new TFTeleporter.PortalPosition(exitPos, srcDim.getGameTime()));
+		cache.addBlockToCache(srcDim.dimension(), new ColumnPos(pos.getX(), pos.getZ()), new TFTeleporter.PortalPosition(exitPos, srcDim.getGameTime()));
+		cache.addBlockToCache(srcDim.dimension(), new ColumnPos(pos.south().getX(), pos.south().getZ()), new TFTeleporter.PortalPosition(exitPos, srcDim.getGameTime()));
+		cache.addBlockToCache(srcDim.dimension(), new ColumnPos(pos.east().getX(), pos.east().getZ()), new TFTeleporter.PortalPosition(exitPos, srcDim.getGameTime()));
+		cache.addBlockToCache(srcDim.dimension(), new ColumnPos(pos.south().east().getX(), pos.south().east().getZ()), new TFTeleporter.PortalPosition(exitPos, srcDim.getGameTime()));
 	}
 
 	protected static boolean isIdealForPortal(ServerLevel world, BlockPos pos) {
@@ -560,7 +559,7 @@ public class TFTeleporter {
 
 	private static BlockState randNatureBlock(RandomSource random) {
 		Optional<Block> optional = BuiltInRegistries.BLOCK
-			.getTag(BlockTagGenerator.GENERATED_PORTAL_DECO)
+			.get(TFBlockTags.GENERATED_PORTAL_DECO)
 			.flatMap(tag -> tag.getRandomElement(random))
 			.map(Holder::value);
 		return optional.map(Block::defaultBlockState).orElseGet(Blocks.SHORT_GRASS::defaultBlockState);
@@ -615,8 +614,8 @@ public class TFTeleporter {
 		return pos.with(Direction.Axis.Y, height);
 	}
 
-	protected static DimensionTransition makeTransition(ServerLevel level, Entity entity, Vec3 pos) {
-		return new DimensionTransition(level, pos, Vec3.ZERO, entity.getYRot(), entity.getXRot(), DimensionTransition.PLACE_PORTAL_TICKET);
+	protected static TeleportTransition makeTransition(ServerLevel level, Entity entity, Vec3 pos) {
+		return new TeleportTransition(level, pos, Vec3.ZERO, entity.getYRot(), entity.getXRot(), TeleportTransition.PLACE_PORTAL_TICKET);
 	}
 
 	static class PortalPosition {

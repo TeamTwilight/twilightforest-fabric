@@ -1,12 +1,10 @@
 package twilightforest.block;
 
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -14,7 +12,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import org.joml.Vector3f;
 
 import java.util.Map;
 
@@ -43,16 +40,6 @@ public class TrollsteinnBlock extends Block {
 			.setValue(WEST_LIT, false).setValue(EAST_LIT, false));
 	}
 
-	/**
-	 * Computation from vanilla function updateSkyBrightness in Level.java
-	 */
-	public static int calculateServerSkyDarken(Level level) {
-		double rainEffect = 1.0 - (double) (level.getRainLevel(1.0F) * 5.0F) / 16.0;
-		double thunderEffect = 1.0 - (double) (level.getThunderLevel(1.0F) * 5.0F) / 16.0;
-		double dayCycleEffect = 0.5 + 2.0 * Mth.clamp(Mth.cos(level.getTimeOfDay(1.0F) * (float) (Math.PI * 2)), -0.25, 0.25);
-		return (int) ((1.0 - dayCycleEffect * rainEffect * thunderEffect) * 11.0);
-	}
-
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(DOWN_LIT, UP_LIT, NORTH_LIT, SOUTH_LIT, WEST_LIT, EAST_LIT);
@@ -67,17 +54,15 @@ public class TrollsteinnBlock extends Block {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public boolean hasAnalogOutputSignal(BlockState state) {
 		return true;
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
-	public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+	public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos, Direction direction) {
 		int peak = 0;
-		for (Direction direction : Direction.values())
-			peak = Math.max(level.getMaxLocalRawBrightness(pos.relative(direction)), peak);
+		for (Direction dir : Direction.values())
+			peak = Math.max(level.getMaxLocalRawBrightness(pos.relative(dir)), peak);
 		return peak;
 	}
 
@@ -87,8 +72,7 @@ public class TrollsteinnBlock extends Block {
 		for (Map.Entry<Direction, BooleanProperty> e : PROPERTY_MAP.entrySet()) {
 			Level level = ctx.getLevel();
 			BlockPos pos = ctx.getClickedPos();
-			int light = level.getMaxLocalRawBrightness(pos.relative(e.getKey()),
-				level.isClientSide() ? calculateServerSkyDarken(level) : level.getSkyDarken());
+			int light = level.getMaxLocalRawBrightness(pos.relative(e.getKey()), level.getSkyDarken());
 			ret = ret.setValue(e.getValue(), light > LIGHT_THRESHOLD);
 		}
 		return ret;
@@ -99,7 +83,7 @@ public class TrollsteinnBlock extends Block {
 		if (rand.nextBoolean()) this.sparkle(level, pos);
 	}
 
-	DustParticleOptions PURPL = new DustParticleOptions(new Vector3f(0.25F, 0.0F, 0.5F), 1.0F);
+	DustParticleOptions PURPL = new DustParticleOptions(-12582784, 1.0F);
 
 	// [VanillaCopy] Based on RedstoneOreBlock.spawnParticles
 	private void sparkle(Level level, BlockPos pos) {
@@ -107,7 +91,7 @@ public class TrollsteinnBlock extends Block {
 
 		for (Direction direction : Direction.values()) {
 			BlockPos blockpos = pos.relative(direction);
-			if (!level.getBlockState(blockpos).isSolidRender(level, blockpos) && level.getMaxLocalRawBrightness(pos.relative(direction)) <= LIGHT_THRESHOLD) {
+			if (!level.getBlockState(blockpos).isSolidRender() && level.getMaxLocalRawBrightness(pos.relative(direction)) <= LIGHT_THRESHOLD) {
 				Direction.Axis direction$axis = direction.getAxis();
 				double d1 = direction$axis == Direction.Axis.X ? 0.5 + 0.5625 * (double) direction.getStepX() : (double) random.nextFloat();
 				double d2 = direction$axis == Direction.Axis.Y ? 0.5 + 0.5625 * (double) direction.getStepY() : (double) random.nextFloat();

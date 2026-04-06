@@ -29,7 +29,6 @@ public class DirectionalRotatedPillarBlock extends RotatedPillarBlock {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public BlockState mirror(BlockState state, Mirror mirror) {
 		if (mirror != Mirror.NONE) {
 			Direction.Axis axis = state.getValue(AXIS);

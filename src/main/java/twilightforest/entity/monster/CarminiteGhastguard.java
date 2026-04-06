@@ -174,7 +174,7 @@ public class CarminiteGhastguard extends Ghast implements EnforcedHomePoint {
 		if (!this.isRestrictionPointValid(entity.level().dimension())) return true;
 		// TF - restrict valid y levels
 		// Towers are so large, a simple radius doesn't really work, so we make it more of a cylinder
-		return entity.blockPosition().getY() > this.level().getMinBuildHeight() + 64 &&
+		return entity.blockPosition().getY() > this.level().getMinY() + 64 &&
 			entity.blockPosition().getY() < this.level().getMaxBuildHeight() - 64 &&
 			this.getRestrictionPoint().pos().distSqr(entity.blockPosition()) < (double) (this.getHomeRadius() * this.getHomeRadius());
 

@@ -6,13 +6,17 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.*;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -27,13 +31,13 @@ public class CloudBlock extends Block {
 	@Nullable
 	protected final Biome.Precipitation precipitation;
 
-	public CloudBlock(Properties properties, @Nullable Biome.Precipitation precipitation) {
+	public CloudBlock(@Nullable Biome.Precipitation precipitation, Properties properties) {
 		super(properties);
 		this.precipitation = precipitation;
 	}
 
 	public static boolean shouldSnow(LevelReader level, BlockPos pos) {
-		if (pos.getY() >= level.getMinBuildHeight() && pos.getY() < level.getMaxBuildHeight() && level.getBrightness(LightLayer.BLOCK, pos) < 10) {
+		if (pos.getY() >= level.getMinY() && pos.getY() < level.getMaxY() && level.getBrightness(LightLayer.BLOCK, pos) < 10) {
 			BlockState blockstate = level.getBlockState(pos);
 			return (blockstate.isAir() || blockstate.is(Blocks.SNOW)) && Blocks.SNOW.defaultBlockState().canSurvive(level, pos);
 		}
@@ -57,13 +61,8 @@ public class CloudBlock extends Block {
 	}
 
 	@Override
-	public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
+	public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, double fallDistance) {
 		entity.causeFallDamage(fallDistance, 0.1F, level.damageSources().fall());
-	}
-
-	@Override
-	public int getLightBlock(BlockState state, BlockGetter level, BlockPos pos) {
-		return 1;
 	}
 
 	/**
@@ -85,7 +84,7 @@ public class CloudBlock extends Block {
 	 */
 	public Pair<Biome.Precipitation, Float> getCurrentPrecipitation(BlockPos pos, Level level, float rainLevel) {
 		if (this.getPrecipitation() == null) {
-			if (rainLevel > 0.0F) return Pair.of(level.getBiome(pos).value().getPrecipitationAt(pos), rainLevel);
+			if (rainLevel > 0.0F) return Pair.of(level.getBiome(pos).value().getPrecipitationAt(pos, level.getSeaLevel()), rainLevel);
 			else return Pair.of(Biome.Precipitation.NONE, 0.0F);
 		} else return Pair.of(this.getPrecipitation(), 1.0F);
 	}
@@ -106,9 +105,9 @@ public class CloudBlock extends Block {
 					if (!Heightmap.Types.MOTION_BLOCKING.isOpaque().test(level.getBlockState(pos.atY(y)))) highestRainyBlock = y - 1;
 					else break;
 				}
-				if (highestRainyBlock > level.getMinBuildHeight()) {
+				if (highestRainyBlock > level.getMinY()) {
 					if (precipitation == Biome.Precipitation.SNOW) {
-						int snowHeight = level.getGameRules().getInt(GameRules.RULE_SNOW_ACCUMULATION_HEIGHT);
+						int snowHeight = level.getGameRules().get(GameRules.MAX_SNOW_ACCUMULATION_HEIGHT);
 						BlockPos snowOnPos = pos.atY(highestRainyBlock + 1); // We check the position above our last block
 						if (snowHeight > 0 && CloudBlock.shouldSnow(level, snowOnPos)) {
 							BlockState snowOnState = level.getBlockState(snowOnPos);
@@ -154,7 +153,7 @@ public class CloudBlock extends Block {
 			particlePacket.queueParticle(TFParticleType.CLOUD_PUFF.get(), false, x, y, z, xSpeed, ySpeed, zSpeed);
 		}
 
-		PacketDistributor.sendToPlayersTrackingChunk(level, new ChunkPos(pos), particlePacket);
+		PacketDistributor.sendToPlayersTrackingChunk(level, ChunkPos.containing(pos), particlePacket);
 
 		return true;
 	}

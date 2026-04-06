@@ -1,10 +1,8 @@
 package twilightforest.block;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.Mirror;
@@ -42,7 +40,6 @@ public class EtchedNagastoneBlock extends DirectionalBlock {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.setValue(FACING, mirror.mirror(state.getValue(FACING)));
 	}

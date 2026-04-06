@@ -2,7 +2,9 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.BlockGetter;
@@ -15,24 +17,24 @@ import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
-import twilightforest.data.tags.BlockTagGenerator;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFDamageTypes;
+import twilightforest.tags.TFBlockTags;
 
-public class OreBerryBlock extends TFBushBlock {
+public class OreBerryBushBlock extends TFBushBlock {
 	protected static VoxelShape ENTITY_COLLISION_SHAPE = Block.box(0.001D, 0.0D, 0.001D, 15.999D, 15.999D, 15.999D);
 	protected boolean surviveInLight;
-	public OreBerryBlock(boolean surviveInLight, ResourceKey<LootTable> berryTable, Properties properties) {
+
+	public OreBerryBushBlock(boolean surviveInLight, ResourceKey<LootTable> berryTable, Properties properties) {
 		super(berryTable, properties);
 		this.surviveInLight = surviveInLight;
 	}
 
 	@Override
-	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		if (!(entity instanceof ItemEntity)) {
-			entity.hurt(TFDamageTypes.getDamageSource(level, TFDamageTypes.OREBERRY), 1.0F);
+	protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier, boolean isPrecise) {
+		if (!(entity instanceof ItemEntity) && level instanceof ServerLevel sl) {
+			entity.hurtServer(sl, TFDamageTypes.getDamageSource(level, TFDamageTypes.OREBERRY), 1.0F);
 		}
-		super.entityInside(state, level, pos, entity);
 	}
 
 	@Override
@@ -45,14 +47,15 @@ public class OreBerryBlock extends TFBushBlock {
 		return shape;
 	}
 
+	@Nullable
 	@Override
-	public @Nullable PathType getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob) {
-		return PathType.DANGER_OTHER;
+	public PathType getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob) {
+		return PathType.DAMAGING;
 	}
 
 	@Override
 	public boolean canBePlacedAt(BlockState state) {
-		return state.is(BlockTagGenerator.OREBERRY_BUSHES_SURVIVE);
+		return state.is(TFBlockTags.OREBERRY_BUSHES_SURVIVE);
 	}
 
 	@Override
@@ -66,7 +69,7 @@ public class OreBerryBlock extends TFBushBlock {
 	}
 
 	@Override
-	protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType) {
+	protected boolean isPathfindable(BlockState state, PathComputationType type) {
 		return false;
 	}
 }

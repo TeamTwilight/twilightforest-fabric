@@ -2,13 +2,14 @@ package twilightforest.block;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -51,18 +52,18 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (super.useItemOn(stack, state, level, pos, player, hand, hit) != ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION)
-			return ItemInteractionResult.SUCCESS;
+	protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		if (super.useItemOn(stack, state, level, pos, player, hand, hit) != InteractionResult.PASS)
+			return InteractionResult.SUCCESS;
 		if (!(level.getBlockEntity(pos) instanceof MasonJarBlockEntity jar))
-			return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+			return InteractionResult.CONSUME;
 		if (!(level instanceof ServerLevel server))
-			return ItemInteractionResult.SUCCESS;
+			return InteractionResult.SUCCESS;
 
 		MasonJarBlockEntity.MasonJarItemStackHandler handler = jar.getItemHandler();
 		if (stack.isEmpty()) handleEmptyHand(server, pos, player, hand, jar, handler);
 		else handleInsert(server, pos, player, hand, jar, handler, stack);
-		return ItemInteractionResult.SUCCESS;
+		return InteractionResult.SUCCESS;
 	}
 
 	private static void handleEmptyHand(ServerLevel server, BlockPos pos, Player player, InteractionHand hand, MasonJarBlockEntity jar, MasonJarBlockEntity.MasonJarItemStackHandler handler) {
@@ -72,7 +73,7 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 			return;
 		}
 		if (player.isSecondaryUseActive()) {
-			player.displayClientMessage(Component.literal(preview.getHoverName().getString() + " x" + preview.getCount()), true);
+			player.sendOverlayMessage(Component.literal(preview.getHoverName().getString() + " x" + preview.getCount()));
 			wiggle(server, pos, jar);
 			return;
 		}
@@ -115,7 +116,6 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	protected boolean hasAnalogOutputSignal(BlockState state) {
 		return true;
 	}
@@ -133,8 +133,7 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
-	protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+	protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos, Direction direction) {
 		if (level.getBlockEntity(pos) instanceof MasonJarBlockEntity jarBlockEntity) {
 			ItemStack itemstack = jarBlockEntity.getItemHandler().getItem();
 			return Mth.lerpDiscrete(itemstack.isEmpty() ? 0 : (float) itemstack.getCount() / (float) itemstack.getMaxStackSize(), 0, 15);

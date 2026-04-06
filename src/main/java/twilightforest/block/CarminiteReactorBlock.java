@@ -3,17 +3,19 @@ package twilightforest.block;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.redstone.Orientation;
+import org.jspecify.annotations.Nullable;
 import twilightforest.block.entity.CarminiteReactorBlockEntity;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFBlocks;
@@ -41,13 +43,7 @@ public class CarminiteReactorBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
-	public RenderShape getRenderShape(BlockState state) {
-		return RenderShape.MODEL;
-	}
-
-	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+	protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, @Nullable Orientation orientation, boolean movedByPiston) {
 		if (level.isClientSide()) return;
 
 		if (!state.getValue(ACTIVE) && this.isReactorReady(level, pos)) {
@@ -65,16 +61,13 @@ public class CarminiteReactorBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moving) {
-		if (!newState.is(state.getBlock())) {
-			for (BlockPos offset : BlockPos.betweenClosed(pos.offset(-1, -1, -1), pos.offset(1, 1, 1))) {
-				BlockState checkState = level.getBlockState(offset);
-				if (checkState.is(TFBlocks.FAKE_GOLD) || checkState.is(TFBlocks.FAKE_DIAMOND)) {
-					level.destroyBlock(offset, false);
-				}
+	protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
+		for (BlockPos offset : BlockPos.betweenClosed(pos.offset(-1, -1, -1), pos.offset(1, 1, 1))) {
+			BlockState checkState = level.getBlockState(offset);
+			if (checkState.is(TFBlocks.FAKE_GOLD) || checkState.is(TFBlocks.FAKE_DIAMOND)) {
+				level.destroyBlock(offset, false);
 			}
 		}
-		super.onRemove(state, level, pos, newState, moving);
 	}
 
 	@Override
@@ -82,6 +75,7 @@ public class CarminiteReactorBlock extends BaseEntityBlock {
 		return new CarminiteReactorBlockEntity(pos, state);
 	}
 
+	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
 		return createTickerHelper(type, TFBlockEntities.CARMINITE_REACTOR.get(), CarminiteReactorBlockEntity::tick);

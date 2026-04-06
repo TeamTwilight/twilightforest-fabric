@@ -1,24 +1,23 @@
 package twilightforest.block;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.Util;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.Util;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.IceBlock;
+import net.minecraft.world.level.block.VegetationBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -29,7 +28,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.network.PacketDistributor;
-import twilightforest.client.particle.data.LeafParticleData;
+import org.jspecify.annotations.Nullable;
+import twilightforest.init.TFParticleType;
 import twilightforest.network.SpawnFallenLeafFromPacket;
 
 public class FallenLeavesBlock extends TFPlantBlock {
@@ -51,7 +51,7 @@ public class FallenLeavesBlock extends TFPlantBlock {
 	}
 
 	@Override
-	protected MapCodec<? extends BushBlock> codec() {
+	public MapCodec<? extends VegetationBlock> codec() {
 		return CODEC;
 	}
 
@@ -99,6 +99,7 @@ public class FallenLeavesBlock extends TFPlantBlock {
 		return false;
 	}
 
+	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		BlockState blockstate = context.getLevel().getBlockState(context.getClickedPos());
@@ -131,31 +132,22 @@ public class FallenLeavesBlock extends TFPlantBlock {
 					return;
 			}
 
-			int color = Minecraft.getInstance().getBlockColors().getColor(Blocks.OAK_LEAVES.defaultBlockState(), level, pos, 0);
-			int r = Mth.clamp(((color >> 16) & 0xFF) + random.nextInt(0x22) - 0x11, 0x00, 0xFF);
-			int g = Mth.clamp(((color >> 8) & 0xFF) + random.nextInt(0x22) - 0x11, 0x00, 0xFF);
-			int b = Mth.clamp((color & 0xFF) + random.nextInt(0x22) - 0x11, 0x00, 0xFF);
-			level.addParticle(new LeafParticleData(r, g, b), pos.getX() + random.nextFloat(), pos.getY() + dist - 0.25F, pos.getZ() + random.nextFloat(), 0.0D, 0.0D, 0.0D);
+			level.addParticle(ColorParticleOption.create(TFParticleType.FALLEN_LEAF.get(), level.getClientLeafTintColor(pos)), pos.getX() + random.nextFloat(), pos.getY() + dist - 0.25F, pos.getZ() + random.nextFloat(), 0.0D, 0.0D, 0.0D);
 		}
 	}
 
 	@Override
-	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		super.entityInside(state, level, pos, entity);
+	protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier, boolean isPrecise) {
+		super.entityInside(state, level, pos, entity, effectApplier, isPrecise);
 		if (state.getValue(LAYERS) > 2) {
 			entity.makeStuckInBlock(state, new Vec3(1.0D - (0.05D * (state.getValue(LAYERS) - 2)), 1.0D, 1.0D - (0.05D * (state.getValue(LAYERS) - 2))));
 		}
 		if (entity instanceof LivingEntity && (entity.getDeltaMovement().x() != 0 || entity.getDeltaMovement().z() != 0) && level.getRandom().nextBoolean()) {
 			if (level.isClientSide()) {
-				int color = Minecraft.getInstance().getBlockColors().getColor(Blocks.OAK_LEAVES.defaultBlockState(), level, pos, 0);
-				int r = Mth.clamp(((color >> 16) & 0xFF) + level.getRandom().nextInt(0x22) - 0x11, 0x00, 0xFF);
-				int g = Mth.clamp(((color >> 8) & 0xFF) + level.getRandom().nextInt(0x22) - 0x11, 0x00, 0xFF);
-				int b = Mth.clamp((color & 0xFF) + level.getRandom().nextInt(0x22) - 0x11, 0x00, 0xFF);
-				level.addParticle(new LeafParticleData(r, g, b),
+				level.addParticle(ColorParticleOption.create(TFParticleType.FALLEN_LEAF.get(), level.getClientLeafTintColor(pos)),
 					pos.getX() + level.getRandom().nextFloat(),
 					pos.getY() + ((2F / 16F) * (state.getValue(LAYERS) - 1)),
 					pos.getZ() + level.getRandom().nextFloat(),
-
 					(level.getRandom().nextFloat() * -0.5F) * entity.getDeltaMovement().x(),
 					level.getRandom().nextFloat() * 0.5F + 0.25F,
 					(level.getRandom().nextFloat() * -0.5F) * entity.getDeltaMovement().z()

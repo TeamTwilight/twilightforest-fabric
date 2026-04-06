@@ -10,13 +10,14 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.redstone.Orientation;
+import org.jspecify.annotations.Nullable;
 import twilightforest.block.entity.CarminiteBuilderBlockEntity;
 import twilightforest.enums.TowerDeviceVariant;
 import twilightforest.init.TFBlockEntities;
@@ -54,12 +55,6 @@ public class BuilderBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
-	public RenderShape getRenderShape(BlockState state) {
-		return RenderShape.MODEL;
-	}
-
-	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(STATE);
 	}
@@ -73,7 +68,7 @@ public class BuilderBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+	protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, @Nullable Orientation orientation, boolean movedByPiston) {
 		if (level.isClientSide()) {
 			return;
 		}
@@ -114,13 +109,10 @@ public class BuilderBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moving) {
-		if (!newState.is(state.getBlock())) {
-			for (Direction e : Direction.values()) {
-				activateBuiltBlocks(level, pos.relative(e));
-			}
+	protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
+		for (Direction e : Direction.values()) {
+			activateBuiltBlocks(level, pos.relative(e));
 		}
-		super.onRemove(state, level, pos, newState, moving);
 	}
 
 	private void letsBuild(Level level, BlockPos pos) {
@@ -144,7 +136,7 @@ public class BuilderBlock extends BaseEntityBlock {
 
 		for (Direction direction : Direction.values()) {
 			BlockPos blockpos = pos.relative(direction);
-			if (!level.getBlockState(blockpos).isSolidRender(level, blockpos)) {
+			if (!level.getBlockState(blockpos).isSolidRender()) {
 				Direction.Axis axis = direction.getAxis();
 				double d1 = axis == Direction.Axis.X ? 0.5 + 0.5625 * (double) direction.getStepX() : (double) random.nextFloat();
 				double d2 = axis == Direction.Axis.Y ? 0.5 + 0.5625 * (double) direction.getStepY() : (double) random.nextFloat();
@@ -159,6 +151,7 @@ public class BuilderBlock extends BaseEntityBlock {
 		return new CarminiteBuilderBlockEntity(pos, state);
 	}
 
+	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
 		return state.getValue(STATE) == TowerDeviceVariant.BUILDER_ACTIVE ? createTickerHelper(type, TFBlockEntities.TOWER_BUILDER.get(), CarminiteBuilderBlockEntity::tick) : null;

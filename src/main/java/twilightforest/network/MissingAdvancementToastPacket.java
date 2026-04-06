@@ -9,6 +9,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.TwilightForestMod;
@@ -34,7 +35,7 @@ public record MissingAdvancementToastPacket(Component title, ItemStack icon) imp
 			ctx.enqueueWork(new Runnable() {
 				@Override
 				public void run() {
-					Minecraft.getInstance().getToasts().addToast(new MissingAdvancementToast(packet.title(), packet.icon()));
+					Minecraft.getInstance().getToastManager().addToast(new MissingAdvancementToast(packet.title(), packet.icon()));
 				}
 			});
 		}

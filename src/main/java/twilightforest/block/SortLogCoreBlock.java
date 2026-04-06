@@ -10,12 +10,13 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
 import twilightforest.config.TFConfig;
-import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.init.TFParticleType;
 import twilightforest.network.ParticlePacket;
+import twilightforest.tags.TFEntityTypeTags;
 import twilightforest.util.BlockCapabilityDirectionalCache;
 import twilightforest.util.WorldUtil;
 
@@ -23,7 +24,7 @@ import java.util.*;
 
 public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
-	private final BlockCapabilityDirectionalCache<IItemHandler> capabilityCache = new BlockCapabilityDirectionalCache<>();
+	private final BlockCapabilityDirectionalCache<ResourceHandler<ItemResource>> capabilityCache = new BlockCapabilityDirectionalCache<>();
 
 	public SortLogCoreBlock(Properties properties) {
 		super(properties);
@@ -34,10 +35,11 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 		return !TFConfig.disableSortingCore;
 	}
 
+	//TODO fuckkkkkkkkk
 	@Override
 	void performTreeEffect(ServerLevel level, BlockPos pos, RandomSource rand) {
-		Map<List<IItemHandler>, Vec3> inputMap = new HashMap<>();
-		Map<IItemHandler, Vec3> outputMap = new HashMap<>();
+		Map<List<ResourceHandler<ItemResource>>, Vec3> inputMap = new HashMap<>();
+		Map<ResourceHandler<ItemResource>, Vec3> outputMap = new HashMap<>();
 
 		for (BlockPos blockPos : WorldUtil.getAllAround(pos, TFConfig.sortingCoreRange)) { // Get every itemHandler from every block in the area
 			if (!blockPos.equals(pos)) {
@@ -45,9 +47,9 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 				if (blockEntity != null) {
 					// Put it in the input if its within 2 blocks
 					if (Math.abs(blockPos.getX() - pos.getX()) <= 2 && Math.abs(blockPos.getY() - pos.getY()) <= 2 && Math.abs(blockPos.getZ() - pos.getZ()) <= 2) {
-						List<IItemHandler> handlers = new ArrayList<>();
+						List<ResourceHandler<ItemResource>> handlers = new ArrayList<>();
 						for (Direction side : Direction.values()) {
-							IItemHandler handler = this.capabilityCache.get(Capabilities.ItemHandler.BLOCK, level, blockPos, side);
+							ResourceHandler<ItemResource> handler = this.capabilityCache.get(Capabilities.Item.BLOCK, level, blockPos, side);
 							if (handler != null) handlers.add(handler);
 						}
 						if (!handlers.isEmpty()) {
@@ -55,7 +57,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 						}
 					} else { // Output if its outside that range
 						for (Direction side : Direction.values()) {
-							IItemHandler handler = this.capabilityCache.get(Capabilities.ItemHandler.BLOCK, level, blockPos, side);
+							ResourceHandler<ItemResource> handler = this.capabilityCache.get(Capabilities.Item.BLOCK, level, blockPos, side);
 							if (handler != null) outputMap.put(handler, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
 						}
 					}
@@ -65,10 +67,10 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
 		List<Entity> alreadyUsedForInput = new ArrayList<>(); // Keep track of entities we already have for inputs, so we can skip over them when looking for outputs
 
-		level.getEntities((Entity) null, new AABB(pos).inflate(2), entity -> entity.isAlive() && entity.getType().is(EntityTagGenerator.SORTABLE_ENTITIES)).forEach(entity -> {
-			List<IItemHandler> handlers = new ArrayList<>();
+		level.getEntities((Entity) null, new AABB(pos).inflate(2), entity -> entity.isAlive() && entity.is(TFEntityTypeTags.SORTABLE_ENTITIES)).forEach(entity -> {
+			List<ResourceHandler<ItemResource>> handlers = new ArrayList<>();
 			for (Direction side : Direction.values()) {
-				IItemHandler handler = entity.getCapability(Capabilities.ItemHandler.ENTITY_AUTOMATION, side);
+				ResourceHandler<ItemResource> handler = entity.getCapability(Capabilities.Item.ENTITY_AUTOMATION, side);
 				if (handler != null) handlers.add(handler);
 			}
 			if (!handlers.isEmpty()) {
@@ -79,24 +81,24 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
 		if (inputMap.isEmpty()) return; // No input
 
-		level.getEntities((Entity) null, new AABB(pos).inflate(16), entity -> entity.isAlive() && !alreadyUsedForInput.contains(entity) && entity.getType().is(EntityTagGenerator.SORTABLE_ENTITIES)).forEach(entity -> {
+		level.getEntities((Entity) null, new AABB(pos).inflate(16), entity -> entity.isAlive() && !alreadyUsedForInput.contains(entity) && entity.is(TFEntityTypeTags.SORTABLE_ENTITIES)).forEach(entity -> {
 			for (Direction side : Direction.values()) {
-				IItemHandler handler = entity.getCapability(Capabilities.ItemHandler.ENTITY_AUTOMATION, side);
+				ResourceHandler<ItemResource> handler = entity.getCapability(Capabilities.Item.ENTITY_AUTOMATION, side);
 				if (handler != null) outputMap.put(handler, entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D));
 			}
 		});
 
 		if (outputMap.isEmpty()) return; // No output
 
-		for (Map.Entry<List<IItemHandler>, Vec3> inputHandlers : inputMap.entrySet()) {
+		for (Map.Entry<List<ResourceHandler<ItemResource>>, Vec3> inputHandlers : inputMap.entrySet()) {
 			boolean transferred = false;
-			for (IItemHandler inputIItemHandler : inputHandlers.getKey()) {
+			for (ResourceHandler<ItemResource> inputIItemHandler : inputHandlers.getKey()) {
 				for (int i = 0; i < inputIItemHandler.getSlots(); i++) {
 					ItemStack inputStack = inputIItemHandler.extractItem(i, 1, true);
 					if (!inputStack.isEmpty()) {
-						Map<Integer, IItemHandler> outputsByCount = new HashMap<>();
+						Map<Integer, ResourceHandler<ItemResource>> outputsByCount = new HashMap<>();
 
-						for (IItemHandler outputIItemHandler : outputMap.keySet()) {
+						for (ResourceHandler<ItemResource> outputIItemHandler : outputMap.keySet()) {
 							int count = 0;
 							for (int j = 0; j < outputIItemHandler.getSlots(); j++) {
 								ItemStack stack = outputIItemHandler.getStackInSlot(j);
@@ -106,7 +108,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 						}
 
 						for (Integer count : outputsByCount.keySet().stream().sorted(Comparator.comparingInt(Integer::intValue).reversed()).toList()) {
-							IItemHandler outputIItemHandler = outputsByCount.get(count);
+							ResourceHandler<ItemResource> outputIItemHandler = outputsByCount.get(count);
 							int firstProperStack = -1;
 							for (int j = 0; j < outputIItemHandler.getSlots(); j++) {
 								if (outputIItemHandler.isItemValid(j, inputStack)) {

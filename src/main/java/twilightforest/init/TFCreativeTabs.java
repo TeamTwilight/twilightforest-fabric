@@ -245,10 +245,10 @@ public class TFCreativeTabs {
 			output.accept(TFItems.FALLEN_LEAVES);
 			output.accept(TFBlocks.ROOT_STRAND);
 			output.accept(TFBlocks.HEDGE);
-			output.accept(TFBlocks.IRON_OREBERRY);
-			output.accept(TFBlocks.GOLD_OREBERRY);
-			output.accept(TFBlocks.COPPER_OREBERRY);
-			output.accept(TFBlocks.ESSENCE_OREBERRY);
+			output.accept(TFBlocks.IRON_OREBERRY_BUSH);
+			output.accept(TFBlocks.GOLD_OREBERRY_BUSH);
+			output.accept(TFBlocks.COPPER_OREBERRY_BUSH);
+			output.accept(TFBlocks.ESSENCE_OREBERRY_BUSH);
 			output.accept(TFBlocks.RASPBERRY_BUSH);
 			output.accept(TFBlocks.BLUEBERRY_BUSH);
 			output.accept(TFBlocks.BLACKBERRY_BUSH);
