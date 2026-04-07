@@ -6,12 +6,11 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LevelEvent;
@@ -19,8 +18,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
-
-import javax.annotation.Nonnull;
 
 public class LampOfCindersItem extends Item {
 
@@ -31,23 +28,11 @@ public class LampOfCindersItem extends Item {
 	}
 
 	@Override
-	public boolean isEnchantable(ItemStack pStack) {
-		return false;
-	}
-
-	@Override
-	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		return false;
-	}
-
-	@Nonnull
-	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand hand) {
+	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		player.startUsingItem(hand);
-		return new InteractionResultHolder<>(InteractionResult.SUCCESS, player.getItemInHand(hand));
+		return InteractionResult.SUCCESS;
 	}
 
-	@Nonnull
 	@Override
 	public InteractionResult useOn(UseOnContext context) {
 		Level world = context.getLevel();
@@ -81,32 +66,34 @@ public class LampOfCindersItem extends Item {
 	}
 
 	@Override
-	public void releaseUsing(ItemStack stack, Level level, LivingEntity living, int useRemaining) {
+	public boolean releaseUsing(ItemStack stack, Level level, LivingEntity living, int useRemaining) {
 		int useTime = this.getUseDuration(stack, living) - useRemaining;
 
-		if (useTime > FIRING_TIME && (stack.getDamageValue() + 1) < this.getMaxDamage(stack)) {
-			this.doBurnEffect(level, living);
+		if (useTime > FIRING_TIME && !stack.nextDamageWillBreak()) {
+			return this.doBurnEffect(level, living);
 		}
+		return false;
 	}
 
-	private void doBurnEffect(Level level, LivingEntity living) {
-		BlockPos pos = BlockPos.containing(living.getEyePosition().add(living.getLookAngle().scale(2.0D)));
+	private boolean doBurnEffect(Level level, LivingEntity user) {
+		BlockPos pos = BlockPos.containing(user.getEyePosition().add(user.getLookAngle().scale(2.0D)));
 		int range = 4;
+		boolean burned = false;
 
 		if (!level.isClientSide()) {
-			level.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.LAMP_BURN.get(), living.getSoundSource(), 1.5F, 0.8F);
+			level.playSound(null, user.blockPosition(), TFSounds.LAMP_BURN.get(), user.getSoundSource(), 1.5F, 0.8F);
 
 			// set nearby thorns to burnt
 			for (int dx = -range; dx <= range; dx++) {
 				for (int dy = -range; dy <= range; dy++) {
 					for (int dz = -range; dz <= range; dz++) {
-						this.burnBlock(level, pos.offset(dx, dy, dz));
+						burned |= this.burnBlock(level, pos.offset(dx, dy, dz));
 					}
 				}
 			}
 		}
 
-		if (living instanceof Player player) {
+		if (user instanceof Player player) {
 			for (int i = 0; i < 6; i++) {
 				BlockPos rPos = pos.offset(
 					level.getRandom().nextInt(range) - level.getRandom().nextInt(range),
@@ -118,15 +105,19 @@ public class LampOfCindersItem extends Item {
 			}
 
 			//burn mobs!
-			for (LivingEntity targets : level.getEntitiesOfClass(LivingEntity.class, new AABB(pos.below(2)).inflate(4.0D))) {
-				if (!(targets instanceof Player)) targets.igniteForSeconds(5);
+			for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, new AABB(pos.below(2)).inflate(4.0D))) {
+				if (target != user && !target.isAlliedTo(user)) {
+					target.igniteForSeconds(5);
+					burned = true;
+				}
 			}
 		}
+		return burned;
 	}
 
 	@Override
-	public UseAnim getUseAnimation(ItemStack stack) {
-		return UseAnim.BOW;
+	public ItemUseAnimation getUseAnimation(ItemStack stack) {
+		return ItemUseAnimation.BOW;
 	}
 
 	@Override

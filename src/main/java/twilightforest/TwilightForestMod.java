@@ -1,7 +1,6 @@
 package twilightforest;
 
 import com.google.common.reflect.Reflection;
-import com.mojang.logging.LogUtils;
 import net.minecraft.resources.Identifier;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -11,7 +10,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
-import org.apache.logging.log4j.LogManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tamaized.beanification.BeanContext;
@@ -55,7 +53,6 @@ public final class TwilightForestMod {
 		TFSounds.SOUNDS.register(bus);
 		TFLoot.FUNCTIONS.register(bus);
 		TFLoot.CONDITIONS.register(bus);
-		TFEntities.ENTITIES.register(bus);
 		TFFeatures.FEATURES.register(bus);
 		TFCreativeTabs.TABS.register(bus);
 		TFLoot.CONDITIONALS.register(bus);
@@ -63,6 +60,7 @@ public final class TwilightForestMod {
 		ItemDisplays.DISPLAYS.register(bus);
 		TFMenuTypes.CONTAINERS.register(bus);
 		TFRecipes.RECIPE_TYPES.register(bus);
+		TFEntities.ENTITY_TYPES.register(bus);
 		TFAttributes.ATTRIBUTES.register(bus);
 		TFAdvancements.TRIGGERS.register(bus);
 		TFMobEffects.MOB_EFFECTS.register(bus);
@@ -76,7 +74,7 @@ public final class TwilightForestMod {
 		TravellersModifierTypes.TYPES.register(bus);
 		TFBlockEntities.BLOCK_ENTITIES.register(bus);
 		TFLootModifiers.LOOT_MODIFIERS.register(bus);
-		TFArmorMaterials.ARMOR_MATERIALS.register(bus);
+		TFConsumeEffects.CONSUME_EFFECTS.register(bus);
 		TFStructureTypes.STRUCTURE_TYPES.register(bus);
 		TFFeatureModifiers.TRUNK_PLACERS.register(bus);
 		BiomeLayerTypes.BIOME_LAYER_TYPES.register(bus);

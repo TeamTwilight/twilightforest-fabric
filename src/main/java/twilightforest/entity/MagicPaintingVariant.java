@@ -2,30 +2,39 @@ package twilightforest.entity;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ExtraCodecs;
+import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipProvider;
 import twilightforest.TFRegistries;
+import twilightforest.init.TFDataComponents;
 import twilightforest.init.custom.MagicPaintingVariants;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.function.Consumer;
 
-public record MagicPaintingVariant(int width, int height, List<Layer> layers, Component author, Identifier backTexture) {
+public record MagicPaintingVariant(int width, int height, List<Layer> layers, Component title, Component author, Identifier backTexture) implements TooltipProvider {
 	public static final Codec<MagicPaintingVariant> CODEC = RecordCodecBuilder.create((recordCodecBuilder) -> recordCodecBuilder.group(
 		ExtraCodecs.POSITIVE_INT.fieldOf("width").forGetter(MagicPaintingVariant::width),
 		ExtraCodecs.POSITIVE_INT.fieldOf("height").forGetter(MagicPaintingVariant::height),
 		ExtraCodecs.nonEmptyList(Layer.CODEC.listOf()).fieldOf("layers").forGetter(MagicPaintingVariant::layers),
+		ComponentSerialization.CODEC.fieldOf("title").forGetter(MagicPaintingVariant::title),
 		ComponentSerialization.CODEC.fieldOf("author").forGetter(MagicPaintingVariant::author),
 		Identifier.CODEC.fieldOf("back_texture").forGetter(MagicPaintingVariant::backTexture)
 	).apply(recordCodecBuilder, MagicPaintingVariant::new));
@@ -39,7 +48,7 @@ public record MagicPaintingVariant(int width, int height, List<Layer> layers, Co
 	}
 
 	public static Optional<MagicPaintingVariant> getVariant(@Nullable HolderLookup.Provider regAccess, ResourceKey<MagicPaintingVariant> id) {
-		return regAccess == null ? Optional.empty() : regAccess.asGetterLookup().lookup(TFRegistries.Keys.MAGIC_PAINTINGS).flatMap(reg -> reg.get(id)).map(Holder.Reference::value);
+		return regAccess == null ? Optional.empty() : regAccess.lookup(TFRegistries.Keys.MAGIC_PAINTINGS).flatMap(reg -> reg.get(id)).map(Holder.Reference::value);
 	}
 
 	public static String getVariantId(RegistryAccess regAccess, MagicPaintingVariant variant) {
@@ -47,7 +56,14 @@ public record MagicPaintingVariant(int width, int height, List<Layer> layers, Co
 	}
 
 	public static Identifier getVariantIdentifier(RegistryAccess regAccess, MagicPaintingVariant variant) {
-		return regAccess.registry(TFRegistries.Keys.MAGIC_PAINTINGS).map(reg -> reg.getKey(variant)).orElse(MagicPaintingVariants.DEFAULT.location());
+		return regAccess.lookup(TFRegistries.Keys.MAGIC_PAINTINGS).map(reg -> reg.getKey(variant)).orElse(MagicPaintingVariants.DEFAULT.identifier());
+	}
+
+	@Override
+	public void addToTooltip(Item.TooltipContext context, Consumer<Component> consumer, TooltipFlag flag, DataComponentGetter components) {
+		consumer.accept(this.title().copy().withStyle(ChatFormatting.YELLOW));
+		consumer.accept(this.author().copy().withStyle(ChatFormatting.GRAY));
+		consumer.accept(Component.translatable("painting.dimensions", Mth.positiveCeilDiv(this.width(), 16), Mth.positiveCeilDiv(this.height(), 16)));
 	}
 
 	public record Layer(String path, @Nullable Parallax parallax, @Nullable OpacityModifier opacityModifier, boolean fullbright, boolean localLighting) {

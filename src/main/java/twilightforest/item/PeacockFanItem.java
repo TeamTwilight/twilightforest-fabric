@@ -7,7 +7,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -15,7 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractCandleBlock;
 import net.minecraft.world.level.block.FlowerBlock;
@@ -32,24 +31,21 @@ import twilightforest.network.MovePlayerPacket;
 import twilightforest.network.ParticlePacket;
 import twilightforest.util.WorldUtil;
 
-import javax.annotation.Nonnull;
-
 public class PeacockFanItem extends Item {
 
 	public PeacockFanItem(Properties properties) {
 		super(properties);
 	}
 
-	@Nonnull
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand hand) {
+	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
 		boolean flag = !player.onGround() && !player.isSwimming() && !player.getData(TFDataAttachments.FEATHER_FAN);
 
 		if (!level.isClientSide()) {
 			int fanned = this.doFan(level, player);
-			stack.hurtAndBreak(fanned + 1, player, LivingEntity.getSlotForHand(hand));
+			stack.hurtAndBreak(fanned + 1, player, hand);
 			if (flag) {
 				player.setData(TFDataAttachments.FEATHER_FAN, true);
 			} else {
@@ -89,18 +85,17 @@ public class PeacockFanItem extends Item {
 					player.getDeltaMovement().z() * 1.05F
 				));
 			}
-			return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
+			return InteractionResult.SUCCESS;
 		}
 
 		player.startUsingItem(hand);
 
-		return new InteractionResultHolder<>(InteractionResult.PASS, stack);
+		return InteractionResult.PASS;
 	}
 
-	@Nonnull
 	@Override
-	public UseAnim getUseAnimation(ItemStack stack) {
-		return UseAnim.BLOCK;
+	public ItemUseAnimation getUseAnimation(ItemStack stack) {
+		return ItemUseAnimation.BLOCK;
 	}
 
 	@Override
@@ -115,7 +110,6 @@ public class PeacockFanItem extends Item {
 
 	private int fanEntitiesInAABB(Level level, Player player, AABB fanBox) {
 		Vec3 moveVec = player.getLookAngle().scale(2);
-		Item fan = player.getUseItem().getItem();
 		int fannedEntities = 0;
 
 		for (Entity entity : level.getEntitiesOfClass(Entity.class, fanBox)) {
@@ -126,7 +120,7 @@ public class PeacockFanItem extends Item {
 
 			if (entity instanceof ServerPlayer pushedPlayer && pushedPlayer != player && !pushedPlayer.isShiftKeyDown()) {
 				PacketDistributor.sendToPlayer(pushedPlayer, new MovePlayerPacket(moveVec.x(), moveVec.y(), moveVec.z()));
-				player.getCooldowns().addCooldown(fan, 40);
+				player.getCooldowns().addCooldown(player.getUseItem(), 40);
 				fannedEntities += 2;
 			}
 		}

@@ -2,24 +2,23 @@ package twilightforest.item;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ToolMaterial;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 
-import java.util.List;
+import java.util.function.Consumer;
 
 public class MinotaurAxeItem extends AxeItem {
 
-	public MinotaurAxeItem(Tier material, Properties properties) {
-		super(material, properties);
+	public MinotaurAxeItem(ToolMaterial material, float damage, float speed, Properties properties) {
+		super(material, damage, speed, properties);
 	}
 
 	@Override
-	public int getEnchantmentValue() {
-		return Tiers.GOLD.getEnchantmentValue();
-	}
-
-	@Override
-	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flags) {
-		super.appendHoverText(stack, context, tooltip, flags);
-		tooltip.add(Component.translatable("item.twilightforest.minotaur_axe.desc").withStyle(ChatFormatting.GRAY));
+	public void appendHoverText(ItemStack itemStack, TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag tooltipFlag) {
+		super.appendHoverText(itemStack, context, display, builder, tooltipFlag);
+		builder.accept(Component.translatable("item.twilightforest.minotaur_axe.desc").withStyle(ChatFormatting.GRAY));
 	}
 }

@@ -14,8 +14,8 @@ import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.event.EventHooks;
+import org.jspecify.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class TripleBowItem extends BowItem {
@@ -26,13 +26,13 @@ public class TripleBowItem extends BowItem {
 
 	// Half [VanillaCopy]: copy of modified super to fire three arrows
 	@Override
-	public void releaseUsing(ItemStack stack, Level level, LivingEntity living, int timeLeft) {
+	public boolean releaseUsing(ItemStack stack, Level level, LivingEntity living, int timeLeft) {
 		if (living instanceof Player player) {
 			ItemStack arrowStack = player.getProjectile(stack);
 
 			int i = this.getUseDuration(stack, player) - timeLeft;
 			i = EventHooks.onArrowLoose(stack, level, player, i, !arrowStack.isEmpty());
-			if (i < 0) return;
+			if (i < 0) return false;
 
 			if (!arrowStack.isEmpty()) {
 				float f = getPowerForTime(i);
@@ -44,9 +44,11 @@ public class TripleBowItem extends BowItem {
 
 					level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F / (level.getRandom().nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 					player.awardStat(Stats.ITEM_USED.get(this));
+					return true;
 				}
 			}
 		}
+		return false;
 	}
 
 	@Override
@@ -60,9 +62,9 @@ public class TripleBowItem extends BowItem {
 			if (!itemstack.isEmpty()) {
 				float f4 = f2 + f3 * (float)((i + 1) / 2) * f1;
 				f3 = -f3;
-				stack.hurtAndBreak(this.getDurabilityUse(itemstack), living, LivingEntity.getSlotForHand(hand));
+				stack.hurtAndBreak(this.getDurabilityUse(itemstack), living, hand);
 
-				for (int j = -1; j < 2; j++) {
+				for (int j = -1; j <= 1; j++) {
 					ItemStack copy = itemstack.copy();
 					if (j != 0) copy.set(DataComponents.INTANGIBLE_PROJECTILE, Unit.INSTANCE);
 					Projectile projectile = this.createProjectile(level, living, stack, copy, crit);

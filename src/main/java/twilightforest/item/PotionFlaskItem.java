@@ -3,9 +3,9 @@ package twilightforest.item;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,19 +26,12 @@ import twilightforest.init.TFSounds;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public class BrittleFlaskItem extends Item {
+public class PotionFlaskItem extends Item {
 
 	public static final int DOSES = 3;
 
-	public BrittleFlaskItem(Properties properties) {
+	public PotionFlaskItem(Properties properties) {
 		super(properties);
-	}
-
-	@Override
-	public ItemStack getDefaultInstance() {
-		ItemStack itemstack = super.getDefaultInstance();
-		itemstack.set(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY);
-		return itemstack;
 	}
 
 	@Override
@@ -53,7 +46,7 @@ public class BrittleFlaskItem extends Item {
 
 	@Override
 	public int getBarColor(ItemStack stack) {
-		return FastColor.ARGB32.opaque(stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY).potion().getColor());
+		return ARGB.opaque(stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY).potion().getColor());
 	}
 
 	@Override
@@ -102,19 +95,19 @@ public class BrittleFlaskItem extends Item {
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 		PotionFlaskComponent flaskContents = stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY);
 
 		if (flaskContents.potion() == PotionContents.EMPTY) {
-			return InteractionResultHolder.fail(player.getItemInHand(hand));
+			return InteractionResult.FAIL;
 		}
 
 		if (flaskContents.doses() > 0) {
 			return ItemUtils.startUsingInstantly(level, player, hand);
 		}
 
-		return InteractionResultHolder.fail(player.getItemInHand(hand));
+		return InteractionResult.FAIL;
 	}
 
 	@Override
@@ -123,33 +116,31 @@ public class BrittleFlaskItem extends Item {
 	}
 
 	@Override
-	public UseAnim getUseAnimation(ItemStack stack) {
-		return UseAnim.DRINK;
+	public ItemUseAnimation getUseAnimation(ItemStack stack) {
+		return ItemUseAnimation.DRINK;
 	}
 
 	@Override
 	public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
 		PotionFlaskComponent flaskContents = stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY);
 		if (flaskContents.potion() != PotionContents.EMPTY) {
-			if (entity instanceof Player player) {
-				if (!level.isClientSide()) {
-					for (MobEffectInstance mobeffectinstance : flaskContents.potion().getAllEffects()) {
-						if (mobeffectinstance.is(MobEffects.HARM) != entity.isInvertedHealAndHarm() && mobeffectinstance.getAmplifier() > 0) {
-							//custom harming death message for the advancement
-							entity.hurt(entity.damageSources().source(TFDamageTypes.FAILED_CHALLENGE), (float)(6 << mobeffectinstance.getAmplifier()));
-						} else if (mobeffectinstance.getEffect().value().isInstantenous()) {
-							mobeffectinstance.getEffect().value().applyInstantenousEffect(player, player, player, mobeffectinstance.getAmplifier(), 1.0D);
-						} else {
-							player.addEffect(new MobEffectInstance(mobeffectinstance));
-						}
-					}
-					if (!player.isCreative() && !player.isSpectator() && player instanceof ServerPlayer serverPlayer) {
-						flaskContents.potion().potion().ifPresent(potion -> player.getData(TFDataAttachments.FLASK_DOSES).trackDrink(potion, serverPlayer));
+			if (entity instanceof ServerPlayer player) {
+				for (MobEffectInstance mobeffectinstance : flaskContents.potion().getAllEffects()) {
+					if (mobeffectinstance.is(MobEffects.INSTANT_DAMAGE) != entity.isInvertedHealAndHarm() && mobeffectinstance.getAmplifier() > 0) {
+						//custom harming death message for the advancement
+						entity.hurtServer(player.level(), entity.damageSources().source(TFDamageTypes.FAILED_CHALLENGE), (float)(6 << mobeffectinstance.getAmplifier()));
+					} else if (mobeffectinstance.getEffect().value().isInstantenous()) {
+						mobeffectinstance.getEffect().value().applyInstantenousEffect(player.level(), player, player, player, mobeffectinstance.getAmplifier(), 1.0D);
+					} else {
+						player.addEffect(new MobEffectInstance(mobeffectinstance));
 					}
 				}
-				player.awardStat(Stats.ITEM_USED.get(this));
-				if (!player.getAbilities().instabuild) {
+				if (!player.isCreative() && !player.isSpectator() && player instanceof ServerPlayer serverPlayer) {
+					flaskContents.potion().potion().ifPresent(potion -> player.getData(TFDataAttachments.FLASK_DOSES).trackDrink(potion, serverPlayer));
+				}
 
+				player.awardStat(Stats.ITEM_USED.get(this));
+				if (!player.isCreative()) {
 					this.changeAndConsumeFlask(stack, player, flask -> {
 						flask.update(TFDataComponents.POTION_FLASK_CONTENTS, flaskContents, component -> {
 							component = component.removeDose();

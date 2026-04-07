@@ -65,6 +65,10 @@ public class TFItemTags {
 	public static final TagKey<Item> KEPT_ON_DEATH = create("kept_on_death");
 	public static final TagKey<Item> BLOCK_AND_CHAIN_ENCHANTABLE = create("enchantable/block_and_chain");
 
+	public static final TagKey<Item> TRAVELLERS_BELT_BLACKLISTED = create("travellers_belt_blacklisted");
+	public static final TagKey<Item> TRAVELLERS_AGILE_RANGER_WHITELISTED = create("travellers_agile_ranger_whitelisted");
+	public static final TagKey<Item> TRAVELLERS_AGILE_RANGER_BLACKLISTED = create("travellers_agile_ranger_blacklisted");
+
 	public static final TagKey<Item> REPAIRS_IRONWOOD_TOOLS = create("repairs_ironwood_tools");
 	public static final TagKey<Item> REPAIRS_STEELEAF_TOOLS = create("repairs_steeleaf_tools");
 	public static final TagKey<Item> REPAIRS_KNIGHTMETAL_TOOLS = create("repairs_knightmetal_tools");
@@ -81,6 +85,7 @@ public class TFItemTags {
 	public static final TagKey<Item> REPAIRS_PHANTOM_ARMOR = create("repairs_phantom_armor");
 	public static final TagKey<Item> REPAIRS_ARCTIC_ARMOR = create("repairs_arctic_armor");
 	public static final TagKey<Item> REPAIRS_YETI_ARMOR = create("repairs_yeti_armor");
+	public static final TagKey<Item> REPAIRS_TRAVELLERS_GEAR = create("repairs_travellers_gear");
 
 	public static final TagKey<Item> SCEPTERS = create("scepters");
 	public static final TagKey<Item> IMMUNE_TO_THORNS = create("immune_to_thorns");

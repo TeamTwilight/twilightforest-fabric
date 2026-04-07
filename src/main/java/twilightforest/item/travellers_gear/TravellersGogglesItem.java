@@ -1,22 +1,22 @@
 package twilightforest.item.travellers_gear;
 
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.network.protocol.Packet;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.monster.EnderMan;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
-import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.world.item.component.TooltipDisplay;
+import org.jspecify.annotations.Nullable;
 import twilightforest.components.item.ItemDisplayContents;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.custom.TravellersModifiersManager;
@@ -25,19 +25,20 @@ import java.util.Optional;
 
 public class TravellersGogglesItem extends TravellersArmorItem {
 
-	public TravellersGogglesItem(Properties properties) {
-		super(Type.HELMET, properties, 3, 12);
+	public TravellersGogglesItem(int insertableModifierSlots, Properties properties) {
+		super(insertableModifierSlots, properties);
 	}
 
 	@Override
-	public @NotNull Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
-		return !stack.has(DataComponents.HIDE_TOOLTIP) && !stack.has(DataComponents.HIDE_ADDITIONAL_TOOLTIP)
+	public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
+		TooltipDisplay display = stack.getOrDefault(DataComponents.TOOLTIP_DISPLAY, TooltipDisplay.DEFAULT);
+		return !display.hideTooltip()
 			? Optional.ofNullable(stack.get(TFDataComponents.ITEM_DISPLAY)).map(Tooltip::new)
 			: Optional.empty();
 	}
 
 	@Override
-	public boolean overrideStackedOnOther(ItemStack stack, @NotNull Slot slot, @NotNull ClickAction action, @NotNull Player player) {
+	public boolean overrideStackedOnOther(ItemStack stack, Slot slot, ClickAction action, Player player) {
 		if (stack.getCount() != 1 || action != ClickAction.SECONDARY)
 			return false;
 
@@ -63,7 +64,7 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 	}
 
 	@Override
-	public boolean overrideOtherStackedOnMe(ItemStack stack, @NotNull ItemStack other, @NotNull Slot slot, @NotNull ClickAction action, @NotNull Player player, @NotNull SlotAccess access) {
+	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
 		if (stack.getCount() != 1 || action != ClickAction.SECONDARY || !slot.allowModification(player))
 			return false;
 
@@ -88,11 +89,11 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 	}
 
 	@Override
-	public void inventoryTick(@NotNull ItemStack stack, @NotNull Level level, @NotNull Entity entity, int slotId, boolean isSelected) {
+	public void inventoryTick(ItemStack stack, ServerLevel level, Entity owner, @Nullable EquipmentSlot slot) {
 		//only tick while on the player's head
-		if (slotId != Inventory.INVENTORY_SIZE + EquipmentSlot.HEAD.getIndex())
+		if (slot != EquipmentSlot.HEAD)
 			return;
-		if (level.isClientSide() || !TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER))
+		if (level.isClientSide() || !TravellersModifiersManager.isModifierActive(owner, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER))
 			return;
 
 		ItemDisplayContents contents = stack.get(TFDataComponents.ITEM_DISPLAY);
@@ -108,18 +109,16 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 			return;
 
 		//mark as selected so map properly updates
-		mapItem.inventoryTick(map, level, entity, slotId, true);
+		mapItem.inventoryTick(map, level, owner, slot);
 		//send update packets here instead as the goggles aren't considered a complex item
-		if (entity instanceof ServerPlayer player) {
-			Packet<?> packet = mapItem.getUpdatePacket(map, level, player);
-			if (packet != null)
-				player.connection.send(packet);
+		if (owner instanceof ServerPlayer player) {
+			player.synchronizeSpecialItemUpdates(map);
 		}
 	}
 
 	@Override
-	public boolean isEnderMask(@NotNull ItemStack stack, @NotNull Player player, @NotNull EnderMan enderman) {
-		return TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.ALL_NIGHT_GOGGLES_MODIFIER);
+	public boolean isGazeDisguise(ItemStack stack, Player player, @Nullable LivingEntity entity) {
+		return entity instanceof EnderMan && TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.ALL_NIGHT_GOGGLES_MODIFIER);
 	}
 
 	private void playRemoveOneSound(Entity entity) {

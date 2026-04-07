@@ -8,7 +8,6 @@ import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import twilightforest.data.tags.ItemTagGenerator;
-import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFRecipes;
 

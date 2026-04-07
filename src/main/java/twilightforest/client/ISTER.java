@@ -64,8 +64,6 @@ import twilightforest.enums.BossVariant;
 import twilightforest.enums.extensions.TFItemDisplayContextEnumExtension;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataComponents;
-import twilightforest.item.KnightmetalShieldItem;
-import twilightforest.item.MysticCrownItem;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -4,19 +4,16 @@ import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multisets;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.MapPostProcessing;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -27,14 +24,12 @@ import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
 import net.minecraft.world.level.saveddata.maps.MapId;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.neoforged.neoforge.common.Tags;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFDataMaps;
 import twilightforest.init.TFItems;
-import twilightforest.item.mapdata.TFMagicMapData;
 import twilightforest.item.mapdata.TFMazeMapData;
 import twilightforest.util.datamaps.OreMapOreColor;
 
-import java.util.List;
 import java.util.Optional;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
@@ -50,7 +45,7 @@ public class MazeMapItem extends MapItem {
 		this.mapOres = mapOres;
 	}
 
-	public static ItemStack setupNewMap(Level level, int worldX, int worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking, int worldY, boolean mapOres) {
+	public static ItemStack setupNewMap(ServerLevel level, int worldX, int worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking, int worldY, boolean mapOres) {
 		ItemStack itemstack = new ItemStack(mapOres ? TFItems.FILLED_ORE_MAP.get() : TFItems.FILLED_MAZE_MAP.get());
 		createMapData(itemstack, level, worldX, worldZ, scale, trackingPosition, unlimitedTracking, level.dimension(), worldY, mapOres);
 		return itemstack;
@@ -66,15 +61,15 @@ public class MazeMapItem extends MapItem {
 	@Override
 	protected TFMazeMapData getCustomMapData(ItemStack stack, Level level) {
 		TFMazeMapData mapdata = getData(stack, level);
-		if (mapdata == null && !level.isClientSide()) {
-			BlockPos pos = level.getSharedSpawnPos();
-			mapdata = MazeMapItem.createMapData(stack, level, pos.getX(), pos.getZ(), 0, false, false, level.dimension(), pos.getY(), mapOres);
+		if (mapdata == null && level instanceof ServerLevel serverLevel) {
+			BlockPos pos = serverLevel.getRespawnData().pos();
+			mapdata = MazeMapItem.createMapData(stack, serverLevel, pos.getX(), pos.getZ(), 0, false, false, level.dimension(), pos.getY(), mapOres);
 		}
 
 		return mapdata;
 	}
 
-	private static TFMazeMapData createMapData(ItemStack stack, Level level, int x, int z, int scale, boolean trackingPosition, boolean unlimitedTracking, ResourceKey<Level> dimension, int y, boolean ore) {
+	private static TFMazeMapData createMapData(ItemStack stack, ServerLevel level, int x, int z, int scale, boolean trackingPosition, boolean unlimitedTracking, ResourceKey<Level> dimension, int y, boolean ore) {
 		MapId i = level.getFreeMapId();
 
 		int mapSize = 128 * (1 << scale);
@@ -202,13 +197,13 @@ public class MazeMapItem extends MapItem {
 
 	// [VanillaCopy] super but shows a dot if player is too far in the vertical direction as well
 	@Override
-	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean isSelected) {
+	public void inventoryTick(ItemStack stack, ServerLevel level, Entity owner, @Nullable EquipmentSlot slot) {
 		if (!level.isClientSide()) {
 			TFMazeMapData mapdata = this.getCustomMapData(stack, level);
 
 			if (mapdata != null) {
-				if (entity instanceof Player entityplayer) {
-					mapdata.tickCarriedBy(entityplayer, stack);
+				if (owner instanceof Player entityplayer) {
+					mapdata.tickCarriedBy(entityplayer, stack, null);
 
 					// TF - if player is far away vertically, show a dot
 					int yProximity = Mth.floor(entityplayer.getY() - mapdata.yCenter);
@@ -220,41 +215,10 @@ public class MazeMapItem extends MapItem {
 					}
 				}
 
-				if (!mapdata.locked && (isSelected || entity instanceof Player player && player.getOffhandItem() == stack)) {
-					this.update(level, entity, mapdata);
+				if (!mapdata.locked && slot != null && slot.getType() == EquipmentSlot.Type.HAND) {
+					this.update(level, owner, mapdata);
 				}
 			}
-		}
-	}
-
-	@Override
-	public void onCraftedBy(ItemStack stack, Level level, Player player) {
-		// disable zooming
-	}
-
-	@Override
-	@Nullable
-	public Packet<?> getUpdatePacket(ItemStack stack, Level level, Player player) {
-		MapId mapId = stack.get(DataComponents.MAP_ID);
-		TFMazeMapData mapdata = this.getCustomMapData(stack, level);
-		return mapId == null || mapdata == null ? null : mapdata.getUpdatePacket(mapId, player);
-	}
-
-	@Override
-	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-		MapId mapId = stack.get(DataComponents.MAP_ID);
-		if (mapId != null) {
-			TFMazeMapData data = TFMazeMapData.getClientMagicMapData(getMapName(mapId.id()));
-			if (flag.isAdvanced()) {
-				if (data != null) {
-					tooltip.add(Component.translatable("item.twilightforest.maze_map.y_level", data.yCenter).withStyle(ChatFormatting.GRAY));
-					tooltip.add(Component.translatable("filled_map.id", mapId.id()).withStyle(ChatFormatting.GRAY));
-					tooltip.add(Component.translatable("filled_map.scale", 1 << data.scale).withStyle(ChatFormatting.GRAY));
-					tooltip.add(Component.translatable("filled_map.level", data.scale, 4).withStyle(ChatFormatting.GRAY));
-				} else {
-					tooltip.add(Component.translatable("filled_map.unknown").withStyle(ChatFormatting.GRAY));
-				}
-			} else tooltip.add(MapItem.getTooltipForId(mapId));
 		}
 	}
 }

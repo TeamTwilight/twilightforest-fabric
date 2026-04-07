@@ -14,7 +14,9 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.PositionMoveRotation;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -70,12 +72,12 @@ public class TravellersGearLogic {
 
 		ParticlePacket particlePacket = new ParticlePacket();  // we have to create it on client to avoid networking delays
 		for (int particleNumber = 0; particleNumber < livingEntity.dimensions.width(); particleNumber++) {
-			double dx = (level.random.nextDouble() * 2.0 - 1.0) * (double) livingEntity.dimensions.width() / 2D;
-			double dz = (level.random.nextDouble() * 2.0 - 1.0) * (double) livingEntity.dimensions.width() / 2D;
+			double dx = (level.getRandom().nextDouble() * 2.0 - 1.0) * (double) livingEntity.dimensions.width() / 2D;
+			double dz = (level.getRandom().nextDouble() * 2.0 - 1.0) * (double) livingEntity.dimensions.width() / 2D;
 			Vec3 particlePos = new Vec3(livingEntity.getX() + dx, livingEntity.getY() + WATER_WALKING_MAX_SUBMERGED_HEIGHT, livingEntity.getZ() + dz);
 			Vec3 particleVelocity = new Vec3(-livingEntityVelocity.x, 0.5, -livingEntityVelocity.z);
 			if (level.isClientSide()) {
-				level.addParticle(ParticleTypes.SPLASH, false, particlePos.x(), particlePos.y(), particlePos.z(), particleVelocity.x(), particleVelocity.y(), particleVelocity.z());
+				level.addParticle(ParticleTypes.SPLASH, particlePos.x(), particlePos.y(), particlePos.z(), particleVelocity.x(), particleVelocity.y(), particleVelocity.z());
 			} else {
 				particlePacket.queueParticle(ParticleTypes.SPLASH, false, particlePos, particleVelocity);
 			}
@@ -117,7 +119,7 @@ public class TravellersGearLogic {
 		TravellersWingsAttachment attachment = player.getData(TFDataAttachments.TRAVELLERS_WINGS);
 		long dt = player.level().getGameTime() - attachment.lastSidestepTime;
 		if (TravellersModifiersManager.isModifierActive(player, leggingsStack, TravellersModifiersManager.SIDESTEP_MODIFIER) && dt > cooldown && attachment.shouldPlaySideStepCooldownSound) {
-			player.playNotifySound(TFSounds.SIDE_STEP_CHARGED.get(), player.getSoundSource(), 1F, player.getVoicePitch());
+			player.level().playLocalSound(player.blockPosition(), TFSounds.SIDE_STEP_CHARGED.get(), player.getSoundSource(), 1F, player.getVoicePitch(), false);
 			attachment.shouldPlaySideStepCooldownSound = false;
 		}
 	}
@@ -148,16 +150,19 @@ public class TravellersGearLogic {
 		if (livingEntity.level().getGameTime() - lastHitTime <= 10 * 20)  // 10 seconds
 			return;
 
-		livingEntity.getArmorSlots().forEach(slot -> {
-			Float probability = slot.get(TFDataComponents.AUTO_REPAIR_PROBABILITY);
-			if (probability == null || !TravellersModifiersManager.isModifierActive(livingEntity, slot, TravellersModifiersManager.AUTO_REPAIR_MODIFIER))
+		for (EquipmentSlot slot : EquipmentSlotGroup.ARMOR.slots()) {
+			ItemStack stack = livingEntity.getItemBySlot(slot);
+
+			Float probability = stack.get(TFDataComponents.AUTO_REPAIR_PROBABILITY);
+			if (probability == null || !TravellersModifiersManager.isModifierActive(livingEntity, stack, TravellersModifiersManager.AUTO_REPAIR_MODIFIER))
 				return;
 			Level level = livingEntity.level();
 			double boostedProbability = getAutoRepairChance(probability, level, livingEntity.blockPosition());
 
-			if (boostedProbability > level.random.nextFloat())
-				slot.setDamageValue(Math.max(slot.getDamageValue() - 1, 0));
-		});
+			if (boostedProbability > level.getRandom().nextFloat())
+				stack.setDamageValue(Math.max(stack.getDamageValue() - 1, 0));
+
+		}
 	}
 
 	private static double getAutoRepairChance(double baseProb, Level level, BlockPos pos) {
@@ -167,7 +172,7 @@ public class TravellersGearLogic {
 		double boostFactor;  // 1 tick in boost ≈ boostFactor ticks without boost
 		if (level.dimensionTypeRegistration().is(TFDimensionData.TWILIGHT_DIM_TYPE))
 			boostFactor = AUTO_REPAIR_TWILIGHT_BOOST;
-		else if (level.isDay())
+		else if (level.isBrightOutside())
 			boostFactor = AUTO_REPAIR_SUNLIGHT_BOOST;
 		else
 			return baseProb;
@@ -178,14 +183,14 @@ public class TravellersGearLogic {
 		ItemStack leggingsStack = livingEntity.getItemBySlot(EquipmentSlot.LEGS);
 		Integer amplifier = leggingsStack.get(TFDataComponents.HIGH_JUMP_AMPLIFIER);
 		if (TravellersModifiersManager.isModifierActive(livingEntity, leggingsStack, TravellersModifiersManager.HIGH_JUMP_ABILITY) && amplifier != null)
-			livingEntity.addEffect(new MobEffectInstance(MobEffects.JUMP, 2, amplifier, false, false, false));
+			livingEntity.addEffect(new MobEffectInstance(MobEffects.JUMP_BOOST, 2, amplifier, false, false, false));
 	}
 
 	public static void travellersVestHaste(LivingEntity livingEntity) {
 		ItemStack chestStack = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
 		Integer amplifier = chestStack.get(TFDataComponents.HASTE_AMPLIFIER);
 		if (TravellersModifiersManager.isModifierActive(livingEntity, chestStack, TravellersModifiersManager.HASTE_MODIFIER) && amplifier != null)
-			livingEntity.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, 2, amplifier, false, false, false));
+			livingEntity.addEffect(new MobEffectInstance(MobEffects.HASTE, 2, amplifier, false, false, false));
 	}
 
 	public static void travellersBootsUnrestrained(LivingEntity livingEntity) {
@@ -257,9 +262,9 @@ public class TravellersGearLogic {
 			Vec3 deltaMovement = player.getDeltaMovement();
 			for (int particleNumber = 0; particleNumber < 10; particleNumber++) {
 				Vec3 particleVelocity = new Vec3(
-					(serverLevel.random.nextDouble() - 0.5),
-					serverLevel.random.nextDouble() + 1,
-					(serverLevel.random.nextDouble() - 0.5)
+					(serverLevel.getRandom().nextDouble() - 0.5),
+					serverLevel.getRandom().nextDouble() + 1,
+					(serverLevel.getRandom().nextDouble() - 0.5)
 				);
 				ParticleOptions type = TFParticleType.DOUBLE_JUMP.get();
 				Vec3 wingsPosition = player.position().add(Math.sin(Math.toRadians(player.yBodyRot)) / 3, 1.2, -Math.cos(Math.toRadians(player.yBodyRot)) / 3);
@@ -333,11 +338,11 @@ public class TravellersGearLogic {
 
 		if (count > 1) {
 			TwilightForestMod.LOGGER.warn("{} illegal {}", serverPlayer.getName().getString(), movementType);
-			serverPlayer.absMoveTo(serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(),
+			serverPlayer.absSnapTo(serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(),
 				serverPlayer.getYRot(), serverPlayer.getXRot());
-			serverPlayer.connection.send(new ClientboundPlayerPositionPacket(
-				serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(),
-				serverPlayer.getYRot(), serverPlayer.getXRot(), Collections.emptySet(), 0));
+			serverPlayer.connection.send(ClientboundPlayerPositionPacket.of(serverPlayer.getId(),
+				new PositionMoveRotation(serverPlayer.position(), Vec3.ZERO,
+				serverPlayer.getYRot(), serverPlayer.getXRot()), Collections.emptySet()));
 		}
 	}
 

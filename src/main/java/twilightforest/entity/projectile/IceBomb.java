@@ -3,26 +3,31 @@ package twilightforest.entity.projectile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Position;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.enchantment.ApplyFrostedEffect;
 import twilightforest.entity.boss.AlphaYeti;
 import twilightforest.entity.monster.Yeti;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
+import twilightforest.init.TFItems;
 import twilightforest.init.TFParticleType;
+import twilightforest.tags.TFBlockTags;
 
 import java.util.List;
 
@@ -34,12 +39,17 @@ public class IceBomb extends TFThrowable {
 		super(type, level);
 	}
 
-	public IceBomb(EntityType<? extends IceBomb> type, Level level, LivingEntity thrower) {
-		super(type, level, thrower);
+	public IceBomb(Level level, LivingEntity thrower, ItemStack stack) {
+		super(TFEntities.THROWN_ICE.get(), level, thrower, stack);
 	}
 
-	public IceBomb(Level level, Position pos) {
-		super(TFEntities.THROWN_ICE.get(), level, pos.x(), pos.y(), pos.z());
+	public IceBomb(Level level, Position pos, ItemStack stack) {
+		super(TFEntities.THROWN_ICE.get(), level, pos.x(), pos.y(), pos.z(), stack);
+	}
+
+	@Override
+	protected Item getDefaultItem() {
+		return TFItems.ICE_BOMB.get();
 	}
 
 	@Override
@@ -50,8 +60,10 @@ public class IceBomb extends TFThrowable {
 	}
 
 	@Override
-	protected void onHitEntity(EntityHitResult pResult) {
-		if (pResult.getEntity() instanceof LivingEntity entity) inflictDamage(entity, 2);
+	protected void onHitEntity(EntityHitResult result) {
+		if (result.getEntity() instanceof LivingEntity entity && this.level() instanceof ServerLevel serverLevel) {
+			this.inflictDamage(serverLevel, entity, 2);
+		}
 	}
 
 	private void doTerrainEffects(int range) {
@@ -85,7 +97,7 @@ public class IceBomb extends TFThrowable {
 			if (this.level().isEmptyBlock(pos) && Blocks.SNOW.defaultBlockState().canSurvive(this.level(), pos)) {
 				this.level().setBlockAndUpdate(pos, Blocks.SNOW.defaultBlockState());
 			}
-			if (state.is(BlockTagGenerator.ICE_BOMB_REPLACEABLES)) {
+			if (state.is(TFBlockTags.ICE_BOMB_REPLACEABLES)) {
 				this.level().setBlock(pos, Blocks.SNOW.defaultBlockState().canSurvive(this.level(), pos) ? Blocks.SNOW.defaultBlockState() : Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
 			}
 			if (state.is(Blocks.SNOW) && state.getValue(SnowLayerBlock.LAYERS) < 8) {
@@ -134,31 +146,31 @@ public class IceBomb extends TFThrowable {
 			}
 		} else {
 			if (this.zoneTimer == 99) this.doTerrainEffects(3);
-			if (this.zoneTimer % 20 == 0) this.hitNearbyEntities();
+			if (this.zoneTimer % 20 == 0) this.hitNearbyEntities((ServerLevel) this.level());
 		}
 	}
 
-	private void hitNearbyEntities() {
-		List<LivingEntity> nearby = this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(3, 2, 3));
+	private void hitNearbyEntities(ServerLevel level) {
+		List<LivingEntity> nearby = level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(3, 2, 3));
 
 		for (LivingEntity entity : nearby) {
 			if (entity != this.getOwner()) {
 				if (entity instanceof Yeti) {
 					// TODO: make "frozen yeti" entity?
 					BlockPos pos = BlockPos.containing(entity.xOld, entity.yOld, entity.zOld);
-					this.level().setBlockAndUpdate(pos, Blocks.ICE.defaultBlockState());
-					this.level().setBlockAndUpdate(pos.above(), Blocks.ICE.defaultBlockState());
+					level.setBlockAndUpdate(pos, Blocks.ICE.defaultBlockState());
+					level.setBlockAndUpdate(pos.above(), Blocks.ICE.defaultBlockState());
 
 					entity.discard();
-				} else this.inflictDamage(entity, 1);
+				} else this.inflictDamage(level, entity, 1);
 			}
 		}
 	}
 
-	private void inflictDamage(LivingEntity entity, int dmgMultiplier) {
-		if (!entity.getType().is(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES)) {
-			entity.hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.FROZEN, this, this.getOwner()),
-				(entity.getType().is(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES) ? 5.0F : 1.0F) * dmgMultiplier);
+	private void inflictDamage(ServerLevel level, LivingEntity entity, int dmgMultiplier) {
+		if (!entity.is(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES)) {
+			entity.hurtServer(level, TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.FROZEN, this, this.getOwner()),
+				(entity.is(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES) ? 5.0F : 1.0F) * dmgMultiplier);
 			ApplyFrostedEffect.doChillAuraEffect(entity, 100 * dmgMultiplier, 0, true);
 		}
 	}
@@ -173,14 +185,16 @@ public class IceBomb extends TFThrowable {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag pCompound) {
-		pCompound.putInt("zone_timer", this.zoneTimer);
-		pCompound.putBoolean("has_hit", this.hasHit);
+	protected void addAdditionalSaveData(ValueOutput output) {
+		super.addAdditionalSaveData(output);
+		output.putInt("zone_timer", this.zoneTimer);
+		output.putBoolean("has_hit", this.hasHit);
 	}
 
 	@Override
-	protected void readAdditionalSaveData(CompoundTag pCompound) {
-		this.zoneTimer = pCompound.getInt("zone_timer");
-		this.hasHit = pCompound.getBoolean("has_hit");
+	protected void readAdditionalSaveData(ValueInput input) {
+		super.readAdditionalSaveData(input);
+		this.zoneTimer = input.getIntOr("zone_timer", 100);
+		this.hasHit = input.getBooleanOr("has_hit", false);
 	}
 }

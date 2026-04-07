@@ -122,7 +122,7 @@ public class ClientRegistrationEvents {
 		bus.addListener(OverlayHandler::registerOverlays);
 
 		bus.addListener(RegisterClientTooltipComponentFactoriesEvent.class, event -> {
-			event.register(BrittleFlaskItem.Tooltip.class, PotionFlaskTooltipComponent::new);
+			event.register(PotionFlaskItem.Tooltip.class, PotionFlaskTooltipComponent::new);
 			event.register(TravellersArmorBeltItem.Tooltip.class, TravellersBeltTooltipComponent::new);
 			event.register(TravellersGogglesItem.Tooltip.class, ItemDisplayTooltipComponent::new);
 		});

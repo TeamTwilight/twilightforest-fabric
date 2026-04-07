@@ -7,31 +7,26 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.UseAnim;
-import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
-import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
 import twilightforest.network.ParticlePacket;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.util.iterators.VoxelBresenhamIterator;
 
-import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class OreMagnetItem extends Item {
 
@@ -45,31 +40,13 @@ public class OreMagnetItem extends Item {
 	}
 
 	@Override
-	public boolean isEnchantable(ItemStack stack) {
-		return false;
-	}
-
-	@Override
-	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		AtomicBoolean badEnchant = new AtomicBoolean();
-		book.getEnchantments().entrySet().forEach(enchantment -> {
-			if (!Objects.equals(Enchantments.UNBREAKING, enchantment)) {
-				badEnchant.set(true);
-			}
-		});
-
-		return !badEnchant.get() && super.isBookEnchantable(stack, book);
-	}
-
-	@Nonnull
-	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand hand) {
+	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		player.startUsingItem(hand);
-		return new InteractionResultHolder<>(InteractionResult.SUCCESS, player.getItemInHand(hand));
+		return InteractionResult.SUCCESS;
 	}
 
 	@Override
-	public void releaseUsing(ItemStack stack, Level level, LivingEntity living, int useRemaining) {
+	public boolean releaseUsing(ItemStack stack, Level level, LivingEntity living, int useRemaining) {
 		int useTime = this.getUseDuration(stack, living) - useRemaining;
 
 		if (!level.isClientSide() && useTime > 10) {
@@ -101,16 +78,17 @@ public class OreMagnetItem extends Item {
 			}
 
 			if (moved > 0) {
-				stack.hurtAndBreak(moved, living, LivingEntity.getSlotForHand(living.getUsedItemHand()));
+				stack.hurtAndBreak(moved, living, living.getUsedItemHand());
 				level.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.MAGNET_GRAB.get(), living.getSoundSource(), 1.0F, 1.0F);
+				return true;
 			}
 		}
+		return false;
 	}
 
-	@Nonnull
 	@Override
-	public UseAnim getUseAnimation(ItemStack stack) {
-		return UseAnim.BOW;
+	public ItemUseAnimation getUseAnimation(ItemStack stack) {
+		return ItemUseAnimation.BOW;
 	}
 
 	@Override
@@ -179,7 +157,7 @@ public class OreMagnetItem extends Item {
 							if (serverplayer.distanceToSqr(xyz) < 4096.0D) {
 								ParticlePacket particlePacket = new ParticlePacket();
 								for (int i = 0; i < 16; i++) {
-									Vec3 offset = new Vec3((level.random.nextDouble() - 0.5D) * 1.25D, (level.random.nextDouble() - 0.5D) * 1.25D, (level.random.nextDouble() - 0.5D) * 1.25D);
+									Vec3 offset = new Vec3((level.getRandom().nextDouble() - 0.5D) * 1.25D, (level.getRandom().nextDouble() - 0.5D) * 1.25D, (level.getRandom().nextDouble() - 0.5D) * 1.25D);
 									particlePacket.queueParticle(TFParticleType.LOG_CORE_PARTICLE.get(), false, xyz.add(offset), new Vec3(0.8, 0.9, 0.2));
 								}
 								PacketDistributor.sendToPlayer(serverplayer, particlePacket);
@@ -211,7 +189,7 @@ public class OreMagnetItem extends Item {
 
 	@Deprecated
 	private static boolean isReplaceable(BlockState state) {
-		return state.is(BlockTagGenerator.ORE_MAGNET_SAFE_REPLACE_BLOCK);
+		return state.is(TFBlockTags.ORE_MAGNET_SAFE_REPLACE_BLOCK);
 	}
 
 	private static boolean findVein(Level level, BlockPos here, BlockState oreState, Set<BlockPos> veinBlocks) {

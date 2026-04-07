@@ -17,7 +17,7 @@ import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtension
 import org.joml.Matrix4f;
 import twilightforest.TwilightForestMod;
 import twilightforest.components.item.PotionFlaskComponent;
-import twilightforest.item.BrittleFlaskItem;
+import twilightforest.item.PotionFlaskItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ public class PotionFlaskTooltipComponent implements ClientTooltipComponent {
 	private final PotionFlaskComponent component;
 	private final int maxDoses;
 
-	public PotionFlaskTooltipComponent(BrittleFlaskItem.Tooltip tooltip) {
+	public PotionFlaskTooltipComponent(PotionFlaskItem.Tooltip tooltip) {
 		this.component = tooltip.component();
 		this.maxDoses = tooltip.maxDoses();
 	}

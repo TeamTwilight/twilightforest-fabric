@@ -6,7 +6,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -55,7 +55,7 @@ public class SeekerArrow extends TFArrow {
 				this.updateTarget();
 			}
 
-			if (this.level().isClientSide() && !this.inGround) {
+			if (this.level().isClientSide() && !this.isInGround()) {
 				for (int i = 0; i < 4; ++i) {
 					this.level().addParticle(ParticleTypes.WITCH, this.getX() + this.getDeltaMovement().x() * i / 4.0D, this.getY() + this.getDeltaMovement().y() * i / 4.0D, this.getZ() + this.getDeltaMovement().z() * i / 4.0D, -this.getDeltaMovement().x(), -this.getDeltaMovement().y() + 0.2D, -this.getDeltaMovement().z());
 				}
@@ -180,7 +180,7 @@ public class SeekerArrow extends TFArrow {
 	}
 
 	private boolean isThisArrowFlying() {
-		return !this.inGround && getDeltaMovement().lengthSqr() > 1.0;
+		return !this.isInGround() && getDeltaMovement().lengthSqr() > 1.0;
 	}
 
 	@Override

@@ -164,6 +164,7 @@ public class GrowingBeanstalkBlockEntity extends BlockEntity {
 		BlockState state = level.getBlockState(pos);
 		if (state.isAir() || (state.canBeReplaced() && !state.is(TFBlocks.BEANSTALK_GROWER)) || (state.isAir() || state.is(BlockTags.LEAVES)) || state.is(TFBlocks.FLUFFY_CLOUD)) {
 			level.setBlockAndUpdate(pos, TFBlocks.HUGE_STALK.get().defaultBlockState());
+			Block.pushEntitiesUp(state, TFBlocks.HUGE_STALK.get().defaultBlockState(), level, pos);
 			if (pos.getY() > 150) {
 				for (int i = 0; i < 7; i++) {
 					if (level.getBlockState(pos.relative(Direction.UP, i)).is(TFBlocks.WISPY_CLOUD) || level.getBlockState(pos.relative(Direction.UP, i)).is(TFBlocks.FLUFFY_CLOUD)) {

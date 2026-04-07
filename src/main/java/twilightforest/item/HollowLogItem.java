@@ -3,12 +3,10 @@ package twilightforest.item;
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Map;
 
@@ -37,23 +35,6 @@ public class HollowLogItem extends BlockItem {
 	public void registerBlocks(Map<Block, Item> blockItemMap, Item item) {
 		super.registerBlocks(blockItemMap, item);
 		blockItemMap.put(this.horizontalLog, item);
-		blockItemMap.put(this.verticalLog, item);
 		blockItemMap.put(this.climbable, item);
-	}
-
-	// FIXME Depreciated for removal, NeoForge will no longer continue supporting this method
-	//  https://github.com/neoforged/NeoForge/pull/1480
-	@SuppressWarnings("removal")
-	@Override
-	public void removeFromBlockToItemMap(Map<Block, Item> blockItemMap, Item item) {
-		super.removeFromBlockToItemMap(blockItemMap, item);
-		blockItemMap.remove(this.horizontalLog);
-		blockItemMap.remove(this.verticalLog);
-		blockItemMap.remove(this.climbable);
-	}
-
-	@Override
-	public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
-		return 300;
 	}
 }

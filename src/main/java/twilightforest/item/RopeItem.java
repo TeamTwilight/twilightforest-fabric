@@ -12,16 +12,15 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jspecify.annotations.Nullable;
 import twilightforest.block.RopeBlock;
 
-import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class RopeItem extends BlockItem {
 	public static final int EXTEND_RANGE = 7;
-
 
 	public RopeItem(Block block, Item.Properties properties) {
 		super(block, properties);
@@ -45,9 +44,9 @@ public class RopeItem extends BlockItem {
 			BlockPos.MutableBlockPos mutableBlockPos = blockpos.mutable();
 
 			while (i < EXTEND_RANGE) {
-				if (!level.isClientSide && !level.isInWorldBounds(mutableBlockPos)) {
+				if (!level.isClientSide() && !level.isInWorldBounds(mutableBlockPos)) {
 					Player player = context.getPlayer();
-					int j = level.getMaxBuildHeight();
+					int j = level.getMaxY();
 					if (player instanceof ServerPlayer serverPlayer && mutableBlockPos.getY() >= j) {
 						serverPlayer.sendSystemMessage(Component.translatable("build.tooHigh", j - 1).withStyle(ChatFormatting.RED), true);
 					}

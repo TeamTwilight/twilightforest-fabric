@@ -3,18 +3,17 @@ package twilightforest.item;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFDataMaps;
 import twilightforest.util.entities.EntityUtil;
-
-import javax.annotation.Nonnull;
 
 public class TransformPowderItem extends Item {
 
@@ -28,12 +27,11 @@ public class TransformPowderItem extends Item {
 			return InteractionResult.PASS;
 		}
 
-		return transformEntityIfPossible(target, player.getItemInHand(hand), !player.isCreative()) ? InteractionResult.SUCCESS : InteractionResult.PASS;
+		return transformEntityIfPossible(target, player, player.getItemInHand(hand), !player.isCreative()) ? InteractionResult.SUCCESS : InteractionResult.PASS;
 	}
 
-	@Nonnull
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand hand) {
+	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		if (level.isClientSide()) {
 			AABB area = this.getEffectAABB(player);
 
@@ -47,12 +45,12 @@ public class TransformPowderItem extends Item {
 
 		}
 
-		return new InteractionResultHolder<>(InteractionResult.SUCCESS, player.getItemInHand(hand));
+		return InteractionResult.SUCCESS;
 	}
 
-	public static boolean transformEntityIfPossible(LivingEntity target, ItemStack powder, boolean shrinkStack) {
-		//dont transform tamed animals that have owners
-		if (target instanceof OwnableEntity ownable && ownable.getOwner() != null) return false;
+	public static boolean transformEntityIfPossible(LivingEntity target, @Nullable Player user, ItemStack powder, boolean shrinkStack) {
+		//dont transform tamed animals that have other owners
+		if (target instanceof OwnableEntity ownable && ownable.getOwner() != user) return false;
 
 		var datamap = target.getType().builtInRegistryHolder().getData(TFDataMaps.TRANSFORMATION_POWDER);
 

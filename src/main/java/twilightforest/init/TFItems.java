@@ -1,48 +1,45 @@
 package twilightforest.init;
 
+import net.minecraft.core.Direction;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.BlocksAttacks;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
-import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.item.component.TooltipDisplay;
+import net.minecraft.world.item.enchantment.Repairable;
+import net.minecraft.world.item.equipment.ArmorType;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import tamaized.beanification.Autowired;
 import twilightforest.TwilightForestMod;
 import twilightforest.components.item.PotionFlaskComponent;
-import twilightforest.data.tags.CustomTagGenerator;
-import twilightforest.enums.extensions.TFBoatTypeEnumExtension;
 import twilightforest.enums.extensions.TFRarityEnumExtension;
 import twilightforest.item.*;
-import twilightforest.item.StackableEffectItem.StackableEffectInstance;
+import twilightforest.item.food.TFConsumables;
 import twilightforest.item.food.TFFoods;
 import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
 import twilightforest.item.travellers_gear.TravellersArmorItem;
-import twilightforest.item.travellers_gear.TravellersItem;
 import twilightforest.item.travellers_gear.TravellersGogglesItem;
+import twilightforest.tags.TFBannerPatternTags;
 import twilightforest.util.TFToolMaterials;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class TFItems {
-
-	@Autowired
-	private static TFBoatTypeEnumExtension boatTypeEnumExtension;
 
 	@Autowired
 	private static TFRarityEnumExtension tfRarityEnumExtension;
@@ -50,8 +47,8 @@ public class TFItems {
 	public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(TwilightForestMod.ID);
 
 	public static final DeferredItem<Item> NAGA_SCALE = register("naga_scale", Item::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON));
-	public static final DeferredItem<Item> NAGA_CHESTPLATE = register("naga_chestplate", properties -> new Item(TFArmorMaterials.NAGA, ArmorType.CHESTPLATE, properties), () -> new Item.Properties().durability(ArmorType.CHESTPLATE.getDurability(21)).rarity(Rarity.UNCOMMON));
-	public static final DeferredItem<Item> NAGA_LEGGINGS = register("naga_leggings", properties -> new Item(TFArmorMaterials.NAGA, ArmorType.LEGGINGS, properties), () -> new Item.Properties().durability(ArmorType.LEGGINGS.getDurability(21)).rarity(Rarity.UNCOMMON));
+	public static final DeferredItem<Item> NAGA_CHESTPLATE = register("naga_chestplate", Item::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.NAGA, ArmorType.CHESTPLATE).rarity(Rarity.UNCOMMON));
+	public static final DeferredItem<Item> NAGA_LEGGINGS = register("naga_leggings", Item::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.NAGA, ArmorType.LEGGINGS).rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> TWILIGHT_SCEPTER = register("twilight_scepter", TwilightWandItem::new, () -> new Item.Properties().durability(99).rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> LIFEDRAIN_SCEPTER = register("lifedrain_scepter", LifedrainScepterItem::new, () -> new Item.Properties().durability(99).rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> ZOMBIE_SCEPTER = register("zombie_scepter", ZombieWandItem::new, () -> new Item.Properties().durability(9).rarity(Rarity.UNCOMMON));
@@ -73,13 +70,13 @@ public class TFItems {
 	public static final DeferredItem<Item> LIVEROOT = register("liveroot", Item::new, Item.Properties::new);
 	public static final DeferredItem<Item> RAW_IRONWOOD = register("raw_ironwood", Item::new, Item.Properties::new);
 	public static final DeferredItem<Item> IRONWOOD_INGOT = register("ironwood_ingot", Item::new, Item.Properties::new);
-	public static final DeferredItem<Item> IRONWOOD_HELMET = register("ironwood_helmet", properties -> new Item(TFArmorMaterials.IRONWOOD, ArmorType.HELMET, properties), () -> new Item.Properties().durability(ArmorType.HELMET.getDurability(20)));
-	public static final DeferredItem<Item> IRONWOOD_CHESTPLATE = register("ironwood_chestplate", properties -> new Item(TFArmorMaterials.IRONWOOD, ArmorType.CHESTPLATE, properties), () -> new Item.Properties().durability(ArmorType.CHESTPLATE.getDurability(20)));
-	public static final DeferredItem<Item> IRONWOOD_LEGGINGS = register("ironwood_leggings", properties -> new Item(TFArmorMaterials.IRONWOOD, ArmorType.LEGGINGS, properties), () -> new Item.Properties().durability(ArmorType.LEGGINGS.getDurability(20)));
-	public static final DeferredItem<Item> IRONWOOD_BOOTS = register("ironwood_boots", properties -> new Item(TFArmorMaterials.IRONWOOD, ArmorType.BOOTS, properties), () -> new Item.Properties().durability(ArmorType.BOOTS.getDurability(20)));
-	public static final DeferredItem<Item> IRONWOOD_SWORD = register("ironwood_sword", properties -> new SwordItem(TFToolMaterials.IRONWOOD, 3.0F, -2.4F, properties), Item.Properties::new);
+	public static final DeferredItem<Item> IRONWOOD_HELMET = register("ironwood_helmet", Item::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.IRONWOOD, ArmorType.HELMET));
+	public static final DeferredItem<Item> IRONWOOD_CHESTPLATE = register("ironwood_chestplate", Item::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.IRONWOOD, ArmorType.CHESTPLATE));
+	public static final DeferredItem<Item> IRONWOOD_LEGGINGS = register("ironwood_leggings", Item::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.IRONWOOD, ArmorType.LEGGINGS));
+	public static final DeferredItem<Item> IRONWOOD_BOOTS = register("ironwood_boots", Item::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.IRONWOOD, ArmorType.BOOTS));
+	public static final DeferredItem<Item> IRONWOOD_SWORD = register("ironwood_sword", Item::new, () -> new Item.Properties().sword(TFToolMaterials.IRONWOOD, 3.0F, -2.4F));
 	public static final DeferredItem<Item> IRONWOOD_SHOVEL = register("ironwood_shovel", properties -> new ShovelItem(TFToolMaterials.IRONWOOD, 1.5F, -3.0F, properties), Item.Properties::new);
-	public static final DeferredItem<Item> IRONWOOD_PICKAXE = register("ironwood_pickaxe", properties -> new PickaxeItem(TFToolMaterials.IRONWOOD, 1.0F, -2.8F, properties), Item.Properties::new);
+	public static final DeferredItem<Item> IRONWOOD_PICKAXE = register("ironwood_pickaxe", Item::new, () -> new Item.Properties().pickaxe(TFToolMaterials.IRONWOOD, 1.0F, -2.8F));
 	public static final DeferredItem<Item> IRONWOOD_AXE = register("ironwood_axe", properties -> new AxeItem(TFToolMaterials.IRONWOOD, 6.0F, -3.1F, properties), Item.Properties::new);
 	public static final DeferredItem<Item> IRONWOOD_HOE = register("ironwood_hoe", properties -> new HoeItem(TFToolMaterials.IRONWOOD, -2, -1.0F, properties), Item.Properties::new);
 	public static final DeferredItem<Item> TORCHBERRIES = register("torchberries", Item::new, () -> new Item.Properties().food(TFFoods.TORCHBERRIES, TFConsumables.TORCHBERRIES));
@@ -90,30 +87,31 @@ public class TFItems {
 	public static final DeferredItem<Item> FIERY_BLOOD = register("fiery_blood", Item::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> FIERY_TEARS = register("fiery_tears", Item::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> FIERY_INGOT = register("fiery_ingot", Item::new, () -> new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON));
-	public static final DeferredItem<Item> FIERY_HELMET = register("fiery_helmet", properties -> new FieryItem(TFArmorMaterials.FIERY, ArmorType.HELMET, properties), () -> new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON));
-	public static final DeferredItem<Item> FIERY_CHESTPLATE = register("fiery_chestplate", properties -> new FieryItem(TFArmorMaterials.FIERY, ArmorType.CHESTPLATE, properties), () -> new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON));
-	public static final DeferredItem<Item> FIERY_LEGGINGS = register("fiery_leggings", properties -> new FieryItem(TFArmorMaterials.FIERY, ArmorType.LEGGINGS, properties), () -> new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON));
-	public static final DeferredItem<Item> FIERY_BOOTS = register("fiery_boots", properties -> new FieryItem(TFArmorMaterials.FIERY, ArmorType.BOOTS, properties), () -> new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON));
-	public static final DeferredItem<Item> FIERY_SWORD = register("fiery_sword", properties -> new FierySwordItem(TFToolMaterials.FIERY, properties), () -> new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON));
-	public static final DeferredItem<Item> FIERY_PICKAXE = register("fiery_pickaxe", properties -> new FieryPickItem(TFToolMaterials.FIERY, properties), () -> new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON));
-	public static final DeferredItem<Item> TRAVELLERS_GOGGLES = register("travellers_goggles", () -> new TravellersGogglesItem(TravellersArmorItem.gogglesProperties(new Item.Properties())));
-	public static final DeferredItem<Item> TRAVELLERS_VEST = register("travellers_vest", () -> new TravellersArmorItem(ArmorItem.Type.CHESTPLATE, TravellersArmorItem.chestProperties(new Item.Properties()), 3, 12));
-	public static final DeferredItem<Item> TRAVELLERS_GLOVES = register("travellers_gloves", () -> new TravellersArmorItem(ArmorItem.Type.CHESTPLATE, TravellersArmorItem.glovesProperties(new Item.Properties().stacksTo(1)), 0));
-	public static final DeferredItem<Item> TRAVELLERS_WINGS = register("travellers_wings", () -> new TravellersArmorBeltItem(ArmorItem.Type.LEGGINGS, TravellersArmorItem.wingsProperties(new Item.Properties()), 3, 12));
-	public static final DeferredItem<Item> TRAVELLERS_BELT = register("travellers_belt", () -> new TravellersArmorBeltItem(ArmorItem.Type.LEGGINGS, TravellersArmorBeltItem.beltProperties(new Item.Properties().stacksTo(1)), 0));
-	public static final DeferredItem<Item> TRAVELLERS_BOOTS = register("travellers_boots", () -> new TravellersArmorItem(ArmorItem.Type.BOOTS, TravellersArmorItem.bootsProperties(new Item.Properties()), 3, 12));public static final DeferredItem<Item> STEELEAF_INGOT = register("steeleaf_ingot", Item::new, Item.Properties::new);
-	public static final DeferredItem<Item> STEELEAF_HELMET = register("steeleaf_helmet", properties -> new Item(TFArmorMaterials.STEELEAF, ArmorType.HELMET, properties), Item.Properties::new);
-	public static final DeferredItem<Item> STEELEAF_CHESTPLATE = register("steeleaf_chestplate", properties -> new Item(TFArmorMaterials.STEELEAF, ArmorType.CHESTPLATE, properties), Item.Properties::new);
-	public static final DeferredItem<Item> STEELEAF_LEGGINGS = register("steeleaf_leggings", properties -> new Item(TFArmorMaterials.STEELEAF, ArmorType.LEGGINGS, properties), Item.Properties::new);
-	public static final DeferredItem<Item> STEELEAF_BOOTS = register("steeleaf_boots", properties -> new Item(TFArmorMaterials.STEELEAF, ArmorType.BOOTS, properties), Item.Properties::new);
-	public static final DeferredItem<Item> STEELEAF_SWORD = register("steeleaf_sword", properties -> new SwordItem(TFToolMaterials.STEELEAF, 3.0F, -2.4F, properties), Item.Properties::new);
+	public static final DeferredItem<Item> FIERY_HELMET = register("fiery_helmet", FieryArmorItem::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.FIERY, ArmorType.HELMET).fireResistant().rarity(Rarity.UNCOMMON));
+	public static final DeferredItem<Item> FIERY_CHESTPLATE = register("fiery_chestplate", FieryArmorItem::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.FIERY, ArmorType.CHESTPLATE).fireResistant().rarity(Rarity.UNCOMMON));
+	public static final DeferredItem<Item> FIERY_LEGGINGS = register("fiery_leggings", FieryArmorItem::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.FIERY, ArmorType.LEGGINGS).fireResistant().rarity(Rarity.UNCOMMON));
+	public static final DeferredItem<Item> FIERY_BOOTS = register("fiery_boots", FieryArmorItem::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.FIERY, ArmorType.BOOTS).fireResistant().rarity(Rarity.UNCOMMON));
+	public static final DeferredItem<Item> FIERY_SWORD = register("fiery_sword", FierySwordItem::new, () -> new Item.Properties().sword(TFToolMaterials.FIERY, 3.0F, -2.4F).fireResistant().rarity(Rarity.UNCOMMON));
+	public static final DeferredItem<Item> FIERY_PICKAXE = register("fiery_pickaxe", FieryPickItem::new, () -> new Item.Properties().pickaxe(TFToolMaterials.FIERY, 1.0F, -2.8F).fireResistant().rarity(Rarity.UNCOMMON));
+	public static final DeferredItem<Item> TRAVELLERS_GOGGLES = register("travellers_goggles", properties -> new TravellersGogglesItem(3, properties), () -> TravellersArmorItem.gogglesProperties(new Item.Properties().humanoidArmor(TFArmorMaterials.TRAVELLERS_GEAR, ArmorType.HELMET)));
+	public static final DeferredItem<Item> TRAVELLERS_VEST = register("travellers_vest", properties -> new TravellersArmorItem(3, properties), () -> TravellersArmorItem.chestProperties(new Item.Properties().humanoidArmor(TFArmorMaterials.TRAVELLERS_GEAR, ArmorType.CHESTPLATE)));
+	public static final DeferredItem<Item> TRAVELLERS_GLOVES = register("travellers_gloves", properties -> new TravellersArmorItem(0, properties), () -> TravellersArmorItem.glovesProperties(new Item.Properties().humanoidArmor(TFArmorMaterials.TRAVELLERS_GEAR, ArmorType.CHESTPLATE).durability(0).stacksTo(1)));
+	public static final DeferredItem<Item> TRAVELLERS_WINGS = register("travellers_wings", properties -> new TravellersArmorBeltItem(3, properties), () -> TravellersArmorItem.wingsProperties(new Item.Properties().humanoidArmor(TFArmorMaterials.TRAVELLERS_GEAR, ArmorType.LEGGINGS)));
+	public static final DeferredItem<Item> TRAVELLERS_BELT = register("travellers_belt", properties -> new TravellersArmorBeltItem(0, properties), () -> TravellersArmorBeltItem.beltProperties(new Item.Properties().humanoidArmor(TFArmorMaterials.TRAVELLERS_GEAR, ArmorType.LEGGINGS).durability(0).stacksTo(1)));
+	public static final DeferredItem<Item> TRAVELLERS_BOOTS = register("travellers_boots", properties -> new TravellersArmorItem(3, properties), () -> TravellersArmorItem.bootsProperties(new Item.Properties().humanoidArmor(TFArmorMaterials.TRAVELLERS_GEAR, ArmorType.BOOTS)));
+	public static final DeferredItem<Item> STEELEAF_INGOT = register("steeleaf_ingot", Item::new, Item.Properties::new);
+	public static final DeferredItem<Item> STEELEAF_HELMET = register("steeleaf_helmet", Item::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.STEELEAF, ArmorType.HELMET));
+	public static final DeferredItem<Item> STEELEAF_CHESTPLATE = register("steeleaf_chestplate", Item::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.STEELEAF, ArmorType.CHESTPLATE));
+	public static final DeferredItem<Item> STEELEAF_LEGGINGS = register("steeleaf_leggings", Item::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.STEELEAF, ArmorType.LEGGINGS));
+	public static final DeferredItem<Item> STEELEAF_BOOTS = register("steeleaf_boots", Item::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.STEELEAF, ArmorType.BOOTS));
+	public static final DeferredItem<Item> STEELEAF_SWORD = register("steeleaf_sword", Item::new, () -> new Item.Properties().sword(TFToolMaterials.KNIGHTMETAL, 3.0F, -2.4F));
 	public static final DeferredItem<Item> STEELEAF_SHOVEL = register("steeleaf_shovel", properties -> new ShovelItem(TFToolMaterials.STEELEAF, 1.5F, -3.0F, properties), Item.Properties::new);
-	public static final DeferredItem<Item> STEELEAF_PICKAXE = register("steeleaf_pickaxe", properties -> new PickaxeItem(TFToolMaterials.STEELEAF, 1.0F, -2.8F, properties), Item.Properties::new);
+	public static final DeferredItem<Item> STEELEAF_PICKAXE = register("steeleaf_pickaxe", Item::new, () -> new Item.Properties().pickaxe(TFToolMaterials.STEELEAF, 1.0F, -2.8F));
 	public static final DeferredItem<Item> STEELEAF_AXE = register("steeleaf_axe", properties -> new AxeItem(TFToolMaterials.STEELEAF, 6.0F, -3.0F, properties), Item.Properties::new);
 	public static final DeferredItem<Item> STEELEAF_HOE = register("steeleaf_hoe", properties -> new HoeItem(TFToolMaterials.STEELEAF, -3.0F, -0.5F, properties), Item.Properties::new);
-	public static final DeferredItem<Item> GOLDEN_MINOTAUR_AXE = register("gold_minotaur_axe", properties -> new MinotaurAxeItem(ToolMaterial.GOLD, properties), Item.Properties::new);
-	public static final DeferredItem<Item> DIAMOND_MINOTAUR_AXE = register("diamond_minotaur_axe", properties -> new MinotaurAxeItem(ToolMaterial.DIAMOND, properties), () -> new Item.Properties().rarity(Rarity.UNCOMMON));
-	public static final DeferredItem<Item> MAZEBREAKER_PICKAXE = register("mazebreaker_pickaxe", properties -> new MazebreakerPickItem(ToolMaterial.DIAMOND, properties), () -> new Item.Properties().rarity(Rarity.RARE));
+	public static final DeferredItem<Item> GOLDEN_MINOTAUR_AXE = register("gold_minotaur_axe", properties -> new MinotaurAxeItem(ToolMaterial.GOLD, 6.0F, -3.2F, properties), Item.Properties::new);
+	public static final DeferredItem<Item> DIAMOND_MINOTAUR_AXE = register("diamond_minotaur_axe", properties -> new MinotaurAxeItem(ToolMaterial.DIAMOND, 6.0F, -3.2F, properties), () -> new Item.Properties().rarity(Rarity.UNCOMMON));
+	public static final DeferredItem<Item> MAZEBREAKER_PICKAXE = register("mazebreaker_pickaxe", MazebreakerPickItem::new, () -> new Item.Properties().pickaxe(ToolMaterial.DIAMOND, 1.0F, -2.8F).component(DataComponents.REPAIRABLE, new Repairable(HolderSet.empty())).rarity(Rarity.RARE));
 	public static final DeferredItem<Item> TRANSFORMATION_POWDER = register("transformation_powder", TransformPowderItem::new, Item.Properties::new);
 	public static final DeferredItem<Item> RAW_MEEF = register("raw_meef", Item::new, () -> new Item.Properties().food(TFFoods.RAW_MEEF));
 	public static final DeferredItem<Item> COOKED_MEEF = register("cooked_meef", Item::new, () -> new Item.Properties().food(TFFoods.MEEF_STEAK));
@@ -124,17 +122,17 @@ public class TFItems {
 	public static final DeferredItem<Item> CRUMBLE_HORN = register("crumble_horn", CrumbleHornItem::new, () -> new Item.Properties().durability(1024).rarity(Rarity.RARE));
 	public static final DeferredItem<Item> PEACOCK_FEATHER_FAN = register("peacock_feather_fan", PeacockFanItem::new, () -> new Item.Properties().durability(1024).rarity(Rarity.RARE));
 	public static final DeferredItem<Item> MOONWORM_QUEEN = register("moonworm_queen", MoonwormQueenItem::new, () -> new Item.Properties().durability(256).rarity(Rarity.RARE));
-	public static final DeferredItem<Item> BRITTLE_FLASK = register("brittle_potion_flask", BrittleFlaskItem::new, () -> new Item.Properties().component(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY));
-	public static final DeferredItem<Item> GREATER_FLASK = register("greater_potion_flask", GreaterFlaskItem::new, () -> new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON).fireResistant().component(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY_UNBREAKABLE));
+	public static final DeferredItem<Item> BRITTLE_FLASK = register("brittle_potion_flask", PotionFlaskItem::new, () -> new Item.Properties().component(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY));
+	public static final DeferredItem<Item> GREATER_FLASK = register("greater_potion_flask", PotionFlaskItem::new, () -> new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON).fireResistant().component(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY_UNBREAKABLE));
 	public static final DeferredItem<Item> CHARM_OF_LIFE_1 = register("charm_of_life_1", Item::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> CHARM_OF_LIFE_2 = register("charm_of_life_2", Item::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> CHARM_OF_KEEPING_1 = register("charm_of_keeping_1", Item::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> CHARM_OF_KEEPING_2 = register("charm_of_keeping_2", Item::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> CHARM_OF_KEEPING_3 = register("charm_of_keeping_3", Item::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON));
-	public static final DeferredItem<Item> IRON_BERRY = register("iron_berry", () -> new Item(new Item.Properties()));
-	public static final DeferredItem<Item> GOLD_BERRY = register("gold_berry", () -> new Item(new Item.Properties()));
-	public static final DeferredItem<Item> COPPER_BERRY = register("copper_berry", () -> new Item(new Item.Properties()));
-	public static final DeferredItem<Item> ESSENCE_BERRY = register("essence_berry", () -> new EssenceBerryItem(new Item.Properties()));
+	public static final DeferredItem<Item> IRON_BERRY = register("iron_berry", Item::new, Item.Properties::new);
+	public static final DeferredItem<Item> GOLD_BERRY = register("gold_berry", Item::new, Item.Properties::new);
+	public static final DeferredItem<Item> COPPER_BERRY = register("copper_berry", Item::new, Item.Properties::new);
+	public static final DeferredItem<Item> ESSENCE_BERRY = register("essence_berry", EssenceBerryItem::new, Item.Properties::new);
 	public static final DeferredItem<Item> TOWER_KEY = register("tower_key", Item::new, () -> new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> BORER_ESSENCE = register("borer_essence", Item::new, Item.Properties::new);
 	public static final DeferredItem<Item> CARMINITE = register("carminite", Item::new, Item.Properties::new);
@@ -146,38 +144,53 @@ public class TFItems {
 	public static final DeferredItem<Item> ARMOR_SHARD = register("armor_shard", Item::new, Item.Properties::new);
 	public static final DeferredItem<Item> ARMOR_SHARD_CLUSTER = register("armor_shard_cluster", Item::new, Item.Properties::new);
 	public static final DeferredItem<Item> KNIGHTMETAL_INGOT = register("knightmetal_ingot", Item::new, Item.Properties::new);
-	public static final DeferredItem<Item> KNIGHTMETAL_HELMET = register("knightmetal_helmet", properties -> new Item(TFArmorMaterials.KNIGHTMETAL, ArmorType.HELMET, properties), Item.Properties::new);
-	public static final DeferredItem<Item> KNIGHTMETAL_CHESTPLATE = register("knightmetal_chestplate", properties -> new Item(TFArmorMaterials.KNIGHTMETAL, ArmorType.CHESTPLATE, properties), Item.Properties::new);
-	public static final DeferredItem<Item> KNIGHTMETAL_LEGGINGS = register("knightmetal_leggings", properties -> new Item(TFArmorMaterials.KNIGHTMETAL, ArmorType.LEGGINGS, properties), Item.Properties::new);
-	public static final DeferredItem<Item> KNIGHTMETAL_BOOTS = register("knightmetal_boots", properties -> new Item(TFArmorMaterials.KNIGHTMETAL, ArmorType.BOOTS, properties), Item.Properties::new);
-	public static final DeferredItem<Item> KNIGHTMETAL_SWORD = register("knightmetal_sword", properties -> new KnightmetalSwordItem(TFToolMaterials.KNIGHTMETAL, properties), Item.Properties::new);
-	public static final DeferredItem<Item> KNIGHTMETAL_PICKAXE = register("knightmetal_pickaxe", properties -> new KnightmetalPickItem(TFToolMaterials.KNIGHTMETAL, properties), Item.Properties::new);
-	public static final DeferredItem<Item> KNIGHTMETAL_AXE = register("knightmetal_axe", properties -> new KnightmetalAxeItem(TFToolMaterials.KNIGHTMETAL, properties), Item.Properties::new);
+	public static final DeferredItem<Item> KNIGHTMETAL_HELMET = register("knightmetal_helmet", Item::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.KNIGHTMETAL, ArmorType.HELMET));
+	public static final DeferredItem<Item> KNIGHTMETAL_CHESTPLATE = register("knightmetal_chestplate", Item::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.KNIGHTMETAL, ArmorType.CHESTPLATE));
+	public static final DeferredItem<Item> KNIGHTMETAL_LEGGINGS = register("knightmetal_leggings", Item::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.KNIGHTMETAL, ArmorType.LEGGINGS));
+	public static final DeferredItem<Item> KNIGHTMETAL_BOOTS = register("knightmetal_boots", Item::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.KNIGHTMETAL, ArmorType.BOOTS));
+	public static final DeferredItem<Item> KNIGHTMETAL_SWORD = register("knightmetal_sword", KnightmetalToolItem::new, () -> new Item.Properties().sword(TFToolMaterials.KNIGHTMETAL, 3.0F, -2.4F));
+	public static final DeferredItem<Item> KNIGHTMETAL_PICKAXE = register("knightmetal_pickaxe", KnightmetalToolItem::new, () -> new Item.Properties().pickaxe(TFToolMaterials.KNIGHTMETAL, 1.0F, -2.8F));
+	public static final DeferredItem<Item> KNIGHTMETAL_AXE = register("knightmetal_axe", properties -> new KnightmetalAxeItem(TFToolMaterials.KNIGHTMETAL, 6.0F, -3.2F, properties), Item.Properties::new);
 	public static final DeferredItem<Item> KNIGHTMETAL_RING = register("knightmetal_ring", Item::new, Item.Properties::new);
-	public static final DeferredItem<Item> KNIGHTMETAL_SHIELD = register("knightmetal_shield", KnightmetalShieldItem::new, () -> new Item.Properties().durability(1024));
+	public static final DeferredItem<Item> KNIGHTMETAL_SHIELD = register("knightmetal_shield", Item::new, () -> new Item.Properties()
+		.durability(1024)
+		.equippableUnswappable(EquipmentSlot.OFFHAND)
+		.delayedComponent(
+			DataComponents.BLOCKS_ATTACKS,
+			context -> new BlocksAttacks(
+				0.25F,
+				1.0F,
+				List.of(new BlocksAttacks.DamageReduction(90.0F, Optional.empty(), 0.0F, 1.0F)),
+				new BlocksAttacks.ItemDamageFunction(3.0F, 1.0F, 1.0F),
+				Optional.of(context.getOrThrow(DamageTypeTags.BYPASSES_SHIELD)),
+				Optional.of(SoundEvents.SHIELD_BLOCK),
+				Optional.of(SoundEvents.SHIELD_BREAK)
+			)
+		)
+		.component(DataComponents.BREAK_SOUND, SoundEvents.SHIELD_BREAK));
 	public static final DeferredItem<Item> BLOCK_AND_CHAIN = register("block_and_chain", ChainBlockItem::new, () -> new Item.Properties().durability(99));
-	public static final DeferredItem<Item> PHANTOM_HELMET = register("phantom_helmet", properties -> new PhantomArmorItem(TFArmorMaterials.PHANTOM, ArmorType.HELMET, properties), () -> new Item.Properties().durability(ArmorType.HELMET.getDurability(30)).rarity(Rarity.UNCOMMON));
-	public static final DeferredItem<Item> PHANTOM_CHESTPLATE = register("phantom_chestplate", properties -> new PhantomArmorItem(TFArmorMaterials.PHANTOM, ArmorType.CHESTPLATE, properties), () -> new Item.Properties().durability(ArmorType.CHESTPLATE.getDurability(30)).rarity(Rarity.UNCOMMON));
+	public static final DeferredItem<Item> PHANTOM_HELMET = register("phantom_helmet", PhantomArmorItem::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.PHANTOM, ArmorType.HELMET).rarity(Rarity.UNCOMMON));
+	public static final DeferredItem<Item> PHANTOM_CHESTPLATE = register("phantom_chestplate", PhantomArmorItem::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.PHANTOM, ArmorType.CHESTPLATE).rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> ICE_BOMB = register("ice_bomb", IceBombItem::new, () -> new Item.Properties().stacksTo(16));
 	public static final DeferredItem<Item> ARCTIC_FUR = register("arctic_fur", Item::new, Item.Properties::new);
-	public static final DeferredItem<Item> ARCTIC_HELMET = register("arctic_helmet", properties -> new ArcticArmorItem(TFArmorMaterials.ARCTIC, ArmorType.HELMET, properties), Item.Properties::new);
-	public static final DeferredItem<Item> ARCTIC_CHESTPLATE = register("arctic_chestplate", properties -> new ArcticArmorItem(TFArmorMaterials.ARCTIC, ArmorType.CHESTPLATE, properties), Item.Properties::new);
-	public static final DeferredItem<Item> ARCTIC_LEGGINGS = register("arctic_leggings", properties -> new ArcticArmorItem(TFArmorMaterials.ARCTIC, ArmorType.LEGGINGS, properties), () -> new Item.Properties().durability(ArmorType.LEGGINGS.getDurability(10)));
-	public static final DeferredItem<Item> ARCTIC_BOOTS = register("arctic_boots", properties -> new ArcticArmorItem(TFArmorMaterials.ARCTIC, ArmorType.BOOTS, properties), () -> new Item.Properties().durability(ArmorType.BOOTS.getDurability(10)));
+	public static final DeferredItem<Item> ARCTIC_HELMET = register("arctic_helmet", ArcticArmorItem::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.ARCTIC, ArmorType.HELMET));
+	public static final DeferredItem<Item> ARCTIC_CHESTPLATE = register("arctic_chestplate", ArcticArmorItem::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.ARCTIC, ArmorType.CHESTPLATE));
+	public static final DeferredItem<Item> ARCTIC_LEGGINGS = register("arctic_leggings", ArcticArmorItem::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.ARCTIC, ArmorType.LEGGINGS));
+	public static final DeferredItem<Item> ARCTIC_BOOTS = register("arctic_boots", ArcticArmorItem::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.ARCTIC, ArmorType.BOOTS));
 	public static final DeferredItem<Item> ALPHA_YETI_FUR = register("alpha_yeti_fur", Item::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON));
-	public static final DeferredItem<Item> YETI_HELMET = register("yeti_helmet", properties -> new YetiArmorItem(TFArmorMaterials.YETI, ArmorType.HELMET, properties), () -> new Item.Properties().durability(ArmorType.HELMET.getDurability(20)).rarity(Rarity.UNCOMMON));
-	public static final DeferredItem<Item> YETI_CHESTPLATE = register("yeti_chestplate", properties -> new YetiArmorItem(TFArmorMaterials.YETI, ArmorType.CHESTPLATE, properties), () -> new Item.Properties().durability(ArmorType.CHESTPLATE.getDurability(20)).rarity(Rarity.UNCOMMON));
-	public static final DeferredItem<Item> YETI_LEGGINGS = register("yeti_leggings", properties -> new YetiArmorItem(TFArmorMaterials.YETI, ArmorType.LEGGINGS, properties), () -> new Item.Properties().durability(ArmorType.LEGGINGS.getDurability(20)).rarity(Rarity.UNCOMMON));
-	public static final DeferredItem<Item> YETI_BOOTS = register("yeti_boots", properties -> new YetiArmorItem(TFArmorMaterials.YETI, ArmorType.BOOTS, properties), () -> new Item.Properties().durability(ArmorType.BOOTS.getDurability(20)).rarity(Rarity.UNCOMMON));
+	public static final DeferredItem<Item> YETI_HELMET = register("yeti_helmet", YetiArmorItem::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.YETI, ArmorType.HELMET).rarity(Rarity.UNCOMMON));
+	public static final DeferredItem<Item> YETI_CHESTPLATE = register("yeti_chestplate", YetiArmorItem::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.YETI, ArmorType.CHESTPLATE).rarity(Rarity.UNCOMMON));
+	public static final DeferredItem<Item> YETI_LEGGINGS = register("yeti_leggings", YetiArmorItem::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.YETI, ArmorType.LEGGINGS).rarity(Rarity.UNCOMMON));
+	public static final DeferredItem<Item> YETI_BOOTS = register("yeti_boots", YetiArmorItem::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.YETI, ArmorType.BOOTS).rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> TRIPLE_BOW = register("triple_bow", TripleBowItem::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON).durability(384));
 	public static final DeferredItem<Item> SEEKER_BOW = register("seeker_bow", SeekerBowItem::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON).durability(384));
 	public static final DeferredItem<Item> ICE_BOW = register("ice_bow", IceBowItem::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON).durability(384));
 	public static final DeferredItem<Item> ENDER_BOW = register("ender_bow", EnderBowItem::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON).durability(384));
-	public static final DeferredItem<Item> ICE_SWORD = register("ice_sword", properties -> new IceSwordItem(TFToolMaterials.ICE, properties), Item.Properties::new);
-	public static final DeferredItem<Item> GLASS_SWORD = register("glass_sword", properties -> new GlassSwordItem(TFToolMaterials.GLASS, 3, -2.4F, properties), () -> new Item.Properties().rarity(Rarity.UNCOMMON));
+	public static final DeferredItem<Item> ICE_SWORD = register("ice_sword", IceSwordItem::new, () -> new Item.Properties().sword(TFToolMaterials.ICE, 3.0F, -2.4F));
+	public static final DeferredItem<Item> GLASS_SWORD = register("glass_sword", GlassSwordItem::new, () -> new Item.Properties().sword(TFToolMaterials.GLASS, 3, -2.4F).rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> MAGIC_BEANS = register("magic_beans", MagicBeansItem::new, Item.Properties::new);
-	public static final DeferredItem<Item> GIANT_PICKAXE = register("giant_pickaxe", properties -> new GiantPickItem(TFToolMaterials.GIANT, properties), () -> new Item.Properties().attributes(GiantPickItem.createGiantAttributes(TFToolMaterials.GIANT, 8, -3.5F)));
-	public static final DeferredItem<Item> GIANT_SWORD = register("giant_sword", properties -> new SwordItem(TFToolMaterials.GIANT, 10, -3.5F, properties), () -> new Item.Properties().attributes(GiantPickItem.createGiantAttributes(TFToolMaterials.GIANT, 10, -3.5F)));
+	public static final DeferredItem<Item> GIANT_PICKAXE = register("giant_pickaxe", GiantPickItem::new, () -> GiantPickItem.createGiantPickAttributes(new Item.Properties(), TFToolMaterials.GIANT, 8, -3.5F));
+	public static final DeferredItem<Item> GIANT_SWORD = register("giant_sword", Item::new, () -> GiantPickItem.createGiantSwordAttributes(new Item.Properties(), TFToolMaterials.GIANT, 10, -3.5F));
 	public static final DeferredItem<Item> LAMP_OF_CINDERS = register("lamp_of_cinders", LampOfCindersItem::new, () -> new Item.Properties().fireResistant().durability(1024).rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> CUBE_TALISMAN = register("cube_talisman", Item::new, () -> new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> CUBE_OF_ANNIHILATION = register("cube_of_annihilation", CubeOfAnnihilationItem::new, () -> new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.UNCOMMON));
@@ -186,13 +199,14 @@ public class TFItems {
 	public static final DeferredItem<Item> EMPERORS_CLOTH = register("emperors_cloth", Item::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> FOUR_LEAF_CLOVER = register("four_leaf_clover", Item::new, Item.Properties::new);
 	public static final DeferredItem<Item> CROWN_SPLINTER = register("crown_splinter", Item::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON));
-	public static final DeferredItem<Item> MYSTIC_CROWN = register("mystic_crown", Item::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(1).attributes(ItemAttributeModifiers.builder().add(Attributes.ARMOR, new AttributeModifier(ResourceLocation.withDefaultNamespace("armor." + EquipmentSlot.HEAD.getName()), 2.0F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.HEAD).build()).equippable(EquipmentSlot.HEAD));
-	public static final DeferredItem<Item> STALE_BREAD = register("stale_bread", () -> new CustomDamageSwordItem(TFDamageTypes.STALE_SANDWICH, Tiers.WOOD, new Item.Properties().stacksTo(1).attributes(SwordItem.createAttributes(Tiers.WOOD, 3, -2.4F).withTooltip(false))));
+	public static final DeferredItem<Item> MYSTIC_CROWN = register("mystic_crown", Item::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(1).attributes(ItemAttributeModifiers.builder().add(Attributes.ARMOR, new AttributeModifier(Identifier.withDefaultNamespace("armor." + EquipmentSlot.HEAD.getName()), 2.0F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.HEAD).build()).equippable(EquipmentSlot.HEAD));
+	public static final DeferredItem<Item> STALE_BREAD = register("stale_bread", properties -> new CustomDamageSwordItem(TFDamageTypes.STALE_SANDWICH, properties), () -> new Item.Properties().stacksTo(1).component(DataComponents.TOOLTIP_DISPLAY, TooltipDisplay.DEFAULT.withHidden(DataComponents.ATTRIBUTE_MODIFIERS, true)).sword(ToolMaterial.WOOD, 3, -2.4F));
 
 	public static final DeferredItem<Item> KEEPSAKE_CASKET = register("keepsake_casket", KeepsakeCasketItem::new, () -> new Item.Properties().useBlockDescriptionPrefix().rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> HUGE_LILY_PAD = register("huge_lily_pad", properties -> new HugeLilyPadItem(TFBlocks.HUGE_LILY_PAD.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix());
 	public static final DeferredItem<Item> HUGE_WATER_LILY = register("huge_water_lily", properties -> new PlaceOnWaterBlockItem(TFBlocks.HUGE_WATER_LILY.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix());
-	public static final DeferredItem<Item> FALLEN_LEAVES = register("fallen_leaves", properties -> new FallenLeavesItem(TFBlocks.FALLEN_LEAVES.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix());
+	public static final DeferredItem<Item> FALLEN_LEAVES = register("fallen_leaves", properties -> new PlaceOnWaterBlockItem(TFBlocks.FALLEN_LEAVES.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix());
+	public static final DeferredItem<Item> WROUGHT_IRON_FENCE = register("wrought_iron_fence", properties -> new WroughtIronFenceItem(TFBlocks.WROUGHT_IRON_FENCE.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix());
 
 	public static final DeferredItem<Item> ZOMBIE_SKULL_CANDLE = register("zombie_skull_candle", properties -> new SkullCandleItem(TFBlocks.ZOMBIE_SKULL_CANDLE.get(), TFBlocks.ZOMBIE_WALL_SKULL_CANDLE.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix().rarity(Rarity.UNCOMMON).equippable(EquipmentSlot.HEAD));
 	public static final DeferredItem<Item> SKELETON_SKULL_CANDLE = register("skeleton_skull_candle", properties -> new SkullCandleItem(TFBlocks.SKELETON_SKULL_CANDLE.get(), TFBlocks.SKELETON_WALL_SKULL_CANDLE.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix().rarity(Rarity.UNCOMMON).equippable(EquipmentSlot.HEAD));
@@ -201,15 +215,15 @@ public class TFItems {
 	public static final DeferredItem<Item> PLAYER_SKULL_CANDLE = register("player_skull_candle", properties -> new SkullCandleItem(TFBlocks.PLAYER_SKULL_CANDLE.get(), TFBlocks.PLAYER_WALL_SKULL_CANDLE.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix().rarity(Rarity.UNCOMMON).equippable(EquipmentSlot.HEAD));
 	public static final DeferredItem<Item> PIGLIN_SKULL_CANDLE = register("piglin_skull_candle", properties -> new SkullCandleItem(TFBlocks.PIGLIN_SKULL_CANDLE.get(), TFBlocks.PIGLIN_WALL_SKULL_CANDLE.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix().rarity(Rarity.UNCOMMON).equippable(EquipmentSlot.HEAD));
 
-	public static final DeferredItem<Item> NAGA_TROPHY = register("naga_trophy", properties -> new TrophyItem(TFBlocks.NAGA_TROPHY.get(), TFBlocks.NAGA_WALL_TROPHY.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix().rarity(tfRarityEnumExtension.TWILIGHT).equippable(EquipmentSlot.HEAD));
-	public static final DeferredItem<Item> LICH_TROPHY = register("lich_trophy", properties -> new TrophyItem(TFBlocks.LICH_TROPHY.get(), TFBlocks.LICH_WALL_TROPHY.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix().rarity(tfRarityEnumExtension.TWILIGHT).equippable(EquipmentSlot.HEAD));
-	public static final DeferredItem<Item> MINOSHROOM_TROPHY = register("minoshroom_trophy", properties -> new TrophyItem(TFBlocks.MINOSHROOM_TROPHY.get(), TFBlocks.MINOSHROOM_WALL_TROPHY.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix().rarity(tfRarityEnumExtension.TWILIGHT).equippable(EquipmentSlot.HEAD));
-	public static final DeferredItem<Item> HYDRA_TROPHY = register("hydra_trophy", properties -> new TrophyItem(TFBlocks.HYDRA_TROPHY.get(), TFBlocks.HYDRA_WALL_TROPHY.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix().rarity(tfRarityEnumExtension.TWILIGHT).equippable(EquipmentSlot.HEAD));
-	public static final DeferredItem<Item> KNIGHT_PHANTOM_TROPHY = register("knight_phantom_trophy", properties -> new TrophyItem(TFBlocks.KNIGHT_PHANTOM_TROPHY.get(), TFBlocks.KNIGHT_PHANTOM_WALL_TROPHY.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix().rarity(tfRarityEnumExtension.TWILIGHT).equippable(EquipmentSlot.HEAD));
-	public static final DeferredItem<Item> UR_GHAST_TROPHY = register("ur_ghast_trophy", properties -> new TrophyItem(TFBlocks.UR_GHAST_TROPHY.get(), TFBlocks.UR_GHAST_WALL_TROPHY.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix().rarity(tfRarityEnumExtension.TWILIGHT).equippable(EquipmentSlot.HEAD));
-	public static final DeferredItem<Item> ALPHA_YETI_TROPHY = register("alpha_yeti_trophy", properties -> new TrophyItem(TFBlocks.ALPHA_YETI_TROPHY.get(), TFBlocks.ALPHA_YETI_WALL_TROPHY.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix().rarity(tfRarityEnumExtension.TWILIGHT).equippable(EquipmentSlot.HEAD));
-	public static final DeferredItem<Item> SNOW_QUEEN_TROPHY = register("snow_queen_trophy", properties -> new TrophyItem(TFBlocks.SNOW_QUEEN_TROPHY.get(), TFBlocks.SNOW_QUEEN_WALL_TROPHY.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix().rarity(tfRarityEnumExtension.TWILIGHT).equippable(EquipmentSlot.HEAD));
-	public static final DeferredItem<Item> QUEST_RAM_TROPHY = register("quest_ram_trophy", properties -> new TrophyItem(TFBlocks.QUEST_RAM_TROPHY.get(), TFBlocks.QUEST_RAM_WALL_TROPHY.get(), properties), () -> new Item.Properties().useBlockDescriptionPrefix().rarity(tfRarityEnumExtension.TWILIGHT).equippable(EquipmentSlot.HEAD));
+	public static final DeferredItem<Item> NAGA_TROPHY = register("naga_trophy", properties -> new StandingAndWallBlockItem(TFBlocks.NAGA_TROPHY.get(), TFBlocks.NAGA_WALL_TROPHY.get(), Direction.DOWN, properties), () -> new Item.Properties().useBlockDescriptionPrefix().rarity(tfRarityEnumExtension.TWILIGHT).equippable(EquipmentSlot.HEAD));
+	public static final DeferredItem<Item> LICH_TROPHY = register("lich_trophy", properties -> new StandingAndWallBlockItem(TFBlocks.LICH_TROPHY.get(), TFBlocks.LICH_WALL_TROPHY.get(), Direction.DOWN, properties), () -> new Item.Properties().useBlockDescriptionPrefix().rarity(tfRarityEnumExtension.TWILIGHT).equippable(EquipmentSlot.HEAD));
+	public static final DeferredItem<Item> MINOSHROOM_TROPHY = register("minoshroom_trophy", properties -> new StandingAndWallBlockItem(TFBlocks.MINOSHROOM_TROPHY.get(), TFBlocks.MINOSHROOM_WALL_TROPHY.get(), Direction.DOWN, properties), () -> new Item.Properties().useBlockDescriptionPrefix().rarity(tfRarityEnumExtension.TWILIGHT).equippable(EquipmentSlot.HEAD));
+	public static final DeferredItem<Item> HYDRA_TROPHY = register("hydra_trophy", properties -> new StandingAndWallBlockItem(TFBlocks.HYDRA_TROPHY.get(), TFBlocks.HYDRA_WALL_TROPHY.get(), Direction.DOWN, properties), () -> new Item.Properties().useBlockDescriptionPrefix().rarity(tfRarityEnumExtension.TWILIGHT).equippable(EquipmentSlot.HEAD));
+	public static final DeferredItem<Item> KNIGHT_PHANTOM_TROPHY = register("knight_phantom_trophy", properties -> new StandingAndWallBlockItem(TFBlocks.KNIGHT_PHANTOM_TROPHY.get(), TFBlocks.KNIGHT_PHANTOM_WALL_TROPHY.get(), Direction.DOWN, properties), () -> new Item.Properties().useBlockDescriptionPrefix().rarity(tfRarityEnumExtension.TWILIGHT).equippable(EquipmentSlot.HEAD));
+	public static final DeferredItem<Item> UR_GHAST_TROPHY = register("ur_ghast_trophy", properties -> new StandingAndWallBlockItem(TFBlocks.UR_GHAST_TROPHY.get(), TFBlocks.UR_GHAST_WALL_TROPHY.get(), Direction.DOWN, properties), () -> new Item.Properties().useBlockDescriptionPrefix().rarity(tfRarityEnumExtension.TWILIGHT).equippable(EquipmentSlot.HEAD));
+	public static final DeferredItem<Item> ALPHA_YETI_TROPHY = register("alpha_yeti_trophy", properties -> new StandingAndWallBlockItem(TFBlocks.ALPHA_YETI_TROPHY.get(), TFBlocks.ALPHA_YETI_WALL_TROPHY.get(), Direction.DOWN, properties), () -> new Item.Properties().useBlockDescriptionPrefix().rarity(tfRarityEnumExtension.TWILIGHT).equippable(EquipmentSlot.HEAD));
+	public static final DeferredItem<Item> SNOW_QUEEN_TROPHY = register("snow_queen_trophy", properties -> new StandingAndWallBlockItem(TFBlocks.SNOW_QUEEN_TROPHY.get(), TFBlocks.SNOW_QUEEN_WALL_TROPHY.get(), Direction.DOWN, properties), () -> new Item.Properties().useBlockDescriptionPrefix().rarity(tfRarityEnumExtension.TWILIGHT).equippable(EquipmentSlot.HEAD));
+	public static final DeferredItem<Item> QUEST_RAM_TROPHY = register("quest_ram_trophy", properties -> new StandingAndWallBlockItem(TFBlocks.QUEST_RAM_TROPHY.get(), TFBlocks.QUEST_RAM_WALL_TROPHY.get(), Direction.DOWN, properties), () -> new Item.Properties().useBlockDescriptionPrefix().rarity(tfRarityEnumExtension.TWILIGHT).equippable(EquipmentSlot.HEAD));
 
 	public static final DeferredItem<HollowLogItem> HOLLOW_TWILIGHT_OAK_LOG = register("hollow_twilight_oak_log", properties -> new HollowLogItem(TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL, TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_VERTICAL, TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE, properties), () -> new Item.Properties().useBlockDescriptionPrefix());
 	public static final DeferredItem<HollowLogItem> HOLLOW_CANOPY_LOG = register("hollow_canopy_log", properties -> new HollowLogItem(TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL, TFBlocks.HOLLOW_CANOPY_LOG_VERTICAL, TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE, properties), () -> new Item.Properties().useBlockDescriptionPrefix());
@@ -276,59 +290,46 @@ public class TFItems {
 	public static final DeferredItem<Item> MUSIC_DISC_THREAD = register("music_disc_thread", Item::new, () -> new Item.Properties().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(TFJukeboxSongs.THREAD));
 	public static final DeferredItem<Item> MUSIC_DISC_MOTION = register("music_disc_motion", Item::new, () -> new Item.Properties().stacksTo(1).rarity(Rarity.RARE).jukeboxPlayable(TFJukeboxSongs.MOTION));
 
-	public static final DeferredItem<Item> NAGA_BANNER_PATTERN = register("naga_banner_pattern", properties -> new BannerPatternItem(TFBannerPatternTags.NAGA_BANNER_PATTERN, properties), () -> new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
-	public static final DeferredItem<Item> LICH_BANNER_PATTERN = register("lich_banner_pattern", properties -> new BannerPatternItem(TFBannerPatternTags.LICH_BANNER_PATTERN, properties), () -> new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
-	public static final DeferredItem<Item> MINOSHROOM_BANNER_PATTERN = register("minoshroom_banner_pattern", properties -> new BannerPatternItem(TFBannerPatternTags.MINOSHROOM_BANNER_PATTERN, properties), () -> new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
-	public static final DeferredItem<Item> HYDRA_BANNER_PATTERN = register("hydra_banner_pattern", properties -> new BannerPatternItem(TFBannerPatternTags.HYDRA_BANNER_PATTERN, properties), () -> new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
-	public static final DeferredItem<Item> KNIGHT_PHANTOM_BANNER_PATTERN = register("knight_phantom_banner_pattern", properties -> new BannerPatternItem(TFBannerPatternTags.KNIGHT_PHANTOM_BANNER_PATTERN, properties), () -> new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
-	public static final DeferredItem<Item> UR_GHAST_BANNER_PATTERN = register("ur_ghast_banner_pattern", properties -> new BannerPatternItem(TFBannerPatternTags.UR_GHAST_BANNER_PATTERN, properties), () -> new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
-	public static final DeferredItem<Item> ALPHA_YETI_BANNER_PATTERN = register("alpha_yeti_banner_pattern", properties -> new BannerPatternItem(TFBannerPatternTags.ALPHA_YETI_BANNER_PATTERN, properties), () -> new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
-	public static final DeferredItem<Item> SNOW_QUEEN_BANNER_PATTERN = register("snow_queen_banner_pattern", properties -> new BannerPatternItem(TFBannerPatternTags.SNOW_QUEEN_BANNER_PATTERN, properties), () -> new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
-	public static final DeferredItem<Item> QUEST_RAM_BANNER_PATTERN = register("quest_ram_banner_pattern", properties -> new BannerPatternItem(TFBannerPatternTags.QUESTING_RAM_BANNER_PATTERN, properties), () -> new Item.Properties().stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
+	public static final DeferredItem<Item> NAGA_BANNER_PATTERN = register("naga_banner_pattern", Item::new, () -> new Item.Properties().delayedComponent(DataComponents.PROVIDES_BANNER_PATTERNS, context -> context.getOrThrow(TFBannerPatternTags.NAGA_BANNER_PATTERN)).stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
+	public static final DeferredItem<Item> LICH_BANNER_PATTERN = register("lich_banner_pattern", Item::new, () -> new Item.Properties().delayedComponent(DataComponents.PROVIDES_BANNER_PATTERNS, context -> context.getOrThrow(TFBannerPatternTags.LICH_BANNER_PATTERN)).stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
+	public static final DeferredItem<Item> MINOSHROOM_BANNER_PATTERN = register("minoshroom_banner_pattern", Item::new, () -> new Item.Properties().delayedComponent(DataComponents.PROVIDES_BANNER_PATTERNS, context -> context.getOrThrow(TFBannerPatternTags.MINOSHROOM_BANNER_PATTERN)).stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
+	public static final DeferredItem<Item> HYDRA_BANNER_PATTERN = register("hydra_banner_pattern", Item::new, () -> new Item.Properties().delayedComponent(DataComponents.PROVIDES_BANNER_PATTERNS, context -> context.getOrThrow(TFBannerPatternTags.HYDRA_BANNER_PATTERN)).stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
+	public static final DeferredItem<Item> KNIGHT_PHANTOM_BANNER_PATTERN = register("knight_phantom_banner_pattern", Item::new, () -> new Item.Properties().delayedComponent(DataComponents.PROVIDES_BANNER_PATTERNS, context -> context.getOrThrow(TFBannerPatternTags.KNIGHT_PHANTOM_BANNER_PATTERN)).stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
+	public static final DeferredItem<Item> UR_GHAST_BANNER_PATTERN = register("ur_ghast_banner_pattern", Item::new, () -> new Item.Properties().delayedComponent(DataComponents.PROVIDES_BANNER_PATTERNS, context -> context.getOrThrow(TFBannerPatternTags.UR_GHAST_BANNER_PATTERN)).stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
+	public static final DeferredItem<Item> ALPHA_YETI_BANNER_PATTERN = register("alpha_yeti_banner_pattern", Item::new, () -> new Item.Properties().delayedComponent(DataComponents.PROVIDES_BANNER_PATTERNS, context -> context.getOrThrow(TFBannerPatternTags.ALPHA_YETI_BANNER_PATTERN)).stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
+	public static final DeferredItem<Item> SNOW_QUEEN_BANNER_PATTERN = register("snow_queen_banner_pattern", Item::new, () -> new Item.Properties().delayedComponent(DataComponents.PROVIDES_BANNER_PATTERNS, context -> context.getOrThrow(TFBannerPatternTags.SNOW_QUEEN_BANNER_PATTERN)).stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
+	public static final DeferredItem<Item> QUEST_RAM_BANNER_PATTERN = register("quest_ram_banner_pattern", Item::new, () -> new Item.Properties().delayedComponent(DataComponents.PROVIDES_BANNER_PATTERNS, context -> context.getOrThrow(TFBannerPatternTags.QUESTING_RAM_BANNER_PATTERN)).stacksTo(1).rarity(tfRarityEnumExtension.TWILIGHT));
 
-	public static final DeferredItem<Item> RASPBERRY = register("raspberry", () -> new StackableEffectItem());
-	public static final DeferredItem<Item> BLUEBERRY = register("blueberry", () -> new StackableEffectItem());
-	public static final DeferredItem<Item> BLACKBERRY = register("blackberry", () -> new StackableEffectItem());
-	public static final DeferredItem<Item> MALOBERRY = register("maloberry", () -> new StackableEffectItem());
-	public static final DeferredItem<Item> BLIGHTBERRY = register("blightberry", () -> new StackableEffectItem(
-		new StackableEffectInstance(MobEffects.REGENERATION, 8),
-		new StackableEffectInstance(MobEffects.POISON, 5, 0.75F),
-		new StackableEffectInstance(MobEffects.WITHER, 5, 0.15F)
-	));
-	public static final DeferredItem<Item> DUSKBERRY = register("duskberry", () -> new StackableEffectItem(
-		new StackableEffectInstance(MobEffects.NIGHT_VISION, 15),
-		new StackableEffectInstance(MobEffects.BLINDNESS, 3, 0.75F)
-	));
-	public static final DeferredItem<Item> SKYBERRY = register("skyberry", () -> new StackableEffectItem(
-		new StackableEffectInstance(MobEffects.JUMP_BOOST, 8),
-		new StackableEffectInstance(MobEffects.SLOWNESS, 3, 0.75F)
-	));
-	public static final DeferredItem<Item> STINGBERRY = register("stingberry", () -> new StackableEffectItem(
-		new StackableEffectInstance(MobEffects.STRENGTH, 10),
-		new StackableEffectInstance(MobEffects.MINING_FATIGUE, 10, 0.75F)
-	));
-	public static final DeferredItem<Item> BERRY_MEDLEY = register("berry_medley", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.6F).usingConvertsTo(Items.BOWL).build()).stacksTo(1)));
-	public static final DeferredItem<Item> MOSS_SOUP = register("moss_soup", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(5).saturationModifier(0.6F).usingConvertsTo(Items.BOWL).build()).stacksTo(1)));
-	public static final DeferredItem<Item> SHIKA_SENBEI = register("shika_senbei", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(1.0F).build())));
+	public static final DeferredItem<Item> RASPBERRY = register("raspberry", Item::new, () -> new Item.Properties().food(TFFoods.BERRY));
+	public static final DeferredItem<Item> BLUEBERRY = register("blueberry", Item::new, () -> new Item.Properties().food(TFFoods.BERRY));
+	public static final DeferredItem<Item> BLACKBERRY = register("blackberry", Item::new, () -> new Item.Properties().food(TFFoods.BERRY));
+	public static final DeferredItem<Item> MALOBERRY = register("maloberry", Item::new, () -> new Item.Properties().food(TFFoods.BERRY));
+	public static final DeferredItem<Item> BLIGHTBERRY = register("blightberry", Item::new, () -> new Item.Properties().food(TFFoods.BERRY, TFConsumables.BLIGHTBERRY));
+	public static final DeferredItem<Item> DUSKBERRY = register("duskberry", Item::new, () -> new Item.Properties().food(TFFoods.BERRY, TFConsumables.DUSKBERRY));
+	public static final DeferredItem<Item> SKYBERRY = register("skyberry", Item::new, () -> new Item.Properties().food(TFFoods.BERRY, TFConsumables.SKYBERRY));
+	public static final DeferredItem<Item> STINGBERRY = register("stingberry", Item::new, () -> new Item.Properties().food(TFFoods.BERRY, TFConsumables.STINGBERRY));
+	public static final DeferredItem<Item> BERRY_MEDLEY = register("berry_medley", Item::new, () -> new Item.Properties().food(TFFoods.BERRY_MEDLEY).usingConvertsTo(Items.BOWL).stacksTo(1));
+	public static final DeferredItem<Item> MOSS_SOUP = register("moss_soup", Item::new, () -> new Item.Properties().food(TFFoods.MOSS_SOUP).usingConvertsTo(Items.BOWL).stacksTo(1));
+	public static final DeferredItem<Item> SHIKA_SENBEI = register("shika_senbei", Item::new, () -> new Item.Properties().food(TFFoods.SHIKA_SENBEI));
 
-	public static final DeferredItem<Item> MONSTER_JERKY = register("monster_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.275F).build())));
-	public static final DeferredItem<Item> BEEF_JERKY = register("beef_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationModifier(1.18F).build())));
-	public static final DeferredItem<Item> CHICKEN_JERKY = register("chicken_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(1.075F).build())));
-	public static final DeferredItem<Item> PORK_JERKY = register("pork_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationModifier(1.18F).build())));
-	public static final DeferredItem<Item> MUTTON_JERKY = register("mutton_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(1.35F).build())));
-	public static final DeferredItem<Item> RABBIT_JERKY = register("rabbit_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.925F).build())));
-	public static final DeferredItem<Item> COD_JERKY = register("cod_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.875F).build())));
-	public static final DeferredItem<Item> SALMON_JERKY = register("salmon_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(1.35F).build())));
-	public static final DeferredItem<Item> TROPICAL_FISH_JERKY = register("tropical_fish_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.6F).build())));
-	public static final DeferredItem<Item> FUGU_JERKY = register("fugu_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.6F).build())));
-	public static final DeferredItem<Item> VENISON_JERKY = register("venison_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationModifier(1.18F).build())));
-	public static final DeferredItem<Item> MEEF_JERKY = register("meef_jerky", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationModifier(1.18F).build())));
+	public static final DeferredItem<Item> MONSTER_JERKY = register("monster_jerky", Item::new, () -> new Item.Properties().food(TFFoods.MONSTER_JERKY));
+	public static final DeferredItem<Item> BEEF_JERKY = register("beef_jerky", Item::new, () -> new Item.Properties().food(TFFoods.BEEF_JERKY));
+	public static final DeferredItem<Item> CHICKEN_JERKY = register("chicken_jerky", Item::new, () -> new Item.Properties().food(TFFoods.CHICKEN_JERKY));
+	public static final DeferredItem<Item> PORK_JERKY = register("pork_jerky", Item::new, () -> new Item.Properties().food(TFFoods.PORK_JERKY));
+	public static final DeferredItem<Item> MUTTON_JERKY = register("mutton_jerky", Item::new, () -> new Item.Properties().food(TFFoods.MUTTON_JERKY));
+	public static final DeferredItem<Item> RABBIT_JERKY = register("rabbit_jerky", Item::new, () -> new Item.Properties().food(TFFoods.RABBIT_JERKY));
+	public static final DeferredItem<Item> COD_JERKY = register("cod_jerky", Item::new, () -> new Item.Properties().food(TFFoods.COD_JERKY));
+	public static final DeferredItem<Item> SALMON_JERKY = register("salmon_jerky", Item::new, () -> new Item.Properties().food(TFFoods.SALMON_JERKY));
+	public static final DeferredItem<Item> TROPICAL_FISH_JERKY = register("tropical_fish_jerky", Item::new, () -> new Item.Properties().food(TFFoods.TROPICAL_FISH_JERKY));
+	public static final DeferredItem<Item> FUGU_JERKY = register("fugu_jerky", Item::new, () -> new Item.Properties().food(TFFoods.FUGU_JERKY));
+	public static final DeferredItem<Item> VENISON_JERKY = register("venison_jerky", Item::new, () -> new Item.Properties().food(TFFoods.VENISON_JERKY));
+	public static final DeferredItem<Item> MEEF_JERKY = register("meef_jerky", Item::new, () -> new Item.Properties().food(TFFoods.MEEF_JERKY));
 
-	public static final DeferredItem<Item> GELATINOUS_SLIME_DROP = register("gelatinous_slime_drop", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationModifier(0.2F).effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 600), 1.0F).build())));
-	public static final DeferredItem<Item> GELATINOUS_MAZE_SLIME_DROP = register("gelatinous_maze_slime_drop", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationModifier(0.3F).effect(() -> new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 600), 1.0F).build())));
+	public static final DeferredItem<Item> GELATINOUS_SLIME_DROP = register("gelatinous_slime_drop", Item::new, () -> new Item.Properties().food(TFFoods.SLIME_DROP, TFConsumables.SLIME_DROP));
+	public static final DeferredItem<Item> GELATINOUS_MAZE_SLIME_DROP = register("gelatinous_maze_slime_drop", Item::new, () -> new Item.Properties().food(TFFoods.MAZE_SLIME_DROP, TFConsumables.MAZE_SLIME_DROP));
 
-	public static final DeferredItem<Item> TREATED_LEATHER = register("treated_leather", () -> new Item(new Item.Properties()));
-	public static final DeferredItem<Item> TANNED_LEATHER = register("tanned_leather", () -> new Item(new Item.Properties()));
+	public static final DeferredItem<Item> TREATED_LEATHER = register("treated_leather", Item::new, Item.Properties::new);
+	public static final DeferredItem<Item> TANNED_LEATHER = register("tanned_leather", Item::new, Item.Properties::new);
 
 	public static <T extends Item> DeferredItem<T> register(String name, Function<Item.Properties, T> item, Supplier<Item.Properties> properties) {
 		return ITEMS.register(name, () -> item.apply(properties.get().setId(ResourceKey.create(Registries.ITEM, TwilightForestMod.prefix(name)))));

@@ -1,14 +1,15 @@
 package twilightforest.item;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Util;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemContainerContents;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RotationSegment;
@@ -17,7 +18,7 @@ import twilightforest.block.entity.MasonJarBlockEntity;
 import twilightforest.components.item.JarLid;
 import twilightforest.init.TFDataComponents;
 
-import java.util.List;
+import java.util.function.Consumer;
 
 public class JarItem extends BlockItem {
 	public JarItem(JarBlock block, Properties properties) {
@@ -40,12 +41,12 @@ public class JarItem extends BlockItem {
 		}
 
 		@Override
-		public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> components, TooltipFlag flag) {
-			super.appendHoverText(stack, context, components, flag);
+		public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
+			super.appendHoverText(stack, context, display, builder, flag);
 			ItemContainerContents contents = stack.getComponents().get(DataComponents.CONTAINER);
 			if (contents != null) {
 				ItemStack storedStack = contents.copyOne();
-				if (!storedStack.isEmpty()) components.add(storedStack.getDisplayName().copy().append(" x" + storedStack.getCount()).withStyle(ChatFormatting.GRAY));
+				if (!storedStack.isEmpty()) builder.accept(storedStack.getDisplayName().copy().append(" x" + storedStack.getCount()).withStyle(ChatFormatting.GRAY));
 			}
 		}
 
