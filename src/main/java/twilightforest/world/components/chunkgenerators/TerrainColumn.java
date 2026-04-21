@@ -53,7 +53,7 @@ public final class TerrainColumn {
 	public void getBiomesDebug(Consumer<String> accumulator) {
 		this.biomes.double2ObjectEntrySet()
 			.stream()
-			.map(e -> e.getDoubleKey() + ": " + e.getValue().unwrapKey().map(ResourceKey::location).map(Identifier::toString).orElse("NOT REFERENCED"))
+			.map(e -> e.getDoubleKey() + ": " + e.getValue().unwrapKey().map(ResourceKey::identifier).map(Identifier::toString).orElse("NOT REFERENCED"))
 			.forEach(accumulator);
 	}
 

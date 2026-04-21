@@ -12,7 +12,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.InclusiveRange;
-import net.minecraft.util.random.SimpleWeightedRandomList;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.SpawnData;
@@ -40,14 +40,14 @@ public class SpawnerProcessor extends StructureProcessor {
 	private final Optional<Short> range;
 	private final Optional<Float> startDelayFactor;
 	private final Optional<Float> entityWidthMax;
-	private final SimpleWeightedRandomList<SpawnData> entities;
+	private final WeightedList<SpawnData> entities;
 
 	public static SpawnerProcessor compile(int range, Object2IntMap<EntityType<?>> weightMap) {
 		return compile(range, 0, weightMap);
 	}
 
 	public static SpawnerProcessor compile(int range, float maxWidth, Object2IntMap<EntityType<?>> weightMap) {
-		SimpleWeightedRandomList.Builder<SpawnData> entities = SimpleWeightedRandomList.builder();
+		WeightedList.Builder<SpawnData> entities = WeightedList.builder();
 
 		for (Map.Entry<EntityType<?>, Integer> entry : weightMap.entrySet()) {
 			CompoundTag entityInfo = new CompoundTag();
@@ -60,7 +60,7 @@ public class SpawnerProcessor extends StructureProcessor {
 		return new SpawnerProcessor(range <= 0 ? Optional.empty() : Optional.of((short) range), Optional.of(0.25f), maxWidth <= 0 ? Optional.empty() : Optional.of(maxWidth), entities.build());
 	}
 
-	public SpawnerProcessor(Optional<Short> range, Optional<Float> startDelayFactor, Optional<Float> entityWidthMax, SimpleWeightedRandomList<SpawnData> entities) {
+	public SpawnerProcessor(Optional<Short> range, Optional<Float> startDelayFactor, Optional<Float> entityWidthMax, WeightedList<SpawnData> entities) {
 		this.range = range;
 		this.startDelayFactor = startDelayFactor;
 		this.entities = entities;
@@ -77,11 +77,11 @@ public class SpawnerProcessor extends StructureProcessor {
 				nbtInfo.putShort("SpawnRange", this.range.get());
 			}
 			if (this.startDelayFactor.isPresent()) {
-				nbtInfo.putShort("Delay", (short) Math.round(nbtInfo.getShort("MinSpawnDelay") * this.startDelayFactor.get()));
+				nbtInfo.putShort("Delay", (short) Math.round(nbtInfo.getShortOr("MinSpawnDelay", (short)0) * this.startDelayFactor.get()));
 			}
 
-			if (!nbtInfo.contains("SpawnData") || nbtInfo.getList("SpawnData", Tag.TAG_COMPOUND).isEmpty()) {
-				Optional<SpawnData> randomSpawn = this.entities.getRandomValue(placeSettings.getRandom(modifiedInfo.pos()));
+			if (!nbtInfo.contains("SpawnData") || nbtInfo.getList("SpawnData").isEmpty()) {
+				Optional<SpawnData> randomSpawn = this.entities.getRandom(placeSettings.getRandom(modifiedInfo.pos()));
 
 				if (randomSpawn.isPresent()) {
 					SpawnData spawn = randomSpawn.get();
@@ -93,12 +93,12 @@ public class SpawnerProcessor extends StructureProcessor {
 					if (this.entityWidthMax.isPresent() && entitySpawnData instanceof CompoundTag compoundTag) {
 						// give @p command_block[block_entity_data={id:command_block,auto:1,Command:"/setblock ~ ~ ~ spawner{SpawnCount:4,MaxNearbyEntities:6,SpawnRange:4,Delay:1,MinSpawnDelay:200,MaxSpawnDelay:760,RequiredPlayerRange:16,SpawnData:{entity:{id:zombie,attributes:[{id:\"generic.scale\",base:2f}]}}} replace"}] 1
 
-						Optional<EntityType<?>> type = BuiltInRegistries.ENTITY_TYPE.getOptional(Identifier.parse(spawn.entityToSpawn().getString("id")));
+						Optional<EntityType<?>> type = BuiltInRegistries.ENTITY_TYPE.getOptional(Identifier.parse(spawn.entityToSpawn().getStringOr("id", "")));
 						float newScale = this.rescaleToFitWidth(type.map(EntityType::getWidth).orElse(0f));
 
 						if (Float.isFinite(newScale) && newScale != 1) {
-							CompoundTag entityCompound = compoundTag.getCompound("entity");
-							ListTag attributes = entityCompound.getList("attributes", Tag.TAG_COMPOUND);
+							CompoundTag entityCompound = compoundTag.getCompound("entity").orElseThrow();
+							ListTag attributes = entityCompound.getList("attributes").orElseThrow();
 							// Example of tag schema: SpawnData:{entity:{id:zombie,attributes:[{id:\"generic.scale\",base:2f}]}}
 							CompoundTag scale = new CompoundTag();
 							scale.putString("id", "generic.scale");
@@ -144,7 +144,7 @@ public class SpawnerProcessor extends StructureProcessor {
 		return this.entityWidthMax;
 	}
 
-	private SimpleWeightedRandomList<SpawnData> getPossibleEntities() {
+	private WeightedList<SpawnData> getPossibleEntities() {
 		return this.entities;
 	}
 }

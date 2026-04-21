@@ -24,7 +24,7 @@ public class LazyArea implements Area {
 
 	@Override
 	public ResourceKey<Biome> getBiome(int biomeX, int biomeZ) {
-		long key = ChunkPos.asLong(biomeX, biomeZ);
+		long key = ChunkPos.pack(biomeX, biomeZ);
 		ResourceKey<Biome> cached = cachedSamples.get(key);
 		if (cached != null && cached != Biomes.THE_VOID)
 			return cached;

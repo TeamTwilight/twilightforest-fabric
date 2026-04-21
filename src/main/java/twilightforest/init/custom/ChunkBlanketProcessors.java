@@ -74,7 +74,7 @@ public final class ChunkBlanketProcessors {
 		Function<BlockPos, Holder<Biome>> biomeGetter = worldGenRegion::getBiome;
 
 		while (modifierIterator.hasNext()) {
-			modifierIterator.next().processChunk(worldGenRegion.getRandom().fork(), biomeGetter, chunkAccess);
+			modifierIterator.next().processChunk(worldGenRegion, worldGenRegion.getRandom().fork(), biomeGetter, chunkAccess);
 		}
 	}
 }

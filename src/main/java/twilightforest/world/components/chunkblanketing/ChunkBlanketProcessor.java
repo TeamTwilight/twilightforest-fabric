@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -31,7 +32,7 @@ public interface ChunkBlanketProcessor {
 	 * @param biomeGetter A function for obtaining biomes per-block, in respect to noise per-block distortion of biomes existing in 4x4x4 in a chunk section.
 	 * @param chunkAccess The chunk to modify blocks.
 	 */
-	void processChunk(RandomSource random, Function<BlockPos, Holder<Biome>> biomeGetter, ChunkAccess chunkAccess);
+	void processChunk(WorldGenLevel level, RandomSource random, Function<BlockPos, Holder<Biome>> biomeGetter, ChunkAccess chunkAccess);
 
 	/**
 	 * @return Supplier[Codec[? extends ChunkBlanketProcessor]]
@@ -44,7 +45,7 @@ public interface ChunkBlanketProcessor {
 	 */
 	interface SimpleProcessor extends ChunkBlanketProcessor {
 		@Override
-		default void processChunk(RandomSource random, Function<BlockPos, Holder<Biome>> biomeGetter, ChunkAccess chunkAccess) {
+		default void processChunk(WorldGenLevel level, RandomSource random, Function<BlockPos, Holder<Biome>> biomeGetter, ChunkAccess chunkAccess) {
 			for (int dX = 0; dX < 16; dX++) {
 				for (int dZ = 0; dZ < 16; dZ++) {
 					BlockPos firstAvailableBlock = chunkAccess.getPos().getBlockAt(dX, chunkAccess.getHeight(this.heightmap(), dX, dZ) + 1, dZ);

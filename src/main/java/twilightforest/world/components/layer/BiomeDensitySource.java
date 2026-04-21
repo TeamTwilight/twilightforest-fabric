@@ -84,8 +84,8 @@ public class BiomeDensitySource {
 		info.add("BiomeDensitySource at " + cameraPos + ":");
 		info.add("Twilight Biome Column:");
 		biomeColumn.getBiomesDebug(info::add);
-		info.add("Primary Biome: " + biomeKey.location());
-		info.add("Biome at elevation: " + biomeAtY.unwrapKey().map(ResourceKey::location).map(Identifier::toString).orElse("NOT REFERENCED"));
+		info.add("Primary Biome: " + biomeKey.identifier());
+		info.add("Biome at elevation: " + biomeAtY.unwrapKey().map(ResourceKey::identifier).map(Identifier::toString).orElse("NOT REFERENCED"));
 	}
 
 	public static final class DensityData {
