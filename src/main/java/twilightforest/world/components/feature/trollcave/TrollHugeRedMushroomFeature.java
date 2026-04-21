@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.HugeMushroomBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.HugeRedMushroomFeature;
@@ -21,17 +21,17 @@ public class TrollHugeRedMushroomFeature extends HugeRedMushroomFeature {
 	}
 
 	@Override
-	protected void makeCap(LevelAccessor levelAccessor, RandomSource random, BlockPos pos, int height, BlockPos.MutableBlockPos mutableBlockPos, HugeMushroomFeatureConfiguration featureConfiguration) {
+	protected void makeCap(WorldGenLevel levelAccessor, RandomSource random, BlockPos pos, int height, BlockPos.MutableBlockPos mutableBlockPos, HugeMushroomFeatureConfiguration featureConfiguration) {
 		for (int y = height - 3; y <= height; y++) {
-			int foliageRadius = y < height ? featureConfiguration.foliageRadius : featureConfiguration.foliageRadius - 1;
-			int innerRadius = featureConfiguration.foliageRadius - 2;
+			int foliageRadius = y < height ? featureConfiguration.foliageRadius() : featureConfiguration.foliageRadius() - 1;
+			int innerRadius = featureConfiguration.foliageRadius() - 2;
 
 			for (int x = -foliageRadius; x <= foliageRadius; x++) {
 				for (int z = -foliageRadius; z <= foliageRadius; z++) {
 					if (y >= height || FeatureLogic.isEdge(x, z, foliageRadius)) {
 						mutableBlockPos.setWithOffset(pos, x, y, z);
 						if (!levelAccessor.getBlockState(mutableBlockPos).is(BlockTags.FEATURES_CANNOT_REPLACE)) {
-							BlockState blockState = featureConfiguration.capProvider.getState(random, pos);
+							BlockState blockState = featureConfiguration.capProvider().getState(levelAccessor, random, pos);
 							if (FeatureLogic.hasAllMushroomsProperties(blockState)) {
 								blockState = blockState.setValue(HugeMushroomBlock.UP, y >= height - 1)
 									.setValue(HugeMushroomBlock.WEST, x < -innerRadius)

@@ -54,10 +54,10 @@ public class TrunkSideDecorator extends TreeDecorator {
 			BlockPos newPos = logPos.offset(direction.getStepX(), 0, direction.getStepZ());
 			//if we have empty space, we're golden!
 			if (context.isAir(newPos)) {
-				if (this.decoration.getState(context.random(), newPos).hasProperty(BlockStateProperties.FACING)) {
-					context.setBlock(newPos, this.decoration.getState(context.random(), newPos).setValue(BlockStateProperties.FACING, direction));
+				if (this.decoration.getState(context.level(), context.random(), newPos).hasProperty(BlockStateProperties.FACING)) {
+					context.setBlock(newPos, this.decoration.getState(context.level(), context.random(), newPos).setValue(BlockStateProperties.FACING, direction));
 				} else {
-					context.setBlock(newPos, this.decoration.getState(context.random(), newPos));
+					context.setBlock(newPos, this.decoration.getState(context.level(), context.random(), newPos));
 				}
 			}
 		}

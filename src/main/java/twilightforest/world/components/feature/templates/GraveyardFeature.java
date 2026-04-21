@@ -8,7 +8,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.WorldGenLevel;
@@ -114,8 +114,8 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 		Vec3i transformedSize = base.getSize(rotation);
 		Vec3i transformedGraveSize = graves.get(0).getValue().getSize(rotation);
 
-		ChunkPos chunkpos = new ChunkPos(pos.offset(-8, 0, -8));
-		ChunkPos chunkendpos = new ChunkPos(pos.offset(-8, 0, -8).offset(transformedSize));
+		ChunkPos chunkpos = ChunkPos.containing(pos.offset(-8, 0, -8));
+		ChunkPos chunkendpos =ChunkPos.containing(pos.offset(-8, 0, -8).offset(transformedSize));
 		BoundingBox structureboundingbox = new BoundingBox(chunkpos.getMinBlockX() + 8, 0, chunkpos.getMinBlockZ() + 8, chunkendpos.getMaxBlockX() + 8, 255, chunkendpos.getMaxBlockZ() + 8);
 		StructurePlaceSettings placementsettings = (new StructurePlaceSettings()).setMirror(mirror).setRotation(rotation).setBoundingBox(structureboundingbox).setRandom(rand);
 
@@ -177,7 +177,7 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 						}
 						Wraith wraith = new Wraith(TFEntities.WRAITH.get(), world.getLevel());
 						wraith.setPos(placement.getX(), placement.getY(), placement.getZ());
-						EventHooks.finalizeMobSpawn(wraith, world, world.getCurrentDifficultyAt(placement), MobSpawnType.STRUCTURE, null);
+						EventHooks.finalizeMobSpawn(wraith, world, world.getCurrentDifficultyAt(placement), EntitySpawnReason.STRUCTURE, null);
 						world.addFreshEntity(wraith);
 					}
 				}
@@ -185,8 +185,9 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 		}
 
 		data.forEach(info -> {
-			if (info.nbt() != null && StructureMode.valueOf(info.nbt().getString("mode")) == StructureMode.DATA) {
-				String s = info.nbt().getString("metadata");
+			StructureMode mode = StructureMode.valueOf(info.nbt().getString("mode").orElseThrow());
+			if (info.nbt() != null && mode == StructureMode.DATA) {
+				String s = info.nbt().getString("metadata").orElseThrow();
 				BlockPos p = info.pos();
 				if ("spawner".equals(s)) {
 					world.removeBlock(p, false);

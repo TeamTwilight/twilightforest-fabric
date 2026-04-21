@@ -82,7 +82,7 @@ public class DangleFromTreeDecorator extends TreeDecorator {
 			}
 
 			if (cordLength > this.minimumRequiredLength) { // We don't want no pathetic unroped baggage
-				BlockState rope = this.rope.getState(context.random(), pos);
+				BlockState rope = this.rope.getState(context.level(), context.random(), pos);
 				for (int ropeUnrolling = 1; ropeUnrolling < cordLength; ropeUnrolling++) {
 					pos = pos.below(1);
 
@@ -93,7 +93,7 @@ public class DangleFromTreeDecorator extends TreeDecorator {
 				pos = pos.below(1);
 
 				if (context.isAir(pos))
-					context.setBlock(pos, this.baggage.getState(context.random(), pos));
+					context.setBlock(pos, this.baggage.getState(context.level(), context.random(), pos));
 			}
 		}
 	}

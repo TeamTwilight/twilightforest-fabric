@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import twilightforest.block.SnowLoggable;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.util.TFMathUtil;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.feature.config.BerryBushConfig;
@@ -106,7 +106,7 @@ public class BerryBushFeature extends Feature<BerryBushConfig> {
 
 	protected boolean setBush(WorldGenLevel level, BlockPos pos, BlockState state, TagKey<Block> generatesOn, int age, boolean isInSnowyBiome) {
 		BlockState stateToReplace = level.getBlockState(pos);
-		if (!stateToReplace.is(BlockTagGenerator.TF_BERRY_BUSHES_REPLACE) || stateToReplace.is(BlockTags.FEATURES_CANNOT_REPLACE) || !stateToReplace.getFluidState().isEmpty())
+		if (!stateToReplace.is(TFBlockTags.TF_BERRY_BUSHES_REPLACE) || stateToReplace.is(BlockTags.FEATURES_CANNOT_REPLACE) || !stateToReplace.getFluidState().isEmpty())
 			return false;
 
 		if (!level.getBlockState(pos.below()).is(generatesOn) && age < 2)

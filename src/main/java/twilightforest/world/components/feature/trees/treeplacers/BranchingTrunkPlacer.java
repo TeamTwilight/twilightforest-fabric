@@ -7,7 +7,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.LevelSimulatedReader;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
@@ -49,13 +49,13 @@ public class BranchingTrunkPlacer extends TrunkPlacer {
 	}
 
 	@Override
-	public List<FoliagePlacer.FoliageAttachment> placeTrunk(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, RandomSource random, int height, BlockPos startPos, TreeConfiguration treeConfig) {
+	public List<FoliagePlacer.FoliageAttachment> placeTrunk(WorldGenLevel worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, RandomSource random, int height, BlockPos startPos, TreeConfiguration treeConfig) {
 		List<FoliagePlacer.FoliageAttachment> leafAttachments = Lists.newArrayList();
 
 		if (this.preventExposedRoot) {
 			for (Direction direction : Direction.Plane.HORIZONTAL) {
 				if (worldReader.isStateAtPosition(startPos.below().relative(direction), BlockBehaviour.BlockStateBase::canBeReplaced)) {
-					worldPlacer.accept(startPos.below(), (BlockState)Function.identity().apply(treeConfig.trunkProvider.getState(random, startPos.below())));
+					worldPlacer.accept(startPos.below(), (BlockState)Function.identity().apply(treeConfig.trunkProvider.getState(worldReader, random, startPos.below())));
 					break;
 				}
 			}
@@ -79,7 +79,7 @@ public class BranchingTrunkPlacer extends TrunkPlacer {
 		return leafAttachments;
 	}
 
-	private void buildBranch(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, BlockPos pos, List<FoliagePlacer.FoliageAttachment> leafBlocks, int height, double length, double angle, double tilt, RandomSource treeRNG, boolean perpendicularBranches) {
+	private void buildBranch(WorldGenLevel worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, BlockPos pos, List<FoliagePlacer.FoliageAttachment> leafBlocks, int height, double length, double angle, double tilt, RandomSource treeRNG, boolean perpendicularBranches) {
 		BlockPos src = pos.above(height);
 		BlockPos dest = FeatureLogic.translate(src, length, angle, tilt);
 
@@ -107,18 +107,18 @@ public class BranchingTrunkPlacer extends TrunkPlacer {
 	 * Draws a line from {x1, y1, z1} to {x2, y2, z2}
 	 * This takes all variables for setting Branch
 	 */
-	private void drawBresenhamBranch(LevelSimulatedReader worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, RandomSource random, BlockPos from, BlockPos to) {
+	private void drawBresenhamBranch(WorldGenLevel worldReader, BiConsumer<BlockPos, BlockState> worldPlacer, RandomSource random, BlockPos from, BlockPos to) {
 		for (BlockPos pixel : new VoxelBresenhamIterator(from, to)) placeWood(worldReader, worldPlacer, random, pixel);
 	}
 
 	@SuppressWarnings("UnusedReturnValue")
-	protected boolean placeWood(LevelSimulatedReader level, BiConsumer<BlockPos, BlockState> blockSetter, RandomSource random, BlockPos pos) {
+	protected boolean placeWood(WorldGenLevel level, BiConsumer<BlockPos, BlockState> blockSetter, RandomSource random, BlockPos pos) {
 		return this.placeWood(level, blockSetter, random, pos, Function.identity());
 	}
 
-	protected boolean placeWood(LevelSimulatedReader level, BiConsumer<BlockPos, BlockState> blockSetter, RandomSource random, BlockPos pos, Function<BlockState, BlockState> propertySetter) {
+	protected boolean placeWood(WorldGenLevel level, BiConsumer<BlockPos, BlockState> blockSetter, RandomSource random, BlockPos pos, Function<BlockState, BlockState> propertySetter) {
 		if (this.validTreePos(level, pos)) {
-			blockSetter.accept(pos, propertySetter.apply(this.branchesConfig.branchProvider().getState(random, pos)));
+			blockSetter.accept(pos, propertySetter.apply(this.branchesConfig.branchProvider().getState(level, random, pos)));
 			return true;
 		} else return false;
 	}

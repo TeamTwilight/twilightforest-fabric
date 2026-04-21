@@ -147,7 +147,7 @@ public abstract class HollowTreeFeature extends TFTreeFeature<TFTreeFeatureConfi
 	/**
 	 * This function builds the hollow trunk of the tree
 	 */
-	protected static void buildTrunk(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, RootPlacer decoPlacer, RandomSource random, BlockPos pos, int radius, int height, TFTreeFeatureConfig config) {
+	protected static void buildTrunk(WorldGenLevel world, BiConsumer<BlockPos, BlockState> trunkPlacer, RootPlacer decoPlacer, RandomSource random, BlockPos pos, int radius, int height, TFTreeFeatureConfig config) {
 		final int hollow = radius >> 1;
 
 		// go down 4 squares and fill in extra trunk as needed, in case we're on uneven terrain
@@ -165,9 +165,9 @@ public abstract class HollowTreeFeature extends TFTreeFeature<TFTreeFeatureConfi
 					BlockPos dPos = pos.offset(dx, dy, dz);
 					if (FeatureUtil.hasAirAround(world, dPos)) {
 						if (dist > hollow) {
-							trunkPlacer.accept(dPos, config.trunkProvider.getState(random, dPos));
+							trunkPlacer.accept(dPos, config.trunkProvider.getState(world, random, dPos));
 						} else {
-							trunkPlacer.accept(dPos, config.branchProvider.getState(random, dPos));
+							trunkPlacer.accept(dPos, config.branchProvider.getState(world, random, dPos));
 						}
 					} else {
 						FeaturePlacers.placeIfValidRootPos(world, decoPlacer, random, dPos, config.rootsProvider);
@@ -355,7 +355,7 @@ public abstract class HollowTreeFeature extends TFTreeFeature<TFTreeFeatureConfi
 		// make leaves
 		FeaturePlacers.placeSpheroid(world, leavesPlacer, FeaturePlacers.VALID_TREE_POS, random, pos, 4.5f, 4.5f, config.leavesProvider);
 		// wood support
-		FeatureUtil.drawBlob(world, pos, 3, config.branchProvider.getState(random, pos));
+		FeatureUtil.drawBlob(world, pos, 3, config.branchProvider.getState(world, random, pos));
 		// air
 		FeatureUtil.drawBlob(world, pos, 2, Blocks.AIR.defaultBlockState());
 

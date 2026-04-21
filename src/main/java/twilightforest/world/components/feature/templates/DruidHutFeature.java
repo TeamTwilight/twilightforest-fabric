@@ -1,11 +1,11 @@
 package twilightforest.world.components.feature.templates;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.Util;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -55,15 +55,17 @@ public class DruidHutFeature extends TemplateFeature<SwizzleConfig> {
 
 			template.placeInWorld(world, placementPos, placementPos, placementSettings, random, Block.UPDATE_CLIENTS);
 
-			for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(placementPos, placementSettings, Blocks.STRUCTURE_BLOCK))
-				if (info.nbt() != null && StructureMode.valueOf(info.nbt().getString("mode")) == StructureMode.DATA)
+			for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(placementPos, placementSettings, Blocks.STRUCTURE_BLOCK)) {
+				StructureMode mode = StructureMode.valueOf(info.nbt().getString("mode").orElseThrow());
+				if (info.nbt() != null && mode == StructureMode.DATA)
 					this.processMarkers(info, world, rotation, mirror, random);
+			}
 		}
 	}
 
 	@Override
 	protected void processMarkers(StructureTemplate.StructureBlockInfo info, WorldGenLevel world, Rotation rotation, Mirror mirror, RandomSource random) {
-		String s = info.nbt().getString("metadata");
+		String s = info.nbt().getString("metadata").orElseThrow();
 		BlockPos blockPos = info.pos();
         /*
          `spawner` will place a Druid spawner.

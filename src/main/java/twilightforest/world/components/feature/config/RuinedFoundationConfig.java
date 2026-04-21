@@ -8,7 +8,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.BlockFamilies;
 import net.minecraft.data.BlockFamily;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.util.random.SimpleWeightedRandomList;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.util.valueproviders.*;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -17,8 +17,8 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import net.minecraft.world.level.storage.loot.LootTable;
-import twilightforest.data.TFBlockFamilies;
 import twilightforest.loot.TFLootTables;
+import twilightforest.util.TFBlockFamilies;
 
 @SuppressWarnings("ConstantValue")
 public record RuinedFoundationConfig(RuinedFoundationDimensions dimensions, RuinedFoundationBlocks blocks, ResourceKey<LootTable> lootTable) implements FeatureConfiguration {
@@ -36,14 +36,14 @@ public record RuinedFoundationConfig(RuinedFoundationDimensions dimensions, Ruin
 
 	public record RuinedFoundationDimensions(IntProvider wallWidth, IntProvider wallHeights, IntProvider basementHeight, FloatProvider placeFloorTest) {
 		public static final MapCodec<RuinedFoundationDimensions> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
-			IntProvider.codec(1, 16).fieldOf("wall_width").forGetter(RuinedFoundationDimensions::wallWidth),
-			IntProvider.codec(1, 32).fieldOf("wall_heights").forGetter(RuinedFoundationDimensions::wallHeights),
-			IntProvider.codec(0, 16).fieldOf("basement_height").forGetter(RuinedFoundationDimensions::basementHeight),
-			FloatProvider.codec(-8, 8).fieldOf("random_floor_chance").forGetter(RuinedFoundationDimensions::placeFloorTest)
+			IntProviders.codec(1, 16).fieldOf("wall_width").forGetter(RuinedFoundationDimensions::wallWidth),
+			IntProviders.codec(1, 32).fieldOf("wall_heights").forGetter(RuinedFoundationDimensions::wallHeights),
+			IntProviders.codec(0, 16).fieldOf("basement_height").forGetter(RuinedFoundationDimensions::basementHeight),
+			FloatProviders.codec(-8, 8).fieldOf("random_floor_chance").forGetter(RuinedFoundationDimensions::placeFloorTest)
 		).apply(inst, RuinedFoundationDimensions::new));
 
 		public static RuinedFoundationDimensions makeDefault() {
-			WeightedListInt basementHeights = new WeightedListInt(SimpleWeightedRandomList.<IntProvider>builder()
+			WeightedListInt basementHeights = new WeightedListInt(WeightedList.<IntProvider>builder()
 				// 50% basement chance!
 				.add(ConstantInt.of(3), 1)
 				.add(ConstantInt.of(0), 1)
@@ -83,7 +83,7 @@ public record RuinedFoundationConfig(RuinedFoundationDimensions dimensions, Ruin
 			BlockState decayedWall = decayedMaterial.getBaseBlock().defaultBlockState();
 			BlockState decayedStairs = decayedMaterial.get(BlockFamily.Variant.STAIRS).defaultBlockState();
 
-			final WeightedStateProvider floor = new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder()
+			final WeightedStateProvider floor = new WeightedStateProvider(WeightedList.<BlockState>builder()
 				.add(floorMaterial.getBaseBlock().defaultBlockState(), 39)
 				.add(floorMaterial.get(BlockFamily.Variant.SLAB).defaultBlockState().setValue(BlockStateProperties.WATERLOGGED, floorWaterlogged), 1)
 				.add(floorStairs.setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.NORTH).setValue(BlockStateProperties.WATERLOGGED, floorWaterlogged), 6)
@@ -93,7 +93,7 @@ public record RuinedFoundationConfig(RuinedFoundationDimensions dimensions, Ruin
 				.build()
 			);
 
-			final WeightedStateProvider wallTop = new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder()
+			final WeightedStateProvider wallTop = new WeightedStateProvider(WeightedList.<BlockState>builder()
 				.add(wallBlock, 5)
 				.add(wallMaterial.get(BlockFamily.Variant.SLAB).defaultBlockState(), 1)
 				.add(wallStairs.setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.EAST), 2)
@@ -101,7 +101,7 @@ public record RuinedFoundationConfig(RuinedFoundationDimensions dimensions, Ruin
 				.build()
 			);
 
-			final WeightedStateProvider decayedTop = new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder()
+			final WeightedStateProvider decayedTop = new WeightedStateProvider(WeightedList.<BlockState>builder()
 				.add(decayedWall, 5)
 				.add(decayedMaterial.get(BlockFamily.Variant.SLAB).defaultBlockState(), 1)
 				.add(decayedStairs.setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.EAST), 2)

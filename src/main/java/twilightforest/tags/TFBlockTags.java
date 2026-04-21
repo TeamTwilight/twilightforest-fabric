@@ -1,6 +1,6 @@
 package twilightforest.tags;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
@@ -62,6 +62,7 @@ public class TFBlockTags {
 	public static final TagKey<Block> TF_BERRY_BUSHES_REPLACE = create("tf_berry_bushes_replace");
 	public static final TagKey<Block> DARK_TOWER_BERRY_BUSHES_SURVIVE = create("dark_tower_berry_bushes_survive");
 	public static final TagKey<Block> DARK_TOWER_BERRY_BUSHES_DIE = create("dark_tower_berry_bushes_die");
+	public static final TagKey<Block> HUGE_MUSHGLOOM_PLACEABLE = create("huge_mushgloom_placeable");
 
 	public static final TagKey<Block> ORE_MAGNET_SAFE_REPLACE_BLOCK = create("ore_magnet/ore_safe_replace_block");
 	public static final TagKey<Block> ORE_MAGNET_IGNORE = create("ore_magnet/ignored_ores");
@@ -116,6 +117,6 @@ public class TFBlockTags {
 	}
 
 	private static TagKey<Block> create(String modid, String tagName) {
-		return BlockTags.create(ResourceLocation.fromNamespaceAndPath(modid, tagName));
+		return BlockTags.create(Identifier.fromNamespaceAndPath(modid, tagName));
 	}
 }

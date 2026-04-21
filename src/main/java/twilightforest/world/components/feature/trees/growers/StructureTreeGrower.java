@@ -1,6 +1,7 @@
 package twilightforest.world.components.feature.trees.growers;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
@@ -27,7 +28,7 @@ public class StructureTreeGrower extends TreeGrower {
 	//copied from PlaceCommand.placeStructure
 	@Override
 	public boolean growTree(ServerLevel level, ChunkGenerator generator, BlockPos pos, BlockState state, RandomSource random) {
-		Structure structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).getOrThrow(TFStructures.HOLLOW_TREE);
+		Holder.Reference<Structure> structure = level.registryAccess().lookupOrThrow(Registries.STRUCTURE).getOrThrow(TFStructures.HOLLOW_TREE);
 
 		if (!(structure instanceof TreeGrowerStartable treeGrowerStartable) || !treeGrowerStartable.checkSaplingClearance(level, pos))
 			return false;
@@ -57,7 +58,7 @@ public class StructureTreeGrower extends TreeGrower {
 					level.getMinY(),
 					chunkPos.getMinBlockZ(),
 					chunkPos.getMaxBlockX(),
-					level.getMaxBuildHeight(),
+					level.getMaxY(),
 					chunkPos.getMaxBlockZ()
 				),
 				chunkPos

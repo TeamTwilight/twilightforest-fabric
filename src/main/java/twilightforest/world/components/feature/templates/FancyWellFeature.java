@@ -47,9 +47,11 @@ public class FancyWellFeature extends TemplateFeature<SwizzleConfig> {
 
 		template.placeInWorld(world, placementPos, placementPos, placementSettings, random, Block.UPDATE_CLIENTS);
 
-		for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(placementPos, placementSettings, Blocks.STRUCTURE_BLOCK))
-			if (info.nbt() != null && StructureMode.valueOf(info.nbt().getString("mode")) == StructureMode.DATA)
+		for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(placementPos, placementSettings, Blocks.STRUCTURE_BLOCK)) {
+			StructureMode mode = StructureMode.valueOf(info.nbt().getString("mode").orElseThrow());
+			if (info.nbt() != null && mode == StructureMode.DATA)
 				this.processMarkers(info, world, rotation, mirror, random);
+		}
 	}
 
 	@Override

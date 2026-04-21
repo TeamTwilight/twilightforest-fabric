@@ -2,10 +2,10 @@ package twilightforest.world.components.feature.templates;
 
 import com.google.common.math.StatsAccumulator;
 import com.mojang.serialization.Codec;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.Util;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.WorldGenLevel;
@@ -47,8 +47,8 @@ public abstract class TemplateFeature<T extends FeatureConfiguration> extends Fe
 		Rotation rotation = Rotation.getRandom(random);
 		Mirror mirror = Util.getRandom(Mirror.values(), random);
 
-		ChunkPos chunkpos = new ChunkPos(pos);
-		BoundingBox structureMask = new BoundingBox(chunkpos.getMinBlockX(), world.getMinY(), chunkpos.getMinBlockZ(), chunkpos.getMaxBlockX(), world.getMaxBuildHeight(), chunkpos.getMaxBlockZ());
+		ChunkPos chunkpos = ChunkPos.containing(pos);
+		BoundingBox structureMask = new BoundingBox(chunkpos.getMinBlockX(), world.getMinY(), chunkpos.getMinBlockZ(), chunkpos.getMaxBlockX(), world.getMaxY(), chunkpos.getMaxBlockZ());
 
 		BlockPos posSnap = chunkpos.getWorldPosition().offset(0, pos.getY(), 0);
 
@@ -70,9 +70,11 @@ public abstract class TemplateFeature<T extends FeatureConfiguration> extends Fe
 
 		template.placeInWorld(world, placementPos, placementPos, placementSettings, random, Block.UPDATE_CLIENTS);
 
-		for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(placementPos, placementSettings, Blocks.STRUCTURE_BLOCK))
-			if (info.nbt() != null && StructureMode.valueOf(info.nbt().getString("mode")) == StructureMode.DATA)
+		for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(placementPos, placementSettings, Blocks.STRUCTURE_BLOCK)) {
+			StructureMode mode = StructureMode.valueOf(info.nbt().getString("mode").orElseThrow());
+			if (info.nbt() != null && mode == StructureMode.DATA)
 				this.processMarkers(info, world, rotation, mirror, random);
+		}
 
 		this.postPlacement(world, random, templateManager, rotation, mirror, placementSettings, placementPos, config);
 

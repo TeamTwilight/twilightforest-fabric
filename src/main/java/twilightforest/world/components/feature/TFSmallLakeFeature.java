@@ -14,7 +14,7 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 
 import java.util.Optional;
 
@@ -63,7 +63,7 @@ public class TFSmallLakeFeature extends Feature<TFSmallLakeFeature.Configuration
 				}
 			}
 
-			BlockState fluidState = config.fluid().getState(randomsource, blockpos);
+			BlockState fluidState = config.fluid().getState(worldgenlevel, randomsource, blockpos);
 
 			for (int x = 0; x < 16; x++) {
 				for (int z = 0; z < 16; z++) {
@@ -91,15 +91,15 @@ public class TFSmallLakeFeature extends Feature<TFSmallLakeFeature.Configuration
 				}
 			}
 
-			BlockState iceState = config.ice != null ? config.ice.getState(randomsource, blockpos) : null;
+			BlockState iceState = config.ice != null ? config.ice.getState(worldgenlevel, randomsource, blockpos) : null;
 
 			for (int x = 0; x < 16; x++) {
 				for (int z = 0; z < 16; z++) {
 					for (int y = 0; y < 8; y++) {
 						if (booleans[(x * 16 + z) * 8 + y]) {
 							BlockPos offset = blockpos.offset(x, y, z);
-							if (!(worldgenlevel.getBlockState(offset).is(BlockTagGenerator.SMALL_LAKES_DONT_REPLACE) ||
-								worldgenlevel.getBlockState(offset.above()).is(BlockTagGenerator.SMALL_LAKES_DONT_REPLACE))) {
+							if (!(worldgenlevel.getBlockState(offset).is(TFBlockTags.SMALL_LAKES_DONT_REPLACE) ||
+								worldgenlevel.getBlockState(offset.above()).is(TFBlockTags.SMALL_LAKES_DONT_REPLACE))) {
 								if (y >= 4) {
 									worldgenlevel.setBlock(offset, AIR, Block.UPDATE_CLIENTS);
                                     worldgenlevel.scheduleTick(offset, AIR.getBlock(), 0);
@@ -120,7 +120,7 @@ public class TFSmallLakeFeature extends Feature<TFSmallLakeFeature.Configuration
 			}
 
 			if (config.barrier() != null) {
-				BlockState barrierState = config.barrier().getState(randomsource, blockpos);
+				BlockState barrierState = config.barrier().getState(worldgenlevel, randomsource, blockpos);
 				if (!barrierState.isAir()) {
 					for (int x = 0; x < 16; x++) {
 						for (int z = 0; z < 16; z++) {

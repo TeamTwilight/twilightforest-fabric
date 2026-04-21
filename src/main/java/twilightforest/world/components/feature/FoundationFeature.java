@@ -121,7 +121,7 @@ public class FoundationFeature extends Feature<RuinedFoundationConfig> {
 
 		// make chest
 		BlockPos lootPos = ceilingPos.offset(chestX, 1 - depth, chestZ);
-		world.setBlock(lootPos, lootContainer.getState(rand, lootPos), Block.UPDATE_ALL);
+		world.setBlock(lootPos, lootContainer.getState(world, rand, lootPos), Block.UPDATE_ALL);
 		if (world.getBlockEntity(lootPos) instanceof RandomizableContainerBlockEntity lootBE) {
 			lootBE.setLootTable(lootTable, world.getSeed() * lootPos.getX() + lootPos.getY() ^ lootPos.getZ());
 		}
@@ -139,7 +139,7 @@ public class FoundationFeature extends Feature<RuinedFoundationConfig> {
 	}
 
 	private static void setAndUpdate(WorldGenLevel world, RandomSource rand, BlockStateProvider floor, BlockPos placeAt, Rotation rotation) {
-		BlockState state = floor.getState(rand, placeAt).rotate(rotation);
+		BlockState state = floor.getState(world, rand, placeAt).rotate(rotation);
 
 		if (state.hasProperty(BlockStateProperties.WATERLOGGED)) {
 			boolean hasWaterOrAbove = world.getFluidState(placeAt).is(FluidTags.WATER) || world.getFluidState(placeAt.above()).is(FluidTags.WATER);

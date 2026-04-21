@@ -139,7 +139,7 @@ public class DarkCanopyTreeFeature extends Feature<TreeConfiguration> {
 		BlockPos blockpos = config.rootPlacer.map((placer) -> placer.getTrunkOrigin(pos, random)).orElse(pos);
 		int i1 = Math.min(pos.getY(), blockpos.getY());
 		int j1 = Math.max(pos.getY(), blockpos.getY()) + i + 1;
-		if (i1 >= level.getMinY() + 1 && j1 <= level.getMaxBuildHeight()) {
+		if (i1 >= level.getMinY() + 1 && j1 <= level.getMaxY()) {
 			OptionalInt optionalint = config.minimumSize.minClippedHeight();
 			int k1 = this.getMaxFreeTreeHeight(level, i, blockpos, config);
 			if (k1 >= i || optionalint.isPresent() && k1 >= optionalint.getAsInt()) {
