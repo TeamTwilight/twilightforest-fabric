@@ -2,6 +2,6 @@
 @ParametersAreNonnullByDefault
 package twilightforest.compat.curios.renderer;
 
-import net.minecraft.MethodsReturnNonnullByDefault;
+import com.mojang.logging.annotations.MethodsReturnNonnullByDefault;
 
 import javax.annotation.ParametersAreNonnullByDefault;
