@@ -210,7 +210,7 @@ public abstract class HollowTreeFeature extends TFTreeFeature<TFTreeFeatureConfi
 	/**
 	 * Make a branch!
 	 */
-	protected static void makeMedBranch(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RandomSource random, BlockPos pos, int diameter, int branchHeight, double length, double angle, double tilt, boolean leafy, TFTreeFeatureConfig config) {
+	protected static void makeMedBranch(WorldGenLevel world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RandomSource random, BlockPos pos, int diameter, int branchHeight, double length, double angle, double tilt, boolean leafy, TFTreeFeatureConfig config) {
 		BlockPos src = FeatureLogic.translate(pos.above(branchHeight), diameter, angle, 0.5);
 		makeMedBranch(world, trunkPlacer, leavesPlacer, random, src, length, angle, tilt, leafy, config);
 	}
@@ -218,7 +218,7 @@ public abstract class HollowTreeFeature extends TFTreeFeature<TFTreeFeatureConfi
 	/**
 	 * Make a branch!
 	 */
-	protected static void makeMedBranch(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RandomSource random, BlockPos src, double length, double angle, double tilt, boolean leafy, TFTreeFeatureConfig config) {
+	protected static void makeMedBranch(WorldGenLevel world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RandomSource random, BlockPos src, double length, double angle, double tilt, boolean leafy, TFTreeFeatureConfig config) {
 		BlockPos dest = FeatureLogic.translate(src, length, angle, tilt);
 
 		FeaturePlacers.drawBresenhamBranch(world, trunkPlacer, random, src, dest, config.branchProvider);
@@ -264,7 +264,7 @@ public abstract class HollowTreeFeature extends TFTreeFeature<TFTreeFeatureConfi
 	/**
 	 * Make a small branch with a leaf blob at the end
 	 */
-	protected static void makeSmallBranch(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RandomSource random, BlockPos src, double length, double angle, double tilt, boolean leafy, TFTreeFeatureConfig config) {
+	protected static void makeSmallBranch(WorldGenLevel world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RandomSource random, BlockPos src, double length, double angle, double tilt, boolean leafy, TFTreeFeatureConfig config) {
 		BlockPos dest = FeatureLogic.translate(src, length, angle, tilt);
 
 		FeaturePlacers.drawBresenhamBranch(world, trunkPlacer, random, src, dest, config.branchProvider);
@@ -278,7 +278,7 @@ public abstract class HollowTreeFeature extends TFTreeFeature<TFTreeFeatureConfi
 	/**
 	 * Make a small branch at a certain height
 	 */
-	protected static void makeSmallBranch(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RandomSource random, BlockPos pos, int diameter, int branchHeight, double length, double angle, double tilt, boolean leafy, TFTreeFeatureConfig config) {
+	protected static void makeSmallBranch(WorldGenLevel world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RandomSource random, BlockPos pos, int diameter, int branchHeight, double length, double angle, double tilt, boolean leafy, TFTreeFeatureConfig config) {
 		BlockPos src = FeatureLogic.translate(pos.above(branchHeight), diameter, angle, 0.5);
 		makeSmallBranch(world, trunkPlacer, leavesPlacer, random, src, length, angle, tilt, leafy, config);
 	}

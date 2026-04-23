@@ -5,7 +5,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -77,7 +76,7 @@ public class MiningTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 		return true;
 	}
 
-	protected static void putBranchWithLeaves(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RandomSource rand, BlockPos pos, boolean bushy, TFTreeFeatureConfig config) {
+	protected static void putBranchWithLeaves(WorldGenLevel world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leavesPlacer, RandomSource rand, BlockPos pos, boolean bushy, TFTreeFeatureConfig config) {
 		FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos, config.branchProvider);
 
 		for (int lx = -1; lx <= 1; lx++) {

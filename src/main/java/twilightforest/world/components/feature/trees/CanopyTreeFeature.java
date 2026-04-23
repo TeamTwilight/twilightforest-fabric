@@ -5,8 +5,6 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.init.TFBlocks;
@@ -86,7 +84,7 @@ public class CanopyTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 		return true;
 	}
 
-	private void makeLeafBlob(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> leafPlacer, RandomSource random, BlockPos leafPos, TFTreeFeatureConfig config) {
+	private void makeLeafBlob(WorldGenLevel world, BiConsumer<BlockPos, BlockState> leafPlacer, RandomSource random, BlockPos leafPos, TFTreeFeatureConfig config) {
 		FeaturePlacers.placeCircleOdd(world, leafPlacer, FeaturePlacers.VALID_TREE_POS, random, leafPos.below(), 3, config.leavesProvider);
 		FeaturePlacers.placeCircleOdd(world, leafPlacer, FeaturePlacers.VALID_TREE_POS, random, leafPos, 4, config.leavesProvider);
 		FeaturePlacers.placeCircleOdd(world, leafPlacer, FeaturePlacers.VALID_TREE_POS, random, leafPos.above(), 2, config.leavesProvider);
@@ -95,7 +93,7 @@ public class CanopyTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 	/**
 	 * Build a branch with a flat blob of leaves at the end.
 	 */
-	void buildBranch(LevelAccessor world, List<BlockPos> leaves, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, int height, double length, double angle, double tilt, boolean trunk, RandomSource treeRNG, TFTreeFeatureConfig config) {
+	void buildBranch(WorldGenLevel world, List<BlockPos> leaves, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, int height, double length, double angle, double tilt, boolean trunk, RandomSource treeRNG, TFTreeFeatureConfig config) {
 		BlockPos src = pos.above(height);
 		BlockPos dest = FeatureLogic.translate(src, length, angle, tilt);
 
@@ -128,7 +126,7 @@ public class CanopyTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 		}
 	}
 
-	protected static void makeRoots(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, RootPlacer decoPlacer, RandomSource random, BlockPos pos, TFTreeFeatureConfig config) {
+	protected static void makeRoots(WorldGenLevel world, BiConsumer<BlockPos, BlockState> trunkPlacer, RootPlacer decoPlacer, RandomSource random, BlockPos pos, TFTreeFeatureConfig config) {
 		// root bulb
 		if (FeatureUtil.hasAirAround(world, pos.below())) {
 			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, random, pos.below(), config.trunkProvider);

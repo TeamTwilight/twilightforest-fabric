@@ -57,7 +57,7 @@ public final class FeaturePlacers {
 	 * Draws a line from {x1, y1, z1} to {x2, y2, z2}
 	 * This takes all variables for setting Branch
 	 */
-	public static void drawBresenhamBranch(LevelAccessor world, BiConsumer<BlockPos, BlockState> trunkPlacer, RandomSource random, BlockPos start, BlockPos end, BlockStateProvider config) {
+	public static void drawBresenhamBranch(WorldGenLevel world, BiConsumer<BlockPos, BlockState> trunkPlacer, RandomSource random, BlockPos start, BlockPos end, BlockStateProvider config) {
 		for (BlockPos pixel : new VoxelBresenhamIterator(start, end)) {
 			placeIfValidTreePos(world, trunkPlacer, random, pixel, config);
 		}
@@ -66,7 +66,7 @@ public final class FeaturePlacers {
 	/**
 	 * Build a root, but don't let it stick out too far into thin air because that's weird
 	 */
-	public static void buildRoot(LevelAccessor world, RootPlacer placer, RandomSource rand, BlockPos start, double offset, int b, BlockStateProvider config) {
+	public static void buildRoot(WorldGenLevel world, RootPlacer placer, RandomSource rand, BlockPos start, double offset, int b, BlockStateProvider config) {
 		BlockPos dest = FeatureLogic.translate(start.below(b + 2), 5, 0.3 * b + offset, 0.8);
 
 		// go through block by block and stop drawing when we head too far into open air
@@ -79,26 +79,26 @@ public final class FeaturePlacers {
 	 * Draws a line from {x1, y1, z1} to {x2, y2, z2}
 	 * This just takes a BlockState, used to set Trunk
 	 */
-	public static void drawBresenhamTree(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> placer, BiFunction<LevelSimulatedReader, BlockPos, Boolean> predicate, BlockPos from, BlockPos to, BlockStateProvider config, RandomSource random) {
+	public static void drawBresenhamTree(WorldGenLevel world, BiConsumer<BlockPos, BlockState> placer, BiFunction<LevelSimulatedReader, BlockPos, Boolean> predicate, BlockPos from, BlockPos to, BlockStateProvider config, RandomSource random) {
 		for (BlockPos pixel : new VoxelBresenhamIterator(from, to)) {
 			placeProvidedBlock(world, placer, predicate, pixel, config, random);
 		}
 	}
 
-	public static void placeProvidedBlock(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> worldPlacer, BiFunction<LevelSimulatedReader, BlockPos, Boolean> predicate, BlockPos pos, BlockStateProvider config, RandomSource random) {
-		if (predicate.apply(world, pos)) worldPlacer.accept(pos, config.getState(random, pos));
+	public static void placeProvidedBlock(WorldGenLevel world, BiConsumer<BlockPos, BlockState> worldPlacer, BiFunction<LevelSimulatedReader, BlockPos, Boolean> predicate, BlockPos pos, BlockStateProvider config, RandomSource random) {
+		if (predicate.apply(world, pos)) worldPlacer.accept(pos, config.getState(world, random, pos));
 	}
 
-	public static void placeLeaf(LevelSimulatedReader world, FoliagePlacer.FoliageSetter setter, BiFunction<LevelSimulatedReader, BlockPos, Boolean> predicate, BlockPos pos, BlockStateProvider config, RandomSource random) {
-		if (predicate.apply(world, pos)) setter.set(pos, config.getState(random, pos));
+	public static void placeLeaf(WorldGenLevel world, FoliagePlacer.FoliageSetter setter, BiFunction<LevelSimulatedReader, BlockPos, Boolean> predicate, BlockPos pos, BlockStateProvider config, RandomSource random) {
+		if (predicate.apply(world, pos)) setter.set(pos, config.getState(world, random, pos));
 	}
 
-	public static void placeCircleOdd(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> placer, BiFunction<LevelSimulatedReader, BlockPos, Boolean> predicate, RandomSource random, BlockPos centerPos, float radius, BlockStateProvider config) {
+	public static void placeCircleOdd(WorldGenLevel world, BiConsumer<BlockPos, BlockState> placer, BiFunction<LevelSimulatedReader, BlockPos, Boolean> predicate, RandomSource random, BlockPos centerPos, float radius, BlockStateProvider config) {
 		placeCircleOdd(world, placer, predicate, random, centerPos, radius, config, false);
 	}
 
 	// Use for trunks with Odd-count widths
-	public static void placeCircleOdd(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> placer, BiFunction<LevelSimulatedReader, BlockPos, Boolean> predicate, RandomSource random, BlockPos centerPos, float radius, BlockStateProvider config, boolean useLegacyDistance) {
+	public static void placeCircleOdd(WorldGenLevel world, BiConsumer<BlockPos, BlockState> placer, BiFunction<LevelSimulatedReader, BlockPos, Boolean> predicate, RandomSource random, BlockPos centerPos, float radius, BlockStateProvider config, boolean useLegacyDistance) {
 		// Normally, I'd use mutable pos here but there are multiple bits of logic down the line that force
 		// the pos to be immutable causing multiple same BlockPos instances to exist.
 		FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos, config, random);
@@ -119,12 +119,12 @@ public final class FeaturePlacers {
 		}
 	}
 
-	public static void placeCircleEven(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> placer, BiFunction<LevelSimulatedReader, BlockPos, Boolean> predicate, RandomSource random, BlockPos centerPos, float radius, BlockStateProvider config) {
+	public static void placeCircleEven(WorldGenLevel world, BiConsumer<BlockPos, BlockState> placer, BiFunction<LevelSimulatedReader, BlockPos, Boolean> predicate, RandomSource random, BlockPos centerPos, float radius, BlockStateProvider config) {
 		placeCircleEven(world, placer, predicate, random, centerPos, radius, config, false);
 	}
 
 	// Use for trunks with Even-count widths
-	public static void placeCircleEven(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> placer, BiFunction<LevelSimulatedReader, BlockPos, Boolean> predicate, RandomSource random, BlockPos centerPos, float radius, BlockStateProvider config, boolean useLegacyDistance) {
+	public static void placeCircleEven(WorldGenLevel world, BiConsumer<BlockPos, BlockState> placer, BiFunction<LevelSimulatedReader, BlockPos, Boolean> predicate, RandomSource random, BlockPos centerPos, float radius, BlockStateProvider config, boolean useLegacyDistance) {
 		// Normally, I'd use mutable pos here but there are multiple bits of logic down the line that force
 		// the pos to be immutable causing multiple same BlockPos instances to exist.
 		FeaturePlacers.placeProvidedBlock(world, placer, predicate, centerPos, config, random);
@@ -156,7 +156,7 @@ public final class FeaturePlacers {
 		return (x * x + z * z) <= radius * radius;
 	}
 
-	public static void placeSpheroid(LevelSimulatedReader world, FoliagePlacer.FoliageSetter setter, BiFunction<LevelSimulatedReader, BlockPos, Boolean> predicate, RandomSource random, BlockPos centerPos, float xzRadius, float yRadius, float verticalBias, BlockStateProvider config) {
+	public static void placeSpheroid(WorldGenLevel world, FoliagePlacer.FoliageSetter setter, BiFunction<LevelSimulatedReader, BlockPos, Boolean> predicate, RandomSource random, BlockPos centerPos, float xzRadius, float yRadius, float verticalBias, BlockStateProvider config) {
 		float xzRadiusSquared = xzRadius * xzRadius;
 		float yRadiusSquared = yRadius * yRadius;
 		float superRadiusSquared = xzRadiusSquared * yRadiusSquared;
@@ -200,7 +200,7 @@ public final class FeaturePlacers {
 	}
 
 	// Version without the `verticalBias` unlike above
-	public static void placeSpheroid(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> placer, BiFunction<LevelSimulatedReader, BlockPos, Boolean> predicate, RandomSource random, BlockPos centerPos, float xzRadius, float yRadius, BlockStateProvider config) {
+	public static void placeSpheroid(WorldGenLevel world, BiConsumer<BlockPos, BlockState> placer, BiFunction<LevelSimulatedReader, BlockPos, Boolean> predicate, RandomSource random, BlockPos centerPos, float xzRadius, float yRadius, BlockStateProvider config) {
 		float xzRadiusSquared = xzRadius * xzRadius;
 		float yRadiusSquared = yRadius * yRadius;
 		float superRadiusSquared = xzRadiusSquared * yRadiusSquared;
@@ -256,18 +256,18 @@ public final class FeaturePlacers {
 
 	// [VanillaCopy] TrunkPlacer.placeLog - Swapped TreeConfiguration for BlockStateProvider
 	// If possible, use TrunkPlacer.placeLog instead
-	public static boolean placeIfValidTreePos(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> placer, RandomSource random, BlockPos pos, BlockStateProvider config) {
+	public static boolean placeIfValidTreePos(WorldGenLevel world, BiConsumer<BlockPos, BlockState> placer, RandomSource random, BlockPos pos, BlockStateProvider config) {
 		if (validTreePos(world, pos)) {
-			placer.accept(pos, config.getState(random, pos));
+			placer.accept(pos, config.getState(world, random, pos));
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	public static boolean placeIfValidRootPos(LevelSimulatedReader world, RootPlacer placer, RandomSource random, BlockPos pos, BlockStateProvider config) {
+	public static boolean placeIfValidRootPos(WorldGenLevel world, RootPlacer placer, RandomSource random, BlockPos pos, BlockStateProvider config) {
 		if (!FeatureUtil.anyBelowMatch(pos, placer.getRootPenetrability() - 1, (blockPos -> !FeatureLogic.canRootGrowIn(world, blockPos)))) {
-			placer.getPlacer().accept(pos, config.getState(random, pos));
+			placer.getPlacer().accept(pos, config.getState(world, random, pos));
 			return true;
 		} else {
 			return false;
@@ -319,7 +319,7 @@ public final class FeaturePlacers {
 		return stateOut.setValue(property, stateIn.getValue(property));
 	}
 
-	public static void traceRoot(LevelSimulatedReader worldReader, RootPlacer worldPlacer, RandomSource random, BlockStateProvider dirtRoot, Iterable<BlockPos> posTracer) {
+	public static void traceRoot(WorldGenLevel worldReader, RootPlacer worldPlacer, RandomSource random, BlockStateProvider dirtRoot, Iterable<BlockPos> posTracer) {
 		// Trace block positions and stop tracing too far into open air
 		for (BlockPos rootPos : posTracer) {
 			if (FeatureUtil.anyBelowMatch(rootPos, worldPlacer.getRootPenetrability() - 1, (blockPos -> worldReader.isStateAtPosition(blockPos, FeatureLogic.ROOT_SHOULD_SKIP))))
@@ -332,7 +332,7 @@ public final class FeaturePlacers {
 	}
 
 	@SuppressWarnings("deprecation")
-	public static void traceExposedRoot(LevelSimulatedReader worldReader, RootPlacer worldPlacer, RandomSource random, BlockStateProvider exposedRoot, BlockStateProvider dirtRoot, Iterable<BlockPos> posTracer) {
+	public static void traceExposedRoot(WorldGenLevel worldReader, RootPlacer worldPlacer, RandomSource random, BlockStateProvider exposedRoot, BlockStateProvider dirtRoot, Iterable<BlockPos> posTracer) {
 		// Trace block positions and alternate the root tracing once "underground"
 		for (BlockPos exposedPos : posTracer) {
 			if (worldReader.isStateAtPosition(exposedPos, FeatureLogic.ROOT_SHOULD_SKIP)) {
@@ -343,11 +343,11 @@ public final class FeaturePlacers {
 			if (FeatureLogic.hasEmptyNeighborExceptBelow(worldReader, exposedPos)) {
 				// Check if the position is not replaceable
 				if (FeatureUtil.anyBelowMatch(exposedPos, worldPlacer.getRootPenetrability() - 1, (blockPos -> worldReader.isStateAtPosition(blockPos, (state) -> !FeatureLogic.worldGenReplaceable(state)
-					&& state != exposedRoot.getState(random, exposedPos)))))
+					&& state != exposedRoot.getState(worldReader, random, exposedPos)))))
 					return; // Root must stop
 
 				// Good to go!
-				worldPlacer.getPlacer().accept(exposedPos, exposedRoot.getState(random, exposedPos));
+				worldPlacer.getPlacer().accept(exposedPos, exposedRoot.getState(worldReader, random, exposedPos));
 			} else { // We are in-fact underground, finish tracing root's path by placing underground roots
 				// Retry placement at position as underground root. If successful, continue the tracing as regular root
 				if (FeaturePlacers.placeIfValidRootPos(worldReader, worldPlacer, random, exposedPos, dirtRoot))

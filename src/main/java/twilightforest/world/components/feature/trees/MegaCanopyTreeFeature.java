@@ -5,8 +5,6 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -80,7 +78,7 @@ public class MegaCanopyTreeFeature extends CanopyTreeFeature {
 		return true;
 	}
 
-	private void makeLeafBlob(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leafPlacer, RandomSource rand, BlockPos leafPos, TFTreeFeatureConfig config) {
+	private void makeLeafBlob(WorldGenLevel world, BiConsumer<BlockPos, BlockState> trunkPlacer, BiConsumer<BlockPos, BlockState> leafPlacer, RandomSource rand, BlockPos leafPos, TFTreeFeatureConfig config) {
 		FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, leafPos, config.branchProvider);
 		for (Direction direction : new Direction[]{Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST}) {
 			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, leafPos.relative(direction, 1), config.branchProvider);
@@ -103,7 +101,7 @@ public class MegaCanopyTreeFeature extends CanopyTreeFeature {
 		FeaturePlacers.placeCircleOdd(world, leafPlacer, FeaturePlacers.VALID_TREE_POS, rand, leafPos.below(2), 4.5f, config.leavesProvider, true);
 	}
 
-	private void buildTrunk(LevelAccessor world, List<BlockPos> leaves, BiConsumer<BlockPos, BlockState> trunkPlacer, RandomSource rand, BlockPos pos, int treeHeight, TFTreeFeatureConfig config) {
+	private void buildTrunk(WorldGenLevel world, List<BlockPos> leaves, BiConsumer<BlockPos, BlockState> trunkPlacer, RandomSource rand, BlockPos pos, int treeHeight, TFTreeFeatureConfig config) {
 		for (int dy = 0; dy <= treeHeight; dy++) {
 			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(0, dy, 0), config.trunkProvider);
 			FeaturePlacers.placeIfValidTreePos(world, trunkPlacer, rand, pos.offset(1, dy, 0), config.trunkProvider);
@@ -134,7 +132,7 @@ public class MegaCanopyTreeFeature extends CanopyTreeFeature {
 	 * Build a branch with a flat blob of leaves at the end.
 	 */
 	@Override
-	void buildBranch(LevelAccessor world, List<BlockPos> leaves, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, int height, double length, double angle, double tilt, boolean trunk, RandomSource treeRNG, TFTreeFeatureConfig config) {
+	void buildBranch(WorldGenLevel world, List<BlockPos> leaves, BlockPos pos, BiConsumer<BlockPos, BlockState> trunkPlacer, int height, double length, double angle, double tilt, boolean trunk, RandomSource treeRNG, TFTreeFeatureConfig config) {
 		BlockPos src = pos.above(height);
 		BlockPos dest = FeatureLogic.translate(src, length, angle, tilt);
 

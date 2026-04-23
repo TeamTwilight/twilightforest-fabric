@@ -9,7 +9,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.IntProviders;
-import net.minecraft.world.level.LevelSimulatedReader;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
@@ -78,7 +77,7 @@ public class LeafSpheroidFoliagePlacer extends FoliagePlacer {
 		}
 	}
 
-	private static void placeLeafCluster(LevelSimulatedReader worldReader, FoliageSetter setter, RandomSource random, BlockPos pos, BlockStateProvider state) {
+	private static void placeLeafCluster(WorldGenLevel worldReader, FoliageSetter setter, RandomSource random, BlockPos pos, BlockStateProvider state) {
 		FeaturePlacers.placeLeaf(worldReader, setter, FeaturePlacers.VALID_TREE_POS, pos, state, random);
 		FeaturePlacers.placeLeaf(worldReader, setter, FeaturePlacers.VALID_TREE_POS, pos.east(), state, random);
 		FeaturePlacers.placeLeaf(worldReader, setter, FeaturePlacers.VALID_TREE_POS, pos.south(), state, random);
