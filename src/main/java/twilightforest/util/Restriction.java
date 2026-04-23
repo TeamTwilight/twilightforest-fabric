@@ -48,11 +48,11 @@ public record Restriction(@Nullable ResourceKey<Structure> hintStructureKey, Res
 			return Optional.empty();
 
 		RegistryAccess access = entity.level().registryAccess();
-		Identifier biomeLocation = access.registryOrThrow(Registries.BIOME).getKey(biome);
+		Identifier biomeLocation = access.lookupOrThrow(Registries.BIOME).getKey(biome);
 		if (biomeLocation == null)
 			return Optional.empty();
 
-		Optional<Registry<Restriction>> restrictionsRegistry = access.registry(TFRegistries.Keys.RESTRICTIONS);
+		Optional<Registry<Restriction>> restrictionsRegistry = access.lookup(TFRegistries.Keys.RESTRICTIONS);
 		if (restrictionsRegistry.isEmpty())
 			return Optional.empty();
 

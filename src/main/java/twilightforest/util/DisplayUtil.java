@@ -22,7 +22,7 @@ public class DisplayUtil {
 	// Instead of making methods in Display and Display.BlockDisplay public, this is a lazy way of compiling the NBT data then using it to initialize the entity
 	public boolean spawnBlockDisplay(Level level, BoundingBox box, BlockState displayState, float padding) {
 		Transformation transform = new Transformation(new Matrix4f().scale(box.getXSpan() + padding * 2, box.getYSpan() + padding * 2, box.getZSpan() + padding * 2));
-		transform.getScale(); // Dummy call to ensure the matrix is factorized, or else there will be nulls on serialization
+		transform.scale(); // Dummy call to ensure the matrix is factorized, or else there will be nulls on serialization
 
 		// See Display.addAdditionalSaveData()
 		DataResult<Tag> serializedTransform = Transformation.EXTENDED_CODEC.encodeStart(NbtOps.INSTANCE, transform);

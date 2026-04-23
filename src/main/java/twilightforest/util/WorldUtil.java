@@ -6,7 +6,6 @@ import it.unimi.dsi.fastutil.ints.IntComparators;
 import it.unimi.dsi.fastutil.ints.IntList;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import it.unimi.dsi.fastutil.objects.ObjectArraySet;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
@@ -15,6 +14,7 @@ import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.Util;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelAccessor;
@@ -129,7 +129,7 @@ public final class WorldUtil {
 						Holder<Biome> biome = level.getBiome(landmarkCenterPosition);
 
 						if (targetStructure.value().biomes().contains(biome)) {
-							if (skipKnownStructures && structureManager.checkStructurePresence(new ChunkPos(landmarkCenterPosition), targetStructure.value(), landmarkPlacement.getKey(), true) == StructureCheckResult.START_PRESENT)
+							if (skipKnownStructures && structureManager.checkStructurePresence(ChunkPos.containing(landmarkCenterPosition), targetStructure.value(), landmarkPlacement.getKey(), true) == StructureCheckResult.START_PRESENT)
 								break;
 
 							final double newDistance = landmarkCenterPosition.distToLowCornerSqr(pos.getX(), 0, pos.getZ());

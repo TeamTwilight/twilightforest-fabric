@@ -19,7 +19,7 @@ public class MultipartEntityUtil {
 	}
 
 	@Nullable
-	public EntityRenderer<?> tryLookupTFPartRenderer(@Nullable EntityRenderer<?> renderer, Entity entity) {
+	public EntityRenderer<?,?> tryLookupTFPartRenderer(@Nullable EntityRenderer<?,?> renderer, Entity entity) {
 		if (entity instanceof TFPart<?> part)
 			return BakedMultiPartRenderers.lookup(part.renderer());
 		return renderer;

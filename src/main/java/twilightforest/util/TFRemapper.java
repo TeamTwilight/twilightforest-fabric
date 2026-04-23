@@ -13,7 +13,7 @@ public class TFRemapper {
 
 	public static void addRegistryAliases() {
 		DeferredRegister<Block> blockReg = TFBlocks.BLOCKS;
-		DeferredRegister<EntityType<?>> entityReg = TFEntities.ENTITIES;
+		DeferredRegister<EntityType<?>> entityReg = TFEntities.ENTITY_TYPES;
 		DeferredRegister<Item> itemReg = TFItems.ITEMS;
 		DeferredRegister<StructurePieceType> pieceTypeReg = TFStructurePieceTypes.STRUCTURE_PIECE_TYPES;
 
