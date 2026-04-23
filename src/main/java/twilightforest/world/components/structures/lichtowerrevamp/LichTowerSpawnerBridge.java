@@ -46,12 +46,12 @@ public class LichTowerSpawnerBridge extends TwilightJigsawPiece implements Piece
 	}
 
 	private static void addInvertedWoodProcessors(RegistryAccess registryAccess, StructurePlaceSettings placeSettings) {
-		Optional<Registry<WoodPalette>> woodPalettes = registryAccess.registry(TFRegistries.Keys.WOOD_PALETTES);
+		Optional<Registry<WoodPalette>> woodPalettes = registryAccess.lookup(TFRegistries.Keys.WOOD_PALETTES);
 
 		if (woodPalettes.isPresent()) {
 			Registry<WoodPalette> woodPaletteRegistry = woodPalettes.get();
-			Holder<WoodPalette> twiOak = woodPaletteRegistry.getHolderOrThrow(WoodPalettes.TWILIGHT_OAK);
-			Holder<WoodPalette> canopy = woodPaletteRegistry.getHolderOrThrow(WoodPalettes.CANOPY);
+			Holder<WoodPalette> twiOak = woodPaletteRegistry.getOrThrow(WoodPalettes.TWILIGHT_OAK);
+			Holder<WoodPalette> canopy = woodPaletteRegistry.getOrThrow(WoodPalettes.CANOPY);
 			placeSettings.addProcessor(new WoodMultiPaletteSwizzle(List.of(
 				Pair.of(twiOak, canopy),
 				Pair.of(canopy, twiOak)

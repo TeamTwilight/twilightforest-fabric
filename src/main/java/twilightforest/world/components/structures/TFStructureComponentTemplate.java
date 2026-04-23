@@ -28,7 +28,7 @@ public abstract class TFStructureComponentTemplate extends TFStructureComponent 
 
 	public TFStructureComponentTemplate(StructurePieceSerializationContext ctx, StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
-		this.templatePosition = new BlockPos(nbt.getInt("TPX"), nbt.getInt("TPY"), nbt.getInt("TPZ"));
+		this.templatePosition = new BlockPos(nbt.getIntOr("TPX", 0), nbt.getIntOr("TPY", 0), nbt.getIntOr("TPZ", 0));
 		this.placeSettings.setRotation(this.rotation);
 		LAZY_TEMPLATE_LOADER = () -> setup(ctx.structureTemplateManager());
 	}

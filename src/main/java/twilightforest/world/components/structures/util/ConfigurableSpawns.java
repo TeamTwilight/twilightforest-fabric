@@ -9,16 +9,6 @@ public interface ConfigurableSpawns extends ControlledSpawns {
 	ControlledSpawningConfig getConfig();
 
 	@Override
-	default List<MobSpawnSettings.SpawnerData> getCombinedMonsterSpawnableList() {
-		return this.getConfig().combinedMonsterSpawnableCache();
-	}
-
-	@Override
-	default List<MobSpawnSettings.SpawnerData> getCombinedCreatureSpawnableList() {
-		return this.getConfig().combinedCreatureSpawnableCache();
-	}
-
-	@Override
 	default List<MobSpawnSettings.SpawnerData> getSpawnableList(MobCategory creatureType) {
 		return switch (creatureType) {
 			case MONSTER -> this.getSpawnableMonsterList(0);

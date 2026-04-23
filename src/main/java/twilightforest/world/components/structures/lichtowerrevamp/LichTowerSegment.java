@@ -19,6 +19,7 @@ import twilightforest.TwilightForestMod;
 import tamaized.beanification.Autowired;
 import twilightforest.data.tags.CustomTagGenerator;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.tags.TFPaintingVariantTags;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.structures.SpawnIndexProvider;
@@ -169,7 +170,7 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 
 	@Override
 	protected void handleDataMarker(String label, BlockPos pos, WorldGenLevel level, RandomSource random, BoundingBox chunkBounds, ChunkGenerator chunkGen, Rotation rotation) {
-		LichBossRoom.placePainting(label, pos, level, random, chunkBounds, this.placeSettings.getRotation(), 2, 10, CustomTagGenerator.PaintingVariantTagGenerator.LICH_TOWER_PAINTINGS);
+		LichBossRoom.placePainting(label, pos, level, random, chunkBounds, this.placeSettings.getRotation(), 2, 10, TFPaintingVariantTags.LICH_TOWER_PAINTINGS);
 	}
 
 	@Override

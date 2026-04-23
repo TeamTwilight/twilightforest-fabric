@@ -73,12 +73,12 @@ public abstract class LandmarkStructure extends Structure implements DecorationC
 	@Override
 	public Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
 		ChunkPos chunkPos = context.chunkPos();
-		int x = (chunkPos.x << 4) + (this.centerInChunk ? 7 : 0);
-		int z = (chunkPos.z << 4) + (this.centerInChunk ? 7 : 0);
+		int x = (chunkPos.x() << 4) + (this.centerInChunk ? 7 : 0);
+		int z = (chunkPos.z() << 4) + (this.centerInChunk ? 7 : 0);
 		int y = this.adjustForTerrain(context, x, z);
 
 		return Optional
-			.ofNullable(this.getFirstPiece(context, RandomSource.create(context.seed() + chunkPos.x * 25117L + chunkPos.z * 151121L), chunkPos, x, y, z))
+			.ofNullable(this.getFirstPiece(context, RandomSource.create(context.seed() + chunkPos.x() * 25117L + chunkPos.z() * 151121L), chunkPos, x, y, z))
 			.map(piece -> this.getStructurePieceGenerationStubFunction(piece, context, x, y, z));
 	}
 
@@ -122,8 +122,8 @@ public abstract class LandmarkStructure extends Structure implements DecorationC
 		ChunkPos chunkPos = context.chunkPos();
 		// set biomeX and biomeZ to center of the biome-grid tile.
 		// Otherwise some tightly-fitting biomes like Highlands vs Thornlands may fail the Troll-Clouds structure generation
-		int biomeX = (Math.round(chunkPos.x / 16F) << 6) + 2;
-		int biomeZ = (Math.round(chunkPos.z / 16F) << 6) + 2;
+		int biomeX = (Math.round(chunkPos.x() / 16F) << 6) + 2;
+		int biomeZ = (Math.round(chunkPos.z() / 16F) << 6) + 2;
 
 		Holder<Biome> biomeAt = twilightBiomeProvider.getMainBiome(biomeX, biomeZ);
 

@@ -94,9 +94,9 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
 
 	public static StructurePlaceSettings readSettings(CompoundTag compoundTag) {
 		return new StructurePlaceSettings()
-			.setRotation(ArrayUtil.wrapped(Rotation.values(), compoundTag.getInt("rotation")))
-			.setMirror(ArrayUtil.wrapped(Mirror.values(), compoundTag.getInt("mirror")))
-			.setRotationPivot(new BlockPos(compoundTag.getInt("pivot_x"), compoundTag.getInt("pivot_y"), compoundTag.getInt("pivot_z")))
+			.setRotation(ArrayUtil.wrapped(Rotation.values(), compoundTag.getIntOr("rotation", 0)))
+			.setMirror(ArrayUtil.wrapped(Mirror.values(), compoundTag.getIntOr("mirror", 0)))
+			.setRotationPivot(new BlockPos(compoundTag.getIntOr("pivot_x", 0), compoundTag.getIntOr("pivot_y", 0), compoundTag.getIntOr("pivot_z", 0)))
 			.addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
 	}
 
@@ -126,10 +126,10 @@ public abstract class TwilightTemplateStructurePiece extends TemplateStructurePi
 			for (StructureTemplate.StructureBlockInfo structuretemplate$structureblockinfo : this.template
 				.filterBlocks(this.templatePosition, this.placeSettings, Blocks.STRUCTURE_BLOCK)) {
 				if (structuretemplate$structureblockinfo.nbt() != null) {
-					StructureMode structuremode = StructureMode.valueOf(structuretemplate$structureblockinfo.nbt().getString("mode"));
+					StructureMode structuremode = StructureMode.valueOf(structuretemplate$structureblockinfo.nbt().getString("mode").orElseThrow());
 					if (structuremode == StructureMode.DATA) {
 						this.handleDataMarker(
-							structuretemplate$structureblockinfo.nbt().getString("metadata"),
+							structuretemplate$structureblockinfo.nbt().getString("metadata").orElseThrow(),
 							structuretemplate$structureblockinfo.pos(),
 							level,
 							random,

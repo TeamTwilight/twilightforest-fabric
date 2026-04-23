@@ -6,7 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Display;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.WorldGenLevel;
@@ -79,10 +79,10 @@ public abstract class TFStructureComponent extends StructurePiece implements Spa
 
 	public TFStructureComponent(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
-		this.spawnListIndex = nbt.getInt("si");
-		this.deco = TFStructureDecorator.getDecoFor(nbt.getString("deco"));
+		this.spawnListIndex = nbt.getIntOr("si", 0);
+		this.deco = TFStructureDecorator.getDecoFor(nbt.getStringOr("deco", ""));
 		this.rotation = Rotation.NONE;
-		this.rotation = Rotation.values()[nbt.getInt("rot") % Rotation.values().length];
+		this.rotation = Rotation.values()[nbt.getIntOr("rot", 0) % Rotation.values().length];
 	}
 
 	public TFStructureComponent(StructurePieceType type, int i, BoundingBox boundingBox) {
@@ -121,7 +121,7 @@ public abstract class TFStructureComponent extends StructurePiece implements Spa
 				final Display.TextDisplay display = new Display.TextDisplay(EntityType.TEXT_DISPLAY, world.getLevel());
 				display.setText(Component.literal(s));
 				display.setBillboardConstraints(billboardConstraint);
-				display.moveTo(pos.getX() + 0.5, pos.getY() + additionalYOffset, pos.getZ() + 0.5, 0, 0);
+				display.snapTo(pos.getX() + 0.5, pos.getY() + additionalYOffset, pos.getZ() + 0.5, 0, 0);
 
 				if (world.addFreshEntity(display))
 					positionAccumulator.accept(display.position());
@@ -164,7 +164,7 @@ public abstract class TFStructureComponent extends StructurePiece implements Spa
 			final Sheep sheep = new Sheep(EntityType.SHEEP, world);
 			sheep.setCustomName(Component.literal(s));
 			sheep.setNoAi(true);
-			sheep.moveTo(blockpos.getX() + 0.5, blockpos.getY() + 10, blockpos.getZ() + 0.5, 0, 0);
+			sheep.snapTo(blockpos.getX() + 0.5, blockpos.getY() + 10, blockpos.getZ() + 0.5, 0, 0);
 			sheep.setInvulnerable(true);
 			sheep.setInvisible(true);
 			sheep.setCustomNameVisible(true);

@@ -67,8 +67,8 @@ public class LichTowerRoomDecor extends TwilightJigsawPiece implements PieceBear
 			}
 			case "tree" -> {
 				ResourceKey<ConfiguredFeature<?, ?>> randomTree = TFStructureHelper.randomTree(random.nextInt(4));
-				Registry<ConfiguredFeature<?, ?>> featureRegistry = level.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE);
-				if (!featureRegistry.get(randomTree).place(level, chunkGen, random, pos)) {
+				Registry<ConfiguredFeature<?, ?>> featureRegistry = level.registryAccess().lookupOrThrow(Registries.CONFIGURED_FEATURE);
+				if (!featureRegistry.get(randomTree).get().value().place(level, chunkGen, random, pos)) {
 					level.setBlock(pos, TFStructureHelper.randomPlant(random), Block.UPDATE_CLIENTS);
 				}
 			}

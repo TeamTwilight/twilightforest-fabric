@@ -1,7 +1,6 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
 import com.google.common.collect.Streams;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
@@ -11,6 +10,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.Unit;
+import net.minecraft.util.Util;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
@@ -248,7 +248,7 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 
 				BlockPos directionOffset = destPos.subtract(checkPos);
 				// Rotate to test for orthogonality via dot product (to check if dot() == 0)
-				var targetDirecton = turn.rotate(first.orientation().top()).getNormal();
+				var targetDirecton = turn.rotate(first.orientation().top()).getUnitVec3i();
 
 				// 0 from (horizontal) dot product means orthogonal, can approach from a right-angle turn now
 				if (directionOffset.getX() * targetDirecton.getX() + directionOffset.getZ() * targetDirecton.getZ() == 0)
@@ -347,11 +347,11 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 		if (knot == null || boundedEntity == null)
 			return;
 
-		knot.moveTo(this.leashPos.getX() + 0.5, this.leashPos.getY(), this.leashPos.getZ() + 0.5);
+		knot.snapTo(this.leashPos.getX() + 0.5, this.leashPos.getY(), this.leashPos.getZ() + 0.5);
 
 		boundedEntity.setPersistenceRequired();
 		boundedEntity.setLeashedTo(knot, false);
-		boundedEntity.moveTo(zombiePos.getX() + 0.5, zombiePos.getY() - 1, zombiePos.getZ() + 0.5);
+		boundedEntity.snapTo(zombiePos.getX() + 0.5, zombiePos.getY() - 1, zombiePos.getZ() + 0.5);
 		boundedEntity.setData(TFDataAttachments.LEASH_PATHFINDER_OVERRIDE, Unit.INSTANCE);
 		level.addFreshEntity(boundedEntity);
 	}

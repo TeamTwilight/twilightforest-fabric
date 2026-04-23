@@ -16,14 +16,12 @@ import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
-import tamaized.beanification.Autowired;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFStructureTypes;
+import twilightforest.tags.TFBiomeTags;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 import twilightforest.world.components.structures.util.DecorationClearance;
-import twilightforest.world.components.structures.util.StructureTemplateDefinitions;
 
 import java.util.Map;
 import java.util.Optional;
@@ -33,9 +31,6 @@ public class CampStructure extends Structure implements DecorationClearance {
 	public static final MapCodec<CampStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		Structure.settingsCodec(instance)
 	).apply(instance, CampStructure::new));
-
-	@Autowired
-	private static StructureTemplateDefinitions structureTemplateDefinitions;
 
 	protected CampStructure(StructureSettings settings) {
 		super(settings);
@@ -57,7 +52,7 @@ public class CampStructure extends Structure implements DecorationClearance {
 		return Optional.of(new GenerationStub(freePosition, structurePiecesBuilder -> {
 			Identifier templatePool = TwilightForestMod.prefix("camp/structure_start");
 			// TODO Instead use StructureTemplateDefinitions.initializeStubFromPool
-			TwilightJigsawPiece twilightJigsawPiece = structureTemplateDefinitions.initializeTemplateFromPool(templatePool, freePosition, oriented, templatePool.toString(), context, 0, false);
+			TwilightJigsawPiece twilightJigsawPiece = TwilightJigsawPiece.initializeTemplateFromPool(templatePool, freePosition.mutable(), oriented, templatePool.toString(), random, 0, context.structureTemplateManager());
 
 			if (twilightJigsawPiece == null) return;
 
@@ -74,7 +69,7 @@ public class CampStructure extends Structure implements DecorationClearance {
 
 	public static CampStructure buildStructureConfig(BootstrapContext<Structure> context) {
 		return new CampStructure(new StructureSettings(
-			context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_CAMP_BIOMES),
+			context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_CAMP_BIOMES),
 			Map.of(),
 			GenerationStep.Decoration.SURFACE_STRUCTURES,
 			TerrainAdjustment.BEARD_BOX

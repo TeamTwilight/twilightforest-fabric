@@ -4,13 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.JsonOps;
+import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import twilightforest.TwilightForestMod;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceReloadListener {
+public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceReloadListener<JsonElement> {
 	protected final Gson gson;
 	private final Codec<T> codec;
 
@@ -27,7 +27,7 @@ public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceR
 	}
 
 	public CodecResourceReloadListener(Gson gson, String directory, Codec<T> codec) {
-		super(gson, directory);
+		super(ExtraCodecs.JSON, FileToIdConverter.json(directory));
 
 		this.gson = gson;
 		this.codec = codec;
@@ -45,7 +45,7 @@ public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceR
 
 			if (TwilightForestMod.ID.equals(location.getNamespace())) {
 				JsonElement jsonElement = entry.getValue();
-				this.deserialize(manager, this.initDynamicOps(), location, jsonElement);
+				this.deserialize(manager, location, jsonElement);
 			} else {
 				nonTwilight.add(entry);
 			}
@@ -54,13 +54,13 @@ public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceR
 		for (Map.Entry<Identifier, JsonElement> entry : nonTwilight) {
 			Identifier location = entry.getKey();
 			JsonElement jsonElement = entry.getValue();
-			this.deserialize(manager, this.initDynamicOps(), location, jsonElement);
+			this.deserialize(manager, location, jsonElement);
 		}
 	}
 
-	protected void deserialize(ResourceManager manager, DynamicOps<JsonElement> ops, Identifier location, JsonElement jsonElement) {
+	protected void deserialize(ResourceManager manager, Identifier location, JsonElement jsonElement) {
 		try {
-			Optional<T> checkFile = this.codec.parse(ops, jsonElement).result();
+			Optional<T> checkFile = this.codec.parse(JsonOps.INSTANCE, jsonElement).result();
 			if (checkFile.isPresent()) {
 				this.forLocation(manager, location, checkFile.get());
 			} else {
@@ -71,16 +71,12 @@ public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceR
 		}
 	}
 
-	protected DynamicOps<JsonElement> initDynamicOps() {
-		return JsonOps.INSTANCE;
-	}
-
 	protected abstract void forLocation(ResourceManager manager, Identifier location, T element);
 
 	/**
 	 * Intentionally not subscribed, it is on the subclasses to opt into subscription
 	 */
-	public void registerListener(AddReloadListenerEvent event) {
-		event.addListener(this);
-	}
+//	public void registerListener(AddReloadListenerEvent event) {
+//		event.addListener(this);
+//	}
 }

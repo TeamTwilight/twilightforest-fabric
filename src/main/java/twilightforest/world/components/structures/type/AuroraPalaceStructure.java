@@ -6,6 +6,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
@@ -19,6 +20,7 @@ import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
+import twilightforest.tags.TFBiomeTags;
 import twilightforest.world.components.structures.icetower.IceTowerMainComponent;
 import twilightforest.world.components.structures.util.ControlledSpawningStructure;
 
@@ -58,8 +60,8 @@ public class AuroraPalaceStructure extends ControlledSpawningStructure {
 			Optional.of(new DecorationConfig(2, false, true, false)),
 			true, Optional.of(TFMapDecorations.AURORA_PALACE),
 			new StructureSettings(
-				context.lookup(Registries.BIOME).getOrThrow(BiomeTagGenerator.VALID_AURORA_PALACE_BIOMES),
-				Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning
+				context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_AURORA_PALACE_BIOMES),
+				Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.of()))), // Landmarks have Controlled Mob spawning
 				GenerationStep.Decoration.SURFACE_STRUCTURES,
 				TerrainAdjustment.NONE
 			)

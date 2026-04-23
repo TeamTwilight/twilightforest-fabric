@@ -1,6 +1,5 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -8,7 +7,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.decoration.PaintingVariant;
+import net.minecraft.util.Util;
+import net.minecraft.world.entity.decoration.painting.PaintingVariant;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.StructureManager;
@@ -27,8 +27,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.tags.CustomTagGenerator;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.tags.TFPaintingVariantTags;
 import twilightforest.util.DirectionUtil;
 import twilightforest.util.entities.EntityUtil;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
@@ -76,7 +76,7 @@ public final class LichBossRoom extends TwilightJigsawPiece implements PieceBear
 
 	@Override
 	protected void handleDataMarker(String label, BlockPos pos, WorldGenLevel level, RandomSource random, BoundingBox chunkBounds, ChunkGenerator chunkGen, Rotation rotation) {
-		placePainting(label, pos, level, random, chunkBounds, this.placeSettings.getRotation(), 3, 3, CustomTagGenerator.PaintingVariantTagGenerator.LICH_BOSS_PAINTINGS);
+		placePainting(label, pos, level, random, chunkBounds, this.placeSettings.getRotation(), 3, 3, TFPaintingVariantTags.LICH_BOSS_PAINTINGS);
 	}
 
 	public static boolean placePainting(String label, BlockPos pos, ServerLevelAccessor level, RandomSource random, BoundingBox chunkBounds, Rotation rotation, int limitTries, int rarityFactor, TagKey<PaintingVariant> lichTowerPaintings) {

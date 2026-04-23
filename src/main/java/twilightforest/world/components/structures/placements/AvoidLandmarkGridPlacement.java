@@ -56,7 +56,7 @@ public class AvoidLandmarkGridPlacement extends RandomSpreadStructurePlacement {
 	protected boolean isPlacementChunk(ChunkGeneratorStructureState state, int chunkX, int chunkZ) {
 		//copy of super
 		ChunkPos chunkpos = this.getPotentialStructureChunk(state.getLevelSeed(), chunkX, chunkZ);
-		if (chunkpos.x != chunkX || chunkpos.z != chunkZ) {
+		if (chunkpos.x() != chunkX || chunkpos.z() != chunkZ) {
 			return false;
 		}
 

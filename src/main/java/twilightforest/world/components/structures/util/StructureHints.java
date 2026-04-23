@@ -84,9 +84,9 @@ public interface StructureHints {
 	void trySpawnHintMonster(Level world, Player player, BlockPos pos);
 
 	static void tryHintForStructure(Player player, ServerLevel level, ResourceKey<Structure> forStructure) {
-		Optional<Registry<Structure>> optStructureReg = level.registryAccess().registry(Registries.STRUCTURE);
+		Optional<Registry<Structure>> optStructureReg = level.registryAccess().lookup(Registries.STRUCTURE);
 
-		if (optStructureReg.isEmpty() || !(optStructureReg.get().get(forStructure) instanceof StructureHints structureHints))
+		if (optStructureReg.isEmpty() || !(optStructureReg.get().get(forStructure).get() instanceof StructureHints structureHints))
 			return;
 
 		structureHints.trySpawnHintMonster(level, player);
@@ -99,15 +99,15 @@ public interface StructureHints {
 	 */
 	default boolean didSpawnHintMonster(Level world, Player player, BlockPos pos) {
 		// find a target point
-		int dx = world.random.nextInt(16) - world.random.nextInt(16);
-		int dy = world.random.nextInt(4) - world.random.nextInt(4);
-		int dz = world.random.nextInt(16) - world.random.nextInt(16);
+		int dx = world.getRandom().nextInt(16) - world.getRandom().nextInt(16);
+		int dy = world.getRandom().nextInt(4) - world.getRandom().nextInt(4);
+		int dz = world.getRandom().nextInt(16) - world.getRandom().nextInt(16);
 
 		// make our hint monster
 		Mob hinty = this.createHintMonster(world);
 
 		if (hinty != null) {
-			hinty.moveTo(pos.offset(dx, dy, dz), 0f, 0f);
+			hinty.snapTo(pos.offset(dx, dy, dz), 0f, 0f);
 
 			// check if the bounding box is clear
 			if (hinty.checkSpawnObstruction(world) && hinty.getSensing().hasLineOfSight(player)) {
@@ -116,7 +116,7 @@ public interface StructureHints {
 
 				if (!book.isEmpty()) {
 					hinty.setItemSlot(EquipmentSlot.MAINHAND, book);
-					hinty.setDropChance(EquipmentSlot.MAINHAND, Mob.PRESERVE_ITEM_DROP_CHANCE_THRESHOLD);
+					hinty.setDropChance(EquipmentSlot.MAINHAND, 1.0F); //Mob.PRESERVE_ITEM_DROP_CHANCE_THRESHOLD = 1.0F
 					//hinty.setDropItemsWhenDead(true);
 				}
 

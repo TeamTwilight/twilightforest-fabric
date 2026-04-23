@@ -32,7 +32,7 @@ public abstract class TwilightDoubleTemplateStructurePiece extends TwilightTempl
 	public TwilightDoubleTemplateStructurePiece(StructurePieceType structurePieceType, CompoundTag compoundTag, StructurePieceSerializationContext ctx, StructurePlaceSettings rl2SettingsFunction, StructurePlaceSettings placeSettingsOverlay) {
 		super(structurePieceType, compoundTag, ctx, rl2SettingsFunction);
 
-		this.templateOverlayLocation = Identifier.parse(compoundTag.getString("TemplateOverlay"));
+		this.templateOverlayLocation = Identifier.parse(compoundTag.getString("TemplateOverlay").orElseThrow());
 		this.templateOverlay = this.structureManager.getOrCreate(this.templateOverlayLocation);
 		this.placeSettingsOverlay = placeSettingsOverlay;
 	}
@@ -62,16 +62,16 @@ public abstract class TwilightDoubleTemplateStructurePiece extends TwilightTempl
 		if (this.templateOverlay.placeInWorld(worldGenLevel, this.templatePosition, blockPos, this.placeSettingsOverlay, random, 2)) {
 			for (StructureTemplate.StructureBlockInfo structureBlockInfo : this.templateOverlay.filterBlocks(this.templatePosition, this.placeSettingsOverlay, Blocks.STRUCTURE_BLOCK)) {
 				if (structureBlockInfo.nbt() != null) {
-					StructureMode structureMode = StructureMode.valueOf(structureBlockInfo.nbt().getString("mode"));
+					StructureMode structureMode = StructureMode.valueOf(structureBlockInfo.nbt().getString("mode").orElseThrow());
 
 					if (structureMode == StructureMode.DATA)
-						this.handleDataMarker(structureBlockInfo.nbt().getString("metadata"), structureBlockInfo.pos(), worldGenLevel, random, boundingBox);
+						this.handleDataMarker(structureBlockInfo.nbt().getString("metadata").orElseThrow(), structureBlockInfo.pos(), worldGenLevel, random, boundingBox);
 				}
 			}
 
 			for (StructureTemplate.StructureBlockInfo structureBlockInfo : this.templateOverlay.filterBlocks(this.templatePosition, this.placeSettingsOverlay, Blocks.JIGSAW)) {
 				if (structureBlockInfo.nbt() != null) {
-					String s = structureBlockInfo.nbt().getString("final_state");
+					String s = structureBlockInfo.nbt().getString("final_state").orElseThrow();
 					BlockState blockState = Blocks.AIR.defaultBlockState();
 					try {
 						BlockState parserState = BlockStateParser.parseForBlock(worldGenLevel.holderLookup(Registries.BLOCK), new StringReader(s), false).blockState();

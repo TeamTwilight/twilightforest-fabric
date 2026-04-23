@@ -26,7 +26,7 @@ public class UtilityPiece extends StructurePiece {
 
 	public UtilityPiece(StructurePieceSerializationContext context, CompoundTag compoundTag) {
 		super(TFStructurePieceTypes.TFUtilityPiece.value(), compoundTag);
-		this.allowFeatures = compoundTag.getBoolean("allow_features");
+		this.allowFeatures = compoundTag.getBooleanOr("allow_features", true);
 	}
 
 	@Override

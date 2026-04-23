@@ -5,7 +5,6 @@ import it.unimi.dsi.fastutil.ints.IntArraySet;
 import it.unimi.dsi.fastutil.ints.IntList;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.minecraft.Util;
 import net.minecraft.core.*;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -14,13 +13,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.InclusiveRange;
-import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
-import net.minecraft.util.Unit;
+import net.minecraft.util.*;
 import net.minecraft.world.RandomizableContainer;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -430,7 +426,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 				pos = this.danglingBlock(pos, level, random, TFBlocks.ROPE.value().defaultBlockState(), modifiedLabel[0].substring("rope".length()));
 				if (pos == null) return;
 			} if (modifiedLabel[0].startsWith("chain")) {
-				pos = this.danglingBlock(pos, level, random, Blocks.CHAIN.defaultBlockState(), modifiedLabel[0].substring("chain".length()));
+				pos = this.danglingBlock(pos, level, random, Blocks.IRON_CHAIN.defaultBlockState(), modifiedLabel[0].substring("chain".length()));
 				if (pos == null) return;
 			} else if (modifiedLabel[0].equals("pedestal")) {
 
@@ -579,7 +575,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 				};
 				if (!jarEntity.fillFromLootTable(lootTableId, random.nextLong(), level.getLevel())) {
 					Identifier itemId = Identifier.bySeparator(label, '.');
-					jarEntity.getItemHandler().setItem(new ItemStack(level.registryAccess().registry(Registries.ITEM).<Function<Identifier, Item>>map(reg -> reg::get).orElse($ -> Items.AIR).apply(itemId)));
+					jarEntity.getItemHandler().setItem(new ItemStack(level.registryAccess().lookup(Registries.ITEM).<Function<Identifier, Item>>map(reg -> reg::get).orElse($ -> Items.AIR).apply(itemId)));
 				}
 				int itemRotation = this.placeSettings.getRotation().ordinal() * 4 + (parameters.length == 3 ? this.getHeadRotation(parameters[2], random) : 0);
 				jarEntity.setItemRotation(Math.floorMod(itemRotation, 16));
@@ -717,11 +713,11 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		if (knot == null || trapEntity == null)
 			return;
 
-		knot.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+		knot.snapTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
 
 		trapEntity.setPersistenceRequired();
 		trapEntity.setLeashedTo(knot, false);
-		trapEntity.moveTo(zombiePos.getX() + 0.5, zombiePos.getY() - 1, zombiePos.getZ() + 0.5);
+		trapEntity.snapTo(zombiePos.getX() + 0.5, zombiePos.getY() - 1, zombiePos.getZ() + 0.5);
 		trapEntity.setData(TFDataAttachments.LEASH_PATHFINDER_OVERRIDE, Unit.INSTANCE);
 		level.addFreshEntity(trapEntity);
 	}
@@ -748,9 +744,9 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 
 	private BlockState blockFromLabel(String label) {
 		if (label.contains(".")) {
-			return BuiltInRegistries.BLOCK.get(Identifier.bySeparator(label, '.')).defaultBlockState();
+			return BuiltInRegistries.BLOCK.get(Identifier.bySeparator(label, '.')).get().value().defaultBlockState();
 		} else {
-			return BuiltInRegistries.BLOCK.get(Identifier.parse(label)).defaultBlockState();
+			return BuiltInRegistries.BLOCK.get(Identifier.parse(label)).get().value().defaultBlockState();
 		}
 	}
 
@@ -864,12 +860,12 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		level.setBlock(pos, lectern, Block.UPDATE_CLIENTS);
 
 		if (putMimic) {
-			DeathTome tomeMimic = TFEntities.DEATH_TOME.value().create(level.getLevel());
+			DeathTome tomeMimic = TFEntities.DEATH_TOME.value().create(level.getLevel(), EntitySpawnReason.STRUCTURE);
 			if (tomeMimic != null) {
 				tomeMimic.setPersistenceRequired();
-				tomeMimic.moveTo(pos, lectern.getValue(HorizontalDirectionalBlock.FACING).toYRot(), 0);
+				tomeMimic.snapTo(pos, lectern.getValue(HorizontalDirectionalBlock.FACING).toYRot(), 0);
 				tomeMimic.setOnLectern(true);
-				tomeMimic.finalizeSpawn(level, level.getCurrentDifficultyAt(tomeMimic.blockPosition()), MobSpawnType.STRUCTURE, null);
+				tomeMimic.finalizeSpawn(level, level.getCurrentDifficultyAt(tomeMimic.blockPosition()), EntitySpawnReason.STRUCTURE, null);
 				level.addFreshEntityWithPassengers(tomeMimic);
 			}
 		} else if (level.getBlockEntity(pos) instanceof LecternBlockEntity lecternBlockEntity) {

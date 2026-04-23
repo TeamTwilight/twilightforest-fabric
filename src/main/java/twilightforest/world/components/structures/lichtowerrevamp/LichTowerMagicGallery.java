@@ -8,6 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.StructureManager;
@@ -21,13 +22,13 @@ import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFRegistries;
 import tamaized.beanification.Autowired;
-import twilightforest.data.tags.BlockTagGenerator;
-import twilightforest.data.tags.CustomTagGenerator;
 import twilightforest.entity.MagicPainting;
 import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.init.custom.MagicPaintingVariants;
+import twilightforest.tags.TFBlockTags;
+import twilightforest.tags.TFPaintingVariantTags;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
@@ -97,7 +98,7 @@ public class LichTowerMagicGallery extends TwilightJigsawPiece implements PieceB
 
 	private static void removeIfBanister(WorldGenLevel level, BlockPos pos, BoundingBox chunkBounds) {
 		if (chunkBounds.isInside(pos)) {
-			if (level.getBlockState(pos).is(BlockTagGenerator.BANISTERS)) {
+			if (level.getBlockState(pos).is(TFBlockTags.BANISTERS)) {
 				level.removeBlock(pos, false);
 			}
 		}
@@ -120,7 +121,7 @@ public class LichTowerMagicGallery extends TwilightJigsawPiece implements PieceB
 			Direction direction = this.placeSettings.getRotation().rotate(Direction.SOUTH);
 
 			Optional<Holder.Reference<MagicPaintingVariant>> variantHolderOpt = variantForGallery(level, this.templateName);
-			MagicPainting galleryPainting = TFEntities.MAGIC_PAINTING.value().create(level.getLevel());
+			MagicPainting galleryPainting = TFEntities.MAGIC_PAINTING.value().create(level.getLevel(), EntitySpawnReason.STRUCTURE);
 			if (variantHolderOpt.isPresent() && galleryPainting != null) {
 				galleryPainting.setDirection(direction);
 				galleryPainting.setVariant(variantHolderOpt.get());
@@ -132,7 +133,7 @@ public class LichTowerMagicGallery extends TwilightJigsawPiece implements PieceB
 				level.addFreshEntityWithPassengers(galleryPainting);
 			}
 		} else {
-			LichBossRoom.placePainting(label, pos, level, random, chunkBounds, this.placeSettings.getRotation(), 2, 1, CustomTagGenerator.PaintingVariantTagGenerator.LICH_TOWER_PAINTINGS);
+			LichBossRoom.placePainting(label, pos, level, random, chunkBounds, this.placeSettings.getRotation(), 2, 1, TFPaintingVariantTags.LICH_TOWER_PAINTINGS);
 		}
 	}
 
@@ -148,7 +149,7 @@ public class LichTowerMagicGallery extends TwilightJigsawPiece implements PieceB
 
 		if (variantId == null) return Optional.empty();
 
-		return level.registryAccess().registryOrThrow(TFRegistries.Keys.MAGIC_PAINTINGS).getHolder(variantId);
+		return level.registryAccess().lookupOrThrow(TFRegistries.Keys.MAGIC_PAINTINGS).get(variantId);
 	}
 
 	public static void tryPlaceGallery(Structure.GenerationContext context, StructurePieceAccessor pieceAccessor, @Nullable Identifier roomId, JigsawRecord connection, TwilightJigsawPiece parent, int newDepth, StructureTemplateManager structureManager, String jigsawLabel) {
