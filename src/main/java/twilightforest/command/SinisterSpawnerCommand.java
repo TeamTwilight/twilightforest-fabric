@@ -29,7 +29,7 @@ public class SinisterSpawnerCommand {
 
 	public LiteralArgumentBuilder<CommandSourceStack> register(CommandBuildContext buildContext) {
 		return Commands.literal("sinister_spawner")
-			.requires(cs -> cs.hasPermission(2))
+			.requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 			.then(Commands.literal("add_particle").then(Commands.argument("particle", ParticleArgument.particle(buildContext)).then(Commands.argument("pos", BlockPosArgument.blockPos()).executes(this::addParticle))))
 			.then(Commands.literal("remove_particle").then(Commands.argument("particle", ParticleArgument.particle(buildContext)).then(Commands.argument("pos", BlockPosArgument.blockPos()).executes(this::removeParticle))))
 			.then(Commands.literal("set_loot").then(Commands.argument("loot", ResourceOrIdArgument.lootTable(buildContext)).suggests(SUGGEST_LOOT_TABLE).then(Commands.argument("pos", BlockPosArgument.blockPos()).executes(this::setLootTable))))

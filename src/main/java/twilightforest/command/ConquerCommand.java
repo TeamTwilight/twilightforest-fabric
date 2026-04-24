@@ -21,8 +21,8 @@ public class ConquerCommand {
 	private final SimpleCommandExceptionType NOT_IN_STRUCTURE = new SimpleCommandExceptionType(Component.translatable("commands.tffeature.structure.required"));
 
 	public LiteralArgumentBuilder<CommandSourceStack> register() {
-		LiteralArgumentBuilder<CommandSourceStack> conquer = Commands.literal("conquer").requires(cs -> cs.hasPermission(2)).executes(ctx -> changeStructureActivity(ctx.getSource(), true));
-		LiteralArgumentBuilder<CommandSourceStack> reactivate = Commands.literal("reactivate").requires(cs -> cs.hasPermission(2)).executes(ctx -> changeStructureActivity(ctx.getSource(), false));
+		LiteralArgumentBuilder<CommandSourceStack> conquer = Commands.literal("conquer").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS)).executes(ctx -> changeStructureActivity(ctx.getSource(), true));
+		LiteralArgumentBuilder<CommandSourceStack> reactivate = Commands.literal("reactivate").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS)).executes(ctx -> changeStructureActivity(ctx.getSource(), false));
 		return conquer.then(reactivate);
 	}
 

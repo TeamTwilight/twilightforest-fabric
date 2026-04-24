@@ -32,7 +32,7 @@ import java.util.StringJoiner;
 public class InfoCommand {
 
 	public LiteralArgumentBuilder<CommandSourceStack> register() {
-		return Commands.literal("info").requires(cs -> cs.hasPermission(2)).executes(this::run);
+		return Commands.literal("info").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS)).executes(this::run);
 	}
 
 	private int run(CommandContext<CommandSourceStack> ctx) {

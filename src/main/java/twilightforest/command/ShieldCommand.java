@@ -17,7 +17,7 @@ public class ShieldCommand {
 
 	public LiteralArgumentBuilder<CommandSourceStack> register() {
 		return Commands.literal("shield")
-			.requires(cs -> cs.hasPermission(2))
+			.requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 			.then(Commands.argument("target", EntityArgument.entity())
 				.then(Commands.literal("set")
 					.then(Commands.argument("amount", IntegerArgumentType.integer())

@@ -43,7 +43,7 @@ public class MapLocatorCommand {
 
 	public LiteralArgumentBuilder<CommandSourceStack> register() {
 		// TODO A magic map variation might be cool
-		return Commands.literal("map_locator").requires(cs -> cs.hasPermission(2)).then(
+		return Commands.literal("map_locator").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS)).then(
 			Commands.argument("structure", ResourceOrTagKeyArgument.resourceOrTagKey(Registries.STRUCTURE)).executes(context -> run(context, Collections.singleton(context.getSource().getPlayerOrException()), false)).then(
 				Commands.argument("player", EntityArgument.players()).executes(context -> run(context, EntityArgument.getPlayers(context, "player"), false)).then(
 					Commands.argument("skip_known_structures", BoolArgumentType.bool()).executes(context -> run(context, EntityArgument.getPlayers(context, "player"), BoolArgumentType.getBool(context, "skip_known_structures")))

@@ -1,6 +1,7 @@
 package twilightforest.events;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.ClickEvent;
@@ -219,7 +220,7 @@ public class EntityEvents {
 			if (te instanceof SkullChestBlockEntity casket) {
 				ResolvableProfile checker = casket.owner;
 				if (checker != null && !casket.isEmpty()) {
-					if (!player.hasPermissions(3) || !player.getGameProfile().equals(checker.gameProfile())) {
+					if (!Commands.LEVEL_ADMINS.check(player.permissions()) || !player.getGameProfile().equals(checker.gameProfile())) {
 						event.setCanceled(true);
 					}
 				}

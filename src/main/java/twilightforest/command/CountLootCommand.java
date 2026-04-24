@@ -36,7 +36,7 @@ import java.util.Map;
 @tamaized.beanification.Component
 public class CountLootCommand {
 	public LiteralArgumentBuilder<CommandSourceStack> register() {
-		return Commands.literal("count_loot").requires(cs -> cs.hasPermission(Commands.LEVEL_GAMEMASTERS))
+		return Commands.literal("count_loot").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 			.then(Commands.argument("filter_structure", ResourceKeyArgument.key(Registries.STRUCTURE)).executes(this::countLoot)
 				.then(Commands.argument("show_common", BoolArgumentType.bool()).executes(this::countLootFiltered))
 			);

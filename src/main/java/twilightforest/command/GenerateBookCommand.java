@@ -25,7 +25,7 @@ public class GenerateBookCommand {
 	public LiteralArgumentBuilder<CommandSourceStack> register() {
 		return Commands.literal("genbook")
 			.executes(context -> generateBook(context.getSource(), null))
-			.requires(cs -> cs.hasPermission(3))
+			.requires(Commands.hasPermission(Commands.LEVEL_ADMINS))
 			.then(Commands.argument("structure", ResourceKeyArgument.key(Registries.STRUCTURE))
 				.executes(context -> generateBook(context.getSource(), ResourceKeyArgument.getStructure(context, "structure"))));
 	}

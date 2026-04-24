@@ -29,7 +29,7 @@ public class StructureDistanceCommand {
 	private DisplayUtil displayUtil;
 
 	public ArgumentBuilder<CommandSourceStack, ?> register() {
-		return Commands.literal("generator_radius").requires(cs -> cs.hasPermission(Commands.LEVEL_GAMEMASTERS))
+		return Commands.literal("generator_radius").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 			.then(Commands.argument("filter_structure", ResourceKeyArgument.key(Registries.STRUCTURE)).executes(this::structureDistance));
 	}
 

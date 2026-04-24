@@ -34,7 +34,7 @@ public class DisplayPiecesCommand {
 	private DisplayUtil displayUtil;
 
 	public LiteralArgumentBuilder<CommandSourceStack> register() {
-		return Commands.literal("display_pieces").requires(cs -> cs.hasPermission(Commands.LEVEL_GAMEMASTERS))
+		return Commands.literal("display_pieces").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 			.then(Commands.argument("filter_structure", ResourceKeyArgument.key(Registries.STRUCTURE)).executes(this::debugDisplayPieces));
 	}
 

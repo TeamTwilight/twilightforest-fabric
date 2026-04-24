@@ -25,7 +25,7 @@ public class TFTeleportCommand {
 
 	public LiteralArgumentBuilder<CommandSourceStack> register() {
 		return Commands.literal("tp")
-			.requires(cs -> cs.hasPermission(2))
+			.requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 			.executes(this::run);
 	}
 
