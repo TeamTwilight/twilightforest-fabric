@@ -72,7 +72,7 @@ public interface IBossLootBuffer {
 		if (TFConfig.bossDropChests && !boss.getItemStacks().isEmpty()) {
 			if (!tryDeposit(boss, chest, pos, serverLevel)) {
 				BlockPos.MutableBlockPos chestPos = pos.mutable();
-				for (int y = pos.getY(); y < serverLevel.getMaxBuildHeight(); y++) {
+				for (int y = pos.getY(); y < serverLevel.getMaxY(); y++) {
 					chestPos.setY(y);
 					if (tryDeposit(boss, chest, chestPos, serverLevel)) return;
 				}

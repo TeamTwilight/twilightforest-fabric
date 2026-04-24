@@ -42,11 +42,11 @@ public class TFTeleportCommand {
 
 		Vec3 pos = source.getPosition();
 		Level level = player.level();
-		double yConverted = (pos.y - level.getMinY()) / (level.getMaxBuildHeight() - level.getMinY()) * (twilight.getMaxBuildHeight() - twilight.getMinY()) + twilight.getMinY();
+		double yConverted = (pos.y - level.getMinY()) / (level.getMaxY() - level.getMinY()) * (twilight.getMaxY() - twilight.getMinY()) + twilight.getMinY();
 		Vec3 teleportPos = new Vec3(pos.x, yConverted, pos.z);
 		if (!twilight.isInWorldBounds(BlockPos.containing(teleportPos)))
 			throw INVALID_POSITION.create();
-		player.teleportTo(twilight, teleportPos.x(), teleportPos.y(), teleportPos.z(), player.getYRot(), player.getXRot());
+		player.teleportTo(twilight, teleportPos.x(), teleportPos.y(), teleportPos.z(), player.getYRot(), player.getXRot(), false);
 		String formattedX = String.format(Locale.ROOT, "%.1f", teleportPos.x());
 		String formattedY = String.format(Locale.ROOT, "%.1f", teleportPos.y());
 		String formattedZ = String.format(Locale.ROOT, "%.1f", teleportPos.z());

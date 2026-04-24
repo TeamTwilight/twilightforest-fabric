@@ -129,7 +129,7 @@ public class HollowTreeStructure extends Structure implements DecorationClearanc
 		int seaFloorY = context.chunkGenerator().getFirstOccupiedHeight(x, z, Heightmap.Types.OCEAN_FLOOR_WG, context.heightAccessor(), context.randomState());
 		int worldY = context.chunkGenerator().getFirstOccupiedHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState());
 
-		int height = Math.min(this.height.sample(random) + worldY, context.heightAccessor().getMaxBuildHeight()) - worldY;
+		int height = Math.min(this.height.sample(random) + worldY, context.heightAccessor().getMaxY()) - worldY;
 
 		if (height < 16 || (!this.allowInWater && seaFloorY < worldY))
 			return Optional.empty();
@@ -169,7 +169,7 @@ public class HollowTreeStructure extends Structure implements DecorationClearanc
 		ChunkPos chunkPos = new ChunkPos(blockPos);
 		RandomSource random = RandomSource.create(seed + chunkPos.x * 25117L + chunkPos.z * 151121L);
 
-		int height = Math.min(this.height.sample(random) + blockPos.getY(), heightAccessor.getMaxBuildHeight()) - blockPos.getY();
+		int height = Math.min(this.height.sample(random) + blockPos.getY(), heightAccessor.getMaxY()) - blockPos.getY();
 
 		if (height < 16)
 			return StructureStart.INVALID_START;
