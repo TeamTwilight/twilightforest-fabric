@@ -12,14 +12,13 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -41,12 +40,12 @@ public class MoonwormShot extends TFThrowable {
 
 	@SuppressWarnings("this-escape")
 	public MoonwormShot(EntityType<? extends MoonwormShot> type, Level level, LivingEntity thrower) {
-		super(type, level, thrower);
+		super(type, level, thrower, new ItemStack(TFBlocks.MOONWORM));
 		this.shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0F, 1.5F, 1.0F);
 	}
 
 	public MoonwormShot(Level level, double x, double y, double z) {
-		super(TFEntities.MOONWORM_SHOT.get(), level, x, y, z);
+		super(TFEntities.MOONWORM_SHOT.get(), level, x, y, z, new ItemStack(TFBlocks.MOONWORM));
 	}
 
 	@Override
@@ -68,7 +67,7 @@ public class MoonwormShot extends TFThrowable {
 	public void handleEntityEvent(byte id) {
 		if (id == EntityEvent.DEATH) {
 			for (int i = 0; i < 8; ++i) {
-				this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SLIME_BLOCK.defaultBlockState()), true, this.getX(), this.getY() + 0.1D, this.getZ(), 0.0D, 0.0D, 0.0D);
+				this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SLIME_BLOCK.defaultBlockState()), this.getX(), this.getY() + 0.1D, this.getZ(), 0.0D, 0.0D, 0.0D);
 			}
 		} else super.handleEntityEvent(id);
 	}
@@ -89,7 +88,7 @@ public class MoonwormShot extends TFThrowable {
 				LootParams ctx = new LootParams.Builder(serverLevel).withParameter(LootContextParams.THIS_ENTITY, this).withParameter(LootContextParams.ORIGIN, this.position()).withParameter(LootContextParams.DAMAGE_SOURCE, this.damageSources().fall()).create(LootContextParamSets.ENTITY);
 				serverLevel.getServer().reloadableRegistries().getLootTable(TFLootTables.MOONWORM_FAILED_TO_PLACE_DROPS).getRandomItems(ctx).forEach((stack) -> {
 					ItemEntity squish = new ItemEntity(this.level(), this.getX(), this.getY(), this.getZ(), stack);
-					squish.spawnAtLocation(squish.getItem());
+					squish.spawnAtLocation(serverLevel, squish.getItem());
 				});
 			}
 			this.level().playSound(null, pos, TFSounds.BUG_SQUISH.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
@@ -108,7 +107,7 @@ public class MoonwormShot extends TFThrowable {
 				LootParams ctx = new LootParams.Builder(serverLevel).withParameter(LootContextParams.THIS_ENTITY, this).withParameter(LootContextParams.ORIGIN, this.position()).withParameter(LootContextParams.DAMAGE_SOURCE, this.damageSources().fall()).create(LootContextParamSets.ENTITY);
 				serverLevel.getServer().reloadableRegistries().getLootTable(TFLootTables.MOONWORM_FAILED_TO_PLACE_DROPS).getRandomItems(ctx).forEach((stack) -> {
 					ItemEntity squish = new ItemEntity(this.level(), this.getX(), this.getY(), this.getZ(), stack);
-					squish.spawnAtLocation(squish.getItem());
+					squish.spawnAtLocation(serverLevel, squish.getItem());
 				});
 			}
 			this.level().playSound(null, this.blockPosition(), TFSounds.BUG_SQUISH.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
@@ -123,5 +122,10 @@ public class MoonwormShot extends TFThrowable {
 			this.level().broadcastEntityEvent(this, (byte) 3);
 			this.discard();
 		}
+	}
+
+	@Override
+	protected Item getDefaultItem() {
+		return TFBlocks.MOONWORM.asItem();
 	}
 }

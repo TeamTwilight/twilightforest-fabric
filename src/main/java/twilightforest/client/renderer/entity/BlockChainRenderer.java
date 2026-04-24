@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
@@ -81,5 +82,16 @@ public class BlockChainRenderer extends EntityRenderer<ChainBlock> {
 	@Override
 	public Identifier getTextureLocation(ChainBlock entity) {
 		return TEXTURE;
+	}
+
+	@Override
+	public AABB getBoundingBoxForCulling(ChainBlock entity) {
+		Entity owner = entity.getOwner();
+		if (owner != null) {
+			AABB dis = super.getBoundingBoxForCulling(entity);
+			AABB ownerAABB = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(owner).getBoundingBoxForCulling(owner);
+			return dis.minmax(ownerAABB);
+		}
+		return super.getBoundingBoxForCulling(entity);
 	}
 }

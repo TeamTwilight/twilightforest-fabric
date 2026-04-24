@@ -5,9 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -18,6 +16,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
@@ -35,6 +34,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.storage.TagValueInput;
+import net.minecraft.world.level.storage.TagValueOutput;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -43,8 +46,6 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.boss.AlphaYeti;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
-
-import java.util.Objects;
 
 //modified version of FallingBlockEntity, edits noted
 public class FallingIce extends Entity {
@@ -104,6 +105,12 @@ public class FallingIce extends Entity {
 		return !this.isRemoved();
 	}
 
+	//TODO: Necessary method
+	@Override
+	public boolean hurtServer(ServerLevel level, DamageSource source, float damage) {
+		return false;
+	}
+
 	@Override
 	public void tick() {
 		if (this.blockState.isAir()) {
@@ -130,7 +137,7 @@ public class FallingIce extends Entity {
 				}
 
 				if (!this.onGround() && !flag1) {
-					if (!this.level().isClientSide() && (this.time > 100 && (blockpos.getY() <= this.level().getMinY() || blockpos.getY() > this.level().getMaxBuildHeight()) || this.time > 1000)) {
+					if (!this.level().isClientSide() && (this.time > 100 && (blockpos.getY() <= this.level().getMinY() || blockpos.getY() > this.level().getMaxY()) || this.time > 1000)) {
 						this.discard();
 					}
 				} else {
@@ -146,20 +153,18 @@ public class FallingIce extends Entity {
 							}
 
 							if (this.level().setBlock(blockpos, this.blockState, Block.UPDATE_ALL)) {
-								((ServerLevel) this.level()).getChunkSource().chunkMap.broadcast(this, new ClientboundBlockUpdatePacket(blockpos, this.level().getBlockState(blockpos)));
+								((ServerLevel) this.level()).getChunkSource().chunkMap.sendToTrackingPlayers(this, new ClientboundBlockUpdatePacket(blockpos, this.level().getBlockState(blockpos)));
 								this.discard();
 
 								if (this.blockData != null && this.blockState.hasBlockEntity()) {
 									BlockEntity blockentity = this.level().getBlockEntity(blockpos);
 									if (blockentity != null) {
-										CompoundTag compoundtag = blockentity.saveWithoutMetadata(this.level().registryAccess());
-
-										for (String s : this.blockData.getAllKeys()) {
-											compoundtag.put(s, Objects.requireNonNull(this.blockData.get(s)).copy());
-										}
-
-										try {
-											blockentity.loadWithComponents(compoundtag, this.level().registryAccess());
+										try(ProblemReporter.ScopedCollector reporter = new ProblemReporter.ScopedCollector(blockentity.problemPath(), TwilightForestMod.LOGGER)) {
+											TagValueOutput output = TagValueOutput.createWithContext(reporter, this.level().registryAccess());
+											blockentity.saveWithoutMetadata(this.level().registryAccess());
+											CompoundTag compoundtag = output.buildResult();
+											this.blockData.forEach((name, tag) -> compoundtag.put(name, tag.copy()));
+											blockentity.loadWithComponents(TagValueInput.create(reporter, this.level().registryAccess(), compoundtag));
 										} catch (Exception exception) {
 											TwilightForestMod.LOGGER.error("Failed to load block entity from falling block", exception);
 										}
@@ -194,7 +199,7 @@ public class FallingIce extends Entity {
 
 	//TF: always hurt entities, remove anvil and dripstone crap, make sure our target isn't the alpha yeti, and scale damage based on difficulty
 	@Override
-	public boolean causeFallDamage(float dist, float multiplier, DamageSource source) {
+	public boolean causeFallDamage(double dist, float multiplier, DamageSource source) {
 
 		int realDist = Mth.ceil(dist - 5.0F);
 		if (realDist >= 0) {
@@ -220,22 +225,17 @@ public class FallingIce extends Entity {
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tag) {
-		tag.put("BlockState", NbtUtils.writeBlockState(this.blockState));
+	protected void addAdditionalSaveData(ValueOutput tag) {
+		tag.store("BlockState", BlockState.CODEC, this.blockState);
 		tag.putInt("Time", this.time);
-		if (this.blockData != null) {
-			tag.put("BlockEntityData", this.blockData);
-		}
-
+		tag.storeNullable("BlockEntityData", CompoundTag.CODEC, this.blockData);
 	}
 
 	@Override
-	protected void readAdditionalSaveData(CompoundTag tag) {
-		this.blockState = NbtUtils.readBlockState(this.level().holderLookup(Registries.BLOCK), tag.getCompound("BlockState"));
-		this.time = tag.getInt("Time");
-		if (tag.contains("BlockEntityData", 10)) {
-			this.blockData = tag.getCompound("BlockEntityData");
-		}
+	protected void readAdditionalSaveData(ValueInput tag) {
+		this.blockState = tag.read("BlockState", BlockState.CODEC).orElse(Blocks.AIR.defaultBlockState());
+		this.time = tag.getIntOr("Time", 0);
+		this.blockData = tag.read("BlockEntityData", CompoundTag.CODEC).orElse(null);
 
 		if (this.blockState.isAir()) {
 			this.blockState = Blocks.PACKED_ICE.defaultBlockState();
@@ -256,11 +256,6 @@ public class FallingIce extends Entity {
 
 	public BlockState getBlockState() {
 		return this.blockState;
-	}
-
-	@Override
-	public boolean onlyOpCanSetNbt() {
-		return true;
 	}
 
 	@Override

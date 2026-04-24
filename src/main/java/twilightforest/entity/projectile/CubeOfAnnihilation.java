@@ -1,7 +1,6 @@
 package twilightforest.entity.projectile;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,15 +17,17 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.*;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
-import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
 import twilightforest.network.ParticlePacket;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.util.WorldUtil;
 
 public class CubeOfAnnihilation extends ThrowableProjectile {
@@ -40,7 +41,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 
 	@SuppressWarnings("this-escape")
 	public CubeOfAnnihilation(EntityType<? extends CubeOfAnnihilation> type, Level world, LivingEntity thrower, ItemStack stack) {
-		super(type, thrower, world);
+		super(type, thrower.getX(), thrower.getEyeY() - 0.1F, thrower.getZ(), world);
 		this.shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0.0F, 1.5F, 1.0F);
 		this.stack = stack;
 	}
@@ -62,7 +63,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 	@Override
 	protected void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
-		if (result.getEntity() instanceof LivingEntity && result.getEntity().hurt(this.getDamageSource(), 10)) {
+		if (result.getEntity() instanceof LivingEntity && this.level() instanceof ServerLevel server && result.getEntity().hurtServer(server, this.getDamageSource(), 10)) {
 			this.tickCount += 60;
 		}
 	}
@@ -120,7 +121,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 	private boolean canAnnihilate(BlockPos pos, BlockState state, boolean restrictedPlaceMode) {
 		// whitelist many castle blocks
 		Block block = state.getBlock();
-		return (state.is(BlockTagGenerator.ANNIHILATION_INCLUSIONS) || block.getExplosionResistance() < 8F && state.getDestroySpeed(this.level(), pos) >= 0)
+		return (state.is(TFBlockTags.ANNIHILATION_INCLUSIONS) || block.getExplosionResistance() < 8F && state.getDestroySpeed(this.level(), pos) >= 0)
 			&& (!restrictedPlaceMode || this.stack.canBreakBlockInAdventureMode(new BlockInWorld(this.level(), pos, false)));
 	}
 
@@ -147,7 +148,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 	public void tick() {
 		super.tick();
 
-		if (!this.level().isClientSide) {
+		if (!this.level().isClientSide()) {
 			if (this.getOwner() == null) {
 				this.remove(RemovalReason.KILLED);
 				return;
@@ -210,16 +211,14 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 	}
 
 	@Override
-	protected void readAdditionalSaveData(CompoundTag pCompound) {
+	protected void readAdditionalSaveData(ValueInput pCompound) {
 		super.readAdditionalSaveData(pCompound);
-		if (pCompound.contains("CubeOfAnnihilationStack", 10)) {
-			this.stack = ItemStack.parseOptional(this.registryAccess(), pCompound.getCompound("CubeOfAnnihilationStack"));
-		}
+		this.stack = pCompound.read("CubeOfAnnihilationStack", ItemStack.CODEC).orElse(ItemStack.EMPTY);
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag pCompound) {
+	protected void addAdditionalSaveData(ValueOutput pCompound) {
 		super.addAdditionalSaveData(pCompound);
-		pCompound.put("CubeOfAnnihilationStack", this.stack.save(this.registryAccess()));
+		pCompound.store("CubeOfAnnihilationStack", ItemStack.CODEC, this.stack);
 	}
 }

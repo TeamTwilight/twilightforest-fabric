@@ -1,10 +1,11 @@
 package twilightforest.entity.projectile;
 
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ItemSupplier;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -22,7 +23,7 @@ public class IceSnowball extends TFThrowable implements ItemSupplier {
 	}
 
 	public IceSnowball(Level world, LivingEntity thrower) {
-		super(TFEntities.ICE_SNOWBALL.get(), world, thrower);
+		super(TFEntities.ICE_SNOWBALL.get(), world, thrower, new ItemStack(Items.SNOWBALL));
 	}
 
 	@Override
@@ -37,8 +38,8 @@ public class IceSnowball extends TFThrowable implements ItemSupplier {
 	}
 
 	@Override
-	public boolean hurt(DamageSource source, float amount) {
-		super.hurt(source, amount);
+	public boolean hurtServer(ServerLevel server, DamageSource source, float amount) {
+		super.hurtServer(server, source, amount);
 		this.die();
 		return true;
 	}
@@ -73,6 +74,11 @@ public class IceSnowball extends TFThrowable implements ItemSupplier {
 			this.level().broadcastEntityEvent(this, (byte) 3);
 			this.discard();
 		}
+	}
+
+	@Override
+	protected Item getDefaultItem() {
+		return Items.SNOWBALL;
 	}
 
 	@Override

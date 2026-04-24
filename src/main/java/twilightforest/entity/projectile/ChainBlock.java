@@ -2,7 +2,7 @@ package twilightforest.entity.projectile;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -23,19 +23,19 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.phys.AABB;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import net.neoforged.neoforge.entity.PartEntity;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
+import twilightforest.tags.TFBlockTags;
 
 public class ChainBlock extends ThrowableProjectile implements IEntityWithComplexSpawn {
 
@@ -58,21 +58,11 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 	}
 
 	public ChainBlock(EntityType<? extends ChainBlock> type, Level level, LivingEntity thrower, InteractionHand hand, ItemStack stack) {
-		super(type, thrower, level);
+		super(type, thrower.getX(), thrower.getEyeY() - 0.1F, thrower.getZ(), level);
 		this.stack = stack;
 		this.setHand(hand);
 		this.shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0.0F, 1.5F, 1.0F);
 		this.getEntityData().set(IS_FOIL, stack.hasFoil());
-	}
-
-	@Override
-	public AABB getBoundingBoxForCulling() {
-		if (this.getOwner() != null) {
-			AABB dis = super.getBoundingBoxForCulling();
-			AABB owner = this.getOwner().getBoundingBoxForCulling();
-			return dis.minmax(owner);
-		}
-		return super.getBoundingBoxForCulling();
 	}
 
 	private void setHand(InteractionHand hand) {
@@ -145,20 +135,20 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 			}
 
 			//properly disable shields
-			if (result.getEntity() instanceof Player player && player.isUsingItem() && player.getUseItem().canPerformAction(ItemAbilities.SHIELD_BLOCK)) {
-				player.getUseItem().hurtAndBreak(5, player, LivingEntity.getSlotForHand(player.getUsedItemHand()));
-				player.disableShield();
+			if (result.getEntity() instanceof Player player && player.isUsingItem() && player.getUseItem().has(DataComponents.BLOCKS_ATTACKS)) {
+				player.getUseItem().hurtAndBreak(5, player, (player.getUsedItemHand()));
+				player.getUseItem().get(DataComponents.BLOCKS_ATTACKS).disable((ServerLevel) level, player, 100, player.getUseItem());
 			}
 
 			if (damage > 0.0F) {
-				if (result.getEntity().hurt(source, damage)) {
+				if (result.getEntity().hurtServer((ServerLevel) level, source, damage)) {
 					this.playSound(TFSounds.BLOCK_AND_CHAIN_HIT.get(), 1.0f, this.random.nextFloat());
 					// age when we hit a monster so that we go back to the player faster
 					this.hitEntity = true;
 					this.setIsReturning(true);
 					this.tickCount += 60;
 					if (this.getOwner() instanceof LivingEntity living) {
-						this.stack.hurtAndBreak(1, living, LivingEntity.getSlotForHand(this.getHand()));
+						this.stack.hurtAndBreak(1, living, this.getHand());
 					}
 				}
 			}
@@ -186,7 +176,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 					null,
 					vec3,
 					level.getBlockState(result.getBlockPos()),
-					item -> this.kill()
+					item -> this.kill(level)
 				);
 			}
 		}
@@ -242,7 +232,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 	}
 
 	public static boolean canBreakBlockAt(Level level, BlockPos pos, BlockState state, ItemStack stack, boolean restrictedPlaceMode) {
-		return level.getWorldBorder().isWithinBounds(pos) && stack.isCorrectToolForDrops(state) && !state.is(BlockTagGenerator.BLOCK_AND_CHAIN_NEVER_BREAKS)
+		return level.getWorldBorder().isWithinBounds(pos) && stack.isCorrectToolForDrops(state) && !state.is(TFBlockTags.BLOCK_AND_CHAIN_NEVER_BREAKS)
 			&& (!restrictedPlaceMode || stack.canBreakBlockInAdventureMode(new BlockInWorld(level, pos, false)));
 	}
 
@@ -278,7 +268,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 					// despawn if close enough
 					if (distToPlayer < 2F) {
 						if (this.stack != null && this.getOwner() instanceof LivingEntity living && living.getData(TFDataAttachments.SMASH_BLOCKS).getBlocksSmashed() > 0) {
-							this.stack.hurtAndBreak(Math.min(living.getData(TFDataAttachments.SMASH_BLOCKS).getBlocksSmashed(), 3), living, LivingEntity.getSlotForHand(this.getHand()));
+							this.stack.hurtAndBreak(Math.min(living.getData(TFDataAttachments.SMASH_BLOCKS).getBlocksSmashed(), 3), living, this.getHand());
 						}
 						this.discard();
 					}
@@ -316,18 +306,18 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 	}
 
 	@Override
-	protected void readAdditionalSaveData(CompoundTag pCompound) {
+	protected void readAdditionalSaveData(ValueInput pCompound) {
 		super.readAdditionalSaveData(pCompound);
-		if (pCompound.contains("BlockAndChainStack", 10)) {
-			this.stack = ItemStack.parseOptional(this.registryAccess(), pCompound.getCompound("BlockAndChainStack"));
-		}
-		this.setIsReturning(pCompound.getBoolean("IsReturning"));
+		this.stack = pCompound.read("BlockAndChainStack", ItemStack.CODEC).orElse(ItemStack.EMPTY);
+		this.setIsReturning(pCompound.getBooleanOr("IsReturning", false));
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag pCompound) {
+	protected void addAdditionalSaveData(ValueOutput pCompound) {
 		super.addAdditionalSaveData(pCompound);
-		pCompound.put("BlockAndChainStack", this.stack.save(this.registryAccess()));
+		if (this.stack != null) {
+			pCompound.store("BlockAndChainStack", ItemStack.CODEC, this.stack); //TODO: I don't think we should be checking if this is null, ItemStacks should never be null.
+		}
 		pCompound.putBoolean("IsReturning", this.isReturning());
 	}
 

@@ -3,13 +3,16 @@ package twilightforest.entity.projectile;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
@@ -27,7 +30,7 @@ public class LichBolt extends TFThrowable {
 	}
 
 	public LichBolt(Level level, LivingEntity owner) {
-		super(TFEntities.LICH_BOLT.get(), level, owner);
+		super(TFEntities.LICH_BOLT.get(), level, owner, new ItemStack(Items.ENDER_PEARL)); //necessary because ItemStack is required
 	}
 
 	@Override
@@ -55,8 +58,8 @@ public class LichBolt extends TFThrowable {
 	}
 
 	@Override
-	public boolean hurt(DamageSource damagesource, float amount) {
-		super.hurt(damagesource, amount);
+	public boolean hurtServer(ServerLevel server, DamageSource damagesource, float amount) {
+		super.hurtServer(server, damagesource, amount);
 
 		if (!this.level().isClientSide() && damagesource.getEntity() != null) {
 			Vec3 vec3d = damagesource.getEntity().getLookAngle();
@@ -82,7 +85,7 @@ public class LichBolt extends TFThrowable {
 		if (id == EntityEvent.DEATH) {
 			ItemStack itemId = new ItemStack(Items.ENDER_PEARL);
 			for (int i = 0; i < 8; ++i) {
-				this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, itemId), this.getX(), this.getY(), this.getZ(), random.nextGaussian() * 0.05D, random.nextDouble() * 0.2D, random.nextGaussian() * 0.05D);
+				this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, ItemStackTemplate.fromNonEmptyStack(itemId)), this.getX(), this.getY(), this.getZ(), random.nextGaussian() * 0.05D, random.nextDouble() * 0.2D, random.nextGaussian() * 0.05D);
 			}
 		} else {
 			super.handleEntityEvent(id);
@@ -118,5 +121,11 @@ public class LichBolt extends TFThrowable {
 	@Override
 	public boolean ignoreExplosion(Explosion explosion) {
 		return true;
+	}
+
+	//Required method
+	@Override
+	protected Item getDefaultItem() {
+		return Items.ENDER_PEARL;
 	}
 }

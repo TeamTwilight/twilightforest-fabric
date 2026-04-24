@@ -1,12 +1,16 @@
 package twilightforest.entity.projectile;
 
 import net.minecraft.core.particles.ColorParticleOption;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -23,12 +27,12 @@ public class TwilightWandBolt extends TFThrowable {
 	}
 
 	public TwilightWandBolt(Level world, LivingEntity thrower) {
-		super(TFEntities.WAND_BOLT.get(), world, thrower);
+		super(TFEntities.WAND_BOLT.get(), world, thrower, new ItemStack(Items.ENDER_PEARL));
 		this.shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0, 1.5F, 1.0F);
 	}
 
 	public TwilightWandBolt(Level worldIn, double x, double y, double z) {
-		super(TFEntities.WAND_BOLT.get(), worldIn, x, y, z);
+		super(TFEntities.WAND_BOLT.get(), worldIn, x, y, z, new ItemStack(Items.ENDER_PEARL));
 	}
 
 	@Override
@@ -65,7 +69,7 @@ public class TwilightWandBolt extends TFThrowable {
 	public void handleEntityEvent(byte id) {
 		if (id == EntityEvent.DEATH) {
 			for (int i = 0; i < 8; i++) {
-				this.level().addParticle(TFParticleType.TWILIGHT_ORB.get(), false, this.getX(), this.getY(), this.getZ(), this.random.nextGaussian() * 0.05D, random.nextDouble() * 0.2D, random.nextGaussian() * 0.05D);
+				this.level().addParticle(TFParticleType.TWILIGHT_ORB.get(), this.getX(), this.getY(), this.getZ(), this.random.nextGaussian() * 0.05D, random.nextDouble() * 0.2D, random.nextGaussian() * 0.05D);
 			}
 		} else {
 			super.handleEntityEvent(id);
@@ -97,8 +101,8 @@ public class TwilightWandBolt extends TFThrowable {
 	}
 
 	@Override
-	public boolean hurt(DamageSource source, float amount) {
-		super.hurt(source, amount);
+	public boolean hurtServer(ServerLevel server, DamageSource source, float amount) {
+		super.hurtServer(server, source, amount);
 
 		if (!this.level().isClientSide() && source.getEntity() != null) {
 			Vec3 vec3d = source.getEntity().getLookAngle();
@@ -112,5 +116,11 @@ public class TwilightWandBolt extends TFThrowable {
 		}
 
 		return false;
+	}
+
+	//required method
+	@Override
+	protected Item getDefaultItem() {
+		return Items.ENDER_PEARL;
 	}
 }

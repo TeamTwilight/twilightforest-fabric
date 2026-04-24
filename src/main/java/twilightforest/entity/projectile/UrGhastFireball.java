@@ -5,9 +5,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
-import net.minecraft.world.entity.projectile.LargeFireball;
+import net.minecraft.world.entity.projectile.hurtingprojectile.AbstractHurtingProjectile;
+import net.minecraft.world.entity.projectile.hurtingprojectile.LargeFireball;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -52,7 +51,7 @@ public class UrGhastFireball extends LargeFireball implements ITFProjectile {
 			entity1.hurt(source, 16.0F);
 			EnchantmentHelper.doPostAttackEffects(serverlevel, entity1, source);
 
-			boolean flag = EventHooks.canEntityGrief(this.level(), this.getOwner());
+			boolean flag = EventHooks.canEntityGrief(serverlevel, this.getOwner());
 			this.level().explode(null, this.getX(), this.getY(), this.getZ(), this.power, flag, Level.ExplosionInteraction.NONE);
 			this.discard();
 		}
@@ -62,8 +61,10 @@ public class UrGhastFireball extends LargeFireball implements ITFProjectile {
 	protected void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
 		//explode and leave fire when hitting a block, but dont destroy them
-		boolean flag = EventHooks.canEntityGrief(this.level(), this.getOwner());
-		this.level().explode(null, this.getX(), this.getY(), this.getZ(), (float) this.power, flag, Level.ExplosionInteraction.NONE);
+		if (this.level() instanceof ServerLevel server) {
+			boolean flag = EventHooks.canEntityGrief(server, this.getOwner());
+			this.level().explode(null, this.getX(), this.getY(), this.getZ(), (float) this.power, flag, Level.ExplosionInteraction.NONE);
+		}
 		this.discard();
 	}
 
