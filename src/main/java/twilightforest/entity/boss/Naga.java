@@ -207,7 +207,7 @@ public class Naga extends BaseTFBoss {
 	@Nullable
 	@Override
 	@SuppressWarnings("deprecation")
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data) {
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason type, @Nullable SpawnGroupData data) {
 		if (this.level().getDifficulty() != Difficulty.EASY && this.getAttribute(Attributes.MAX_HEALTH) != null) {
 			boolean hard = this.level().getDifficulty() == Difficulty.HARD;
 			AttributeModifier modifier = new AttributeModifier(TwilightForestMod.prefix("difficulty_health_boost"), hard ? 130 : 80, AttributeModifier.Operation.ADD_VALUE);

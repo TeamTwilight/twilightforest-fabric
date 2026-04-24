@@ -145,7 +145,7 @@ public class Yeti extends Monster implements IHostileMount {
 		return true;
 	}
 
-	public static boolean yetiSnowyForestSpawnHandler(EntityType<? extends Yeti> entityType, ServerLevelAccessor accessor, MobSpawnType reason, BlockPos pos, RandomSource random) {
+	public static boolean yetiSnowyForestSpawnHandler(EntityType<? extends Yeti> entityType, ServerLevelAccessor accessor, EntitySpawnReason reason, BlockPos pos, RandomSource random) {
 		if (accessor.getDifficulty() != Difficulty.PEACEFUL) {
 			if (accessor.getBiome(pos).is(TFBiomes.SNOWY_FOREST)) {
 				return checkMobSpawnRules(entityType, accessor, reason, pos, random);
@@ -157,7 +157,7 @@ public class Yeti extends Monster implements IHostileMount {
 		return false;
 	}
 
-	public static boolean normalYetiSpawnHandler(EntityType<? extends Monster> entity, ServerLevelAccessor accessor, MobSpawnType reason, BlockPos pos, RandomSource random) {
+	public static boolean normalYetiSpawnHandler(EntityType<? extends Monster> entity, ServerLevelAccessor accessor, EntitySpawnReason reason, BlockPos pos, RandomSource random) {
 		return isValidLightLevel(accessor, pos, random) && checkMobSpawnRules(entity, accessor, reason, pos, random);
 	}
 

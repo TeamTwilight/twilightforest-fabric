@@ -310,7 +310,7 @@ public class EntityUtil {
 						}
 					}
 
-					EventHooks.finalizeMobSpawn(mob, level, level.getCurrentDifficultyAt(oldEntity.blockPosition()), MobSpawnType.CONVERSION, null);
+					EventHooks.finalizeMobSpawn(mob, level, level.getCurrentDifficultyAt(oldEntity.blockPosition()), EntitySpawnReason.CONVERSION, null);
 				}
 
 				oldEntity.level().addFreshEntity(newEntity);

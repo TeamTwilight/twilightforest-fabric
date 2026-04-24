@@ -103,7 +103,7 @@ public class MiscEvents {
 			level.playSound(null, pos, SoundEvents.BOOK_PUT, SoundSource.BLOCKS, 1.0F, 1.0F);
 
 			if (level instanceof ServerLevel serverLevel) {
-				DeathTome tome = TFEntities.DEATH_TOME.get().spawn(serverLevel, stack, player, pos.below(), MobSpawnType.SPAWN_EGG, true, false);
+				DeathTome tome = TFEntities.DEATH_TOME.get().spawn(serverLevel, stack, player, pos.below(), EntitySpawnReason.SPAWN_EGG, true, false);
 				if (tome != null) {
 					stack.consume(1, player);
 					serverLevel.gameEvent(player, GameEvent.ENTITY_PLACE, pos);

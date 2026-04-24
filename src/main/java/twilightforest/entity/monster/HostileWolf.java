@@ -105,7 +105,7 @@ public class HostileWolf extends Monster implements VariantHolder<Holder<WolfVar
 		super.setTarget(entity);
 	}
 
-	public static boolean checkWolfSpawnRules(EntityType<? extends HostileWolf> entity, ServerLevelAccessor accessor, MobSpawnType reason, BlockPos pos, RandomSource random) {
+	public static boolean checkWolfSpawnRules(EntityType<? extends HostileWolf> entity, ServerLevelAccessor accessor, EntitySpawnReason reason, BlockPos pos, RandomSource random) {
 		return accessor.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel(accessor, pos, random) && checkMobSpawnRules(entity, accessor, reason, pos, random);
 	}
 

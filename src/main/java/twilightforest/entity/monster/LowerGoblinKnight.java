@@ -107,12 +107,12 @@ public class LowerGoblinKnight extends Monster {
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data) {
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData data) {
 		data = super.finalizeSpawn(accessor, difficulty, reason, data);
 
 		UpperGoblinKnight upper = new UpperGoblinKnight(TFEntities.UPPER_GOBLIN_KNIGHT.get(), this.level());
 		upper.moveTo(this.getX(), this.getY() + 1, this.getZ(), this.getYRot(), 0.0F);
-		EventHooks.finalizeMobSpawn(upper, accessor, difficulty, MobSpawnType.NATURAL, data);
+		EventHooks.finalizeMobSpawn(upper, accessor, difficulty, EntitySpawnReason.NATURAL, data);
 		upper.startRiding(this);
 
 		return data;

@@ -11,7 +11,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -151,7 +151,7 @@ public class WinterWolf extends HostileWolf implements IBreathAttacker {
 		target.hurt(this.damageSources().mobAttack(this), BREATH_DAMAGE);
 	}
 
-	public static boolean canSpawnHere(EntityType<? extends WinterWolf> entity, ServerLevelAccessor accessor, MobSpawnType reason, BlockPos pos, RandomSource random) {
+	public static boolean canSpawnHere(EntityType<? extends WinterWolf> entity, ServerLevelAccessor accessor, EntitySpawnReason reason, BlockPos pos, RandomSource random) {
 		Optional<ResourceKey<Biome>> key = accessor.getBiome(pos).unwrapKey();
 		return accessor.getDifficulty() != Difficulty.PEACEFUL && Objects.equals(key, Optional.of(TFBiomes.SNOWY_FOREST)) || Monster.isDarkEnoughToSpawn(accessor, pos, random);
 	}
