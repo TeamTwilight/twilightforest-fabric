@@ -10,7 +10,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.biome.Biome;
 import twilightforest.TFRegistries;
 import twilightforest.init.custom.DwarfRabbitVariants;
-import twilightforest.init.custom.TinyBirdVariants;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,14 +29,14 @@ public record DwarfRabbitVariant(Identifier texture, Optional<HolderSet<Biome>> 
 	}
 
 	public static Holder<DwarfRabbitVariant> getVariant(RegistryAccess access, Holder<Biome> currentBiome, RandomSource random) {
-		Registry<DwarfRabbitVariant> registry = access.registryOrThrow(TFRegistries.Keys.DWARF_RABBIT_VARIANT);
-		List<Holder.Reference<DwarfRabbitVariant>> validBunnies = registry.holders().filter(variant -> variant.value().spawnBiomes().isEmpty() || variant.value().spawnBiomes().get().contains(currentBiome)).toList();
-		return validBunnies.isEmpty() ? registry.getHolderOrThrow(DwarfRabbitVariants.BROWN) : validBunnies.get(random.nextInt(validBunnies.size()));
+		Registry<DwarfRabbitVariant> registry = access.lookupOrThrow(TFRegistries.Keys.DWARF_RABBIT_VARIANT);
+		List<Holder.Reference<DwarfRabbitVariant>> validBunnies = registry.filterElements(variant -> variant.spawnBiomes().isEmpty() || variant.spawnBiomes().get().contains(currentBiome)).listElements().toList();
+		return validBunnies.isEmpty() ? registry.getOrThrow(DwarfRabbitVariants.BROWN) : validBunnies.get(random.nextInt(validBunnies.size()));
 	}
 
 	public static Holder<DwarfRabbitVariant> getRandomCommonVariant(RegistryAccess access, RandomSource random) {
-		Registry<DwarfRabbitVariant> registry = access.registryOrThrow(TFRegistries.Keys.DWARF_RABBIT_VARIANT);
-		List<Holder.Reference<DwarfRabbitVariant>> validBunnies = registry.holders().filter(variant -> variant.value().spawnBiomes().isEmpty()).toList();
-		return validBunnies.isEmpty() ? registry.getHolderOrThrow(DwarfRabbitVariants.BROWN) : validBunnies.get(random.nextInt(validBunnies.size()));
+		Registry<DwarfRabbitVariant> registry = access.lookupOrThrow(TFRegistries.Keys.DWARF_RABBIT_VARIANT);
+		List<Holder.Reference<DwarfRabbitVariant>> validBunnies = registry.filterElements(variant -> variant.spawnBiomes().isEmpty()).listElements().toList();
+		return validBunnies.isEmpty() ? registry.getOrThrow(DwarfRabbitVariants.BROWN) : validBunnies.get(random.nextInt(validBunnies.size()));
 	}
 }

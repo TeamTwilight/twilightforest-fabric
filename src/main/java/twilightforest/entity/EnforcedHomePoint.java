@@ -10,6 +10,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.GoalSelector;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.goal.AttemptToGoHomeGoal;
@@ -21,13 +23,13 @@ public interface EnforcedHomePoint {
 		selector.addGoal(5, new AttemptToGoHomeGoal<>(entity, 1.25D));
 	}
 
-	default void saveHomePointToNbt(CompoundTag tag) {
+	default void saveHomePointToNbt(ValueOutput tag) {
 		if (this.getRestrictionPoint() != null) {
 			GlobalPos.CODEC.encodeStart(NbtOps.INSTANCE, this.getRestrictionPoint()).resultOrPartial(TwilightForestMod.LOGGER::error).ifPresent(tag1 -> tag.put("HomePos", tag1));
 		}
 	}
 
-	default void loadHomePointFromNbt(CompoundTag tag) {
+	default void loadHomePointFromNbt(ValueInput tag) {
 		//properly load old home points, just assume theyre set in TF
 		if (tag.contains("Home", 9)) {
 			ListTag nbttaglist = tag.getList("Home", 6);

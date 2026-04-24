@@ -29,8 +29,8 @@ public record TinyBirdVariant(Identifier texture, Optional<HolderSet<Biome>> spa
 	}
 
 	public static Holder<TinyBirdVariant> getVariant(RegistryAccess access, Holder<Biome> currentBiome, RandomSource random) {
-		Registry<TinyBirdVariant> registry = access.registryOrThrow(TFRegistries.Keys.TINY_BIRD_VARIANT);
-		List<Holder.Reference<TinyBirdVariant>> validBirds = registry.holders().filter(variant -> variant.value().spawnBiomes().isEmpty() || variant.value().spawnBiomes().get().contains(currentBiome)).toList();
-		return validBirds.isEmpty() ? registry.getHolderOrThrow(TinyBirdVariants.RED) : validBirds.get(random.nextInt(validBirds.size()));
+		Registry<TinyBirdVariant> registry = access.lookupOrThrow(TFRegistries.Keys.TINY_BIRD_VARIANT);
+		List<Holder.Reference<TinyBirdVariant>> validBirds = registry.filterElements(variant -> variant.spawnBiomes().isEmpty() || variant.spawnBiomes().get().contains(currentBiome)).listElements().toList();
+		return validBirds.isEmpty() ? registry.getOrThrow(TinyBirdVariants.RED) : validBirds.get(random.nextInt(validBirds.size()));
 	}
 }

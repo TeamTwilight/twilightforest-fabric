@@ -10,6 +10,9 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.AABB;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.QuestRamModel;
 import twilightforest.entity.passive.QuestRam;
@@ -27,6 +30,11 @@ public class QuestRamRenderer<T extends QuestRam, M extends QuestRamModel<T>> ex
 	@Override
 	public Identifier getTextureLocation(T entity) {
 		return TEXTURE;
+	}
+
+	@Override
+	public AABB getBoundingBoxForCulling(LivingEntity entity) {
+		return super.getBoundingBoxForCulling(entity).inflate(3.0D);
 	}
 
 	public static class GlowingLinesLayer<T extends QuestRam, M extends QuestRamModel<T>> extends RenderLayer<T, M> {

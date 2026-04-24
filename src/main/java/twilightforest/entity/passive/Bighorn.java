@@ -8,10 +8,10 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -31,31 +31,32 @@ public class Bighorn extends Sheep {
 		super(type, world);
 	}
 
-	@Override
-	public ResourceKey<LootTable> getDefaultLootTable() {
-		if (this.isSheared()) {
-			return this.getType().getDefaultLootTable();
-		} else {
-			return switch (this.getColor()) {
-				case ORANGE -> TFLootTables.BIGHORN_SHEEP_ORANGE;
-				case MAGENTA -> TFLootTables.BIGHORN_SHEEP_MAGENTA;
-				case LIGHT_BLUE -> TFLootTables.BIGHORN_SHEEP_LIGHT_BLUE;
-				case YELLOW -> TFLootTables.BIGHORN_SHEEP_YELLOW;
-				case LIME -> TFLootTables.BIGHORN_SHEEP_LIME;
-				case PINK -> TFLootTables.BIGHORN_SHEEP_PINK;
-				case GRAY -> TFLootTables.BIGHORN_SHEEP_GRAY;
-				case LIGHT_GRAY -> TFLootTables.BIGHORN_SHEEP_LIGHT_GRAY;
-				case CYAN -> TFLootTables.BIGHORN_SHEEP_CYAN;
-				case PURPLE -> TFLootTables.BIGHORN_SHEEP_PURPLE;
-				case BLUE -> TFLootTables.BIGHORN_SHEEP_BLUE;
-				case BROWN -> TFLootTables.BIGHORN_SHEEP_BROWN;
-				case GREEN -> TFLootTables.BIGHORN_SHEEP_GREEN;
-				case RED -> TFLootTables.BIGHORN_SHEEP_RED;
-				case BLACK -> TFLootTables.BIGHORN_SHEEP_BLACK;
-				default -> TFLootTables.BIGHORN_SHEEP_WHITE;
-			};
-		}
-	}
+	//TODO: Moved to loot tables
+//	@Override
+//	public ResourceKey<LootTable> getDefaultLootTable() {
+//		if (this.isSheared()) {
+//			return this.getType().getDefaultLootTable();
+//		} else {
+//			return switch (this.getColor()) {
+//				case ORANGE -> TFLootTables.BIGHORN_SHEEP_ORANGE;
+//				case MAGENTA -> TFLootTables.BIGHORN_SHEEP_MAGENTA;
+//				case LIGHT_BLUE -> TFLootTables.BIGHORN_SHEEP_LIGHT_BLUE;
+//				case YELLOW -> TFLootTables.BIGHORN_SHEEP_YELLOW;
+//				case LIME -> TFLootTables.BIGHORN_SHEEP_LIME;
+//				case PINK -> TFLootTables.BIGHORN_SHEEP_PINK;
+//				case GRAY -> TFLootTables.BIGHORN_SHEEP_GRAY;
+//				case LIGHT_GRAY -> TFLootTables.BIGHORN_SHEEP_LIGHT_GRAY;
+//				case CYAN -> TFLootTables.BIGHORN_SHEEP_CYAN;
+//				case PURPLE -> TFLootTables.BIGHORN_SHEEP_PURPLE;
+//				case BLUE -> TFLootTables.BIGHORN_SHEEP_BLUE;
+//				case BROWN -> TFLootTables.BIGHORN_SHEEP_BROWN;
+//				case GREEN -> TFLootTables.BIGHORN_SHEEP_GREEN;
+//				case RED -> TFLootTables.BIGHORN_SHEEP_RED;
+//				case BLACK -> TFLootTables.BIGHORN_SHEEP_BLACK;
+//				default -> TFLootTables.BIGHORN_SHEEP_WHITE;
+//			};
+//		}
+//	}
 
 	private static DyeColor getRandomFleeceColor(RandomSource random) {
 		return random.nextBoolean()
@@ -65,7 +66,7 @@ public class Bighorn extends Sheep {
 
 	@Nullable
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata) {
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason reason, @Nullable SpawnGroupData livingdata) {
 		livingdata = super.finalizeSpawn(accessor, difficulty, reason, livingdata);
 		this.setColor(getRandomFleeceColor(accessor.getRandom()));
 		return livingdata;
@@ -78,9 +79,11 @@ public class Bighorn extends Sheep {
 			return null;
 		}
 
-		Bighorn babySheep = TFEntities.BIGHORN_SHEEP.get().create(world);
+		Bighorn babySheep = TFEntities.BIGHORN_SHEEP.get().create(world, EntitySpawnReason.BREEDING);
 		if (babySheep != null) {
-			babySheep.setColor(this.getOffspringColor(this, otherParent));
+			DyeColor parent = this.getColor();
+			DyeColor partner = otherParent.getColor();
+			babySheep.setColor(DyeColor.getMixedColor(world, parent, partner));
 		}
 		return babySheep;
 	}

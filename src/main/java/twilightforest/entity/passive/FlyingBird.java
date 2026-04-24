@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
@@ -13,7 +14,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -49,7 +49,7 @@ public abstract class FlyingBird extends Bird {
 		super.registerGoals();
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(0, new PanicGoal(this, 1.5F));
-		this.goalSelector.addGoal(3, new TemptGoal(this, 1.0F, Ingredient.of(this.getTemptItems()), true));
+		this.goalSelector.addGoal(3, new TemptGoal(this, 1.0F, i -> i.is(this.getTemptItems()), true));
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
 		this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6F));
 		this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
@@ -82,8 +82,8 @@ public abstract class FlyingBird extends Bird {
 	}
 
 	@Override
-	protected void customServerAiStep() {
-		super.customServerAiStep();
+	protected void customServerAiStep(ServerLevel server) {
+		super.customServerAiStep(server);
 
 		if (this.isBirdLanded()) {
 			this.currentFlightTime = 0;

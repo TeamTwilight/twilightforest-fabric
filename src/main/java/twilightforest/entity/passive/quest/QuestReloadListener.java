@@ -1,13 +1,13 @@
 package twilightforest.entity.passive.quest;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.mojang.serialization.JsonOps;
+import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.profiling.ProfilerFiller;
 import twilightforest.TwilightForestMod;
 import tamaized.beanification.Autowired;
@@ -16,15 +16,13 @@ import twilightforest.entity.passive.quest.ram.QuestingRamCurrentContext;
 
 import java.util.Map;
 
-public class QuestReloadListener extends SimpleJsonResourceReloadListener {
+public class QuestReloadListener extends SimpleJsonResourceReloadListener<JsonElement> {
 
 	@Autowired
 	private static QuestingRamCurrentContext questingRamCurrentContext;
 
-	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
-
 	public QuestReloadListener() {
-		super(GSON, "twilight/quests");
+		super(ExtraCodecs.JSON, FileToIdConverter.json("twilight/quests"));
 	}
 
 	@Override
