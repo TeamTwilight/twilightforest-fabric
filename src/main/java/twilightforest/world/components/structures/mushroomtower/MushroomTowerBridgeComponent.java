@@ -20,7 +20,6 @@ import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 
-
 public class MushroomTowerBridgeComponent extends MushroomTowerWingComponent {
 
 	final int dSize;
@@ -32,8 +31,8 @@ public class MushroomTowerBridgeComponent extends MushroomTowerWingComponent {
 
 	public MushroomTowerBridgeComponent(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
-		this.dSize = nbt.getInt("destSize");
-		this.dHeight = nbt.getInt("destHeight");
+		this.dSize = nbt.getIntOr("destSize", 0);
+		this.dHeight = nbt.getIntOr("destHeight", 0);
 	}
 
 	protected MushroomTowerBridgeComponent(StructurePieceType piece, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {

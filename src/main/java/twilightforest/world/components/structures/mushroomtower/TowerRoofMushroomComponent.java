@@ -18,7 +18,6 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerRoofComponent;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 
-
 public class TowerRoofMushroomComponent extends TowerRoofComponent {
 
 	public TowerRoofMushroomComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {

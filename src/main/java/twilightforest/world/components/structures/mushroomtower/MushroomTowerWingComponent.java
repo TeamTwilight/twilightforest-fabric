@@ -23,7 +23,6 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.lichtower.TowerRoofComponent;
 import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 
-
 public class MushroomTowerWingComponent extends TowerWingComponent {
 
 	private static final int RANGE = 200;
@@ -39,8 +38,8 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 
 	public MushroomTowerWingComponent(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
-		this.hasBase = nbt.getBoolean("hasBase");
-		this.isAscender = nbt.getBoolean("isAscender");
+		this.hasBase = nbt.getBooleanOr("hasBase", false);
+		this.isAscender = nbt.getBooleanOr("isAscender", false);
 	}
 
 	protected MushroomTowerWingComponent(StructurePieceType piece, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
