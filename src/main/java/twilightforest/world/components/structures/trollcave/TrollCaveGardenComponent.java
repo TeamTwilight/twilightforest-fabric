@@ -50,8 +50,8 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		Registry<Biome> biomeRegistry = world.registryAccess().registryOrThrow(Registries.BIOME);
-		Predicate<Biome> highlands = biome -> biome == biomeRegistry.get(TFBiomes.HIGHLANDS) || biome == biomeRegistry.get(TFBiomes.HIGHLANDS_UNDERGROUND);
+		Registry<Biome> biomeRegistry = world.registryAccess().lookupOrThrow(Registries.BIOME);
+		Predicate<Biome> highlands = biome -> biome == biomeRegistry.getValueOrThrow(TFBiomes.HIGHLANDS) || biome == biomeRegistry.getValueOrThrow(TFBiomes.HIGHLANDS_UNDERGROUND);
 		if (this.isBoundingBoxOutsideBiomes(world, highlands, blockPos)) {
 			return;
 		}
@@ -108,7 +108,7 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 
 		BlockPos pos = new BlockPos(dx, dy, dz);
 		if (sbb.isInside(pos)) {
-			world.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE).get(feature).place(world, generator, rand, pos);
+			world.registryAccess().lookupOrThrow(Registries.CONFIGURED_FEATURE).get(feature).get().value().place(world, generator, rand, pos);
 		}
 	}
 }

@@ -31,10 +31,10 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 
 	public TrollCaveConnectComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFTCCon.get(), ctx, nbt);
-		this.openingTowards[0] = nbt.getBoolean("openingTowards0");
-		this.openingTowards[1] = nbt.getBoolean("openingTowards1");
-		this.openingTowards[2] = nbt.getBoolean("openingTowards2");
-		this.openingTowards[3] = nbt.getBoolean("openingTowards3");
+		this.openingTowards[0] = nbt.getBooleanOr("openingTowards0", false);
+		this.openingTowards[1] = nbt.getBooleanOr("openingTowards1", false);
+		this.openingTowards[2] = nbt.getBooleanOr("openingTowards2", false);
+		this.openingTowards[3] = nbt.getBooleanOr("openingTowards3", false);
 	}
 
 	@SuppressWarnings("this-escape")

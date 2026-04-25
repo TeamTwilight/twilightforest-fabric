@@ -97,7 +97,7 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 		if (chunkGenerating.isInside(bx, by, bz)) {
 			BlockPos pos = new BlockPos(bx, by, bz);
 
-			GiantMiner miner = TFEntities.GIANT_MINER.get().create(world.getLevel());
+			GiantMiner miner = TFEntities.GIANT_MINER.get().create(world.getLevel(), EntitySpawnReason.STRUCTURE);
 			miner.setPos(bx, by, bz);
 			miner.setPersistenceRequired();
 			EventHooks.finalizeMobSpawn(miner, world, world.getCurrentDifficultyAt(pos), EntitySpawnReason.STRUCTURE, null);
@@ -114,7 +114,7 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 		if (chunkGenerating.isInside(bx, by, bz)) {
 			BlockPos pos = new BlockPos(bx, by, bz);
 
-			ArmoredGiant warrior = TFEntities.ARMORED_GIANT.get().create(world.getLevel());
+			ArmoredGiant warrior = TFEntities.ARMORED_GIANT.get().create(world.getLevel(), EntitySpawnReason.STRUCTURE);
 			warrior.setPos(bx, by, bz);
 			warrior.setPersistenceRequired();
 			EventHooks.finalizeMobSpawn(warrior, world, world.getCurrentDifficultyAt(pos), EntitySpawnReason.STRUCTURE, null);

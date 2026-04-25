@@ -46,7 +46,7 @@ public class CloudComponent extends StructurePiece {
 		int genCenterX = this.boundingBox.minX() - OFFSET - chunkWorldPos.getX() + 16;
 		int genCenterZ = this.boundingBox.minZ() - OFFSET - chunkWorldPos.getZ() + 16;
 
-		generateCloud(level.getChunk(chunkPos.x, chunkPos.z), genCenterX, genCenterZ, this.boundingBox.maxY(), randomSource);
+		generateCloud(level.getChunk(chunkPos.x(), chunkPos.z()), genCenterX, genCenterZ, this.boundingBox.maxY(), randomSource);
 	}
 
 	private static void generateCloud(ChunkAccess chunkAccess, int hx, int hz, int cloudHeight, RandomSource random) {
@@ -57,8 +57,8 @@ public class CloudComponent extends StructurePiece {
 		BlockState wispyCloud = TFBlocks.WISPY_CLOUD.get().defaultBlockState();
 		BlockState fluffyCloud = TFBlocks.FLUFFY_CLOUD.get().defaultBlockState();
 
-		int regionX = center.x + 8 >> 4;
-		int regionZ = center.z + 8 >> 4;
+		int regionX = center.x() + 8 >> 4;
+		int regionZ = center.z() + 8 >> 4;
 
 		long seed = regionX * 3129871L ^ regionZ * 116129781L;
 		seed = seed * seed * 42317861L + seed * 7L;
@@ -140,7 +140,7 @@ public class CloudComponent extends StructurePiece {
 
 	private static void setIfAir(ChunkAccess chunkAccess, BlockPos topPos, BlockState blockState) {
 		if (chunkAccess.getBlockState(topPos).isAir()) {
-			chunkAccess.setBlockState(topPos, blockState, false);
+			chunkAccess.setBlockState(topPos, blockState, 3);
 		}
 	}
 }

@@ -22,12 +22,12 @@ import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFConfiguredFeatures;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.init.custom.StructureSpeleothemConfigs;
 import twilightforest.loot.TFLootTables;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.feature.BlockSpikeFeature;
@@ -49,10 +49,10 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 	public TrollCaveMainComponent(StructurePieceType piece, StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(piece, nbt);
 
-		this.size = nbt.getInt("size");
-		this.height = nbt.getInt("height");
+		this.size = nbt.getIntOr("size", 0);
+		this.height = nbt.getIntOr("height", 0);
 
-		this.speleothemConfigHolder = StructureSpeleothemConfigs.getConfigHolder(ctx.registryAccess(), nbt.getString("config_id"));
+		this.speleothemConfigHolder = StructureSpeleothemConfigs.getConfigHolder(ctx.registryAccess(), nbt.getString("config_id").orElseThrow());
 		this.speleothemConfig = this.speleothemConfigHolder.value();
 	}
 
@@ -76,7 +76,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		super.addAdditionalSaveData(ctx, tagCompound);
 		tagCompound.putInt("size", this.size);
 		tagCompound.putInt("height", this.height);
-		tagCompound.putString("config_id", this.speleothemConfigHolder.key().location().toString());
+		tagCompound.putString("config_id", this.speleothemConfigHolder.key().identifier().toString());
 	}
 
 	@Override
@@ -161,7 +161,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 
 					double dist = Math.sqrt(ex * ey * ez);
 
-					if (this.getBlock(world, x, y, z, boundingBox).is(BlockTagGenerator.CANNOT_TROLL_CAVE_HOLLOW))
+					if (this.getBlock(world, x, y, z, boundingBox).is(TFBlockTags.CANNOT_TROLL_CAVE_HOLLOW))
 						continue;
 
 					if (dist > threshold) {
@@ -241,7 +241,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		for (int i = 0; i < 15; i++) {
 			pos.move(0, 1, 0);
 			if (sbb.isInside(pos) && world.getBlockState(pos.above()).isAir()) {
-				world.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE).get(feature).place(world, generator, rand, pos);
+				world.registryAccess().lookupOrThrow(Registries.CONFIGURED_FEATURE).get(feature).get().value().place(world, generator, rand, pos);
 				break;
 			}
 		}
