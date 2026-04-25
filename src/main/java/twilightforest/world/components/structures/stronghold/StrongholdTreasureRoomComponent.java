@@ -25,7 +25,7 @@ public class StrongholdTreasureRoomComponent extends KnightStrongholdComponent {
 
 	public StrongholdTreasureRoomComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFTreaR.get(), nbt);
-		this.enterBottom = nbt.getBoolean("enterBottom");
+		this.enterBottom = nbt.getBooleanOr("enterBottom", false);
 	}
 
 	public StrongholdTreasureRoomComponent(int i, Direction facing, int x, int y, int z) {

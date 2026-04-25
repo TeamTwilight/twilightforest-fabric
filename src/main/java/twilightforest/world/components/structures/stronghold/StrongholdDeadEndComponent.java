@@ -25,7 +25,7 @@ public class StrongholdDeadEndComponent extends KnightStrongholdComponent {
 
 	public StrongholdDeadEndComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFSDE.get(), nbt);
-		this.chestTrapped = nbt.getBoolean("chestTrapped");
+		this.chestTrapped = nbt.getBooleanOr("chestTrapped", false);
 	}
 
 	public StrongholdDeadEndComponent(int i, Direction facing, int x, int y, int z) {

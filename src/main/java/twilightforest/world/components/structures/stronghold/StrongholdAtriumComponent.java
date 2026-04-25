@@ -29,7 +29,7 @@ public class StrongholdAtriumComponent extends KnightStrongholdComponent {
 
 	public StrongholdAtriumComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFSAt.get(), nbt);
-		this.enterBottom = nbt.getBoolean("enterBottom");
+		this.enterBottom = nbt.getBooleanOr("enterBottom", false);
 	}
 
 	public StrongholdAtriumComponent(int i, Direction facing, int x, int y, int z) {
@@ -150,7 +150,7 @@ public class StrongholdAtriumComponent extends KnightStrongholdComponent {
 			// grow a tree
 
 			for (int i = 0; i < 100; i++) {
-				if (world.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE).get(treeGen).place(world, generator, world.getRandom(), pos)) {
+				if (world.registryAccess().lookupOrThrow(Registries.CONFIGURED_FEATURE).get(treeGen).get().value().place(world, generator, world.getRandom(), pos)) {
 					break;
 				}
 			}

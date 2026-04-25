@@ -23,7 +23,7 @@ public class StrongholdBalconyRoomComponent extends KnightStrongholdComponent {
 
 	public StrongholdBalconyRoomComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFSBalR.get(), nbt);
-		this.enterBottom = nbt.getBoolean("enterBottom");
+		this.enterBottom = nbt.getBooleanOr("enterBottom", false);
 	}
 
 	public StrongholdBalconyRoomComponent(int i, Direction facing, int x, int y, int z) {

@@ -37,7 +37,7 @@ public abstract class KnightStrongholdComponent extends TFStructureComponentOld 
 
 	public KnightStrongholdComponent(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
-		this.readOpeningsFromArray(nbt.getIntArray("doorInts"));
+		this.readOpeningsFromArray(nbt.getIntArray("doorInts").orElse(null)); //TODO: This is quite wrong
 	}
 
 	@SuppressWarnings("this-escape")
