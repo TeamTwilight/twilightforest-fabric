@@ -40,9 +40,9 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 
 	public DarkTowerWingComponent(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
-		this.keyTower = nbt.getBoolean("keyTower");
+		this.keyTower = nbt.getBooleanOr("keyTower", false);
 
-		this.readDoorsTypesFromArray(nbt.getIntArray("doorTypeInts"));
+		this.readDoorsTypesFromArray(nbt.getIntArray("doorTypeInts").orElse(null)); //TODO: Verify this
 	}
 
 	protected DarkTowerWingComponent(StructurePieceType piece, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {

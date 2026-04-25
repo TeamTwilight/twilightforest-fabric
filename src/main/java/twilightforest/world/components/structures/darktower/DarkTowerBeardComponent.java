@@ -22,8 +22,8 @@ public class DarkTowerBeardComponent extends TFStructureComponentOld {
 
 	public DarkTowerBeardComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFDTBea.get(), nbt);
-		this.size = nbt.getInt("beardSize");
-		this.height = nbt.getInt("beardHeight");
+		this.size = nbt.getIntOr("beardSize", 0);
+		this.height = nbt.getIntOr("beardHeight", 0);
 	}
 
 	@SuppressWarnings("this-escape")
