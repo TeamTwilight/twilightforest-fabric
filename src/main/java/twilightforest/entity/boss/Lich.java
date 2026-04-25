@@ -49,6 +49,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -64,6 +66,8 @@ import twilightforest.entity.monster.LichMinion;
 import twilightforest.entity.projectile.LichBomb;
 import twilightforest.init.*;
 import twilightforest.network.ParticlePacket;
+import twilightforest.tags.TFDamageTypeTags;
+import twilightforest.tags.TFEntityTypeTags;
 import twilightforest.util.entities.EntityUtil;
 
 import java.util.ArrayList;
@@ -214,7 +218,7 @@ public class Lich extends BaseTFBoss {
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag compound) {
+	public void addAdditionalSaveData(ValueOutput compound) {
 		super.addAdditionalSaveData(compound);
 		if (this.getMasterUUID() != null) {
 			compound.putUUID("MasterLich", this.getMasterUUID());
@@ -233,7 +237,7 @@ public class Lich extends BaseTFBoss {
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundTag compound) {
+	public void readAdditionalSaveData(ValueInput compound) {
 		super.readAdditionalSaveData(compound);
 		if (compound.contains("MasterLich")) {
 			this.setMasterUUID(compound.getUUID("MasterLich"));
@@ -319,8 +323,8 @@ public class Lich extends BaseTFBoss {
 	}
 
 	@Override
-	protected void customServerAiStep() {
-		super.customServerAiStep();
+	protected void customServerAiStep(ServerLevel server) {
+		super.customServerAiStep(server);
 
 		// Teleport home if we get too far away from it
 		if (this.isOutsideHomeRange(this.position()) && this.getTeleportInvisibility() <= 0) this.teleportHome();
@@ -349,7 +353,7 @@ public class Lich extends BaseTFBoss {
 	}
 
 	@Override
-	public boolean hurt(DamageSource src, float damage) {
+	public boolean hurtServer(ServerLevel server, DamageSource src, float damage) {
 		if (this.getTeleportInvisibility() > 0 && !src.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) return false;
 
 		// if we're in a wall, teleport for gosh sakes
@@ -369,7 +373,7 @@ public class Lich extends BaseTFBoss {
 
 		// if our shield is up, ignore any damage that can be blocked.
 		if (!src.is(DamageTypeTags.BYPASSES_INVULNERABILITY) && this.getShieldStrength() > 0) {
-			if (src.is(DamageTypeTagGenerator.BREAKS_LICH_SHIELDS) && damage > 2) {
+			if (src.is(TFDamageTypeTags.BREAKS_LICH_SHIELDS) && damage > 2) {
 				// reduce shield for magic damage greater than 1 heart
 				if (this.getShieldStrength() > 0) {
 					int newShieldStrength = this.getShieldStrength() - 1;
@@ -392,7 +396,7 @@ public class Lich extends BaseTFBoss {
 			return false;
 		}
 
-		if (super.hurt(src, damage)) {
+		if (super.hurtServer(server, src, damage)) {
 			if (this.getRandom().nextInt(this.getPhase() == 3 ? 6 : 3) <= this.hitsWithoutTeleport++ && !this.isDeadOrDying()) {
 				this.hitsWithoutTeleport = 0;
 				this.teleportToNewTarget(this.getTarget(), 20.0F, null);
@@ -434,7 +438,7 @@ public class Lich extends BaseTFBoss {
 		if (projectile instanceof LichBomb) pitch *= 0.85F;
 		this.playSound(TFSounds.LICH_SHOOT.get(), this.getSoundVolume(), pitch);
 
-		projectile.moveTo(sx, sy, sz, this.getYRot(), this.getXRot());
+		projectile.snapTo(sx, sy, sz, this.getYRot(), this.getXRot());
 		projectile.shoot(tx, ty, tz, 0.5F, 1.0F);
 
 		this.level().addFreshEntity(projectile);
@@ -545,7 +549,7 @@ public class Lich extends BaseTFBoss {
 
 	@Override
 	public ItemStack getMainHandItem() {
-		if (this.getTeleportInvisibility() > 0 && this.level().isClientSide) return ItemStack.EMPTY;
+		if (this.getTeleportInvisibility() > 0 && this.level().isClientSide()) return ItemStack.EMPTY;
 		return super.getMainHandItem();
 	}
 
@@ -922,8 +926,8 @@ public class Lich extends BaseTFBoss {
 	}
 
 	@Override
-	protected boolean shouldSpawnLoot() {
-		return !this.isShadowClone() && super.shouldSpawnLoot();
+	protected boolean shouldSpawnLoot(ServerLevel server) {
+		return !this.isShadowClone() && super.shouldSpawnLoot(server);
 	}
 
 	@Override
@@ -1073,7 +1077,7 @@ public class Lich extends BaseTFBoss {
 
 	@Override
 	public ProjectileDeflection deflection(Projectile projectile) {
-		if (projectile.getType().is(EntityTagGenerator.LICH_DEFLECTS_PHASE_2) && (projectile.getOwner() instanceof Player || projectile.getOwner() instanceof Lich || projectile.getOwner() == null) && this.getPhase() > 1) {
+		if (projectile.is(TFEntityTypeTags.LICH_DEFLECTS_PHASE_2) && (projectile.getOwner() instanceof Player || projectile.getOwner() instanceof Lich || projectile.getOwner() == null) && this.getPhase() > 1) {
 			return (proj, entity, random) -> {
 				proj.setDeltaMovement(this.getDeltaMovement().add(0.5D - this.getRandom().nextDouble(), 0.75D, 0.5D - this.getRandom().nextDouble()).multiply(0.75D, 1.5D, 0.75D));
 				proj.setOwner(this);

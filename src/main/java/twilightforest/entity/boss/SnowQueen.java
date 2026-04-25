@@ -7,6 +7,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
@@ -207,8 +208,8 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 			this.iceArray[i].setYRot(this.getIceShieldAngle(i));
 
 			// collide things with the block
-			if (!this.level().isClientSide()) {
-				this.applyShieldCollisions(this.iceArray[i]);
+			if (this.level() instanceof ServerLevel server) {
+				this.applyShieldCollisions(server, this.iceArray[i]);
 			}
 		}
 
@@ -226,12 +227,12 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 		}
 	}
 
-	private void applyShieldCollisions(Entity collider) {
+	private void applyShieldCollisions(ServerLevel server, Entity collider) {
 		List<Entity> list = this.level().getEntities(collider, collider.getBoundingBox().inflate(-0.2F, -0.2F, -0.2F));
 
 		for (Entity collided : list) {
 			if (collided.isPushable()) {
-				this.applyShieldCollision(collider, collided);
+				this.applyShieldCollision(server, collider, collided);
 			}
 		}
 	}
@@ -239,10 +240,10 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 	/**
 	 * Do the effect where the shield hits something
 	 */
-	private void applyShieldCollision(Entity collider, Entity collided) {
+	private void applyShieldCollision(ServerLevel server, Entity collider, Entity collided) {
 		if (collided != this) {
 			collided.push(collider);
-			if (collided instanceof LivingEntity && this.doHurtTarget(collided)) {
+			if (collided instanceof LivingEntity && this.doHurtTarget(server, collided)) {
 				Vec3 motion = collided.getDeltaMovement();
 				collided.setDeltaMovement(motion.x(), motion.y() + 0.4, motion.z());
 				this.playSound(TFSounds.SNOW_QUEEN_ATTACK.get(), 1.0F, 1.0F);
@@ -251,14 +252,14 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 	}
 
 	@Override
-	public boolean doHurtTarget(Entity entity) {
+	public boolean doHurtTarget(ServerLevel server, Entity entity) {
 		DamageSource source = this.getCurrentPhase() == Phase.DROP ? TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.SQUISH, this, TFEntities.SNOW_QUEEN.get()) : this.level().damageSources().mobAttack(this);
 		return EntityUtil.properlyApplyCustomDamageSource(this, entity, source, null);
 	}
 
 	@Override
-	protected void customServerAiStep() {
-		super.customServerAiStep();
+	protected void customServerAiStep(ServerLevel server) {
+		super.customServerAiStep(server);
 
 		// switch phases
 		if (this.getCurrentPhase() == Phase.SUMMON && this.getSummonsRemaining() == 0 && this.countMyMinions() <= 0) {
@@ -273,8 +274,8 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 	}
 
 	@Override
-	public boolean hurt(DamageSource source, float damage) {
-		boolean result = super.hurt(source, damage);
+	public boolean hurtServer(ServerLevel server, DamageSource source, float damage) {
+		boolean result = super.hurtServer(server, source, damage);
 
 		if (result && this.getCurrentPhase() == Phase.BEAM) {
 			this.damageWhileBeaming += (int) damage;
@@ -301,8 +302,8 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 		return 0.1F;
 	}
 
-	public void destroyBlocksInAABB(AABB box) {
-		if (EventHooks.canEntityGrief(this.level(), this)) {
+	public void destroyBlocksInAABB(ServerLevel server, AABB box) {
+		if (EventHooks.canEntityGrief(server, this)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 				BlockState state = this.level().getBlockState(pos);
 				if (state.is(BlockTags.ICE)) {
@@ -353,7 +354,7 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 
 	public void summonMinionAt(LivingEntity targetedEntity) {
 		IceCrystal minion = new IceCrystal(this.level());
-		minion.absMoveTo(this.getX(), this.getY(), this.getZ(), 0.0F, 0.0F);
+		minion.absSnapTo(this.getX(), this.getY(), this.getZ(), 0.0F, 0.0F);
 
 		this.level().addFreshEntity(minion);
 
@@ -392,8 +393,8 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 	}
 
 	@Override
-	public void doBreathAttack(Entity target) {
-		target.hurt(TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.CHILLING_BREATH, this, TFEntities.SNOW_QUEEN.get()), BREATH_DAMAGE);
+	public void doBreathAttack(ServerLevel server, Entity target) {
+		target.hurtServer(server, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.CHILLING_BREATH, this, TFEntities.SNOW_QUEEN.get()), BREATH_DAMAGE);
 		// TODO: slow target?
 	}
 

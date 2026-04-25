@@ -4,7 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -21,11 +20,13 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -58,8 +59,8 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 
 	public abstract Block getBossSpawner();
 
-	protected boolean shouldSpawnLoot() {
-		return this.level().getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT);
+	protected boolean shouldSpawnLoot(ServerLevel server) {
+		return server.getGameRules().get(GameRules.MOB_DROPS);
 	}
 
 	protected boolean shouldCreateSpawner() {
@@ -86,14 +87,14 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag compound) {
+	public void addAdditionalSaveData(ValueOutput compound) {
 		this.saveHomePointToNbt(compound);
 		this.addDeathItemsSaveData(compound, this.registryAccess());
 		super.addAdditionalSaveData(compound);
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundTag compound) {
+	public void readAdditionalSaveData(ValueInput compound) {
 		super.readAdditionalSaveData(compound);
 		this.readDeathItemsSaveData(compound, this.registryAccess());
 		this.loadHomePointFromNbt(compound);
@@ -103,9 +104,11 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	public void lavaHurt() {
 		if (!this.fireImmune()) {
 			this.igniteForSeconds(5);
-			if (this.hurt(this.damageSources().lava(), 4.0F)) {
-				this.playSound(SoundEvents.GENERIC_BURN, 0.4F, 2.0F + this.getRandom().nextFloat() * 0.4F);
-				EntityUtil.killLavaAround(this);
+			if (this.level() instanceof ServerLevel server) {
+				if (this.hurtServer(server, this.damageSources().lava(), 4.0F)) {
+					this.playSound(SoundEvents.GENERIC_BURN, 0.4F, 2.0F + this.getRandom().nextFloat() * 0.4F);
+					EntityUtil.killLavaAround(this);
+				}
 			}
 		}
 	}
@@ -113,7 +116,7 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	@Override
 	public void die(DamageSource cause) {
 		super.die(cause);
-		if (this.shouldSpawnLoot() && this.level() instanceof ServerLevel server) this.postmortem(server, cause);
+		if (this.level() instanceof ServerLevel server && this.shouldSpawnLoot(server)) this.postmortem(server, cause);
 	}
 
 	// mark the boss structure as conquered, separate method, so it can be overridden
@@ -131,7 +134,7 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 
 	// drop loot into a chest after removal, separate method, so it can be overridden
 	protected void postRemoval(ServerLevel serverLevel, RemovalReason reason) {
-		if (reason.equals(RemovalReason.KILLED) && this.shouldSpawnLoot()) {
+		if (reason.equals(RemovalReason.KILLED) && this.shouldSpawnLoot(serverLevel)) {
 			IBossLootBuffer.depositDropsIntoChest(this, this.getDeathContainer(this.getRandom()).defaultBlockState().setValue(ChestBlock.FACING, Direction.Plane.HORIZONTAL.getRandomDirection(this.level().getRandom())), EntityUtil.bossChestLocation(this), serverLevel);
 		}
 	}
@@ -154,12 +157,7 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	}
 
 	@Override
-	protected boolean shouldDespawnInPeaceful() {
-		return true;
-	}
-
-	@Override
-	protected boolean shouldDropLoot() {
+	protected boolean shouldDropLoot(ServerLevel server) {
 		return !TFConfig.bossDropChests;
 	}
 
@@ -229,8 +227,8 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	}
 
 	@Override
-	protected void customServerAiStep() {
-		super.customServerAiStep();
+	protected void customServerAiStep(ServerLevel server) {
+		super.customServerAiStep(server);
 		if (!this.level().isClientSide()) this.tickBossBar();
 	}
 

@@ -11,6 +11,7 @@ import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
@@ -28,6 +29,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.pathfinder.Path;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.event.EventHooks;
@@ -211,7 +214,7 @@ public class Hydra extends BaseTFBoss {
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag compound) {
+	public void addAdditionalSaveData(ValueOutput compound) {
 		byte headData = 0;
 		for (int i = 0; i < MAX_HEADS; i++) {
 			if (this.hc[i].isActive()) {
@@ -228,7 +231,7 @@ public class Hydra extends BaseTFBoss {
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundTag compound) {
+	public void readAdditionalSaveData(ValueInput compound) {
 		super.readAdditionalSaveData(compound);
 		this.activateHeadsOnLoad(compound.getByte("NumHeads"));
 		if (compound.contains("HeadNames", Tag.TAG_LIST)) {
@@ -260,8 +263,8 @@ public class Hydra extends BaseTFBoss {
 	private int numTicksToChaseTarget;
 
 	@Override
-	protected void customServerAiStep() {
-		super.customServerAiStep();
+	protected void customServerAiStep(ServerLevel server) {
+		super.customServerAiStep(server);
 		this.xxa = 0.0F;
 		this.zza = 0.0F;
 		float f = 48.0F;
@@ -298,19 +301,19 @@ public class Hydra extends BaseTFBoss {
 		}
 
 		// destroy blocks
-		this.destroyBlocksInAABB(this.body.getBoundingBox());
-		this.destroyBlocksInAABB(this.tail.getBoundingBox());
+		this.destroyBlocksInAABB(server, this.body.getBoundingBox());
+		this.destroyBlocksInAABB(server, this.tail.getBoundingBox());
 
 		for (int i = 0; i < MAX_HEADS; i++) {
 			if (!this.hc[i].isDead()) {
-				this.destroyBlocksInAABB(this.hc[i].headEntity.getBoundingBox());
+				this.destroyBlocksInAABB(server, this.hc[i].headEntity.getBoundingBox());
 			}
 		}
 
 		// smash blocks beneath us too
 		if (this.tickCount % 20 == 0) {
 			if (this.isUnsteadySurfaceBeneath()) {
-				this.destroyBlocksInAABB(this.getBoundingBox().move(0, -1, 0));
+				this.destroyBlocksInAABB(server, this.getBoundingBox().move(0, -1, 0));
 			}
 		}
 
@@ -555,8 +558,8 @@ public class Hydra extends BaseTFBoss {
 		return ((float) solid / (float) total) < 0.6F;
 	}
 
-	private void destroyBlocksInAABB(AABB box) {
-		if (this.deathTime <= 0 && EventHooks.canEntityGrief(this.level(), this)) {
+	private void destroyBlocksInAABB(ServerLevel server, AABB box) {
+		if (this.deathTime <= 0 && EventHooks.canEntityGrief(server, this)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 				if (EntityUtil.canDestroyBlock(this.level(), pos, this)) {
 					this.level().destroyBlock(pos, false);
@@ -572,8 +575,8 @@ public class Hydra extends BaseTFBoss {
 
 	public boolean attackEntityFromPart(HydraPart part, DamageSource source, float damage) {
 		// if we're in a wall, kill that wall
-		if (!this.level().isClientSide() && source.is(DamageTypes.IN_WALL)) {
-			this.destroyBlocksInAABB(part.getBoundingBox());
+		if (this.level() instanceof ServerLevel server && source.is(DamageTypes.IN_WALL)) {
+			this.destroyBlocksInAABB(server, part.getBoundingBox());
 		}
 
 		if (source.getEntity() == this || source.getDirectEntity() == this)
@@ -606,11 +609,11 @@ public class Hydra extends BaseTFBoss {
 
 		boolean tookDamage;
 		if (headCon != null && headCon.getCurrentMouthOpen() > 0.5) {
-			tookDamage = super.hurt(source, damage);
+			tookDamage = super.hurtServer(source, damage);
 			headCon.addDamage(damage);
 		} else {
 			int armoredDamage = Math.round(damage / ARMOR_MULTIPLIER);
-			tookDamage = super.hurt(source, armoredDamage);
+			tookDamage = super.hurtServer(source, armoredDamage);
 
 			if (headCon != null) {
 				headCon.addDamage(armoredDamage);
@@ -629,13 +632,13 @@ public class Hydra extends BaseTFBoss {
 	}
 
 	@Override
-	public boolean hurt(DamageSource src, float damage) {
-		return src.is(DamageTypeTags.BYPASSES_INVULNERABILITY) && super.hurt(src, damage);
+	public boolean hurtServer(ServerLevel serverLevel, DamageSource src, float damage) {
+		return src.is(DamageTypeTags.BYPASSES_INVULNERABILITY) && super.hurtServer(serverLevel, src, damage);
 	}
 
 	@Override
-	public boolean isInvulnerableTo(DamageSource source) {
-		return !source.is(TFDamageTypes.HYDRA_MORTAR) && super.isInvulnerableTo(source);
+	public boolean isInvulnerableTo(ServerLevel serverLevel, DamageSource source) {
+		return !source.is(TFDamageTypes.HYDRA_MORTAR) && super.isInvulnerableTo(serverLevel, source);
 	}
 
 	@Override

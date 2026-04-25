@@ -17,6 +17,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.Vec3;
@@ -42,11 +44,11 @@ public interface IBossLootBuffer {
 		}
 	}
 
-	default void addDeathItemsSaveData(CompoundTag tag, RegistryAccess registryAccess) {
+	default void addDeathItemsSaveData(ValueOutput tag, RegistryAccess registryAccess) {
 		ContainerHelper.saveAllItems(tag, this.getItemStacks(), registryAccess);
 	}
 
-	default void readDeathItemsSaveData(CompoundTag tag, RegistryAccess registryAccess) {
+	default void readDeathItemsSaveData(ValueInput tag, RegistryAccess registryAccess) {
 		ContainerHelper.loadAllItems(tag, this.getItemStacks(), registryAccess);
 	}
 

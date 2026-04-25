@@ -77,7 +77,7 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 	}
 
 	public final void updateLastPos() {
-		this.moveTo(this.getX(), this.getY(), this.getZ());
+		this.snapTo(this.getX(), this.getY(), this.getZ());
 		this.yRotO = this.getYRot();
 		this.xRotO = this.getXRot();
 		this.tickCount++;
@@ -109,8 +109,8 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 	}
 
 	@Override
-	public InteractionResult interact(Player player, InteractionHand hand) {
-		return this.getParent().interact(player, hand);
+	public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
+		return this.getParent().interact(player, hand, location);
 	}
 
 	@Override

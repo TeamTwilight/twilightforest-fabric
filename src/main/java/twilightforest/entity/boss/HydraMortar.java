@@ -3,6 +3,7 @@ package twilightforest.entity.boss;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -18,7 +19,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.EventHooks;
-import twilightforest.data.tags.BlockTagGenerator;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
 
@@ -45,7 +46,7 @@ public class HydraMortar extends ThrowableProjectile {
 		double py = head.getY() + 1 + vector.y() * dist;
 		double pz = head.getZ() + vector.z() * dist;
 
-		this.moveTo(px, py, pz, 0, 0);
+		this.snapTo(px, py, pz, 0, 0);
 		// these are being set to extreme numbers when we get here, why?
 		head.setDeltaMovement(Vec3.ZERO);
 		this.shootFromRotation(head, head.getXRot(), head.getYRot(), -20.0F, 0.5F, 1F);
@@ -117,7 +118,7 @@ public class HydraMortar extends ThrowableProjectile {
 	public float getBlockExplosionResistance(Explosion explosion, BlockGetter getter, BlockPos pos, BlockState state, FluidState fluid, float idk) {
 		float resistance = super.getBlockExplosionResistance(explosion, getter, pos, state, fluid, idk);
 
-		if (this.megaBlast && !state.is(BlockTagGenerator.COMMON_PROTECTIONS)) {
+		if (this.megaBlast && !state.is(TFBlockTags.COMMON_PROTECTIONS)) {
 			resistance = Math.min(0.8F, resistance);
 		}
 
@@ -139,8 +140,8 @@ public class HydraMortar extends ThrowableProjectile {
 	}
 
 	@Override
-	public boolean hurt(DamageSource source, float amount) {
-		super.hurt(source, amount);
+	public boolean hurtServer(ServerLevel server, DamageSource source, float amount) {
+		super.hurtServer(server, source, amount);
 
 		if (source.getEntity() != null && !this.level().isClientSide()) {
 			Vec3 vec3d = source.getEntity().getLookAngle();

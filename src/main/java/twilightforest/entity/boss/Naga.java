@@ -256,14 +256,14 @@ public class Naga extends BaseTFBoss {
 	}
 
 	@Override
-	protected void customServerAiStep() {
-		super.customServerAiStep();
+	protected void customServerAiStep(ServerLevel server) {
+		super.customServerAiStep(server);
 
 		if (this.getTarget() != null && (this.distanceToSqr(this.getTarget()) > 80 * 80 || !this.areSelfAndTargetInHome(this.getTarget()))) {
 			this.setTarget(null);
 		}
 
-		if (EventHooks.canEntityGrief(this.level(), this)) {
+		if (EventHooks.canEntityGrief(server, this)) {
 			AABB bb = this.getBoundingBox();
 
 			int minx = Mth.floor(bb.minX - 0.75D);
@@ -344,10 +344,10 @@ public class Naga extends BaseTFBoss {
 	}
 
 	@Override
-	public boolean isInvulnerableTo(DamageSource src) {
+	public boolean isInvulnerableTo(ServerLevel server, DamageSource src) {
 		return src.getEntity() != null && !this.isOtherEntityWithinHomeArea(src.getEntity()) // reject damage from outside of our home radius
 			|| src.getDirectEntity() != null && !this.isOtherEntityWithinHomeArea(src.getDirectEntity())
-			|| src.is(DamageTypeTags.IS_EXPLOSION) || super.isInvulnerableTo(src);
+			|| src.is(DamageTypeTags.IS_EXPLOSION) || super.isInvulnerableTo(server, src);
 	}
 
 	@Override

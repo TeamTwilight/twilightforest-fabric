@@ -6,6 +6,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
@@ -24,6 +25,7 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -134,14 +136,14 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 	}
 
 	@Override
-	protected void customServerAiStep() {
-		super.customServerAiStep();
+	protected void customServerAiStep(ServerLevel server) {
+		super.customServerAiStep(server);
 		if (this.isRampaging() && (this.horizontalCollision || this.verticalCollision)) { //collided does not exist, but this is an equal?
 			this.collisionCounter++;
 		}
 
 		if (this.collisionCounter >= 15) {
-			this.destroyBlocksInAABB(this.getBoundingBox());
+			this.destroyBlocksInAABB(server, this.getBoundingBox());
 			this.collisionCounter = 0;
 		}
 	}
@@ -162,13 +164,13 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 	}
 
 	@Override
-	public boolean hurt(DamageSource source, float amount) {
+	public boolean hurtServer(ServerLevel server, DamageSource source, float amount) {
 		// no arrow damage when in ranged mode
 		if (!this.canRampage() && !this.isTired() && source.is(DamageTypeTags.IS_PROJECTILE)) {
 			return false;
 		}
 
-		boolean flag = super.hurt(source, amount);
+		boolean flag = super.hurtServer(server, source, amount);
 
 		if (flag) {
 			this.canRampage = true;
@@ -212,8 +214,8 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 		return true;
 	}
 
-	public void destroyBlocksInAABB(AABB box) {
-		if (EventHooks.canEntityGrief(this.level(), this)) {
+	public void destroyBlocksInAABB(ServerLevel server, AABB box) {
+		if (EventHooks.canEntityGrief(server, this)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 				if (EntityUtil.canDestroyBlock(this.level(), pos, this)) {
 					this.level().destroyBlock(pos, false);
@@ -222,8 +224,8 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 		}
 	}
 
-	public void makeRandomBlockFall(int range, int hangTime) {
-		if (EventHooks.canEntityGrief(this.level(), this)) {
+	public void makeRandomBlockFall(ServerLevel server, int range, int hangTime) {
+		if (EventHooks.canEntityGrief(server, this)) {
 			// find a block nearby
 			int bx = Mth.floor(this.getX()) + this.getRandom().nextInt(range) - this.getRandom().nextInt(range);
 			int bz = Mth.floor(this.getZ()) + this.getRandom().nextInt(range) - this.getRandom().nextInt(range);
@@ -258,7 +260,7 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 	@Override
 	public void performRangedAttack(LivingEntity target, float distanceFactor) {
 		if (!this.canRampage()) {
-			IceBomb ice = new IceBomb(TFEntities.THROWN_ICE.get(), this.level(), this);
+			IceBomb ice = new IceBomb(this.level(), this, new ItemStack(TFItems.ICE_BOMB.get()));
 
 			// [VanillaCopy] Part of Skeleton.performRangedAttack
 			double d0 = target.getX() - this.getX();
@@ -295,18 +297,18 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 	}
 
 	@Override
-	public boolean causeFallDamage(float distance, float multiplier, DamageSource source) {
-		if (!this.level().isClientSide() && this.isRampaging()) {
+	public boolean causeFallDamage(double distance, float multiplier, DamageSource source) {
+		if (this.level() instanceof ServerLevel server && this.isRampaging()) {
 			this.playSound(TFSounds.ALPHA_YETI_ICE.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-			this.hitNearbyEntities();
+			this.hitNearbyEntities(server);
 		}
 
 		return super.causeFallDamage(distance, multiplier, source);
 	}
 
-	private void hitNearbyEntities() {
+	private void hitNearbyEntities(ServerLevel server) {
 		for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(5.0D, 0.0D, 5.0D))) {
-			if (entity != this && entity.hurt(this.damageSources().mobAttack(this), 5.0F)) {
+			if (entity != this && entity.hurtServer(server, this.damageSources().mobAttack(this), 5.0F)) {
 				entity.push(0.0D, 0.4D, 0.0D);
 			}
 		}
