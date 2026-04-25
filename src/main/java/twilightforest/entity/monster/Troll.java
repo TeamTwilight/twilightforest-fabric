@@ -1,12 +1,10 @@
 package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
@@ -30,6 +28,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -162,26 +162,24 @@ public class Troll extends Monster implements RangedAttackMob {
 	}
 
 	@Override
-	public boolean doHurtTarget(Entity entity) {
-		return super.doHurtTarget(entity);
+	public boolean doHurtTarget(ServerLevel server, Entity entity) {
+		return super.doHurtTarget(server, entity);
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag compound) {
+	public void addAdditionalSaveData(ValueOutput compound) {
 		super.addAdditionalSaveData(compound);
 		compound.putBoolean("HasRock", this.hasRock());
 		compound.putInt("RockCooldown", this.rockCooldown);
-		if (this.rock != null) {
-			compound.put("RockState", NbtUtils.writeBlockState(this.rock));
-		}
+		compound.storeNullable("RockState", BlockState.CODEC, this.rock);
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundTag compound) {
+	public void readAdditionalSaveData(ValueInput compound) {
 		super.readAdditionalSaveData(compound);
-		this.setHasRock(compound.getBoolean("HasRock"));
-		this.rockCooldown = compound.getInt("RockCooldown");
-		this.rock = NbtUtils.readBlockState(this.level().holderLookup(Registries.BLOCK), compound.getCompound("RockState"));
+		this.setHasRock(compound.getBooleanOr("HasRock", false));
+		this.rockCooldown = compound.getIntOr("RockCooldown", 0);
+		this.rock = compound.read("RockState", BlockState.CODEC).orElse(null);
 	}
 
 	private void setCombatTask() {

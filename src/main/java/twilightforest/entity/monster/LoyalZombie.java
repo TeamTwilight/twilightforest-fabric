@@ -1,7 +1,6 @@
 package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -25,8 +24,8 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.Wolf;
-import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.animal.equine.AbstractHorse;
+import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.monster.Monster;
@@ -35,6 +34,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFDamageTypes;
@@ -85,8 +86,8 @@ public class LoyalZombie extends TamableAnimal {
 	}
 
 	@Override
-	public boolean doHurtTarget(Entity entity) {
-		boolean success = entity.hurt(this.damageSources().mobAttack(this), 7.0F);
+	public boolean doHurtTarget(ServerLevel server, Entity entity) {
+		boolean success = entity.hurtServer(server, this.damageSources().mobAttack(this), 7.0F);
 
 		if (success) {
 			entity.push(0.0D, 0.2D, 0.0D);
@@ -99,7 +100,7 @@ public class LoyalZombie extends TamableAnimal {
 	public void aiStep() {
 		// once our damage boost effect wears out, start to decay
 		// the effect here is that we die shortly after our 60 second lifespan
-		if (!this.level().isClientSide() && this.getEffect(MobEffects.DAMAGE_BOOST) == null) {
+		if (!this.level().isClientSide() && this.getEffect(MobEffects.STRENGTH) == null) {
 			if (this.tickCount % 20 == 0) {
 				this.hurt(TFDamageTypes.getDamageSource(this.level(), TFDamageTypes.EXPIRED), 2);
 			}
@@ -109,18 +110,18 @@ public class LoyalZombie extends TamableAnimal {
 	}
 
 	@Override
-	public InteractionResult interactAt(Player player, Vec3 vec3, InteractionHand hand) {
+	public InteractionResult interact(Player player, InteractionHand hand, Vec3 vec3) {
 		//feeding a loyal zombie rotten flesh will refresh its death timer, allowing your minions to stick around for longer
 		if (this.getOwner() != null && this.getOwner().is(player) && player.getItemInHand(hand).is(Items.ROTTEN_FLESH)) {
-			this.removeEffect(MobEffects.DAMAGE_BOOST);
-			this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 1200, 1));
+			this.removeEffect(MobEffects.STRENGTH);
+			this.addEffect(new MobEffectInstance(MobEffects.STRENGTH, 1200, 1));
 			this.heal(1.0F);
 			this.playSound(SoundEvents.ZOMBIE_INFECT, this.getSoundVolume(), this.getVoicePitch());
 			player.getItemInHand(hand).consume(1, player);
-			return InteractionResult.sidedSuccess(this.level().isClientSide());
+			return InteractionResult.SUCCESS;
 		}
 
-		return super.interactAt(player, vec3, hand);
+		return super.interact(player, hand, vec3);
 	}
 
 	/**
@@ -144,15 +145,15 @@ public class LoyalZombie extends TamableAnimal {
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag compound) {
+	public void addAdditionalSaveData(ValueOutput compound) {
 		super.addAdditionalSaveData(compound);
 		compound.putBoolean("IsBaby", this.isBaby());
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundTag compound) {
+	public void readAdditionalSaveData(ValueInput compound) {
 		super.readAdditionalSaveData(compound);
-		this.setBaby(compound.getBoolean("IsBaby"));
+		this.setBaby(compound.getBooleanOr("IsBaby", false));
 	}
 
 	@Override
@@ -186,7 +187,7 @@ public class LoyalZombie extends TamableAnimal {
 	}
 
 	@Override
-	protected void dropExperience(@Nullable Entity entity) {
+	protected void dropExperience(ServerLevel server, @Nullable Entity entity) {
 
 	}
 

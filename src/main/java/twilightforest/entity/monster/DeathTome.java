@@ -3,10 +3,10 @@ package twilightforest.entity.monster;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
@@ -33,6 +33,8 @@ import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.HitResult;
@@ -109,7 +111,7 @@ public class DeathTome extends Monster implements RangedAttackMob {
 		};
 		flyingpathnavigation.setCanOpenDoors(false);
 		flyingpathnavigation.setCanFloat(false);
-		flyingpathnavigation.setCanPassDoors(true);
+		//flyingpathnavigation.setCanPassDoors(true);
 		return flyingpathnavigation;
 	}
 
@@ -189,7 +191,7 @@ public class DeathTome extends Monster implements RangedAttackMob {
 	@Override
 	public void tick() {
 		if (this.isOnLectern()) this.ambientSoundTime = -1; // Don't play ambient sounds if we're trying to be stealthy
-		if (this.level().isClientSide) {
+		if (this.level().isClientSide()) {
 			float f1 = this.flipT;
 
 			if (this.random.nextInt(this.isOnLectern() ? 120 : 30) == 0) {
@@ -208,12 +210,12 @@ public class DeathTome extends Monster implements RangedAttackMob {
 	}
 
 	@Override
-	public boolean hurt(DamageSource src, float damage) {
+	public boolean hurtServer(ServerLevel server, DamageSource src, float damage) {
 		if (src.is(DamageTypeTags.IS_FIRE)) {
 			damage *= 2;
 		}
 
-		if (super.hurt(src, damage)) {
+		if (super.hurtServer(server, src, damage)) {
 			if (damage > 0) {
 				if (this.isOnLectern()) {
 					this.setDeltaMovement(0.0D, 0.25D, 0.0D);
@@ -222,7 +224,7 @@ public class DeathTome extends Monster implements RangedAttackMob {
 				if (!this.level().isClientSide()) {
 					LootParams ctx = TFLootTables.createLootParams(this, true, src).create(LootContextParamSets.ENTITY);
 
-					Objects.requireNonNull(this.level().getServer()).reloadableRegistries().getLootTable(TFLootTables.DEATH_TOME_HURT).getRandomItems(ctx, s -> spawnAtLocation(s, 1.0F));
+					Objects.requireNonNull(this.level().getServer()).reloadableRegistries().getLootTable(TFLootTables.DEATH_TOME_HURT).getRandomItems(ctx, s -> spawnAtLocation(server, s, 1.0F));
 				}
 			}
 			return true;
@@ -265,13 +267,13 @@ public class DeathTome extends Monster implements RangedAttackMob {
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundTag tag) {
+	public void readAdditionalSaveData(ValueInput tag) {
 		super.readAdditionalSaveData(tag);
-		this.entityData.set(DATA_LECTERN, tag.getBoolean("on_lectern"));
+		this.entityData.set(DATA_LECTERN, tag.getBooleanOr("on_lectern", false));
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag tag) {
+	public void addAdditionalSaveData(ValueOutput tag) {
 		super.addAdditionalSaveData(tag);
 		tag.putBoolean("on_lectern", this.entityData.get(DATA_LECTERN));
 	}

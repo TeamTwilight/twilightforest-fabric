@@ -1,6 +1,7 @@
 package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
@@ -16,9 +17,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFItems;
+import twilightforest.tags.TFBlockTags;
 import twilightforest.util.entities.EntityUtil;
 
 import java.util.List;
@@ -79,7 +80,7 @@ public class GiantMiner extends Monster {
 	}
 
 	@Override
-	public boolean doHurtTarget(Entity entity) {
+	public boolean doHurtTarget(ServerLevel server, Entity entity) {
 		return EntityUtil.properlyApplyCustomDamageSource(this, entity, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.ANT, this), null);
 	}
 
@@ -95,7 +96,7 @@ public class GiantMiner extends Monster {
 	}
 
 	public static boolean canSpawn(EntityType<? extends GiantMiner> type, ServerLevelAccessor accessor, EntitySpawnReason reason, BlockPos pos, RandomSource rand) {
-		return accessor.getBlockState(pos.below()).is(BlockTagGenerator.GIANTS_SPAWNABLE_ON);
+		return accessor.getBlockState(pos.below()).is(TFBlockTags.GIANTS_SPAWNABLE_ON);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package twilightforest.entity.monster;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -58,8 +59,8 @@ public class MosquitoSwarm extends Monster {
 	}
 
 	@Override
-	public boolean doHurtTarget(Entity entity) {
-		if (super.doHurtTarget(entity)) {
+	public boolean doHurtTarget(ServerLevel server, Entity entity) {
+		if (super.doHurtTarget(server, entity)) {
 			if (entity instanceof LivingEntity living) {
 				int duration = switch (this.level().getDifficulty()) {
 					case EASY -> 7;

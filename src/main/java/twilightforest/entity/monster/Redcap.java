@@ -1,6 +1,5 @@
 package twilightforest.entity.monster;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -22,6 +21,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.ai.goal.AvoidAnyEntityGoal;
 import twilightforest.entity.ai.goal.RedcapLightTNTGoal;
@@ -74,7 +75,7 @@ public class Redcap extends Monster {
 	}
 
 	public boolean isShy() {
-		return this.lastHurtByPlayerTime <= 0;
+		return this.lastHurtByPlayerMemoryTime <= 0;
 	}
 
 	@Nullable
@@ -98,14 +99,14 @@ public class Redcap extends Monster {
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag compound) {
+	public void addAdditionalSaveData(ValueOutput compound) {
 		super.addAdditionalSaveData(compound);
 		compound.putInt("TNTLeft", this.heldTNT.getCount());
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundTag compound) {
+	public void readAdditionalSaveData(ValueInput compound) {
 		super.readAdditionalSaveData(compound);
-		this.heldTNT.setCount(compound.getInt("TNTLeft"));
+		this.heldTNT.setCount(compound.getIntOr("TNTLeft", 0));
 	}
 }

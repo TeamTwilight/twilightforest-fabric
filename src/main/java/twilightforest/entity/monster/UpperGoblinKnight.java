@@ -1,7 +1,6 @@
 package twilightforest.entity.monster;
 
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -26,6 +25,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -119,17 +120,17 @@ public class UpperGoblinKnight extends Monster {
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag compound) {
+	public void addAdditionalSaveData(ValueOutput compound) {
 		super.addAdditionalSaveData(compound);
 		compound.putBoolean("hasArmor", this.hasArmor());
 		compound.putBoolean("hasShield", this.hasShield());
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundTag compound) {
+	public void readAdditionalSaveData(ValueInput compound) {
 		super.readAdditionalSaveData(compound);
-		this.setHasArmor(compound.getBoolean("hasArmor"));
-		this.setHasShield(compound.getBoolean("hasShield"));
+		this.setHasArmor(compound.getBooleanOr("hasArmor", false));
+		this.setHasShield(compound.getBooleanOr("hasShield", false));
 	}
 
 	@Override
@@ -167,8 +168,8 @@ public class UpperGoblinKnight extends Monster {
 	}
 
 	@Override
-	public void customServerAiStep() {
-		super.customServerAiStep();
+	public void customServerAiStep(ServerLevel server) {
+		super.customServerAiStep(server);
 
 		if (this.isShieldDisabled() && this.shieldDisabledTicks++ >= 100) {
 			this.shieldDisabledTicks = 0;
@@ -218,13 +219,13 @@ public class UpperGoblinKnight extends Monster {
 
 		// damage things in front that aren't us or our "mount"
 		double radius = 1.5D;
-
 		AABB spearBB = new AABB(px - radius, py - radius, pz - radius, px + radius, py + radius, pz + radius);
-
 		List<Entity> inBox = this.level().getEntities(this, spearBB, e -> e != this.getVehicle());
 
-		for (Entity entity : inBox) {
-			super.doHurtTarget(entity);
+		if (this.level() instanceof ServerLevel server) {
+			for (Entity entity : inBox) {
+				super.doHurtTarget(server, entity);
+			}
 		}
 
 		if (!inBox.isEmpty()) {
@@ -249,8 +250,7 @@ public class UpperGoblinKnight extends Monster {
 	}
 
 	@Override
-	public boolean doHurtTarget(Entity entity) {
-
+	public boolean doHurtTarget(ServerLevel server, Entity entity) {
 		if (this.heavySpearTimer > 0) {
 			return false;
 		}
@@ -262,11 +262,11 @@ public class UpperGoblinKnight extends Monster {
 		}
 
 		this.swing(InteractionHand.MAIN_HAND);
-		return super.doHurtTarget(entity);
+		return super.doHurtTarget(server, entity);
 	}
 
 	@Override
-	public boolean hurt(DamageSource damageSource, float amount) {
+	public boolean hurtServer(ServerLevel server, DamageSource damageSource, float amount) {
 		// don't take suffocation damage while riding
 		if (damageSource.is(DamageTypes.IN_WALL) && this.getVehicle() != null) {
 			return false;
@@ -296,7 +296,7 @@ public class UpperGoblinKnight extends Monster {
 			}
 		}
 
-		return super.hurt(damageSource, amount);
+		return super.hurtServer(server, damageSource, amount);
 	}
 
 	private void breakArmor() {
@@ -318,14 +318,14 @@ public class UpperGoblinKnight extends Monster {
 
 		if (source.getEntity() instanceof LivingEntity living && living.getMainHandItem().getItem() instanceof AxeItem && !this.level().isClientSide()) {
 			this.getEntityData().set(SHIELD_DISABLED, true);
-			this.playSound(SoundEvents.SHIELD_BREAK, 1.0F, 0.8F + this.level().getRandom().nextFloat() * 0.4F);
+			this.playSound(SoundEvents.SHIELD_BREAK.value(), 1.0F, 0.8F + this.level().getRandom().nextFloat() * 0.4F);
 			return true;
 		}
 
 		if (amount > SHIELD_DAMAGE_THRESHOLD && !this.level().isClientSide()) {
 			this.damageShield();
 		} else {
-			this.playSound(SoundEvents.SHIELD_BLOCK, 1.0F, 0.8F + this.level().getRandom().nextFloat() * 0.4F);
+			this.playSound(SoundEvents.SHIELD_BLOCK.value(), 1.0F, 0.8F + this.level().getRandom().nextFloat() * 0.4F);
 		}
 
 		// knock back slightly

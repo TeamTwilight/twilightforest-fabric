@@ -2,6 +2,7 @@ package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
@@ -79,15 +80,15 @@ public class TowerwoodBorer extends Monster {
 
 	// [VanillaCopy] Silverfish.hurt
 	@Override
-	public boolean hurt(DamageSource source, float amount) {
-		if (this.isInvulnerableTo(source)) {
+	public boolean hurtServer(ServerLevel server, DamageSource source, float amount) {
+		if (this.isInvulnerableTo(server, source)) {
 			return false;
 		} else {
 			if ((source.getEntity() != null || source.is(DamageTypeTags.ALWAYS_TRIGGERS_SILVERFISH)) && this.summonBorers != null) {
 				this.summonBorers.notifyHurt();
 			}
 
-			return super.hurt(source, amount);
+			return super.hurtServer(server, source, amount);
 		}
 	}
 
@@ -122,15 +123,17 @@ public class TowerwoodBorer extends Monster {
 			} else {
 				RandomSource random = this.mob.getRandom();
 
-				if (random.nextInt(10) == 0 && EventHooks.canEntityGrief(this.mob.level(), this.mob)) {
-					this.facing = Direction.getRandom(random);
-					BlockPos blockpos = BlockPos.containing(this.mob.getX(), this.mob.getY() + 0.5D, this.mob.getZ()).relative(this.facing);
-					BlockState state = this.mob.level().getBlockState(blockpos);
+				if (this.mob.level() instanceof ServerLevel server) {
+					if (random.nextInt(10) == 0 && EventHooks.canEntityGrief(server, this.mob)) {
+						this.facing = Direction.getRandom(random);
+						BlockPos blockpos = BlockPos.containing(this.mob.getX(), this.mob.getY() + 0.5D, this.mob.getZ()).relative(this.facing);
+						BlockState state = this.mob.level().getBlockState(blockpos);
 
-					// TF - Change block check
-					if (state.is(TFBlocks.TOWERWOOD)) {
-						this.doMerge = true;
-						return true;
+						// TF - Change block check
+						if (state.is(TFBlocks.TOWERWOOD)) {
+							this.doMerge = true;
+							return true;
+						}
 					}
 				}
 
@@ -205,12 +208,14 @@ public class TowerwoodBorer extends Monster {
 
 							// TF - Change block check
 							if (state.is(TFBlocks.INFESTED_TOWERWOOD)) {
-								if (EventHooks.canEntityGrief(world, this.borer)) {
-									world.destroyBlock(offsetPos, true);
-									this.borer.gameEvent(GameEvent.BLOCK_DESTROY);
-								} else {
-									// TF - reset to normal tower wood
-									world.setBlock(offsetPos, TFBlocks.TOWERWOOD.get().defaultBlockState(), Block.UPDATE_ALL);
+								if (world instanceof ServerLevel server) {
+									if (EventHooks.canEntityGrief(server, this.borer)) {
+										world.destroyBlock(offsetPos, true);
+										this.borer.gameEvent(GameEvent.BLOCK_DESTROY);
+									} else {
+										// TF - reset to normal tower wood
+										world.setBlock(offsetPos, TFBlocks.TOWERWOOD.get().defaultBlockState(), Block.UPDATE_ALL);
+									}
 								}
 
 								if (random.nextBoolean()) {

@@ -17,7 +17,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.Spider;
+import net.minecraft.world.entity.monster.spider.Spider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -79,8 +79,8 @@ public class SwarmSpider extends Spider {
 	}
 
 	@Override
-	public boolean doHurtTarget(Entity entity) {
-		return this.getRandom().nextInt(4) == 0 && super.doHurtTarget(entity);
+	public boolean doHurtTarget(ServerLevel server, Entity entity) {
+		return this.getRandom().nextInt(4) == 0 && super.doHurtTarget(server, entity);
 	}
 
 	public EntityType<? extends SwarmSpider> getReinforcementType() {
@@ -118,14 +118,16 @@ public class SwarmSpider extends Spider {
 
 	public void summonJockey(ServerLevelAccessor accessor, DifficultyInstance difficulty) {
 		if (this.getFirstPassenger() != null || accessor.getRandom().nextInt(200) == 0) {
-			SkeletonDruid druid = TFEntities.SKELETON_DRUID.get().create(this.level());
-			if (druid != null) {
-				druid.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
-				druid.setBaby(true);
-				EventHooks.finalizeMobSpawn(druid, accessor, difficulty, EntitySpawnReason.JOCKEY, null);
+			if (this.level() instanceof ServerLevel server) {
+				SkeletonDruid druid = TFEntities.SKELETON_DRUID.get().create(server, EntitySpawnReason.JOCKEY);
+				if (druid != null) {
+					druid.snapTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
+					druid.setBaby(true);
+					EventHooks.finalizeMobSpawn(druid, accessor, difficulty, EntitySpawnReason.JOCKEY, null);
 
-				if (this.hasPassenger(e -> true)) this.ejectPassengers();
-				druid.startRiding(this);
+					if (this.hasPassenger(e -> true)) this.ejectPassengers();
+					druid.startRiding(this);
+				}
 			}
 		}
 	}

@@ -6,6 +6,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -88,14 +89,15 @@ public class RisingZombie extends Monster {
 		}
 
 		if (!this.level().isClientSide() && this.getRisingTicks() >= 130) {
-			var zombie = this.convertTo(EntityType.ZOMBIE, true);
-			zombie.setHealth(this.getHealth());
-			zombie.setYRot(this.yRotO = this.getYRot());
+			this.convertTo(EntityType.ZOMBIE, ConversionParams.single(this, true, true), zombie -> {
+				zombie.setHealth(this.getHealth());
+				zombie.setYRot(this.yRotO = this.getYRot());
+			});
 		}
 	}
 
 	@Override
-	public boolean isInvulnerableTo(DamageSource source) {
+	public boolean isInvulnerableTo(ServerLevel server, DamageSource source) {
 		return source.is(DamageTypes.IN_WALL);
 	}
 
@@ -171,7 +173,7 @@ public class RisingZombie extends Monster {
 	}
 
 	@Override
-	protected boolean isAffectedByFluids() {
+	public boolean isAffectedByFluids() {
 		return false;
 	}
 

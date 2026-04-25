@@ -1,9 +1,9 @@
 package twilightforest.entity.monster;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
@@ -21,6 +21,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
@@ -94,15 +96,15 @@ public class LowerGoblinKnight extends Monster {
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag compound) {
+	public void addAdditionalSaveData(ValueOutput compound) {
 		super.addAdditionalSaveData(compound);
 		compound.putBoolean("hasArmor", this.hasArmor());
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundTag compound) {
+	public void readAdditionalSaveData(ValueInput compound) {
 		super.readAdditionalSaveData(compound);
-		this.setHasArmor(compound.getBoolean("hasArmor"));
+		this.setHasArmor(compound.getBooleanOr("hasArmor", false));
 	}
 
 	@Nullable
@@ -111,7 +113,7 @@ public class LowerGoblinKnight extends Monster {
 		data = super.finalizeSpawn(accessor, difficulty, reason, data);
 
 		UpperGoblinKnight upper = new UpperGoblinKnight(TFEntities.UPPER_GOBLIN_KNIGHT.get(), this.level());
-		upper.moveTo(this.getX(), this.getY() + 1, this.getZ(), this.getYRot(), 0.0F);
+		upper.snapTo(this.getX(), this.getY() + 1, this.getZ(), this.getYRot(), 0.0F);
 		EventHooks.finalizeMobSpawn(upper, accessor, difficulty, EntitySpawnReason.NATURAL, data);
 		upper.startRiding(this);
 
@@ -124,11 +126,11 @@ public class LowerGoblinKnight extends Monster {
 	}
 
 	@Override
-	public boolean doHurtTarget(Entity entity) {
+	public boolean doHurtTarget(ServerLevel server, Entity entity) {
 		if (this.isVehicle() && this.getPassengers().get(0) instanceof LivingEntity living) {
-			return living.doHurtTarget(entity);
+			return living.doHurtTarget(server, entity);
 		} else {
-			return super.doHurtTarget(entity);
+			return super.doHurtTarget(server, entity);
 		}
 
 	}
@@ -150,7 +152,7 @@ public class LowerGoblinKnight extends Monster {
 	}
 
 	@Override
-	public boolean hurt(DamageSource source, float amount) {
+	public boolean hurtServer(ServerLevel server, DamageSource source, float amount) {
 		// check the angle of attack, if applicable
 		Entity attacker = null;
 		if (source.getEntity() != null) {
@@ -189,7 +191,7 @@ public class LowerGoblinKnight extends Monster {
 			}
 		}
 
-		return super.hurt(source, amount);
+		return super.hurtServer(server, source, amount);
 	}
 
 	@Override

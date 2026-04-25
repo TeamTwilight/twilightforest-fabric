@@ -3,10 +3,10 @@ package twilightforest.entity.monster;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -24,6 +24,9 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.ai.control.NoClipMoveControl;
@@ -34,7 +37,7 @@ import twilightforest.init.TFSounds;
 import java.util.EnumSet;
 import java.util.Optional;
 
-public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
+public class Wraith extends Mob implements Enemy, EnforcedHomePoint {
 
 	private static final EntityDataAccessor<Optional<GlobalPos>> HOME_POINT = SynchedEntityData.defineId(Wraith.class, EntityDataSerializers.OPTIONAL_GLOBAL_POS);
 
@@ -74,13 +77,8 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 	}
 
 	@Override
-	protected boolean shouldDespawnInPeaceful() {
-		return true;
-	}
-
-	@Override
-	public boolean hurt(DamageSource source, float amount) {
-		if (super.hurt(source, amount)) {
+	public boolean hurtServer(ServerLevel server, DamageSource source, float amount) {
+		if (super.hurtServer(server, source, amount)) {
 			Entity entity = source.getEntity();
 			if (this.getVehicle() == entity || this.getPassengers().contains(entity)) {
 				return true;
@@ -95,9 +93,14 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 	}
 
 	@Override
-	public boolean doHurtTarget(Entity entity) {
+	public boolean doHurtTarget(ServerLevel server, Entity entity) {
 		entity.hurt(TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.HAUNT, this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
-		return super.doHurtTarget(entity);
+		return super.doHurtTarget(server, entity);
+	}
+
+	@Override
+	public void travel(Vec3 input) {
+		this.travelFlying(input, 0.2F);
 	}
 
 	@Override
@@ -131,13 +134,13 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag tag) {
+	public void addAdditionalSaveData(ValueOutput tag) {
 		super.addAdditionalSaveData(tag);
 		this.saveHomePointToNbt(tag);
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundTag tag) {
+	public void readAdditionalSaveData(ValueInput tag) {
 		super.readAdditionalSaveData(tag);
 		this.loadHomePointFromNbt(tag);
 	}
@@ -155,6 +158,11 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 	@Override
 	public int getHomeRadius() {
 		return 20;
+	}
+
+	@Override
+	public boolean onClimbable() {
+		return false;
 	}
 
 	static class FlyTowardsTargetGoal extends Goal {

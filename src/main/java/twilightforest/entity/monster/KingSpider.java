@@ -1,13 +1,14 @@
 package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.monster.Spider;
+import net.minecraft.world.entity.monster.spider.Spider;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
@@ -61,14 +62,16 @@ public class KingSpider extends Spider {
 		data = super.finalizeSpawn(accessor, difficulty, reason, data);
 
 		// will always have a druid riding the spider or whatever is riding the spider
-		SkeletonDruid druid = TFEntities.SKELETON_DRUID.get().create(this.level());
-		if (druid != null) {
-			druid.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
-			druid.finalizeSpawn(accessor, difficulty, EntitySpawnReason.JOCKEY, null);
-			Entity lastRider = this;
-			while (!lastRider.getPassengers().isEmpty())
-				lastRider = lastRider.getPassengers().get(0);
-			druid.startRiding(lastRider);
+		if (this.level() instanceof ServerLevel server) {
+			SkeletonDruid druid = TFEntities.SKELETON_DRUID.get().create(server, EntitySpawnReason.JOCKEY);
+			if (druid != null) {
+				druid.snapTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
+				druid.finalizeSpawn(accessor, difficulty, EntitySpawnReason.JOCKEY, null);
+				Entity lastRider = this;
+				while (!lastRider.getPassengers().isEmpty())
+					lastRider = lastRider.getPassengers().get(0);
+				druid.startRiding(lastRider);
+			}
 		}
 		return data;
 	}

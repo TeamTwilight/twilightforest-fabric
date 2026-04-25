@@ -1,5 +1,6 @@
 package twilightforest.entity.monster;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
@@ -16,7 +17,7 @@ import net.minecraft.world.entity.ai.goal.ZombieAttackGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
-import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -58,15 +59,15 @@ public class LichMinion extends Zombie {
 	}
 
 	@Override
-	public boolean hurt(DamageSource source, float amount) {
+	public boolean hurtServer(ServerLevel server, DamageSource source, float amount) {
 		LivingEntity prevTarget = getTarget();
 
-		if (super.hurt(source, amount)) {
+		if (super.hurtServer(server, source, amount)) {
 			if (source.getEntity() instanceof Lich) {
 				// return to previous target but speed up
 				this.setLastHurtByMob(prevTarget);
-				this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 200, 2));
-				this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 200, 1));
+				this.addEffect(new MobEffectInstance(MobEffects.SPEED, 200, 2));
+				this.addEffect(new MobEffectInstance(MobEffects.STRENGTH, 200, 1));
 			}
 			return true;
 		} else return false;
@@ -99,7 +100,7 @@ public class LichMinion extends Zombie {
 		}
 		// if we still don't have a master, or ours is dead, die.
 		if (this.master == null || !this.master.isAlive()) {
-			this.kill();
+			this.discard();
 		}
 		super.aiStep();
 	}

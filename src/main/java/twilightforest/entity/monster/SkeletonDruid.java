@@ -1,10 +1,10 @@
 package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -17,19 +17,19 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.RangedAttackGoal;
-import net.minecraft.world.entity.monster.AbstractSkeleton;
+import net.minecraft.world.entity.monster.skeleton.AbstractSkeleton;
 import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.projectile.NatureBolt;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
-
-import java.util.UUID;
 
 public class SkeletonDruid extends AbstractSkeleton {
 	private RangedAttackGoal rangedAttackGoal;
@@ -129,15 +129,15 @@ public class SkeletonDruid extends AbstractSkeleton {
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag compound) {
+	public void addAdditionalSaveData(ValueOutput compound) {
 		super.addAdditionalSaveData(compound);
 		compound.putBoolean("IsBaby", this.isBaby());
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundTag compound) {
+	public void readAdditionalSaveData(ValueInput compound) {
 		super.readAdditionalSaveData(compound);
-		this.setBaby(compound.getBoolean("IsBaby"));
+		this.setBaby(compound.getBooleanOr("IsBaby", false));
 	}
 
 	// Below: VANILLACOPY Zombie Baby Code
@@ -152,12 +152,12 @@ public class SkeletonDruid extends AbstractSkeleton {
 	}
 
 	@Override
-	public int getBaseExperienceReward() {
+	public int getBaseExperienceReward(ServerLevel server) {
 		if (this.isBaby()) {
 			this.xpReward = (int) (this.xpReward * 2.5F);
 		}
 
-		return super.getBaseExperienceReward();
+		return super.getBaseExperienceReward(server);
 	}
 
 	@Override

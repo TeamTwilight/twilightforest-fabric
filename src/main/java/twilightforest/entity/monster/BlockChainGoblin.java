@@ -4,6 +4,7 @@ import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -135,7 +136,7 @@ public class BlockChainGoblin extends Monster {
 	}
 
 	@Override
-	public boolean doHurtTarget(Entity entity) {
+	public boolean doHurtTarget(ServerLevel server, Entity entity) {
 		return EntityUtil.properlyApplyCustomDamageSource(this, entity, TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.SPIKED, this, this.block), null);
 	}
 
@@ -189,8 +190,8 @@ public class BlockChainGoblin extends Monster {
 		}
 
 		// collide things with the block
-		if (!this.level().isClientSide() && this.isAlive() && (this.isThrowing() || this.isSwingingChain())) {
-			this.applyBlockCollisions(this.block);
+		if (this.level() instanceof ServerLevel server && this.isAlive() && (this.isThrowing() || this.isSwingingChain())) {
+			this.applyBlockCollisions(server, this.block);
 		}
 		this.chainMove();
 	}
@@ -215,12 +216,12 @@ public class BlockChainGoblin extends Monster {
 	/**
 	 * Check if the block is colliding with any nearby entities
 	 */
-	protected void applyBlockCollisions(Entity collider) {
+	protected void applyBlockCollisions(ServerLevel server, Entity collider) {
 		List<Entity> list = this.level().getEntities(collider, collider.getBoundingBox().inflate(0.2D, 0.0D, 0.2D));
 
 		for (Entity entity : list) {
 			if (entity.isPushable()) {
-				this.applyBlockCollision(collider, entity);
+				this.applyBlockCollision(server, collider, entity);
 			}
 		}
 
@@ -234,11 +235,11 @@ public class BlockChainGoblin extends Monster {
 	/**
 	 * Do the effect where the block hits something
 	 */
-	protected void applyBlockCollision(Entity collider, Entity collided) {
+	protected void applyBlockCollision(ServerLevel server, Entity collider, Entity collided) {
 		if (collided != this) {
 			collided.push(collider);
 			if (collided instanceof LivingEntity) {
-				if (super.doHurtTarget(collided)) {
+				if (super.doHurtTarget(server, collided)) {
 					collided.push(0, 0.4, 0);
 					this.playSound(TFSounds.BLOCK_AND_CHAIN_HIT.get(), 1.0F, 1.0F);
 					this.gameEvent(GameEvent.PROJECTILE_LAND);

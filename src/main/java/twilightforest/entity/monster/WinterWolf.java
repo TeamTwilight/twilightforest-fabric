@@ -5,6 +5,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
@@ -147,8 +148,8 @@ public class WinterWolf extends HostileWolf implements IBreathAttacker {
 	}
 
 	@Override
-	public void doBreathAttack(Entity target) {
-		target.hurt(this.damageSources().mobAttack(this), BREATH_DAMAGE);
+	public void doBreathAttack(ServerLevel server, Entity target) {
+		target.hurtServer(server, this.damageSources().mobAttack(this), BREATH_DAMAGE);
 	}
 
 	public static boolean canSpawnHere(EntityType<? extends WinterWolf> entity, ServerLevelAccessor accessor, EntitySpawnReason reason, BlockPos pos, RandomSource random) {

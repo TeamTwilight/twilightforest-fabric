@@ -2,6 +2,7 @@ package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -20,7 +21,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathType;
-import org.joml.Vector3f;
 import twilightforest.init.TFSounds;
 
 public class CarminiteGolem extends Monster {
@@ -52,8 +52,8 @@ public class CarminiteGolem extends Monster {
 	}
 
 	@Override
-	public boolean doHurtTarget(Entity entity) {
-		boolean attackSuccess = super.doHurtTarget(entity);
+	public boolean doHurtTarget(ServerLevel server, Entity entity) {
+		boolean attackSuccess = super.doHurtTarget(server, entity);
 
 		if (attackSuccess) {
 			this.attackTimer = 10;
@@ -88,7 +88,7 @@ public class CarminiteGolem extends Monster {
 		}
 
 		if (this.getRandom().nextBoolean()) {
-			this.level().addParticle(new DustParticleOptions(new Vector3f(1.0F, 0.0F, 0.0F), 1.0F), this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(), this.getY() + this.getRandom().nextDouble() * this.getBbHeight() - 0.25D, this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(), 0, 0, 0);
+			this.level().addParticle(new DustParticleOptions(16711680, 1.0F), this.getX() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(), this.getY() + this.getRandom().nextDouble() * this.getBbHeight() - 0.25D, this.getZ() + (this.getRandom().nextDouble() - 0.5D) * this.getBbWidth(), 0, 0, 0);
 		}
 	}
 

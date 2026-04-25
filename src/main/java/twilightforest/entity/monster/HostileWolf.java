@@ -22,12 +22,18 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.*;
-import net.minecraft.world.entity.monster.AbstractSkeleton;
+import net.minecraft.world.entity.animal.turtle.Turtle;
+import net.minecraft.world.entity.animal.wolf.Wolf;
+import net.minecraft.world.entity.animal.wolf.WolfVariant;
+import net.minecraft.world.entity.animal.wolf.WolfVariants;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.skeleton.AbstractSkeleton;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStructures;
@@ -35,7 +41,7 @@ import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 
 import java.util.Optional;
 
-public class HostileWolf extends Monster implements VariantHolder<Holder<WolfVariant>> {
+public class HostileWolf extends Monster {
 
 	private static final EntityDataAccessor<Holder<WolfVariant>> VARIANT = SynchedEntityData.defineId(HostileWolf.class, EntityDataSerializers.WOLF_VARIANT);
 
@@ -65,37 +71,33 @@ public class HostileWolf extends Monster implements VariantHolder<Holder<WolfVar
 	@Override
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 		super.defineSynchedData(builder);
-		builder.define(VARIANT, this.registryAccess().registryOrThrow(Registries.WOLF_VARIANT).getHolderOrThrow(WolfVariants.PALE));
+		builder.define(VARIANT, this.registryAccess().lookupOrThrow(Registries.WOLF_VARIANT).getOrThrow(WolfVariants.PALE));
 	}
 
 	public Identifier getTexture() {
 		WolfVariant wolfvariant = this.getVariant().value();
-		return this.isAggressive() ? wolfvariant.angryTexture() : wolfvariant.wildTexture();
+		WolfVariant.AssetInfo assetInfo = this.isBaby() ? wolfvariant.babyInfo() : wolfvariant.adultInfo();
+		return this.isAggressive() ? assetInfo.angry().texturePath() : assetInfo.wild().texturePath();
 	}
 
-	@Override
 	public Holder<WolfVariant> getVariant() {
 		return this.getEntityData().get(VARIANT);
 	}
 
-	@Override
 	public void setVariant(Holder<WolfVariant> variant) {
 		this.getEntityData().set(VARIANT, variant);
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag tag) {
+	public void addAdditionalSaveData(ValueOutput tag) {
 		super.addAdditionalSaveData(tag);
-		tag.putString("variant", this.getVariant().unwrapKey().orElse(WolfVariants.PALE).location().toString());
+		tag.putString("variant", this.getVariant().unwrapKey().orElse(WolfVariants.PALE).identifier().toString());
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundTag tag) {
+	public void readAdditionalSaveData(ValueInput tag) {
 		super.readAdditionalSaveData(tag);
-		Optional.ofNullable(Identifier.tryParse(tag.getString("variant")))
-			.map(location -> ResourceKey.create(Registries.WOLF_VARIANT, location))
-			.flatMap(key -> this.registryAccess().registryOrThrow(Registries.WOLF_VARIANT).getHolder(key))
-			.ifPresent(this::setVariant);
+		tag.read("variant", WolfVariant.CODEC).ifPresent(this::setVariant);
 	}
 
 	@Override
@@ -137,17 +139,12 @@ public class HostileWolf extends Monster implements VariantHolder<Holder<WolfVar
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState state) {
-		this.playSound(SoundEvents.WOLF_STEP, 0.15F, 1.0F);
+		this.playSound(SoundEvents.WOLF_STEP.value(), 0.15F, 1.0F);
 	}
 
 	@Override
 	protected float getSoundVolume() {
 		return 0.4F;
-	}
-
-	@Override
-	protected boolean shouldDespawnInPeaceful() {
-		return true;
 	}
 
 	public float getTailAngle() {
