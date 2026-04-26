@@ -2,38 +2,46 @@ package twilightforest.client.event;
 
 import it.unimi.dsi.fastutil.ints.Int2IntFunction;
 import net.minecraft.client.color.block.BlockColors;
+import net.minecraft.client.color.block.BlockTintSource;
+import net.minecraft.client.color.block.BlockTintSources;
 import net.minecraft.client.renderer.BiomeColors;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.FastColor;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.level.FoliageColor;
-import net.minecraft.world.level.GrassColor;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
-import net.neoforged.neoforge.common.DeferredSpawnEggItem;
-import net.neoforged.neoforge.registries.DeferredHolder;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.ClimbableHollowLogBlock;
-import twilightforest.components.item.PotionFlaskComponent;
+import twilightforest.client.color.FlaskTint;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.init.TFBlocks;
-import twilightforest.init.TFDataComponents;
-import twilightforest.init.TFEntities;
-import twilightforest.init.TFItems;
-import twilightforest.item.ArcticArmorItem;
 import twilightforest.util.ColorUtil;
 import twilightforest.util.SimplexNoiseHelper;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class ColorHandler {
 	public static final Int2IntFunction CANOPY_COLORIZER = color -> 0xFF000000 | (((color & 0xFEFEFE) + 0x469A66) / 2);
 	public static final Int2IntFunction MANGROVE_COLORIZER = color -> 0xFF000000 | (((color & 0xFEFEFE) + 0xC0E694) / 2);
 
-	protected static void registerBlockColors(RegisterColorHandlersEvent.Block event) {
+	protected static void registerBlockColors(RegisterColorHandlersEvent.BlockTintSources event) {
 		BlockColors blockColors = event.getBlockColors();
 
-		event.register((state, getter, pos, tintIndex) -> 0xFF000000 | ColorUtil.hsvToRGB(getter == null ? 0.45F : SimplexNoiseHelper.rippleFractalNoise(2, 128.0f, pos != null ? pos.above(128) : new BlockPos(0, 0, 0), 0.37f, 0.67f, 1.5f), 1.0f, 1.0f), TFBlocks.AURORA_BLOCK.get());
-		event.register((state, getter, pos, tintIndex) -> {
-			int normalColor = blockColors.getColor(TFBlocks.AURORA_BLOCK.get().defaultBlockState(), getter, pos, tintIndex);
+		event.register(List.of(new BlockTintSource() {
+			@Override
+			public int color(BlockState state) {
+				return auroraTint(null, null);
+			}
+
+			@Override
+			public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
+				return auroraTint(level, pos);
+			}
+		}), TFBlocks.AURORA_BLOCK.get());
+		event.register(List.of(state -> {
+			//TODO: Verify this. It's kind of how you get the color
+			int normalColor = blockColors.getTintSource(TFBlocks.AURORA_BLOCK.get().defaultBlockState(), 0).color(TFBlocks.AURORA_BLOCK.get().defaultBlockState());
 
 			int red = (normalColor >> 16) & 255;
 			int blue = normalColor & 255;
@@ -42,13 +50,27 @@ public class ColorHandler {
 			float[] hsb = ColorUtil.rgbToHSV(red, green, blue);
 
 			return 0xFF000000 | ColorUtil.hsvToRGB(hsb[0], hsb[1] * 0.5F, Math.min(hsb[2] + 0.4F, 0.9F));
-		}, TFBlocks.AURORA_PILLAR.get(), TFBlocks.AURORA_SLAB.get(), TFBlocks.AURORALIZED_GLASS.get());
-		event.register((state, getter, pos, tintIndex) -> blockColors.getColor(Blocks.SHORT_GRASS.defaultBlockState(), getter, pos, tintIndex), TFBlocks.SMOKER.get(), TFBlocks.FIRE_JET.get());
-		event.register((state, getter, pos, tintIndex) -> getter != null && pos != null ? 0xFF000000 | 2129968 : 0xFF000000 | 7455580, TFBlocks.HUGE_LILY_PAD.get());
-		event.register((state, getter, pos, tintIndex) -> {
-			if (getter == null || pos == null) {
+		}), TFBlocks.AURORA_PILLAR.get(), TFBlocks.AURORA_SLAB.get(), TFBlocks.AURORALIZED_GLASS.get());
+		event.register(List.of(BlockTintSources.grass()), TFBlocks.SMOKER.get(), TFBlocks.FIRE_JET.get()); //TODO: This got the block tint from Grass, but this is about the same?
+		event.register(List.of(new BlockTintSource() {
+			@Override
+			public int color(BlockState state) {
+				return 0xFF000000 | 2129968;
+			}
+
+			@Override
+			public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
+				return 0xFF000000 | 7455580;
+			}
+		}), TFBlocks.HUGE_LILY_PAD.get());
+		event.register(List.of(new BlockTintSource() {
+			@Override
+			public int color(BlockState state) {
 				return 0xFF000000 | 106 << 16 | 156 << 8 | 23;
-			} else {
+			}
+
+			@Override
+			public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
 				int red, green, blue;
 
 				int fade = pos.getX() * 16 + pos.getY() * 16 + pos.getZ() * 16;
@@ -66,11 +88,15 @@ public class ColorHandler {
 
 				return 0xFF000000 | red << 16 | green << 8 | blue;
 			}
-		}, TFBlocks.TIME_LEAVES.get());
-		event.register((state, getter, pos, tintIndex) -> {
-			if (getter == null || pos == null) {
+		}), TFBlocks.TIME_LEAVES.get());
+		event.register(List.of(new BlockTintSource() {
+			@Override
+			public int color(BlockState state) {
 				return 0xFF000000 | 108 << 16 | 204 << 8 | 234;
-			} else {
+			}
+
+			@Override
+			public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
 				int red, green, blue;
 
 				int fade = pos.getX() * 27 + pos.getY() * 63 + pos.getZ() * 39;
@@ -88,11 +114,15 @@ public class ColorHandler {
 
 				return 0xFF000000 | red << 16 | green << 8 | blue;
 			}
-		}, TFBlocks.TRANSFORMATION_LEAVES.get());
-		event.register((state, getter, pos, tintIndex) -> {
-			if (getter == null || pos == null) {
+		}), TFBlocks.TRANSFORMATION_LEAVES.get());
+		event.register(List.of(new BlockTintSource() {
+			@Override
+			public int color(BlockState state) {
 				return 0xFF000000 | 252 << 16 | 241 << 8 | 68;
-			} else {
+			}
+
+			@Override
+			public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
 				int red, green, blue;
 
 				int fade = pos.getX() * 31 + pos.getY() * 33 + pos.getZ() * 32;
@@ -110,11 +140,15 @@ public class ColorHandler {
 
 				return 0xFF000000 | red << 16 | green << 8 | blue;
 			}
-		}, TFBlocks.MINING_LEAVES.get());
-		event.register((state, getter, pos, tintIndex) -> {
-			if (getter == null || pos == null) {
+		}), TFBlocks.MINING_LEAVES.get());
+		event.register(List.of(new BlockTintSource() {
+			@Override
+			public int color(BlockState state) {
 				return 0xFF000000 | 54 << 16 | 76 << 8 | 3;
-			} else {
+			}
+
+			@Override
+			public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
 				int red, green, blue;
 
 				int fade = pos.getX() * 63 + pos.getY() * 63 + pos.getZ() * 63;
@@ -132,22 +166,60 @@ public class ColorHandler {
 
 				return 0xFF000000 | red << 16 | green << 8 | blue;
 			}
-		}, TFBlocks.SORTING_LEAVES.get());
-		event.register((state, getter, pos, tintIndex) -> {
-			if (getter == null || pos == null) {
+		}), TFBlocks.SORTING_LEAVES.get());
+		event.register(List.of(new BlockTintSource() {
+			@Override
+			public int color(BlockState state) {
 				return -1;
-			} else {
+			}
+
+			@Override
+			public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
 				float f = SimplexNoiseHelper.rippleFractalNoise(2, 32.0f, pos, 0.4f, 1.0f, 2f);
 				return 0xFF000000 | ColorUtil.hsvToRGB(0.1f, 1f - f, (f + 2f) / 3f);
 			}
-		}, TFBlocks.TOWERWOOD.get(), TFBlocks.CRACKED_TOWERWOOD.get(), TFBlocks.INFESTED_TOWERWOOD.get(), TFBlocks.MOSSY_TOWERWOOD.get());
-		event.register((state, getter, pos, tintIndex) -> getter != null && pos != null ? BiomeColors.getAverageFoliageColor(getter, pos) : FoliageColor.getDefaultColor(), TFBlocks.TWILIGHT_OAK_LEAVES.get(), TFBlocks.DARK_LEAVES.get(), TFBlocks.HARDENED_DARK_LEAVES.get(), TFBlocks.GIANT_LEAVES.get(), TFBlocks.FALLEN_LEAVES.get());
-		event.register((state, getter, pos, tintIndex) -> getter != null && pos != null ? CANOPY_COLORIZER.applyAsInt(BiomeColors.getAverageFoliageColor(getter, pos)) : FoliageColor.getEvergreenColor(), TFBlocks.CANOPY_LEAVES.get());
-		event.register((state, getter, pos, tintIndex) -> getter != null && pos != null ? MANGROVE_COLORIZER.applyAsInt(BiomeColors.getAverageFoliageColor(getter, pos)) : FoliageColor.getBirchColor(), TFBlocks.MANGROVE_LEAVES.get());
-		event.register((state, getter, pos, tintIndex) -> {
-			if (getter == null || pos == null) {
-				return FoliageColor.getDefaultColor();
-			} else {
+		}), TFBlocks.TOWERWOOD.get(), TFBlocks.CRACKED_TOWERWOOD.get(), TFBlocks.INFESTED_TOWERWOOD.get(), TFBlocks.MOSSY_TOWERWOOD.get());
+		event.register(List.of(new BlockTintSource() {
+			@Override
+			public int color(BlockState state) {
+				return FoliageColor.FOLIAGE_DEFAULT;
+			}
+
+			@Override
+			public int colorInWorld(BlockState state, BlockAndTintGetter getter, BlockPos pos) {
+				return BiomeColors.getAverageFoliageColor(getter, pos);
+			}
+		}), TFBlocks.TWILIGHT_OAK_LEAVES.get(), TFBlocks.DARK_LEAVES.get(), TFBlocks.HARDENED_DARK_LEAVES.get(), TFBlocks.GIANT_LEAVES.get(), TFBlocks.FALLEN_LEAVES.get());
+		event.register(List.of(new BlockTintSource() {
+			@Override
+			public int color(BlockState state) {
+				return FoliageColor.FOLIAGE_EVERGREEN;
+			}
+
+			@Override
+			public int colorInWorld(BlockState state, BlockAndTintGetter getter, BlockPos pos) {
+				return CANOPY_COLORIZER.applyAsInt(BiomeColors.getAverageFoliageColor(getter, pos));
+			}
+		}), TFBlocks.CANOPY_LEAVES.get());
+		event.register(List.of(new BlockTintSource() {
+			@Override
+			public int color(BlockState state) {
+				return FoliageColor.FOLIAGE_BIRCH;
+			}
+
+			@Override
+			public int colorInWorld(BlockState state, BlockAndTintGetter getter, BlockPos pos) {
+				return MANGROVE_COLORIZER.applyAsInt(BiomeColors.getAverageFoliageColor(getter, pos));
+			}
+		}), TFBlocks.MANGROVE_LEAVES.get());
+		event.register(List.of(new BlockTintSource() {
+			@Override
+			public int color(BlockState state) {
+				return FoliageColor.FOLIAGE_DEFAULT;
+			}
+
+			@Override
+			public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
 				// RAINBOW!
 				int red = pos.getX() * 32 + pos.getY() * 16;
 				if ((red & 256) != 0) {
@@ -168,79 +240,77 @@ public class ColorHandler {
 				blue &= 255;
 
 				return 0xFF000000 | red << 16 | green << 8 | blue;
+
 			}
-		}, TFBlocks.RAINBOW_OAK_LEAVES.get());
-		event.register((state, getter, pos, tintIndex) -> FoliageColor.getEvergreenColor(), TFBlocks.BEANSTALK_LEAVES.get(), TFBlocks.THORN_LEAVES.get());
-		event.register((state, getter, pos, tintIndex) -> getter != null && pos != null ? BiomeColors.getAverageGrassColor(getter, pos) : GrassColor.getDefaultColor(), TFBlocks.FIDDLEHEAD.get(), TFBlocks.POTTED_FIDDLEHEAD.get());
-		event.register((state, getter, pos, tintIndex) -> {
-				if (tintIndex != 0) {
-					return getter != null && pos != null ? BiomeColors.getAverageGrassColor(getter, pos) : GrassColor.getDefaultColor();
-				} else {
-					return -1;
-				}
-			}, TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_SPRUCE_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_BIRCH_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_JUNGLE_LOG_HORIZONTAL.get(),
+		}), TFBlocks.RAINBOW_OAK_LEAVES.get());
+		event.register(List.of(BlockTintSources.constant(FoliageColor.FOLIAGE_EVERGREEN)), TFBlocks.BEANSTALK_LEAVES.get(), TFBlocks.THORN_LEAVES.get());
+		event.register(List.of(BlockTintSources.grass()), TFBlocks.FIDDLEHEAD.get(), TFBlocks.POTTED_FIDDLEHEAD.get());
+		event.register(List.of(BlockTintSources.grass()), TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_SPRUCE_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_BIRCH_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_JUNGLE_LOG_HORIZONTAL.get(), //TODO: For datagen: apply to correct layer
 			TFBlocks.HOLLOW_ACACIA_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_DARK_OAK_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_CRIMSON_STEM_HORIZONTAL.get(), TFBlocks.HOLLOW_WARPED_STEM_HORIZONTAL.get(),
 			TFBlocks.HOLLOW_VANGROVE_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_CHERRY_LOG_HORIZONTAL.get(),
 			TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_DARK_LOG_HORIZONTAL.get(),
 			TFBlocks.HOLLOW_TIME_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_TRANSFORMATION_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_MINING_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_SORTING_LOG_HORIZONTAL.get());
-		event.register((state, getter, pos, tintIndex) -> {
-				if (state.getValue(ClimbableHollowLogBlock.VARIANT) != HollowLogVariants.Climbable.VINE || tintIndex != 1) {
-					return -1;
-				} else {
-					if (getter != null && pos != null) {
-						return BiomeColors.getAverageFoliageColor(getter, pos);
-					} else {
-						return FoliageColor.getDefaultColor();
-					}
+		event.register(List.of(new BlockTintSource() {
+			//TODO: For datagen: apply to correct layer
+			@Override
+			public int color(BlockState state) {
+				return FoliageColor.FOLIAGE_DEFAULT;
+			}
+
+			@Override
+			public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
+				if (state.getValue(ClimbableHollowLogBlock.VARIANT) == HollowLogVariants.Climbable.VINE) {
+					return BiomeColors.getAverageFoliageColor(level, pos);
 				}
-			}, TFBlocks.HOLLOW_OAK_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_SPRUCE_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_BIRCH_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_JUNGLE_LOG_CLIMBABLE.get(),
+				return BlockTintSource.super.colorInWorld(state, level, pos);
+			}
+		}), TFBlocks.HOLLOW_OAK_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_SPRUCE_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_BIRCH_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_JUNGLE_LOG_CLIMBABLE.get(),
 			TFBlocks.HOLLOW_ACACIA_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_DARK_OAK_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_CRIMSON_STEM_CLIMBABLE.get(), TFBlocks.HOLLOW_WARPED_STEM_CLIMBABLE.get(),
 			TFBlocks.HOLLOW_VANGROVE_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_CHERRY_LOG_CLIMBABLE.get(),
 			TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_MANGROVE_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_DARK_LOG_CLIMBABLE.get(),
 			TFBlocks.HOLLOW_TIME_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_TRANSFORMATION_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_MINING_LOG_CLIMBABLE.get(), TFBlocks.HOLLOW_SORTING_LOG_CLIMBABLE.get());
-		event.register((state, getter, pos, tintIndex) -> {
-			if (tintIndex != 1) {
-				return -1;
-			} else {
-				if (getter != null && pos != null) {
-					return BiomeColors.getAverageFoliageColor(getter, pos);
-				} else {
-					return FoliageColor.getDefaultColor();
-				}
-			}
-		}, TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(), TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get());
-		event.register((state, getter, pos, tintIndex) -> 0xFFFF00FF, TFBlocks.PINK_CASTLE_RUNE_BRICK.get(), TFBlocks.PINK_CASTLE_DOOR.get());
-		event.register((state, getter, pos, tintIndex) -> 0xFF00FFFF, TFBlocks.BLUE_CASTLE_RUNE_BRICK.get(), TFBlocks.BLUE_CASTLE_DOOR.get());
-		event.register((state, getter, pos, tintIndex) -> 0xFFFFFF00, TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get(), TFBlocks.YELLOW_CASTLE_DOOR.get());
-		event.register((state, getter, pos, tintIndex) -> 0xFF4B0082, TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(), TFBlocks.VIOLET_CASTLE_DOOR.get());
-		event.register((state, getter, pos, tintIndex) -> 0xFF5C1074, TFBlocks.VIOLET_FORCE_FIELD.get());
-		event.register((state, getter, pos, tintIndex) -> 0xFFFA057E, TFBlocks.PINK_FORCE_FIELD.get());
-		event.register((state, getter, pos, tintIndex) -> 0xFFFF5B02, TFBlocks.ORANGE_FORCE_FIELD.get());
-		event.register((state, getter, pos, tintIndex) -> 0xFF89E701, TFBlocks.GREEN_FORCE_FIELD.get());
-		event.register((state, getter, pos, tintIndex) -> 0xFF0DDEFF, TFBlocks.BLUE_FORCE_FIELD.get());
+		event.register(List.of(BlockTintSources.foliage()), TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(), TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get()); //TODO: For datagen: apply to correct layer
+		event.register(List.of(BlockTintSources.constant(0xFFFF00FF)), TFBlocks.PINK_CASTLE_RUNE_BRICK.get(), TFBlocks.PINK_CASTLE_DOOR.get());
+		event.register(List.of(BlockTintSources.constant(0xFF00FFFF)), TFBlocks.BLUE_CASTLE_RUNE_BRICK.get(), TFBlocks.BLUE_CASTLE_DOOR.get());
+		event.register(List.of(BlockTintSources.constant(0xFFFFFF00)), TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get(), TFBlocks.YELLOW_CASTLE_DOOR.get());
+		event.register(List.of(BlockTintSources.constant(0xFF4B0082)), TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(), TFBlocks.VIOLET_CASTLE_DOOR.get());
+		event.register(List.of(BlockTintSources.constant(0xFF5C1074)), TFBlocks.VIOLET_FORCE_FIELD.get());
+		event.register(List.of(BlockTintSources.constant(0xFFFA057E)), TFBlocks.PINK_FORCE_FIELD.get());
+		event.register(List.of(BlockTintSources.constant(0xFFFF5B02)), TFBlocks.ORANGE_FORCE_FIELD.get());
+		event.register(List.of(BlockTintSources.constant(0xFF89E701)), TFBlocks.GREEN_FORCE_FIELD.get());
+		event.register(List.of(BlockTintSources.constant(0xFF0DDEFF)), TFBlocks.BLUE_FORCE_FIELD.get());
 	}
 
-	protected static void registerItemColors(RegisterColorHandlersEvent.Item event) {
-		BlockColors blockColors = event.getBlockColors();
+	private static int auroraTint(@Nullable BlockAndTintGetter getter, @Nullable BlockPos pos) {
+		return 0xFF000000 | ColorUtil.hsvToRGB(getter == null ? 0.45F : SimplexNoiseHelper.rippleFractalNoise(2, 128.0f, pos != null ? pos.above(128) : new BlockPos(0, 0, 0), 0.37f, 0.67f, 1.5f), 1.0f, 1.0f);
+	}
 
-		event.register((stack, tintIndex) -> stack.getItem() instanceof BlockItem blocc ? blockColors.getColor(blocc.getBlock().defaultBlockState(), null, null, tintIndex) : -1,
-			TFBlocks.AURORA_BLOCK.get(), TFBlocks.AURORA_PILLAR.get(), TFBlocks.AURORA_SLAB.get(), TFBlocks.AURORALIZED_GLASS.get(), TFBlocks.DARK_LEAVES.get(), TFBlocks.GIANT_LEAVES.get(), TFBlocks.SMOKER.get(), TFBlocks.FIRE_JET.get(),
-			TFBlocks.TIME_LEAVES.get(), TFBlocks.TRANSFORMATION_LEAVES.get(), TFBlocks.MINING_LEAVES.get(), TFBlocks.SORTING_LEAVES.get(), TFBlocks.TWILIGHT_OAK_LEAVES.get(), TFBlocks.CANOPY_LEAVES.get(), TFBlocks.MANGROVE_LEAVES.get(), TFBlocks.RAINBOW_OAK_LEAVES.get(), TFBlocks.THORN_LEAVES.get(), TFBlocks.BEANSTALK_LEAVES.get(),
-			TFBlocks.FALLEN_LEAVES.get(), TFBlocks.FIDDLEHEAD.get(), TFBlocks.POTTED_FIDDLEHEAD.get(), TFBlocks.PINK_CASTLE_RUNE_BRICK.get(), TFBlocks.BLUE_CASTLE_RUNE_BRICK.get(), TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get(), TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(),
-			TFBlocks.YELLOW_CASTLE_DOOR.get(), TFBlocks.BLUE_CASTLE_DOOR.get(), TFBlocks.PINK_CASTLE_DOOR.get(), TFBlocks.VIOLET_CASTLE_DOOR.get(), TFBlocks.PINK_FORCE_FIELD.get(), TFBlocks.BLUE_FORCE_FIELD.get(), TFBlocks.GREEN_FORCE_FIELD.get(), TFBlocks.ORANGE_FORCE_FIELD.get(), TFBlocks.VIOLET_FORCE_FIELD.get(), TFBlocks.HUGE_LILY_PAD.get(),
-			TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(), TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get());
+	protected static void registerItemColors(RegisterColorHandlersEvent.ItemTintSources event) {
+		event.register(TwilightForestMod.prefix("flask_tint"), FlaskTint.MAP_CODEC);
+//		BlockColors blockColors = event.getBlockColors();
 
-		event.register((stack, index) -> index != 1 ? -1 : DyedItemColor.getOrDefault(stack, ArcticArmorItem.DEFAULT_COLOR), TFItems.ARCTIC_HELMET.get(), TFItems.ARCTIC_CHESTPLATE.get(), TFItems.ARCTIC_LEGGINGS.get(), TFItems.ARCTIC_BOOTS.get());
+		//TODO: All of these blocks that have tints are handled via datagen now
+//		event.register((stack, tintIndex) -> stack.getItem() instanceof BlockItem blocc ? blockColors.getColor(blocc.getBlock().defaultBlockState(), null, null, tintIndex) : -1,
+//			TFBlocks.AURORA_BLOCK.get(), TFBlocks.AURORA_PILLAR.get(), TFBlocks.AURORA_SLAB.get(), TFBlocks.AURORALIZED_GLASS.get(), TFBlocks.DARK_LEAVES.get(), TFBlocks.GIANT_LEAVES.get(), TFBlocks.SMOKER.get(), TFBlocks.FIRE_JET.get(),
+//			TFBlocks.TIME_LEAVES.get(), TFBlocks.TRANSFORMATION_LEAVES.get(), TFBlocks.MINING_LEAVES.get(), TFBlocks.SORTING_LEAVES.get(), TFBlocks.TWILIGHT_OAK_LEAVES.get(), TFBlocks.CANOPY_LEAVES.get(), TFBlocks.MANGROVE_LEAVES.get(), TFBlocks.RAINBOW_OAK_LEAVES.get(), TFBlocks.THORN_LEAVES.get(), TFBlocks.BEANSTALK_LEAVES.get(),
+//			TFBlocks.FALLEN_LEAVES.get(), TFBlocks.FIDDLEHEAD.get(), TFBlocks.POTTED_FIDDLEHEAD.get(), TFBlocks.PINK_CASTLE_RUNE_BRICK.get(), TFBlocks.BLUE_CASTLE_RUNE_BRICK.get(), TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get(), TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(),
+//			TFBlocks.YELLOW_CASTLE_DOOR.get(), TFBlocks.BLUE_CASTLE_DOOR.get(), TFBlocks.PINK_CASTLE_DOOR.get(), TFBlocks.VIOLET_CASTLE_DOOR.get(), TFBlocks.PINK_FORCE_FIELD.get(), TFBlocks.BLUE_FORCE_FIELD.get(), TFBlocks.GREEN_FORCE_FIELD.get(), TFBlocks.ORANGE_FORCE_FIELD.get(), TFBlocks.VIOLET_FORCE_FIELD.get(), TFBlocks.HUGE_LILY_PAD.get(),
+//			TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(), TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get());
 
-		event.register((stack, index) -> {
-			if (index > 0) return -1;
-			var contents = stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY);
-			if (contents.potion().potion().isEmpty()) return -1;
-			return contents.potion().getColor();
-		}, TFItems.BRITTLE_FLASK.get(), TFItems.GREATER_FLASK.get());
+		//TODO: Moved to datagen, use ItemModelUtils.tintedModel(Identifier, ItemTintSource...) where ItemTintSource... is new Dye(int)
+//		event.register((stack, index) -> index != 1 ? -1 : DyedItemColor.getOrDefault(stack, ArcticArmorItem.DEFAULT_COLOR), TFItems.ARCTIC_HELMET.get(), TFItems.ARCTIC_CHESTPLATE.get(), TFItems.ARCTIC_LEGGINGS.get(), TFItems.ARCTIC_BOOTS.get());
 
-		for (DeferredSpawnEggItem egg : TFEntities.SPAWN_EGGS.getEntries().stream().map(DeferredHolder::get).map(DeferredSpawnEggItem.class::cast).toList()) {
-			event.register((stack, index) -> FastColor.ARGB32.opaque(egg.getColor(index)), egg);
-		}
+		//TODO: Moved to datagen, use ItemModelUtils.tintedModel(Identifier, ItemTintSource...) where ItemTintSource... is new FlaskTint(int)
+//		event.register((stack, index) -> {
+//			if (index > 0) return -1;
+//			var contents = stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY);
+//			if (contents.potion().potion().isEmpty()) return -1;
+//			return contents.potion().getColor();
+//		}, TFItems.BRITTLE_FLASK.get(), TFItems.GREATER_FLASK.get());
+
+		//TODO: Moved to datagen, use ItemModelUtils.constant(int) for each layer
+//		for (DeferredSpawnEggItem egg : TFEntities.SPAWN_EGGS.getEntries().stream().map(DeferredHolder::get).map(DeferredSpawnEggItem.class::cast).toList()) {
+//			event.register((stack, index) -> FastColor.ARGB32.opaque(egg.getColor(index)), egg);
+//		}
 	}
 }
