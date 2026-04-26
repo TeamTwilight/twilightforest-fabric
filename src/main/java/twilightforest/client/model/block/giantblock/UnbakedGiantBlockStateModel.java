@@ -56,7 +56,7 @@ public record UnbakedGiantBlockStateModel(BlockStateModel.Unbaked sourceModel) i
 				for (BakedQuad quad : firstModelPart.getQuads(side)) {
 					TextureAtlasSprite sprite = quad.materialInfo().sprite();
 
-					CuboidFace cuboidFace = new CuboidFace(side, quad.materialInfo().tintIndex(), sprite.contents().getOriginalImage().toString(), new CuboidFace.UVs(0.0F + coords.x, 0.0F + coords.z, 4.0F + coords.x, 4.0F + coords.z), Quadrant.R0);
+					CuboidFace cuboidFace = new CuboidFace(side, quad.materialInfo().tintIndex(), sprite.contents().name().toString(), new CuboidFace.UVs(0.0F + coords.x, 0.0F + coords.z, 4.0F + coords.x, 4.0F + coords.z), Quadrant.R0);
 
 					BakedQuad bakedQuad = FaceBakery.bakeQuad(
 						modelBaker,
