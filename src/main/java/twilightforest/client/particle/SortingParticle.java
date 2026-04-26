@@ -2,17 +2,19 @@ package twilightforest.client.particle;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.AABB;
 
-public class SortingParticle extends TextureSheetParticle {
+public class SortingParticle extends SingleQuadParticle {
 	private final double xStart;
 	private final double yStart;
 	private final double zStart;
 
-	public SortingParticle(ClientLevel level, double x, double y, double z, double x2, double y2, double z2) {
-		super(level, x, y, z);
+	public SortingParticle(ClientLevel level, double x, double y, double z, double x2, double y2, double z2, TextureAtlasSprite sprite) {
+		super(level, x, y, z, sprite);
 		this.xd = x2;
 		this.yd = y2;
 		this.zd = z2;
@@ -35,8 +37,8 @@ public class SortingParticle extends TextureSheetParticle {
 	}
 
 	@Override
-	public ParticleRenderType getRenderType() {
-		return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+	protected Layer getLayer() {
+		return Layer.TRANSLUCENT;
 	}
 
 	@Override
@@ -46,10 +48,10 @@ public class SortingParticle extends TextureSheetParticle {
 	}
 
 	@Override
-	public int getLightColor(float partialTicks) {
+	public int getLightCoords(float partialTicks) {
 		float f = ((float) this.age + partialTicks) / (float) this.lifetime;
 		f = Mth.clamp(f, 0.0F, 1.0F);
-		int i = super.getLightColor(partialTicks);
+		int i = super.getLightCoords(partialTicks);
 		int j = i & 255;
 		int k = i >> 16 & 255;
 		j += (int) (f * 15.0F * 16.0F);
@@ -82,9 +84,8 @@ public class SortingParticle extends TextureSheetParticle {
 
 	public record Factory(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
 		@Override
-		public Particle createParticle(SimpleParticleType particleType, ClientLevel level, double x, double y, double z, double x2, double y2, double z2) {
-			SortingParticle sortingParticle = new SortingParticle(level, x, y, z, x2, y2, z2);
-			sortingParticle.pickSprite(this.sprite);
+		public Particle createParticle(SimpleParticleType particleType, ClientLevel level, double x, double y, double z, double x2, double y2, double z2, RandomSource random) {
+			SortingParticle sortingParticle = new SortingParticle(level, x, y, z, x2, y2, z2, this.sprite.get(random));
 			return sortingParticle;
 		}
 	}

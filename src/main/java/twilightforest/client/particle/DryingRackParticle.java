@@ -3,6 +3,7 @@ package twilightforest.client.particle;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.RandomSource;
 
 public class DryingRackParticle extends BaseAshSmokeParticle {
 
@@ -20,7 +21,7 @@ public class DryingRackParticle extends BaseAshSmokeParticle {
 			this.sprites = sprites;
 		}
 
-		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
 			return new DryingRackParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, 0.5F, this.sprites);
 		}
 	}

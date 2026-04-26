@@ -4,12 +4,13 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 
-public class CloudPuffParticle extends TextureSheetParticle {
+public class CloudPuffParticle extends SingleQuadParticle {
 	private final SpriteSet sprites;
 
 	CloudPuffParticle(ClientLevel level, double X, double Y, double Z, double XSpeed, double YSpeed, double ZSpeed, SpriteSet sprites) {
-		super(level, X, Y, Z, 0.0D, 0.0D, 0.0D);
+		super(level, X, Y, Z, 0.0D, 0.0D, 0.0D, sprites.first());
 		this.friction = 0.96F;
 		this.sprites = sprites;
 		this.xd *= 0.1D;
@@ -30,8 +31,8 @@ public class CloudPuffParticle extends TextureSheetParticle {
 	}
 
 	@Override
-	public ParticleRenderType getRenderType() {
-		return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+	protected Layer getLayer() {
+		return Layer.TRANSLUCENT;
 	}
 
 	@Override
@@ -50,7 +51,7 @@ public class CloudPuffParticle extends TextureSheetParticle {
 	public record Factory(SpriteSet sprites) implements ParticleProvider<SimpleParticleType> {
 
 		@Override
-		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
 			return new CloudPuffParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, this.sprites);
 		}
 	}

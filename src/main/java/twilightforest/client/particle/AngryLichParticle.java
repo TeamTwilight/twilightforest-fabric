@@ -5,14 +5,16 @@ import net.minecraft.client.particle.HeartParticle;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.RandomSource;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class AngryLichParticle extends HeartParticle {
-	protected AngryLichParticle(ClientLevel level, double x, double y, double z) {
-		super(level, x, y, z);
+	protected AngryLichParticle(ClientLevel level, double x, double y, double z, TextureAtlasSprite sprite) {
+		super(level, x, y, z, sprite);
 
 		this.lifetime = 10;
 
@@ -27,9 +29,8 @@ public class AngryLichParticle extends HeartParticle {
 			this.sprite = sprites;
 		}
 
-		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			AngryLichParticle lichParticle = new AngryLichParticle(level, x, y, z);
-			lichParticle.pickSprite(this.sprite);
+		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+			AngryLichParticle lichParticle = new AngryLichParticle(level, x, y, z, this.sprite.get(random));
 			lichParticle.setColor(1.0F, 1.0F, 1.0F);
 			lichParticle.scale(0.75F);
 			return lichParticle;
