@@ -2,6 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -23,6 +24,30 @@ public class GiantBlock extends Block {
 			pos.getX() & ~0b11, pos.getY() & ~0b11, pos.getZ() & ~0b11,
 			pos.getX() | 0b11, pos.getY() | 0b11, pos.getZ() | 0b11
 		);
+	}
+
+	public static int packCoords(BlockPos pos) {
+		return packCoords(pos.getX(), pos.getY(), pos.getZ());
+	}
+
+	public static int packCoords(int x, int y, int z) {
+		int length = 4;
+
+		int packedX = Mth.positiveModulo(x, length);
+		int packedY = Mth.positiveModulo(y, length) << length;
+		int packedZ = Mth.positiveModulo(z, length) << (length + length);
+
+		return packedX | packedY | packedZ;
+	}
+
+	public static BlockPos unpackCoords(int index) {
+		int length = 4;
+
+		int unpackedX = Mth.positiveModulo(index, length);
+		int unpackedY = Mth.positiveModulo(index >> length, length);
+		int unpackedZ = Mth.positiveModulo(index >> (length + length), length);
+
+		return new BlockPos(unpackedX, unpackedY, unpackedZ);
 	}
 
 	@Nullable

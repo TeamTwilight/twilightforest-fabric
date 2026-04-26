@@ -1,169 +1,48 @@
 package twilightforest.client.model.block.giantblock;
 
-import com.google.common.collect.Iterables;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.*;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.BlockModelRotation;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
+import net.minecraft.client.resources.model.geometry.BakedQuad.MaterialFlags;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.ChunkRenderTypeSet;
-import net.neoforged.neoforge.client.RenderTypeGroup;
-import net.neoforged.neoforge.client.model.IDynamicBakedModel;
-import net.neoforged.neoforge.client.model.data.ModelData;
-import net.neoforged.neoforge.client.model.data.ModelProperty;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
+import net.neoforged.neoforge.client.model.DynamicBlockStateModel;
 import twilightforest.block.GiantBlock;
-import twilightforest.util.Vec2i;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class GiantBlockModel implements IDynamicBakedModel {
+public class GiantBlockModel implements BlockStateModel, DynamicBlockStateModel {
 
-	private static final ModelProperty<GiantBlockData> DATA = new ModelProperty<>();
+	private final BlockStateModel[] voxels;
 
-	private final TextureAtlasSprite[] textures;
-	private final TextureAtlasSprite particle;
-	private final boolean usesAO;
-	private final boolean usesBlockLight;
-	private final ItemTransforms transforms;
-	@Nullable
-	private final ChunkRenderTypeSet blockRenderTypes;
-	@Nullable
-	private final RenderType itemRenderType;
-
-	public GiantBlockModel(TextureAtlasSprite[] texture, TextureAtlasSprite particle, boolean usesAO, boolean usesBlockLight, ItemTransforms transforms, RenderTypeGroup group) {
-		this.textures = texture;
-		this.particle = particle;
-		this.usesAO = usesAO;
-		this.usesBlockLight = usesBlockLight;
-		this.transforms = transforms;
-		this.blockRenderTypes = !group.isEmpty() ? ChunkRenderTypeSet.of(group.block()) : null;
-		this.itemRenderType = !group.isEmpty() ? group.entity() : null;
+	public GiantBlockModel(BlockStateModel[] voxels) {
+		this.voxels = voxels;
 	}
 
 	@Override
-	public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource rand, @NotNull ModelData extraData, @Nullable RenderType renderType) {
-		List<BakedQuad> quads = new ArrayList<>();
-
-		if (extraData.has(DATA) && side != null) {
-			BlockPos pos = extraData.get(DATA).pos();
-			Vec2i coords = this.calculateOffset(side, pos.offset(this.magicOffsetFromDir(side)));
-
-			TextureAtlasSprite sprite = this.textures[this.textures.length > 1 ? side.ordinal() : 0];
-
-			if (!Iterables.contains(GiantBlock.getVolume(pos), pos.offset(side.getUnitVec3i()))) {
-				quads.add(FaceBakery.bakeQuad(new Vector3f(0.0F, 0.0F, 0.0F), new Vector3f(16.0F, 16.0F, 16.0F), new BlockElementFace(side, side.ordinal(), side.name(), new BlockFaceUV(new float[]{0.0F + coords.x, 0.0F + coords.z, 4.0F + coords.x, 4.0F + coords.z}, 0)), sprite, side, BlockModelRotation.X0_Y0, null, true, 0));
-			}
-		}
-
-		return quads;
-	}
-
-	//based on the offsets written in the original giant block json
-	private BlockPos magicOffsetFromDir(Direction side) {
-		return switch (side) {
-			case DOWN -> new BlockPos(0, 0, 2);
-			case NORTH, SOUTH -> new BlockPos(0, 1, 0);
-			case WEST, EAST -> new BlockPos(0, 1, -1);
-			default -> new BlockPos(0, 0, -1);
-		};
-	}
-
-	//an offset is calculated between 0 and 15 based on which side its on.
-	//it then grabs the remainder after dividing by 4 and then multiply by 4 to scale correctly
-	private Vec2i calculateOffset(Direction side, BlockPos pos) {
-		int x = pos.getX();
-		int y = pos.getY();
-		int z = pos.getZ();
-
-		int offsetX, offsetY;
-
-		if (side.getAxis().isVertical()) {
-			offsetX = x % 4;
-			offsetY = (side.getStepY() * z + 1) % 4;
-		} else if (side.getAxis() == Direction.Axis.Z) {
-			offsetX = x % 4;
-			offsetY = -y % 4;
-		} else {
-			offsetX = (z + 1) % 4;
-			offsetY = -y % 4;
-		}
-
-		if (side == Direction.NORTH || side == Direction.EAST) {
-			offsetX = (4 - offsetX - 1) % 4;
-		}
-
-		if (offsetX < 0) {
-			offsetX += 16;
-		}
-		if (offsetY < 0) {
-			offsetY += 16;
-		}
-
-		return new Vec2i((offsetX % 4) * 4, (offsetY % 4) * 4);
+	public void collectParts(BlockAndTintGetter level, BlockPos pos, BlockState state, RandomSource random, List<BlockStateModelPart> parts) {
+		this.voxels[GiantBlock.packCoords(pos)].collectParts(level, pos, state, random, parts);
 	}
 
 	@Override
-	public @NotNull ModelData getModelData(@NotNull BlockAndTintGetter level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull ModelData modelData) {
-		if (modelData == ModelData.EMPTY) {
-			modelData = ModelData.builder().with(DATA, new GiantBlockData(level, pos)).build();
-		}
-		return modelData;
+	public Material.Baked particleMaterial(BlockAndTintGetter level, BlockPos pos, BlockState state) {
+		return this.voxels[GiantBlock.packCoords(pos)].particleMaterial(level, pos, state);
 	}
 
 	@Override
-	public boolean useAmbientOcclusion() {
-		return this.usesAO;
+	public Material.Baked particleMaterial() {
+		return this.voxels[0].particleMaterial();
 	}
 
 	@Override
-	public boolean isGui3d() {
-		return true;
+	public @MaterialFlags int materialFlags(BlockAndTintGetter level, BlockPos pos, BlockState state) {
+		return this.voxels[GiantBlock.packCoords(pos)].materialFlags(level, pos, state);
 	}
 
 	@Override
-	public boolean usesBlockLight() {
-		return this.usesBlockLight;
-	}
-
-	@Override
-	public TextureAtlasSprite getParticleIcon() {
-		return this.particle;
-	}
-
-	@NotNull
-	@Override
-	public ItemTransforms getTransforms() {
-		return this.transforms;
-	}
-
-	@NotNull
-	@Override
-	public ChunkRenderTypeSet getRenderTypes(@NotNull BlockState state, @NotNull RandomSource rand, @NotNull ModelData data) {
-		if (this.blockRenderTypes != null) {
-			if (this.blockRenderTypes.contains(RenderType.cutoutMipped()) && !Minecraft.useFancyGraphics()) {
-				return ChunkRenderTypeSet.of(RenderType.solid());
-			}
-			return this.blockRenderTypes;
-		}
-		return IDynamicBakedModel.super.getRenderTypes(state, rand, data);
-	}
-
-	@Override
-	public RenderType getRenderType(ItemStack stack) {
-		return this.itemRenderType != null ? this.itemRenderType : IDynamicBakedModel.super.getRenderType(stack);
-	}
-
-	//modeldata holder
-	public record GiantBlockData(BlockAndTintGetter getter, BlockPos pos) {
+	public @MaterialFlags int materialFlags() {
+		return this.voxels[0].materialFlags();
 	}
 }
