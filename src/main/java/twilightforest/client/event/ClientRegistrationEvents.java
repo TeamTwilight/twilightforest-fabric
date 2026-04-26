@@ -55,7 +55,7 @@ import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.*;
 import twilightforest.client.model.block.BrazierModel;
 import twilightforest.client.model.block.ReactorDebrisModel;
-import twilightforest.client.model.block.aurorablock.NoiseVaryingModelLoader;
+import twilightforest.client.model.block.aurorablock.UnbakedNoiseVaryingBlockStateModel;
 import twilightforest.client.model.block.carpet.RoyalRagsModelLoader;
 import twilightforest.client.model.block.connected.ConnectedTextureModelLoader;
 import twilightforest.client.model.block.forcefield.ForceFieldModelLoader;
@@ -107,6 +107,7 @@ public class ClientRegistrationEvents {
 		bus.addListener(this::registerEntityRenderers);
 		bus.addListener(this::registerLayerDefinitions);
 		bus.addListener(this::registerModelLoaders);
+		bus.addListener(this::registerBlockStateModels);
 		bus.addListener(this::registerScreens);
 		bus.addListener(this::registerClientExtensions);
 		bus.addListener(this::registerMapDecorators);
@@ -128,12 +129,15 @@ public class ClientRegistrationEvents {
 		});
 	}
 
-	private void registerModelLoaders(ModelEvent.RegisterGeometryLoaders event) {
+	private void registerBlockStateModels(RegisterBlockStateModels event) {
+		event.registerModel(TwilightForestMod.prefix("noise_varying"), UnbakedNoiseVaryingBlockStateModel.MAP_CODEC);
+	}
+
+	private void registerModelLoaders(ModelEvent.RegisterLoaders event) {
 		event.register(TwilightForestMod.prefix("patch"), PatchModelLoader.INSTANCE);
 		event.register(TwilightForestMod.prefix("giant_block"), GiantBlockModelLoader.INSTANCE);
 		event.register(TwilightForestMod.prefix("force_field"), ForceFieldModelLoader.INSTANCE);
 		event.register(TwilightForestMod.prefix("connected_texture_block"), ConnectedTextureModelLoader.INSTANCE);
-		event.register(TwilightForestMod.prefix("noise_varying"), NoiseVaryingModelLoader.INSTANCE);
 		event.register(TwilightForestMod.prefix("royal_rags"), RoyalRagsModelLoader.INSTANCE);
 		event.register(TwilightForestMod.prefix("travellers_gear"), TravellersGearItemModel.Loader.INSTANCE);
 	}

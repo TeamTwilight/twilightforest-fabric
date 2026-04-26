@@ -1,48 +1,45 @@
 package twilightforest.client.model.block.aurorablock;
 
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.DelegateBakedModel;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
+import net.minecraft.client.resources.model.geometry.BakedQuad.MaterialFlags;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.model.data.ModelData;
-import net.neoforged.neoforge.client.model.data.ModelProperty;
-import org.jetbrains.annotations.Nullable;
+import net.neoforged.neoforge.client.model.DelegateBlockStateModel;
+import net.neoforged.neoforge.client.model.DynamicBlockStateModel;
 import twilightforest.util.SimplexNoiseHelper;
 
 import java.util.List;
 
-public class NoiseVaryingModel extends DelegateBakedModel {
-	private static final ModelProperty<Integer> VARIANT = new ModelProperty<>();
-	private final BakedModel[] variants;
+public class NoiseVaryingModel extends DelegateBlockStateModel implements DynamicBlockStateModel {
+	private final BlockStateModel[] variants;
 
-	public NoiseVaryingModel(BakedModel[] variants) {
+	public NoiseVaryingModel(BlockStateModel[] variants) {
 		// First variation will propagate properties among other variants
 		super(variants[0]);
 		this.variants = variants;
 	}
 
 	@Override
-	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource rand, ModelData extraData, @Nullable RenderType renderType) {
-		if (extraData.has(VARIANT)) {
-			@SuppressWarnings("DataFlowIssue") // Just checked above
-			int variant = extraData.get(VARIANT);
-			return this.variants[variant].getQuads(state, side, rand, extraData, renderType);
-		}
-
-		// Defer to our primary wrapped model
-		return super.getQuads(state, side, rand, extraData, renderType);
+	public void collectParts(BlockAndTintGetter level, BlockPos pos, BlockState state, RandomSource random, List<BlockStateModelPart> parts) {
+		this.chooseVariant(pos).collectParts(level, pos, state, random, parts);
 	}
 
 	@Override
-	public ModelData getModelData(BlockAndTintGetter level, BlockPos pos, BlockState state, ModelData modelData) {
-		if (modelData.has(VARIANT))
-			return modelData;
-
-		return modelData.derive().with(VARIANT, SimplexNoiseHelper.calcVariant(pos, this.variants.length)).build();
+	public Material.Baked particleMaterial(BlockAndTintGetter level, BlockPos pos, BlockState state) {
+		return this.chooseVariant(pos).particleMaterial(level, pos, state);
 	}
+
+	@Override
+	public @MaterialFlags int materialFlags(BlockAndTintGetter level, BlockPos pos, BlockState state) {
+		return this.chooseVariant(pos).materialFlags(level, pos, state);
+	}
+
+	private BlockStateModel chooseVariant(BlockPos pos) {
+		return this.variants[SimplexNoiseHelper.calcVariant(pos, this.variants.length)];
+	}
+
 }

@@ -42,11 +42,6 @@ public class SimplexNoiseHelper {  // Simplex noise in 2D, 3D and 4D
 		return getFractalNoise(iterations, size, pos) / iterations;
 	}
 
-	@Deprecated
-	public static int calcVariant(BlockPos pos) {
-		return calcVariant(pos, 16);
-	}
-
 	public static int calcVariant(BlockPos pos, int variants) {
 		return Mth.floor(Mth.positiveModulo(fractalNoise(3, 48.0f, pos) * 120.0f, variants));
 	}
