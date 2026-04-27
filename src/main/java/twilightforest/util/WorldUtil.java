@@ -80,6 +80,7 @@ public final class WorldUtil {
 		return pos.offset(dx, dy, dz);
 	}
 
+	// TODO: use vanilla weighted list instead
 	public static <T> T getRandomElementWithWeights(List<Pair<T, Float>> list, RandomSource rng) {
 		float totalWeight = (float) list.stream().mapToDouble(Pair::getSecond).sum();
 		float randomValue = rng.nextFloat() * totalWeight;

@@ -1,7 +1,7 @@
 package twilightforest.init;
 
 import com.google.common.base.Suppliers;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.world.level.GameRules;
 import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.network.EnforceProgressionStatusPacket;

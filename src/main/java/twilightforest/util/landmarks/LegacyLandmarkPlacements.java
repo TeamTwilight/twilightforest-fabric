@@ -1,7 +1,7 @@
 package twilightforest.util.landmarks;
 
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.random.SimpleWeightedRandomList;
