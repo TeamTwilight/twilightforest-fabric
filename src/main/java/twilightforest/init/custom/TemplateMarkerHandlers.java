@@ -6,7 +6,7 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.PaintingVariantTags;
-import net.minecraft.util.random.SimpleWeightedRandomList;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
@@ -53,8 +53,8 @@ public class TemplateMarkerHandlers {
 	//    Spawner handler
 
 	public static void bootstrap(BootstrapContext<TemplateMarkerHandlerList> context) {
-		BlockPlaceMarkerHandler campfireSeat = new BlockPlaceMarkerHandler(new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder()
-			.add(TFBlocks.TWILIGHT_OAK_SLAB.value().defaultBlockState())
+		BlockPlaceMarkerHandler campfireSeat = new BlockPlaceMarkerHandler(new WeightedStateProvider(WeightedList.<BlockState>builder()
+			.add(TFBlocks.TWILIGHT_OAK_SLAB.value().defaultBlockState(), 1)
 			.add(Blocks.AIR.defaultBlockState(), 3)
 			.build()));
 
