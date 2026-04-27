@@ -12,6 +12,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.util.valueproviders.IntProvider;
+import net.minecraft.util.valueproviders.IntProviders;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
@@ -35,8 +36,8 @@ import java.util.stream.Collectors;
 public class FallenTrunkStructure extends Structure implements CustomDensitySource, DecorationClearance {
 	public static final MapCodec<FallenTrunkStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		Structure.settingsCodec(instance),
-		IntProvider.codec(16, 32).fieldOf("length").forGetter(s -> s.length),
-		IntProvider.codec(20, 32).fieldOf("big_trunk_length").forGetter(s -> s.bigTrunkLength),
+		IntProviders.codec(16, 32).fieldOf("length").forGetter(s -> s.length),
+		IntProviders.codec(20, 32).fieldOf("big_trunk_length").forGetter(s -> s.bigTrunkLength),
 		BlockStateProvider.CODEC.fieldOf("log").forGetter(s -> s.log),
 		ResourceKey.codec(Registries.LOOT_TABLE).fieldOf("chest_loot_table").forGetter(s -> s.chestLootTable)
 	).apply(instance, FallenTrunkStructure::new));
