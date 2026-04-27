@@ -102,7 +102,7 @@ public class TreeConfigurations {
 				15,
 				new WeightedStateProvider(createBlockList()
 					.add(TFBlocks.ROPE.get().defaultBlockState(), 3)
-					.add(Blocks.CHAIN.defaultBlockState(), 1).build()),
+					.add(Blocks.IRON_CHAIN.defaultBlockState(), 1).build()),
 				new WeightedStateProvider(createBlockList()
 					.add(TFBlocks.FIREFLY_JAR.get().defaultBlockState(), 10)
 					.add(TFBlocks.CICADA_JAR.get().defaultBlockState(), 1).build())
@@ -187,7 +187,7 @@ public class TreeConfigurations {
 				2,
 				4,
 				2,
-				new WeightedStateProvider(createBlockList().add(Blocks.CHAIN.defaultBlockState(), 1).build()),
+				new WeightedStateProvider(createBlockList().add(Blocks.IRON_CHAIN.defaultBlockState(), 1).build()),
 				new WeightedStateProvider(createBlockList().add(Blocks.LANTERN.defaultBlockState().setValue(LanternBlock.HANGING, true), 1).build())
 			)
 		))
