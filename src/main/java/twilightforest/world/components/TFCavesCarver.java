@@ -56,7 +56,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 
 	@Override
 	public boolean carve(CarvingContext ctx, CaveCarverConfiguration config, ChunkAccess access, Function<BlockPos, Holder<Biome>> biomePos, RandomSource random, Aquifer aquifer, ChunkPos accessPos, CarvingMask mask) {
-		if (this.isHighlands && (Mth.clamp(LegacyLandmarkPlacements.manhattanDistanceFromLandmarkCenter(accessPos.x, accessPos.z), 0, 0b11) & 0b1) == 1)
+		if (this.isHighlands && (Mth.clamp(LegacyLandmarkPlacements.manhattanDistanceFromLandmarkCenter(accessPos.x(), accessPos.z()), 0, 0b11) & 0b1) == 1)
 			return false; // If highlands, enforces a binary grid (diagonal range of 4 chunks) of possible placements around the structure center, with center being one of the zero tiles
 
 		int i = SectionPos.sectionToBlockCoord(this.getRange() * 2 - 1);

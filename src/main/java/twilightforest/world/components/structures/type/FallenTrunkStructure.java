@@ -59,10 +59,10 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 	@Override
 	public Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
 		ChunkPos chunkPos = context.chunkPos();
-		RandomSource random = RandomSource.create(context.seed() + chunkPos.x * 14413411L + chunkPos.z * 43387781L);
+		RandomSource random = RandomSource.create(context.seed() + chunkPos.x() * 14413411L + chunkPos.z() * 43387781L);
 
-		int x = SectionPos.sectionToBlockCoord(chunkPos.x, random.nextInt(16));
-		int z = SectionPos.sectionToBlockCoord(chunkPos.z, random.nextInt(16));
+		int x = SectionPos.sectionToBlockCoord(chunkPos.x(), random.nextInt(16));
+		int z = SectionPos.sectionToBlockCoord(chunkPos.z(), random.nextInt(16));
 		int worldY = context.chunkGenerator().getFirstOccupiedHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState());
 		int radius = Util.getRandom(radiuses, random);
 		int length = radius == radiuses.getLast() ? this.bigTrunkLength.sample(random) : this.length.sample(random);

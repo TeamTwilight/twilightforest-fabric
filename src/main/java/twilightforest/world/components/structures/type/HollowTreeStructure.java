@@ -123,10 +123,10 @@ public class HollowTreeStructure extends Structure implements DecorationClearanc
 	public Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
 		ChunkPos chunkPos = context.chunkPos();
 
-		RandomSource random = RandomSource.create(context.seed() + chunkPos.x * 25117L + chunkPos.z * 151121L);
+		RandomSource random = RandomSource.create(context.seed() + chunkPos.x() * 25117L + chunkPos.z() * 151121L);
 
-		int x = SectionPos.sectionToBlockCoord(chunkPos.x, random.nextInt(16));
-		int z = SectionPos.sectionToBlockCoord(chunkPos.z, random.nextInt(16));
+		int x = SectionPos.sectionToBlockCoord(chunkPos.x(), random.nextInt(16));
+		int z = SectionPos.sectionToBlockCoord(chunkPos.z(), random.nextInt(16));
 		int seaFloorY = context.chunkGenerator().getFirstOccupiedHeight(x, z, Heightmap.Types.OCEAN_FLOOR_WG, context.heightAccessor(), context.randomState());
 		int worldY = context.chunkGenerator().getFirstOccupiedHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState());
 
@@ -168,7 +168,7 @@ public class HollowTreeStructure extends Structure implements DecorationClearanc
 	@Override
 	public StructureStart generateFromSapling(RegistryAccess registryAccess, ChunkGenerator generator, BiomeSource biomeSource, RandomState randomState, StructureTemplateManager templateManager, long seed, BlockPos blockPos, LevelHeightAccessor heightAccessor) {
 		ChunkPos chunkPos = new ChunkPos(blockPos);
-		RandomSource random = RandomSource.create(seed + chunkPos.x * 25117L + chunkPos.z * 151121L);
+		RandomSource random = RandomSource.create(seed + chunkPos.x() * 25117L + chunkPos.z() * 151121L);
 
 		int height = Math.min(this.height.sample(random) + blockPos.getY(), heightAccessor.getMaxY()) - blockPos.getY();
 

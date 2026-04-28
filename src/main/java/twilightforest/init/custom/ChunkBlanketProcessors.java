@@ -60,7 +60,7 @@ public final class ChunkBlanketProcessors {
 
 		Set<Holder<Biome>> biomesInChunk = new ObjectArraySet<>();
 
-		for (LevelChunkSection levelchunksection : worldGenRegion.getChunk(chunkPos.x, chunkPos.z).getSections()) {
+		for (LevelChunkSection levelchunksection : worldGenRegion.getChunk(chunkPos.x(), chunkPos.z()).getSections()) {
 			levelchunksection.getBiomes().getAll(biomesInChunk::add);
 		}
 

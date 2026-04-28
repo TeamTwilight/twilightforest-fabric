@@ -239,8 +239,8 @@ public class ClientGameEvents {
 						}
 					}
 					for (ChunkPos pos : chunksInRange) {
-						if (mc.level.getChunk(pos.x, pos.z, ChunkStatus.FULL, false) != null) {
-							List<BlockEntity> beanstalksInChunk = mc.level.getChunk(pos.x, pos.z).getBlockEntities().values().stream()
+						if (mc.level.getChunk(pos.x(), pos.z(), ChunkStatus.FULL, false) != null) {
+							List<BlockEntity> beanstalksInChunk = mc.level.getChunk(pos.x(), pos.z()).getBlockEntities().values().stream()
 								.filter(blockEntity -> blockEntity instanceof GrowingBeanstalkBlockEntity beanstalkBlock && beanstalkBlock.isBeanstalkRumbling())
 								.toList();
 							if (!beanstalksInChunk.isEmpty()) {

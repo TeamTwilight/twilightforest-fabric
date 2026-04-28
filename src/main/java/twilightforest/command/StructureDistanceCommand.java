@@ -47,8 +47,8 @@ public class StructureDistanceCommand {
 
 		ChunkPos centerChunk = structureAt.getChunkPos();
 		for (ChunkPos chunkPos : ChunkPos.rangeClosed(centerChunk, 8).toList()) {
-			int diffX = chunkPos.x - centerChunk.x;
-			int diffZ = chunkPos.z - centerChunk.z;
+			int diffX = chunkPos.x() - centerChunk.x();
+			int diffZ = chunkPos.z() - centerChunk.z();
 			int squareRadiusDist = Math.max(Mth.abs(diffX), Mth.abs(diffZ));
 
 			int minX = chunkPos.getMinBlockX();
