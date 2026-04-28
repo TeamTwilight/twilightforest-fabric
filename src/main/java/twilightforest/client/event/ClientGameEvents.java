@@ -50,6 +50,7 @@ import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.ISTER;
 import twilightforest.client.OptifineWarningScreen;
 import twilightforest.client.TFShaders;
+import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.entity.MagicPaintingRenderer;
 import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.config.TFConfig;
@@ -109,6 +110,8 @@ public class ClientGameEvents {
 		NeoForge.EVENT_BUS.addListener(FogHandler::unloadFog);
 
 		NeoForge.EVENT_BUS.addListener(LockedBiomeToastHandler::tickLockedToastLogic);
+
+		NeoForge.EVENT_BUS.addListener(TFSkyRenderer::extractLevelRender);
 	}
 
 	private void handleGameBootup(ScreenEvent.Init.Post event) {

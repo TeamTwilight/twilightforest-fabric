@@ -5,34 +5,42 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.state.level.LevelRenderState;
+import net.minecraft.client.renderer.state.level.SkyRenderState;
+import net.minecraft.client.renderer.state.level.WeatherRenderState;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.client.CustomSkyboxRenderer;
+import net.neoforged.neoforge.client.CustomWeatherEffectRenderer;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
+import org.joml.Matrix4fc;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.init.TFBiomes;
 
 import java.util.Optional;
 
-public class TwilightForestRenderInfo extends DimensionSpecialEffects {
-
-	public TwilightForestRenderInfo(float cloudHeight, boolean placebo, SkyType fogType, boolean brightenLightMap, boolean entityLightingBottomsLit) {
-		super(cloudHeight, placebo, fogType, brightenLightMap, entityLightingBottomsLit);
-	}
+public class TwilightForestRenderInfo implements CustomSkyboxRenderer, CustomWeatherEffectRenderer {
 
 	@Nullable
-	@Override
-	public float[] getSunriseColor(float daycycle, float partialTicks) { // Fog color
-		return null;
-	}
+	private TFSkyRenderer skyRenderer;
 
-	@Override
-	public Vec3 getBrightnessDependentFogColor(Vec3 biomeFogColor, float daylight) { // For modifying biome fog color with daycycle
-		return biomeFogColor.multiply(daylight * 0.94F + 0.06F, (daylight * 0.94F + 0.06F), (daylight * 0.91F + 0.09F));
-	}
+	//TODO: Set via EnvironmentAttribute at the DimensionType level
+//	@Nullable
+//	@Override
+//	public float[] getSunriseColor(float daycycle, float partialTicks) { // Fog color
+//		return null;
+//	}
+
+	//TODO: Set via EnvironmentAttribute at the DimensionType level
+//	@Override
+//	public Vec3 getBrightnessDependentFogColor(Vec3 biomeFogColor, float daylight) { // For modifying biome fog color with daycycle
+//		return biomeFogColor.multiply(daylight * 0.94F + 0.06F, (daylight * 0.94F + 0.06F), (daylight * 0.91F + 0.09F));
+//	}
 
 	@Override
 	public boolean isFoggyAt(int x, int y) { // true = nearFog
@@ -57,12 +65,15 @@ public class TwilightForestRenderInfo extends DimensionSpecialEffects {
 	}
 
 	@Override
-	public boolean renderSky(ClientLevel level, int ticks, float partialTick, Matrix4f modelViewMatrix, Camera camera, Matrix4f projectionMatrix, boolean isFoggy, Runnable setupFog) {
-		return TFSkyRenderer.renderSky(level, partialTick, modelViewMatrix, camera, projectionMatrix, setupFog);
+	public boolean renderSky(LevelRenderState levelRenderState, SkyRenderState skyRenderState, Matrix4fc modelViewMatrix, Runnable setupFog) {
+		if (this.skyRenderer == null) {
+			this.skyRenderer = new TFSkyRenderer();
+		}
+		return skyRenderer.renderSky(levelRenderState, skyRenderState, modelViewMatrix, setupFog);
 	}
 
 	@Override
-	public boolean renderSnowAndRain(ClientLevel level, int ticks, float partialTick, LightTexture lightTexture, double camX, double camY, double camZ) {
+	public boolean renderSnowAndRain(LevelRenderState levelRenderState, WeatherRenderState weatherRenderState, MultiBufferSource bufferSource, Vec3 camPos) {
 		return TFWeatherRenderer.renderSnowAndRain(level, ticks, partialTick, lightTexture, new Vec3(camX, camY, camZ));
 	}
 
