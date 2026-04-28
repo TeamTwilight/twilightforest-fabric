@@ -104,7 +104,7 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 	private boolean hasInvalidNearbyBiome(GenerationContext context, int x, int worldY, int z, RandomSource random) {
 		Pair<BlockPos, Holder<Biome>> invalidBiome = context.biomeSource().findBiomeHorizontal(
 			x, worldY, z,
-			this.length.getMaxValue(), 1,
+			this.length.maxInclusive(), 1,
 			biomeHolder -> !context.validBiome().test(biomeHolder),
 			random, false, context.randomState().sampler());
 		return invalidBiome != null;
