@@ -8,6 +8,7 @@ import net.minecraft.core.HolderSet;
 import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -23,16 +24,16 @@ public record GlacierBlanketProcessor(HolderSet<Biome> biomesForApplication, Blo
 	).apply(inst, GlacierBlanketProcessor::new));
 
 	@Override
-	public void processColumn(RandomSource random, ChunkAccess chunkAccess, BlockPos aboveFloor) {
+	public void processColumn(WorldGenLevel level, RandomSource random, ChunkAccess chunkAccess, BlockPos aboveFloor) {
 		int firstAvailableY = aboveFloor.getY();
 		int maxY = firstAvailableY + this.height;
 
 		BlockPos maxPosY = aboveFloor.atY(maxY);
-		chunkAccess.setBlockState(maxPosY, this.glacierTop.getState(random, maxPosY), false);
+		chunkAccess.setBlockState(maxPosY, this.glacierTop.getState(level, random, maxPosY), 3);
 
 		for (int y = maxY - 1; y >= firstAvailableY; y--) {
 			BlockPos posSurfaceChunk = aboveFloor.atY(y);
-			chunkAccess.setBlockState(posSurfaceChunk, this.glacierBody.getState(random, posSurfaceChunk), false);
+			chunkAccess.setBlockState(posSurfaceChunk, this.glacierBody.getState(level, random, posSurfaceChunk), 3);
 		}
 	}
 

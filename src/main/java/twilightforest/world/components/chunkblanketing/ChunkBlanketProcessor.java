@@ -53,12 +53,12 @@ public interface ChunkBlanketProcessor {
 					if (!this.biomesForApplication().contains(biomeGetter.apply(firstAvailableBlock)))
 						continue;
 
-					this.processColumn(random, chunkAccess, firstAvailableBlock);
+					this.processColumn(level, random, chunkAccess, firstAvailableBlock);
 				}
 			}
 		}
 
-		void processColumn(RandomSource random, ChunkAccess chunkAccess, BlockPos aboveFloor);
+		void processColumn(WorldGenLevel level, RandomSource random, ChunkAccess chunkAccess, BlockPos aboveFloor);
 
 		Heightmap.Types heightmap();
 	}
