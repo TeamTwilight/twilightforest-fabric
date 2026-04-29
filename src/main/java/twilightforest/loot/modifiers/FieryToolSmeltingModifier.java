@@ -3,7 +3,6 @@ package twilightforest.loot.modifiers;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -29,18 +28,18 @@ public class FieryToolSmeltingModifier extends LootModifier {
 	@Override
 	protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
 		List<Pair<ItemStack, Float>> list = generatedLoot.stream().map(stack ->
-			context.getLevel().getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(stack), context.getLevel())
+			context.getLevel().recipeAccess().getRecipeFor(RecipeType.SMELTING, new SingleRecipeInput(stack), context.getLevel())
 				.map(holder -> {
-					ItemStack result = holder.value().getResultItem(context.getLevel().registryAccess()).copy();
+					ItemStack result = holder.value().assemble(new SingleRecipeInput(stack)).copy();
 					result.setCount(stack.getCount() * result.getCount());
-					return Pair.of(result, holder.value().getExperience());
+					return Pair.of(result, holder.value().experience());
 				})
 				.filter(pair -> !pair.getLeft().isEmpty())
 				.orElse(Pair.of(stack, 0.0F))).toList();
 
 		float xp = (float) list.stream().mapToDouble(Pair::getRight).sum();
-		if (xp > 0.0F && context.hasParam(LootContextParams.THIS_ENTITY)) {
-			ExperienceOrb.award(context.getLevel(), context.getParam(LootContextParams.THIS_ENTITY).position(), Math.round(xp));
+		if (xp > 0.0F && context.hasParameter(LootContextParams.THIS_ENTITY)) {
+			ExperienceOrb.award(context.getLevel(), context.getParameter(LootContextParams.THIS_ENTITY).position(), Math.round(xp));
 		}
 
 		return list.stream().map(Pair::getLeft).collect(Collectors.toCollection(ObjectArrayList::new));

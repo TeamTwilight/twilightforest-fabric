@@ -5,9 +5,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.neoforged.fml.ModList;
-import twilightforest.init.TFLoot;
 
 // Loot condition for checking if a mod exists.
 public class ModExistsCondition implements LootItemCondition {
@@ -23,8 +21,8 @@ public class ModExistsCondition implements LootItemCondition {
 	}
 
 	@Override
-	public LootItemConditionType getType() {
-		return TFLoot.MOD_EXISTS.get();
+	public MapCodec<? extends LootItemCondition> codec() {
+		return CODEC;
 	}
 
 	@Override

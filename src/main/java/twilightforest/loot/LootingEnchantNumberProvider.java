@@ -5,17 +5,15 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.util.context.ContextKey;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParam;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraft.world.level.storage.loot.providers.number.LootNumberProviderType;
 import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
 import net.minecraft.world.level.storage.loot.providers.number.NumberProviders;
-import twilightforest.init.TFLoot;
 
 import java.util.Set;
 
@@ -35,8 +33,8 @@ public class LootingEnchantNumberProvider implements NumberProvider {
 	}
 
 	@Override
-	public LootNumberProviderType getType() {
-		return TFLoot.LOOTING_ROLLS.get();
+	public MapCodec<? extends NumberProvider> codec() {
+		return CODEC;
 	}
 
 	public static LootingEnchantNumberProvider applyLootingLevelTo(HolderLookup.Provider provider, NumberProvider baseValue) {
@@ -46,14 +44,14 @@ public class LootingEnchantNumberProvider implements NumberProvider {
 
 	@Override
 	public float getFloat(LootContext context) {
-		if (context.getParamOrNull(LootContextParams.ATTACKING_ENTITY) instanceof LivingEntity living) {
+		if (context.getOptionalParameter(LootContextParams.ATTACKING_ENTITY) instanceof LivingEntity living) {
 			return EnchantmentHelper.getEnchantmentLevel(this.enchantment, living) + this.baseValue.getFloat(context);
 		}
 		return this.baseValue.getFloat(context);
 	}
 
 	@Override
-	public Set<LootContextParam<?>> getReferencedContextParams() {
+	public Set<ContextKey<?>> getReferencedContextParams() {
 		return this.baseValue.getReferencedContextParams();
 	}
 }
