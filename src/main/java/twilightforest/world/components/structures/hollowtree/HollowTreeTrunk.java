@@ -117,7 +117,7 @@ public class HollowTreeTrunk extends HollowTreePiece {
 		tag.put("dungeon_air", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.dungeonAir).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
 		tag.put("dungeon_loot_block", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.dungeonLootBlock).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
 
-		tag.putString("dungeon_loot_table", this.dungeonLootTable.location().toString());
+		tag.putString("dungeon_loot_table", this.dungeonLootTable.identifier().toString());
 
 		tag.putString("dungeon_monster", BuiltInRegistries.ENTITY_TYPE.getKey(this.dungeonMonster.value()).toString());
 	}
@@ -308,7 +308,7 @@ public class HollowTreeTrunk extends HollowTreePiece {
 			facing = Rotation.COUNTERCLOCKWISE_90;
 		}
 
-		BlockState decor = this.bug.getState(random, src).rotate(world, src, facing);
+		BlockState decor = this.bug.getState(world, random, src).rotate(world, src, facing);
 		if (world.getBlockState(src).canBeReplaced() && decor.canSurvive(world, src)) {
 			world.setBlock(src, decor, Block.UPDATE_ALL);
 		}
