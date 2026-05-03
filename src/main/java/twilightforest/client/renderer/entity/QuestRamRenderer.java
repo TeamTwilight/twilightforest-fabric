@@ -1,53 +1,58 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.phys.AABB;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.QuestRamModel;
+import twilightforest.client.state.entity.QuestingRamRenderState;
 import twilightforest.entity.passive.QuestRam;
 
-public class QuestRamRenderer<T extends QuestRam, M extends QuestRamModel<T>> extends MobRenderer<T, M> {
+public class QuestRamRenderer extends MobRenderer<QuestRam, QuestingRamRenderState, QuestRamModel> {
 
 	public static final Identifier TEXTURE = TwilightForestMod.getModelTexture("questram.png");
 	public static final Identifier LINE_TEXTURE = TwilightForestMod.getModelTexture("questram_lines.png");
 
-	public QuestRamRenderer(EntityRendererProvider.Context context, M model) {
-		super(context, model, 1.0F);
-		this.addLayer(new GlowingLinesLayer<>(this));
+	public QuestRamRenderer(EntityRendererProvider.Context context) {
+		super(context, new QuestRamModel(context.bakeLayer(TFModelLayers.QUEST_RAM)), 1.0F);
+		this.addLayer(new GlowingLinesLayer(this));
 	}
 
 	@Override
-	public Identifier getTextureLocation(T entity) {
+	public QuestingRamRenderState createRenderState() {
+		return new QuestingRamRenderState();
+	}
+
+	@Override
+	public void extractRenderState(QuestRam entity, QuestingRamRenderState state, float partialTick) {
+		super.extractRenderState(entity, state, partialTick);
+		state.colorFlags = entity.getColorFlags();
+	}
+
+	@Override
+	public Identifier getTextureLocation(QuestingRamRenderState state) {
 		return TEXTURE;
 	}
 
-	@Override
-	public AABB getBoundingBoxForCulling(LivingEntity entity) {
-		return super.getBoundingBoxForCulling(entity).inflate(3.0D);
-	}
+	public static class GlowingLinesLayer extends RenderLayer<QuestingRamRenderState, QuestRamModel> {
 
-	public static class GlowingLinesLayer<T extends QuestRam, M extends QuestRamModel<T>> extends RenderLayer<T, M> {
-
-		public GlowingLinesLayer(RenderLayerParent<T, M> renderer) {
+		public GlowingLinesLayer(RenderLayerParent<QuestingRamRenderState, QuestRamModel> renderer) {
 			super(renderer);
 		}
 
 		@Override
-		public void render(PoseStack stack, MultiBufferSource buffer, int i, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-			VertexConsumer consumer = buffer.getBuffer(RenderType.entityTranslucent(LINE_TEXTURE));
+		public void submit(PoseStack stack, SubmitNodeCollector collector, int light, QuestingRamRenderState state, float yRot, float xRot) {
 			stack.scale(1.025F, 1.025F, 1.025F);
-			this.getParentModel().renderToBuffer(stack, consumer, 0xF000F0, OverlayTexture.NO_OVERLAY);
+			collector.order(1).submitModel(this.getParentModel(), state, stack, RenderTypes.entityTranslucent(LINE_TEXTURE), LightCoordsUtil.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, -1, null);
 		}
 	}
 }

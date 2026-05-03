@@ -1,51 +1,50 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.HierarchicalModel;
-import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.SlimeBeetleModel;
 import twilightforest.entity.monster.SlimeBeetle;
 
-public class SlimeBeetleRenderer<T extends SlimeBeetle, M extends HierarchicalModel<T>> extends MobRenderer<T, M> {
+public class SlimeBeetleRenderer extends MobRenderer<SlimeBeetle, LivingEntityRenderState, SlimeBeetleModel> {
 
 	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("slimebeetle.png");
 
-	public SlimeBeetleRenderer(EntityRendererProvider.Context context, M model, ModelPart innerRoot, float shadowSize) {
-		super(context, model, shadowSize);
-		this.addLayer(new OuterTailLayer<>(this, innerRoot));
+	public SlimeBeetleRenderer(EntityRendererProvider.Context context) {
+		super(context, new SlimeBeetleModel(context.bakeLayer(TFModelLayers.SLIME_BEETLE)), 0.6F);
+		this.addLayer(new OuterTailLayer(this));
 	}
 
 	@Override
-	public Identifier getTextureLocation(T entity) {
+	public LivingEntityRenderState createRenderState() {
+		return new LivingEntityRenderState();
+	}
+
+	@Override
+	public Identifier getTextureLocation(LivingEntityRenderState state) {
 		return TEXTURE;
 	}
 
-	public static class OuterTailLayer<T extends SlimeBeetle, M extends HierarchicalModel<T>> extends RenderLayer<T, M> {
-		private final SlimeBeetleModel<T> tailModel;
-
-		public OuterTailLayer(RenderLayerParent<T, M> renderer, ModelPart innerRoot) {
+	public static class OuterTailLayer extends RenderLayer<LivingEntityRenderState, SlimeBeetleModel> {
+		public OuterTailLayer(RenderLayerParent<LivingEntityRenderState, SlimeBeetleModel> renderer) {
 			super(renderer);
-			this.tailModel = new SlimeBeetleModel<>(innerRoot);
 		}
 
+		//TODO
 		@Override
-		public void render(PoseStack ms, MultiBufferSource buffers, int light, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-			if (!entity.isInvisible()) {
-				this.tailModel.copyPropertiesTo(this.getParentModel());
-				this.tailModel.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
-				this.tailModel.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-				VertexConsumer consumer = buffers.getBuffer(RenderType.entityTranslucent(this.getTextureLocation(entity)));
-				this.tailModel.renderTail(ms, consumer, light, LivingEntityRenderer.getOverlayCoords(entity, 0));
+		public void submit(PoseStack stack, SubmitNodeCollector collector, int light, LivingEntityRenderState state, float yRot, float xRot) {
+			if (!state.isInvisible) {
+				this.getParentModel().setupAnim(state);
+				collector.submitModel(this.getParentModel(), state, stack, RenderTypes.entityTranslucent(TEXTURE), light, LivingEntityRenderer.getOverlayCoords(state, 0), state.outlineColor, null);
 			}
 		}
 	}

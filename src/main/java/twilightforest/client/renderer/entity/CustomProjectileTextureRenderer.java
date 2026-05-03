@@ -3,10 +3,12 @@ package twilightforest.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
@@ -17,7 +19,7 @@ import twilightforest.entity.projectile.TFThrowable;
  * This renderer serves as a way to render item textures on a projectile without needing an actual item registered for it.
  * Consider using {@link net.minecraft.client.renderer.entity.ThrownItemRenderer} if your projectile is an existing item already.
  */
-public class CustomProjectileTextureRenderer extends EntityRenderer<TFThrowable> {
+public class CustomProjectileTextureRenderer extends EntityRenderer<TFThrowable, EntityRenderState> {
 
 	private final Identifier texture;
 	private final float scale;
@@ -42,49 +44,48 @@ public class CustomProjectileTextureRenderer extends EntityRenderer<TFThrowable>
 	}
 
 	@Override
-	public void render(TFThrowable entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
+	public void submit(EntityRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
 		if (this.flashing) {
-			stack.pushPose();
-			float age = entity.tickCount + partialTicks;
-			float f = (Mth.sin(age) + 1.0F) * 0.5F;
+			poseStack.pushPose();
+			float f = (Mth.sin(state.ageInTicks) + 1.0F) * 0.5F;
 			float f1 = 1.0F + Mth.sin(f * 100.0F) * f * 0.01F;
 			f = Mth.clamp(f, 0.0F, 1.0F);
 			f *= f;
 			f *= f;
 			float f2 = (1.0F + f * 0.4F) * f1;
 			float f3 = (1.0F + f * 0.1F) / f1;
-			stack.scale(f2, f3, f2);
-			this.render(entity, entityYaw, partialTicks, stack, buffer, light, OverlayTexture.pack(OverlayTexture.u(f), OverlayTexture.v(false)));
-			stack.popPose();
+			poseStack.scale(f2, f3, f2);
+			this.submit(state, poseStack, submitNodeCollector, state.lightCoords, OverlayTexture.NO_OVERLAY, camera);
+			poseStack.popPose();
 		} else {
-			this.render(entity, entityYaw, partialTicks, stack, buffer, light, OverlayTexture.NO_OVERLAY);
+			this.submit(state, poseStack, submitNodeCollector, state.lightCoords, OverlayTexture.NO_OVERLAY, camera);
 		}
 	}
 
 	//[VanillaCopy] of DragonFireballRender.render, we just input our own texture stuff instead
-	public void render(TFThrowable entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light, int overlayTexture) {
+	public void submit(EntityRenderState state, PoseStack stack, SubmitNodeCollector submitNodeCollector, int light, int overlay, CameraRenderState camera) {
 		stack.pushPose();
 		stack.scale(0.5F * this.scale, 0.5F * this.scale, 0.5F * this.scale);
 
-		stack.mulPose(this.entityRenderDispatcher.cameraOrientation());
+		stack.mulPose(camera.orientation);
 		stack.mulPose(Axis.YP.rotationDegrees(180.0F));
-		PoseStack.Pose pose = stack.last();
-		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(this.texture));
+		submitNodeCollector.submitCustomGeometry(stack, RenderTypes.entityCutout(this.texture), (pose1, vertexConsumer) -> {
+			vertex(vertexConsumer, pose1, light, 0.0F, 0.0F, 0.0F, 1.0F, overlay);
+			vertex(vertexConsumer, pose1, light, 1.0F, 0.0F, 1.0F, 1.0F, overlay);
+			vertex(vertexConsumer, pose1, light, 1.0F, 1.0F, 1.0F, 0.0F, overlay);
+			vertex(vertexConsumer, pose1, light, 0.0F, 1.0F, 0.0F, 0.0F, overlay);
+		});
 
-		vertex(consumer, pose, light, 0.0F, 0.0F, 0.0F, 1.0F, overlayTexture);
-		vertex(consumer, pose, light, 1.0F, 0.0F, 1.0F, 1.0F, overlayTexture);
-		vertex(consumer, pose, light, 1.0F, 1.0F, 1.0F, 0.0F, overlayTexture);
-		vertex(consumer, pose, light, 0.0F, 1.0F, 0.0F, 0.0F, overlayTexture);
 		stack.popPose();
-		super.render(entity, entityYaw, partialTicks, stack, buffer, light);
+		super.submit(state, stack, submitNodeCollector, camera);
 	}
 
 	private static void vertex(VertexConsumer consumer, PoseStack.Pose pose, int light, float xOffset, float zOffset, float u, float v, int overlay) {
-		consumer.addVertex(pose, xOffset - 0.5F, zOffset - 0.25F, 0.0F).setColor(255, 255, 255, 255).setUv(u, v).setOverlay(overlay).setLight(light).setNormal(pose, 0.0F, 1.0F, 0.0F);
+		consumer.addVertex(pose, xOffset - 0.5F, zOffset - 0.25F, 0.0F).setColor(-1).setUv(u, v).setOverlay(overlay).setLight(light).setNormal(pose, 0.0F, 1.0F, 0.0F);
 	}
 
 	@Override
-	public Identifier getTextureLocation(TFThrowable entity) {
-		return this.texture;
+	public EntityRenderState createRenderState() {
+		return new EntityRenderState();
 	}
 }

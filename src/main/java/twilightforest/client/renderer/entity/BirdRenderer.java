@@ -1,31 +1,42 @@
 package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.renderer.entity.AgeableMobRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.state.entity.BirdRenderState;
 import twilightforest.entity.passive.Bird;
 
-public class BirdRenderer<T extends Bird, M extends EntityModel<T>> extends MobRenderer<T, M> {
+public class BirdRenderer<T extends Bird, M extends EntityModel<BirdRenderState>> extends AgeableMobRenderer<T, BirdRenderState, M> {
 
 	private final Identifier texture;
 
 	public BirdRenderer(EntityRendererProvider.Context context, M model, float shadowSize, String textureName) {
-		super(context, model, shadowSize);
+		this(context, model, model, shadowSize, textureName);
+	}
+
+	public BirdRenderer(EntityRendererProvider.Context context, M model, M babyModel, float shadowSize, String textureName) {
+		super(context, model, babyModel, shadowSize);
 		this.texture = TwilightForestMod.getModelTexture(textureName);
 	}
 
 	@Override
-	protected float getBob(T entity, float partialTicks) {
-		float flapLength = entity.lastFlapLength + (entity.flapLength - entity.lastFlapLength) * partialTicks;
-		float flapIntensity = entity.lastFlapIntensity + (entity.flapIntensity - entity.lastFlapIntensity) * partialTicks;
-		return (Mth.sin(flapLength) + 1.0F) * flapIntensity;
+	public BirdRenderState createRenderState() {
+		return new BirdRenderState();
 	}
 
 	@Override
-	public Identifier getTextureLocation(T entity) {
+	public void extractRenderState(T entity, BirdRenderState state, float partialTick) {
+		super.extractRenderState(entity, state, partialTick);
+		state.flap = Mth.lerp(partialTick, entity.lastFlapLength, entity.flapLength);
+		state.flapSpeed = Mth.lerp(partialTick, entity.lastFlapIntensity, entity.flapIntensity);
+	}
+
+	@Override
+	public Identifier getTextureLocation(BirdRenderState state) {
 		return this.texture;
 	}
 }

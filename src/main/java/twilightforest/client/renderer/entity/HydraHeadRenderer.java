@@ -2,79 +2,58 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.model.ListModel;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.network.chat.Component;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.entity.EntityAttachment;
-import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.client.ClientHooks;
+import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Matrix4f;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.entity.HydraHeadModel;
+import twilightforest.client.state.entity.HydraHeadRenderState;
 import twilightforest.entity.boss.Hydra;
 import twilightforest.entity.boss.HydraHead;
 import twilightforest.entity.boss.HydraHeadContainer;
 
-public class HydraHeadRenderer<T extends HydraHead, M extends ListModel<T>> extends TFPartRenderer<T, M> {
+public class HydraHeadRenderer extends TFPartRenderer<HydraHead, HydraHeadRenderState, HydraHeadModel> {
 
 	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("hydra4.png");
 
-
-	public HydraHeadRenderer(EntityRendererProvider.Context context, M model) {
+	public HydraHeadRenderer(EntityRendererProvider.Context context, HydraHeadModel model) {
 		super(context, model);
 	}
 
 	@Override
-	public void render(T entity, float yaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
-		// get the HydraHeadContainer that we're taking about
-		HydraHeadContainer headCon = getHeadObject(entity);
+	public void submit(HydraHeadRenderState state, PoseStack stack, SubmitNodeCollector buffer, CameraRenderState cameraRenderState) {
+		stack.mulPose(Axis.YP.rotationDegrees(-180));
+		super.submit(state, stack, buffer, cameraRenderState);
+	}
 
-		if (headCon != null) {
-			// see whether we want to render these
-			if (entity.isActive()) {
-				stack.mulPose(Axis.YP.rotationDegrees(-180));
-				super.render(entity, yaw, partialTicks, stack, buffer, light);
-			}
 
-		} else {
-			super.render(entity, yaw, partialTicks, stack, buffer, light);
-		}
+	@Override
+	protected @Nullable RenderType getRenderType(HydraHeadRenderState state, boolean visible, boolean ghostly, boolean glowing) {
+		// see whether we want to render these
+		if (!state.active) return null;
+		return super.getRenderType(state, visible, ghostly, glowing);
 	}
 
 	@Override
-	protected boolean shouldShowName(T entity) {
+	protected boolean shouldShowName(HydraHead entity, double partialTick) {
 		return entity.hasCustomName() && !entity.getCustomName().getString().isEmpty();
 	}
 
 	@Override
-	protected void renderNameTag(T entity, Component component, PoseStack stack, MultiBufferSource source, int light, float scale) {
-		double d0 = this.entityRenderDispatcher.distanceToSqr(entity);
-		if (ClientHooks.isNameplateInRenderDistance(entity, d0)) {
-			Vec3 vec3 = entity.getAttachments().getNullable(EntityAttachment.NAME_TAG, 0, entity.getViewYRot(scale));
-			if (vec3 != null) {
-				boolean flag = !entity.isDiscrete();
-				stack.pushPose();
-				stack.translate(vec3.x, vec3.y + 0.5, vec3.z);
-				stack.mulPose(Axis.YP.rotationDegrees(180.0F));
-				stack.mulPose(this.entityRenderDispatcher.cameraOrientation());
-				stack.scale(-0.05F, -0.05F, 0.05F);
-				Matrix4f matrix4f = stack.last().pose();
-				float f1 = Minecraft.getInstance().options.getBackgroundOpacity(0.25F);
-				int j = (int) (f1 * 255.0F) << 24;
-				Font font = this.getFont();
-				float f2 = (float) (-font.width(component) / 2);
-				font.drawInBatch(component, f2, (float) 0, 553648127, false, matrix4f, source, flag ? Font.DisplayMode.SEE_THROUGH : Font.DisplayMode.NORMAL, j, light);
-				if (flag) {
-					font.drawInBatch(component, f2, (float) 0, -1, false, matrix4f, source, Font.DisplayMode.NORMAL, 0, light);
-				}
+	public HydraHeadRenderState createRenderState() {
+		return new HydraHeadRenderState();
+	}
 
-				stack.popPose();
-			}
-		}
+	@Override
+	public void extractRenderState(HydraHead entity, HydraHeadRenderState state, float partialTick) {
+		super.extractRenderState(entity, state, partialTick);
+		var container = getHeadObject(entity);
+		state.active = container == null || entity.isActive();
+		state.mouthAngle = Mth.lerp(partialTick, entity.getMouthOpenLast(), entity.getMouthOpen());
 	}
 
 	@Nullable
@@ -92,7 +71,7 @@ public class HydraHeadRenderer<T extends HydraHead, M extends ListModel<T>> exte
 	}
 
 	@Override
-	public Identifier getTextureLocation(T entity) {
+	public Identifier getTextureLocation(HydraHeadRenderState state) {
 		return TEXTURE;
 	}
 }

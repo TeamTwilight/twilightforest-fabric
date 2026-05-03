@@ -1,7 +1,6 @@
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
-import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -9,13 +8,12 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import twilightforest.entity.SpikeBlock;
+import twilightforest.client.state.entity.ChainBlockRenderState;
 
-public class SpikeBlockModel extends ListModel<SpikeBlock> {
-	private final ModelPart block;
+public class SpikeBlockModel extends EntityModel<ChainBlockRenderState> {
 
 	public SpikeBlockModel(ModelPart root) {
-		this.block = root.getChild("block");
+		super(root);
 	}
 
 	public static LayerDefinition create() {
@@ -168,15 +166,5 @@ public class SpikeBlockModel extends ListModel<SpikeBlock> {
 			PartPose.offsetAndRotation(-4.0F, 0.0F, 4.0F, ANGLE_MINOR, -QUARTER_PI, 0.0F));
 
 		return LayerDefinition.create(meshdefinition, 32, 16);
-	}
-
-	@Override
-	public void setupAnim(SpikeBlock entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-
-	}
-
-	@Override
-	public Iterable<ModelPart> parts() {
-		return ImmutableList.of(this.block);
 	}
 }

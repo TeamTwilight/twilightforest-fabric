@@ -9,23 +9,18 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
+import net.minecraft.util.LightCoordsUtil;
+import net.minecraft.util.Unit;
 
-public class FireflyModel extends Model {
+public class FireflyModel extends Model<Unit> {
 
-	private final ModelPart legs;
-	private final ModelPart fatbody;
-	private final ModelPart skinnybody;
-	private final ModelPart glow;
+	public final ModelPart glow;
 
 	public FireflyModel(ModelPart root) {
-		super(RenderType::entityCutoutNoCull);
-
-		this.legs = root.getChild("legs");
-		this.fatbody = root.getChild("fat_body");
-		this.skinnybody = root.getChild("skinny_body");
+		super(root, RenderTypes::entityCutout);
 		this.glow = root.getChild("glow");
 	}
 
@@ -56,14 +51,7 @@ public class FireflyModel extends Model {
 		return LayerDefinition.create(meshdefinition, 64, 32);
 	}
 
-	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, int color) {
-		this.legs.render(stack, consumer, light, overlay, color);
-		this.fatbody.render(stack, consumer, light, overlay, color);
-		this.skinnybody.render(stack, consumer, light, overlay, color);
-	}
-
-	public void renderGlow(PoseStack stack, VertexConsumer consumer, float alpha) {
-		this.glow.render(stack, consumer, 0xF000F0, OverlayTexture.NO_OVERLAY, FastColor.ARGB32.colorFromFloat(alpha, 1.0F, 1.0F, 1.0F));
+	public void setupGlow() {
+		this.glow.skipDraw = true;
 	}
 }
