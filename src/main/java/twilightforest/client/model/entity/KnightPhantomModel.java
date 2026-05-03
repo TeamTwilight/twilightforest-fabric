@@ -1,25 +1,20 @@
 package twilightforest.client.model.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import org.jspecify.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.renderer.entity.AlphaYetiRenderer;
 import twilightforest.client.renderer.entity.KnightPhantomRenderer;
 import twilightforest.client.state.entity.KnightPhantomRenderState;
-import twilightforest.entity.boss.KnightPhantom;
 
 public class KnightPhantomModel extends HumanoidModel<KnightPhantomRenderState> implements TrophyBlockModel {
 
@@ -130,7 +125,7 @@ public class KnightPhantomModel extends HumanoidModel<KnightPhantomRenderState> 
 	}
 
 	@Override
-	public void renderTrophy(PoseStack stack, SubmitNodeCollector collector, int light, ItemDisplayContext context) {
+	public void renderTrophy(PoseStack stack, SubmitNodeCollector collector, int light, int overlay, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress, ItemDisplayContext context) {
 		if (context == ItemDisplayContext.GUI) {
 			stack.pushPose();
 
@@ -140,19 +135,19 @@ public class KnightPhantomModel extends HumanoidModel<KnightPhantomRenderState> 
 
 			stack.pushPose();
 			stack.translate(0.0F, 0.3f, 0.0F);
-			collector.submitModelPart(this.helmet, stack, RenderTypes.entityCutout(PHANTOM_ARMOR_TEXTURE), light, OverlayTexture.NO_OVERLAY, null);
+			collector.submitModelPart(this.helmet, stack, RenderTypes.entityCutout(PHANTOM_ARMOR_TEXTURE), light, overlay, null);
 			stack.popPose();
 
 			stack.scale(1 / 1.1F, 1 / 1.1F, 1 / 1.1F);
 			stack.translate(0.0F, 0.25F, 0.0F);
-			collector.submitModelPart(this.head, stack, RenderTypes.entityCutout(KnightPhantomRenderer.TEXTURE), light, OverlayTexture.NO_OVERLAY, null);
+			collector.submitModelPart(this.head, stack, RenderTypes.entityCutout(KnightPhantomRenderer.TEXTURE), light, overlay, null, -1, breakProgress);
 			stack.popPose();
 		} else {
 			stack.translate(0.0F, 0.25F, 0.0F);
-			collector.submitModelPart(this.head, stack, RenderTypes.entityCutout(KnightPhantomRenderer.TEXTURE), light, OverlayTexture.NO_OVERLAY, null);
+			collector.submitModelPart(this.head, stack, RenderTypes.entityCutout(KnightPhantomRenderer.TEXTURE), light, overlay, null, -1, breakProgress);
 			stack.scale(1.1F, 1.1F, 1.1F);
 			stack.translate(0.0F, 0.05F, 0.0F);
-			collector.submitModelPart(this.helmet, stack, RenderTypes.entityCutout(PHANTOM_ARMOR_TEXTURE), light, OverlayTexture.NO_OVERLAY, null);
+			collector.submitModelPart(this.helmet, stack, RenderTypes.entityCutout(PHANTOM_ARMOR_TEXTURE), light, overlay, null);
 		}
 	}
 }

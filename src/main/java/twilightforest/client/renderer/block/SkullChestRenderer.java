@@ -30,7 +30,7 @@ import java.util.Map;
 public class SkullChestRenderer<T extends BlockEntity & LidBlockEntity> implements BlockEntityRenderer<T, SkullChestRenderState> {
 
 	private static final Map<Direction, Transformation> TRANSFORMATIONS = Util.makeEnumMap(Direction.class, SkullChestRenderer::createModelTransformation);
-	private static final Identifier SKULL_CHEST_TEXTURE = TwilightForestMod.getModelTexture("casket/skull_chest.png");
+	public static final Identifier SKULL_CHEST_TEXTURE = TwilightForestMod.getModelTexture("casket/skull_chest.png");
 
 	private final KeepsakeCasketModel model;
 
@@ -75,10 +75,6 @@ public class SkullChestRenderer<T extends BlockEntity & LidBlockEntity> implemen
 	}
 
 	protected Identifier getTextureLocation(BlockState blockstate) {
-		return SKULL_CHEST_TEXTURE;
-	}
-
-	public Identifier getTextureLocation(int damage) {
 		return SKULL_CHEST_TEXTURE;
 	}
 }

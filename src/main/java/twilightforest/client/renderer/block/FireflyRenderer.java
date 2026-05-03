@@ -33,10 +33,10 @@ public class FireflyRenderer implements BlockEntityRenderer<FireflyBlockEntity, 
 
 	@Override
 	public void submit(FireflyRenderState state, PoseStack stack, SubmitNodeCollector collector, CameraRenderState camera) {
-		submitFirefly(this.fireflyModel, state.yaw, state.glowIntensity, state.rotation, state.facing, stack, collector, state.lightCoords);
+		submitFirefly(this.fireflyModel, state.yaw, state.glowIntensity, state.rotation, state.facing, stack, collector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0, state.breakProgress);
 	}
 
-	public static void submitFirefly(FireflyModel model, int yaw, float glow, float rotation, Direction facing, PoseStack stack, SubmitNodeCollector collector, int light) {
+	public static void submitFirefly(FireflyModel model, int yaw, float glow, float rotation, Direction facing, PoseStack stack, SubmitNodeCollector collector, int light, int overlay, int outlineColor, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
 		stack.pushPose();
 		stack.translate(0.5F, 0.5F, 0.5F);
 		stack.mulPose(facing.getRotation());
@@ -45,8 +45,8 @@ public class FireflyRenderer implements BlockEntityRenderer<FireflyBlockEntity, 
 		stack.mulPose(Axis.YN.rotationDegrees(yaw));
 
 		model.setupGlow();
-		collector.submitModel(model, Unit.INSTANCE, stack, RenderTypes.entityCutout(TEXTURE), light, OverlayTexture.NO_OVERLAY, 0, null);
-		collector.submitModelPart(model.glow, stack, RenderTypes.entityTranslucentEmissive(TEXTURE), light, OverlayTexture.NO_OVERLAY, null, ARGB.white(glow), null);
+		collector.submitModel(model, Unit.INSTANCE, stack, RenderTypes.entityCutout(TEXTURE), light, OverlayTexture.NO_OVERLAY, outlineColor, breakProgress);
+		collector.submitModelPart(model.glow, stack, RenderTypes.entityTranslucentEmissive(TEXTURE), light, overlay, null, ARGB.white(glow), breakProgress);
 		stack.popPose();
 	}
 

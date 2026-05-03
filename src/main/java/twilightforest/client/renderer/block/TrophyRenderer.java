@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Util;
 import net.minecraft.world.entity.EntityType;
@@ -95,13 +96,13 @@ public class TrophyRenderer implements BlockEntityRenderer<TrophyBlockEntity, Tr
 		TrophyBlockModel model = this.modelByType.apply(state.variant);
 		stack.pushPose();
 		stack.mulPose(state.transformation);
-		submitTrophy(state.wall, model, state.animationProgress, stack, collector, state.lightCoords, ItemDisplayContext.NONE);
+		submitTrophy(state.wall, model, state.animationProgress, stack, collector, state.lightCoords, OverlayTexture.NO_OVERLAY, state.breakProgress, ItemDisplayContext.NONE);
 		stack.popPose();
 	}
 
-	public static void submitTrophy(boolean wall, TrophyBlockModel model, float animationProgress, PoseStack stack, SubmitNodeCollector collector, int light, ItemDisplayContext context) {
+	public static void submitTrophy(boolean wall, TrophyBlockModel model, float animationProgress, PoseStack stack, SubmitNodeCollector collector, int light, int overlay, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress, ItemDisplayContext context) {
 		model.setupRotationsForTrophy(animationProgress, context == ItemDisplayContext.GUI ? 0.35F : wall ? 0.5F : 0.0F);
-		model.renderTrophy(stack, collector, light, context);
+		model.renderTrophy(stack, collector, light, overlay, breakProgress, context);
 	}
 
 	@Override

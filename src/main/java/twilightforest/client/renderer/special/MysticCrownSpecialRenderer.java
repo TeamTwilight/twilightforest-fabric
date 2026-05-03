@@ -5,26 +5,35 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.special.NoDataSpecialModelRenderer;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.world.item.ItemDisplayContext;
+import org.joml.Vector3fc;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.LichModel;
 import twilightforest.client.renderer.entity.LichRenderer;
 
+import java.util.function.Consumer;
+
 public record MysticCrownSpecialRenderer(LichModel model) implements NoDataSpecialModelRenderer {
 
 	@Override
-	public void render(ItemDisplayContext context, PoseStack stack, MultiBufferSource source, int light, int overlay, boolean foil) {
+	public void submit(PoseStack stack, SubmitNodeCollector collector, int light, int overlay, boolean hasFoil, int outlineColor) {
 		stack.pushPose();
 		stack.translate(0.5F, 0.0F, 0.5F);
 		stack.scale(1.0F, -1.0F, -1.0F);
-		VertexConsumer vertexconsumer = source.getBuffer(this.model.renderType(LichRenderer.TEXTURE));
-		this.model().hat.render(stack, vertexconsumer, light, overlay);
+		collector.submitModelPart(this.model.hat, stack, this.model.renderType(LichRenderer.TEXTURE), light, overlay, null);
 		stack.popPose();
 	}
 
-	public record Unbaked() implements SpecialModelRenderer.Unbaked {
+	@Override
+	public void getExtents(Consumer<Vector3fc> output) {
+		PoseStack poseStack = new PoseStack();
+		this.model.hat.getExtentsForGui(poseStack, output);
+	}
+
+	public record Unbaked() implements NoDataSpecialModelRenderer.Unbaked {
 		public static final MapCodec<MysticCrownSpecialRenderer.Unbaked> MAP_CODEC = MapCodec.unit(MysticCrownSpecialRenderer.Unbaked::new);
 
 		@Override
@@ -33,8 +42,8 @@ public record MysticCrownSpecialRenderer(LichModel model) implements NoDataSpeci
 		}
 
 		@Override
-		public SpecialModelRenderer<?> bake(EntityModelSet set) {
-			return new MysticCrownSpecialRenderer(new LichModel(set.bakeLayer(TFModelLayers.LICH_TROPHY)));
+		public SpecialModelRenderer<Void> bake(BakingContext context) {
+			return new MysticCrownSpecialRenderer(new LichModel(context.entityModelSet().bakeLayer(TFModelLayers.LICH_TROPHY)));
 		}
 	}
 }

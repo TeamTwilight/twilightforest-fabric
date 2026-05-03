@@ -47,7 +47,6 @@ import twilightforest.block.GiantBlock;
 import twilightforest.block.MiniatureStructureBlock;
 import twilightforest.block.entity.GrowingBeanstalkBlockEntity;
 import twilightforest.client.BugModelAnimationHelper;
-import twilightforest.client.ISTER;
 import twilightforest.client.OptifineWarningScreen;
 import twilightforest.client.TFShaders;
 import twilightforest.client.renderer.TFSkyRenderer;
@@ -117,13 +116,6 @@ public class ClientGameEvents {
 	private void handleGameBootup(ScreenEvent.Init.Post event) {
 		if (firstTitleScreenShown || !(event.getScreen() instanceof TitleScreen)) return;
 
-		// Registering this resource listener earlier than the main screen will cause a crash
-		// Yes, crashing happens if registered to RegisterClientReloadListenersEvent
-		if (Minecraft.getInstance().getResourceManager() instanceof ReloadableResourceManager resourceManager) {
-			resourceManager.registerReloadListener(ISTER.INSTANCE.get());
-			TwilightForestMod.LOGGER.debug("Registered ISTER listener");
-		}
-
 		if (ClientRegistrationEvents.isOptifinePresent() && !TFConfig.disableOptifineNagScreen) {
 			Minecraft.getInstance().setScreen(new OptifineWarningScreen(event.getScreen()));
 		}
@@ -138,7 +130,7 @@ public class ClientGameEvents {
 				LocalDate date = LocalDate.now();
 				if (date.getMonth() == Month.AUGUST && date.getDayOfMonth() == 19) {
 					RuleBasedNumberFormat formatter = new RuleBasedNumberFormat(Locale.US, RuleBasedNumberFormat.ORDINAL);
-					renderer.splash = String.format("Happy %s birthday to the Twilight Forest!", formatter.format(date.getYear() - 2011));
+					renderer.splash = Component.literal(String.format("Happy %s birthday to the Twilight Forest!", formatter.format(date.getYear() - 2011)));
 				}
 			}
 		}

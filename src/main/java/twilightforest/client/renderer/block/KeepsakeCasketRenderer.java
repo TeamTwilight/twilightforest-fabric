@@ -25,11 +25,10 @@ public class KeepsakeCasketRenderer<T extends BlockEntity & LidBlockEntity> exte
 
 	@Override
 	protected Identifier getTextureLocation(BlockState blockstate) {
-		return this.getTextureLocation(blockstate.getValue(KeepsakeCasketBlock.BREAKAGE));
+		return getTextureLocation(blockstate.getValue(KeepsakeCasketBlock.BREAKAGE));
 	}
 
-	@Override
-	public Identifier getTextureLocation(int damage) {
+	public static Identifier getTextureLocation(int damage) {
 		return CASKET_TEXTURES.get(Mth.clamp(damage, 0, CASKET_TEXTURES.size() - 1));
 	}
 }

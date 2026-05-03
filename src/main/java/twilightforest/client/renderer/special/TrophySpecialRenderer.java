@@ -5,51 +5,56 @@ import com.mojang.math.Axis;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.util.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.geom.EntityModelSet;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.special.NoDataSpecialModelRenderer;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.world.item.ItemDisplayContext;
+import org.joml.Vector3fc;
 import twilightforest.client.model.entity.TrophyBlockModel;
 import twilightforest.client.renderer.block.TrophyRenderer;
 import twilightforest.config.TFConfig;
 import twilightforest.enums.BossVariant;
 
-import javax.annotation.Nullable;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
-public record TrophySpecialRenderer(Function<BossVariant, TrophyBlockModel> trophy, BossVariant variant, Optional<Integer> fixedRotation) implements NoDataSpecialModelRenderer {
+public record TrophySpecialRenderer(Function<BossVariant, TrophyBlockModel> trophy, BossVariant variant, Optional<Integer> fixedRotation, ItemDisplayContext context) implements NoDataSpecialModelRenderer {
 
 	@Override
-	public void render(ItemDisplayContext context, PoseStack stack, MultiBufferSource source, int light, int overlay, boolean foil) {
+	public void submit(PoseStack stack, SubmitNodeCollector collector, int light, int overlay, boolean hasFoil, int outlineColor) {
 		TrophyBlockModel model = this.trophy().apply(this.variant());
-		float rotation = this.fixedRotation.orElse(TFConfig.rotateTrophyHeadsGui && !Minecraft.getInstance().isPaused() ? (int) (Util.getMillis() / 35) : 0);
 		float animation = !Minecraft.getInstance().isPaused() ? (int) (Util.getMillis() / 30) + Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks() : 0;
 		if (model != null) {
-			if (context == ItemDisplayContext.GUI) {
+			float rotation = this.fixedRotation.orElse(TFConfig.rotateTrophyHeadsGui && !Minecraft.getInstance().isPaused() ? (int) (Util.getMillis() / 35) : 0);
+			if (this.context() == ItemDisplayContext.GUI) {
 				stack.pushPose();
 				stack.translate(0.5F, 0.5F, 0.5F);
 				stack.mulPose(Axis.YN.rotationDegrees(rotation));
 				stack.translate(-0.5F, -0.5F, -0.5F);
-				TrophyRenderer.render(null, 180.0F, model, false, animation, stack, source, light, overlay, context);
+				TrophyRenderer.submitTrophy(false, model, animation, stack, collector, light, overlay, null, this.context());
 				stack.popPose();
 			} else {
-				TrophyRenderer.render(null, 180.0F, model, false, animation, stack, source, light, overlay, context);
+				TrophyRenderer.submitTrophy(false, model, animation, stack, collector, light, overlay, null, this.context());
 			}
 		}
 	}
 
-	public record Unbaked(BossVariant variant, Optional<Integer> fixedRotation) implements SpecialModelRenderer.Unbaked {
+	@Override
+	public void getExtents(Consumer<Vector3fc> output) {
+	}
+
+	public record Unbaked(BossVariant variant, Optional<Integer> fixedRotation, ItemDisplayContext context) implements NoDataSpecialModelRenderer.Unbaked {
 		public static final MapCodec<TrophySpecialRenderer.Unbaked> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 				BossVariant.CODEC.fieldOf("kind").forGetter(TrophySpecialRenderer.Unbaked::variant),
-				Codec.INT.optionalFieldOf("fixed_rotation").forGetter(TrophySpecialRenderer.Unbaked::fixedRotation))
+				Codec.INT.optionalFieldOf("fixed_rotation").forGetter(TrophySpecialRenderer.Unbaked::fixedRotation),
+				ItemDisplayContext.CODEC.fieldOf("display").forGetter(TrophySpecialRenderer.Unbaked::context))
 			.apply(instance, TrophySpecialRenderer.Unbaked::new));
 
-		public Unbaked(BossVariant variant) {
-			this(variant, Optional.empty());
+		public Unbaked(BossVariant variant, ItemDisplayContext context) {
+			this(variant, Optional.empty(), context);
 		}
 
 		@Override
@@ -58,9 +63,9 @@ public record TrophySpecialRenderer(Function<BossVariant, TrophyBlockModel> trop
 		}
 
 		@Override
-		public SpecialModelRenderer<?> bake(EntityModelSet set) {
-			Function<BossVariant, TrophyBlockModel> model = Util.memoize(variant -> TrophyRenderer.createTrophyModel(set, variant));
-			return new TrophySpecialRenderer(model, variant, this.fixedRotation());
+		public SpecialModelRenderer<Void> bake(BakingContext context) {
+			Function<BossVariant, TrophyBlockModel> model = Util.memoize(variant -> TrophyRenderer.createTrophyModel(context.entityModelSet(), variant));
+			return new TrophySpecialRenderer(model, this.variant(), this.fixedRotation(), this.context());
 		}
 	}
 }

@@ -31,10 +31,10 @@ public class MoonwormRenderer implements BlockEntityRenderer<MoonwormBlockEntity
 
 	@Override
 	public void submit(MoonwormRenderState state, PoseStack stack, SubmitNodeCollector collector, CameraRenderState camera) {
-		renderMoonworm(this.moonwormModel, state.yaw, state.rotation, state.wiggleRotation, state.delay, state.facing, stack, collector, state.lightCoords);
+		submitMoonworm(this.moonwormModel, state.yaw, state.rotation, state.wiggleRotation, state.delay, state.facing, stack, collector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0, state.breakProgress);
 	}
 
-	public static void renderMoonworm(MoonwormModel model, float yaw, float rotation, float wiggleRotation, int delay, Direction facing, PoseStack stack, SubmitNodeCollector collector, int light) {
+	public static void submitMoonworm(MoonwormModel model, float yaw, float rotation, float wiggleRotation, int delay, Direction facing, PoseStack stack, SubmitNodeCollector collector, int light, int overlay, int outlineColor, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
 		stack.pushPose();
 		stack.translate(0.5F, 0.5F, 0.5F);
 		stack.mulPose(facing.getRotation());
@@ -42,7 +42,7 @@ public class MoonwormRenderer implements BlockEntityRenderer<MoonwormBlockEntity
 		stack.mulPose(Axis.YP.rotationDegrees(180.0F + rotation));
 		stack.mulPose(Axis.YN.rotationDegrees(yaw));
 		model.setupAnim(delay, wiggleRotation);
-		collector.submitModel(model, Unit.INSTANCE, stack, model.renderType(TEXTURE), light, OverlayTexture.NO_OVERLAY, 0, null);
+		collector.submitModel(model, Unit.INSTANCE, stack, model.renderType(TEXTURE), light, overlay, outlineColor, breakProgress);
 		stack.popPose();
 	}
 

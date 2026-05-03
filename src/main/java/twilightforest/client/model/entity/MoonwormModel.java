@@ -16,7 +16,6 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Unit;
-import twilightforest.client.state.block.MoonwormRenderState;
 
 public class MoonwormModel extends Model<Unit> {
 

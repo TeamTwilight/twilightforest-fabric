@@ -33,6 +33,7 @@ import twilightforest.block.AbstractSkullCandleBlock;
 import twilightforest.block.LightableBlock;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.client.state.block.SkullCandleRenderState;
+import twilightforest.components.item.SkullCandles;
 
 import java.util.function.Function;
 
@@ -60,13 +61,13 @@ public class SkullCandleRenderer implements BlockEntityRenderer<SkullCandleBlock
 		SkullBlockRenderer.submitSkull(state.animationProgress, stack, collector, state.lightCoords, model, state.renderType, 0, state.breakProgress);
 
 		stack.mulPose(state.candleTransformation);
-		submitCandles(state.candle, stack, collector, state.lightCoords);
+		submitCandles(state.candle, stack, collector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
 		stack.popPose();
 
 	}
 
-	public static void submitCandles(BlockModelRenderState state, PoseStack stack, SubmitNodeCollector collector, int light) {
-		state.submit(stack, collector, light, OverlayTexture.NO_OVERLAY, 0);
+	public static void submitCandles(BlockModelRenderState state, PoseStack stack, SubmitNodeCollector collector, int light, int overlay, int outline) {
+		state.submit(stack, collector, light, overlay, outline);
 	}
 
 	@Override
@@ -91,11 +92,15 @@ public class SkullCandleRenderer implements BlockEntityRenderer<SkullCandleBlock
 		state.skullType = ((AbstractSkullBlock)blockState.getBlock()).getType();
 		state.renderType = this.resolveSkullRenderType(state.skullType, blockEntity);
 
-		this.blockResolver.update(state.candle,
-			AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(blockEntity.candleInfo.color()))
-			.defaultBlockState()
-			.setValue(CandleBlock.CANDLES, Math.max(1, blockState.getValue(BlockStateProperties.CANDLES)))
-			.setValue(CandleBlock.LIT, blockState.getValue(AbstractSkullCandleBlock.LIGHTING) != LightableBlock.Lighting.NONE),
+		updateSkullCandle(blockEntity.candleInfo, this.blockResolver, state.candle, blockState.getValue(AbstractSkullCandleBlock.LIGHTING) != LightableBlock.Lighting.NONE);
+	}
+
+	public static void updateSkullCandle(SkullCandles info, BlockModelResolver resolver, BlockModelRenderState state, boolean lit) {
+		resolver.update(state,
+			AbstractSkullCandleBlock.candleColorToCandle(AbstractSkullCandleBlock.CandleColors.colorFromInt(info.color()))
+				.defaultBlockState()
+				.setValue(CandleBlock.CANDLES, Math.max(1, info.count()))
+				.setValue(CandleBlock.LIT, lit),
 			BlockDisplayContext.create());
 	}
 

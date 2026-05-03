@@ -6,6 +6,10 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.item.ItemModel;
+import net.minecraft.client.renderer.item.ItemModelResolver;
+import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
@@ -16,6 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.neoforged.api.distmarker.Dist;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3fc;
 import tamaized.beanification.Autowired;
 import twilightforest.client.renderer.block.JarRenderer;
 import twilightforest.components.item.JarLid;
@@ -24,14 +29,15 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataComponents;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
-public record MasonJarSpecialRenderer(Optional<Item> defaultLid) implements SpecialModelRenderer<DataComponentMap> {
+public record MasonJarSpecialRenderer(Optional<Item> defaultLid, ItemModelResolver resolver) implements SpecialModelRenderer<DataComponentMap> {
 
 	@Autowired(dist = Dist.CLIENT)
 	private static TFItemDisplayContextEnumExtension itemDisplayContextEnumExtension;
 
 	@Override
-	public void render(@Nullable DataComponentMap map, ItemDisplayContext context, PoseStack stack, MultiBufferSource source, int light, int overlay, boolean foil) {
+	public void submit(@Nullable DataComponentMap map, PoseStack stack, SubmitNodeCollector collector, int light, int overlay, boolean hasFoil, int outlineColor) {
 		if (map != null) {
 			stack.pushPose();
 			JarLid jarLid = map.get(TFDataComponents.JAR_LID.get());
@@ -46,11 +52,18 @@ public record MasonJarSpecialRenderer(Optional<Item> defaultLid) implements Spec
 				stack.pushPose();
 				stack.translate(0.5D, 0.4375D, 0.5D);
 				stack.scale(0.5F, 0.5F, 0.5F);
-				Minecraft.getInstance().getItemRenderer().renderStatic(contents.copyOne(), itemDisplayContextEnumExtension.JARRED, light, overlay, stack, source, null, 0);
+				ItemStackRenderState state = new ItemStackRenderState();
+				this.resolver().updateForTopItem(state, contents.copyOne(), itemDisplayContextEnumExtension.JARRED, null, null, 0);
+				state.submit(stack, collector, light, overlay, outlineColor);
 				stack.popPose();
 			}
 			stack.popPose();
 		}
+	}
+
+	@Override
+	public void getExtents(Consumer<Vector3fc> output) {
+
 	}
 
 	@Override
@@ -77,8 +90,8 @@ public record MasonJarSpecialRenderer(Optional<Item> defaultLid) implements Spec
 		}
 
 		@Override
-		public SpecialModelRenderer<?> bake(EntityModelSet set) {
-			return new MasonJarSpecialRenderer(this.defaultLid());
+		public SpecialModelRenderer<?> bake(BakingContext context) {
+			return new MasonJarSpecialRenderer(this.defaultLid(), Minecraft.getInstance().getItemModelResolver());
 		}
 	}
 }

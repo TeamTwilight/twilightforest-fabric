@@ -1,18 +1,16 @@
 package twilightforest.client.model.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
-import twilightforest.client.renderer.entity.AlphaYetiRenderer;
+import org.jspecify.annotations.Nullable;
 import twilightforest.client.renderer.entity.HydraRenderer;
 import twilightforest.client.state.entity.HydraHeadRenderState;
 
@@ -92,7 +90,7 @@ public class HydraHeadModel extends EntityModel<HydraHeadRenderState> implements
 	}
 
 	@Override
-	public void renderTrophy(PoseStack stack, SubmitNodeCollector collector, int light, ItemDisplayContext context) {
+	public void renderTrophy(PoseStack stack, SubmitNodeCollector collector, int light, int overlay, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress, ItemDisplayContext context) {
 		boolean itemForm = context != ItemDisplayContext.NONE;
 		stack.scale(0.25F, 0.25F, 0.25F);
 		if (itemForm) {
@@ -102,6 +100,6 @@ public class HydraHeadModel extends EntityModel<HydraHeadRenderState> implements
 			stack.translate(0.0F, 0.0F, 0.75f);
 		}
 		stack.translate(0.0F, -1.0F, itemForm ? -1.0F : 0.0F);
-		collector.submitModelPart(this.head, stack, RenderTypes.entityCutout(HydraRenderer.TEXTURE), light, OverlayTexture.NO_OVERLAY, null);
+		collector.submitModelPart(this.head, stack, RenderTypes.entityCutout(HydraRenderer.TEXTURE), light, overlay, null, -1, breakProgress);
 	}
 }
