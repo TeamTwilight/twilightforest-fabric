@@ -234,9 +234,6 @@ public final class TFConfiguredFeatures {
 
 	public static final ResourceKey<ConfiguredFeature<?, ?>> FLOWER_PLACER_ALT = registerKey("flower_placer_alt");
 
-	//music!
-	public static final Music TFMUSICTYPE = new Music(TFSounds.MUSIC, 1200, 12000, true);
-
 	public static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {
 		return ResourceKey.create(Registries.CONFIGURED_FEATURE, TwilightForestMod.prefix(name));
 	}

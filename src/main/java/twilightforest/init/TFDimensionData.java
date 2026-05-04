@@ -4,12 +4,18 @@ import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.Music;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TimelineTags;
+import net.minecraft.util.TriState;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.attribute.*;
+import net.minecraft.world.level.CardinalLighting;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.*;
+import net.minecraft.world.timeline.Timeline;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.custom.BiomeLayerStack;
@@ -18,7 +24,7 @@ import twilightforest.world.components.layer.BiomeDensitySource;
 import twilightforest.world.registration.surface_rules.TFSurfaceRules;
 
 import java.util.List;
-import java.util.OptionalLong;
+import java.util.Optional;
 
 public class TFDimensionData {
 
@@ -34,28 +40,37 @@ public class TFDimensionData {
 
 	public static final ResourceKey<LevelStem> TWILIGHT_LEVEL_STEM = ResourceKey.create(Registries.LEVEL_STEM, TFDimension.DIMENSION);
 
-	private static DimensionType twilightDimType() {
-		return new DimensionType(
-			OptionalLong.of(13000L), //fixed time
+	public static void bootstrapType(BootstrapContext<DimensionType> context) {
+		HolderGetter<Timeline> timelines = context.lookup(Registries.TIMELINE);
+		context.register(TWILIGHT_DIM_TYPE, new DimensionType(
+			true, //fixed time
 			true, //skylight
 			false, //ceiling
-			false, //ultrawarm
-			true, //natural
-			1 / 8.0, //coordinate scale
-			true, //bed works
-			false, //respawn anchor works
+			false, //ender dragon fight
+			1 / 8.0D, //coordinate scale
 			-32, // Minimum Y Level
 			32 + 256, // Height + Min Y = Max Y
 			32 + 256, // Logical Height
-			BlockTags.INFINIBURN_OVERWORLD, //infiburn
-			TFDimension.DIMENSION_RENDERER, // DimensionRenderInfo
-			0.01f,
-			new DimensionType.MonsterSettings(false, false, UniformInt.of(0, 7), 7)
-		);
-	}
-
-	public static void bootstrapType(BootstrapContext<DimensionType> context) {
-		context.register(TWILIGHT_DIM_TYPE, twilightDimType());
+			BlockTags.INFINIBURN_OVERWORLD, //infiburn tag
+			0.01F, //ambient light
+			new DimensionType.MonsterSettings(UniformInt.of(0, 7), 7), //monster settings
+			DimensionType.Skybox.OVERWORLD, //skybox
+			CardinalLighting.Type.DEFAULT, //cardinal lighting
+			EnvironmentAttributeMap.builder() //attributes
+				.set(EnvironmentAttributes.BACKGROUND_MUSIC, new BackgroundMusic(new Music(TFSounds.MUSIC, 1200, 12000, true)))
+				.set(EnvironmentAttributes.AMBIENT_SOUNDS, AmbientSounds.LEGACY_CAVE_SETTINGS)
+				.set(EnvironmentAttributes.CAN_PILLAGER_PATROL_SPAWN, false)
+				.set(EnvironmentAttributes.BED_RULE, new BedRule(BedRule.Rule.NEVER, BedRule.Rule.ALWAYS, false, Optional.empty()))
+				.set(EnvironmentAttributes.PIGLINS_ZOMBIFY, false)
+				.set(EnvironmentAttributes.CAN_PILLAGER_PATROL_SPAWN, false)
+				.set(EnvironmentAttributes.CAN_START_RAID, false)
+				.set(EnvironmentAttributes.CREAKING_ACTIVE, true)
+				.set(EnvironmentAttributes.EYEBLOSSOM_OPEN, TriState.TRUE)
+				.set(EnvironmentAttributes.STAR_BRIGHTNESS, 1.0F)
+				.build(),
+			timelines.getOrThrow(TimelineTags.UNIVERSAL), //timelines
+			Optional.empty() //clock
+		));
 	}
 
 	public static NoiseGeneratorSettings makeNoiseSettings(BootstrapContext<NoiseGeneratorSettings> context, boolean skylight) {
