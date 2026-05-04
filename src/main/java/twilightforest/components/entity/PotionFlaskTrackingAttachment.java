@@ -1,6 +1,7 @@
 package twilightforest.components.entity;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -19,7 +20,7 @@ public class PotionFlaskTrackingAttachment {
 	private int dosesDrank;
 	private long lastTimeStarted;
 
-	public static final Codec<PotionFlaskTrackingAttachment> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+	public static final MapCodec<PotionFlaskTrackingAttachment> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			BuiltInRegistries.POTION.holderByNameCodec().optionalFieldOf("last_used_potion", null).forGetter(o -> o.lastUsedPotion),
 			Codec.INT.fieldOf("doses_drank").forGetter(o -> o.dosesDrank),
 			Codec.LONG.fieldOf("last_game_time_started").forGetter(o -> o.lastTimeStarted))

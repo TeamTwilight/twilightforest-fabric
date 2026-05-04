@@ -17,8 +17,8 @@ public abstract class TFKeyBinds {
 	public static final KeyMapping SWAP_HOTBAR_KEY = register("swap_hotbar", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_V, TFKeyBindsCategories.TRAVELLERS_GEAR);
 
 	@SuppressWarnings("SameParameterValue")
-	private static KeyMapping register(String name, InputConstants.Type type, int key, TFKeyBindsCategories.Category category) {
-		KeyMapping keyMapping = new KeyMapping(addPrefix(name), type, key, category.internalName());
+	private static KeyMapping register(String name, InputConstants.Type type, int key, KeyMapping.Category category) {
+		KeyMapping keyMapping = new KeyMapping(addPrefix(name), type, key, category);
 		KEY_MAPPINGS.add(keyMapping);
 		return keyMapping;
 	}

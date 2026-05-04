@@ -1,13 +1,8 @@
 package twilightforest.init;
 
+import net.minecraft.client.KeyMapping;
 import twilightforest.TwilightForestMod;
 
 public abstract class TFKeyBindsCategories {
-	public record Category(String internalName) {}
-	public static final Category TRAVELLERS_GEAR = new Category(addCategoryPrefix("travellers_gear"));
-
-	@SuppressWarnings("SameParameterValue")
-	private static String addCategoryPrefix(String s) {
-		return "key." + TwilightForestMod.ID + ".categories." + s;
-	}
+	public static final KeyMapping.Category TRAVELLERS_GEAR = new KeyMapping.Category(TwilightForestMod.prefix("travellers_gear"));
 }

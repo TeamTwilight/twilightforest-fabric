@@ -1,6 +1,7 @@
 package twilightforest.components.entity;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -19,7 +20,7 @@ import twilightforest.network.ParticlePacket;
 
 public class FortificationShieldAttachment {
 
-	public static final Codec<FortificationShieldAttachment> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+	public static final MapCodec<FortificationShieldAttachment> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			Codec.INT.fieldOf("temporary_shields").forGetter(o -> o.temporaryShields),
 			Codec.INT.fieldOf("permanent_shields").forGetter(o -> o.permanentShields))
 		.apply(instance, FortificationShieldAttachment::new));

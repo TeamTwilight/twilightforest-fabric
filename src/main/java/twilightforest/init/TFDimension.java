@@ -17,11 +17,11 @@ public class TFDimension {
 	// Checks if the world is linked by the default Twilight Portal.
 	// Only use this method if you need to know if a world is a destination for portals!
 	public static boolean isTwilightPortalDestination(Level level) {
-		return DIMENSION.equals(level.dimension().location());
+		return DIMENSION.equals(level.dimension().identifier());
 	}
 
 	// Checks if the world is a qualified Twilight world by checking against its namespace or if it's a portal destination
 	public static boolean isTwilightWorldOnClient(Level clientWorld) {
-		return TwilightForestMod.ID.equals(clientWorld.dimension().location().getNamespace()) || isTwilightPortalDestination(clientWorld);
+		return TwilightForestMod.ID.equals(clientWorld.dimension().identifier().getNamespace()) || isTwilightPortalDestination(clientWorld);
 	}
 }

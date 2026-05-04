@@ -1,19 +1,16 @@
 package twilightforest.init;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.particle.data.LeafParticleData;
 
 import java.util.function.Function;
 

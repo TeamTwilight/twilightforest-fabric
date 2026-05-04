@@ -63,7 +63,7 @@ public final class Codecs {
 		Codec.INT.fieldOf("id").forGetter(o -> o.id),
 		Codec.INT.fieldOf("color").forGetter(o -> o.col)
 	).apply(instance, MapColor::new)).validate(Codecs::validateMapColor);
-	public static final Codec<GameProfile> SIMPLE_GAME_PROFILE = RecordCodecBuilder.create(instance -> instance.group(
+	public static final MapCodec<GameProfile> SIMPLE_GAME_PROFILE = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		UUIDUtil.AUTHLIB_CODEC.fieldOf("id").forGetter(GameProfile::id),
 		ExtraCodecs.PLAYER_NAME.fieldOf("name").forGetter(GameProfile::name)
 	).apply(instance, GameProfile::new));
@@ -142,10 +142,6 @@ public final class Codecs {
 		} catch (Throwable e) {
 			return DataResult.error(e::getMessage);
 		}
-	}
-
-	public static <T> Codec<T> fromRegistry(Registry<T> registry) {
-		return Identifier.CODEC.xmap(registry::get, registry::getKey);
 	}
 
 	public static <E> DataResult<Pair<E, E>> arrayToPair(List<E> list) {

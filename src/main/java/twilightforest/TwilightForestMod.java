@@ -43,7 +43,6 @@ public final class TwilightForestMod {
 	public TwilightForestMod(IEventBus bus, Dist dist) {
 		Reflection.initialize(ConfigSetup.class);
 		ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> ConfigurationScreen::new);
-		TFGameRules.register();
 
 		TFItems.ITEMS.register(bus);
 		TFStats.STATS.register(bus);
@@ -53,6 +52,7 @@ public final class TwilightForestMod {
 		TFSounds.SOUNDS.register(bus);
 		TFLoot.FUNCTIONS.register(bus);
 		TFLoot.CONDITIONS.register(bus);
+		TFGameRules.RULES.register(bus);
 		TFFeatures.FEATURES.register(bus);
 		TFCreativeTabs.TABS.register(bus);
 		TFLoot.CONDITIONALS.register(bus);

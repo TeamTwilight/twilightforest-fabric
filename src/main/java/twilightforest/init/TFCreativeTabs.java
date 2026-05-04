@@ -10,7 +10,6 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.util.Unit;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.ItemLore;
-import net.minecraft.world.item.component.Unbreakable;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -645,7 +644,7 @@ public class TFCreativeTabs {
 		ItemStack stack = new ItemStack(item);
 		if (TFConfig.defaultItemEnchants) {
 			for (EnchantmentInstance enchant : instances) {
-				stack.enchant(enchant.enchantment, enchant.level);
+				stack.enchant(enchant.enchantment(), enchant.level());
 			}
 		}
 		output.accept(stack);
@@ -677,7 +676,7 @@ public class TFCreativeTabs {
 
 		List<Component> GLASS_SWORD_COMPONENTS = List.of(Component.translatable("item.twilightforest.glass_sword.desc").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
 		loreSword.set(DataComponents.LORE, new ItemLore(GLASS_SWORD_COMPONENTS, GLASS_SWORD_COMPONENTS));
-		loreSword.set(DataComponents.UNBREAKABLE, new Unbreakable(true));
+		loreSword.set(DataComponents.UNBREAKABLE, Unit.INSTANCE);
 		loreSword.set(TFDataComponents.INFINITE_GLASS_SWORD, Unit.INSTANCE);
 
 		output.accept(loreSword);
@@ -698,6 +697,7 @@ public class TFCreativeTabs {
 			event.insertAfter(new ItemStack(Items.WARPED_HYPHAE), TFItems.HOLLOW_WARPED_STEM.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 			event.insertAfter(new ItemStack(Items.MANGROVE_WOOD), TFItems.HOLLOW_VANGROVE_LOG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 			event.insertAfter(new ItemStack(Items.CHERRY_WOOD), TFItems.HOLLOW_CHERRY_LOG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.PALE_OAK_WOOD), TFItems.HOLLOW_PALE_OAK_LOG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 
 			event.insertAfter(new ItemStack(Items.OAK_FENCE_GATE), TFBlocks.OAK_DRYING_RACK.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 			event.insertAfter(new ItemStack(Items.SPRUCE_FENCE_GATE), TFBlocks.SPRUCE_DRYING_RACK.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
@@ -710,6 +710,7 @@ public class TFCreativeTabs {
 			event.insertAfter(new ItemStack(Items.MANGROVE_FENCE_GATE), TFBlocks.VANGROVE_DRYING_RACK.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 			event.insertAfter(new ItemStack(Items.BAMBOO_FENCE_GATE), TFBlocks.BAMBOO_DRYING_RACK.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 			event.insertAfter(new ItemStack(Items.CHERRY_FENCE_GATE), TFBlocks.CHERRY_DRYING_RACK.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.PALE_OAK_FENCE_GATE), TFBlocks.PALE_OAK_DRYING_RACK.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 
 			event.insertAfter(new ItemStack(Items.OAK_FENCE_GATE), TFBlocks.OAK_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 			event.insertAfter(new ItemStack(Items.SPRUCE_FENCE_GATE), TFBlocks.SPRUCE_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
@@ -722,8 +723,7 @@ public class TFCreativeTabs {
 			event.insertAfter(new ItemStack(Items.MANGROVE_FENCE_GATE), TFBlocks.VANGROVE_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 			event.insertAfter(new ItemStack(Items.BAMBOO_FENCE_GATE), TFBlocks.BAMBOO_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 			event.insertAfter(new ItemStack(Items.CHERRY_FENCE_GATE), TFBlocks.CHERRY_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-		} else if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
-			event.insertAfter(new ItemStack(Items.IRON_NUGGET), TFItems.COPPER_NUGGET.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.PALE_OAK_FENCE_GATE), TFBlocks.PALE_OAK_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 		} else if (event.getTabKey() == CreativeModeTabs.OP_BLOCKS && event.hasPermissions()) {
 			event.getParameters().holders().lookupOrThrow(TFRegistries.Keys.MAGIC_PAINTINGS)
 				.listElements().sorted(MAGIC_COMPARATOR)

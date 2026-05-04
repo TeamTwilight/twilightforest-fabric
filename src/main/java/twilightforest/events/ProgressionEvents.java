@@ -10,6 +10,9 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.permissions.Permission;
+import net.minecraft.server.permissions.PermissionLevel;
+import net.minecraft.util.TriState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -25,7 +28,6 @@ import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.BlockSnapshot;
 import net.neoforged.neoforge.common.util.FakePlayer;
-import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
@@ -35,8 +37,6 @@ import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.config.TFConfig;
-import twilightforest.data.tags.BlockTagGenerator;
-import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.entity.monster.Kobold;
 import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFBlocks;
@@ -44,6 +44,8 @@ import twilightforest.init.TFDimension;
 import twilightforest.network.AreaProtectionPacket;
 import twilightforest.network.MissingAdvancementToastPacket;
 import twilightforest.network.StructureProtectionPacket;
+import twilightforest.tags.TFBlockTags;
+import twilightforest.tags.TFItemTags;
 import twilightforest.util.Enforcement;
 import twilightforest.util.PlayerHelper;
 import twilightforest.util.landmarks.LandmarkUtil;
@@ -174,28 +176,28 @@ public class ProgressionEvents {
 		Player eventPlayer = event.getEntity();
 
 		if (!(eventPlayer instanceof ServerPlayer player)) return;
-		if (!(player.level() instanceof ServerLevel world)) return;
+		ServerLevel level = player.level();
 
 		// check for portal creation, at least if it's not disabled
 		if (!TFConfig.disablePortalCreation && player.tickCount % (!TFConfig.checkPortalPlacement ? 100 : 20) == 0) {
 			// skip non admin players when the option is on
-			if (world.getServer().getProfilePermissions(player.getGameProfile()) >= TFConfig.portalCreationPermission) {
+			if (level.getServer().getProfilePermissions(player.nameAndId()).level().isEqualOrHigherThan(TFConfig.portalCreationPermission)) {
 				// reduce range to 4.0 if config is set to admins/owners only
-				checkForPortalCreation(player, world, TFConfig.portalCreationPermission >= Commands.LEVEL_ADMINS ? 4.0F : 32.0F);
+				checkForPortalCreation(player, level, TFConfig.portalCreationPermission.isEqualOrHigherThan(PermissionLevel.ADMINS)  ? 4.0F : 32.0F);
 			}
 		}
 
 		// check the player for being in a forbidden progression area, only every 20 ticks
-		if (player.tickCount % 20 == 0 && LandmarkUtil.isProgressionEnforced(world) && !player.isCreative() && !player.isSpectator()) {
-			Enforcement.enforceBiomeProgression(player, world);
+		if (player.tickCount % 20 == 0 && LandmarkUtil.isProgressionEnforced(level) && !player.isCreative() && !player.isSpectator()) {
+			Enforcement.enforceBiomeProgression(player, level);
 		}
 
 		// check and send nearby forbidden structures, every 100 ticks or so
-		if (player.tickCount % 100 == 0 && LandmarkUtil.isProgressionEnforced(world)) {
+		if (player.tickCount % 100 == 0 && LandmarkUtil.isProgressionEnforced(level)) {
 			if (player.isCreative() || player.isSpectator()) {
 				sendAllClearPacket(player);
 			} else {
-				checkForLockedStructuresSendPacket(player, world);
+				checkForLockedStructuresSendPacket(player, level);
 			}
 		}
 	}
@@ -203,7 +205,7 @@ public class ProgressionEvents {
 	@SuppressWarnings("UnusedReturnValue")
 	private static boolean checkForLockedStructuresSendPacket(Player player, ServerLevel world) {
 		ChunkPos chunkPlayer = player.chunkPosition();
-		return LandmarkUtil.locateNearestLandmarkStart(world, chunkPlayer.x, chunkPlayer.z).map(structureStart -> {
+		return LandmarkUtil.locateNearestLandmarkStart(world, chunkPlayer.x(), chunkPlayer.z()).map(structureStart -> {
 			if (structureStart.getStructure() instanceof AdvancementLockedStructure advancementLockedStructure && !advancementLockedStructure.doesPlayerHaveRequiredAdvancements(player)) {
 				List<Pair<BoundingBox, Boolean>> boundingBoxesData = structureStart.getPieces().stream()
 					.map(piece -> Pair.of(isPieceProtected(piece) ? piece.getBoundingBox().inflatedBy(4) : piece.getBoundingBox(), isPieceProtected(piece)))
@@ -218,17 +220,17 @@ public class ProgressionEvents {
 		}).orElse(false);
 	}
 
-	private static void checkForPortalCreation(ServerPlayer player, Level world, float rangeToCheck) {
-		if (world.dimension().location().equals(Identifier.parse(TFConfig.originDimension))
-			|| TFDimension.isTwilightPortalDestination(world)
+	private static void checkForPortalCreation(ServerPlayer player, ServerLevel level, float rangeToCheck) {
+		if (level.dimension().identifier().equals(Identifier.parse(TFConfig.originDimension))
+			|| TFDimension.isTwilightPortalDestination(level)
 			|| TFConfig.allowPortalsInOtherDimensions) {
 
-			List<ItemEntity> itemList = world.getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(rangeToCheck));
+			List<ItemEntity> itemList = level.getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(rangeToCheck));
 			ItemEntity qualified = null;
 
 			for (ItemEntity entityItem : itemList) {
-				if (entityItem.getItem().is(ItemTagGenerator.PORTAL_ACTIVATOR) &&
-					TFBlocks.TWILIGHT_PORTAL.get().canFormPortal(world.getBlockState(entityItem.blockPosition())) &&
+				if (entityItem.getItem().is(TFItemTags.PORTAL_ACTIVATOR) &&
+					TFBlocks.TWILIGHT_PORTAL.get().canFormPortal(level.getBlockState(entityItem.blockPosition())) &&
 					Objects.equals(entityItem.getOwner(), player)) {
 
 					qualified = entityItem;
@@ -241,7 +243,7 @@ public class ProgressionEvents {
 			if (!player.isCreative() && !player.isSpectator() && TFConfig.getPortalLockingAdvancement(player) != null) {
 				AdvancementHolder requirement = PlayerHelper.getAdvancement(player, Objects.requireNonNull(TFConfig.getPortalLockingAdvancement(player)));
 				if (requirement != null && !PlayerHelper.doesPlayerHaveRequiredAdvancement(player, requirement)) {
-					player.displayClientMessage(TFPortalBlock.PORTAL_UNWORTHY, true);
+					player.sendOverlayMessage(TFPortalBlock.PORTAL_UNWORTHY);
 
 					if (!TFPortalBlock.isPlayerNotifiedOfRequirement(player)) {
 						// .doesPlayerHaveRequiredAdvancement null-checks already, so we can skip null-checking the `requirement`
@@ -261,10 +263,10 @@ public class ProgressionEvents {
 				double vy = rand.nextGaussian() * 0.02D;
 				double vz = rand.nextGaussian() * 0.02D;
 
-				world.addParticle(ParticleTypes.EFFECT, qualified.getX(), qualified.getY() + 0.2, qualified.getZ(), vx, vy, vz);
+				level.addParticle(ParticleTypes.EFFECT, qualified.getX(), qualified.getY() + 0.2, qualified.getZ(), vx, vy, vz);
 			}
 
-			if (TFBlocks.TWILIGHT_PORTAL.get().tryToCreatePortal(world, qualified.blockPosition(), qualified, player))
+			if (TFBlocks.TWILIGHT_PORTAL.get().tryToCreatePortal(level, qualified.blockPosition(), qualified, player))
 				TFAdvancements.MADE_TF_PORTAL.get().trigger(player);
 
 		}
@@ -275,11 +277,11 @@ public class ProgressionEvents {
 	}
 
 	private static boolean isBlockProtectedFromInteraction(BlockGetter level, BlockPos pos) {
-		return level.getBlockState(pos).is(BlockTagGenerator.STRUCTURE_BANNED_INTERACTIONS);
+		return level.getBlockState(pos).is(TFBlockTags.STRUCTURE_BANNED_INTERACTIONS);
 	}
 
 	private static boolean isBlockProtectedFromBreaking(BlockGetter level, BlockPos pos) {
-		return !level.getBlockState(pos).is(BlockTagGenerator.PROGRESSION_ALLOW_BREAKING);
+		return !level.getBlockState(pos).is(TFBlockTags.PROGRESSION_ALLOW_BREAKING);
 	}
 
 	private static void sendAreaProtectionPacket(ServerLevel level, BlockPos pos, List<BoundingBox> sbb) {

@@ -32,7 +32,6 @@ import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
 import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.item.travellers_gear.TravellersGogglesItem;
 import twilightforest.tags.TFBannerPatternTags;
-import twilightforest.util.TFToolMaterials;
 
 import java.util.List;
 import java.util.Optional;

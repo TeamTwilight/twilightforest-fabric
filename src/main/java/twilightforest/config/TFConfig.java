@@ -10,6 +10,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.permissions.PermissionLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
@@ -70,9 +71,9 @@ public class TFConfig {
 	public static boolean portalForNewPlayerSpawn = true;
 
 	// -- Portal --
-	public static String originDimension = Level.OVERWORLD.location().toString();
+	public static String originDimension = Level.OVERWORLD.identifier().toString();
 	public static boolean allowPortalsInOtherDimensions = false;
-	public static int portalCreationPermission = 0;
+	public static PermissionLevel portalCreationPermission = PermissionLevel.ALL;
 	public static boolean disablePortalCreation = false;
 	public static boolean checkPortalPlacement = true;
 	public static boolean destructivePortalLightning = true;
@@ -117,7 +118,7 @@ public class TFConfig {
 			Identifier lock = Identifier.tryParse(ConfigSetup.COMMON_CONFIG.PORTAL.portalAdvancementLock.get());
 			if (lock == null || PlayerHelper.getAdvancement(player, lock) == null) {
 				//if the RL is not a valid advancement fail us
-				TwilightForestMod.LOGGER.fatal("The portal locking advancement is not a valid advancement! Setting to null!");
+				TwilightForestMod.LOGGER.error("The portal locking advancement is not a valid advancement! Setting to null!");
 				ConfigSetup.COMMON_CONFIG.PORTAL.portalAdvancementLock.set("");
 			} else {
 				portalLockingAdvancement = Identifier.tryParse(ConfigSetup.COMMON_CONFIG.PORTAL.portalAdvancementLock.get());
@@ -132,7 +133,7 @@ public class TFConfig {
 	public static List<Holder<Biome>> getValidAuroraBiomes(RegistryAccess access) {
 		if (VALID_AURORA_BIOMES.isEmpty() && !ConfigSetup.CLIENT_CONFIG.auroraBiomes.get().isEmpty()) {
 			ConfigSetup.CLIENT_CONFIG.auroraBiomes.get().forEach(s -> {
-				Optional<Holder<Biome>> holder = Optional.ofNullable(Identifier.tryParse(s)).flatMap(key -> access.registryOrThrow(Registries.BIOME).getHolder(key));
+				Optional<Holder<Biome>> holder = Optional.ofNullable(Identifier.tryParse(s)).flatMap(key -> access.lookupOrThrow(Registries.BIOME).get(key));
 				if (holder.isEmpty()) {
 					TwilightForestMod.LOGGER.warn("Biome {} in Twilight Forest's validAuroraBiomes config option is not a valid biome. Skipping!", s);
 				} else {

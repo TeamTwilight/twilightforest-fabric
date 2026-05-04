@@ -37,25 +37,6 @@ import java.util.function.BiConsumer;
 
 public class ItemModelGenerator extends ItemModelBuilders {
 
-	private static final List<ItemModelGenerators.TrimMaterialData> EX_TRIM_MATERIAL_MODELS = List.of(
-		new ItemModelGenerators.TrimMaterialData("quartz", TrimMaterials.QUARTZ, Map.of()),
-		new ItemModelGenerators.TrimMaterialData("iron", TrimMaterials.IRON, Map.of(EquipmentAssets.IRON, "iron_darker")),
-		new ItemModelGenerators.TrimMaterialData("netherite", TrimMaterials.NETHERITE, Map.of(EquipmentAssets.NETHERITE, "netherite_darker")),
-		new ItemModelGenerators.TrimMaterialData("redstone", TrimMaterials.REDSTONE, Map.of()),
-		new ItemModelGenerators.TrimMaterialData("copper", TrimMaterials.COPPER, Map.of()),
-		new ItemModelGenerators.TrimMaterialData("gold", TrimMaterials.GOLD, Map.of(EquipmentAssets.GOLD, "gold_darker")),
-		new ItemModelGenerators.TrimMaterialData("emerald", TrimMaterials.EMERALD, Map.of()),
-		new ItemModelGenerators.TrimMaterialData("diamond", TrimMaterials.DIAMOND, Map.of(EquipmentAssets.DIAMOND, "diamond_darker")),
-		new ItemModelGenerators.TrimMaterialData("lapis", TrimMaterials.LAPIS, Map.of()),
-		new ItemModelGenerators.TrimMaterialData("amethyst", TrimMaterials.AMETHYST, Map.of()),
-		new ItemModelGenerators.TrimMaterialData("resin", TrimMaterials.RESIN, Map.of()),
-		new ItemModelGenerators.TrimMaterialData("ironwood", TFTrimMaterials.IRONWOOD, Map.of()),
-		new ItemModelGenerators.TrimMaterialData("steeleaf", TFTrimMaterials.STEELEAF, Map.of()),
-		new ItemModelGenerators.TrimMaterialData("fiery", TFTrimMaterials.FIERY, Map.of()),
-		new ItemModelGenerators.TrimMaterialData("knightmetal", TFTrimMaterials.KNIGHTMETAL, Map.of()),
-		new ItemModelGenerators.TrimMaterialData("carminite", TFTrimMaterials.CARMINITE, Map.of()),
-		new ItemModelGenerators.TrimMaterialData("naga_scale", TFTrimMaterials.NAGA_SCALE, Map.of()));
-
 	public ItemModelGenerator(ItemModelOutput output, BiConsumer<Identifier, ModelInstance> modelOutput) {
 		super(output, modelOutput);
 	}
@@ -154,30 +135,30 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateChestBoat(TFItems.MINING_CHEST_BOAT.get());
 		this.generateChestBoat(TFItems.SORTING_CHEST_BOAT.get());
 
-		this.generateExpandedTrimmableItem(TFItems.IRONWOOD_HELMET.get(), TFEquipmentAssets.IRONWOOD, "helmet");
-		this.generateExpandedTrimmableItem(TFItems.IRONWOOD_CHESTPLATE.get(), TFEquipmentAssets.IRONWOOD, "chestplate");
-		this.generateExpandedTrimmableItem(TFItems.IRONWOOD_LEGGINGS.get(), TFEquipmentAssets.IRONWOOD, "leggings");
-		this.generateExpandedTrimmableItem(TFItems.IRONWOOD_BOOTS.get(), TFEquipmentAssets.IRONWOOD, "boots");
+		this.generateDynamicTrimmableItem(TFItems.IRONWOOD_HELMET.get(), ItemModelGenerators.TRIM_PREFIX_HELMET);
+		this.generateDynamicTrimmableItem(TFItems.IRONWOOD_CHESTPLATE.get(), ItemModelGenerators.TRIM_PREFIX_CHESTPLATE);
+		this.generateDynamicTrimmableItem(TFItems.IRONWOOD_LEGGINGS.get(), ItemModelGenerators.TRIM_PREFIX_LEGGINGS);
+		this.generateDynamicTrimmableItem(TFItems.IRONWOOD_BOOTS.get(), ItemModelGenerators.TRIM_PREFIX_BOOTS);
 		this.generateFlatItem(TFItems.IRONWOOD_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.IRONWOOD_PICKAXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.IRONWOOD_AXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.IRONWOOD_SHOVEL.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.IRONWOOD_HOE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 
-		this.generateExpandedTrimmableItem(TFItems.STEELEAF_HELMET.get(), TFEquipmentAssets.STEELEAF, "helmet");
-		this.generateExpandedTrimmableItem(TFItems.STEELEAF_CHESTPLATE.get(), TFEquipmentAssets.STEELEAF, "chestplate");
-		this.generateExpandedTrimmableItem(TFItems.STEELEAF_LEGGINGS.get(), TFEquipmentAssets.STEELEAF, "leggings");
-		this.generateExpandedTrimmableItem(TFItems.STEELEAF_BOOTS.get(), TFEquipmentAssets.STEELEAF, "boots");
+		this.generateDynamicTrimmableItem(TFItems.STEELEAF_HELMET.get(), ItemModelGenerators.TRIM_PREFIX_HELMET);
+		this.generateDynamicTrimmableItem(TFItems.STEELEAF_CHESTPLATE.get(), ItemModelGenerators.TRIM_PREFIX_CHESTPLATE);
+		this.generateDynamicTrimmableItem(TFItems.STEELEAF_LEGGINGS.get(), ItemModelGenerators.TRIM_PREFIX_LEGGINGS);
+		this.generateDynamicTrimmableItem(TFItems.STEELEAF_BOOTS.get(), ItemModelGenerators.TRIM_PREFIX_BOOTS);
 		this.generateFlatItem(TFItems.STEELEAF_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.STEELEAF_PICKAXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.STEELEAF_AXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.STEELEAF_SHOVEL.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.STEELEAF_HOE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 
-		this.generateExpandedTrimmableItem(TFItems.KNIGHTMETAL_HELMET.get(), TFEquipmentAssets.KNIGHTMETAL, "helmet");
-		this.generateExpandedTrimmableItem(TFItems.KNIGHTMETAL_CHESTPLATE.get(), TFEquipmentAssets.KNIGHTMETAL, "chestplate");
-		this.generateExpandedTrimmableItem(TFItems.KNIGHTMETAL_LEGGINGS.get(), TFEquipmentAssets.KNIGHTMETAL, "leggings");
-		this.generateExpandedTrimmableItem(TFItems.KNIGHTMETAL_BOOTS.get(), TFEquipmentAssets.KNIGHTMETAL, "boots");
+		this.generateDynamicTrimmableItem(TFItems.KNIGHTMETAL_HELMET.get(), ItemModelGenerators.TRIM_PREFIX_HELMET);
+		this.generateDynamicTrimmableItem(TFItems.KNIGHTMETAL_CHESTPLATE.get(), ItemModelGenerators.TRIM_PREFIX_CHESTPLATE);
+		this.generateDynamicTrimmableItem(TFItems.KNIGHTMETAL_LEGGINGS.get(), ItemModelGenerators.TRIM_PREFIX_LEGGINGS);
+		this.generateDynamicTrimmableItem(TFItems.KNIGHTMETAL_BOOTS.get(), ItemModelGenerators.TRIM_PREFIX_BOOTS);
 		this.generateFlatItem(TFItems.KNIGHTMETAL_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.KNIGHTMETAL_PICKAXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.KNIGHTMETAL_AXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
@@ -186,28 +167,28 @@ public class ItemModelGenerator extends ItemModelBuilders {
 			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.BLOCK_AND_CHAIN.get(), ModelTemplates.FLAT_HANDHELD_ITEM))));
 		this.generateKnightmetalShield(TFItems.KNIGHTMETAL_SHIELD.get());
 
-		this.generateExpandedTrimmableItem(TFItems.FIERY_HELMET.get(), TFEquipmentAssets.FIERY, "helmet");
-		this.generateExpandedTrimmableItem(TFItems.FIERY_CHESTPLATE.get(), TFEquipmentAssets.FIERY, "chestplate");
-		this.generateExpandedTrimmableItem(TFItems.FIERY_LEGGINGS.get(), TFEquipmentAssets.FIERY, "leggings");
-		this.generateExpandedTrimmableItem(TFItems.FIERY_BOOTS.get(), TFEquipmentAssets.FIERY, "boots");
+		this.generateDynamicTrimmableItem(TFItems.FIERY_HELMET.get(), ItemModelGenerators.TRIM_PREFIX_HELMET);
+		this.generateDynamicTrimmableItem(TFItems.FIERY_CHESTPLATE.get(), ItemModelGenerators.TRIM_PREFIX_CHESTPLATE);
+		this.generateDynamicTrimmableItem(TFItems.FIERY_LEGGINGS.get(), ItemModelGenerators.TRIM_PREFIX_LEGGINGS);
+		this.generateDynamicTrimmableItem(TFItems.FIERY_BOOTS.get(), ItemModelGenerators.TRIM_PREFIX_BOOTS);
 		this.generateFlatItem(TFItems.FIERY_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.FIERY_PICKAXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 
-		this.generateExpandedTrimmableItem(TFItems.ARCTIC_HELMET.get(), TFEquipmentAssets.ARCTIC, "helmet", ArcticArmorItem.DEFAULT_COLOR);
-		this.generateExpandedTrimmableItem(TFItems.ARCTIC_CHESTPLATE.get(), TFEquipmentAssets.ARCTIC, "chestplate", ArcticArmorItem.DEFAULT_COLOR);
-		this.generateExpandedTrimmableItem(TFItems.ARCTIC_LEGGINGS.get(), TFEquipmentAssets.ARCTIC, "leggings", ArcticArmorItem.DEFAULT_COLOR);
-		this.generateExpandedTrimmableItem(TFItems.ARCTIC_BOOTS.get(), TFEquipmentAssets.ARCTIC, "boots", ArcticArmorItem.DEFAULT_COLOR);
+		this.generateDynamicTrimmableItem(TFItems.ARCTIC_HELMET.get(), ItemModelGenerators.TRIM_PREFIX_HELMET, ArcticArmorItem.DEFAULT_COLOR);
+		this.generateDynamicTrimmableItem(TFItems.ARCTIC_CHESTPLATE.get(), ItemModelGenerators.TRIM_PREFIX_CHESTPLATE, ArcticArmorItem.DEFAULT_COLOR);
+		this.generateDynamicTrimmableItem(TFItems.ARCTIC_LEGGINGS.get(), ItemModelGenerators.TRIM_PREFIX_LEGGINGS, ArcticArmorItem.DEFAULT_COLOR);
+		this.generateDynamicTrimmableItem(TFItems.ARCTIC_BOOTS.get(), ItemModelGenerators.TRIM_PREFIX_BOOTS, ArcticArmorItem.DEFAULT_COLOR);
 
-		this.generateExpandedTrimmableItem(TFItems.YETI_HELMET.get(), TFEquipmentAssets.YETI, "helmet");
-		this.generateExpandedTrimmableItem(TFItems.YETI_CHESTPLATE.get(), TFEquipmentAssets.YETI, "chestplate");
-		this.generateExpandedTrimmableItem(TFItems.YETI_LEGGINGS.get(), TFEquipmentAssets.YETI, "leggings");
-		this.generateExpandedTrimmableItem(TFItems.YETI_BOOTS.get(), TFEquipmentAssets.YETI, "boots");
+		this.generateDynamicTrimmableItem(TFItems.YETI_HELMET.get(), ItemModelGenerators.TRIM_PREFIX_HELMET);
+		this.generateDynamicTrimmableItem(TFItems.YETI_CHESTPLATE.get(), ItemModelGenerators.TRIM_PREFIX_CHESTPLATE);
+		this.generateDynamicTrimmableItem(TFItems.YETI_LEGGINGS.get(), ItemModelGenerators.TRIM_PREFIX_LEGGINGS);
+		this.generateDynamicTrimmableItem(TFItems.YETI_BOOTS.get(), ItemModelGenerators.TRIM_PREFIX_BOOTS);
 
-		this.generateExpandedTrimmableItem(TFItems.PHANTOM_HELMET.get(), TFEquipmentAssets.PHANTOM, "helmet");
-		this.generateExpandedTrimmableItem(TFItems.PHANTOM_CHESTPLATE.get(), TFEquipmentAssets.PHANTOM, "chestplate");
+		this.generateDynamicTrimmableItem(TFItems.PHANTOM_HELMET.get(), ItemModelGenerators.TRIM_PREFIX_HELMET);
+		this.generateDynamicTrimmableItem(TFItems.PHANTOM_CHESTPLATE.get(), ItemModelGenerators.TRIM_PREFIX_CHESTPLATE);
 
-		this.generateExpandedTrimmableItem(TFItems.NAGA_CHESTPLATE.get(), TFEquipmentAssets.NAGA, "chestplate");
-		this.generateExpandedTrimmableItem(TFItems.NAGA_LEGGINGS.get(), TFEquipmentAssets.NAGA, "leggings");
+		this.generateDynamicTrimmableItem(TFItems.NAGA_CHESTPLATE.get(), ItemModelGenerators.TRIM_PREFIX_CHESTPLATE);
+		this.generateDynamicTrimmableItem(TFItems.NAGA_LEGGINGS.get(), ItemModelGenerators.TRIM_PREFIX_LEGGINGS);
 
 		this.itemModelOutput.accept(TFItems.MYSTIC_CROWN.get(), ItemModelUtils.specialModel(ModelLocationUtils.getModelLocation(TFItems.MYSTIC_CROWN.get()), new MysticCrownSpecialRenderer.Unbaked()));
 
@@ -332,40 +313,12 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateBooleanDispatch(shieldItem, ItemModelUtils.isUsingItem(), blocking, normal);
 	}
 
-	public void generateExpandedTrimmableItem(Item item, ResourceKey<EquipmentAsset> key, String name) {
-		this.generateExpandedTrimmableItem(item, key, name, -1);
+	public void generateDynamicTrimmableItem(Item armor, Identifier slotTrimPrefix) {
+		this.generateDynamicTrimmableItem(armor, this.createFlatItemModel(armor, ModelTemplates.FLAT_ITEM), slotTrimPrefix);
 	}
 
-	public void generateExpandedTrimmableItem(Item item, ResourceKey<EquipmentAsset> key, String name, int dyeColor) {
-		Identifier model = ModelLocationUtils.getModelLocation(item);
-		Identifier texture = TextureMapping.getItemTexture(item);
-		Identifier overlayTexture = TextureMapping.getItemTexture(item, "_overlay");
-		List<SelectItemModel.SwitchCase<ResourceKey<TrimMaterial>>> trims = new ArrayList<>(TRIM_MATERIAL_MODELS.size());
-
-		for (ItemModelGenerators.TrimMaterialData data : EX_TRIM_MATERIAL_MODELS) {
-			Identifier trimModel = model.withSuffix("_" + data.name() + "_trim");
-			Identifier trimTexture = Identifier.withDefaultNamespace(
-				"trims/items/" + name + "_trim_" + data.textureName(key)
-			);
-			ItemModel.Unbaked trimMaterialModel;
-			if (dyeColor != -1) {
-				this.generateLayeredItem(trimModel, texture, overlayTexture, trimTexture);
-				trimMaterialModel = ItemModelUtils.tintedModel(trimModel, new Dye(dyeColor));
-			} else {
-				trimMaterialModel = ItemModelUtils.plainModel(this.generateLayeredItem(trimModel, texture, trimTexture));
-			}
-
-			trims.add(ItemModelUtils.when(data.materialKey(), trimMaterialModel));
-		}
-
-		ItemModel.Unbaked armorModel;
-		if (dyeColor != -1) {
-			armorModel = ItemModelUtils.tintedModel(ModelTemplates.TWO_LAYERED_ITEM.create(model, TextureMapping.layered(texture, overlayTexture), this.modelOutput), new Dye(dyeColor));
-		} else {
-			armorModel = ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(model, TextureMapping.layer0(texture), this.modelOutput));
-		}
-
-		this.itemModelOutput.accept(item, ItemModelUtils.select(new TrimMaterialProperty(), armorModel, trims));
+	public void generateDynamicTrimmableItem(Item armor, Identifier slotTrimPrefix, int color) {
+		this.generateDynamicTrimmableItem(armor, this.createFlatItemModel(armor, ModelTemplates.FLAT_ITEM), slotTrimPrefix, color);
 	}
 
 	public void generateBow(Item bowItem, boolean twoLayered) {

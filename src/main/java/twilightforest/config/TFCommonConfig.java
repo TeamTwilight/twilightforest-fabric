@@ -2,6 +2,7 @@ package twilightforest.config;
 
 import net.minecraft.commands.Commands;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.permissions.PermissionLevel;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ public class TFCommonConfig {
 			PORTAL.portalCreationPermission = builder
 				.translation(TFConfig.CONFIG_ID + "portal_permission")
 				.comment(ConfigComments.PORTAL_PERMISSION)
-				.defineInRange("portalCreationPermission", 0, 0, Commands.LEVEL_OWNERS);
+				.defineEnum("portalCreationPermission", PermissionLevel.ALL);
 			PORTAL.disablePortalCreation = builder
 				.translation(TFConfig.CONFIG_ID + "disable_portal")
 				.comment(ConfigComments.DISABLE_PORTAL)
@@ -215,7 +216,7 @@ public class TFCommonConfig {
 	static class Portal {
 		ModConfigSpec.ConfigValue<String> originDimension;
 		ModConfigSpec.BooleanValue allowPortalsInOtherDimensions;
-		ModConfigSpec.IntValue portalCreationPermission;
+		ModConfigSpec.EnumValue<PermissionLevel> portalCreationPermission;
 		ModConfigSpec.BooleanValue disablePortalCreation;
 		ModConfigSpec.BooleanValue checkPortalPlacement;
 		ModConfigSpec.BooleanValue destructivePortalLightning;

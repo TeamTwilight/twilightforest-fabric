@@ -1,4 +1,4 @@
-package twilightforest.util;
+package twilightforest.init;
 
 import net.minecraft.world.item.ToolMaterial;
 import twilightforest.tags.TFBlockTags;

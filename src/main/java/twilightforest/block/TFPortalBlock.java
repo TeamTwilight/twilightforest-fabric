@@ -148,8 +148,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 		return Fluids.WATER.getFlowing(1, false); // 1 is minimum value. Minecraft wiki at time of this writing has the values backwards.
 	}
 
-	public boolean tryToCreatePortal(Level level, BlockPos pos, ItemEntity catalyst, @Nullable Player player) {
-
+	public boolean tryToCreatePortal(ServerLevel level, BlockPos pos, ItemEntity catalyst, @Nullable Player player) {
 		BlockState state = level.getBlockState(pos);
 
 		if (this.canFormPortal(state) && level.getBlockState(pos.below()).isFaceSturdy(level, pos, Direction.UP)) {
@@ -161,7 +160,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 			if (recursivelyValidatePortal(level, pos, blocksChecked, size, state) && size.intValue() >= MIN_PORTAL_SIZE) {
 
 				if (!TFConfig.checkPortalPlacement) {
-					boolean checkProgression = LandmarkUtil.isProgressionEnforced(catalyst.level());
+					boolean checkProgression = LandmarkUtil.isProgressionEnforced(level);
 					if (!TFTeleporter.isSafeAround(level, pos, catalyst, checkProgression)) {
 						// TODO: "failure" effect - particles?
 						if (player != null) {
@@ -273,8 +272,8 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 		if (!(entity instanceof Player player))
 			return 0;
 		return player.getAbilities().invulnerable
-			? level.getGameRules().get(TFGameRules.RULE_PLAYERS_TF_PORTAL_CREATIVE_DELAY.get())
-			: level.getGameRules().get(TFGameRules.RULE_PLAYERS_TF_PORTAL_DEFAULT_DELAY.get());
+			? level.getGameRules().get(TFGameRules.TF_PORTAL_CREATIVE_DELAY.get())
+			: level.getGameRules().get(TFGameRules.TF_PORTAL_DEFAULT_DELAY.get());
 	}
 
 	@Nullable

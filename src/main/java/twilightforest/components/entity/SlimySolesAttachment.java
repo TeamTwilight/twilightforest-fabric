@@ -1,12 +1,13 @@
 package twilightforest.components.entity;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 public class SlimySolesAttachment {
 
 	//optionals are here as the fields were improperly named and caused logspam after the fix
-	public static final Codec<SlimySolesAttachment> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+	public static final MapCodec<SlimySolesAttachment> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			Codec.DOUBLE.optionalFieldOf("bounce_velocity", 0.0D).forGetter(o -> o.bounceVelocity),
 			Codec.DOUBLE.optionalFieldOf("double_jump_boost_velocity", 0.0D).forGetter(o -> o.doubleJumpBoostVelocity),
 			Codec.BOOL.optionalFieldOf("force_bounce", false).forGetter(o -> o.forceBounce),

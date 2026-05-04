@@ -3,6 +3,7 @@ package twilightforest.util.landmarks;
 import net.minecraft.core.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.ChunkPos;
@@ -123,8 +124,8 @@ public final class LandmarkUtil {
 		return Optional.empty();
 	}
 
-	public static boolean isProgressionEnforced(Level world) {
-		return world.getGameRules().getBoolean(TFGameRules.ENFORCED_PROGRESSION_RULE.get());
+	public static boolean isProgressionEnforced(ServerLevel level) {
+		return level.getGameRules().get(TFGameRules.ENFORCED_PROGRESSION_RULE.get());
 	}
 
 	private LandmarkUtil() {

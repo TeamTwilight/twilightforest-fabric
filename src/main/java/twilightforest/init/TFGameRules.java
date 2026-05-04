@@ -1,45 +1,27 @@
 package twilightforest.init;
 
-import com.google.common.base.Suppliers;
-import net.minecraft.util.Util;
-import net.minecraft.world.level.GameRules;
-import net.neoforged.neoforge.network.PacketDistributor;
-import twilightforest.network.EnforceProgressionStatusPacket;
-
-import java.util.HashSet;
-import java.util.Set;
-import java.util.function.Supplier;
+import com.mojang.brigadier.arguments.BoolArgumentType;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.serialization.Codec;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.flag.FeatureFlagSet;
+import net.minecraft.world.level.gamerules.*;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import twilightforest.TwilightForestMod;
 
 public class TFGameRules {
-	private static final Set<Supplier<GameRules.Key<?>>> GAME_RULES = new HashSet<>();
+	public static final DeferredRegister<GameRule<?>> RULES = DeferredRegister.create(Registries.GAME_RULE, TwilightForestMod.ID);
 
-	public static final Supplier<GameRules.Key<GameRules.BooleanValue>> ENFORCED_PROGRESSION_RULE = register("tfEnforcedProgression",
-		GameRules.Category.UPDATES,
-		GameRules.BooleanValue.create(true, (server, value) ->
-			// sends a packet to every player online when this changes
-			PacketDistributor.sendToAllPlayers(new EnforceProgressionStatusPacket(value.get()))
-		)
-	);
+	public static final DeferredHolder<GameRule<?>, GameRule<Boolean>> ENFORCED_PROGRESSION_RULE = registerBoolean("twilightforest_enforced_progression", GameRuleCategory.UPDATES, true);
+	public static final DeferredHolder<GameRule<?>, GameRule<Integer>> TF_PORTAL_DEFAULT_DELAY = registerInteger("players_twilight_portal_default_delay", GameRuleCategory.PLAYER, 60, 0);
+	public static final DeferredHolder<GameRule<?>, GameRule<Integer>> TF_PORTAL_CREATIVE_DELAY = registerInteger("players_twilight_portal_creative_delay", GameRuleCategory.PLAYER, 0, 0);
 
-	public static final Supplier<GameRules.Key<GameRules.IntegerValue>> RULE_PLAYERS_TF_PORTAL_DEFAULT_DELAY = register("playersTfPortalDefaultDelay",
-		GameRules.Category.PLAYER,
-		GameRules.IntegerValue.create(60)
-	);
-
-	public static final Supplier<GameRules.Key<GameRules.IntegerValue>> RULE_PLAYERS_TF_PORTAL_CREATIVE_DELAY = register("playersTfPortalCreativeDelay",
-		GameRules.Category.PLAYER,
-		GameRules.IntegerValue.create(1)
-	);
-
-	@SuppressWarnings("unchecked")
-	private static <T extends GameRules.Value<T>> Supplier<GameRules.Key<T>> register(String name, GameRules.Category category, GameRules.Type<T> type) {
-		Supplier<GameRules.Key<T>> supplier = Suppliers.memoize(() -> GameRules.register(name, category, type));
-		GAME_RULES.add((Supplier<GameRules.Key<?>>) (Object) supplier);
-		return supplier;
+	public static DeferredHolder<GameRule<?>, GameRule<Boolean>> registerBoolean(String id, GameRuleCategory category, boolean defaultValue) {
+		return RULES.register(id, () -> new GameRule<>(category, GameRuleType.BOOL, BoolArgumentType.bool(), GameRuleTypeVisitor::visitBoolean, Codec.BOOL, b -> b ? 1 : 0, defaultValue, FeatureFlagSet.of()));
 	}
 
-	public static void register() {
-		// Get main thread and use it to register our game rules early
-		GAME_RULES.forEach(gameRule -> Util.backgroundExecutor().execute(gameRule::get));
+	public static DeferredHolder<GameRule<?>, GameRule<Integer>> registerInteger(String id, GameRuleCategory category, int defaultValue, int min) {
+		return RULES.register(id, () -> new GameRule<>(category, GameRuleType.INT, IntegerArgumentType.integer(min, Integer.MAX_VALUE), GameRuleTypeVisitor::visitInteger, Codec.INT, i -> i, defaultValue, FeatureFlagSet.of()));
 	}
 }
