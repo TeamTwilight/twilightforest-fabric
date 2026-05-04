@@ -78,24 +78,94 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 	}
 
 	public void generateSapling(Block block, Block pottedBlock, BlockModelGenerators.PlantType type) {
-		Identifier sapling = type.getCross().extend().build().create(block, type.getTextureMapping(block), this.modelOutput);
-		this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(sapling)));
-		Identifier potted = type.getCrossPot().extend().build().create(pottedBlock, type.getPlantTextureMapping(block), this.modelOutput);
-		this.blockStateOutput.accept(createSimpleBlock(pottedBlock, plainVariant(potted)));
+		MultiVariant sapling = plainVariant(type.getCross().create(block, type.getTextureMapping(block), this.modelOutput));
+		this.blockStateOutput.accept(createSimpleBlock(block, sapling));
+		MultiVariant potted = plainVariant(type.getCrossPot().create(pottedBlock, type.getPlantTextureMapping(block), this.modelOutput));
+		this.blockStateOutput.accept(createSimpleBlock(pottedBlock, potted));
 		this.registerSimpleItemModel(block.asItem(), type.createItemModel(this, block));
+	}
+
+	public void generateButton(Block button, TextureMapping mapping) {
+		MultiVariant unpressed = plainVariant(ModelTemplates.BUTTON.create(button, mapping, this.modelOutput));
+		MultiVariant pressed = plainVariant(ModelTemplates.BUTTON_PRESSED.create(button, mapping, this.modelOutput));
+		this.blockStateOutput.accept(BlockModelGenerators.createButton(button, unpressed, pressed));
+		Identifier inventory = ModelTemplates.BUTTON_INVENTORY.create(button, mapping, this.modelOutput);
+		this.registerSimpleItemModel(button, inventory);
+	}
+
+	public void generateFence(Block fence, TextureMapping mapping) {
+		MultiVariant post = plainVariant(ModelTemplates.FENCE_POST.create(fence, mapping, this.modelOutput));
+		MultiVariant side = plainVariant(ModelTemplates.FENCE_SIDE.create(fence, mapping, this.modelOutput));
+		this.blockStateOutput.accept(BlockModelGenerators.createFence(fence, post, side));
+		Identifier inventory = ModelTemplates.FENCE_INVENTORY.create(fence, mapping, this.modelOutput);
+		this.registerSimpleItemModel(fence, inventory);
+	}
+
+	public void generateFenceGate(Block fenceGate, TextureMapping mapping) {
+		MultiVariant open = plainVariant(ModelTemplates.FENCE_GATE_OPEN.create(fenceGate, mapping, this.modelOutput));
+		Identifier closed = ModelTemplates.FENCE_GATE_CLOSED.create(fenceGate, mapping, this.modelOutput);
+		MultiVariant wallOpen = plainVariant(ModelTemplates.FENCE_GATE_WALL_OPEN.create(fenceGate, mapping, this.modelOutput));
+		MultiVariant wallClosed = plainVariant(ModelTemplates.FENCE_GATE_WALL_CLOSED.create(fenceGate, mapping, this.modelOutput));
+		this.blockStateOutput.accept(BlockModelGenerators.createFenceGate(fenceGate, open, plainVariant(closed), wallOpen, wallClosed, true));
+		this.registerSimpleItemModel(fenceGate, closed);
+	}
+
+	public void generatePressurePlate(Block pressurePlate, TextureMapping mapping) {
+		Identifier unpressed = ModelTemplates.PRESSURE_PLATE_UP.create(pressurePlate, mapping, this.modelOutput);
+		MultiVariant pressed = plainVariant(ModelTemplates.PRESSURE_PLATE_DOWN.create(pressurePlate, mapping, this.modelOutput));
+		this.blockStateOutput.accept(BlockModelGenerators.createPressurePlate(pressurePlate, plainVariant(unpressed), pressed));
+		this.registerSimpleItemModel(pressurePlate, unpressed);
+	}
+
+	public void generateSign(Block floor, Block wall, TextureMapping mapping) {
+		MultiVariant model = plainVariant(ModelTemplates.PARTICLE_ONLY.create(floor, mapping, this.modelOutput));
+		this.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(floor, model));
+		this.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(wall, model));
+		this.registerSimpleFlatItemModel(floor.asItem());
+	}
+
+	public void generateHangingSign(Block ceiling, Block wall, Block particle) {
+		MultiVariant sign = plainVariant(ModelTemplates.PARTICLE_ONLY.create(ceiling, new TextureMapping().put(TextureSlot.PARTICLE, TextureMapping.getBlockTexture(particle)), this.modelOutput));
+		this.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(ceiling, sign));
+		this.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(wall, sign));
+		this.registerSimpleFlatItemModel(ceiling.asItem());
+	}
+
+	public void generateSlab(Block slab, Block full, TextureMapping mapping) {
+		Identifier bottom = ModelTemplates.SLAB_BOTTOM.create(slab, mapping, this.modelOutput);
+		MultiVariant top = plainVariant(ModelTemplates.SLAB_TOP.create(slab, mapping, this.modelOutput));
+		this.blockStateOutput.accept(createSlab(slab, plainVariant(bottom), top, plainVariant(ModelLocationUtils.getModelLocation(full))));
+		this.registerSimpleItemModel(slab, bottom);
+	}
+
+	public void generateStairs(Block stairs, TextureMapping mapping) {
+		MultiVariant inner = plainVariant(ModelTemplates.STAIRS_INNER.createWithSuffix(stairs, "_inner", mapping, this.modelOutput));
+		Identifier straight = ModelTemplates.STAIRS_STRAIGHT.create(stairs, mapping, this.modelOutput);
+		MultiVariant outer = plainVariant(ModelTemplates.STAIRS_OUTER.createWithSuffix(stairs, "_outer", mapping, this.modelOutput));
+		this.blockStateOutput.accept(BlockModelGenerators.createStairs(stairs, inner, plainVariant(straight), outer));
+		this.registerSimpleItemModel(stairs, straight);
+	}
+
+	public void generateTrapdoor(Block trapdoor, boolean orientable) {
+		TextureMapping texturemapping = TextureMapping.defaultTexture(trapdoor);
+		MultiVariant top = plainVariant((orientable ? ModelTemplates.ORIENTABLE_TRAPDOOR_TOP : ModelTemplates.TRAPDOOR_TOP).create(trapdoor, texturemapping, this.modelOutput));
+		Identifier bottom = (orientable ? ModelTemplates.ORIENTABLE_TRAPDOOR_BOTTOM : ModelTemplates.TRAPDOOR_BOTTOM).create(trapdoor, texturemapping, this.modelOutput);
+		MultiVariant open = plainVariant((orientable ? ModelTemplates.ORIENTABLE_TRAPDOOR_OPEN : ModelTemplates.TRAPDOOR_OPEN).create(trapdoor, texturemapping, this.modelOutput));
+		this.blockStateOutput.accept(createTrapdoor(trapdoor, top, plainVariant(bottom), open));
+		this.registerSimpleItemModel(trapdoor, bottom);
 	}
 
 	//holy ternary batman
 	public void generateDoor(Block door, boolean useSideTexture) {
 		TextureMapping texturemapping = useSideTexture ? TFTextureMapping.sideDoor(door) : TextureMapping.door(door);
-		Identifier bottomLeft = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_BOTTOM_LEFT : ModelTemplates.DOOR_BOTTOM_LEFT).extend().build().create(door, texturemapping, this.modelOutput);
-		Identifier bottomLeftOpen = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_BOTTOM_LEFT_OPEN : ModelTemplates.DOOR_BOTTOM_LEFT_OPEN).extend().build().create(door, texturemapping, this.modelOutput);
-		Identifier bottomRight = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_BOTTOM_RIGHT : ModelTemplates.DOOR_BOTTOM_RIGHT).extend().build().create(door, texturemapping, this.modelOutput);
-		Identifier bottomRightOpen = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_BOTTOM_RIGHT_OPEN : ModelTemplates.DOOR_BOTTOM_RIGHT_OPEN).extend().build().create(door, texturemapping, this.modelOutput);
-		Identifier topLeft = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_TOP_LEFT : ModelTemplates.DOOR_TOP_LEFT).extend().build().create(door, texturemapping, this.modelOutput);
-		Identifier topLeftOpen = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_TOP_LEFT_OPEN : ModelTemplates.DOOR_TOP_LEFT_OPEN).extend().build().create(door, texturemapping, this.modelOutput);
-		Identifier topRight = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_TOP_RIGHT : ModelTemplates.DOOR_TOP_RIGHT).extend().build().create(door, texturemapping, this.modelOutput);
-		Identifier topRightOpen = (useSideTexture ? TFModelTemplates.CORRECTED_DOOR_TOP_RIGHT_OPEN : ModelTemplates.DOOR_TOP_RIGHT_OPEN).extend().build().create(door, texturemapping, this.modelOutput);
+		MultiVariant bottomLeft = plainVariant((useSideTexture ? TFModelTemplates.CORRECTED_DOOR_BOTTOM_LEFT : ModelTemplates.DOOR_BOTTOM_LEFT).create(door, texturemapping, this.modelOutput));
+		MultiVariant bottomLeftOpen = plainVariant((useSideTexture ? TFModelTemplates.CORRECTED_DOOR_BOTTOM_LEFT_OPEN : ModelTemplates.DOOR_BOTTOM_LEFT_OPEN).create(door, texturemapping, this.modelOutput));
+		MultiVariant bottomRight = plainVariant((useSideTexture ? TFModelTemplates.CORRECTED_DOOR_BOTTOM_RIGHT : ModelTemplates.DOOR_BOTTOM_RIGHT).create(door, texturemapping, this.modelOutput));
+		MultiVariant bottomRightOpen = plainVariant((useSideTexture ? TFModelTemplates.CORRECTED_DOOR_BOTTOM_RIGHT_OPEN : ModelTemplates.DOOR_BOTTOM_RIGHT_OPEN).create(door, texturemapping, this.modelOutput));
+		MultiVariant topLeft = plainVariant((useSideTexture ? TFModelTemplates.CORRECTED_DOOR_TOP_LEFT : ModelTemplates.DOOR_TOP_LEFT).create(door, texturemapping, this.modelOutput));
+		MultiVariant topLeftOpen = plainVariant((useSideTexture ? TFModelTemplates.CORRECTED_DOOR_TOP_LEFT_OPEN : ModelTemplates.DOOR_TOP_LEFT_OPEN).create(door, texturemapping, this.modelOutput));
+		MultiVariant topRight = plainVariant((useSideTexture ? TFModelTemplates.CORRECTED_DOOR_TOP_RIGHT : ModelTemplates.DOOR_TOP_RIGHT).create(door, texturemapping, this.modelOutput));
+		MultiVariant topRightOpen = plainVariant((useSideTexture ? TFModelTemplates.CORRECTED_DOOR_TOP_RIGHT_OPEN : ModelTemplates.DOOR_TOP_RIGHT_OPEN).create(door, texturemapping, this.modelOutput));
 		this.registerSimpleFlatItemModel(door.asItem());
 		this.blockStateOutput.accept(createDoor(door, bottomLeft, bottomLeftOpen, bottomRight, bottomRightOpen, topLeft, topLeftOpen, topRight, topRightOpen));
 	}
@@ -123,6 +193,12 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 				return plainVariant(model);
 			})
 		).with(ROTATION_HORIZONTAL_FACING_ALT);
+	}
+
+	public void generateDryingRack(Block rack, TextureMapping mapping) {
+		Identifier rackModel = TFModelTemplates.DRYING_RACK.create(rack, mapping, this.modelOutput);
+		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(rack, plainVariant(rackModel)).with(ROTATION_HORIZONTAL_FACING_ALT));
+		this.registerSimpleItemModel(rack, rackModel);
 	}
 
 	public void generateHollowLog(Block log, Block stripped, Block horizontal, Block vertical, Block climbable) {

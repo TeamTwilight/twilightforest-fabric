@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.ClimbableHollowLogBlock;
-import twilightforest.client.color.FlaskTint;
+import twilightforest.client.properties.PotionFlaskTintSource;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.ColorUtil;
@@ -286,31 +286,6 @@ public class ColorHandler {
 	}
 
 	protected static void registerItemColors(RegisterColorHandlersEvent.ItemTintSources event) {
-		event.register(TwilightForestMod.prefix("flask_tint"), FlaskTint.MAP_CODEC);
-//		BlockColors blockColors = event.getBlockColors();
-
-		//TODO: All of these blocks that have tints are handled via datagen now
-//		event.register((stack, tintIndex) -> stack.getItem() instanceof BlockItem blocc ? blockColors.getColor(blocc.getBlock().defaultBlockState(), null, null, tintIndex) : -1,
-//			TFBlocks.AURORA_BLOCK.get(), TFBlocks.AURORA_PILLAR.get(), TFBlocks.AURORA_SLAB.get(), TFBlocks.AURORALIZED_GLASS.get(), TFBlocks.DARK_LEAVES.get(), TFBlocks.GIANT_LEAVES.get(), TFBlocks.SMOKER.get(), TFBlocks.FIRE_JET.get(),
-//			TFBlocks.TIME_LEAVES.get(), TFBlocks.TRANSFORMATION_LEAVES.get(), TFBlocks.MINING_LEAVES.get(), TFBlocks.SORTING_LEAVES.get(), TFBlocks.TWILIGHT_OAK_LEAVES.get(), TFBlocks.CANOPY_LEAVES.get(), TFBlocks.MANGROVE_LEAVES.get(), TFBlocks.RAINBOW_OAK_LEAVES.get(), TFBlocks.THORN_LEAVES.get(), TFBlocks.BEANSTALK_LEAVES.get(),
-//			TFBlocks.FALLEN_LEAVES.get(), TFBlocks.FIDDLEHEAD.get(), TFBlocks.POTTED_FIDDLEHEAD.get(), TFBlocks.PINK_CASTLE_RUNE_BRICK.get(), TFBlocks.BLUE_CASTLE_RUNE_BRICK.get(), TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get(), TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(),
-//			TFBlocks.YELLOW_CASTLE_DOOR.get(), TFBlocks.BLUE_CASTLE_DOOR.get(), TFBlocks.PINK_CASTLE_DOOR.get(), TFBlocks.VIOLET_CASTLE_DOOR.get(), TFBlocks.PINK_FORCE_FIELD.get(), TFBlocks.BLUE_FORCE_FIELD.get(), TFBlocks.GREEN_FORCE_FIELD.get(), TFBlocks.ORANGE_FORCE_FIELD.get(), TFBlocks.VIOLET_FORCE_FIELD.get(), TFBlocks.HUGE_LILY_PAD.get(),
-//			TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(), TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get());
-
-		//TODO: Moved to datagen, use ItemModelUtils.tintedModel(Identifier, ItemTintSource...) where ItemTintSource... is new Dye(int)
-//		event.register((stack, index) -> index != 1 ? -1 : DyedItemColor.getOrDefault(stack, ArcticArmorItem.DEFAULT_COLOR), TFItems.ARCTIC_HELMET.get(), TFItems.ARCTIC_CHESTPLATE.get(), TFItems.ARCTIC_LEGGINGS.get(), TFItems.ARCTIC_BOOTS.get());
-
-		//TODO: Moved to datagen, use ItemModelUtils.tintedModel(Identifier, ItemTintSource...) where ItemTintSource... is new FlaskTint(int)
-//		event.register((stack, index) -> {
-//			if (index > 0) return -1;
-//			var contents = stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY);
-//			if (contents.potion().potion().isEmpty()) return -1;
-//			return contents.potion().getColor();
-//		}, TFItems.BRITTLE_FLASK.get(), TFItems.GREATER_FLASK.get());
-
-		//TODO: Moved to datagen, use ItemModelUtils.constant(int) for each layer
-//		for (DeferredSpawnEggItem egg : TFEntities.SPAWN_EGGS.getEntries().stream().map(DeferredHolder::get).map(DeferredSpawnEggItem.class::cast).toList()) {
-//			event.register((stack, index) -> FastColor.ARGB32.opaque(egg.getColor(index)), egg);
-//		}
+		event.register(TwilightForestMod.prefix("potion_flask"), PotionFlaskTintSource.TYPE);
 	}
 }

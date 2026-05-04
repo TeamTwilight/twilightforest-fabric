@@ -44,6 +44,7 @@ public class TFModelTemplates extends ModelTemplates {
 	public static final ModelTemplate BANISTER_TALL = create("twilightforest:banister_tall", "_tall", TextureSlot.TEXTURE);
 	public static final ModelTemplate BANISTER_TALL_EXTENDED = create("twilightforest:banister_tall_extended", "_tall_extended", TextureSlot.TEXTURE);
 	public static final ModelTemplate BANISTER_INVENTORY = createItem("twilightforest:banister_inventory", "_inventory", TextureSlot.TEXTURE);
+	public static final ModelTemplate DRYING_RACK = create("twilightforest:template_drying_rack", TextureSlot.TEXTURE);
 
 	public static final ModelTemplate CORRECTED_DOOR_BOTTOM_LEFT = create("twilightforest:util/corrected_door_bottom_left", "_bottom_left", TextureSlot.TOP, TextureSlot.BOTTOM, TextureSlot.SIDE);
 	public static final ModelTemplate CORRECTED_DOOR_BOTTOM_LEFT_OPEN = create("twilightforest:util/corrected_door_bottom_left_open", "_bottom_left_open", TextureSlot.TOP, TextureSlot.BOTTOM, TextureSlot.SIDE);
@@ -88,4 +89,8 @@ public class TFModelTemplates extends ModelTemplates {
 	public static final ModelTemplate TWO_LAYERED_BOW = createItem("bow", TextureSlot.LAYER0, TextureSlot.LAYER1);
 
 	public static final ModelTemplate JAR_LID = create("twilightforest:jar_lid", TextureSlot.SIDE, TextureSlot.END).extend().parent(TwilightForestMod.prefix("block/jar_lid")).build();
+
+	public static final ModelTemplate SMALL_BUSH = create("twilightforest:util/small_bush", TextureSlot.ALL);
+	public static final ModelTemplate MEDIUM_BUSH = create("twilightforest:util/medium_bush", TextureSlot.ALL);
+	public static final ModelTemplate LARGE_BUSH = create("twilightforest:util/large_bush", TextureSlot.ALL);
 }

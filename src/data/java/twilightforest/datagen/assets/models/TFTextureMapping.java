@@ -2,6 +2,7 @@ package twilightforest.datagen.assets.models;
 
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -52,11 +53,11 @@ public class TFTextureMapping {
 
 	public static TextureMapping ctmBlock(Block block) {
 		var overlay = TextureMapping.getBlockTexture(block);
-		return ctmBlock(null, overlay);
+		return ctmBlock(null, overlay.sprite());
 	}
 
 	public static TextureMapping forcefield() {
-		var tex = TwilightForestMod.prefix("block/forcefield");
+		var tex = new Material(TwilightForestMod.prefix("block/forcefield"));
 		return new TextureMapping().put(TextureSlot.PANE, tex).put(TextureSlot.PARTICLE, tex);
 	}
 
@@ -65,7 +66,7 @@ public class TFTextureMapping {
 		return giantBlock(tex, tex);
 	}
 
-	public static TextureMapping giantBlock(Identifier side, Identifier end) {
+	public static TextureMapping giantBlock(Material side, Material end) {
 		return new TextureMapping()
 			.put(TextureSlot.PARTICLE, side)
 			.put(TextureSlot.NORTH, side)
@@ -79,11 +80,11 @@ public class TFTextureMapping {
 	public static TextureMapping ctmBlock(@Nullable Identifier base, Identifier overlay) {
 		TextureMapping mapping = new TextureMapping();
 		if (base != null) {
-			mapping = mapping.put(TFTextureSlot.CTM_BASE, base).put(TextureSlot.PARTICLE, base);
+			mapping = mapping.put(TFTextureSlot.CTM_BASE, new Material(base)).put(TextureSlot.PARTICLE, new Material(base));
 		} else {
-			mapping = mapping.put(TextureSlot.PARTICLE, overlay);
+			mapping = mapping.put(TextureSlot.PARTICLE, new Material(overlay));
 		}
-		return mapping.put(TFTextureSlot.CTM_OVERLAY, overlay).put(TFTextureSlot.CTM_OVERLAY_CONNECTED, overlay.withSuffix("_ctm"));
+		return mapping.put(TFTextureSlot.CTM_OVERLAY, new Material(overlay)).put(TFTextureSlot.CTM_OVERLAY_CONNECTED, new Material(overlay.withSuffix("_ctm")));
 	}
 
 	public static TextureMapping sideDoor(Block block) {

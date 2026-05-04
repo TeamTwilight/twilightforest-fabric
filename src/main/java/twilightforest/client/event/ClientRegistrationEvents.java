@@ -4,40 +4,30 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.animal.wolf.AdultWolfModel;
-import net.minecraft.client.model.animal.wolf.WolfModel;
 import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.monster.silverfish.SilverfishModel;
 import net.minecraft.client.model.monster.slime.SlimeModel;
 import net.minecraft.client.model.monster.spider.SpiderModel;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
-import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
-import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.client.resources.model.sprite.AtlasManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
-import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
 import net.minecraft.world.phys.AABB;
@@ -50,8 +40,6 @@ import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.map.RegisterMapDecorationRenderersEvent;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
 import twilightforest.TwilightForestMod;
@@ -70,7 +58,7 @@ import twilightforest.client.model.entity.*;
 import twilightforest.client.model.item.TravellersGearItemModel;
 import twilightforest.client.model.item.TrollsteinnModel;
 import twilightforest.client.particle.*;
-import twilightforest.client.renderer.TFSkyRenderer;
+import twilightforest.client.properties.*;
 import twilightforest.client.renderer.armor.TFArmorRenderer;
 import twilightforest.client.renderer.armor.TFSimpleArmorRenderer;
 import twilightforest.client.renderer.block.*;
@@ -82,7 +70,6 @@ import twilightforest.client.renderer.map.MagicMapPlayerIconRenderer;
 import twilightforest.client.renderer.tooltip.ItemDisplayTooltipComponent;
 import twilightforest.client.renderer.tooltip.PotionFlaskTooltipComponent;
 import twilightforest.client.renderer.tooltip.TravellersBeltTooltipComponent;
-import twilightforest.components.item.PotionFlaskComponent;
 import twilightforest.init.*;
 import twilightforest.item.*;
 import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
@@ -90,10 +77,7 @@ import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.item.travellers_gear.TravellersGogglesItem;
 import twilightforest.util.woods.TFWoodTypes;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.function.Predicate;
 
 @Component(dist = Dist.CLIENT)
 public class ClientRegistrationEvents {
@@ -108,7 +92,7 @@ public class ClientRegistrationEvents {
 		bus.addListener(this::clientSetup);
 		bus.addListener(this::registerAdditionalModels);
 		bus.addListener(this::registerClientReloadListeners);
-		bus.addListener(this::registerDimEffects);
+		bus.addListener(this::registerAtlases);
 		bus.addListener(this::registerEntityRenderers);
 		bus.addListener(this::registerLayerDefinitions);
 		bus.addListener(this::registerModelLoaders);
@@ -117,6 +101,10 @@ public class ClientRegistrationEvents {
 		bus.addListener(this::registerClientExtensions);
 		bus.addListener(this::registerMapDecorators);
 		bus.addListener(this::registerParticleFactories);
+		bus.addListener(this::registerConditionalProperties);
+		bus.addListener(this::registerRangeProperties);
+		bus.addListener(this::registerSelectProperties);
+		bus.addListener(this::registerItemModels);
 
 		bus.addListener(RegisterKeyMappingsEvent.class, event -> TFKeyBinds.KEY_MAPPINGS.forEach(event::register));
 
@@ -139,158 +127,32 @@ public class ClientRegistrationEvents {
 		event.registerModel(TwilightForestMod.prefix("noise_varying"), UnbakedNoiseVaryingBlockStateModel.MAP_CODEC);
 	}
 
+	private void registerItemModels(RegisterItemModelsEvent event) {
+		event.register(TwilightForestMod.prefix("travellers_gear"), TravellersGearItemModel.Unbaked.MAP_CODEC);
+	}
+
 	private void registerModelLoaders(ModelEvent.RegisterLoaders event) {
 		event.register(TwilightForestMod.prefix("patch"), PatchModelLoader.INSTANCE);
 		event.register(TwilightForestMod.prefix("force_field"), ForceFieldModelLoader.INSTANCE);
 		event.register(TwilightForestMod.prefix("connected_texture_block"), ConnectedTextureModelLoader.INSTANCE);
 		event.register(TwilightForestMod.prefix("royal_rags"), RoyalRagsModelLoader.INSTANCE);
-		event.register(TwilightForestMod.prefix("travellers_gear"), TravellersGearItemModel.Loader.INSTANCE);
+	}
+
+	private void registerConditionalProperties(RegisterConditionalItemModelPropertyEvent event) {
+		event.register(TwilightForestMod.prefix("moonworm_queen_pulse"), MoonwormQueenPulse.TYPE);
+		event.register(TwilightForestMod.prefix("ore_meter_flash"), OreMeterFlash.TYPE);
+	}
+
+	private void registerRangeProperties(RegisterRangeSelectItemModelPropertyEvent event) {
+		event.register(TwilightForestMod.prefix("potion_flask_dosage"), PotionFlaskDosage.TYPE);
+		event.register(TwilightForestMod.prefix("potion_flask_damage"), PotionFlaskDamage.TYPE);
+	}
+
+	private void registerSelectProperties(RegisterSelectItemModelPropertyEvent event) {
+		event.register(TwilightForestMod.prefix("experiment_115_variant"), Experiment115Type.TYPE);
 	}
 
 	private void bakeCustomModels(ModelEvent.ModifyBakingResult event) {
-		ItemProperties.register(TFItems.CUBE_OF_ANNIHILATION.get(), TwilightForestMod.prefix("thrown"), (stack, level, entity, idk) ->
-			stack.get(TFDataComponents.THROWN_PROJECTILE) != null ? 1 : 0);
-
-		ItemProperties.register(TFItems.KNIGHTMETAL_SHIELD.get(), Identifier.parse("blocking"), (stack, level, entity, idk) ->
-			entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
-
-		ItemProperties.register(TFItems.MOON_DIAL.get(), Identifier.parse("phase"), new ClampedItemPropertyFunction() {
-			@Override
-			public float unclampedCall(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entityBase, int idk) {
-				boolean flag = entityBase != null;
-				Entity entity = flag ? entityBase : stack.getFrame();
-
-				if (level == null && entity != null) level = (ClientLevel) entity.level();
-
-				return level == null ? 0.0F : (float) (level.dimensionType().natural() ? Mth.frac(level.getMoonPhase() / 8.0f) : this.wobble(level, Math.random()));
-			}
-
-			double rotation;
-			double rota;
-			long lastUpdateTick;
-
-			private double wobble(Level level, double rotation) {
-				if (level.getGameTime() != this.lastUpdateTick) {
-					this.lastUpdateTick = level.getGameTime();
-					double delta = rotation - this.rotation;
-					delta = Mth.positiveModulo(delta + 0.5D, 1.0D) - 0.5D;
-					this.rota += delta * 0.1D;
-					this.rota *= 0.9D;
-					this.rotation = Mth.positiveModulo(this.rotation + this.rota, 1.0D);
-				}
-				return this.rotation;
-			}
-		});
-
-		ItemProperties.register(TFItems.ORE_METER.get(), TwilightForestMod.prefix("active"), (stack, level, entity, idk) -> {
-			if (OreMeterItem.isLoading(stack)) {
-				int totalLoadTime = OreMeterItem.LOAD_TIME + OreMeterItem.getRange(stack) * 25;
-				int progress = OreMeterItem.getLoadProgress(stack);
-				return progress % 5 >= 2 + (int) (Math.random() * 2) && progress <= totalLoadTime - 15 ? 1 : 0;
-			}
-			return stack.has(TFDataComponents.ORE_DATA) ? 1 : 0;
-		});
-
-		ItemProperties.register(TFItems.MOONWORM_QUEEN.get(), TwilightForestMod.prefix("alt"), (stack, level, entity, idk) -> {
-			if (entity != null && entity.getUseItem() == stack) {
-				int useTime = stack.getUseDuration(entity) - entity.getUseItemRemainingTicks();
-				if (useTime >= MoonwormQueenItem.FIRING_TIME && (useTime >>> 1) % 2 == 0) {
-					return 1;
-				}
-			}
-			return 0;
-		});
-
-		ItemProperties.register(TFItems.ENDER_BOW.get(), Identifier.parse("pull"), (stack, level, entity, idk) -> {
-			if (entity == null) return 0.0F;
-			else
-				return entity.getUseItem() != stack ? 0.0F : (stack.getUseDuration(entity) - entity.getUseItemRemainingTicks()) / 20.0F;
-		});
-
-		ItemProperties.register(TFItems.ENDER_BOW.get(), Identifier.parse("pulling"), (stack, level, entity, idk) ->
-			entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
-
-		ItemProperties.register(TFItems.ICE_BOW.get(), Identifier.parse("pull"), (stack, level, entity, idk) -> {
-			if (entity == null) return 0.0F;
-			else
-				return entity.getUseItem() != stack ? 0.0F : (stack.getUseDuration(entity) - entity.getUseItemRemainingTicks()) / 20.0F;
-		});
-
-		ItemProperties.register(TFItems.ICE_BOW.get(), Identifier.parse("pulling"), (stack, level, entity, idk) ->
-			entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
-
-		ItemProperties.register(TFItems.SEEKER_BOW.get(), Identifier.parse("pull"), (stack, level, entity, idk) -> {
-			if (entity == null) return 0.0F;
-			else
-				return entity.getUseItem() != stack ? 0.0F : (stack.getUseDuration(entity) - entity.getUseItemRemainingTicks()) / 20.0F;
-		});
-
-		ItemProperties.register(TFItems.SEEKER_BOW.get(), Identifier.parse("pulling"), (stack, level, entity, idk) ->
-			entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
-
-		ItemProperties.register(TFItems.TRIPLE_BOW.get(), Identifier.parse("pull"), (stack, level, entity, idk) -> {
-			if (entity == null) return 0.0F;
-			else
-				return entity.getUseItem() != stack ? 0.0F : (stack.getUseDuration(entity) - entity.getUseItemRemainingTicks()) / 20.0F;
-		});
-
-		ItemProperties.register(TFItems.TRIPLE_BOW.get(), Identifier.parse("pulling"), (stack, level, entity, idk) ->
-			entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
-
-		ItemProperties.register(TFItems.ORE_MAGNET.get(), Identifier.parse("pull"), (stack, level, entity, idk) -> {
-			if (entity == null) return 0.0F;
-			else {
-				ItemStack itemstack = entity.getUseItem();
-				return !itemstack.isEmpty() ? (stack.getUseDuration(entity) - entity.getUseItemRemainingTicks()) / 20.0F : 0.0F;
-			}
-		});
-
-		ItemProperties.register(TFBlocks.RED_THREAD.get().asItem(), TwilightForestMod.prefix("size"), (stack, level, entity, idk) -> {
-			if (stack.getCount() >= 32) {
-				return 1.0F;
-			} else if (stack.getCount() >= 16) {
-				return 0.5F;
-			} else if (stack.getCount() >= 4) {
-				return 0.25F;
-			}
-			return 0.0F;
-		});
-
-		ItemProperties.register(TFItems.ORE_MAGNET.get(), Identifier.parse("pulling"), (stack, level, entity, idk) ->
-			entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
-
-		ItemProperties.register(TFItems.BLOCK_AND_CHAIN.get(), TwilightForestMod.prefix("thrown"), (stack, level, entity, idk) ->
-			stack.get(TFDataComponents.THROWN_PROJECTILE) != null ? 1 : 0);
-
-		ItemProperties.register(TFItems.EXPERIMENT_115.get(), Experiment115Item.THINK, (stack, level, entity, idk) ->
-			stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS) != null && stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS).equals("think") ? 1 : 0);
-
-		ItemProperties.register(TFItems.EXPERIMENT_115.get(), Experiment115Item.FULL, (stack, level, entity, idk) ->
-			stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS) != null && stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS).equals("full") ? 1 : 0);
-
-		ItemProperties.register(TFItems.BRITTLE_FLASK.get(), TwilightForestMod.prefix("breakage"), (stack, level, entity, i) ->
-			stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY).breakage());
-
-		ItemProperties.register(TFItems.BRITTLE_FLASK.get(), TwilightForestMod.prefix("potion_level"), (stack, level, entity, i) ->
-			stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY).doses());
-
-		ItemProperties.register(TFItems.GREATER_FLASK.get(), TwilightForestMod.prefix("potion_level"), (stack, level, entity, i) ->
-			stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY).doses());
-
-		ItemProperties.register(TFItems.CRUMBLE_HORN.get(), TwilightForestMod.prefix("tooting"), (stack, world, entity, i) ->
-			entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F
-		);
-
-		Predicate<Identifier> mippedIDs = location -> location.getNamespace().equals(TwilightForestMod.ID) && //only TF blocks
-			((location.getPath().contains("leaves") && !location.getPath().contains("dark")) || //all TF leaves (except dark)
-				location.getPath().contains("_bush") || //all berry bushes
-				location.getPath().contains("_oreberry")); //all oreberry bushes
-
-		Map<ModelResourceLocation, BakedModel> models = event.getModels();
-		List<Map.Entry<ModelResourceLocation, BakedModel>> mippedModels = models.entrySet().stream().filter(entry -> mippedIDs.test(entry.getKey().id())).toList();
-
-		mippedModels.forEach(entry -> models.put(entry.getKey(), new ConditionalMippedModel(entry.getValue())));
-
 		BakedModel oldModel = event.getModels().get(ModelResourceLocation.inventory(TwilightForestMod.prefix("trollsteinn")));
 		models.put(ModelResourceLocation.inventory(TwilightForestMod.prefix("trollsteinn")), new TrollsteinnModel(oldModel));
 		BakedModel defaultReactorDebrisModel = event.getModels().get(ModelResourceLocation.vanilla("netherrack", ""));
@@ -320,11 +182,6 @@ public class ClientRegistrationEvents {
 		});
 	}
 
-	private void registerDimEffects(RegisterDimensionSpecialEffectsEvent event) {
-		TFSkyRenderer.createStars();
-		event.register(TFDimension.DIMENSION_RENDERER, new TwilightForestRenderInfo(128.0F, false, DimensionSpecialEffects.SkyType.NONE, false, false));
-	}
-
 	private void clientSetup(FMLClientSetupEvent evt) {
 		try {
 			Class.forName("net.optifine.Config");
@@ -345,11 +202,13 @@ public class ClientRegistrationEvents {
 		});
 	}
 
-	private void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
-		MagicPaintingTextureManager.instance = new MagicPaintingTextureManager(Minecraft.getInstance().getTextureManager());
-		event.registerReloadListener(MagicPaintingTextureManager.instance);
-		event.registerReloadListener(TextureGeneratorReloadListener.INSTANCE);
-		event.registerReloadListener(new TFArmorRenderer.ResourceReloadListener());
+	private void registerAtlases(RegisterTextureAtlasesEvent event) {
+		event.register(new AtlasManager.AtlasConfig(MagicPaintingAtlasInfo.ATLAS_LOCATION, MagicPaintingAtlasInfo.ATLAS_INFO_LOCATION, false));
+	}
+
+	private void registerClientReloadListeners(AddClientReloadListenersEvent event) {
+		event.addListener(TwilightForestMod.prefix("texture_generator"), TextureGeneratorReloadListener.INSTANCE);
+		event.addListener(TwilightForestMod.prefix("armor_cache"), new TFArmorRenderer.ResourceReloadListener());
 	}
 
 	private void registerScreens(RegisterMenuScreensEvent event) {
@@ -611,7 +470,7 @@ public class ClientRegistrationEvents {
 		event.registerBlock(new IClientBlockExtensions() {
 			@Override
 			public boolean addHitEffects(BlockState state, Level level, HitResult target, ParticleEngine manager) {
-				if (level.random.nextBoolean() && target instanceof BlockHitResult hitResult) { // No clue why the parameter isn't blockHitResult, this should be always true, but we check just in case
+				if (level.getRandom().nextBoolean() && target instanceof BlockHitResult hitResult) { // No clue why the parameter isn't blockHitResult, this should be always true, but we check just in case
 					BlockPos pos = hitResult.getBlockPos();
 					BlockState blockstate = level.getBlockState(pos);
 					if (blockstate.getRenderShape() != RenderShape.INVISIBLE) {
@@ -622,9 +481,9 @@ public class ClientRegistrationEvents {
 						int posZ = pos.getZ();
 
 						AABB aabb = blockstate.getShape(level, pos).bounds();
-						double x = (double) posX + level.random.nextDouble() * (aabb.maxX - aabb.minX - (double) 0.2F) + (double) 0.1F + aabb.minX;
-						double y = (double) posY + level.random.nextDouble() * (aabb.maxY - aabb.minY - (double) 0.2F) + (double) 0.1F + aabb.minY;
-						double z = (double) posZ + level.random.nextDouble() * (aabb.maxZ - aabb.minZ - (double) 0.2F) + (double) 0.1F + aabb.minZ;
+						double x = (double) posX + level.getRandom().nextDouble() * (aabb.maxX - aabb.minX - (double) 0.2F) + (double) 0.1F + aabb.minX;
+						double y = (double) posY + level.getRandom().nextDouble() * (aabb.maxY - aabb.minY - (double) 0.2F) + (double) 0.1F + aabb.minY;
+						double z = (double) posZ + level.getRandom().nextDouble() * (aabb.maxZ - aabb.minZ - (double) 0.2F) + (double) 0.1F + aabb.minZ;
 
 						if (side == Direction.DOWN) y = (double) posY + aabb.minY - (double) 0.1F;
 						if (side == Direction.UP) y = (double) posY + aabb.maxY + (double) 0.1F;
@@ -655,11 +514,11 @@ public class ClientRegistrationEvents {
 					int zMax = Math.max(2, Mth.ceil(zSize / 0.25D));
 
 					for (int xSlice = 0; xSlice < xMax; ++xSlice) {
-						if (level.random.nextInt(3) == 1) continue;
+						if (level.getRandom().nextInt(3) == 1) continue;
 						for (int ySlice = 0; ySlice < yMax; ++ySlice) {
-							if (level.random.nextInt(3) == 1) continue;
+							if (level.getRandom().nextInt(3) == 1) continue;
 							for (int zSlice = 0; zSlice < zMax; ++zSlice) {
-								if (level.random.nextInt(3) == 1) continue;
+								if (level.getRandom().nextInt(3) == 1) continue;
 
 								double speedX = ((double) xSlice + 0.5D) / (double) xMax;
 								double speedY = ((double) ySlice + 0.5D) / (double) yMax;
@@ -745,9 +604,5 @@ public class ClientRegistrationEvents {
 
 	public static boolean isOptifinePresent() {
 		return optifinePresent;
-	}
-
-	private float isBroken(@NotNull ItemStack stack, @Nullable ClientLevel world, @Nullable LivingEntity livingEntity, int seed) {
-		return stack.getDamageValue() >= stack.getMaxDamage() - 1 ? 1F : 0F;
 	}
 }

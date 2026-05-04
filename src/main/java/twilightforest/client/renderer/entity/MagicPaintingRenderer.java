@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -25,7 +26,7 @@ import net.minecraft.world.food.FoodData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.client.MagicPaintingTextureManager;
+import twilightforest.client.MagicPaintingAtlasInfo;
 import twilightforest.client.state.entity.MagicPaintingRenderState;
 import twilightforest.entity.MagicPainting;
 import twilightforest.entity.MagicPaintingVariant;
@@ -35,10 +36,13 @@ import twilightforest.entity.MagicPaintingVariant.Layer.Parallax;
 import javax.annotation.Nullable;
 
 public class MagicPaintingRenderer extends EntityRenderer<MagicPainting, MagicPaintingRenderState> {
+
+	private final TextureAtlas paintingAtlas;
 	public static long lastLightning = 0L;
 
-	public MagicPaintingRenderer(EntityRendererProvider.Context pContext) {
-		super(pContext);
+	public MagicPaintingRenderer(EntityRendererProvider.Context context) {
+		super(context);
+		this.paintingAtlas = context.getAtlas(MagicPaintingAtlasInfo.ATLAS_LOCATION);
 	}
 
 	@Override
@@ -49,12 +53,15 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting, MagicPa
 			stack.pushPose();
 			stack.mulPose(Axis.YP.rotationDegrees(180.0F - state.direction.get2DDataValue() * 90));
 			stack.scale(0.0625F, 0.0625F, 0.0625F);
-			MagicPaintingTextureManager manager = MagicPaintingTextureManager.instance;
-			TextureAtlasSprite textureatlassprite = manager.getBackSprite(variant);
+			TextureAtlasSprite textureatlassprite = this.paintingAtlas.getSprite(variant.backTexture());
 			this.renderPainting(state, camera, stack, collector, RenderTypes.entityTranslucent(textureatlassprite.atlasLocation()), state.lightCoords, variant.width(), variant.height(), textureatlassprite);
 			stack.popPose();
 			super.submit(state, stack, collector, camera);
 		}
+	}
+
+	public TextureAtlasSprite getLayerSprite(Identifier variant, MagicPaintingVariant.Layer layer) {
+		return this.paintingAtlas.getSprite(variant.withPrefix(MagicPaintingAtlasInfo.MAGIC_PAINTING_PATH + "/").withSuffix("/" + layer.path()));
 	}
 
 	private void renderPainting(MagicPaintingRenderState state, CameraRenderState cameraState, PoseStack stack, SubmitNodeCollector collector, RenderType renderType, int[] worldLight, int width, int height, TextureAtlasSprite backSprite) {
@@ -94,7 +101,7 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting, MagicPa
 				double heightDiff = parallax != null ? (heightFactor - layerHeightFactor) * (double) heightAsBlock * 0.5D : 0.0D;
 				double heightOffset = heightDiff != 0.0D ? this.getHeightOffset(parallax, state, cameraState, heightDiff) : 0.0D;
 
-				TextureAtlasSprite layerTexture = MagicPaintingTextureManager.instance.getLayerSprite(textureLocation, layer);
+				TextureAtlasSprite layerTexture = this.getLayerSprite(textureLocation, layer);
 
 				for (int w = 0; w < widthAsBlock; ++w) {
 					for (int h = 0; h < heightAsBlock; ++h) {

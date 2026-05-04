@@ -16,7 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.MagicPaintingTextureManager;
+import twilightforest.client.MagicPaintingAtlasInfo;
 import twilightforest.data.AtlasGenerator;
 import twilightforest.data.LangGenerator;
 import twilightforest.entity.MagicPaintingVariant;
@@ -44,7 +44,7 @@ public class MagicPaintingVariants {
 	}
 
 	public static void bootstrap(BootstrapContext<MagicPaintingVariant> context) {
-		register(context, DARKNESS, "Darkness", /* Name omitted by choice */ "???", 4, 2, MagicPaintingTextureManager.BACK_SPRITE_LOCATION, List.of(
+		register(context, DARKNESS, "Darkness", /* Name omitted by choice */ "???", 4, 2, MagicPaintingAtlasInfo.BACK_SPRITE_LOCATION, List.of(
 			new Layer("background", null, null, true, true),
 			new Layer("sky", new Parallax(Parallax.Type.VIEW_ANGLE, 0.01F, 128, 32), new OpacityModifier(OpacityModifier.Type.SINE_TIME, 0.03F, false, 0.0F, 1.0F), true, true),
 			new Layer("terrain", null, null, false, true),
@@ -53,7 +53,7 @@ public class MagicPaintingVariants {
 			new Layer("lightning", null, new OpacityModifier(OpacityModifier.Type.LIGHTNING, 1.0F, false, 0.0F, 1.0F), true, true),
 			new Layer("frame", null, null, false, false)
 		));
-		register(context, LUCID_LANDS, "Lucid Lands", "Androsa", 3, 3, MagicPaintingTextureManager.BACK_SPRITE_LOCATION, List.of(
+		register(context, LUCID_LANDS, "Lucid Lands", "Androsa", 3, 3, MagicPaintingAtlasInfo.BACK_SPRITE_LOCATION, List.of(
 			new Layer("background", null, null, true, true),
 			new Layer("clouds", new Parallax(Parallax.Type.LINEAR_TIME, 0.00075F, 122, 48), null, true, true),
 			new Layer("mookaite_mesa", null, null, true, true),
@@ -72,7 +72,7 @@ public class MagicPaintingVariants {
 			new Layer("goldstone_plains", new Parallax(Parallax.Type.VIEW_ANGLE, 0.006F, 74, 48), new OpacityModifier(OpacityModifier.Type.MOB_EFFECT_CATEGORY, 0.01F, false, 0.0F, 1.0F, MobEffectCategory.HARMFUL), false, true),
 			new Layer("frame", null, null, false, false)
 		));
-		register(context, THE_HOSTILE_PARADISE, "The Hostile Paradise", "Oz", 3, 2, MagicPaintingTextureManager.BACK_SPRITE_LOCATION, List.of(
+		register(context, THE_HOSTILE_PARADISE, "The Hostile Paradise", "Oz", 3, 2, MagicPaintingAtlasInfo.BACK_SPRITE_LOCATION, List.of(
 			new Layer("1_background", null, null, true, true),
 			new Layer("2_distant_islands_par", new Parallax(Parallax.Type.VIEW_ANGLE, 0.02F, 86, 38), null, true, true),
 			new Layer("3_gold_dungeon_par", new Parallax(Parallax.Type.VIEW_ANGLE, 0.02F, 78, 36), null, true, true),
@@ -87,7 +87,7 @@ public class MagicPaintingVariants {
 			new Layer("12_clouds_par", new Parallax(Parallax.Type.VIEW_ANGLE, 0.02F, 58, 32), new OpacityModifier(OpacityModifier.Type.DISTANCE, 1.0F, false, 0.0F, 1.0F, 12.0F, 24.0F), true, true),
 			new Layer("13_frame", null, null, false, false)
 		));
-		register(context, CASTAWAY_PARADISE, "Castaway Paradise", "HexaBlu", 2, 4, MagicPaintingTextureManager.BACK_SPRITE_LOCATION, List.of(
+		register(context, CASTAWAY_PARADISE, "Castaway Paradise", "HexaBlu", 2, 4, MagicPaintingAtlasInfo.BACK_SPRITE_LOCATION, List.of(
 			new Layer("sunset", new Parallax(Parallax.Type.VIEW_ANGLE, 0.01F, 64, 64), null, true, true),
 			new Layer("sun", null, null, true, true),
 			new Layer("faraway_palm", null, null, false, true),
@@ -96,7 +96,7 @@ public class MagicPaintingVariants {
 			new Layer("palm_tree", null, null, false, true),
 			new Layer("frame", null, null, false, false)
 		));
-		register(context, MUSIC_IN_THE_MIRE, "Music in the Mire", "TripleHeadedSheep", 4, 3, MagicPaintingTextureManager.BACK_SPRITE_LOCATION, List.of(
+		register(context, MUSIC_IN_THE_MIRE, "Music in the Mire", "TripleHeadedSheep", 4, 3, MagicPaintingAtlasInfo.BACK_SPRITE_LOCATION, List.of(
 			new Layer("bl_sky", new Parallax(Parallax.Type.VIEW_ANGLE, 0.015F, 88, 56), null, false, true),
 			new Layer("bl_roots", new Parallax(Parallax.Type.VIEW_ANGLE, 0.015F, 84, 52), null, true, true),
 			new Layer("bl_lightning", new Parallax(Parallax.Type.VIEW_ANGLE, 0.015F, 78, 52), new OpacityModifier(OpacityModifier.Type.LIGHTNING, 1.0F, false, 0.0F, 1.0F), false, true),

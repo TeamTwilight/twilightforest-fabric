@@ -9,6 +9,7 @@ import net.minecraft.client.data.models.model.*;
 import net.minecraft.client.renderer.block.dispatch.Variant;
 import net.minecraft.client.renderer.block.dispatch.VariantMutator;
 import net.minecraft.client.renderer.item.ItemModel;
+import net.minecraft.client.renderer.item.SelectItemModel;
 import net.minecraft.client.renderer.item.properties.select.DisplayContext;
 import net.minecraft.client.renderer.special.ChestSpecialRenderer;
 import net.minecraft.client.resources.model.sprite.Material;
@@ -21,6 +22,8 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.neoforged.neoforge.client.model.block.CompositeBlockModel;
+import net.neoforged.neoforge.client.model.generators.blockstate.CompositeBlockStateModelBuilder;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
@@ -63,9 +66,18 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		MultiVariant template = plainVariant(ModelLocationUtils.decorateBlockModelLocation("skull"));
 		this.blockStateOutput.accept(createSimpleBlock(floor, template));
 		this.blockStateOutput.accept(createSimpleBlock(wall, template));
-		var itemTrophy = ItemModelUtils.specialModel(ModelLocationUtils.decorateItemModelLocation("twilightforest:" + existingTrophy), new TrophySpecialRenderer.Unbaked(floor.getVariant()));
-		this.itemModelOutput.accept(floor.asItem(), ItemModelUtils.select(new DisplayContext(), itemTrophy,
-			ItemModelUtils.when(ItemDisplayContext.GUI, ItemModelUtils.composite(backplate, itemTrophy))));
+		Function<ItemDisplayContext, ItemModel.Unbaked> itemTrophy = ctx -> ItemModelUtils.specialModel(ModelLocationUtils.decorateItemModelLocation("twilightforest:" + existingTrophy), new TrophySpecialRenderer.Unbaked(floor.getVariant(), ctx));
+
+		List<SelectItemModel.SwitchCase<ItemDisplayContext>> cases = new ArrayList<>();
+		for (ItemDisplayContext context : ItemDisplayContext.values()) {
+			if (context == ItemDisplayContext.GUI) {
+				cases.add(new SelectItemModel.SwitchCase<>(List.of(context), ItemModelUtils.composite(backplate, itemTrophy.apply(context))));
+			} else {
+				cases.add(new SelectItemModel.SwitchCase<>(List.of(context), itemTrophy.apply(context)));
+			}
+		}
+
+		this.itemModelOutput.accept(floor.asItem(), ItemModelUtils.select(new DisplayContext(), cases));
 	}
 
 	public void generateSkullCandle(AbstractSkullCandleBlock floor, AbstractSkullCandleBlock wall) {
@@ -77,7 +89,7 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 
 	public void spawner(Block block, String texture) {
 		TextureMapping texturemapping = TextureMapping.cube(new Material(TwilightForestMod.prefix(texture)));
-		this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(ModelTemplates.CUBE_ALL_INNER_FACES.extend().build().create(block, texturemapping, this.modelOutput))));
+		this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(ModelTemplates.CUBE_ALL_INNER_FACES.create(block, texturemapping, this.modelOutput))));
 		this.generateBlockItem(block);
 	}
 
@@ -168,7 +180,7 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		etchedNagastone(TFBlocks.MOSSY_ETCHED_NAGASTONE.get(), "_mossy");
 		etchedNagastone(TFBlocks.CRACKED_ETCHED_NAGASTONE.get(), "_weathered");
 
-		bisectedStairsBlock(TFBlocks.NAGASTONE_STAIRS_LEFT.get(), TwilightForestMod.prefix("block/etched_nagastone_left"), TwilightForestMod.prefix("block/stone_tiles"), TwilightForestMod.prefix("block/nagastone_bare"));
+		bisectedStairsBlock(TFBlocks.NAGASTONE_STAIRS_LEFT.get(), ModelLocationUtils.decorateBlockModelLocation("block/etched_nagastone_left"), TwilightForestMod.prefix("block/stone_tiles"), TwilightForestMod.prefix("block/nagastone_bare"));
 		bisectedStairsBlock(TFBlocks.NAGASTONE_STAIRS_RIGHT.get(), TwilightForestMod.prefix("block/etched_nagastone_right"), TwilightForestMod.prefix("block/stone_tiles"), TwilightForestMod.prefix("block/nagastone_bare"));
 		bisectedStairsBlock(TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT.get(), TwilightForestMod.prefix("block/etched_nagastone_left_mossy"), TwilightForestMod.prefix("block/stone_tiles_mossy"), TwilightForestMod.prefix("block/nagastone_bare_mossy"));
 		bisectedStairsBlock(TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT.get(), TwilightForestMod.prefix("block/etched_nagastone_right_mossy"), TwilightForestMod.prefix("block/stone_tiles_mossy"), TwilightForestMod.prefix("block/nagastone_bare_mossy"));
@@ -219,19 +231,23 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(model));
 	}
 
-	protected void bisectedStairsBlock(Block block, Identifier side, Identifier end, Identifier middle) {
+	protected void bisectedStairsBlock(Block block, Material side, Material end, Material middle) {
 		TextureMapping mapping = TextureMapping.cube(block)
-			.put(TextureSlot.BOTTOM, new Material(end))
-			.put(TextureSlot.TOP, new Material(end))
-			.put(TextureSlot.SIDE, new Material(side))
-			.put(TFTextureSlot.MIDDLE, new Material(middle))
-			.put(TextureSlot.PARTICLE, new Material(middle));
+			.put(TextureSlot.BOTTOM, end)
+			.put(TextureSlot.TOP, end)
+			.put(TextureSlot.SIDE, side)
+			.put(TFTextureSlot.MIDDLE, middle)
+			.put(TextureSlot.PARTICLE, middle);
 
-		Identifier inner = TFModelTemplates.BISECTED_STAIRS_INNER.createWithSuffix(block, "_inner", mapping, this.modelOutput);
+		MultiVariant inner = plainVariant(TFModelTemplates.BISECTED_STAIRS_INNER.createWithSuffix(block, "_inner", mapping, this.modelOutput));
 		Identifier straight = TFModelTemplates.BISECTED_STAIRS_STRAIGHT.create(block, mapping, this.modelOutput);
-		Identifier outer = TFModelTemplates.BISECTED_STAIRS_OUTER.createWithSuffix(block, "_outer", mapping, this.modelOutput);
-		this.blockStateOutput.accept(createStairs(block, plainVariant(inner), plainVariant(straight), plainVariant(outer)));
+		MultiVariant outer = plainVariant(TFModelTemplates.BISECTED_STAIRS_OUTER.createWithSuffix(block, "_outer", mapping, this.modelOutput));
+		this.blockStateOutput.accept(createStairs(block, inner, plainVariant(straight), outer));
 		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(straight));
+	}
+
+	protected void bisectedStairsBlock(Block block, Identifier side, Identifier end, Identifier middle) {
+		this.bisectedStairsBlock(block, new Material(side), new Material(end), new Material(middle));
 	}
 
 	public void stonePillar() {
@@ -633,7 +649,7 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 	}
 
 	public void directionalCrossModel(Block block, PlantType type) {
-		Identifier identifier = type.getCross().extend().build().create(block, TextureMapping.cross(block), this.modelOutput);
+		Identifier identifier = type.getCross().create(block, TextureMapping.cross(block), this.modelOutput);
 
 		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(this.createFlatItemModelWithBlockTexture(block.asItem(), block)));
 		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(block).with(
@@ -782,16 +798,16 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 				.ifElse().from(7, 7, 9).to(9, 9, 16).parents(ForceFieldModel.ExtraDirection.SOUTH).face(Direction.EAST).uvs(9, 7, 16, 9).texture("#pane").end()
 				.ifSame().from(9, 7, 7).to(16, 9, 9).parents(ForceFieldModel.ExtraDirection.EAST).face(Direction.SOUTH).uvs(0, 7, 7, 9).texture("#pane").end().end();
 		}).build().create(block, TFTextureMapping.forcefield(), this.modelOutput))));
-		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.extend().build().create(ModelLocationUtils.getModelLocation(block.asItem()), TextureMapping.layer0(new Material(TwilightForestMod.prefix("block/forcefield"))), this.modelOutput), ItemModelUtils.constantTint(tint)));
+		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(block.asItem()), TextureMapping.layer0(new Material(TwilightForestMod.prefix("block/forcefield"))), this.modelOutput), ItemModelUtils.constantTint(tint)));
 	}
 
 	public void generatePaneBlock(Block glassBlock, Block paneBlock) {
 		TextureMapping mapping = new TextureMapping().put(TextureSlot.PANE, TextureMapping.getBlockTexture(glassBlock)).put(TextureSlot.EDGE, TextureMapping.getBlockTexture(glassBlock));
-		Identifier post = ModelTemplates.STAINED_GLASS_PANE_POST.extend().build().create(paneBlock, mapping, this.modelOutput);
-		Identifier side = ModelTemplates.STAINED_GLASS_PANE_SIDE.extend().build().create(paneBlock, mapping, this.modelOutput);
-		Identifier sideAlt = ModelTemplates.STAINED_GLASS_PANE_SIDE_ALT.extend().build().create(paneBlock, mapping, this.modelOutput);
-		Identifier noSide = ModelTemplates.STAINED_GLASS_PANE_NOSIDE.extend().build().create(paneBlock, mapping, this.modelOutput);
-		Identifier noSideAlt = ModelTemplates.STAINED_GLASS_PANE_NOSIDE_ALT.extend().build().create(paneBlock, mapping, this.modelOutput);
+		Identifier post = ModelTemplates.STAINED_GLASS_PANE_POST.create(paneBlock, mapping, this.modelOutput);
+		Identifier side = ModelTemplates.STAINED_GLASS_PANE_SIDE.create(paneBlock, mapping, this.modelOutput);
+		Identifier sideAlt = ModelTemplates.STAINED_GLASS_PANE_SIDE_ALT.create(paneBlock, mapping, this.modelOutput);
+		Identifier noSide = ModelTemplates.STAINED_GLASS_PANE_NOSIDE.create(paneBlock, mapping, this.modelOutput);
+		Identifier noSideAlt = ModelTemplates.STAINED_GLASS_PANE_NOSIDE_ALT.create(paneBlock, mapping, this.modelOutput);
 		Item item = paneBlock.asItem();
 		this.registerSimpleItemModel(item, this.createFlatItemModelWithBlockTexture(item, glassBlock));
 		this.blockStateOutput
@@ -912,7 +928,7 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 			Direction.EAST, ImmutableMap.of(HugeLilypadPiece.NW, models[3], HugeLilypadPiece.NE, models[0], HugeLilypadPiece.SE, models[1], HugeLilypadPiece.SW, models[2])
 		);
 
-		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(block).with(PropertyDispatch.initial(HugeLilyPadBlock.PIECE, HugeLilyPadBlock.FACING).generate((piece, facing) -> plainVariant(stateMap.get(facing).get(piece)).with(getYRotationFromDirection(facing)))));
+		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(block).with(PropertyDispatch.initial(HugeLilyPadBlock.PIECE, HugeLilyPadBlock.FACING).generate((piece, facing) -> createRotatedVariants(plainModel(stateMap.get(facing).get(piece))))));
 		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(block.asItem()), TextureMapping.layer0(block), this.modelOutput), ItemModelUtils.constantTint(-9321636)));
 	}
 
@@ -948,5 +964,34 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		this.createParticleOnlyBlock(chestBlock, particleBlock);
 		Item item = chestBlock.asItem();
 		this.itemModelOutput.accept(item, ItemModelUtils.specialModel(ModelTemplates.CHEST_INVENTORY.create(item, TextureMapping.particle(particleBlock), this.modelOutput), new ChestSpecialRenderer.Unbaked(texture)));
+	}
+
+	//TODO god I hope this works as I want it to
+	public void generateBush(Block bush) {
+		Identifier small = TFModelTemplates.SMALL_BUSH.createWithSuffix(bush, "_small", TextureMapping.cube(bush), this.modelOutput);
+		MultiVariant medium = plainVariant(TFModelTemplates.MEDIUM_BUSH.create(bush, TextureMapping.cube(bush), this.modelOutput));
+		MultiVariant large = plainVariant(TFModelTemplates.LARGE_BUSH.createWithSuffix(bush, "_large", TextureMapping.cube(bush), this.modelOutput));
+		MultiVariant grown = plainVariant(TFModelTemplates.LARGE_BUSH.createWithSuffix(bush,"_ripe", TextureMapping.cube(TextureMapping.getBlockTexture(bush, "_ripe")), this.modelOutput));
+
+		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(bush).with(PropertyDispatch.initial(TFBushBlock.AGE, TFBushBlock.SNOW_LAYERS).generate((age, snow) -> {
+			MultiVariant bushModel = switch (age) {
+				case 1 -> medium;
+				case 2 -> large;
+				case 3 -> grown;
+				default -> plainVariant(small);
+			};
+			if (snow > 0) {
+				MultiVariant snowModel = snow < 8 ? plainVariant(ModelLocationUtils.getModelLocation(Blocks.SNOW, "_height" + snow * 2)) : plainVariant(ModelLocationUtils.getModelLocation(Blocks.SNOW_BLOCK));
+
+				CompositeBlockStateModelBuilder builder = new CompositeBlockStateModelBuilder();
+				builder.addPartModel(bushModel.toUnbaked());
+				builder.addPartModel(snowModel.toUnbaked());
+
+				return MultiVariant.of(builder);
+			} else {
+				return bushModel;
+			}
+		})));
+		this.itemModelOutput.accept(bush.asItem(), ItemModelUtils.plainModel(small));
 	}
 }
