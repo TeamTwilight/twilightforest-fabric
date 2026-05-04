@@ -22,12 +22,18 @@ import twilightforest.data.LangGenerator;
 import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.entity.MagicPaintingVariant.Layer;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static twilightforest.entity.MagicPaintingVariant.Layer.OpacityModifier;
 import static twilightforest.entity.MagicPaintingVariant.Layer.Parallax;
 
 public class MagicPaintingVariants {
+
+	public static final Map<Identifier, Pair<String, String>> MAGIC_PAINTING_LANG_HELPER = new HashMap<>();
+	public static final Map<Identifier, MagicPaintingVariant> MAGIC_PAINTING_ATLAS_HELPER = new HashMap<>();
+
 	public static final Codec<Holder<MagicPaintingVariant>> CODEC = RegistryFileCodec.create(TFRegistries.Keys.MAGIC_PAINTINGS, MagicPaintingVariant.CODEC, false);
 	public static final StreamCodec<? super RegistryFriendlyByteBuf, Holder<MagicPaintingVariant>> STREAM_CODEC = ByteBufCodecs.holderRegistry(TFRegistries.Keys.MAGIC_PAINTINGS);
 
@@ -116,8 +122,8 @@ public class MagicPaintingVariants {
 		Component titleComponent = Component.translatable(key.identifier().toLanguageKey("magic_painting", "title"));
 		Component authorComponent = Component.translatable(key.identifier().toLanguageKey("magic_painting", "author"));
 		MagicPaintingVariant variant = new MagicPaintingVariant(width * 16, height * 16, layers, titleComponent, authorComponent, backSprite);
-		AtlasGenerator.MAGIC_PAINTING_HELPER.put(key.identifier(), variant);
-		LangGenerator.MAGIC_PAINTING_HELPER.put(key.identifier(), Pair.of(title, author));
+		MAGIC_PAINTING_ATLAS_HELPER.put(key.identifier(), variant);
+		MAGIC_PAINTING_LANG_HELPER.put(key.identifier(), Pair.of(title, author));
 		context.register(key, variant);
 	}
 }

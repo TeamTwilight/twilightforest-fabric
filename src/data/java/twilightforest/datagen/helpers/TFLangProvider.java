@@ -6,6 +6,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.util.Util;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.CachedOutput;
@@ -19,6 +21,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.gamerules.GameRule;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -26,22 +30,27 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import org.apache.commons.lang3.text.WordUtils;
 import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
+import twilightforest.init.TFKeyBindsCategories;
+import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 public abstract class TFLangProvider extends LanguageProvider {
 
 	private final Map<String, String> TF_TIPS = new HashMap<>();
 	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	private final PackOutput output;
+	private final CompletableFuture<HolderLookup.Provider> registries;
 	public final Map<String, String> upsideDownEntries = new HashMap<>();
 
-	public TFLangProvider(PackOutput output) {
+	public TFLangProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
 		super(output, TwilightForestMod.ID, "en_us");
 		this.output = output;
+		this.registries = registries;
 	}
 
 	@Override
@@ -51,8 +60,13 @@ public abstract class TFLangProvider extends LanguageProvider {
 		this.upsideDownEntries.put(key, LangConversionHelper.convertComponents(splitEnglish));
 	}
 
+	@Override
+	protected final void addTranslations() {}
+
+	protected abstract void addTranslations(HolderLookup.Provider registries);
+
 	public void addBiome(ResourceKey<Biome> biome, String name) {
-		this.add("biome.twilightforest." + biome.location().getPath(), name);
+		this.add("biome.twilightforest." + biome.identifier().getPath(), name);
 	}
 
 	public void addSapling(String woodPrefix, String saplingName) {
@@ -91,6 +105,15 @@ public abstract class TFLangProvider extends LanguageProvider {
 		this.add("item.twilightforest." + woodPrefix + "_chest_boat", woodName + " Boat with Chest");
 		this.add("entity.twilightforest." + woodPrefix + "_chest_boat", woodName + " Boat with Chest");
 		this.add("block.twilightforest." + woodPrefix + "_hanging_sign", woodName + " Hanging Sign");
+		this.add("block.twilightforest." + woodPrefix + "_drying_rack", woodName + " Drying Rack");
+	}
+
+	public <T> void addGameRule(DeferredHolder<GameRule<?>, GameRule<T>> gameRule, String gameRuleName) {
+		this.add("gamerule." + gameRule.get().id(), gameRuleName);
+	}
+
+	public <T> void addGameRuleDescription(DeferredHolder<GameRule<?>, GameRule<T>> gameRule, String gameRuleDescription) {
+		this.add("gamerule." + gameRule.get().id() + ".description", gameRuleDescription);
 	}
 
 	public void addBannerPattern(String patternPrefix, String patternName) {
@@ -124,11 +147,11 @@ public abstract class TFLangProvider extends LanguageProvider {
 
 	public void addMusicDisc(DeferredItem<Item> disc, String description) {
 		this.addItem(disc, "Music Disc");
-		this.add(Util.makeDescriptionId("jukebox_song", disc.get().components().get(DataComponents.JUKEBOX_PLAYABLE).song().key().location()), description);
+		this.add(Util.makeDescriptionId("jukebox_song", disc.get().components().get(DataComponents.JUKEBOX_PLAYABLE).song().getKey().identifier()), description);
 	}
 
 	public void addStructure(ResourceKey<Structure> biome, String name) {
-		this.add("structure.twilightforest." + biome.location().getPath(), name);
+		this.add("structure.twilightforest." + biome.identifier().getPath(), name);
 	}
 
 	public void addAdvancement(String key, String title, String desc) {
@@ -179,6 +202,22 @@ public abstract class TFLangProvider extends LanguageProvider {
 		this.add("gui.twilightforest." + key, name);
 	}
 
+	public void addKeyBindCategory(KeyMapping.Category category, String name) {
+		this.add(category.label().getString(), name);
+	}
+
+	public void addKeyMapping(KeyMapping keyMapping, String name) {
+		this.add(keyMapping.getName(), name);
+	}
+
+	public void addTravellersModifier(HolderLookup.Provider registries, ResourceKey<TravellersModifier> modifier, String name) {
+		this.add(modifier.identifier().toLanguageKey(registries.holderOrThrow(modifier).value().getPrefix()), name);
+	}
+
+	public void addTravellersDescription(HolderLookup.Provider registries, ResourceKey<TravellersModifier> modifier, String description) {
+		this.add(modifier.identifier().toLanguageKey(registries.holderOrThrow(modifier).value().getPrefix(), "description"), description);
+	}
+
 	public void createTip(String key, String translation) {
 		String fullKey = "twilightforest.tips." + key;
 		this.add(fullKey, translation);
@@ -186,7 +225,7 @@ public abstract class TFLangProvider extends LanguageProvider {
 	}
 
 	public void translateTag(TagKey<?> tag, String name) {
-		this.add(String.format("tag.%s.%s.%s", tag.registry().location().getPath(), tag.location().getNamespace(), tag.location().getPath().replace('/', '.')), name);
+		this.add(String.format("tag.%s.%s.%s", tag.registry().identifier().getPath(), tag.location().getNamespace(), tag.location().getPath().replace('/', '.')), name);
 	}
 
 	public void configEntry(String key, String name, String description) {
@@ -203,7 +242,13 @@ public abstract class TFLangProvider extends LanguageProvider {
 	@Override
 	public CompletableFuture<?> run(CachedOutput cache) {
 		//generate normal lang file
-		CompletableFuture<?> languageGen = super.run(cache);
+		CompletableFuture<?> languageGen = this.registries.thenCompose(provider -> {
+			this.addTranslations(provider);
+			if (!this.data.isEmpty())
+				return this.save(cache, this.output.getOutputFolder(PackOutput.Target.RESOURCE_PACK).resolve(TwilightForestMod.ID).resolve("lang").resolve("en_us.json"));
+			return null;
+		});
+
 		ImmutableList.Builder<CompletableFuture<?>> futuresBuilder = new ImmutableList.Builder<>();
 		futuresBuilder.add(languageGen);
 

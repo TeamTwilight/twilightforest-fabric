@@ -1,7 +1,13 @@
 package twilightforest.datagen.assets;
 
 import net.minecraft.data.PackOutput;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.animal.cow.CowSoundVariant;
+import net.minecraft.world.entity.animal.cow.CowSoundVariants;
+import net.minecraft.world.entity.animal.pig.PigSoundVariant;
+import net.minecraft.world.entity.animal.pig.PigSoundVariants;
+import net.minecraft.world.entity.animal.wolf.WolfSoundVariants;
 import net.neoforged.neoforge.common.data.SoundDefinition;
 import twilightforest.TwilightForestMod;
 import twilightforest.datagen.helpers.TFSoundProvider;
@@ -35,10 +41,11 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateNewSoundWithSubtitle(TFSounds.BLOCKCHAIN_GOBLIN_DEATH, "mob/redcap/die", 3, "Block and Chain Goblin dies");
 		this.generateNewSoundWithSubtitle(TFSounds.BLOCKCHAIN_GOBLIN_HURT, "mob/redcap/hurt", 4, "Block and Chain Goblin screams");
 
-		this.generateExistingSoundWithSubtitle(TFSounds.BOAR_AMBIENT, SoundEvents.PIG_AMBIENT, "Boar oinks");
-		this.generateExistingSoundWithSubtitle(TFSounds.BOAR_DEATH, SoundEvents.PIG_DEATH, "Boar dies");
-		this.generateExistingSoundWithSubtitle(TFSounds.BOAR_HURT, SoundEvents.PIG_HURT, "Boar hurts");
-		this.makeStepSound(TFSounds.BOAR_STEP, SoundEvents.PIG_STEP);
+		PigSoundVariant.PigSoundSet pigSounds = SoundEvents.PIG_SOUNDS.get(PigSoundVariants.SoundSet.CLASSIC).adultSounds();
+		this.generateExistingSoundWithSubtitle(TFSounds.BOAR_AMBIENT, pigSounds.ambientSound().value(), "Boar oinks");
+		this.generateExistingSoundWithSubtitle(TFSounds.BOAR_DEATH, pigSounds.deathSound().value(), "Boar dies");
+		this.generateExistingSoundWithSubtitle(TFSounds.BOAR_HURT, pigSounds.hurtSound().value(), "Boar hurts");
+		this.makeStepSound(TFSounds.BOAR_STEP, SoundEvents.PIG_STEP.value());
 
 		this.generateExistingSoundWithSubtitle(TFSounds.CARMINITE_BROODLING_AMBIENT, SoundEvents.SPIDER_AMBIENT, "Carminite Broodling hisses");
 		this.generateExistingSoundWithSubtitle(TFSounds.CARMINITE_BROODLING_DEATH, SoundEvents.SPIDER_DEATH, "Carminite Broodling dies");
@@ -98,8 +105,9 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateNewSoundWithSubtitle(TFSounds.HELMET_CRAB_HURT, "mob/helmet_crab/hurt", 3, "Helmet Crab hurts");
 		this.makeNewGenericSound(TFSounds.HELMET_CRAB_STEP, "mob/helmet_crab/step", 6, "footsteps");
 
+		SoundEvent wolfDeath = SoundEvents.WOLF_SOUNDS.get(WolfSoundVariants.SoundSet.CLASSIC).adultSounds().deathSound().value();
 		this.generateNewSoundWithSubtitle(TFSounds.HOSTILE_WOLF_AMBIENT, "mob/mist_wolf/idle", 3, "Hostile Wolf growls");
-		this.generateExistingSoundWithSubtitle(TFSounds.HOSTILE_WOLF_DEATH, SoundEvents.WOLF_DEATH, "Hostile Wolf dies");
+		this.generateExistingSoundWithSubtitle(TFSounds.HOSTILE_WOLF_DEATH, wolfDeath, "Hostile Wolf dies");
 		this.generateNewSoundWithSubtitle(TFSounds.HOSTILE_WOLF_HURT, "mob/mist_wolf/hurt", 2, "Hostile Wolf hurts");
 		this.generateNewSoundWithSubtitle(TFSounds.HOSTILE_WOLF_TARGET, "mob/mist_wolf/target", 1, "Hostile Wolf takes notice");
 
@@ -159,21 +167,22 @@ public class SoundGenerator extends TFSoundProvider {
 		this.makeStepSound(TFSounds.MINION_STEP, SoundEvents.ZOMBIE_STEP);
 		this.generateNewSoundWithSubtitle(TFSounds.MINION_SUMMON, "random/scepter/zombie", 1, "Lich summons new minion");
 
-		this.generateExistingSoundWithSubtitle(TFSounds.MINOSHROOM_AMBIENT, SoundEvents.COW_AMBIENT, "Minoshroom moos");
+		CowSoundVariant cowSounds = SoundEvents.COW_SOUNDS.get(CowSoundVariants.SoundSet.CLASSIC);
+		this.generateExistingSoundWithSubtitle(TFSounds.MINOSHROOM_AMBIENT, cowSounds.ambientSound().value(), "Minoshroom moos");
 		this.generateExistingSoundWithSubtitle(TFSounds.MINOSHROOM_ATTACK, SoundEvents.IRON_GOLEM_ATTACK, "Minoshroom attacks");
-		this.generateExistingSoundWithSubtitle(TFSounds.MINOSHROOM_DEATH, SoundEvents.COW_DEATH, "Minoshroom dies");
-		this.generateExistingSoundWithSubtitle(TFSounds.MINOSHROOM_HURT, SoundEvents.COW_HURT, "Minoshroom hurts");
+		this.generateExistingSoundWithSubtitle(TFSounds.MINOSHROOM_DEATH, cowSounds.deathSound().value(), "Minoshroom dies");
+		this.generateExistingSoundWithSubtitle(TFSounds.MINOSHROOM_HURT, cowSounds.hurtSound().value(), "Minoshroom hurts");
 		this.generateExistingSoundWithSubtitle(TFSounds.MINOSHROOM_SLAM, SoundEvents.LIGHTNING_BOLT_IMPACT, "Minoshroom slams ground");
-		this.makeStepSound(TFSounds.MINOSHROOM_STEP, SoundEvents.COW_STEP);
+		this.makeStepSound(TFSounds.MINOSHROOM_STEP, cowSounds.stepSound().value());
 
-		this.generateExistingSoundWithSubtitle(TFSounds.MINOTAUR_AMBIENT, SoundEvents.COW_AMBIENT, "Minotaur moos");
+		this.generateExistingSoundWithSubtitle(TFSounds.MINOTAUR_AMBIENT, cowSounds.ambientSound().value(), "Minotaur moos");
 		this.generateExistingSoundWithSubtitle(TFSounds.MINOTAUR_ATTACK, SoundEvents.IRON_GOLEM_ATTACK, "Minotaur attacks");
-		this.generateExistingSoundWithSubtitle(TFSounds.MINOTAUR_DEATH, SoundEvents.COW_DEATH, "Minotaur dies");
-		this.generateExistingSoundWithSubtitle(TFSounds.MINOTAUR_HURT, SoundEvents.COW_HURT, "Minotaur hurts");
-		this.makeStepSound(TFSounds.MINOTAUR_STEP, SoundEvents.COW_STEP);
+		this.generateExistingSoundWithSubtitle(TFSounds.MINOTAUR_DEATH, cowSounds.deathSound().value(), "Minotaur dies");
+		this.generateExistingSoundWithSubtitle(TFSounds.MINOTAUR_HURT, cowSounds.hurtSound().value(), "Minotaur hurts");
+		this.makeStepSound(TFSounds.MINOTAUR_STEP, cowSounds.stepSound().value());
 
 		this.generateNewSoundWithSubtitle(TFSounds.MIST_WOLF_AMBIENT, "mob/mist_wolf/idle", 3, "Mist Wolf growls");
-		this.generateExistingSoundWithSubtitle(TFSounds.MIST_WOLF_DEATH, SoundEvents.WOLF_DEATH, "Mist Wolf dies");
+		this.generateExistingSoundWithSubtitle(TFSounds.MIST_WOLF_DEATH, wolfDeath, "Mist Wolf dies");
 		this.generateNewSoundWithSubtitle(TFSounds.MIST_WOLF_HURT, "mob/mist_wolf/hurt", 2, "Mist Wolf hurts");
 		this.generateNewSoundWithSubtitle(TFSounds.MIST_WOLF_TARGET, "mob/mist_wolf/target", 1, "Mist Wolf takes notice");
 
@@ -232,7 +241,7 @@ public class SoundGenerator extends TFSoundProvider {
 
 		this.generateNewSoundWithSubtitle(TFSounds.SNOW_QUEEN_AMBIENT, "mob/ice/crackle", 2, "Snow Queen crackles");
 		this.generateExistingSoundWithSubtitle(TFSounds.SNOW_QUEEN_ATTACK, SoundEvents.IRON_GOLEM_ATTACK, "Snow Queen attacks");
-		this.generateExistingSoundWithSubtitle(TFSounds.SNOW_QUEEN_BREAK, SoundEvents.ITEM_BREAK, "Snow Queen deflects attack");
+		this.generateExistingSoundWithSubtitle(TFSounds.SNOW_QUEEN_BREAK, SoundEvents.ITEM_BREAK.value(), "Snow Queen deflects attack");
 		this.generateNewSoundWithSubtitle(TFSounds.SNOW_QUEEN_DEATH, "mob/ice/death", 2, "Snow Queen dies");
 		this.generateNewSoundWithSubtitle(TFSounds.SNOW_QUEEN_HURT, "mob/ice/hurt", 2, "Snow Queen hurts");
 
@@ -267,7 +276,7 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateSoundWithExistingSubtitle(TFSounds.UR_GHAST_WARN, SoundEvents.GHAST_WARN, "subtitles.twilightforest.entity.ur_ghast.shoot");
 
 		this.generateNewSoundWithSubtitle(TFSounds.WINTER_WOLF_AMBIENT, "mob/mist_wolf/idle", 3, "Winter Wolf growls");
-		this.generateExistingSoundWithSubtitle(TFSounds.WINTER_WOLF_DEATH, SoundEvents.WOLF_DEATH, "Winter Wolf dies");
+		this.generateExistingSoundWithSubtitle(TFSounds.WINTER_WOLF_DEATH, wolfDeath, "Winter Wolf dies");
 		this.generateNewSoundWithSubtitle(TFSounds.WINTER_WOLF_HURT, "mob/mist_wolf/hurt", 2, "Winter Wolf hurts");
 		this.generateExistingSoundWithSubtitle(TFSounds.WINTER_WOLF_SHOOT, SoundEvents.GHAST_SHOOT, "Winter Wolf shoots");
 		this.generateNewSoundWithSubtitle(TFSounds.WINTER_WOLF_TARGET, "mob/mist_wolf/target", 1, "Winter Wolf takes notice");

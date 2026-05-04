@@ -20,6 +20,6 @@ public class AssetsGenerator {
 		generator.addProvider(true, new ParticleGenerator(output));
 		generator.addProvider(true, new SoundGenerator(output));
 		//run last because of subtitles
-		generator.addProvider(true, new LangGenerator(output));
+		generator.addProvider(true, new LangGenerator(output, event.getLookupProvider()));
 	}
 }

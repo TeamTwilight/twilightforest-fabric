@@ -2,8 +2,9 @@ package twilightforest.datagen.assets;
 
 import net.minecraft.client.renderer.texture.atlas.sources.SingleFile;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.data.AtlasIds;
 import net.minecraft.data.PackOutput;
-import net.neoforged.neoforge.common.data.SpriteSourceProvider;
+import net.neoforged.neoforge.client.data.SpriteSourceProvider;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.MagicPaintingAtlasInfo;
 import twilightforest.entity.MagicPaintingVariant;
@@ -20,7 +21,7 @@ public class AtlasGenerator extends SpriteSourceProvider {
 
 	@Override
 	protected void gather() {
-		this.atlas(SHIELD_PATTERNS_ATLAS).addSource(new SingleFile(TwilightForestMod.prefix("entity/knightmetal_shield"), Optional.empty()));
+		this.atlas(AtlasIds.SHIELD_PATTERNS).addSource(new SingleFile(TwilightForestMod.prefix("entity/knightmetal_shield"), Optional.empty()));
 		this.atlas(MagicPaintingAtlasInfo.ATLAS_INFO_LOCATION).addSource(new SingleFile(MagicPaintingAtlasInfo.BACK_SPRITE_LOCATION, Optional.empty()));
 
 		MagicPaintingVariants.MAGIC_PAINTING_ATLAS_HELPER.forEach((location, parallaxVariant) -> {
