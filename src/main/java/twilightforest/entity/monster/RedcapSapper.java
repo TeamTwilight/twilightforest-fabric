@@ -7,33 +7,31 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import twilightforest.entity.ai.goal.RedcapPlantTNTGoal;
-import twilightforest.init.TFItems;
+import twilightforest.init.TFItemVisuals;
 
 public class RedcapSapper extends Redcap {
+    public RedcapSapper(EntityType<? extends RedcapSapper> type, Level level) {
+        super(type, level);
+        this.heldPick = TFItemVisuals.withModel(new ItemStack(Items.DIAMOND_PICKAXE), TFItemVisuals.IRONWOOD_PICKAXE);
+        this.tntLeft = 3;
+    }
 
-	public RedcapSapper(EntityType<? extends RedcapSapper> type, Level world) {
-		super(type, world);
-		this.heldPick = new ItemStack(TFItems.IRONWOOD_PICKAXE.get());
-		this.heldTNT.setCount(3);
-	}
+    public static AttributeSupplier.Builder registerAttributes() {
+        return Redcap.registerAttributes()
+                .add(Attributes.MAX_HEALTH, 30.0D)
+                .add(Attributes.ARMOR, 2.0D);
+    }
 
-	@Override
-	protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty) {
-		super.populateDefaultEquipmentSlots(random, difficulty);
-		this.setItemSlot(EquipmentSlot.FEET, new ItemStack(TFItems.IRONWOOD_BOOTS.get()));
-	}
+    @Override
+    protected int getDisplayModel() {
+        return TFItemVisuals.REDCAP_SAPPER_DISPLAY;
+    }
 
-	@Override
-	protected void registerGoals() {
-		super.registerGoals();
-		this.goalSelector.addGoal(4, new RedcapPlantTNTGoal(this));
-	}
-
-	public static AttributeSupplier.Builder registerAttributes() {
-		return Redcap.registerAttributes()
-				.add(Attributes.MAX_HEALTH, 30.0D)
-				.add(Attributes.ARMOR, 2.0D);
-	}
+    @Override
+    protected void populateDefaultEquipmentSlots(RandomSource source, DifficultyInstance difficulty) {
+        super.populateDefaultEquipmentSlots(source, difficulty);
+        this.setItemSlot(EquipmentSlot.FEET, TFItemVisuals.withModel(new ItemStack(Items.DIAMOND_BOOTS), TFItemVisuals.IRONWOOD_BOOTS));
+    }
 }

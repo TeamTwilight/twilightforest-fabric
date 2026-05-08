@@ -1,0 +1,15 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 64,
+    "separation": 16,
+    "salt": 1585003665,
+    "spread_type": "triangular"
+  },
+  "structures": [
+    {
+      "structure": "codex_twilight:final_castle",
+      "weight": 1
+    }
+  ]
+}

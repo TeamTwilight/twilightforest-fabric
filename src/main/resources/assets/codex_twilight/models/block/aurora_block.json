@@ -1,0 +1,22 @@
+﻿{
+  "parent": "minecraft:block/block",
+  "loader": "codex_twilight:noise_varying",
+  "variants": [
+    "codex_twilight:block/aurora_block_0",
+    "codex_twilight:block/aurora_block_1",
+    "codex_twilight:block/aurora_block_2",
+    "codex_twilight:block/aurora_block_3",
+    "codex_twilight:block/aurora_block_4",
+    "codex_twilight:block/aurora_block_5",
+    "codex_twilight:block/aurora_block_6",
+    "codex_twilight:block/aurora_block_7",
+    "codex_twilight:block/aurora_block_8",
+    "codex_twilight:block/aurora_block_9",
+    "codex_twilight:block/aurora_block_10",
+    "codex_twilight:block/aurora_block_11",
+    "codex_twilight:block/aurora_block_12",
+    "codex_twilight:block/aurora_block_13",
+    "codex_twilight:block/aurora_block_14",
+    "codex_twilight:block/aurora_block_15"
+  ]
+}

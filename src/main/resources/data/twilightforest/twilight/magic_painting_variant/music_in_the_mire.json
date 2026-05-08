@@ -1,0 +1,59 @@
+{
+  "width": 64,
+  "height": 48,
+  "author": {
+    "translate": "magic_painting.twilightforest.music_in_the_mire.author"
+  },
+  "back_texture": "twilightforest:magic_paintings/back",
+  "layers": [
+    {
+      "path": "bl_sky",
+      "parallax": {
+        "type": "view_angle",
+        "multiplier": 0.015,
+        "width": 88,
+        "height": 56
+      },
+      "fullbright": false,
+      "local_lighting": true
+    },
+    {
+      "path": "bl_roots",
+      "parallax": {
+        "type": "view_angle",
+        "multiplier": 0.015,
+        "width": 84,
+        "height": 52
+      },
+      "fullbright": true,
+      "local_lighting": true
+    },
+    {
+      "path": "bl_mid",
+      "parallax": {
+        "type": "view_angle",
+        "multiplier": 0.015,
+        "width": 76,
+        "height": 52
+      },
+      "fullbright": false,
+      "local_lighting": true
+    },
+    {
+      "path": "bl_foreground",
+      "parallax": {
+        "type": "view_angle",
+        "multiplier": 0.015,
+        "width": 74,
+        "height": 48
+      },
+      "fullbright": false,
+      "local_lighting": true
+    },
+    {
+      "path": "bl_frame",
+      "fullbright": false,
+      "local_lighting": false
+    }
+  ]
+}

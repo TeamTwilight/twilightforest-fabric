@@ -1,0 +1,17 @@
+﻿{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "sign": "twilightforest:item/dark_sign",
+    "particle": "twilightforest:item/dark_sign"
+  },
+  "elements": [
+    {
+      "from": [2, 5, 15],
+      "to": [14, 13, 16],
+      "faces": {
+        "north": { "texture": "#sign", "uv": [2, 3, 14, 13] },
+        "south": { "texture": "#sign", "uv": [2, 3, 14, 13] }
+      }
+    }
+  ]
+}

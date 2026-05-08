@@ -1,0 +1,98 @@
+{
+  "carvers": {
+    "air": "twilightforest:tf_caves"
+  },
+  "downfall": 0.4,
+  "effects": {
+    "fog_color": 3672576,
+    "foliage_color": 6563343,
+    "grass_color": 5713443,
+    "mood_sound": {
+      "block_search_extent": 8,
+      "offset": 2.0,
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000
+    },
+    "music": {
+      "max_delay": 12000,
+      "min_delay": 1200,
+      "replace_current_music": true,
+      "sound": "twilightforest:music.twilightforest.twilight_forest"
+    },
+    "particle": {
+      "options": {
+        "type": "minecraft:white_ash"
+      },
+      "probability": 0.05
+    },
+    "sky_color": 2105930,
+    "water_color": 7089196,
+    "water_fog_color": 7089196
+  },
+  "features": [
+    [],
+    [
+      "codex_twilight:lava_lake"
+    ],
+    [],
+    [],
+    [],
+    [],
+    [
+      "minecraft:disk_sand",
+      "minecraft:disk_clay",
+      "minecraft:disk_gravel",
+      "codex_twilight:wood_roots",
+      "codex_twilight:legacy_coal_ore",
+      "codex_twilight:legacy_iron_ore",
+      "codex_twilight:legacy_gold_ore",
+      "codex_twilight:legacy_redstone_ore",
+      "codex_twilight:legacy_diamond_ore",
+      "codex_twilight:legacy_lapis_ore",
+      "codex_twilight:legacy_copper_ore",
+      "codex_twilight:small_andesite",
+      "codex_twilight:small_diorite",
+      "codex_twilight:small_granite"
+    ],
+    [
+      "codex_twilight:plant_roots",
+      "codex_twilight:torch_berries"
+    ],
+    [],
+    [
+      "minecraft:patch_tall_grass",
+      "codex_twilight:patch_grass_badlands",
+      "codex_twilight:patch_grass_savanna",
+      "minecraft:patch_sugar_cane",
+      "minecraft:patch_grass_taiga_2",
+      "codex_twilight:stone_circle",
+      "codex_twilight:outside_stalagmite",
+      "codex_twilight:monolith",
+      "codex_twilight:hollow_stump",
+      "codex_twilight:hollow_log",
+      "codex_twilight:tree/swampy_oak_tree",
+      "codex_twilight:tree/oak_bush",
+      "codex_twilight:fire_jet",
+      "codex_twilight:smoker",
+      "minecraft:patch_sugar_cane_swamp",
+      "minecraft:vines",
+      "minecraft:brown_mushroom_swamp"
+    ],
+    [
+      "minecraft:freeze_top_layer"
+    ]
+  ],
+  "has_precipitation": false,
+  "spawn_costs": {},
+  "spawners": {
+    "ambient": [],
+    "axolotls": [],
+    "creature": [],
+    "misc": [],
+    "monster": [],
+    "underground_water_creature": [],
+    "water_ambient": [],
+    "water_creature": []
+  },
+  "temperature": 1.0
+}

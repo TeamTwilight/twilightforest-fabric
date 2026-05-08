@@ -1,0 +1,13 @@
+﻿{
+    "values":  [
+                   "minecraft:oak",
+                   {
+                       "id":  "codex_twilight:darkwood",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:twilight_oak",
+                       "required":  false
+                   }
+               ]
+}

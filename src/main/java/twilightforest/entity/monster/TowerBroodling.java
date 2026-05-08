@@ -1,7 +1,6 @@
 package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -13,70 +12,76 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFEntities;
+import twilightforest.init.TFItemVisuals;
 import twilightforest.init.TFSounds;
 
-import org.jetbrains.annotations.Nullable;
-
 public class TowerBroodling extends SwarmSpider {
+    public TowerBroodling(EntityType<? extends TowerBroodling> type, Level level) {
+        this(type, level, true);
+    }
 
-	public TowerBroodling(EntityType<? extends TowerBroodling> type, Level world) {
-		this(type, world, true);
-	}
+    public TowerBroodling(EntityType<? extends TowerBroodling> type, Level level, boolean spawnMore) {
+        super(type, level, spawnMore);
+        this.xpReward = 3;
+    }
 
-	public TowerBroodling(EntityType<? extends TowerBroodling> type, Level world, boolean spawnMore) {
-		super(type, world, spawnMore);
-		this.xpReward = 3;
-	}
+    public static AttributeSupplier.Builder registerAttributes() {
+        return SwarmSpider.registerAttributes()
+                .add(Attributes.MAX_HEALTH, 7.0D)
+                .add(Attributes.ATTACK_DAMAGE, 4.0D);
+    }
 
-	public static AttributeSupplier.Builder registerAttributes() {
-		return SwarmSpider.registerAttributes()
-				.add(Attributes.MAX_HEALTH, 7.0D)
-				.add(Attributes.ATTACK_DAMAGE, 4.0D);
-	}
+    @Override
+    protected int getDisplayModel() {
+        return TFItemVisuals.TOWER_BROODLING_DISPLAY;
+    }
 
-	@Override
-	protected SoundEvent getAmbientSound() {
-		return TFSounds.CARMINITE_BROODLING_AMBIENT.get();
-	}
+    @Override
+    protected float getDisplayScale() {
+        return 0.55F;
+    }
 
-	@Override
-	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.CARMINITE_BROODLING_HURT.get();
-	}
+    @Override
+    protected boolean spawnAnother() {
+        TowerBroodling another = new TowerBroodling(TFEntities.CARMINITE_BROODLING.get(), this.level(), false);
+        double sx = this.getX() + (this.getRandom().nextBoolean() ? 0.9D : -0.9D);
+        double sy = this.getY();
+        double sz = this.getZ() + (this.getRandom().nextBoolean() ? 0.9D : -0.9D);
+        another.moveTo(sx, sy, sz, this.getRandom().nextFloat() * 360.0F, 0.0F);
+        if (!another.checkSpawnRules(this.level(), MobSpawnType.MOB_SUMMONED)) {
+            another.discard();
+            return false;
+        }
+        this.level().addFreshEntity(another);
+        another.spawnAnim();
+        return true;
+    }
 
-	@Override
-	protected SoundEvent getDeathSound() {
-		return TFSounds.CARMINITE_BROODLING_DEATH.get();
-	}
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data) {
+        return data;
+    }
 
-	@Override
-	protected void playStepSound(BlockPos pos, BlockState state) {
-		this.playSound(TFSounds.CARMINITE_BROODLING_STEP.get(), 0.15F, 1.0F);
-	}
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return TFSounds.CARMINITE_BROODLING_AMBIENT;
+    }
 
-	@Override
-	protected boolean spawnAnother() {
-		SwarmSpider another = new TowerBroodling(TFEntities.CARMINITE_BROODLING.get(), this.level(), false);
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return TFSounds.CARMINITE_BROODLING_HURT;
+    }
 
-		double sx = getX() + (this.getRandom().nextBoolean() ? 0.9D : -0.9D);
-		double sy = getY();
-		double sz = getZ() + (this.getRandom().nextBoolean() ? 0.9D : -0.9D);
-		another.moveTo(sx, sy, sz, this.getRandom().nextFloat() * 360.0F, 0.0F);
-		if (!another.checkSpawnRules(this.level(), MobSpawnType.MOB_SUMMONED)) {
-			another.discard();
-			return false;
-		}
-		this.level().addFreshEntity(another);
-		another.spawnAnim();
+    @Override
+    protected SoundEvent getDeathSound() {
+        return TFSounds.CARMINITE_BROODLING_DEATH;
+    }
 
-		return true;
-	}
-
-	//no skeleton druid jockeys for us
-	@Nullable
-	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
-		return data;
-	}
+    @Override
+    protected void playStepSound(BlockPos pos, BlockState state) {
+        this.playSound(TFSounds.CARMINITE_BROODLING_STEP, 0.15F, 1.0F);
+    }
 }

@@ -1,0 +1,12 @@
+{
+  "feature": "codex_twilight:fiddlehead",
+  "placement": [
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

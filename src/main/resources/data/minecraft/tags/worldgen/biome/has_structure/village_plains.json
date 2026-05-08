@@ -1,0 +1,11 @@
+{
+    "replace":  false,
+    "values":  [
+                   "twilightforest:forest",
+                   "twilightforest:firefly_forest",
+                   "twilightforest:clearing",
+                   "twilightforest:dense_forest",
+                   "twilightforest:enchanted_forest",
+                   "twilightforest:stream"
+               ]
+}

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "stage=0": {
+      "model": "twilightforest:block/rainbow_oak_sapling"
+    },
+    "stage=1": {
+      "model": "twilightforest:block/rainbow_oak_sapling"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "twilightforest:item/magic_painting"
+  },
+  "overrides": [
+    { "predicate": { "custom_model_data": 32001 }, "model": "twilightforest:item/magic_painting_castaway_paradise" },
+    { "predicate": { "custom_model_data": 32002 }, "model": "twilightforest:item/magic_painting_darkness" },
+    { "predicate": { "custom_model_data": 32003 }, "model": "twilightforest:item/magic_painting_lucid_lands" },
+    { "predicate": { "custom_model_data": 32004 }, "model": "twilightforest:item/magic_painting_music_in_the_mire" },
+    { "predicate": { "custom_model_data": 32005 }, "model": "twilightforest:item/magic_painting_the_hostile_paradise" }
+  ]
+}

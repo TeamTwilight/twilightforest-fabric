@@ -1,0 +1,7 @@
+﻿{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "codex_twilight:block/terrorcotta_arcs_end",
+    "side": "codex_twilight:block/terrorcotta_arcs_side_a"
+  }
+}

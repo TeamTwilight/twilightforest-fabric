@@ -1,0 +1,6 @@
+﻿{
+  "parent": "minecraft:block/template_single_face",
+  "textures": {
+    "texture": "codex_twilight:block/trollsteinn_light"
+  }
+}

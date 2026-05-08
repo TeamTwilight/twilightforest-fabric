@@ -1,0 +1,7 @@
+﻿{
+  "parent": "codex_twilight:block/casket_solid_template",
+  "textures": {
+    "side": "codex_twilight:entity/casket/skull_chest",
+    "top": "codex_twilight:entity/casket/skull_chest"
+  }
+}

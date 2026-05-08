@@ -1,90 +1,53 @@
 {
   "schemaVersion": 1,
-  "id": "twilightforest",
-  "version": "${version}",
-  "name": "The Twilight Forest",
-  "description": "An enchanted forest dimension.",
+  "id": "codex_twilight",
+  "version": "0.1.0",
+  "name": "Codex Twilight",
+  "description": "Twilight Forest content for Arclight: dimension/biome/structure backports plus paired Fabric client renderers, block-entity renderers, particles, sounds, and assets. The server and client both load this jar so Twilight registry ids sync directly without server-side paired-client disguises.",
   "authors": [
-    "Benimatic",
-    "AtomicBlom",
-    "Drullkus",
-    "Killer_Demon",
-    "quadraxis",
-    "Tamaized",
-    "williewillus",
-    "GizmoTheMoonPig",
-    "AlphaMode",
-    "Tropheus Jay"
+    "Codex"
   ],
-  "contact": {
-    "issues": "https://github.com/TeamTwilight/twilightforest-fabric/issues",
-    "sources": "hhttps://github.com/TeamTwilight/twilightforest-fabric/"
-  },
-  "license": "GNU LESSER GENERAL PUBLIC LICENSE Version 2.1",
-  "icon": "icon.png",
   "environment": "*",
   "entrypoints": {
-    "client": [
-      "twilightforest.client.TFClientSetup"
-    ],
     "main": [
-      "twilightforest.TwilightForestMod"
+      "com.codex.twilight.CodexTwilight"
+    ],
+    "client": [
+      "com.codex.twilight.client.CodexTwilightClient"
     ],
     "fabric-datagen": [
-      "twilightforest.data.DataGenerators"
-    ],
-    "mm:early_risers": [
-      "twilightforest.asm.TFASM"
-    ],
-    "cardinal-components-entity": [
-      "twilightforest.capabilities.CapabilityList::attachEntityCapability"
-    ],
-    "cardinal-components-world": [
-      "twilightforest.capabilities.CapabilityList::attachLevelCapability"
-    ],
-    "rei_client": [
-      "twilightforest.compat.rei.TwilightForestREIClientPlugin"
-    ],
-    "rei_common": [
-      "twilightforest.compat.rei.TwilightForestREIServerPlugin"
-    ],
-    "emi": [
-      "twilightforest.compat.emi.EMICompat"
-    ],
-    "jei_mod_plugin": [
-      "twilightforest.compat.jei.JEICompat"
+      "twilightforest.data.CodexTwilightDataGenerators"
     ],
     "jade": [
-      "twilightforest.compat.jade.JadeCompat"
+      "twilightforest.compat.jade.JadeCommonPlugin"
     ],
-    "top_plugin": [
-      "twilightforest.compat.top.TopCompat"
+    "rei_common": [
+      "twilightforest.compat.rei.TFREIServerPlugin"
+    ],
+    "rei_client": [
+      "twilightforest.compat.rei.TFREIClientPlugin"
+    ],
+    "mm_shedaniel:early_risers": [
+      "twilightforest.asm.CodexGrassColorEarlyRiser"
+    ],
+    "_codex_phase_note": [
+      "Phase 1 currently lands GrassColor 1:1 visually via codec-side decode swap (TFGrassColorModifierCodec) instead of MM enum extension, because the runtime `BiomeSpecialEffects$GrassColorModifier` constructor takes (String, ColorModifier) and the ColorModifier inner interface cannot be Class.forName'd during MM preApply transformation. The CodexGrassColorEarlyRiser entrypoint stays declared so Phase 2 can iterate on it once the timing/Proxy approach is fixed; for now the entrypoint runs and silently no-ops the addEnum calls if the class lookup fails."
     ]
   },
+  "accessWidener": "codex_twilight.accesswidener",
   "mixins": [
-    "twilight.mixins.json"
+    "codex_twilight.mixins.json"
   ],
-  "accessWidener": "twilightforest.accesswidener",
   "depends": {
-    "fabricloader": ">=${loader_version}",
-    "fabric-api": ">=${fabric_version}",
-    "minecraft": ">=${minecraft_version}",
-    "java": ">=${java_version}"
-  },
-  "breaks": {
-    "c2me": "*"
+    "fabric-api-base": "*",
+    "fabricloader": ">=0.16.0",
+    "minecraft": "1.21.1",
+    "trinkets": ">=3.10.0"
   },
   "suggests": {
-    "modmenu": "*"
-  },
-  "custom": {
-    "cardinal-components": [
-      "twilightforest:teleporter_cache",
-      "twilightforest:cap_shield",
-      "twilightforest:cap_feather_fan_fall",
-      "twilightforest:cap_thrown",
-      "twilightforest:giant_pick_mine"
-    ],
-    "banner": "twilightforest_logo.png"
+    "roughlyenoughitems": "*",
+    "theoneprobe": "*",
+    "mythicmobs": "*",
+    "mm_shedaniel": "*"
   }
 }

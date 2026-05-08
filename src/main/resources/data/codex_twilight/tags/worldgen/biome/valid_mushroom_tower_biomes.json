@@ -1,0 +1,12 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:dense_mushroom_forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:dense_mushroom_forest",
+                       "required":  false
+                   }
+               ]
+}

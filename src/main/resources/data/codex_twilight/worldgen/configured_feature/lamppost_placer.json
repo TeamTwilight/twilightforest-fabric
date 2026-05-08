@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:random_selector",
+  "config": {
+    "default": {
+      "feature": "codex_twilight:firefly_lamppost",
+      "placement": []
+    },
+    "features": [
+      {
+        "chance": 0.1,
+        "feature": {
+          "feature": "codex_twilight:cicada_lamppost",
+          "placement": []
+        }
+      }
+    ]
+  }
+}

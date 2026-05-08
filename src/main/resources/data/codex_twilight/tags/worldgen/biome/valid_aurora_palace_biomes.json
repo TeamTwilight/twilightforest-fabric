@@ -1,0 +1,12 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:glacier",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:glacier",
+                       "required":  false
+                   }
+               ]
+}

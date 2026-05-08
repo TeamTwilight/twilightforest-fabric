@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "twilightforest:mazestone",
+    "twilightforest:mazestone_brick",
+    "twilightforest:mazestone_border",
+    "twilightforest:mazestone_mosaic",
+    "twilightforest:decorative_mazestone",
+    "twilightforest:cracked_mazestone",
+    "twilightforest:mossy_mazestone",
+    "twilightforest:cut_mazestone"
+  ]
+}

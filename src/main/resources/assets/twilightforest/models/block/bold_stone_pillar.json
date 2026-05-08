@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "twilightforest:block/stone_pillar_end",
+    "side": "twilightforest:block/stone_pillar_side"
+  }
+}

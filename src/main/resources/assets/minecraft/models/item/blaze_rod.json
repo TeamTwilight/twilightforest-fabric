@@ -1,0 +1,20 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minecraft:item/blaze_rod"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 31002
+      },
+      "model": "codex_twilight:item/twilight_scepter"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 31003
+      },
+      "model": "codex_twilight:item/lifedrain_scepter"
+    }
+  ]
+}

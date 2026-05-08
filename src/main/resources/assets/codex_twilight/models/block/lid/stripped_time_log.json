@@ -1,0 +1,7 @@
+﻿{
+  "parent": "codex_twilight:block/jar_lid",
+  "textures": {
+    "1": "codex_twilight:block/stripped_time_log_top",
+    "2": "codex_twilight:block/stripped_time_log"
+  }
+}

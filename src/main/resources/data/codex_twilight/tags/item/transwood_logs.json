@@ -1,0 +1,20 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:transformation_log",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:stripped_transformation_log",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:transformation_wood",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:stripped_transformation_wood",
+                       "required":  false
+                   }
+               ]
+}

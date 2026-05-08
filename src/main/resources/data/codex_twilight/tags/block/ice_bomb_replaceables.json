@@ -1,0 +1,17 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:mayapple",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:fiddlehead",
+                       "required":  false
+                   },
+                   "minecraft:short_grass",
+                   "minecraft:tall_grass",
+                   "minecraft:fern",
+                   "minecraft:large_fern",
+                   "#minecraft:flowers"
+               ]
+}

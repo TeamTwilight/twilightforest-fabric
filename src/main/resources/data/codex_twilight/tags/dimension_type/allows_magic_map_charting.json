@@ -1,0 +1,8 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:twilight_forest_type",
+                       "required":  false
+                   }
+               ]
+}

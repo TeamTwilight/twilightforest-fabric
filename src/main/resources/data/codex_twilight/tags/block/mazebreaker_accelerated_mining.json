@@ -1,0 +1,12 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "#codex_twilight:mazestone",
+                       "required":  false
+                   },
+                   {
+                       "id":  "#codex_twilight:castle_blocks",
+                       "required":  false
+                   }
+               ]
+}

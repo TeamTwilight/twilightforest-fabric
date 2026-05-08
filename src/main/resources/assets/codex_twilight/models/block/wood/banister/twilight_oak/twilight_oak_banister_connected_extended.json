@@ -1,0 +1,6 @@
+﻿{
+  "parent": "codex_twilight:block/banister_connected_extended",
+  "textures": {
+    "texture": "codex_twilight:block/wood/planks_twilight_oak_0"
+  }
+}

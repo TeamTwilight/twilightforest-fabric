@@ -1,0 +1,36 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:naga",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:lich",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:minoshroom",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:hydra",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:ur_ghast",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:alpha_yeti",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:snow_queen",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:plateau_boss",
+                       "required":  false
+                   }
+               ]
+}

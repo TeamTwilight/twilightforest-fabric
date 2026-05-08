@@ -7,6 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.BarrelBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
@@ -42,27 +43,29 @@ public class FancyWellFeature extends TemplateFeature<SwizzleConfig> {
     @Override
     protected void postPlacement(WorldGenLevel world, RandomSource random, StructureTemplateManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos, SwizzleConfig config) {
         StructureTemplate template = templateManager.getOrCreate(WELL_BOTTOM);
+        if (template == null) {
+            return;
+        }
 
-        if (template == null) return;
-
-        placementPos = placementPos.below(template.getSize().getY());//.relative(rotation.rotate(mirror.mirror(Direction.SOUTH)), 1).relative(rotation.rotate(mirror.mirror(Direction.EAST)), 1);
+        placementPos = placementPos.below(template.getSize().getY());
         placementSettings.addProcessor(SmartGrassProcessor.INSTANCE);
+        template.placeInWorld(world, placementPos, placementPos, placementSettings, random, Block.UPDATE_CLIENTS);
 
-        template.placeInWorld(world, placementPos, placementPos, placementSettings, random, 20);
-
-        for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(placementPos, placementSettings, Blocks.STRUCTURE_BLOCK))
-            if (info.nbt() != null && StructureMode.valueOf(info.nbt().getString("mode")) == StructureMode.DATA)
+        for (StructureTemplate.StructureBlockInfo info : template.filterBlocks(placementPos, placementSettings, Blocks.STRUCTURE_BLOCK)) {
+            if (info.nbt() != null && StructureMode.valueOf(info.nbt().getString("mode")) == StructureMode.DATA) {
                 this.processMarkers(info, world, rotation, mirror, random);
+            }
+        }
     }
 
     @Override
     protected void processMarkers(StructureTemplate.StructureBlockInfo info, WorldGenLevel world, Rotation rotation, Mirror mirror, RandomSource random) {
-        String s = info.nbt().getString("metadata");
-
-        if (!s.startsWith("loot")) return;
+        String metadata = info.nbt().getString("metadata");
+        if (!metadata.startsWith("loot")) {
+            return;
+        }
 
         world.removeBlock(info.pos(), false);
-
-        TFLootTables.FANCY_WELL.generateLootContainer(world, info.pos(), Blocks.BARREL.defaultBlockState().setValue(BarrelBlock.FACING, Direction.UP), 16 | 2);
+        TFLootTables.generateLootContainer(world, info.pos(), Blocks.BARREL.defaultBlockState().setValue(BarrelBlock.FACING, Direction.UP), Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS, TFLootTables.FANCY_WELL);
     }
 }

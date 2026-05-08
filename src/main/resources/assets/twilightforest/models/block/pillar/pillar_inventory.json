@@ -1,16 +1,16 @@
-{
+﻿{
   "parent": "block/block",
   "textures": {
-    "blank": "twilightforest:block/stone_twist/twist_blank",
+    "blank": "twilightforest:block/transparent",
     "crown": "twilightforest:block/stone_twist/twist_crown",
-    "side_x": "twilightforest:block/stone_twist/twist_y",
-    "side_z": "twilightforest:block/stone_twist/twist_y",
-    "bottom_cap": "twilightforest:block/stone_twist/cap/end",
-    "bottom_x": "twilightforest:block/stone_twist/cap/y",
-    "bottom_z": "twilightforest:block/stone_twist/cap/y",
-    "top_cap": "twilightforest:block/stone_twist/cap/end",
-    "top_x": "twilightforest:block/stone_twist/cap/y",
-    "top_z": "twilightforest:block/stone_twist/cap/y",
+    "side_x": "twilightforest:block/twisted_stone_pillar",
+    "side_z": "twilightforest:block/twisted_stone_pillar",
+    "bottom_cap": "twilightforest:block/twisted_stone_cap_end",
+    "bottom_x": "twilightforest:block/twisted_stone_cap_side",
+    "bottom_z": "twilightforest:block/twisted_stone_cap_side",
+    "top_cap": "twilightforest:block/twisted_stone_cap_end",
+    "top_x": "twilightforest:block/twisted_stone_cap_side",
+    "top_z": "twilightforest:block/twisted_stone_cap_side",
     "particle": "#side_x"
   },
   "elements": [{

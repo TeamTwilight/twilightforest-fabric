@@ -1,0 +1,12 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:enchanted_forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:enchanted_forest",
+                       "required":  false
+                   }
+               ]
+}

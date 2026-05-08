@@ -1,0 +1,51 @@
+﻿{
+    "values":  [
+                   "minecraft:redstone_lamp",
+                   "minecraft:tnt",
+                   "minecraft:water",
+                   {
+                       "id":  "codex_twilight:antibuilder",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:carminite_builder",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:built_block",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:reactor_debris",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:carminite_reactor",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:reappearing_block",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:ghast_trap",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:fake_diamond",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:fake_gold",
+                       "required":  false
+                   },
+                   {
+                       "id":  "#codex_twilight:common_protections",
+                       "required":  false
+                   },
+                   {
+                       "id":  "gravestone:gravestone",
+                       "required":  false
+                   }
+               ]
+}

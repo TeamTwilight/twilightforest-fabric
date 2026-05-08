@@ -1,0 +1,18 @@
+﻿{
+    "values":  [
+                   "#minecraft:dirt",
+                   "minecraft:moss_block",
+                   {
+                       "id":  "codex_twilight:mangrove_root",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:root",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:liveroot_block",
+                       "required":  false
+                   }
+               ]
+}

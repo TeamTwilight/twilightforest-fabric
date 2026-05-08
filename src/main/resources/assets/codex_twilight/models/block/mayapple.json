@@ -1,0 +1,28 @@
+﻿{
+	"render_type": "minecraft:cutout",
+	"textures": {
+    "particle": "codex_twilight:block/cloverpatch",
+    "stem": "codex_twilight:block/mayapple_side",
+    "leaf": "codex_twilight:block/mayapple"
+  },
+	"elements": [
+		{
+			"from": [ 8, 0, 8 ],
+			"to": [ 9, 6, 9 ],
+			"faces": {
+				"north": { "uv": [ 8, 10, 9, 16 ], "texture": "#stem" },
+				"south": { "uv": [ 8, 10, 9, 16 ], "texture": "#stem" },
+				"west": { "uv": [ 8, 10, 9, 16 ], "texture": "#stem" },
+				"east": { "uv": [ 8, 10, 9, 16 ], "texture": "#stem" }
+			}
+		}, {
+			"from": [ 0, 6, 0 ],
+			"to": [ 16, 6, 16 ],
+			"faces": {
+				"down": { "uv": [ 0, 0, 16, 16 ], "texture": "#leaf" },
+				"up": { "uv": [ 0, 0, 16, 16 ], "texture": "#leaf" }
+			}
+		}
+	]
+}
+

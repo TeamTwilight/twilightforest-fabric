@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "twilightforest:magic_paintings/music_in_the_mire/bl_fog"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 64,
+    "separation": 16,
+    "salt": 349690140,
+    "spread_type": "triangular"
+  },
+  "structures": [
+    {
+      "structure": "codex_twilight:lich_tower",
+      "weight": 1
+    }
+  ]
+}

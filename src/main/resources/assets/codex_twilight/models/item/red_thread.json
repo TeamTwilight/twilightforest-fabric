@@ -1,0 +1,26 @@
+﻿{
+  "parent": "minecraft:item/generated",
+  "overrides": [
+    {
+      "model": "codex_twilight:item/red_thread_bundle",
+      "predicate": {
+        "codex_twilight:size": 0.25
+      }
+    },
+    {
+      "model": "codex_twilight:item/red_thread_spool",
+      "predicate": {
+        "codex_twilight:size": 0.5
+      }
+    },
+    {
+      "model": "codex_twilight:item/red_thread_large_spool",
+      "predicate": {
+        "codex_twilight:size": 1.0
+      }
+    }
+  ],
+  "textures": {
+    "layer0": "codex_twilight:item/red_thread"
+  }
+}

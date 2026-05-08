@@ -1,0 +1,16 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:wand_bolt",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:lich_bolt",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:lich_bomb",
+                       "required":  false
+                   }
+               ]
+}

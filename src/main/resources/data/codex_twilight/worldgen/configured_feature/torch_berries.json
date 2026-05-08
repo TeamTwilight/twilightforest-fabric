@@ -1,0 +1,11 @@
+{
+  "type": "twilightforest:underground_plants",
+  "config": {
+    "state": {
+      "Name": "minecraft:glow_lichen",
+      "Properties": {
+        "has_torchberries": "true"
+      }
+    }
+  }
+}

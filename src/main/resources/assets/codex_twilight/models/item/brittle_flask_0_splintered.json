@@ -1,0 +1,7 @@
+﻿{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "codex_twilight:item/brittle_potion_flask_1",
+    "layer1": "codex_twilight:item/brittle_potion_flask_splintered"
+  }
+}

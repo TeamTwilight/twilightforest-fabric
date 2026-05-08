@@ -1,0 +1,14 @@
+﻿{
+  "parent": "minecraft:item/goat_horn",
+  "overrides": [
+    {
+      "model": "codex_twilight:item/tooting_crumble_horn",
+      "predicate": {
+        "codex_twilight:tooting": 1.0
+      }
+    }
+  ],
+  "textures": {
+    "layer0": "codex_twilight:item/crumble_horn"
+  }
+}

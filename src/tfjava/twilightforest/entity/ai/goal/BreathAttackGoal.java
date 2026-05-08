@@ -1,0 +1,166 @@
+package twilightforest.entity.ai.goal;
+
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
+import twilightforest.entity.IBreathAttacker;
+
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * 1:1 port of upstream {@code twilightforest.entity.ai.goal.BreathAttackGoal} —
+ * generic continuous breath attack goal driven by {@link IBreathAttacker}.
+ * Rotates the host's head onto the breath line, picks the entity it's actually
+ * looking at, and feeds that entity into {@link IBreathAttacker#doBreathAttack}.
+ */
+public class BreathAttackGoal<T extends Mob & IBreathAttacker> extends Goal {
+
+	private final T entityHost;
+	private LivingEntity attackTarget;
+
+	private Vec3 breathPos;
+
+	private final int maxDuration;
+	private final float attackChance;
+	private final float breathRange;
+
+	private int durationLeft;
+
+	@SuppressWarnings("this-escape")
+	public BreathAttackGoal(T living, float range, int time, float chance) {
+		this.entityHost = living;
+		this.breathRange = range;
+		this.maxDuration = time;
+		this.attackChance = chance;
+		this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.JUMP));
+	}
+
+	@Override
+	public boolean canUse() {
+		this.attackTarget = this.entityHost.getLastHurtByMob();
+
+		if (this.attackTarget == null || this.entityHost.distanceTo(attackTarget) > this.breathRange || !this.entityHost.getSensing().hasLineOfSight(attackTarget) || !EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.LIVING_ENTITY_STILL_ALIVE).test(attackTarget)) {
+			return false;
+		} else {
+			this.breathPos = this.attackTarget.getEyePosition();
+
+			return this.entityHost.getRandom().nextFloat() < this.attackChance;
+		}
+	}
+
+	@Override
+	public void start() {
+		this.durationLeft = this.maxDuration;
+		this.entityHost.setBreathing(true);
+	}
+
+	@Override
+	public boolean canContinueToUse() {
+		return this.durationLeft > 0 && this.entityHost.isAlive() && this.attackTarget.isAlive()
+			&& this.entityHost.distanceTo(this.attackTarget) <= this.breathRange
+			&& this.entityHost.getSensing().hasLineOfSight(this.attackTarget)
+			&& EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.LIVING_ENTITY_STILL_ALIVE).test(attackTarget);
+	}
+
+	@Override
+	public void tick() {
+		this.durationLeft--;
+
+		this.entityHost.getLookControl().setLookAt(this.breathPos);
+		this.faceVec(this.breathPos, 100.0F, 100.0F);
+
+		if ((this.maxDuration - this.durationLeft) > 5) {
+			Entity target = this.getHeadLookTarget();
+			if (target != null) {
+				this.entityHost.doBreathAttack(target);
+				this.entityHost.gameEvent(GameEvent.PROJECTILE_SHOOT);
+			}
+		}
+	}
+
+	@Override
+	public void stop() {
+		this.durationLeft = 0;
+		this.attackTarget = null;
+		this.entityHost.setBreathing(false);
+	}
+
+	@Nullable
+	private Entity getHeadLookTarget() {
+		Entity pointedEntity = null;
+		double range = 30.0D;
+		double offset = 3.0D;
+		Vec3 srcVec = new Vec3(this.entityHost.getX(), this.entityHost.getY() + 0.25, this.entityHost.getZ());
+		Vec3 lookVec = this.entityHost.getViewVector(1.0F);
+		Vec3 destVec = srcVec.add(lookVec.x() * range, lookVec.y() * range, lookVec.z() * range);
+		float var9 = 0.5F;
+		List<Entity> possibleList = this.entityHost.level().getEntities(this.entityHost, this.entityHost.getBoundingBox().move(lookVec.x() * offset, lookVec.y() * offset, lookVec.z() * offset).inflate(var9, var9, var9));
+		double hitDist = 0;
+
+		// Codex Fabric: vanilla 1.21.1 Entity doesn't expose NeoForge's
+		// {@code isMultipartEntity()} / {@code getParts()} hooks. The only TF
+		// multipart mob is Hydra, which has its own breath logic and never feeds
+		// this goal — safe to skip the part-removal block.
+
+		for (Entity possibleEntity : possibleList) {
+			if (possibleEntity.isPickable() && possibleEntity != this.entityHost && EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.LIVING_ENTITY_STILL_ALIVE).test(possibleEntity)) {
+				float borderSize = possibleEntity.getPickRadius();
+				AABB collisionBB = possibleEntity.getBoundingBox().inflate(borderSize, borderSize, borderSize);
+				Optional<Vec3> interceptPos = collisionBB.clip(srcVec, destVec);
+
+				if (collisionBB.contains(srcVec)) {
+					if (0.0D < hitDist || hitDist == 0.0D) {
+						pointedEntity = possibleEntity;
+						hitDist = 0.0D;
+					}
+				} else if (interceptPos.isPresent()) {
+					double possibleDist = srcVec.distanceTo(interceptPos.get());
+
+					if (possibleDist < hitDist || hitDist == 0.0D) {
+						pointedEntity = possibleEntity;
+						hitDist = possibleDist;
+					}
+				}
+			}
+		}
+		return pointedEntity;
+	}
+
+	/**
+	 * Face the head towards a specific Vector.
+	 */
+	public void faceVec(Vec3 pos, float yawConstraint, float pitchConstraint) {
+		double xOffset = pos.x() - this.entityHost.getX();
+		double zOffset = pos.z() - this.entityHost.getZ();
+		double yOffset = (this.entityHost.getY() + 0.25) - pos.y();
+
+		double distance = Mth.sqrt((float) (xOffset * xOffset + zOffset * zOffset));
+		float xyAngle = (float) ((Math.atan2(zOffset, xOffset) * 180D) / Math.PI) - 90F;
+		float zdAngle = (float) (-((Math.atan2(yOffset, distance) * 180D) / Math.PI));
+		this.entityHost.setXRot(-updateRotation(this.entityHost.getXRot(), zdAngle, pitchConstraint));
+		this.entityHost.setYRot(updateRotation(this.entityHost.getYRot(), xyAngle, yawConstraint));
+	}
+
+	private float updateRotation(float current, float target, float maxDelta) {
+		float delta = Mth.wrapDegrees(target - current);
+
+		if (delta > maxDelta) {
+			delta = maxDelta;
+		}
+
+		if (delta < -maxDelta) {
+			delta = -maxDelta;
+		}
+
+		return current + delta;
+	}
+}

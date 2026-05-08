@@ -1,0 +1,33 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "twilightforest.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "PlayerMixin",
+    "AxeItemAccessor",
+    "FlowerPotBlockInvoker",
+    "LivingEntityMixin",
+    "MobAccessor",
+    "ParrotAccessor",
+    "DamageSourcesMixin",
+    "EntityStopRidingMixin",
+    "WrittenBookItemMixin",
+    "AbstractArrowMixin",
+    "BushBlockMixin",
+    "FireBlockMixin",
+    "LootTableMixin",
+    "GrassColorModifierCodecMixin",
+    "BeardifierAccessor",
+    "BeardifierMixin"
+  ],
+  "client": [
+    "client.LevelRendererMultipartMixin",
+    "client.EntityRenderDispatcherMultipartMixin",
+    "client.MapRendererAccessor",
+    "client.MapRendererMapInstanceMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

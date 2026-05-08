@@ -1,0 +1,20 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:sorting_log",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:stripped_sorting_log",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:sorting_wood",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:stripped_sorting_wood",
+                       "required":  false
+                   }
+               ]
+}

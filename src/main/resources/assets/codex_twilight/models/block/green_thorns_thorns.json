@@ -1,0 +1,7 @@
+﻿{
+  "parent": "codex_twilight:block/thorns",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "side": "codex_twilight:block/green_thorns_side"
+  }
+}

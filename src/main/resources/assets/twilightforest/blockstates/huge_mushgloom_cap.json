@@ -1,0 +1,32 @@
+{
+  "multipart": [
+    {
+      "when": {"north": "true"},
+      "apply": {"model": "minecraft:block/red_mushroom_block"}
+    },
+    {
+      "when": {"east": "true"},
+      "apply": {"model": "minecraft:block/red_mushroom_block", "y": 90}
+    },
+    {
+      "when": {"south": "true"},
+      "apply": {"model": "minecraft:block/red_mushroom_block", "y": 180}
+    },
+    {
+      "when": {"west": "true"},
+      "apply": {"model": "minecraft:block/red_mushroom_block", "y": 270}
+    },
+    {
+      "when": {"up": "true"},
+      "apply": {"model": "minecraft:block/red_mushroom_block", "x": 270}
+    },
+    {
+      "when": {"down": "true"},
+      "apply": {"model": "minecraft:block/red_mushroom_block", "x": 90}
+    },
+    {
+      "when": {"north": "false", "east": "false", "south": "false", "west": "false", "up": "false", "down": "false"},
+      "apply": {"model": "minecraft:block/mushroom_stem"}
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+﻿{
+    "values":  [
+                   "#c:stones",
+                   "#minecraft:stone_bricks",
+                   "#c:ores_in_ground/stone",
+                   "#c:ores_in_ground/deepslate",
+                   "#c:ores_in_ground/netherrack",
+                   "#c:cobblestones",
+                   "#c:netherracks",
+                   {
+                       "id":  "codex_twilight:giant_cobblestone",
+                       "required":  false
+                   },
+                   "minecraft:polished_andesite",
+                   "minecraft:polished_diorite",
+                   "minecraft:polished_granite",
+                   "minecraft:smooth_stone",
+                   "minecraft:infested_chiseled_stone_bricks",
+                   "minecraft:infested_cracked_stone_bricks",
+                   "minecraft:infested_mossy_stone_bricks",
+                   "minecraft:infested_stone_bricks"
+               ]
+}

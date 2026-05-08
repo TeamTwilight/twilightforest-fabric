@@ -1,0 +1,16 @@
+﻿{
+    "values":  [
+                   "#minecraft:features_cannot_replace",
+                   "#minecraft:logs",
+                   "#minecraft:leaves",
+                   {
+                       "id":  "codex_twilight:root",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:liveroot_block",
+                       "required":  false
+                   },
+                   "minecraft:mushroom_stem"
+               ]
+}

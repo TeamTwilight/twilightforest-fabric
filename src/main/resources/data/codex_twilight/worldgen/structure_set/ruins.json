@@ -1,0 +1,15 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 16,
+    "separation": 5,
+    "salt": 1625579351,
+    "spread_type": "triangular"
+  },
+  "structures": [
+    {
+      "structure": "codex_twilight:ruins",
+      "weight": 1
+    }
+  ]
+}

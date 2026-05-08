@@ -1,0 +1,73 @@
+﻿{
+    "values":  [
+                   "minecraft:nether_portal",
+                   {
+                       "id":  "#codex_twilight:deadrock",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:castle_brick",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:thick_castle_brick",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:mossy_castle_brick",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:castle_roof_tile",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:worn_castle_brick",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:blue_castle_rune_brick",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:violet_castle_rune_brick",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:yellow_castle_rune_brick",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:pink_castle_rune_brick",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:pink_force_field",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:orange_force_field",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:green_force_field",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:blue_force_field",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:violet_force_field",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:brown_thorns",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:green_thorns",
+                       "required":  false
+                   }
+               ]
+}

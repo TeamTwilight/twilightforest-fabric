@@ -1,0 +1,6 @@
+﻿{
+  "parent": "codex_twilight:item/banister_item",
+  "textures": {
+    "texture": "minecraft:block/bamboo_planks"
+  }
+}

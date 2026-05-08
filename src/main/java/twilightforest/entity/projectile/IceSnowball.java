@@ -1,96 +1,71 @@
 package twilightforest.entity.projectile;
 
-import net.fabricmc.api.EnvironmentInterface;
-import net.fabricmc.fabric.impl.item.ItemExtensions;
+import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ItemSupplier;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import twilightforest.init.TFDamageTypes;
-import twilightforest.init.TFEntities;
 
-@EnvironmentInterface(value = EnvType.CLIENT, itf = ItemSupplier.class)
-public class IceSnowball extends TFThrowable implements ItemSupplier {
+public class IceSnowball extends ThrowableProjectile implements ItemSupplier {
+    public IceSnowball(EntityType<? extends IceSnowball> type, Level level) {
+        super(type, level);
+    }
 
-	private static final int DAMAGE = 2;
+    public IceSnowball(EntityType<? extends IceSnowball> type, Level level, LivingEntity owner) {
+        super(type, owner, level);
+    }
 
-	public IceSnowball(EntityType<? extends IceSnowball> type, Level world) {
-		super(type, world);
-	}
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+    }
 
-	public IceSnowball(Level world, LivingEntity thrower) {
-		super(TFEntities.ICE_SNOWBALL.get(), world, thrower);
-	}
+    @Override
+    public void tick() {
+        super.tick();
+        for (int i = 0; i < 3; i++) {
+            this.level().addParticle(ParticleTypes.SNOWFLAKE, this.getX() + 0.25D * (this.random.nextDouble() - this.random.nextDouble()), this.getY() + 0.25D * (this.random.nextDouble() - this.random.nextDouble()), this.getZ() + 0.25D * (this.random.nextDouble() - this.random.nextDouble()), 0.0D, 0.0D, 0.0D);
+        }
+    }
 
-	@Override
-	public void tick() {
-		super.tick();
-		this.makeTrail(ParticleTypes.ITEM_SNOWBALL, 2);
-	}
+    @Override
+    protected void onHitEntity(EntityHitResult result) {
+        super.onHitEntity(result);
+        if (result.getEntity() instanceof LivingEntity living) {
+            living.hurt(TFDamageTypes.indirectSource(this.level(), TFDamageTypes.SNOWBALL_FIGHT, this, this.getOwner()), 4.0F);
+        }
+    }
 
-	@Override
-	protected float getGravity() {
-		return 0.006F;
-	}
+    @Override
+    protected void onHit(HitResult result) {
+        super.onHit(result);
+        if (!this.level().isClientSide()) {
+            this.level().broadcastEntityEvent(this, (byte) 3);
+            this.discard();
+        }
+    }
 
-	@Override
-	public boolean hurt(DamageSource source, float amount) {
-		super.hurt(source, amount);
-		this.die();
-		return true;
-	}
+    @Override
+    public void handleEntityEvent(byte id) {
+        if (id == 3) {
+            ItemStack item = new ItemStack(Items.SNOWBALL);
+            for (int i = 0; i < 8; i++) {
+                this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, item), this.getX(), this.getY(), this.getZ(), this.random.nextGaussian() * 0.05D, this.random.nextDouble() * 0.2D, this.random.nextGaussian() * 0.05D);
+            }
+        } else {
+            super.handleEntityEvent(id);
+        }
+    }
 
-	@Environment(EnvType.CLIENT)
-	@Override
-	public void handleEntityEvent(byte id) {
-		if (id == 3) {
-			for (int j = 0; j < 8; ++j) {
-				this.level().addParticle(ParticleTypes.ITEM_SNOWBALL, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
-			}
-		} else {
-			super.handleEntityEvent(id);
-		}
-	}
-
-	@Override
-	protected void onHitEntity(EntityHitResult result) {
-		super.onHitEntity(result);
-		Entity target = result.getEntity();
-		if (!this.level().isClientSide() && target instanceof LivingEntity) {
-			target.hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.SNOWBALL_FIGHT, this.getOwner(), this), DAMAGE);
-			//damage armor pieces
-			if (target instanceof Player) {
-				for (ItemStack stack : target.getArmorSlots())
-					stack.hurtAndBreak(this.random.nextInt(1), ((Player) target), (user) -> user.broadcastBreakEvent(((ItemExtensions) stack.getItem()).fabric_getEquipmentSlotProvider().getPreferredEquipmentSlot(stack)));
-			}
-		}
-	}
-
-	@Override
-	protected void onHit(HitResult result) {
-		super.onHit(result);
-		this.die();
-	}
-
-	private void die() {
-		if (!this.level().isClientSide()) {
-			this.level().broadcastEntityEvent(this, (byte) 3);
-			this.discard();
-		}
-	}
-
-	@Override
-	public ItemStack getItem() {
-		return new ItemStack(Items.SNOWBALL);
-	}
+    @Override
+    public ItemStack getItem() {
+        return new ItemStack(Items.SNOWBALL);
+    }
 }

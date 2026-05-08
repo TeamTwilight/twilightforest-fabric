@@ -1,0 +1,53 @@
+{
+  "ambientocclusion": false,
+  "textures": {
+    "bug": "twilightforest:model/firefly-tiny",
+    "particle": "twilightforest:block/firefly"
+  },
+  "elements": [
+    {
+      "from": [4, 7.9, 3],
+      "to": [12, 8, 13],
+      "shade": false,
+      "faces": {
+        "up": {"uv": [0, 21, 8, 31], "texture": "#bug"},
+        "down": {"uv": [0, 21, 8, 31], "texture": "#bug"}
+      }
+    },
+    {
+      "from": [6, 6, 4],
+      "to": [10, 8, 10],
+      "shade": false,
+      "faces": {
+        "north": {"uv": [0, 11, 4, 13], "texture": "#bug"},
+        "south": {"uv": [4, 11, 8, 13], "texture": "#bug"},
+        "east": {"uv": [8, 11, 14, 13], "texture": "#bug"},
+        "west": {"uv": [8, 13, 14, 15], "texture": "#bug"},
+        "up": {"uv": [0, 13, 4, 19], "texture": "#bug"},
+        "down": {"uv": [4, 13, 8, 19], "texture": "#bug"}
+      }
+    },
+    {
+      "from": [7, 6.9, 3],
+      "to": [9, 7.9, 11],
+      "shade": false,
+      "faces": {
+        "north": {"uv": [0, 0, 2, 1], "texture": "#bug"},
+        "south": {"uv": [2, 0, 4, 1], "texture": "#bug"},
+        "east": {"uv": [4, 0, 12, 1], "texture": "#bug"},
+        "west": {"uv": [4, 1, 12, 2], "texture": "#bug"},
+        "up": {"uv": [0, 1, 2, 9], "texture": "#bug"},
+        "down": {"uv": [2, 1, 4, 9], "texture": "#bug"}
+      }
+    },
+    {
+      "from": [3, 5.9, 0],
+      "to": [13, 6, 10],
+      "shade": false,
+      "faces": {
+        "up": {"uv": [20, 0, 30, 10], "texture": "#bug"},
+        "down": {"uv": [20, 0, 30, 10], "texture": "#bug"}
+      }
+    }
+  ]
+}

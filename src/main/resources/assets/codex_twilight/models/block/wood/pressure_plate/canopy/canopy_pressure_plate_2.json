@@ -1,0 +1,6 @@
+﻿{
+  "parent": "minecraft:block/pressure_plate_up",
+  "textures": {
+    "texture": "codex_twilight:block/wood/planks_canopy_2"
+  }
+}

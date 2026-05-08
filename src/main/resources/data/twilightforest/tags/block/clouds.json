@@ -1,0 +1,20 @@
+{
+  "values": [
+    {
+      "id": "codex_twilight:fluffy_cloud",
+      "required": false
+    },
+    {
+      "id": "codex_twilight:wispy_cloud",
+      "required": false
+    },
+    {
+      "id": "codex_twilight:rainy_cloud",
+      "required": false
+    },
+    {
+      "id": "codex_twilight:snowy_cloud",
+      "required": false
+    }
+  ]
+}

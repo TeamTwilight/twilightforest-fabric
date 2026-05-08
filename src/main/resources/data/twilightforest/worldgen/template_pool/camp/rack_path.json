@@ -1,0 +1,10 @@
+{
+  "name": "twilightforest:camp/rack_path",
+  "fallback": "twilightforest:camp/deco",
+  "elements": [
+    { "weight": 2, "element": { "element_type": "minecraft:single_pool_element", "location": "codex_twilight:camp/deco/double_drying_rack", "processors": "minecraft:empty", "projection": "rigid" } },
+    { "weight": 2, "element": { "element_type": "minecraft:single_pool_element", "location": "codex_twilight:camp/deco/long_drying_rack", "processors": "minecraft:empty", "projection": "rigid" } },
+    { "weight": 1, "element": { "element_type": "minecraft:single_pool_element", "location": "codex_twilight:camp/deco/repair_station", "processors": "minecraft:empty", "projection": "rigid" } },
+    { "weight": 1, "element": { "element_type": "minecraft:single_pool_element", "location": "codex_twilight:camp/deco/lumber1", "processors": "minecraft:empty", "projection": "rigid" } }
+  ]
+}

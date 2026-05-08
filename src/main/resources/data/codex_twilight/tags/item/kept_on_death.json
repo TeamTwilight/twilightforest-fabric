@@ -1,0 +1,16 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:tower_key",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:phantom_helmet",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:phantom_chestplate",
+                       "required":  false
+                   }
+               ]
+}

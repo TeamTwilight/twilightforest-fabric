@@ -1,12 +1,12 @@
 package twilightforest.block;
 
-import net.fabricmc.fabric.api.tag.convention.v1.ConventionalItemTags;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.AxeItem;
@@ -21,31 +21,25 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 
 public class LiverootBlock extends Block {
+    public LiverootBlock(Properties properties) {
+        super(properties);
+    }
 
-	public LiverootBlock(Properties properties) {
-		super(properties);
-	}
-
-	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-		if (player.getItemInHand(hand).is(ItemTags.AXES) || player.getItemInHand(hand).getItem() instanceof AxeItem) {
-			level.setBlockAndUpdate(pos, TFBlocks.ROOT_BLOCK.get().defaultBlockState());
-			int amountOfRoots = 1;
-			//fortune formula copied from ApplyBonusCount.OreDrops.calculateNewCount so it acts exactly like the loot table
-			if (EnchantmentHelper.getTagEnchantmentLevel(Enchantments.BLOCK_FORTUNE, player.getItemInHand(hand)) > 0) {
-				int i = level.getRandom().nextInt(EnchantmentHelper.getTagEnchantmentLevel(Enchantments.BLOCK_FORTUNE, player.getItemInHand(hand)) + 2) - 1;
-				if (i < 0) {
-					i = 0;
-				}
-
-				amountOfRoots = amountOfRoots * (i + 1);
-			}
-			ItemEntity liveroot = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(TFItems.LIVEROOT.get(), amountOfRoots));
-			level.addFreshEntity(liveroot);
-			level.playSound(null, pos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);
-			player.getItemInHand(hand).hurtAndBreak(1, player, evt -> evt.broadcastBreakEvent(hand));
-			return InteractionResult.sidedSuccess(level.isClientSide());
-		}
-		return super.use(state, level, pos, player, hand, result);
-	}
+    @Override
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+        if (stack.getItem() instanceof AxeItem) {
+            level.setBlockAndUpdate(pos, TFBlocks.ROOT_BLOCK.get().defaultBlockState());
+            int roots = 1;
+            int fortune = EnchantmentHelper.getItemEnchantmentLevel(level.registryAccess().registryOrThrow(Registries.ENCHANTMENT).getHolderOrThrow(Enchantments.FORTUNE), stack);
+            if (fortune > 0) {
+                int bonus = level.getRandom().nextInt(fortune + 2) - 1;
+                roots *= Math.max(bonus, 0) + 1;
+            }
+            level.addFreshEntity(new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(TFItems.LIVEROOT.get(), roots)));
+            level.playSound(null, pos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);
+            stack.hurtAndBreak(1, player, hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
+            return ItemInteractionResult.sidedSuccess(level.isClientSide());
+        }
+        return super.useItemOn(stack, state, level, pos, player, hand, result);
+    }
 }

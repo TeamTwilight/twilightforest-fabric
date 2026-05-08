@@ -1,0 +1,7 @@
+{
+  "parent": "twilightforest:block/casket_solid_template",
+  "textures": {
+    "side": "twilightforest:entity/casket/skull_chest",
+    "top": "twilightforest:entity/casket/skull_chest"
+  }
+}

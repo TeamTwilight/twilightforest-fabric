@@ -1,72 +1,68 @@
 package twilightforest.init;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.damagesource.*;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageEffects;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import twilightforest.util.EntityExcludedDamageSource;
+import twilightforest.util.entities.EntityExcludedDamageSource;
 
-public class TFDamageTypes {
-    public static final ResourceKey<DamageType> GHAST_TEAR = create("ghast_tear"); //Ur-Ghast
-    public static final ResourceKey<DamageType> HYDRA_BITE = create("hydra_bite"); //Hydra
-    public static final ResourceKey<DamageType> HYDRA_FIRE = create("hydra_fire"); //Hydra
-
-    public static final ResourceKey<DamageType> HYDRA_MORTAR = create("hydra_mortar"); //Hydra
-    public static final ResourceKey<DamageType> LICH_BOLT = create("lich_bolt"); //Lich
-    public static final ResourceKey<DamageType> LICH_BOMB = create("lich_bomb"); //Lich
-    public static final ResourceKey<DamageType> CHILLING_BREATH = create("chilling_breath"); //Snow Queen
-    public static final ResourceKey<DamageType> SQUISH = create("squish"); //Snow Queen
-    public static final ResourceKey<DamageType> THROWN_AXE = create("thrown_axe");
-    public static final ResourceKey<DamageType> THROWN_PICKAXE = create("thrown_pickaxe");
-    public static final ResourceKey<DamageType> THORNS = create("thorns");
-    public static final ResourceKey<DamageType> KNIGHTMETAL = create("knightmetal");
-    public static final ResourceKey<DamageType> FIERY = create("fiery");
-    public static final ResourceKey<DamageType> FIRE_JET = create("fire_jet");
-    public static final ResourceKey<DamageType> REACTOR = create("reactor");
-    public static final ResourceKey<DamageType> SLIDER = create("slider");
+public final class TFDamageTypes {
+    public static final ResourceKey<DamageType> EXPIRED = create("expired");
+    public static final ResourceKey<DamageType> HAUNT = create("haunt");
+    public static final ResourceKey<DamageType> SCORCHED = create("scorched");
+    public static final ResourceKey<DamageType> SPIKED = create("spiked");
+    public static final ResourceKey<DamageType> FROZEN = create("frozen");
+    public static final ResourceKey<DamageType> FALLING_ICE = create("falling_ice");
+    public static final ResourceKey<DamageType> GHAST_TEAR = create("ghast_tear");
+    public static final ResourceKey<DamageType> SQUISH = create("squish");
+    public static final ResourceKey<DamageType> AXING = create("axing");
+    public static final ResourceKey<DamageType> CHILLING_BREATH = create("chilling_breath");
+    public static final ResourceKey<DamageType> SLAM = create("slam");
     public static final ResourceKey<DamageType> THROWN_BLOCK = create("thrown_block");
-    public static final ResourceKey<DamageType> AXING = create("axing"); //Minotaur, Minoshroom
-    public static final ResourceKey<DamageType> SLAM = create("slam"); //Minoshroom
-    public static final ResourceKey<DamageType> YEETED = create("yeeted"); //Yeti, Alpha Yeti
-    public static final ResourceKey<DamageType> ANT = create("ant"); //Giants
-    public static final ResourceKey<DamageType> HAUNT = create("haunt"); //Knight Phantom, Wraith
-    public static final ResourceKey<DamageType> CLAMPED = create("clamped"); //Pinch Beetle
-    public static final ResourceKey<DamageType> SCORCHED = create("scorched"); //Fire Beetle
-    public static final ResourceKey<DamageType> FROZEN = create("frozen"); //
-    public static final ResourceKey<DamageType> SPIKED = create("spiked"); //Block and Chain
-    public static final ResourceKey<DamageType> LEAF_BRAIN = create("leaf_brain"); //Skeleton Druid
-    public static final ResourceKey<DamageType> LOST_WORDS = create("lost_words"); //Death Tome
-    public static final ResourceKey<DamageType> SCHOOLED = create("schooled"); //Death Tome 2
-    public static final ResourceKey<DamageType> SNOWBALL_FIGHT = create("snowball_fight"); //Ice Core
+    public static final ResourceKey<DamageType> HYDRA_MORTAR = create("hydra_mortar");
+    public static final ResourceKey<DamageType> SNOWBALL_FIGHT = create("snowball_fight");
+    public static final ResourceKey<DamageType> LEAF_BRAIN = create("leaf_brain");
+    public static final ResourceKey<DamageType> LICH_BOLT = create("lich_bolt");
+    public static final ResourceKey<DamageType> LICH_BOMB = create("lich_bomb");
+    public static final ResourceKey<DamageType> LOST_WORDS = create("lost_words");
+    public static final ResourceKey<DamageType> SCHOOLED = create("schooled");
+    public static final ResourceKey<DamageType> HYDRA_BITE = create("hydra_bite");
+    public static final ResourceKey<DamageType> HYDRA_FIRE = create("hydra_fire");
+    public static final ResourceKey<DamageType> CLAMPED = create("clamped");
+    public static final ResourceKey<DamageType> ANT = create("ant");
+    public static final ResourceKey<DamageType> OREBERRY = create("oreberry");
+    public static final ResourceKey<DamageType> THORNS = create("thorns");
+    public static final ResourceKey<DamageType> FIRE_JET = create("fire_jet");
+    public static final ResourceKey<DamageType> SLIDER = create("slider");
+    public static final ResourceKey<DamageType> FIERY = create("fiery");
+    public static final ResourceKey<DamageType> KNIGHTMETAL = create("knightmetal");
+    public static final ResourceKey<DamageType> OMINOUS_FIRE = create("ominous_fire");
+    public static final ResourceKey<DamageType> REACTOR = create("reactor");
+    public static final ResourceKey<DamageType> THROWN_PICKAXE = create("thrown_pickaxe");
+    public static final ResourceKey<DamageType> THROWN_AXE = create("thrown_axe");
+    public static final ResourceKey<DamageType> STALE_SANDWICH = create("stale_sandwich");
     public static final ResourceKey<DamageType> TWILIGHT_SCEPTER = create("twilight_scepter");
     public static final ResourceKey<DamageType> LIFEDRAIN = create("lifedrain");
-    public static final ResourceKey<DamageType> EXPIRED = create("expired");
-    public static final ResourceKey<DamageType> FALLING_ICE = create("falling_ice");
-    public static final ResourceKey<DamageType> MOONWORM = create("moonworm"); //Moonworm
-    public static final ResourceKey<DamageType> ACID_RAIN = create("acid_rain"); //Acid rain Enforcement
+    public static final ResourceKey<DamageType> MOONWORM = create("moonworm");
+    public static final ResourceKey<DamageType> FAILED_CHALLENGE = create("failed_challenge");
+    public static final ResourceKey<DamageType> ACID_RAIN = create("acid_rain");
+    public static final ResourceKey<DamageType> YEETED = create("yeeted");
 
-    public static ResourceKey<DamageType> create(String name) {
+    private TFDamageTypes() {
+    }
+
+    private static ResourceKey<DamageType> create(String name) {
         return ResourceKey.create(Registries.DAMAGE_TYPE, TwilightForestMod.prefix(name));
     }
 
-    public static DamageSource getDamageSource(Level level, ResourceKey<DamageType> type, EntityType<?>... toIgnore) {
-        return getEntityDamageSource(level, type, null, toIgnore);
-    }
-
-    public static DamageSource getEntityDamageSource(Level level, ResourceKey<DamageType> type, @Nullable Entity attacker, EntityType<?>... toIgnore) {
-        return getIndirectEntityDamageSource(level, type, attacker, attacker, toIgnore);
-    }
-
-    public static DamageSource getIndirectEntityDamageSource(Level level, ResourceKey<DamageType> type, @Nullable Entity attacker, @Nullable Entity indirectAttacker, EntityType<?>... toIgnore) {
-        return toIgnore.length > 0 ? new EntityExcludedDamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(type), toIgnore) : new DamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(type), attacker, indirectAttacker);
-    }
-            
-    public static void bootstrap(BootstapContext<DamageType> context) {
+    public static void bootstrap(BootstrapContext<DamageType> context) {
         context.register(GHAST_TEAR, new DamageType("twilightforest.ghastTear", 0.0F));
         context.register(HYDRA_BITE, new DamageType("twilightforest.hydraBite", 0.0F));
         context.register(HYDRA_FIRE, new DamageType("twilightforest.hydraFire", 0.0F));
@@ -78,6 +74,7 @@ public class TFDamageTypes {
         context.register(THROWN_AXE, new DamageType("twilightforest.thrownAxe", 0.0F));
         context.register(THROWN_PICKAXE, new DamageType("twilightforest.thrownPickaxe", 0.0F));
         context.register(THORNS, new DamageType("twilightforest.thorns", 0.1F));
+        context.register(OREBERRY, new DamageType("twilightforest.oreberry", 0.1F));
         context.register(KNIGHTMETAL, new DamageType("twilightforest.knightmetal", 0.1F));
         context.register(FIERY, new DamageType("twilightforest.fiery", 0.1F, DamageEffects.BURNING));
         context.register(FIRE_JET, new DamageType("twilightforest.fireJet", 0.1F, DamageEffects.BURNING));
@@ -89,7 +86,7 @@ public class TFDamageTypes {
         context.register(YEETED, new DamageType("twilightforest.yeeted", 0.1F));
         context.register(ANT, new DamageType("twilightforest.ant", 0.1F));
         context.register(HAUNT, new DamageType("twilightforest.haunt", 0.1F));
-        context.register(CLAMPED, new DamageType("twilightforest.clamped", 0.1F));
+        context.register(CLAMPED, new DamageType("twilightforest.clamped", 0.1F, DamageEffects.POKING));
         context.register(SCORCHED, new DamageType("twilightforest.scorched", 0.1F, DamageEffects.BURNING));
         context.register(FROZEN, new DamageType("twilightforest.frozen", 0.1F, DamageEffects.FREEZING));
         context.register(SPIKED, new DamageType("twilightforest.spiked", 0.1F));
@@ -103,5 +100,34 @@ public class TFDamageTypes {
         context.register(FALLING_ICE, new DamageType("fallingBlock", 0.1F));
         context.register(MOONWORM, new DamageType("twilightforest.moonworm", 0.0F));
         context.register(ACID_RAIN, new DamageType("twilightforest.acid_rain", 0.0F));
+        context.register(OMINOUS_FIRE, new DamageType("twilightforest.ominous", 0.1F, DamageEffects.BURNING));
+        context.register(FAILED_CHALLENGE, new DamageType("twilightforest.failedChallenge", 0.0F));
+        context.register(STALE_SANDWICH, new DamageType("twilightforest.stale_sandwich", 0.0F));
+    }
+
+    public static DamageSource source(Level level, ResourceKey<DamageType> type) {
+        return source(level, type, new EntityType<?>[0]);
+    }
+
+    public static DamageSource source(Level level, ResourceKey<DamageType> type, EntityType<?>... toIgnore) {
+        var holder = level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(type);
+        return toIgnore.length > 0 ? new EntityExcludedDamageSource(holder, toIgnore) : new DamageSource(holder);
+    }
+
+    public static DamageSource entitySource(Level level, ResourceKey<DamageType> type, @Nullable Entity attacker) {
+        return entitySource(level, type, attacker, new EntityType<?>[0]);
+    }
+
+    public static DamageSource entitySource(Level level, ResourceKey<DamageType> type, @Nullable Entity attacker, EntityType<?>... toIgnore) {
+        return indirectSource(level, type, attacker, attacker, toIgnore);
+    }
+
+    public static DamageSource indirectSource(Level level, ResourceKey<DamageType> type, @Nullable Entity direct, @Nullable Entity cause) {
+        return indirectSource(level, type, direct, cause, new EntityType<?>[0]);
+    }
+
+    public static DamageSource indirectSource(Level level, ResourceKey<DamageType> type, @Nullable Entity direct, @Nullable Entity cause, EntityType<?>... toIgnore) {
+        var holder = level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(type);
+        return toIgnore.length > 0 ? new EntityExcludedDamageSource(holder, direct, cause, toIgnore) : new DamageSource(holder, direct, cause);
     }
 }

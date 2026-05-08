@@ -1,0 +1,8 @@
+{
+    "replace":  false,
+    "values":  [
+                   "twilightforest:dark_forest",
+                   "twilightforest:dark_forest_center",
+                   "twilightforest:spooky_forest"
+               ]
+}

@@ -1,0 +1,8 @@
+{
+  "type": "twilightforest:troll_vines",
+  "config": {
+    "state": {
+      "Name": "minecraft:hanging_roots"
+    }
+  }
+}

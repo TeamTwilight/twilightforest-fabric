@@ -1,6 +1,6 @@
 package twilightforest.entity.monster;
 
-import io.github.fabricators_of_create.porting_lib.entity.MultiPartEntity;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -11,10 +11,14 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.item.PrimedTnt;
@@ -22,324 +26,314 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.entity.Chain;
 import twilightforest.entity.SpikeBlock;
 import twilightforest.entity.TFPart;
-import twilightforest.entity.ai.goal.AvoidAnyEntityGoal;
 import twilightforest.entity.ai.goal.ThrowSpikeBlockGoal;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFSounds;
-import twilightforest.util.EntityUtil;
 
+import java.util.EnumSet;
 import java.util.List;
 
-public class BlockChainGoblin extends Monster implements MultiPartEntity {
-	//this is here but its never been used
-	//private static final UUID MODIFIER_UUID = UUID.fromString("5CD17E52-A79A-43D3-A529-90FDE04B181E");
-	//private static final AttributeModifier MODIFIER = new AttributeModifier(MODIFIER_UUID, "speedPenalty", -0.25D, AttributeModifier.Operation.ADDITION);
+public class BlockChainGoblin extends Monster implements TFPart.Owner {
+    private static final float CHAIN_SPEED = 16.0F;
+    private static final double SPIKE_SIZE = 0.75D;
 
-	private static final float CHAIN_SPEED = 16F;
-	private static final EntityDataAccessor<Byte> DATA_CHAINLENGTH = SynchedEntityData.defineId(BlockChainGoblin.class, EntityDataSerializers.BYTE);
-	private static final EntityDataAccessor<Byte> DATA_CHAINPOS = SynchedEntityData.defineId(BlockChainGoblin.class, EntityDataSerializers.BYTE);
-	private static final EntityDataAccessor<Boolean> IS_THROWING = SynchedEntityData.defineId(BlockChainGoblin.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Byte> DATA_CHAIN_LENGTH = SynchedEntityData.defineId(BlockChainGoblin.class, EntityDataSerializers.BYTE);
+    private static final EntityDataAccessor<Byte> DATA_CHAIN_POS = SynchedEntityData.defineId(BlockChainGoblin.class, EntityDataSerializers.BYTE);
+    private static final EntityDataAccessor<Boolean> IS_THROWING = SynchedEntityData.defineId(BlockChainGoblin.class, EntityDataSerializers.BOOLEAN);
 
-	private int recoilCounter;
-	private float chainAngle;
+    private int recoilCounter;
+    private float chainAngle;
+    private float chainMoveLength;
+    private Vec3 spikePosition = Vec3.ZERO;
+    private Vec3 chainPart1 = Vec3.ZERO;
+    private Vec3 chainPart2 = Vec3.ZERO;
+    private Vec3 chainPart3 = Vec3.ZERO;
+    public final SpikeBlock block;
+    private final MultipartGenericsAreDumb[] partsArray;
 
-	private float chainMoveLength;
+    public BlockChainGoblin(EntityType<? extends BlockChainGoblin> type, Level level) {
+        super(type, level);
+        this.block = new SpikeBlock(this);
+        this.partsArray = new MultipartGenericsAreDumb[]{this.block};
+    }
 
-	public final SpikeBlock block = new SpikeBlock(this);
-	public final Chain chain1;
-	public final Chain chain2;
-	public final Chain chain3;
+    public static abstract class MultipartGenericsAreDumb extends TFPart<Entity> {
+        public MultipartGenericsAreDumb(Entity parent) {
+            super(parent);
+        }
+    }
 
-	private final MultipartGenericsAreDumb[] partsArray;
+    public static AttributeSupplier.Builder registerAttributes() {
+        return Monster.createMonsterAttributes()
+                .add(Attributes.MAX_HEALTH, 20.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.28D)
+                .add(Attributes.ATTACK_DAMAGE, 8.0D)
+                .add(Attributes.ARMOR, 11.0D);
+    }
 
-	public BlockChainGoblin(EntityType<? extends BlockChainGoblin> type, Level world) {
-		super(type, world);
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_CHAIN_LENGTH, (byte) 0);
+        builder.define(DATA_CHAIN_POS, (byte) 0);
+        builder.define(IS_THROWING, false);
+    }
 
-		this.chain1 = new Chain(this);
-		this.chain2 = new Chain(this);
-		this.chain3 = new Chain(this);
+    @Override
+    protected void registerGoals() {
+        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new AvoidTntGoal(this));
+        this.goalSelector.addGoal(4, new ThrowSpikeBlockGoal(this, this.block));
+        this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, false));
+        this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+    }
 
-		this.partsArray = new MultipartGenericsAreDumb[]{this.block, this.chain1, this.chain2, this.chain3};
-	}
+    @Override
+    public void tick() {
+        super.tick();
+        this.block.tick();
+        if (this.recoilCounter > 0) {
+            --this.recoilCounter;
+        }
+        this.chainAngle = this.level().isClientSide() ? this.getSyncedChainAngle() : (this.chainAngle + CHAIN_SPEED) % 360.0F;
+        this.updateChainPositions();
+        this.block.setPos(this.spikePosition.x(), this.spikePosition.y(), this.spikePosition.z());
+        this.block.setYRot(this.level().isClientSide() ? this.getSyncedChainAngle() : this.chainAngle);
+        this.chainMove();
 
-	public static abstract class MultipartGenericsAreDumb extends TFPart<Entity> {
+        if (!this.level().isClientSide()) {
+            this.getEntityData().set(DATA_CHAIN_LENGTH, (byte) Math.floor(this.getChainLength() * 127.0F));
+            this.getEntityData().set(DATA_CHAIN_POS, (byte) Math.floor(this.chainAngle / 360.0F * 255.0F));
+            twilightforest.util.multiparts.MultipartEntityUtil.sendDirtyMultipartEntityData(this);
+            if (this.isAlive() && (this.isThrowing() || this.isSwingingChain())) {
+                this.applyBlockCollisions();
+            }
+        }
+    }
 
-		public MultipartGenericsAreDumb(Entity parent) {
-			super(parent);
-		}
-	}
+    private void applyChainHit(LivingEntity target) {
+        if (target.hurt(TFDamageTypes.indirectSource(this.level(), TFDamageTypes.SPIKED, this, this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE))) {
+            double dx = target.getX() - this.getX();
+            double dz = target.getZ() - this.getZ();
+            double distance = Math.max(0.1D, Math.sqrt(dx * dx + dz * dz));
+            target.push(dx / distance * 0.7D, 0.4D, dz / distance * 0.7D);
+            this.playSound(TFSounds.BLOCK_AND_CHAIN_HIT, 1.0F, 1.0F);
+            this.gameEvent(GameEvent.PROJECTILE_LAND);
+            this.recoilCounter = 40;
+        }
+    }
 
-	@Override
-	protected void registerGoals() {
-		this.goalSelector.addGoal(0, new FloatGoal(this));
-		this.goalSelector.addGoal(1, new AvoidAnyEntityGoal<>(this, PrimedTnt.class, 2.0F, 1.0F, 2.0F));
-		this.goalSelector.addGoal(4, new ThrowSpikeBlockGoal(this, this.block));
-		this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0F, false));
-		this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-		this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
-		this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
-		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
-	}
+    private void updateChainPositions() {
+        if (this.isAlive() && this.chainMoveLength > 0.0F) {
+            Vec3 blockPos = this.getThrowPos();
+            double startX = this.getX();
+            double startY = this.getY() + this.getBbHeight() - 0.1D;
+            double startZ = this.getZ();
+            double offsetX = startX - blockPos.x();
+            double offsetY = startY - blockPos.y() - 0.25D;
+            double offsetZ = startZ - blockPos.z();
 
-	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(DATA_CHAINLENGTH, (byte) 0);
-		this.getEntityData().define(DATA_CHAINPOS, (byte) 0);
-		this.getEntityData().define(IS_THROWING, false);
-	}
+            if (this.chainMoveLength >= 6.0F) {
+                this.setThrowing(false);
+            }
 
-	public static AttributeSupplier.Builder registerAttributes() {
-		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 20.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.28D)
-				.add(Attributes.ATTACK_DAMAGE, 8.0D)
-				.add(Attributes.ARMOR, 11.0D);
-	}
+            this.chainPart1 = new Vec3(startX - offsetX * 0.25D, startY - offsetY * 0.25D, startZ - offsetZ * 0.25D);
+            this.chainPart2 = new Vec3(startX - offsetX * 0.5D, startY - offsetY * 0.5D, startZ - offsetZ * 0.5D);
+            this.chainPart3 = new Vec3(startX - offsetX * 0.85D, startY - offsetY * 0.85D, startZ - offsetZ * 0.85D);
+            this.spikePosition = new Vec3(startX - offsetX, startY - offsetY, startZ - offsetZ);
+        } else {
+            Vec3 blockPos = this.getChainPosition();
+            double startX = this.getX();
+            double startY = this.getY() + this.getBbHeight() - 0.1D;
+            double startZ = this.getZ();
+            double offsetX = startX - blockPos.x();
+            double offsetY = startY - blockPos.y() - SPIKE_SIZE / 3.0D;
+            double offsetZ = startZ - blockPos.z();
 
-	@Override
-	public float getEyeHeight(Pose pose) {
-		return this.getBbHeight() * 0.78F;
-	}
+            this.spikePosition = blockPos;
+            this.chainPart1 = new Vec3(startX - offsetX * 0.4D, startY - offsetY * 0.4D, startZ - offsetZ * 0.4D);
+            this.chainPart2 = new Vec3(startX - offsetX * 0.5D, startY - offsetY * 0.5D, startZ - offsetZ * 0.5D);
+            this.chainPart3 = new Vec3(startX - offsetX * 0.6D, startY - offsetY * 0.6D, startZ - offsetZ * 0.6D);
+        }
+    }
 
-	@Override
-	protected SoundEvent getAmbientSound() {
-		return TFSounds.BLOCKCHAIN_GOBLIN_AMBIENT.get();
-	}
+    private Vec3 getThrowPos() {
+        Vec3 view = this.getViewVector(1.0F);
+        return new Vec3(this.getX() + view.x() * this.chainMoveLength, this.getY() + this.getEyeHeight(), this.getZ() + view.z() * this.chainMoveLength);
+    }
 
-	@Override
-	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.BLOCKCHAIN_GOBLIN_HURT.get();
-	}
+    public double getChainYOffset() {
+        return 1.5D - this.getChainLength() / 4.0D;
+    }
 
-	@Override
-	protected SoundEvent getDeathSound() {
-		return TFSounds.BLOCKCHAIN_GOBLIN_DEATH.get();
-	}
+    public Vec3 getChainPosition() {
+        return this.getChainPosition(this.chainAngle, this.getChainLength());
+    }
 
-	/**
-	 * How high is the chain
-	 */
-	public double getChainYOffset() {
-		return 1.5D - this.getChainLength() / 4.0D;
-	}
+    public Vec3 getChainPosition(float angle, float distance) {
+        double dx = Math.cos(angle * Math.PI / 180.0D) * distance;
+        double dz = Math.sin(angle * Math.PI / 180.0D) * distance;
+        return new Vec3(this.getX() + dx, this.getY() + this.getChainYOffset(), this.getZ() + dz);
+    }
 
-	/**
-	 * Get the block & chain position
-	 */
-	public Vec3 getChainPosition() {
-		return this.getChainPosition(this.getChainAngle(), this.getChainLength());
-	}
+    public boolean isSwingingChain() {
+        return this.swinging || this.getTarget() != null && this.recoilCounter == 0;
+    }
 
-	/**
-	 * Get the block & chain position
-	 */
-	public Vec3 getChainPosition(float angle, float distance) {
-		double dx = Math.cos((angle) * Math.PI / 180.0D) * distance;
-		double dz = Math.sin((angle) * Math.PI / 180.0D) * distance;
+    private void chainMove() {
+        this.chainMoveLength = Mth.clamp(this.chainMoveLength + (this.isThrowing() ? 0.5F : -1.5F), 0.0F, 6.0F);
+    }
 
-		return new Vec3(this.getX() + dx, this.getY() + this.getChainYOffset(), this.getZ() + dz);
-	}
+    private void applyBlockCollisions() {
+        AABB spikeBox = AABB.ofSize(this.spikePosition, SPIKE_SIZE, SPIKE_SIZE, SPIKE_SIZE);
+        List<Entity> entities = this.level().getEntities(this, spikeBox.inflate(0.2D, 0.0D, 0.2D), entity -> entity.isPushable() && !entity.is(this));
 
-	public boolean isSwingingChain() {
-		return this.swinging || (this.getTarget() != null && this.recoilCounter == 0);
-	}
+        for (Entity entity : entities) {
+            entity.push(this);
+            if (entity instanceof LivingEntity living) {
+                this.applyChainHit(living);
+                if (this.isThrowing()) {
+                    this.setThrowing(false);
+                }
+            }
+        }
 
-	@Override
-	public boolean doHurtTarget(Entity entity) {
-		return EntityUtil.properlyApplyCustomDamageSource(this, entity, TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.SPIKED, this, this.block));
-	}
+        if (this.isThrowing() && !this.level().noCollision(this, spikeBox)) {
+            this.setThrowing(false);
+            this.playSound(TFSounds.BLOCK_AND_CHAIN_COLLIDE, 0.65F, 0.75F);
+            this.gameEvent(GameEvent.HIT_GROUND);
+        }
+    }
 
-	@Override
-	public void tick() {
-		super.tick();
-		this.block.tick();
-		this.chain1.tick();
-		this.chain2.tick();
-		this.chain3.tick();
+    @Override
+    public boolean doHurtTarget(Entity entity) {
+        boolean hurt = super.doHurtTarget(entity);
+        if (hurt) {
+            entity.push(0.0D, 0.4D, 0.0D);
+            this.recoilCounter = 20;
+        }
+        return hurt;
+    }
 
-		if (this.recoilCounter > 0) {
-			this.recoilCounter--;
-		}
+    public boolean isThrowing() {
+        return this.getEntityData().get(IS_THROWING);
+    }
 
-		this.chainAngle += CHAIN_SPEED;
-		this.chainAngle %= 360;
+    public void setThrowing(boolean throwing) {
+        this.getEntityData().set(IS_THROWING, throwing);
+    }
 
-		if (!this.level().isClientSide()) {
-			this.getEntityData().set(DATA_CHAINLENGTH, (byte) Math.floor(this.getChainLength() * 127.0F));
-			this.getEntityData().set(DATA_CHAINPOS, (byte) Math.floor(this.getChainAngle() / 360.0F * 255.0F));
-		} else {
-			// synch chain pos if it's wrong
-			if (Math.abs(this.chainAngle - this.getChainAngle()) > CHAIN_SPEED * 2) {
-				this.chainAngle = this.getChainAngle();
-			}
-		}
+    public float getChainMoveLength() {
+        return this.chainMoveLength;
+    }
 
-		//when alive,Holding SpikeBlock
-		if (this.isAlive()) {
-			if (this.chainMoveLength > 0) {
+    public Vec3 getSpikePosition() {
+        return this.spikePosition;
+    }
 
-				Vec3 blockPos = this.getThrowPos();
+    public Vec3 getChainPart1() {
+        return this.chainPart1;
+    }
 
-				double sx2 = this.getX();
-				double sy2 = this.getY() + this.getBbHeight() - 0.1D;
-				double sz2 = this.getZ();
+    public Vec3 getChainPart2() {
+        return this.chainPart2;
+    }
 
-				double ox2 = sx2 - blockPos.x();
-				double oy2 = sy2 - blockPos.y() - 0.25F;
-				double oz2 = sz2 - blockPos.z();
+    public Vec3 getChainPart3() {
+        return this.chainPart3;
+    }
 
-				//When the thrown chainblock exceeds a certain distance, return to the owner
-				if (this.chainMoveLength >= 6.0F || !this.isAlive()) {
-					this.setThrowing(false);
-				}
+    private float getChainLength() {
+        if (this.level().isClientSide()) {
+            return Byte.toUnsignedInt(this.getEntityData().get(DATA_CHAIN_LENGTH)) / 127.0F;
+        }
+        return this.isSwingingChain() ? 0.9F : 0.3F;
+    }
 
-				this.chain1.setPos(sx2 - ox2 * 0.25D, sy2 - oy2 * 0.25D, sz2 - oz2 * 0.25D);
-				this.chain2.setPos(sx2 - ox2 * 0.5D, sy2 - oy2 * 0.5D, sz2 - oz2 * 0.5D);
-				this.chain3.setPos(sx2 - ox2 * 0.85D, sy2 - oy2 * 0.85D, sz2 - oz2 * 0.85D);
+    private float getSyncedChainAngle() {
+        return Byte.toUnsignedInt(this.getEntityData().get(DATA_CHAIN_POS)) / 255.0F * 360.0F;
+    }
 
-				this.block.setPos(sx2 - ox2, sy2 - oy2, sz2 - oz2);
-			} else {
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return TFSounds.BLOCKCHAIN_GOBLIN_AMBIENT;
+    }
 
-				// set block position
-				Vec3 blockPos = this.getChainPosition();
-				this.block.setPos(blockPos.x(), blockPos.y(), blockPos.z());
-				this.block.setYRot(getChainAngle());
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return TFSounds.BLOCKCHAIN_GOBLIN_HURT;
+    }
 
-				// interpolate chain position
-				double sx = this.getX();
-				double sy = this.getY() + this.getBbHeight() - 0.1D;
-				double sz = this.getZ();
+    @Override
+    protected SoundEvent getDeathSound() {
+        return TFSounds.BLOCKCHAIN_GOBLIN_DEATH;
+    }
 
-				double ox = sx - blockPos.x();
-				double oy = sy - blockPos.y() - (this.block.getBbHeight() / 3.0D);
-				double oz = sz - blockPos.z();
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putBoolean("IsThrowing", this.isThrowing());
+        tag.putInt("Recoil", this.recoilCounter);
+    }
 
-				this.chain1.setPos(sx - ox * 0.4D, sy - oy * 0.4D, sz - oz * 0.4D);
-				this.chain2.setPos(sx - ox * 0.5D, sy - oy * 0.5D, sz - oz * 0.5D);
-				this.chain3.setPos(sx - ox * 0.6D, sy - oy * 0.6D, sz - oz * 0.6D);
-			}
-		}
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        this.setThrowing(tag.getBoolean("IsThrowing"));
+        this.recoilCounter = tag.getInt("Recoil");
+    }
 
-		// collide things with the block
-		if (!this.level().isClientSide() && this.isAlive() && (this.isThrowing() || this.isSwingingChain())) {
-			this.applyBlockCollisions(this.block);
-		}
-		this.chainMove();
-	}
+    static class AvoidTntGoal extends Goal {
+        private final BlockChainGoblin goblin;
+        private PrimedTnt nearestTnt;
 
-	private Vec3 getThrowPos() {
-		Vec3 vec3d = this.getViewVector(1.0F);
-		return new Vec3(this.getX() + vec3d.x() * this.chainMoveLength, this.getY() + this.getEyeHeight(), this.getZ() + vec3d.z() * this.chainMoveLength);
-	}
+        AvoidTntGoal(BlockChainGoblin goblin) {
+            this.goblin = goblin;
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+        }
 
-	private void chainMove() {
-		if (this.isThrowing()) {
-			this.chainMoveLength = Mth.clamp(this.chainMoveLength + 0.5F, 0.0F, 6.0F);
-		} else {
-			this.chainMoveLength = Mth.clamp(this.chainMoveLength - 1.5F, 0.0F, 6.0F);
-		}
-	}
+        @Override
+        public boolean canUse() {
+            List<PrimedTnt> tnts = this.goblin.level().getEntitiesOfClass(PrimedTnt.class, this.goblin.getBoundingBox().inflate(2.0D), Entity::isAlive);
+            if (tnts.isEmpty()) {
+                this.nearestTnt = null;
+                return false;
+            }
+            tnts.sort((first, second) -> Double.compare(this.goblin.distanceToSqr(first), this.goblin.distanceToSqr(second)));
+            this.nearestTnt = tnts.get(0);
+            return true;
+        }
 
-	public float getChainMoveLength() {
-		return chainMoveLength;
-	}
+        @Override
+        public boolean canContinueToUse() {
+            return this.nearestTnt != null && this.nearestTnt.isAlive() && this.goblin.distanceToSqr(this.nearestTnt) < 9.0D;
+        }
 
-	/**
-	 * Check if the block is colliding with any nearby entities
-	 */
-	protected void applyBlockCollisions(Entity collider) {
-		List<Entity> list = this.level().getEntities(collider, collider.getBoundingBox().inflate(0.2D, 0.0D, 0.2D));
+        @Override
+        public void tick() {
+            if (this.nearestTnt != null) {
+                Vec3 away = this.goblin.position().subtract(this.nearestTnt.position()).normalize().scale(2.0D);
+                this.goblin.getNavigation().moveTo(this.goblin.getX() + away.x(), this.goblin.getY(), this.goblin.getZ() + away.z(), this.goblin.distanceToSqr(this.nearestTnt) < 4.0D ? 2.0D : 1.0D);
+            }
+        }
+    }
 
-		for (Entity entity : list) {
-			if (entity.isPushable()) {
-				this.applyBlockCollision(collider, entity);
-			}
-		}
+    @Override
+    public MultipartGenericsAreDumb[] getParts() {
+        return this.partsArray;
+    }
 
-		if (this.isThrowing() && collider.isInWall()) {
-			this.setThrowing(false);
-			collider.playSound(TFSounds.BLOCK_AND_CHAIN_COLLIDE.get(), 0.65F, 0.75F);
-			this.gameEvent(GameEvent.HIT_GROUND);
-		}
-	}
-
-	/**
-	 * Do the effect where the block hits something
-	 */
-	protected void applyBlockCollision(Entity collider, Entity collided) {
-		if (collided != this) {
-			collided.push(collider);
-			if (collided instanceof LivingEntity) {
-				if (super.doHurtTarget(collided)) {
-					collided.push(0, 0.4, 0);
-					this.playSound(TFSounds.BLOCK_AND_CHAIN_HIT.get(), 1.0F, 1.0F);
-					this.gameEvent(GameEvent.PROJECTILE_LAND);
-					this.recoilCounter = 40;
-					if (this.isThrowing()) {
-						this.setThrowing(false);
-					}
-				}
-
-			}
-		}
-	}
-
-	public boolean isThrowing() {
-		return this.getEntityData().get(IS_THROWING);
-	}
-
-	public void setThrowing(boolean isThrowing) {
-		this.getEntityData().set(IS_THROWING, isThrowing);
-	}
-
-	/**
-	 * Angle between 0 and 360 to place the chain at
-	 */
-	private float getChainAngle() {
-		if (!this.level().isClientSide()) {
-			return this.chainAngle;
-		} else {
-			return (this.getEntityData().get(DATA_CHAINPOS) & 0xFF) / 255.0F * 360.0F;
-		}
-	}
-
-	/**
-	 * Between 0.0F and 2.0F, how long is the chain right now?
-	 */
-	private float getChainLength() {
-		if (!this.level().isClientSide()) {
-			if (this.isSwingingChain()) {
-				return 0.9F;
-			} else {
-				return 0.3F;
-			}
-		} else {
-			return (this.getEntityData().get(DATA_CHAINLENGTH) & 0xFF) / 127.0F;
-		}
-	}
-
-	@Override
-	public boolean isMultipartEntity() {
-		return true;
-	}
-
-	@Override
-	public void recreateFromPacket(ClientboundAddEntityPacket packet) {
-		super.recreateFromPacket(packet);
-		TFPart.assignPartIDs(this);
-	}
-
-	/**
-	 * We need to do this for the bounding boxes on the parts to become active
-	 */
-	@Override
-	public MultipartGenericsAreDumb[] getParts() {
-		return partsArray;
-	}
+    @Override
+    public void recreateFromPacket(ClientboundAddEntityPacket packet) {
+        super.recreateFromPacket(packet);
+        TFPart.assignPartIDs(this);
+    }
 }

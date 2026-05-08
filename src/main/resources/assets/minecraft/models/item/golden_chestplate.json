@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minecraft:item/golden_chestplate"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 31011
+      },
+      "model": "codex_twilight:item/ironwood_chestplate"
+    }
+  ]
+}

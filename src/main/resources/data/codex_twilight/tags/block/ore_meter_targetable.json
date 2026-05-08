@@ -1,0 +1,21 @@
+{
+  "values": [
+    "#c:ores",
+    "#minecraft:base_stone_overworld",
+    "#minecraft:base_stone_nether",
+    "#minecraft:dirt",
+    "#c:sands",
+    "#c:sandstone/blocks",
+    "#minecraft:terracotta",
+    "#c:gravels",
+    "#minecraft:nylium",
+    {
+      "id": "#c:ores_in_ground/root",
+      "required": false
+    },
+    "minecraft:budding_amethyst",
+    "minecraft:calcite",
+    "minecraft:soul_sand",
+    "minecraft:soul_soil"
+  ]
+}

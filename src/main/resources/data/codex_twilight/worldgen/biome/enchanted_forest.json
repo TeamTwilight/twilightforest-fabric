@@ -1,0 +1,163 @@
+{
+  "carvers": {
+    "air": "twilightforest:tf_caves"
+  },
+  "creature_spawn_probability": 0.15,
+  "downfall": 0.5,
+  "effects": {
+    "fog_color": 12648408,
+    "foliage_color": 65535,
+    "grass_color": 65535,
+    "grass_color_modifier": "twilightforest:enchanted_forest",
+    "mood_sound": {
+      "block_search_extent": 8,
+      "offset": 2.0,
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000
+    },
+    "music": {
+      "max_delay": 12000,
+      "min_delay": 1200,
+      "replace_current_music": true,
+      "sound": "twilightforest:music.twilightforest.twilight_forest"
+    },
+    "particle": {
+      "options": {
+        "type": "twilightforest:wandering_firefly"
+      },
+      "probability": 0.00025
+    },
+    "sky_color": 2105930,
+    "water_color": 4159204,
+    "water_fog_color": 329011
+  },
+  "features": [
+    [],
+    [
+      "codex_twilight:dense_water_lake"
+    ],
+    [],
+    [],
+    [
+      "codex_twilight:druid_hut",
+      "codex_twilight:well_placer",
+      "codex_twilight:foundation"
+    ],
+    [],
+    [
+      "minecraft:disk_sand",
+      "minecraft:disk_clay",
+      "minecraft:disk_gravel",
+      "codex_twilight:wood_roots",
+      "codex_twilight:legacy_coal_ore",
+      "codex_twilight:legacy_iron_ore",
+      "codex_twilight:legacy_gold_ore",
+      "codex_twilight:legacy_redstone_ore",
+      "codex_twilight:legacy_diamond_ore",
+      "codex_twilight:legacy_lapis_ore",
+      "codex_twilight:legacy_copper_ore",
+      "codex_twilight:small_andesite",
+      "codex_twilight:small_diorite",
+      "codex_twilight:small_granite"
+    ],
+    [
+      "codex_twilight:plant_roots",
+      "codex_twilight:torch_berries",
+      "codex_twilight:iron_oreberries_enchanted_forest",
+      "codex_twilight:gold_oreberries_enchanted_forest",
+      "codex_twilight:copper_oreberries_enchanted_forest",
+      "codex_twilight:essence_oreberries_enchanted_forest"
+    ],
+    [],
+    [
+      "minecraft:patch_grass_badlands",
+      "minecraft:patch_sugar_cane",
+      "codex_twilight:dense_ferns",
+      "codex_twilight:dense_large_ferns",
+      "codex_twilight:flower_placer",
+      "codex_twilight:grove_ruins",
+      "codex_twilight:stone_circle",
+      "codex_twilight:outside_stalagmite",
+      "codex_twilight:monolith",
+      "codex_twilight:hollow_stump",
+      "codex_twilight:hollow_log",
+      "twilightforest:tree/selector/enchanted_forest_trees",
+      "twilightforest:tree/selector/dense_canopy_trees",
+      "codex_twilight:fiddlehead",
+      "twilightforest:tree/selector/canopy_trees",
+      "codex_twilight:default_fallen_logs"
+    ],
+    [
+      "minecraft:freeze_top_layer",
+      "codex_twilight:enchanted_forest_vines"
+    ]
+  ],
+  "has_precipitation": false,
+  "spawn_costs": {},
+  "spawners": {
+    "ambient": [],
+    "axolotls": [],
+    "creature": [
+      {
+        "maxCount": 4,
+        "minCount": 4,
+        "type": "twilightforest:bighorn_sheep",
+        "weight": 12
+      },
+      {
+        "maxCount": 4,
+        "minCount": 4,
+        "type": "twilightforest:boar",
+        "weight": 10
+      },
+      {
+        "maxCount": 4,
+        "minCount": 4,
+        "type": "minecraft:chicken",
+        "weight": 10
+      },
+      {
+        "maxCount": 5,
+        "minCount": 4,
+        "type": "twilightforest:deer",
+        "weight": 15
+      },
+      {
+        "maxCount": 4,
+        "minCount": 4,
+        "type": "minecraft:wolf",
+        "weight": 5
+      },
+      {
+        "maxCount": 8,
+        "minCount": 4,
+        "type": "twilightforest:tiny_bird",
+        "weight": 15
+      },
+      {
+        "maxCount": 4,
+        "minCount": 2,
+        "type": "twilightforest:squirrel",
+        "weight": 10
+      },
+      {
+        "maxCount": 5,
+        "minCount": 4,
+        "type": "twilightforest:dwarf_rabbit",
+        "weight": 10
+      },
+      {
+        "maxCount": 2,
+        "minCount": 1,
+        "type": "twilightforest:raven",
+        "weight": 10
+      }
+    ],
+    "misc": [],
+    "monster": [],
+    "underground_water_creature": [],
+    "water_ambient": [],
+    "water_creature": []
+  },
+  "temperature": 0.5
+}

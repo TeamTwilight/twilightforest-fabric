@@ -1,0 +1,96 @@
+{
+  "carvers": {
+    "air": "twilightforest:tf_caves"
+  },
+  "creature_spawn_probability": 0.05,
+  "downfall": 0.9,
+  "effects": {
+    "fog_color": 16777215,
+    "foliage_color": 16777215,
+    "grass_color": 16777215,
+    "music": {
+      "max_delay": 12000,
+      "min_delay": 1200,
+      "replace_current_music": true,
+      "sound": "twilightforest:music.twilightforest.twilight_forest"
+    },
+    "mood_sound": {
+      "block_search_extent": 8,
+      "offset": 2.0,
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000
+    },
+    "sky_color": 8421504,
+    "water_color": 4159204,
+    "water_fog_color": 329011
+  },
+  "features": [
+    [],
+    [
+      "codex_twilight:frozen_lake"
+    ],
+    [],
+    [],
+    [],
+    [],
+    [
+      "codex_twilight:legacy_coal_ore",
+      "codex_twilight:legacy_iron_ore",
+      "codex_twilight:legacy_gold_ore",
+      "codex_twilight:legacy_redstone_ore",
+      "codex_twilight:legacy_diamond_ore",
+      "codex_twilight:legacy_lapis_ore",
+      "codex_twilight:legacy_copper_ore"
+    ],
+    [
+      "codex_twilight:plant_roots",
+      "codex_twilight:torch_berries"
+    ],
+    [],
+    [
+      "codex_twilight:snowy_blueberry_bushes",
+      "codex_twilight:maloberry_bushes",
+      "codex_twilight:tree/selector/snowy_forest_trees",
+      "codex_twilight:spruce_fallen_log"
+    ],
+    [
+      "codex_twilight:snow_under_trees",
+      "minecraft:freeze_top_layer"
+    ]
+  ],
+  "has_precipitation": true,
+  "spawn_costs": {
+    "twilightforest:winter_wolf": {
+      "charge": 0.6,
+      "energy_budget": 0.15
+    },
+    "twilightforest:yeti": {
+      "charge": 0.6,
+      "energy_budget": 0.15
+    }
+  },
+  "spawners": {
+    "ambient": [],
+    "axolotls": [],
+    "creature": [],
+    "misc": [],
+    "monster": [
+      {
+        "type": "twilightforest:winter_wolf",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 5
+      },
+      {
+        "type": "twilightforest:yeti",
+        "maxCount": 1,
+        "minCount": 1,
+        "weight": 5
+      }
+    ],
+    "underground_water_creature": [],
+    "water_ambient": [],
+    "water_creature": []
+  },
+  "temperature": 0.09
+}

@@ -1,0 +1,6 @@
+﻿{
+  "parent": "codex_twilight:block/banister_connected",
+  "textures": {
+    "texture": "minecraft:block/cherry_planks"
+  }
+}

@@ -1,11 +1,11 @@
-{
+﻿{
     "parent": "block/block",
     "render_type": "minecraft:cutout",
     "textures": {
         "particle": "#bottom",
         "bottom": "twilightforest:block/experiment115/experiment115_bottom",
         "top": "twilightforest:block/experiment115/experiment115_top",
-        "top_2": "twilightforest:block/stone_twist/twist_blank",
+        "top_2": "twilightforest:block/transparent",
         "side": "twilightforest:block/experiment115/experiment115_side"
     },
     "elements": [
@@ -24,14 +24,15 @@
             "from": [ 1, 8, 1 ],
             "to": [ 15, 8, 15 ],
             "faces": {
-                "up": { "texture": "#top_2", "forge_data": { "color": "FFFFFFFF", "block_light": 15, "sky_light": 15 } }
+                "up": { "texture": "#top_2", "neoforge_data": { "block_light": 15, "sky_light": 15 } }
             }
         }, {
             "from": [ 1, 8, 1 ],
             "to": [ 15, 8.02, 15 ],
             "faces": {
-                "up": { "texture": "#top_2", "forge_data": { "color": "FFFFFFFF", "block_light": 15, "sky_light": 15 } }
+                "up": { "texture": "#top_2", "neoforge_data": { "block_light": 15, "sky_light": 15 } }
             }
         }
     ]
 }
+

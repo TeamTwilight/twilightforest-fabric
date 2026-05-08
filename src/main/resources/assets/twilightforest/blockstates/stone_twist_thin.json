@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "minecraft:block/polished_deepslate",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "minecraft:block/polished_deepslate"
+    },
+    "axis=z": {
+      "model": "minecraft:block/polished_deepslate",
+      "x": 90
+    }
+  }
+}

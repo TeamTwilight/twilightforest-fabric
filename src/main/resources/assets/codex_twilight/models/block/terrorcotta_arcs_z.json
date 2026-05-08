@@ -1,0 +1,8 @@
+﻿{
+  "parent": "codex_twilight:block/util/cube_column_rotationally_special_z",
+  "textures": {
+    "end": "codex_twilight:block/terrorcotta_arcs_end",
+    "side_a": "codex_twilight:block/terrorcotta_arcs_side_a",
+    "side_b": "codex_twilight:block/terrorcotta_arcs_side_b"
+  }
+}

@@ -1,0 +1,7 @@
+﻿{
+  "parent": "twilightforest:item/template_skull_candle",
+  "textures": {
+    "skull": "codex_twilight:entity/casket/skull_chest"
+  }
+}
+

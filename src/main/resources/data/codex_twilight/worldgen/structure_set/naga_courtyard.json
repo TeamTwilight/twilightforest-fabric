@@ -1,0 +1,15 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 40,
+    "separation": 12,
+    "salt": 825329347,
+    "spread_type": "triangular"
+  },
+  "structures": [
+    {
+      "structure": "codex_twilight:naga_courtyard",
+      "weight": 1
+    }
+  ]
+}

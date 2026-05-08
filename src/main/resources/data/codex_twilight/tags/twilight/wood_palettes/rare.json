@@ -1,0 +1,10 @@
+﻿{
+    "values":  [
+                   "minecraft:birch",
+                   "minecraft:jungle",
+                   {
+                       "id":  "codex_twilight:mangrove",
+                       "required":  false
+                   }
+               ]
+}

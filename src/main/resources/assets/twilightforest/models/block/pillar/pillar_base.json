@@ -1,7 +1,7 @@
 {
 	"parent": "block/block",
 	"textures": {
-		"side": "twilightforest:block/stone_twist/twist_y",
+		"side": "twilightforest:block/twisted_stone_pillar",
 		"particle": "#side"
 	},
 	"elements": [

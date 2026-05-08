@@ -1,0 +1,58 @@
+{
+  "width": 48,
+  "height": 48,
+  "author": {
+    "translate": "magic_painting.twilightforest.lucid_lands.author"
+  },
+  "back_texture": "twilightforest:magic_paintings/back",
+  "layers": [
+    {
+      "path": "background",
+      "fullbright": true,
+      "local_lighting": true
+    },
+    {
+      "path": "clouds",
+      "parallax": {
+        "type": "linear_time",
+        "multiplier": 0.00075,
+        "width": 122,
+        "height": 48
+      },
+      "fullbright": true,
+      "local_lighting": true
+    },
+    {
+      "path": "mookaite_mesa",
+      "fullbright": true,
+      "local_lighting": true
+    },
+    {
+      "path": "agate_jungle",
+      "parallax": {
+        "type": "view_angle",
+        "multiplier": 0.005,
+        "width": 58,
+        "height": 48
+      },
+      "fullbright": true,
+      "local_lighting": true
+    },
+    {
+      "path": "crystal_plains",
+      "parallax": {
+        "type": "view_angle",
+        "multiplier": 0.006,
+        "width": 74,
+        "height": 48
+      },
+      "fullbright": true,
+      "local_lighting": true
+    },
+    {
+      "path": "frame",
+      "fullbright": false,
+      "local_lighting": false
+    }
+  ]
+}

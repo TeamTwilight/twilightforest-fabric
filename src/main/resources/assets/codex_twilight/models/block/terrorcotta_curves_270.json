@@ -1,0 +1,12 @@
+﻿{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "codex_twilight:block/terrorcotta_curves_c",
+    "east": "codex_twilight:block/terrorcotta_curves_c",
+    "north": "codex_twilight:block/terrorcotta_curves_d",
+    "particle": "codex_twilight:block/terrorcotta_curves_a",
+    "south": "codex_twilight:block/terrorcotta_curves_a",
+    "up": "codex_twilight:block/terrorcotta_curves_d",
+    "west": "codex_twilight:block/terrorcotta_curves_b"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 16,
+    "separation": 5,
+    "salt": 488923206,
+    "spread_type": "triangular"
+  },
+  "structures": [
+    {
+      "structure": "codex_twilight:druid_hut",
+      "weight": 1
+    }
+  ]
+}

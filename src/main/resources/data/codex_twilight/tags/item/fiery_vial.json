@@ -1,0 +1,12 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:fiery_blood",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:fiery_tears",
+                       "required":  false
+                   }
+               ]
+}

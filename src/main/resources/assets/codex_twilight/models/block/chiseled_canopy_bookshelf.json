@@ -1,0 +1,7 @@
+﻿{
+  "parent": "minecraft:block/chiseled_bookshelf",
+  "textures": {
+    "side": "codex_twilight:block/wood/chiseled_canopy_bookshelf_side",
+    "top": "codex_twilight:block/wood/chiseled_canopy_bookshelf_top"
+  }
+}

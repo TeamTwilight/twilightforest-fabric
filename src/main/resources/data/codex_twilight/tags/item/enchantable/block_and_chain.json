@@ -1,0 +1,8 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:block_and_chain",
+                       "required":  false
+                   }
+               ]
+}

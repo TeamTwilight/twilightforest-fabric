@@ -1,71 +1,46 @@
 package twilightforest.item;
 
-import io.github.fabricators_of_create.porting_lib.enchant.CustomEnchantingBehaviorItem;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import org.jetbrains.annotations.Nullable;
-import twilightforest.capabilities.CapabilityList;
+import twilightforest.init.TFSounds;
 
-import javax.annotation.Nonnull;
-import java.util.List;
+/**
+ * Q23 ported behaviour: right-click grants 4 hearts of absorption (1 minute) +
+ * resistance II (10 seconds). Consumes 1 durability per use.
+ */
+public class FortificationWandItem extends CodexItem {
 
-public class FortificationWandItem extends Item implements CustomEnchantingBehaviorItem {
+    public FortificationWandItem(Properties properties, Item fallback, int cmd) {
+        super(properties, fallback, cmd);
+    }
 
-	public FortificationWandItem(Properties properties) {
-		super(properties);
-	}
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (stack.getDamageValue() >= stack.getMaxDamage() && !player.getAbilities().instabuild) {
+            return InteractionResultHolder.fail(stack);
+        }
+        level.playSound(null, player.getX(), player.getY(), player.getZ(),
+                TFSounds.FORTIFICATION_SCEPTER_USE, SoundSource.PLAYERS, 1.0F, 1.0F);
 
-	@Nonnull
-	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, @Nonnull InteractionHand hand) {
-		ItemStack stack = player.getItemInHand(hand);
-
-		if (stack.getDamageValue() == stack.getMaxDamage()) {
-			return InteractionResultHolder.fail(stack);
-		}
-
-		if (!level.isClientSide()) {
-			CapabilityList.SHIELDS.maybeGet(player).ifPresent(cap -> {
-				cap.replenishShields();
-				stack.hurt(1, level.getRandom(), null);
-			});
-		}
-
-		if (!player.isCreative())
-			player.getCooldowns().addCooldown(this, 1200);
-
-		return InteractionResultHolder.success(stack);
-	}
-
-	@Override
-	public boolean isEnchantable(ItemStack stack) {
-		return false;
-	}
-
-	@Override
-	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		return false;
-	}
-
-	@Override
-	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return false;
-	}
-
-	@Override
-	@Environment(EnvType.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flags) {
-		super.appendHoverText(stack, level, tooltip, flags);
-		tooltip.add(Component.translatable("item.twilightforest.scepter.desc", stack.getMaxDamage() - stack.getDamageValue()).withStyle(ChatFormatting.GRAY));
-	}
+        if (!level.isClientSide()) {
+            player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 1200, 3));
+            player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 200, 1));
+            if (!player.getAbilities().instabuild && level instanceof ServerLevel serverLevel && player instanceof ServerPlayer sp) {
+                stack.hurtAndBreak(1, serverLevel, sp, removed -> {});
+            }
+        }
+        return InteractionResultHolder.success(stack);
+    }
 }

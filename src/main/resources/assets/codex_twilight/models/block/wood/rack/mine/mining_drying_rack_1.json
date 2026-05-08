@@ -1,0 +1,6 @@
+﻿{
+  "parent": "codex_twilight:block/template_drying_rack",
+  "textures": {
+    "texture": "codex_twilight:block/wood/planks_mine_1"
+  }
+}

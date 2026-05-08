@@ -1,0 +1,55 @@
+﻿{
+    "values":  [
+                   "#minecraft:skeletons",
+                   "#minecraft:frog_food",
+                   "minecraft:blaze",
+                   "minecraft:breeze",
+                   "minecraft:iron_golem",
+                   "minecraft:phantom",
+                   "minecraft:shulker",
+                   "minecraft:skeleton_horse",
+                   "minecraft:snow_golem",
+                   "minecraft:vex",
+                   "minecraft:wither",
+                   {
+                       "id":  "codex_twilight:carminite_golem",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:death_tome",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:ice_crystal",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:knight_phantom",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:lich",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:mosquito_swarm",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:snow_guardian",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:stable_ice_core",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:unstable_ice_core",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:wraith",
+                       "required":  false
+                   }
+               ]
+}

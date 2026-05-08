@@ -1,0 +1,6 @@
+﻿{
+  "parent": "codex_twilight:block/abstract_bush_large_6",
+  "textures": {
+    "all": "codex_twilight:block/stingberry_bush"
+  }
+}

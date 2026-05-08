@@ -1,126 +1,108 @@
 package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.network.syncher.SynchedEntityData;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFItems;
-import twilightforest.util.EntityUtil;
 
 import java.util.List;
 
 public class GiantMiner extends Monster {
+    public GiantMiner(EntityType<? extends GiantMiner> entityType, Level level) {
+        super(entityType, level);
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            this.setDropChance(slot, 0.0F);
+        }
+    }
 
-	public GiantMiner(EntityType<? extends GiantMiner> type, Level world) {
-		super(type, world);
+    @Override
+    protected void registerGoals() {
+        this.goalSelector.addGoal(1, new FloatGoal(this));
+        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));
+        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+    }
 
-		for (EquipmentSlot slot : EquipmentSlot.values()) {
-			this.setDropChance(slot, 0);
-		}
-	}
+    public static AttributeSupplier.Builder registerAttributes() {
+        return Monster.createMonsterAttributes()
+                .add(Attributes.MAX_HEALTH, 80.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.23D)
+                .add(Attributes.ATTACK_DAMAGE, 2.0D)
+                .add(Attributes.FOLLOW_RANGE, 40.0D)
+                .add(Attributes.STEP_HEIGHT, 1.2D);
+    }
 
-	@Override
-	protected void registerGoals() {
-		this.goalSelector.addGoal(1, new FloatGoal(this));
-		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false) {
-			@Override
-			protected double getAttackReachSqr(LivingEntity attackTarget) {
-				return this.mob.getBbWidth() * this.mob.getBbHeight();
-			}
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData) {
+        SpawnGroupData data = super.finalizeSpawn(accessor, difficulty, reason, spawnData);
+        this.populateDefaultEquipmentSlots(accessor.getRandom(), difficulty);
+        this.populateDefaultEquipmentEnchantments(accessor, accessor.getRandom(), difficulty);
+        return data;
+    }
 
-			@Override
-			protected void checkAndPerformAttack(LivingEntity pEnemy, double pDistToEnemySqr) {
-				double eyeHeightDistToEnemySqr = this.mob.distanceToSqr(pEnemy.getX(), pEnemy.getY() - this.mob.getEyeHeight() + pEnemy.getEyeHeight(), pEnemy.getZ());
-				super.checkAndPerformAttack(pEnemy, Math.min(pDistToEnemySqr, eyeHeightDistToEnemySqr * 0.8D));
-			}
-		});
-		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-		this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
-		this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
-		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
-	}
+    @Override
+    protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty) {
+        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.GIANT_PICKAXE.get()));
+    }
 
-	public static AttributeSupplier.Builder registerAttributes() {
-		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 80.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.23D)
-				.add(Attributes.ATTACK_DAMAGE, 2.0D)
-				.add(Attributes.FOLLOW_RANGE, 40.0D);
-	}
+    @Override
+    protected void enchantSpawnedWeapon(ServerLevelAccessor accessor, RandomSource random, DifficultyInstance difficulty) {
+    }
 
-	@Override
-	public float getStepHeight() {
-		return 1.2F;
-	}
+    @Override
+    protected void enchantSpawnedArmor(ServerLevelAccessor accessor, RandomSource random, EquipmentSlot slot, DifficultyInstance difficulty) {
+    }
 
-	@Nullable
-	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
-		SpawnGroupData data = super.finalizeSpawn(accessor, difficulty, reason, spawnDataIn, dataTag);
-		populateDefaultEquipmentSlots(accessor.getRandom(), difficulty);
-		populateDefaultEquipmentEnchantments(accessor.getRandom(), difficulty);
+    @Override
+    public boolean doHurtTarget(Entity entity) {
+        return entity.hurt(TFDamageTypes.entitySource(this.level(), TFDamageTypes.ANT, this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+    }
 
-		return data;
-	}
+    @Override
+    public int getMaxSpawnClusterSize() {
+        return 1;
+    }
 
-	@Override
-	protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty) {
-		this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.GIANT_PICKAXE.get()));
-	}
+    @Override
+    public boolean checkSpawnRules(LevelAccessor accessor, MobSpawnType reason) {
+        List<GiantMiner> giantsNearby = accessor.getEntitiesOfClass(GiantMiner.class, this.getBoundingBox().inflate(100.0D, 10.0D, 100.0D));
+        return giantsNearby.size() < 5;
+    }
 
-	@Override
-	protected void enchantSpawnedWeapon(RandomSource random, float chance) {
+    public static boolean canSpawn(EntityType<? extends GiantMiner> type, ServerLevelAccessor accessor, MobSpawnType reason, BlockPos pos, RandomSource random) {
+        return accessor.getBlockState(pos.below()).is(BlockTagGenerator.GIANTS_SPAWNABLE_ON);
+    }
 
-	}
-
-	@Override
-	protected void enchantSpawnedArmor(RandomSource random, float chance, EquipmentSlot slot) {
-
-	}
-
-	@Override
-	public boolean doHurtTarget(Entity entity) {
-		return EntityUtil.properlyApplyCustomDamageSource(this, entity, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.ANT, this));
-	}
-
-	@Override
-	public double getMyRidingOffset() {
-		return -2.5D;
-	}
-
-	@Override
-	public int getMaxSpawnClusterSize() {
-		return 1;
-	}
-
-	@Override
-	public boolean checkSpawnRules(LevelAccessor accessor, MobSpawnType reason) {
-		List<GiantMiner> giantsNearby = accessor.getEntitiesOfClass(GiantMiner.class, this.getBoundingBox().inflate(100, 10, 100));
-		return giantsNearby.size() < 5;
-	}
-
-	public static boolean canSpawn(EntityType<? extends GiantMiner> type, ServerLevelAccessor accessor, MobSpawnType reason, BlockPos pos, RandomSource rand) {
-		return accessor.getBlockState(pos.below()).is(BlockTagGenerator.GIANTS_SPAWNABLE_ON);
-	}
-
-	@Override
-	protected boolean canRide(Entity entity) {
-		return false;
-	}
+    @Override
+    protected boolean canRide(Entity entity) {
+        return false;
+    }
 }

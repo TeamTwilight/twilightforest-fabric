@@ -1,0 +1,10 @@
+{
+  "name": "twilightforest:camp/main_path",
+  "fallback": "twilightforest:camp/path",
+  "elements": [
+    { "weight": 2, "element": { "element_type": "minecraft:single_pool_element", "location": "codex_twilight:camp/path/intersection_left", "processors": "minecraft:empty", "projection": "rigid" } },
+    { "weight": 2, "element": { "element_type": "minecraft:single_pool_element", "location": "codex_twilight:camp/path/intersection_right", "processors": "minecraft:empty", "projection": "rigid" } },
+    { "weight": 1, "element": { "element_type": "minecraft:single_pool_element", "location": "codex_twilight:camp/path/path_2x6", "processors": "minecraft:empty", "projection": "rigid" } },
+    { "weight": 1, "element": { "element_type": "minecraft:single_pool_element", "location": "codex_twilight:camp/path/path_2x7", "processors": "minecraft:empty", "projection": "rigid" } }
+  ]
+}

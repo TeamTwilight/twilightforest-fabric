@@ -1,0 +1,58 @@
+{
+  "pools": [
+    {
+      "name": "hard_biome_souls",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "slashblade:proudsoul_tiny",
+          "weight": 8
+        },
+        {
+          "type": "minecraft:item",
+          "name": "slashblade:proudsoul",
+          "weight": 5
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance",
+          "chance": 0.06
+        }
+      ]
+    },
+    {
+      "name": "hard_biome_basic_blades",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "slashblade:slashblade_bamboo",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "slashblade:slashblade",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "slashblade:slashblade_white",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "slashblade:slashblade_silverbamboo",
+          "weight": 1
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance",
+          "chance": 0.01
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "minecraft:item/iron_sword"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 31001
+      },
+      "model": "codex_twilight:item/naga_scale_sword"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 31007
+      },
+      "model": "codex_twilight:item/steeleaf_sword"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 31008
+      },
+      "model": "codex_twilight:item/fiery_sword"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 31009
+      },
+      "model": "codex_twilight:item/knightmetal_sword"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 31010
+      },
+      "model": "codex_twilight:item/ice_sword"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 31011
+      },
+      "model": "codex_twilight:item/giant_sword"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 31012
+      },
+      "model": "codex_twilight:item/giant_sword"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 31014
+      },
+      "model": "codex_twilight:item/hydra_trophy"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 31015
+      },
+      "model": "codex_twilight:item/knight_phantom_trophy"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 31016
+      },
+      "model": "codex_twilight:item/ur_ghast_trophy"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 31017
+      },
+      "model": "codex_twilight:item/alpha_yeti_trophy"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 31018
+      },
+      "model": "codex_twilight:item/snow_queen_trophy"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 31019
+      },
+      "model": "codex_twilight:item/quest_ram_trophy"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 31020
+      },
+      "model": "codex_twilight:item/trophy"
+    }
+  ]
+}

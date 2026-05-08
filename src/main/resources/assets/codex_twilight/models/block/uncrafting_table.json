@@ -1,0 +1,76 @@
+﻿{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "texture": "#bottom"
+        },
+        "east": {
+          "cullface": "east",
+          "texture": "#east"
+        },
+        "north": {
+          "cullface": "north",
+          "texture": "#north"
+        },
+        "south": {
+          "cullface": "south",
+          "texture": "#south"
+        },
+        "up": {
+          "cullface": "up",
+          "texture": "#top"
+        },
+        "west": {
+          "cullface": "west",
+          "texture": "#west"
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    },
+    {
+      "faces": {
+        "up": {
+          "cullface": "up",
+          "neoforge_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
+          "texture": "#top2"
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    }
+  ],
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "bottom": "minecraft:block/jungle_planks",
+    "east": "codex_twilight:block/uncrafting_side",
+    "north": "codex_twilight:block/uncrafting_side",
+    "particle": "#bottom",
+    "south": "codex_twilight:block/uncrafting_side",
+    "top": "codex_twilight:block/uncrafting_top",
+    "top2": "codex_twilight:block/uncrafting_glow",
+    "west": "codex_twilight:block/uncrafting_side"
+  }
+}

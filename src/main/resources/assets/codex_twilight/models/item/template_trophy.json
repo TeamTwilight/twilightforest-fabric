@@ -1,0 +1,6 @@
+﻿{
+  "parent": "twilightforest:item/template_trophy",
+  "textures": {
+    "trophy": "codex_twilight:item/trophy"
+  }
+}

@@ -1,0 +1,12 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:dark_forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:dark_forest",
+                       "required":  false
+                   }
+               ]
+}

@@ -1,0 +1,46 @@
+﻿{
+    "remove":  [
+                   "#c:tools/shield"
+               ],
+    "values":  [
+                   {
+                       "id":  "codex_twilight:gelatinous_slime_drop",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:gelatinous_maze_slime_drop",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:zombie_skull_candle",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:skeleton_skull_candle",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:wither_skeleton_skull_candle",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:creeper_skull_candle",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:player_skull_candle",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:piglin_skull_candle",
+                       "required":  false
+                   },
+                   "minecraft:pointed_dripstone",
+                   "minecraft:recovery_compass",
+                   "minecraft:clock",
+                   "minecraft:spyglass",
+                   "minecraft:trident",
+                   "#minecraft:banners",
+                   "#c:tools"
+               ]
+}

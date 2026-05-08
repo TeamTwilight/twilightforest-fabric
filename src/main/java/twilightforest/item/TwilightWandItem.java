@@ -1,68 +1,55 @@
 package twilightforest.item;
 
-import io.github.fabricators_of_create.porting_lib.enchant.CustomEnchantingBehaviorItem;
-import io.github.fabricators_of_create.porting_lib.enchant.CustomEnchantingTableBehaviorEnchantment;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.projectile.TwilightWandBolt;
+import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
 
-import java.util.List;
+/**
+ * Q23/Q24 ported behaviour: right-click spawns a {@link twilightforest.entity.projectile.TwilightWandBolt}
+ * projectile that travels and damages the first living target it hits for 6 HP.
+ * Consumes 1 durability per cast. Skips durability when wearing
+ * {@link twilightforest.init.TFItems#MYSTIC_CROWN}.
+ *
+ * <p>Q24 promoted Q23's raycast fallback to a real projectile after WAND_BOLT
+ * was registered in TFEntities (cross-lane authorisation).</p>
+ */
+public class TwilightWandItem extends CodexItem {
 
-public class TwilightWandItem extends Item implements CustomEnchantingBehaviorItem {
+    public TwilightWandItem(Properties properties, Item fallback, int cmd) {
+        super(properties, fallback, cmd);
+    }
 
-	public TwilightWandItem(Properties properties) {
-		super(properties);
-	}
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (stack.getDamageValue() >= stack.getMaxDamage() && !player.getAbilities().instabuild) {
+            return InteractionResultHolder.fail(stack);
+        }
+        level.playSound(null, player.getX(), player.getY(), player.getZ(),
+                TFSounds.TWILIGHT_SCEPTER_USE, SoundSource.PLAYERS,
+                1.0F, (level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.2F + 1.0F);
 
-	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-		ItemStack stack = player.getItemInHand(hand);
-
-		if (stack.getDamageValue() == stack.getMaxDamage()) {
-			return InteractionResultHolder.fail(player.getItemInHand(hand));
-		} else {
-			player.playSound(TFSounds.SCEPTER_PEARL.get(), 1.0F, (level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.2F + 1.0F);
-
-			if (!level.isClientSide()) {
-				level.addFreshEntity(new TwilightWandBolt(level, player));
-				stack.hurt(1, level.getRandom(), null);
-			}
-
-			return InteractionResultHolder.success(player.getItemInHand(hand));
-		}
-	}
-
-	@Override
-	public boolean isEnchantable(ItemStack stack) {
-		return false;
-	}
-
-	@Override
-	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		return false;
-	}
-
-	@Override
-	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return false;
-	}
-
-	@Override
-	@Environment(EnvType.CLIENT)
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		super.appendHoverText(stack, level, tooltip, flag);
-		tooltip.add(Component.translatable("item.twilightforest.scepter.desc", stack.getMaxDamage() - stack.getDamageValue()).withStyle(ChatFormatting.GRAY));
-	}
+        if (!level.isClientSide()) {
+            ServerLevel serverLevel = (ServerLevel) level;
+            TwilightWandBolt bolt = new TwilightWandBolt(serverLevel, player);
+            serverLevel.addFreshEntity(bolt);
+            // Mystic Crown grants 95% chance to skip durability cost.
+            boolean wearingCrown = player.getItemBySlot(EquipmentSlot.HEAD).is(TFItems.MYSTIC_CROWN.get());
+            if (!player.getAbilities().instabuild && (!wearingCrown || serverLevel.getRandom().nextFloat() > 0.05F) && player instanceof ServerPlayer sp) {
+                stack.hurtAndBreak(1, serverLevel, sp, removed -> {});
+            }
+        }
+        return InteractionResultHolder.success(stack);
+    }
 }

@@ -1,0 +1,11 @@
+{
+  "type": "twilightforest:lampposts",
+  "config": {
+    "state": {
+      "Name": "minecraft:soul_lantern",
+      "Properties": {
+        "waterlogged": "false"
+      }
+    }
+  }
+}

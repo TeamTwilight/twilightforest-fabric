@@ -1,0 +1,22 @@
+﻿{
+    "values":  [
+                   "#minecraft:logs",
+                   {
+                       "id":  "codex_twilight:root",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:liveroot_block",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:mangrove_root",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:time_wood",
+                       "required":  false
+                   },
+                   "#minecraft:features_cannot_replace"
+               ]
+}

@@ -1,0 +1,19 @@
+﻿{
+	"parent": "block/block",
+	"textures": {
+		"particle": "codex_twilight:block/twisted_stone_pillar",
+		"side_z": "codex_twilight:block/twisted_stone_pillar"
+	},
+	"elements": [
+		{
+			"from": [2, 0, 2],
+			"to": [14, 2, 14],
+			"faces": {
+				"north": {"uv": [2, 14, 14, 16], "texture": "#side_z"},
+				"east": {"uv": [2, 14, 14, 16], "texture": "#side_z"},
+				"south": {"uv": [2, 14, 14, 16], "texture": "#side_z"},
+				"west": {"uv": [2, 14, 14, 16], "texture": "#side_z"}
+			}
+		}
+	]
+}

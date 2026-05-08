@@ -1,0 +1,100 @@
+﻿{
+        "parent":    "minecraft:block/block",
+        "textures":    {
+                                         "wood":    "twilightforest:block/wood/planks_darkwood_0",
+                                         "particle":    "twilightforest:block/wood/planks_darkwood_0"
+                                 },
+        "elements":    [
+                                         {
+                                                 "from":    [
+                                                                            1,
+                                                                            0,
+                                                                            1
+                                                                    ],
+                                                 "to":    [
+                                                                        15,
+                                                                        14,
+                                                                        15
+                                                                ],
+                                                 "faces":    {
+                                                                             "down":    {
+                                                                                                        "texture":    "#wood",
+                                                                                                        "uv":    [
+                                                                                                                             1,
+                                                                                                                             1,
+                                                                                                                             15,
+                                                                                                                             15
+                                                                                                                     ]
+                                                                                                },
+                                                                             "up":    {
+                                                                                                    "texture":    "#wood",
+                                                                                                    "uv":    [
+                                                                                                                         1,
+                                                                                                                         1,
+                                                                                                                         15,
+                                                                                                                         15
+                                                                                                                 ]
+                                                                                            },
+                                                                             "north":    {
+                                                                                                         "texture":    "#wood",
+                                                                                                         "uv":    [
+                                                                                                                                1,
+                                                                                                                                2,
+                                                                                                                                15,
+                                                                                                                                16
+                                                                                                                        ]
+                                                                                                 },
+                                                                             "south":    {
+                                                                                                         "texture":    "#wood",
+                                                                                                         "uv":    [
+                                                                                                                                1,
+                                                                                                                                2,
+                                                                                                                                15,
+                                                                                                                                16
+                                                                                                                        ]
+                                                                                                 },
+                                                                             "west":    {
+                                                                                                        "texture":    "#wood",
+                                                                                                        "uv":    [
+                                                                                                                             1,
+                                                                                                                             2,
+                                                                                                                             15,
+                                                                                                                             16
+                                                                                                                     ]
+                                                                                                },
+                                                                             "east":    {
+                                                                                                        "texture":    "#wood",
+                                                                                                        "uv":    [
+                                                                                                                             1,
+                                                                                                                             2,
+                                                                                                                             15,
+                                                                                                                             16
+                                                                                                                     ]
+                                                                                                }
+                                                                     }
+                                         },
+                                         {
+                                                 "from":    [
+                                                                            6,
+                                                                            7,
+                                                                            0.8
+                                                                    ],
+                                                 "to":    [
+                                                                        10,
+                                                                        11,
+                                                                        1.1
+                                                                ],
+                                                 "faces":    {
+                                                                             "north":    {
+                                                                                                         "texture":    "#wood",
+                                                                                                         "uv":    [
+                                                                                                                                6,
+                                                                                                                                6,
+                                                                                                                                10,
+                                                                                                                                10
+                                                                                                                        ]
+                                                                                                 }
+                                                                     }
+                                         }
+                                 ]
+}

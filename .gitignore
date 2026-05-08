@@ -1,27 +1,20 @@
-# eclipse
-bin
-*.launch
-.settings
-.metadata
-.classpath
-.project
+.gradle/
+build/
+bin/
+out/
+tools/
 
-# idea
-out
-*.ipr
-*.iws
+.idea/
+.vscode/
 *.iml
-.idea
 
-# gradle
-build
-.gradle
-local.gradle
-settings.gradle
+__pycache__/
+*.py[cod]
 
-# other
-eclipse
-run
-classes
-logs
-run-client
+*.class
+*.log
+*.tmp
+*.bak
+*.swp
+.DS_Store
+Thumbs.db

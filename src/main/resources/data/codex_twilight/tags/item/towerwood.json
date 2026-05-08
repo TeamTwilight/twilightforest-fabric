@@ -1,0 +1,20 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:towerwood",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:mossy_towerwood",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:cracked_towerwood",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:infested_towerwood",
+                       "required":  false
+                   }
+               ]
+}

@@ -1,0 +1,35 @@
+{
+  "ambientocclusion": false,
+  "textures": {
+    "worm": "twilightforest:model/moonworm",
+    "particle": "twilightforest:block/moonworm"
+  },
+  "elements": [
+    {
+      "from": [6, 6, 7],
+      "to": [10, 10, 9],
+      "shade": false,
+      "faces": {
+        "north": {"uv": [0, 0, 4, 4], "texture": "#worm"},
+        "south": {"uv": [4, 0, 8, 4], "texture": "#worm"},
+        "east": {"uv": [8, 0, 10, 4], "texture": "#worm"},
+        "west": {"uv": [10, 0, 12, 4], "texture": "#worm"},
+        "up": {"uv": [0, 4, 4, 6], "texture": "#worm"},
+        "down": {"uv": [4, 4, 8, 6], "texture": "#worm"}
+      }
+    },
+    {
+      "from": [7, 7, 5],
+      "to": [9, 9, 11],
+      "shade": false,
+      "faces": {
+        "north": {"uv": [0, 6, 2, 8], "texture": "#worm"},
+        "south": {"uv": [2, 6, 4, 8], "texture": "#worm"},
+        "east": {"uv": [4, 6, 10, 8], "texture": "#worm"},
+        "west": {"uv": [4, 8, 10, 10], "texture": "#worm"},
+        "up": {"uv": [0, 8, 2, 14], "texture": "#worm"},
+        "down": {"uv": [2, 8, 4, 14], "texture": "#worm"}
+      }
+    }
+  ]
+}

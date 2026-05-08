@@ -1,0 +1,7 @@
+﻿{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "codex_twilight:block/stripped_twilight_oak_log",
+    "side": "codex_twilight:block/stripped_twilight_oak_log"
+  }
+}

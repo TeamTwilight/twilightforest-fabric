@@ -1,0 +1,10 @@
+﻿{
+    "values":  [
+                   "minecraft:red_mushroom_block",
+                   "minecraft:brown_mushroom_block",
+                   {
+                       "id":  "codex_twilight:huge_mushgloom",
+                       "required":  false
+                   }
+               ]
+}

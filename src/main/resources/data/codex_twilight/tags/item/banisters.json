@@ -1,0 +1,80 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:oak_banister",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:spruce_banister",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:birch_banister",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:jungle_banister",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:acacia_banister",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:dark_oak_banister",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:crimson_banister",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:warped_banister",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:vangrove_banister",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:bamboo_banister",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:cherry_banister",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:twilight_oak_banister",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:canopy_banister",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:mangrove_banister",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:dark_banister",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:time_banister",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:transformation_banister",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:mining_banister",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:sorting_banister",
+                       "required":  false
+                   }
+               ]
+}

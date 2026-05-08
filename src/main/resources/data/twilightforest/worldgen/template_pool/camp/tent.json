@@ -1,0 +1,10 @@
+{
+  "name": "twilightforest:camp/tent",
+  "fallback": "minecraft:empty",
+  "elements": [
+    { "weight": 1, "element": { "element_type": "minecraft:single_pool_element", "location": "codex_twilight:camp/tent/duo_tent", "processors": "minecraft:empty", "projection": "rigid" } },
+    { "weight": 1, "element": { "element_type": "minecraft:single_pool_element", "location": "codex_twilight:camp/tent/luxury_tent", "processors": "minecraft:empty", "projection": "rigid" } },
+    { "weight": 1, "element": { "element_type": "minecraft:single_pool_element", "location": "codex_twilight:camp/tent/open_tent", "processors": "minecraft:empty", "projection": "rigid" } },
+    { "weight": 1, "element": { "element_type": "minecraft:single_pool_element", "location": "codex_twilight:camp/tent/solo_tent", "processors": "minecraft:empty", "projection": "rigid" } }
+  ]
+}

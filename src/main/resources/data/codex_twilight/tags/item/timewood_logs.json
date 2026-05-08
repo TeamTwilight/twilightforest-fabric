@@ -1,0 +1,20 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:time_log",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:stripped_time_log",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:time_wood",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:stripped_time_wood",
+                       "required":  false
+                   }
+               ]
+}

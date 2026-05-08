@@ -1,0 +1,25 @@
+﻿{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "thread": "twilightforest:model/red_thread",
+    "particle": "twilightforest:model/red_thread"
+  },
+  "elements": [
+    {
+      "from": [0, 0.02, 7.5],
+      "to": [16, 0.02, 8.5],
+      "faces": {
+        "up": { "texture": "#thread", "uv": [0, 15, 16, 17] },
+        "down": { "texture": "#thread", "uv": [0, 15, 16, 17] }
+      }
+    },
+    {
+      "from": [7.5, 0.03, 0],
+      "to": [8.5, 0.03, 16],
+      "faces": {
+        "up": { "texture": "#thread", "uv": [15, 0, 17, 16] },
+        "down": { "texture": "#thread", "uv": [15, 0, 17, 16] }
+      }
+    }
+  ]
+}

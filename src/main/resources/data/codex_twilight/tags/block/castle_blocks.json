@@ -1,0 +1,100 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:castle_brick",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:worn_castle_brick",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:cracked_castle_brick",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:mossy_castle_brick",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:castle_roof_tile",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:thick_castle_brick",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:bold_castle_brick_tile",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:bold_castle_brick_pillar",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:encased_castle_brick_tile",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:encased_castle_brick_pillar",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:castle_brick_stairs",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:worn_castle_brick_stairs",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:cracked_castle_brick_stairs",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:mossy_castle_brick_stairs",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:encased_castle_brick_stairs",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:bold_castle_brick_stairs",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:pink_castle_rune_brick",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:yellow_castle_rune_brick",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:blue_castle_rune_brick",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:violet_castle_rune_brick",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:pink_castle_door",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:yellow_castle_door",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:blue_castle_door",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:violet_castle_door",
+                       "required":  false
+                   }
+               ]
+}

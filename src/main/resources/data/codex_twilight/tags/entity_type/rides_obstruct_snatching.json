@@ -1,0 +1,16 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:pinch_beetle",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:yeti",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:alpha_yeti",
+                       "required":  false
+                   }
+               ]
+}

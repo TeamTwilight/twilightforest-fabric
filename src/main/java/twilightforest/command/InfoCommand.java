@@ -3,8 +3,6 @@ package twilightforest.command;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -17,29 +15,32 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-import twilightforest.util.LandmarkUtil;
-import twilightforest.world.components.chunkgenerators.ChunkGeneratorTwilight;
+import net.minecraft.world.level.StructureManager;
+import twilightforest.world.components.structures.SpawnIndexProvider;
+import twilightforest.world.components.structures.type.HollowHillStructure;
+import twilightforest.util.landmarks.LandmarkUtil;
 import twilightforest.world.components.structures.start.TFStructureStart;
+import twilightforest.world.components.structures.util.ControlledSpawns;
 import twilightforest.world.components.structures.util.LandmarkStructure;
-import twilightforest.world.registration.TFGenerationSettings;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.StringJoiner;
 
-public class InfoCommand {
-	public static LiteralArgumentBuilder<CommandSourceStack> register() {
-		return Commands.literal("info").requires(cs -> cs.hasPermission(2)).executes(InfoCommand::run);
+public final class InfoCommand {
+
+	public LiteralArgumentBuilder<CommandSourceStack> register() {
+		return Commands.literal("info").requires(cs -> cs.hasPermission(2)).executes(this::run);
 	}
 
-	private static int run(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
+	private int run(CommandContext<CommandSourceStack> ctx) {
 		CommandSourceStack source = ctx.getSource();
 		ServerLevel level = source.getLevel();
-
-		if (!TFGenerationSettings.usesTwilightChunkGenerator(level)) {
-			throw TFCommand.NOT_IN_TF.create();
-		}
 
 		BlockPos pos = BlockPos.containing(source.getPosition());
 
@@ -51,14 +52,26 @@ public class InfoCommand {
 
 		ResourceLocation key = possibleStructureRegistry.get().getKey(landmarkStructure);
 
-		if (!FabricLoader.getInstance().isDevelopmentEnvironment())
-			source.sendSuccess(() -> Component.translatable("This command is still WIP, some things may still be broken.").withStyle(ChatFormatting.RED, ChatFormatting.BOLD), false);
+		if (!net.fabricmc.loader.api.FabricLoader.getInstance().isDevelopmentEnvironment()) {
+			source.sendSuccess(() -> Component.translatable("commands.tffeature.info.wip").withStyle(ChatFormatting.RED, ChatFormatting.BOLD), false);
+		}
 
 		// nearest feature
 		String structureName = Component.translatable("structure." + key.getNamespace() + "." + key.getPath()).getString();
 		source.sendSuccess(() -> Component.translatable("commands.tffeature.nearest", structureName), false);
 
-		if (structureStart.getBoundingBox().isInside(pos)) {
+		BoundingBox boundingBox = structureStart.getBoundingBox();
+
+		StringJoiner boxInfo = new StringJoiner(", ", "[", "]");
+		boxInfo.add("" + boundingBox.minX());
+		boxInfo.add("" + boundingBox.minY());
+		boxInfo.add("" + boundingBox.minZ());
+		boxInfo.add("" + boundingBox.maxX());
+		boxInfo.add("" + boundingBox.maxY());
+		boxInfo.add("" + boundingBox.maxZ());
+		source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.boundaries", boxInfo), false);
+
+		if (boundingBox.isInside(pos)) {
 			source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.inside").withStyle(ChatFormatting.BOLD, ChatFormatting.GREEN), false);
 
 			if (structureStart instanceof TFStructureStart tfStructureStart) {
@@ -66,7 +79,7 @@ public class InfoCommand {
 			}
 
 			// what is the spawn list
-			List<MobSpawnSettings.SpawnerData> spawnList = ChunkGeneratorTwilight.gatherPotentialSpawns(level.structureManager(), MobCategory.MONSTER, pos);
+			List<MobSpawnSettings.SpawnerData> spawnList = gatherPotentialSpawns(level.structureManager(), MobCategory.MONSTER, pos);
 			source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.spawn_list").withStyle(ChatFormatting.UNDERLINE), false);
 			if (spawnList != null)
 				for (MobSpawnSettings.SpawnerData entry : spawnList)
@@ -78,4 +91,34 @@ public class InfoCommand {
 		return Command.SINGLE_SUCCESS;
 	}
 
+	private static int getSpawnListIndexAt(StructureStart start, BlockPos pos) {
+		int highestFoundIndex = -1;
+		for (StructurePiece component : start.getPieces()) {
+			if (component.getBoundingBox().isInside(pos) && component instanceof SpawnIndexProvider indexProvider && indexProvider.getSpawnIndex() > highestFoundIndex) {
+				highestFoundIndex = indexProvider.getSpawnIndex();
+			}
+		}
+		return highestFoundIndex;
+	}
+
+	private static List<MobSpawnSettings.SpawnerData> gatherPotentialSpawns(StructureManager structureManager, MobCategory category, BlockPos pos) {
+		List<StructureStart> structureStarts = structureManager.startsForStructure(new ChunkPos(pos), structure -> structure instanceof ControlledSpawns);
+		for (StructureStart start : structureStarts) {
+			if (!(start.getStructure() instanceof ControlledSpawns landmark) || !start.isValid()) {
+				continue;
+			}
+			if (category != MobCategory.MONSTER) {
+				return landmark.getSpawnableList(category);
+			}
+			if (start instanceof TFStructureStart tfStart && tfStart.isConquered()) {
+				return null;
+			}
+			if (landmark instanceof HollowHillStructure hollowHill && !hollowHill.canSpawnMob(pos, start.getBoundingBox())) {
+				return null;
+			}
+			int index = getSpawnListIndexAt(start, pos);
+			return index < 0 ? null : landmark.getSpawnableMonsterList(index);
+		}
+		return null;
+	}
 }

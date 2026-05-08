@@ -1,0 +1,14 @@
+﻿{
+  "parent": "minecraft:item/handheld",
+  "overrides": [
+    {
+      "model": "codex_twilight:item/block_and_chain_thrown",
+      "predicate": {
+        "codex_twilight:thrown": 1.0
+      }
+    }
+  ],
+  "textures": {
+    "layer0": "codex_twilight:item/block_and_chain"
+  }
+}

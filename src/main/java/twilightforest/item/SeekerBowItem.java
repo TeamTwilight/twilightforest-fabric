@@ -1,18 +1,17 @@
 package twilightforest.item;
 
-import io.github.fabricators_of_create.porting_lib.item.CustomArrowItem;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import twilightforest.entity.projectile.SeekerArrow;
 
-public class SeekerBowItem extends BowItem implements CustomArrowItem {
+public class SeekerBowItem extends CodexBowItem {
 
-	public SeekerBowItem(Properties properties) {
-		super(properties);
-	}
+    public SeekerBowItem(Properties properties, Item fallback) {
+        super(properties, fallback, -1);
+    }
 
-	@Override
-	public AbstractArrow customArrow(AbstractArrow arrow) {
-		return new SeekerArrow(arrow.level(), arrow.getOwner());
-	}
+    public AbstractArrow customArrow(AbstractArrow arrow, ItemStack projectileStack, ItemStack weaponStack) {
+        return new SeekerArrow(arrow, projectileStack.copyWithCount(1), weaponStack);
+    }
 }

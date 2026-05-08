@@ -1,0 +1,7 @@
+﻿{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "codex_twilight:block/mazestone",
+    "side": "codex_twilight:block/cut_mazestone"
+  }
+}

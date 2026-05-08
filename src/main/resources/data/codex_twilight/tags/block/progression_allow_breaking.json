@@ -1,0 +1,16 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:skull_chest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:keepsake_casket",
+                       "required":  false
+                   },
+                   {
+                       "id":  "gravestone:gravestone",
+                       "required":  false
+                   }
+               ]
+}

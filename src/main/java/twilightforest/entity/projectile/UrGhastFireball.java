@@ -1,11 +1,14 @@
 package twilightforest.entity.projectile;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.entity.projectile.LargeFireball;
-import net.minecraft.world.level.Explosion;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -13,65 +16,56 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.entity.boss.UrGhast;
+import twilightforest.init.TFEntities;
+import twilightforest.init.TFItemVisuals;
 
-public class UrGhastFireball extends LargeFireball implements ITFProjectile {
+import java.util.List;
 
-	private final int power;
+public class UrGhastFireball extends LargeFireball {
+    private int explosionPower = 1;
 
-	public UrGhastFireball(Level world, UrGhast entityTFTowerBoss, double x, double y, double z, int power) {
-		super(world, entityTFTowerBoss, x, y, z, power);
-		this.power = power;
-	}
+    public UrGhastFireball(EntityType<? extends UrGhastFireball> type, Level level) {
+        super(type, level);
+    }
 
-	//[VanillaCopy] of Projectile.onHit. We don't want fireballs to explode no matter what they hit, which is what LargeFireball.onHit does
-	@Override
-	protected void onHit(HitResult pResult) {
-		HitResult.Type hitresult$type = pResult.getType();
-		if (hitresult$type == HitResult.Type.ENTITY) {
-			this.onHitEntity((EntityHitResult)pResult);
-			this.level().gameEvent(GameEvent.PROJECTILE_LAND, pResult.getLocation(), GameEvent.Context.of(this, null));
-		} else if (hitresult$type == HitResult.Type.BLOCK) {
-			BlockHitResult blockhitresult = (BlockHitResult)pResult;
-			this.onHitBlock(blockhitresult);
-			BlockPos blockpos = blockhitresult.getBlockPos();
-			this.level().gameEvent(GameEvent.PROJECTILE_LAND, blockpos, GameEvent.Context.of(this, this.level().getBlockState(blockpos)));
-		}
-	}
+    public UrGhastFireball(Level level, LivingEntity owner, double deltaX, double deltaY, double deltaZ, int power) {
+        super(level, owner, new Vec3(deltaX, deltaY, deltaZ), power);
+        this.explosionPower = power;
+    }
 
-	@Override
-	protected void onHitEntity(EntityHitResult result) {
-		if (!this.level().isClientSide() && !(result.getEntity() instanceof AbstractHurtingProjectile)) {
-			// TF - up damage by 10
-			result.getEntity().hurt(this.damageSources().fireball(this, this.getOwner()), 16.0F);
-			this.doEnchantDamageEffects((LivingEntity) this.getOwner(), result.getEntity());
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+    }
 
-			boolean flag = this.level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
-			this.level().explode(null, this.getX(), this.getY(), this.getZ(), this.power, flag, Level.ExplosionInteraction.NONE);
-			this.discard();
-		}
-	}
+    @Override
+    protected void onHit(HitResult result) {
+        if (result.getType() == HitResult.Type.ENTITY) {
+            this.onHitEntity((EntityHitResult) result);
+            this.level().gameEvent(GameEvent.PROJECTILE_LAND, result.getLocation(), GameEvent.Context.of(this, null));
+        } else if (result.getType() == HitResult.Type.BLOCK) {
+            BlockHitResult blockHit = (BlockHitResult) result;
+            this.onHitBlock(blockHit);
+            BlockPos blockPos = blockHit.getBlockPos();
+            this.level().gameEvent(GameEvent.PROJECTILE_LAND, blockPos, GameEvent.Context.of(this, this.level().getBlockState(blockPos)));
+        }
+    }
 
-	@Override
-	protected void onHitBlock(BlockHitResult result) {
-		super.onHitBlock(result);
-		//explode and leave fire when hitting a block, but dont destroy them
-		boolean flag = this.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
-		this.level().explode(null, this.getX(), this.getY(), this.getZ(), (float) this.power, flag, Level.ExplosionInteraction.NONE);
-		this.discard();
-	}
+    @Override
+    protected void onHitEntity(EntityHitResult result) {
+        Entity entity = result.getEntity();
+        if (!this.level().isClientSide() && !(entity instanceof AbstractHurtingProjectile)) {
+            entity.hurt(this.damageSources().fireball(this, this.getOwner()), 16.0F);
+            boolean griefing = this.level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
+            this.level().explode(null, this.getX(), this.getY(), this.getZ(), this.explosionPower, griefing, Level.ExplosionInteraction.NONE);
+            this.discard();
+        }
+    }
 
-	@Override
-	public void shoot(double x, double y, double z, float scale, float dist) {
-		Vec3 vec3d = (new Vec3(x, y, z))
-				.normalize()
-				.add(this.random.nextGaussian() * 0.0075F * dist, this.random.nextGaussian() * 0.0075F * dist, this.random.nextGaussian() * 0.0075F * dist)
-				.scale(scale);
-		this.setDeltaMovement(vec3d);
-		float f = Mth.sqrt((float) distanceToSqr(vec3d));
-		this.setYRot((float) (Mth.atan2(vec3d.x(), z) * (180F / Mth.PI)));
-		this.setXRot((float) (Mth.atan2(vec3d.y(), f) * (180F / Mth.PI)));
-		this.yRotO = this.getYRot();
-		this.xRotO = this.getXRot();
-	}
+    @Override
+    protected void onHitBlock(BlockHitResult result) {
+        boolean griefing = this.level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
+        this.level().explode(null, this.getX(), this.getY(), this.getZ(), this.explosionPower, griefing, Level.ExplosionInteraction.NONE);
+        this.discard();
+    }
 }

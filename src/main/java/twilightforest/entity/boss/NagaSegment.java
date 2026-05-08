@@ -1,153 +1,143 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFPart;
+import twilightforest.init.TFSounds;
 
 import java.util.List;
 
 public class NagaSegment extends TFPart<Naga> {
+    public static final ResourceLocation RENDERER = twilightforest.TwilightForestMod.prefix("naga_segment");
 
-	public static final ResourceLocation RENDERER = TwilightForestMod.prefix("naga_segment");
+    private final Naga parent;
+    private boolean active;
+    private int deathCounter;
 
-	private int deathCounter;
+    public NagaSegment(Naga parent) {
+        super(parent);
+        this.parent = parent;
+        this.setSize(EntityDimensions.fixed(2.0F, 2.0F));
+        this.setPos(parent.getX(), parent.getY(), parent.getZ());
+    }
 
-	public NagaSegment(Naga naga) {
-		super(naga);
-		this.setPos(naga.getX(), naga.getY(), naga.getZ());
-		setMaxUpStep(getStepHeight());
-	}
+    @Override
+    public void tick() {
+        super.tick();
+        if (this.active) {
+            this.collideWithOthers();
+        }
+        if (this.deathCounter > 0 && --this.deathCounter <= 0) {
+            this.spawnDestructionParticles();
+            this.parent.playSound(TFSounds.NAGA_HURT, 0.25F, this.parent.getVoicePitch() * 0.75F + 0.5F * this.parent.getRandom().nextFloat());
+            this.parent.deathTime = 0;
+            this.deactivate();
+        }
+    }
 
-	@Override
-	protected void defineSynchedData() {
-		this.deactivate();
-	}
+    private void collideWithOthers() {
+        AABB bounds = this.getBoundingBox();
+        List<Entity> entities = this.parent.level().getEntities(this.parent, bounds, entity -> entity.isPushable() && !this.is(entity));
+        for (Entity entity : entities) {
+            entity.push(this.parent);
+            if (entity instanceof LivingEntity && !(entity instanceof Naga) && !this.parent.isDazed() && !this.parent.isDeadOrDying()) {
+                int attackStrength = entity instanceof Animal ? 6 : 2;
+                entity.hurt(entity.level().damageSources().mobAttack(this.parent), attackStrength);
+            }
+        }
+    }
 
-	@Override
-	@Environment(EnvType.CLIENT)
-	public ResourceLocation renderer() {
-		return RENDERER;
-	}
+    private void spawnDestructionParticles() {
+        for (int k = 0; k < 20; k++) {
+            this.parent.level().addParticle(this.parent.getRandom().nextBoolean() ? ParticleTypes.EXPLOSION : ParticleTypes.EXPLOSION_EMITTER,
+                    this.position().x() + (this.parent.getRandom().nextFloat() - 0.5F) * 4.0F,
+                    this.position().y() + this.parent.getRandom().nextFloat() * 2.0F,
+                    this.position().z() + (this.parent.getRandom().nextFloat() - 0.5F) * 4.0F,
+                    this.parent.getRandom().nextGaussian() * 0.02D,
+                    this.parent.getRandom().nextGaussian() * 0.02D,
+                    this.parent.getRandom().nextGaussian() * 0.02D);
+        }
+    }
 
-	@Override
-	public boolean hurt(DamageSource src, float damage) {
-		return !this.isInvisible() && this.getParent().hurt(src, damage * 2.0F / 3.0F);
-	}
+    @Override
+    public boolean hurt(net.minecraft.world.damagesource.DamageSource source, float damage) {
+        return this.active && this.parent.hurt(source, damage * 2.0F / 3.0F);
+    }
 
-	@Override
-	public boolean is(Entity entity) {
-		return entity == this || entity == this.getParent();
-	}
+    @Override
+    public boolean is(Entity entity) {
+        return super.is(entity);
+    }
 
-	@Override
-	protected void readAdditionalSaveData(CompoundTag compound) {
+    public void deactivate() {
+        this.active = false;
+    }
 
-	}
+    public void activate() {
+        this.active = true;
+    }
 
-	@Override
-	protected void addAdditionalSaveData(CompoundTag compound) {
+    public boolean isActive() {
+        return this.active;
+    }
 
-	}
+    @Override
+    public boolean isInvisible() {
+        return !this.active || super.isInvisible();
+    }
 
-	@Override
-	public void tick() {
-		super.tick();
+    @Override
+    public ResourceLocation renderer() {
+        return RENDERER;
+    }
 
-		++this.tickCount;
+    public void selfDestruct(int counter) {
+        this.deathCounter = counter;
+    }
 
-		if (!this.isInvisible())
-			this.collideWithOthers();
+    @Override
+    public void setPos(double x, double y, double z) {
+        super.setPos(x, y, z);
+    }
 
-		if (this.deathCounter > 0) {
-			this.deathCounter--;
-			if (this.deathCounter <= 0) {
-				Vec3 pos = this.position();
-				float width = this.getBbWidth();
-				float height = this.getBbHeight();
-				for (int k = 0; k < 20; k++) {
-					this.level().addParticle(this.random.nextBoolean() ? ParticleTypes.EXPLOSION : ParticleTypes.EXPLOSION_EMITTER,
-							(pos.x() + this.random.nextFloat() * width * 2.0F) - width,
-							pos.y() + this.random.nextFloat() * height,
-							(pos.z() + this.random.nextFloat() * width * 2.0F) - width,
-							this.random.nextGaussian() * 0.02D, this.random.nextGaussian() * 0.02D, this.random.nextGaussian() * 0.02D);
-				}
+    @Override
+    public void setRot(float yRot, float xRot) {
+        super.setRot(yRot, xRot);
+    }
 
-				this.getParent().deathTime = 0;
-				this.deactivate();
-			}
-		}
-	}
+    public boolean isInWall() {
+        return !this.parent.level().noCollision(this.getBoundingBox().deflate(0.05D));
+    }
 
-	private void collideWithOthers() {
-		List<Entity> list = this.level().getEntities(this, this.getBoundingBox());
+    public void follow(Entity leader, int index) {
+        this.follow(leader.position(), leader.getYRot(), index);
+    }
 
-		for (Entity entity : list) {
-			if (entity.isPushable()) {
-				this.collideWithEntity(entity);
-			}
-		}
-	}
+    public void follow(NagaSegment leader, int index) {
+        this.follow(leader.position(), leader.getYRot(), index);
+    }
 
-	private void collideWithEntity(Entity entity) {
-		entity.push(this);
-
-		// attack anything that's not us
-		if (entity instanceof LivingEntity && !(entity instanceof Naga) && !this.getParent().isDazed()) {
-			int attackStrength = 2;
-
-			// get rid of nearby deer & look impressive
-			if (entity instanceof Animal) {
-				attackStrength *= 3;
-			}
-
-			entity.hurt(entity.level().damageSources().mobAttack(this.getParent()), attackStrength);
-		}
-	}
-
-	public void deactivate() {
-		this.setSize(EntityDimensions.scalable(0.0F, 0.0F));
-		this.setInvisible(true);
-	}
-
-	public void activate() {
-		this.setSize(EntityDimensions.scalable(2.0F, 2.0F));
-		this.setInvisible(false);
-	}
-
-	// make public
-	@Override
-	public void setRot(float yaw, float pitch) {
-		super.setRot(yaw, pitch);
-	}
-
-	@Override
-	protected void playStepSound(BlockPos pos, BlockState block) {
-	}
-
-	public void selfDestruct(int counter) {
-		this.deathCounter = counter;
-	}
-
-	@Override
-	public boolean canChangeDimensions() {
-		return false;
-	}
-
-//	@Override
-	public float getStepHeight() {
-		return 2.0F;
-	}
+    private void follow(Vec3 leaderPosition, float leaderYRot, int index) {
+        float angle = ((leaderYRot + 180.0F) * Mth.PI) / 180.0F;
+        double straightenForce = this.parent.isDeadOrDying() ? 0.0D : 0.05D + (1.0D / (index + 1)) * 0.5D;
+        double idealX = -Mth.sin(angle) * straightenForce;
+        double idealZ = Mth.cos(angle) * straightenForce;
+        double groundY = this.isInWall() ? leaderPosition.y() + 2.0D : leaderPosition.y();
+        double idealY = (groundY - leaderPosition.y()) * straightenForce;
+        Vec3 diff = this.position().subtract(leaderPosition).normalize().add(idealX, idealY, idealZ).normalize();
+        if (diff.lengthSqr() < 1.0E-7D) {
+            diff = new Vec3(-Mth.sin(angle), 0.0D, Mth.cos(angle));
+        }
+        double distance = 2.0D;
+        this.setPos(leaderPosition.x() + distance * diff.x(), leaderPosition.y() + distance * diff.y(), leaderPosition.z() + distance * diff.z());
+        double horizontal = Mth.sqrt((float) (diff.x() * diff.x() + diff.z() * diff.z()));
+        this.setRot((float) (Math.atan2(diff.z(), diff.x()) * 180.0D / Math.PI) + 90.0F, -(float) (Math.atan2(diff.y(), horizontal) * 180.0D / Math.PI));
+    }
 }

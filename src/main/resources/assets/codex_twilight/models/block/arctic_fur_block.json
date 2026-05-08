@@ -1,0 +1,11 @@
+﻿{
+  "parent": "minecraft:block/block",
+  "connectable_blocks": [
+    "codex_twilight:arctic_fur_block"
+  ],
+  "loader": "codex_twilight:connected_texture_block",
+  "textures": {
+    "overlay_connected": "codex_twilight:block/arctic_fur_block_ctm",
+    "overlay_texture": "codex_twilight:block/arctic_fur_block"
+  }
+}

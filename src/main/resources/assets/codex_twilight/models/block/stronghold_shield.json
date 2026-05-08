@@ -1,0 +1,7 @@
+﻿{
+  "parent": "minecraft:block/cube_top",
+  "textures": {
+    "side": "codex_twilight:block/shield_outside",
+    "top": "codex_twilight:block/shield_inside"
+  }
+}

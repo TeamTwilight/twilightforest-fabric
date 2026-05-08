@@ -1,0 +1,9 @@
+﻿{
+  "parent": "codex_twilight:block/horizontal_hollow_log",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "inner": "minecraft:block/stripped_crimson_stem",
+    "side": "minecraft:block/crimson_stem",
+    "top": "minecraft:block/crimson_stem_top"
+  }
+}

@@ -1,0 +1,8 @@
+﻿{
+  "parent": "codex_twilight:block/vertical_hollow_log",
+  "textures": {
+    "inner": "codex_twilight:block/stripped_time_log",
+    "side": "codex_twilight:block/time_log",
+    "top": "codex_twilight:block/time_log_top"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "type": "twilightforest:wood_roots",
+  "config": {
+    "root_block": {
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "data": {
+            "Name": "minecraft:hanging_roots"
+          },
+          "weight": 6
+        },
+        {
+          "data": {
+            "Name": "minecraft:rooted_dirt"
+          },
+          "weight": 1
+        }
+      ]
+    },
+    "root_ore": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "minecraft:rooted_dirt"
+      }
+    }
+  }
+}

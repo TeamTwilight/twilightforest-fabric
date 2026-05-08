@@ -1,0 +1,12 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:snowy_forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:snowy_forest",
+                       "required":  false
+                   }
+               ]
+}

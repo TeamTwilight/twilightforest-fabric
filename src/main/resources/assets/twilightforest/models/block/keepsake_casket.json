@@ -1,0 +1,7 @@
+{
+  "parent": "twilightforest:block/casket_solid_template",
+  "textures": {
+    "side": "twilightforest:entity/casket/keepsake_casket_0",
+    "top": "twilightforest:entity/casket/keepsake_casket_0"
+  }
+}

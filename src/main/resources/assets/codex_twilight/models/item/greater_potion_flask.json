@@ -1,0 +1,26 @@
+﻿{
+  "parent": "minecraft:item/generated",
+  "overrides": [
+    {
+      "model": "codex_twilight:item/greater_flask_0",
+      "predicate": {
+        "codex_twilight:potion_level": 1.0
+      }
+    },
+    {
+      "model": "codex_twilight:item/greater_flask_1",
+      "predicate": {
+        "codex_twilight:potion_level": 2.0
+      }
+    },
+    {
+      "model": "codex_twilight:item/greater_flask_2",
+      "predicate": {
+        "codex_twilight:potion_level": 3.0
+      }
+    }
+  ],
+  "textures": {
+    "layer0": "codex_twilight:item/greater_potion_flask"
+  }
+}

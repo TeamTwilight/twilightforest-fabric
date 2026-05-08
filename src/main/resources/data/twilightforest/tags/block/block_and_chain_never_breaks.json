@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "#minecraft:wither_immune",
+    "#minecraft:dragon_immune"
+  ]
+}

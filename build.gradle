@@ -1,182 +1,228 @@
-//file:noinspection GradlePackageVersionRange
 plugins {
-    id "fabric-loom" version "1.3.+"
-    id "io.github.juuxel.loom-vineflower" version "1.+"
-    id "maven-publish"
+    id 'fabric-loom' version '1.14.10'
+    id 'java'
 }
 
-loom {
-    accessWidenerPath = file("src/main/resources/twilightforest.accesswidener")
-}
+group = 'com.codex'
+version = '0.1.0'
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
-
-archivesBaseName = "${project.mod_id}-fabric-${minecraft_version}"
-version = (hasProperty("CIRevision") ? CIRevision : project.mod_version)
-group = project.group_name
-
-sourceSets.main.resources {
-    srcDir "src/generated/resources"
+base {
+    archivesName = 'codex-twilight'
 }
 
 repositories {
-    mavenLocal() // test builds of Porting Lib
-    maven { url = "https://maven.quiltmc.org/repository/release" } // QM
-    maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // Forge Config API Port
-    maven { url = "https://api.modrinth.com/maven" } // LazyDFU, Suggestion Tweaker
-    maven { url = "https://maven.shedaniel.me/" } // Cloth Config
-    maven { url = "https://maven.wispforest.io" } // TOP
-    maven { url = "https://storage.googleapis.com/devan-maven/" }
-    maven { url = "https://maven.terraformersmc.com/releases/" } // Mod Menu, Trinkets, EMI
-    maven { url = "https://mvn.devos.one/snapshots/" } // Porting Lib, Forge Tags, Tinkers, Mantle
-    maven { url = "https://maven.ladysnake.org/releases" } // Cardinal Components API
-    maven { url = "https://maven.parchmentmc.net/" } // Parchment
-    maven { url = "https://maven.jamieswhiteshirt.com/libs-release" } // Reach Entity Attributes
-    maven { url = "https://dvs1.progwml6.com/files/maven/" } // JEI
-    maven { url 'https://maven.blamejared.com' } // Botany Pots, Bookself
-    maven { // Jade
-        url "https://www.cursemaven.com"
-        content {
-            includeGroup "curse.maven"
-        }
+    maven { url = 'https://mvn.devos.one/snapshots/' }
+    maven { url = 'https://maven.shedaniel.me' }
+    maven { url = 'https://maven.k-4u.nl' }
+    maven { url = 'https://maven.terraformersmc.com/releases/' }
+    maven { url = 'https://maven.ladysnake.org/releases' }
+    maven { url = 'https://api.modrinth.com/maven' }
+    maven { url = 'https://maven.blamejared.com' }
+}
+
+def serverRoot = projectDir.parentFile.parentFile
+def minecraftVersion = '1.21.1'
+def fabricLoaderVersion = '0.18.1'
+def fabricApiVersion = '0.116.4+1.21.1'
+def portingLibVersion = '3.1.0-beta.85+1.21.1'
+def reiVersion = '16.0.799'
+def emiVersion = '1.1.22+1.21.1'
+def jadeVersion = '15.10.5+fabric'
+def jeiVersion = '19.27.0.340'
+def topVersion = '1.21_neo-12.0.3-5'
+def trinketsVersion = '3.10.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
     }
-    maven { url = "https://maven.wispforest.io"}
-    maven { url = "https://jitpack.io" } // Fabric ASM, Mixin Extras
 }
 
 dependencies {
-    // dev env
-    minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings(loom.layered {
-        it.mappings("org.quiltmc:quilt-mappings:${project.minecraft_version}+build.${project.qm_version}:intermediary-v2")
-		it.parchment("org.parchmentmc.data:parchment-${project.minecraft_version}:${project.parchment_version}@zip")
-        it.officialMojangMappings { nameSyntheticMembers = false }
-    })
-    modImplementation("net.fabricmc:fabric-loader:${project.loader_version}")
-
-    modLocalRuntime("com.terraformersmc:modmenu:${project.modmenu_version}") { exclude(group: "net.fabricmc.fabric-api") }
-    modLocalRuntime("maven.modrinth:suggestion-tweaker:${project.suggestion_tweaker_version}+fabric")
-    modLocalRuntime("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}") { exclude(group: "net.fabricmc.fabric-api") } // for Suggestion Tweaker
-
-    // dependencies
-    for (String module in port_lib_modules.split(",")) {
-        modApi(include("io.github.fabricators_of_create.Porting-Lib:$module:$port_lib_version"))
+    minecraft "com.mojang:minecraft:${minecraftVersion}"
+    mappings loom.officialMojangMappings()
+    modImplementation "net.fabricmc:fabric-loader:${fabricLoaderVersion}"
+    modImplementation fabricApi.module('fabric-lifecycle-events-v1', fabricApiVersion)
+    include fabricApi.module('fabric-lifecycle-events-v1', fabricApiVersion)
+    modImplementation fabricApi.module('fabric-entity-events-v1', fabricApiVersion)
+    include fabricApi.module('fabric-entity-events-v1', fabricApiVersion)
+    modImplementation fabricApi.module('fabric-registry-sync-v0', fabricApiVersion)
+    include fabricApi.module('fabric-registry-sync-v0', fabricApiVersion)
+    modImplementation fabricApi.module('fabric-object-builder-api-v1', fabricApiVersion)
+    include fabricApi.module('fabric-object-builder-api-v1', fabricApiVersion)
+    modImplementation fabricApi.module('fabric-api-lookup-api-v1', fabricApiVersion)
+    include fabricApi.module('fabric-api-lookup-api-v1', fabricApiVersion)
+    modImplementation fabricApi.module('fabric-recipe-api-v1', fabricApiVersion)
+    include fabricApi.module('fabric-recipe-api-v1', fabricApiVersion)
+    modImplementation fabricApi.module('fabric-transfer-api-v1', fabricApiVersion)
+    include fabricApi.module('fabric-transfer-api-v1', fabricApiVersion)
+    modImplementation fabricApi.module('fabric-events-interaction-v0', fabricApiVersion)
+    include fabricApi.module('fabric-events-interaction-v0', fabricApiVersion)
+    modImplementation fabricApi.module('fabric-data-attachment-api-v1', fabricApiVersion)
+    include fabricApi.module('fabric-data-attachment-api-v1', fabricApiVersion)
+    modImplementation fabricApi.module('fabric-command-api-v2', fabricApiVersion)
+    include fabricApi.module('fabric-command-api-v2', fabricApiVersion)
+    // B6 parent block ports use Fabric's flammability registry for TF plant parity.
+    modImplementation fabricApi.module('fabric-content-registries-v0', fabricApiVersion)
+    include fabricApi.module('fabric-content-registries-v0', fabricApiVersion)
+    // B6 parent block ports keep upstream Porting Lib hooks instead of stripping them.
+    modImplementation include("io.github.fabricators_of_create.Porting-Lib:common:${portingLibVersion}")
+    // F2 — client renderer registration lives in src/client/, scoped to the client sourceSet.
+    // Loom split-env routes modImplementation onto both main and client sourceSets;
+    // fabric-rendering-v1 itself is `environment: client` so it only loads on Fabric clients.
+    modImplementation fabricApi.module('fabric-rendering-v1', fabricApiVersion)
+    include fabricApi.module('fabric-rendering-v1', fabricApiVersion)
+    modImplementation fabricApi.module('fabric-blockrenderlayer-v1', fabricApiVersion)
+    include fabricApi.module('fabric-blockrenderlayer-v1', fabricApiVersion)
+    modImplementation fabricApi.module('fabric-renderer-api-v1', fabricApiVersion)
+    include fabricApi.module('fabric-renderer-api-v1', fabricApiVersion)
+    modImplementation fabricApi.module('fabric-resource-loader-v0', fabricApiVersion)
+    include fabricApi.module('fabric-resource-loader-v0', fabricApiVersion)
+    modImplementation fabricApi.module('fabric-key-binding-api-v1', fabricApiVersion)
+    include fabricApi.module('fabric-key-binding-api-v1', fabricApiVersion)
+    // F2.8 — custom S2C packet for TF mob hit-spark VFX. Server-side broadcasts on damage;
+    // client-side receives + spawns vanilla CRIT particles. Module is dual-env, so both
+    // server registration and client receiver compile against the same payload type.
+    modImplementation fabricApi.module('fabric-networking-api-v1', fabricApiVersion)
+    include fabricApi.module('fabric-networking-api-v1', fabricApiVersion)
+    // F2.6 — fabric-particles-v1 exposes ParticleFactoryRegistry for paired client
+    // particle providers; client-only env so it doesn't load on dedicated servers.
+    modImplementation fabricApi.module('fabric-particles-v1', fabricApiVersion)
+    include fabricApi.module('fabric-particles-v1', fabricApiVersion)
+    modImplementation fabricApi.module('fabric-data-generation-api-v1', fabricApiVersion)
+    // B5 — Fabric port of NeoForge IGeometryLoader for the seven TF-side custom block-model
+    // loaders (noise_varying / connected_texture_block / force_field / giant_block / patch /
+    // royal_rags / neoforge:composite). ModelLoadingPlugin lets us swap a custom UnbakedModel
+    // in for specific model ids; FabricBakedModel.emitBlockQuads (in fabric-renderer-api-v1,
+    // already included above) gives us the BlockPos vanilla BakedModel.getQuads lacks.
+    modImplementation fabricApi.module('fabric-model-loading-api-v1', fabricApiVersion)
+    include fabricApi.module('fabric-model-loading-api-v1', fabricApiVersion)
+    compileOnly 'org.jetbrains:annotations:24.1.0'
+    compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
+    modImplementation "dev.emi:trinkets:${trinketsVersion}"
+    modCompileOnly "dev.emi:emi-fabric:${emiVersion}"
+    modCompileOnly "maven.modrinth:jade:${jadeVersion}"
+    modCompileOnly("mezz.jei:jei-1.21.1-fabric:${jeiVersion}") {
+        transitive = false
     }
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-fabric:${reiVersion}"
+    compileOnly "mcjty.theoneprobe:theoneprobe:${topVersion}"
+    // Manningham Mills (shedaniel's fork) — bundled inside aether-1.21.1-1.5.11-fabric.jar at
+    // META-INF/jars/mm-2.4.1.jar. We use ClassTinkerers.enumBuilder to graft custom
+    // BiomeSpecialEffects$GrassColorModifier values for Twilight Forest before MC class init.
+    // compileOnly is enough because aether (a hard dep of the modpack) provides mm at runtime.
+    compileOnly files('local/mm-2.4.1.jar')
+}
 
-    modImplementation("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
-    modImplementation(include("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${project.config_api_version}"))
-    modImplementation(include("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cca_version}"))
-    modImplementation(include("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cca_version}"))
-    modImplementation(include("dev.onyxstudios.cardinal-components-api:cardinal-components-world:${project.cca_version}"))
-    modImplementation(include("com.github.Chocohead:Fabric-ASM:v2.3"))
-    modImplementation(include("maven.modrinth:here-be-no-dragons:1.0.0"))
-    implementation(include("com.electronwill.night-config:core:3.6.3"))
-    implementation(include("com.electronwill.night-config:toml:3.6.3"))
-    implementation(include("javax.annotation:javax.annotation-api:1.3.2"))
-    implementation(include("com.google.code.findbugs:jsr305:3.0.2"))
-
-    // compat
-    modImplementation("dev.emi:trinkets:${project.trinkets_version}")
-    // EMI
-    modCompileOnly("dev.emi:emi:${project.emi_version}") { transitive = false }
-    // JEI
-    // FIXME remapping issues with API jar
-//    deps.modCompileOnly("mezz.jei:jei-${project.minecraft_version}-common-api:${project.jei_version}") { transitive = false }
-//    deps.modCompileOnly("mezz.jei:jei-${project.minecraft_version}-fabric-api:${project.jei_version}") { transitive = false }
-    modCompileOnly("mezz.jei:jei-1.19.3-fabric:${project.jei_version}") { transitive = false }
-    // REI
-    modCompileOnly("me.shedaniel.cloth:basic-math:0.6.0") { transitive = false }
-    modCompileOnly("dev.architectury:architectury-fabric:${project.architectury_version}") { transitive = false }
-    modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}") { transitive = false }
-    modCompileOnly("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}") { transitive = false }
-    // Jade
-    modImplementation("curse.maven:jade-324717:${jade_id}")
-    // TOP
-    modCompileOnly("mcjty.theoneprobe:theoneprobe-fabric:${top_version}")
-
-    String recipeViewer = project.recipe_viewer
-    if (recipeViewer == "emi") {
-        modLocalRuntime("dev.emi:emi:${project.emi_version}") { transitive = false }
-    } else if (recipeViewer == "jei") {
-        modLocalRuntime("mezz.jei:jei-${project.minecraft_version}-fabric:${project.jei_version}") { transitive = false }
-    } else if (recipeViewer == "rei") {
-        modLocalRuntime("me.shedaniel.cloth:basic-math:0.6.0") { transitive = false }
-        modLocalRuntime("dev.architectury:architectury-fabric:${project.architectury_version}") { transitive = false }
-        modLocalRuntime("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}") { exclude(group: "net.fabricmc.fabric-api"); transitive = false }
-        modLocalRuntime("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}") { transitive = false }
-    } else {
-        println("unknown recipe viewer: $recipeViewer")
+sourceSets {
+    main {
+        java {
+            srcDir 'src/tfjava'
+        }
     }
+    datagen {
+        java {
+            srcDir 'src/datagen/java'
+        }
+        compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
+        runtimeClasspath += output + compileClasspath
+    }
+}
 
-    // test mods
-//    modRuntimeOnly "net.darkhax.botanypots:BotanyPots-Fabric-1.19.2:9.0.3"
-//    modLocalRuntime "io.wispforest:owo-lib:0.10.4+pre.1+1.19.4"
+configurations {
+    datagenImplementation.extendsFrom implementation, modImplementation
+    datagenCompileOnly.extendsFrom compileOnly
+}
+
+// F2.5 — owner-driven Fabric port of upstream Twilight Forest client renderers.
+//
+// Dual-license structure:
+//   * Codex Twilight original code: MIT (LICENSE at project root)
+//   * Files under src/tfjava-client/twilightforest/**: derivative work of upstream
+//     Twilight Forest, retain upstream LGPL 2.1+. Attribution in
+//     CREDITS-twilightforest-assets.txt; full upstream LICENSE in
+//     local/twilightforest-1.21.1-src/LICENSE.
+//
+// Workflow: drop NeoForge → Fabric translated files into
+//   src/tfjava-client/twilightforest/client/renderer/block/   (BER classes)
+//   src/tfjava-client/twilightforest/client/model/block/      (model classes)
+//   src/tfjava-client/twilightforest/client/...               (anything else)
+// then wire each BER's registration in
+//   src/client/java/com/codex/twilight/client/render/ClientBlockEntityRendererBootstrap
+//
+// The Loom-managed `client` sourceSet exists only after splitEnvironmentSourceSets()
+// runs in the loom block above, so the srcDir add-on must run in afterEvaluate.
+afterEvaluate {
+    def tfClient = file('src/tfjava-client')
+    if (tfClient.exists()) {
+        sourceSets.client.java.srcDir tfClient
+    }
 }
 
 loom {
-    runs {
-        datagen {
-            client()
+    splitEnvironmentSourceSets()
+    accessWidenerPath = file('src/main/resources/codex_twilight.accesswidener')
 
-            name "Data Generation"
-            vmArg "-Dfabric-api.datagen"
-            vmArg "-Dfabric-api.datagen.output-dir=${file("src/generated/resources")}"
-            vmArg "-Dfabric-api.datagen.modid=twilightforest"
-
-            property "porting_lib.datagen.existing_resources", file("src/main/resources").absolutePath
-            property "twilightforest.data.server", "false"
-
-            runDir "build/datagen"
+    mods {
+        codex_twilight {
+            sourceSet sourceSets.main
+            // F2 — paired client renderers ride in the same jar via Loom split env;
+            // src/client/java only loads on Fabric clients, server-side classloader skips it.
+            sourceSet sourceSets.client
         }
-    }
-}
-
-processResources {
-    Map<String, String> properties = new HashMap<>()
-    properties.put("version", project.version)
-    properties.put("loader_version", project.loader_version)
-    properties.put("fabric_version", project.fabric_version)
-    properties.put("minecraft_version", project.minecraft_version)
-    properties.put("java_version", sourceCompatibility)
-
-    properties.forEach((k, v) -> inputs.property(k, v))
-
-    filesMatching("fabric.mod.json") {
-        expand properties
     }
 }
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.encoding = "UTF-8"
-
-    it.options.release = 17
+    options.encoding = 'UTF-8'
+    options.release = 21
 }
 
-java {
-    withSourcesJar()
-}
-
-jar {
-    from("LICENSE") {
-        rename { "${it}_${project.archivesBaseName}"}
+tasks.named('jar') {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from sourceSets.main.output
+    // F2 — client sourceSet output goes into the same jar; Loom marks it as client-only.
+    from sourceSets.client.output
+    manifest {
+        attributes(
+            'Implementation-Title': 'Codex Twilight',
+            'Implementation-Version': project.version
+        )
     }
 }
 
-// configure the maven publication
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
+tasks.named('remapJar') {
+    doLast {
+        def jarFile = archiveFile.get().asFile
+        def mirrorDir = layout.buildDirectory.dir('mmGrassStructMirror').get().asFile
+
+        delete mirrorDir
+        copy {
+            from zipTree(jarFile)
+            include 'twilightforest/asm/grass/*GrassColorModifier.class'
+            into mirrorDir
+        }
+
+        // Manningham Mills resolves enum-subclass struct bytecode relative to its own
+        // package (me/shedaniel/mm). Mirror the already-remapped bytes into that resource
+        // path after remapJar runs, avoiding duplicate internal class names during remap.
+        ant.zip(destfile: jarFile, update: true) {
+            zipfileset(dir: mirrorDir, prefix: 'me/shedaniel/mm')
         }
     }
+}
 
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-    repositories {
-        // Add repositories to publish to here.
-        // Notice: This block does NOT have the same function as the block in the top level.
-        // The repositories here will be used for publishing your artifact, not for
-        // retrieving dependencies.
-    }
+tasks.register('installServerMod', Copy) {
+    dependsOn tasks.named('remapJar')
+    from tasks.named('remapJar').flatMap { it.archiveFile }
+    into file("${serverRoot}/mods")
+}
+
+tasks.register('installGlobalDataPack', Copy) {
+    from file('src/main/resources/data')
+    into file("${serverRoot}/global_packs/required_data/codex_twilight/data")
+}
+
+tasks.register('buildAndInstall') {
+    dependsOn tasks.named('installServerMod'), tasks.named('installGlobalDataPack')
 }

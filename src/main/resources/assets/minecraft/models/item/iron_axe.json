@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "minecraft:item/iron_axe"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 31023
+      },
+      "model": "codex_twilight:item/diamond_minotaur_axe"
+    }
+  ]
+}

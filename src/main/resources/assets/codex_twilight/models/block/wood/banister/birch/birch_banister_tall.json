@@ -1,0 +1,6 @@
+﻿{
+  "parent": "codex_twilight:block/banister_tall",
+  "textures": {
+    "texture": "minecraft:block/birch_planks"
+  }
+}

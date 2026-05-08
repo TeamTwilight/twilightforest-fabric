@@ -1,0 +1,7 @@
+﻿{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "codex_twilight:block/mining_log",
+    "side": "codex_twilight:block/mining_log"
+  }
+}

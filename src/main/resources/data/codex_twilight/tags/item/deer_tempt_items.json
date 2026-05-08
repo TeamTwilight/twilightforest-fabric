@@ -1,0 +1,10 @@
+﻿{
+    "values":  [
+                   "#c:crops/wheat",
+                   "minecraft:apple",
+                   {
+                       "id":  "codex_twilight:shika_senbei",
+                       "required":  false
+                   }
+               ]
+}

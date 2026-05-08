@@ -1,0 +1,167 @@
+package twilightforest.world.components.feature.trees;
+
+import com.mojang.serialization.Codec;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.HugeMushroomBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.HugeMushroomFeatureConfiguration;
+
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@ParametersAreNonnullByDefault
+public class RedCanopyMushroomFeature extends CanopyMushroomFeature {
+	private final int enumHead;
+
+	public RedCanopyMushroomFeature(Codec<HugeMushroomFeatureConfiguration> featureConfigurationCodec, int enumHead) {
+		super(featureConfigurationCodec);
+		this.enumHead = enumHead;
+	}
+
+	@Override
+	public boolean place(FeaturePlaceContext<HugeMushroomFeatureConfiguration> context) {
+		return super.place(context);
+	}
+
+	@Override
+	protected int getTreeHeight(RandomSource random) {
+		return super.getTreeHeight(random) + 3;
+	}
+
+	@Override
+	protected int getBranches(RandomSource random) {
+		return 3;
+	}
+
+	@Override
+	protected double getLength(RandomSource random) {
+		return 10 + random.nextInt(2);
+	}
+
+	@Override
+	protected void makeCap(LevelAccessor levelAccessor, RandomSource random, BlockPos pos, int height, BlockPos.MutableBlockPos mutableBlockPos, HugeMushroomFeatureConfiguration featureConfiguration) {
+		if (this.enumHead == 0) {
+			this.makeVanillaCap(levelAccessor, random, pos, height, mutableBlockPos, featureConfiguration);
+		} else if (this.enumHead == 1) {
+			this.makeSmoothCap(levelAccessor, random, pos, height, mutableBlockPos, featureConfiguration);
+		} else if (this.enumHead == 2) {
+			this.makeSpheroidCap(levelAccessor, random, pos, height, mutableBlockPos, featureConfiguration);
+		} else {
+			super.makeCap(levelAccessor, random, pos, height, mutableBlockPos, featureConfiguration);
+		}
+	}
+
+	protected void makeVanillaCap(LevelAccessor levelAccessor, RandomSource random, BlockPos pos, int height, BlockPos.MutableBlockPos mutableBlockPos, HugeMushroomFeatureConfiguration featureConfiguration) {
+		for (int y = height - 3; y <= height; ++y) {
+			int j = y < height ? featureConfiguration.foliageRadius : featureConfiguration.foliageRadius - 1;
+			int k = featureConfiguration.foliageRadius - 2;
+
+			for (int x = -j; x <= j; ++x) {
+				for (int z = -j; z <= j; ++z) {
+					boolean xMinMax = x == -j || x == j;
+					boolean zMinMax = z == -j || z == j;
+					if (y >= height || xMinMax != zMinMax) {
+						mutableBlockPos.setWithOffset(pos, x, y, z);
+						if (this.isReplaceable(levelAccessor, mutableBlockPos)) {
+							BlockState blockState = featureConfiguration.capProvider.getState(random, pos);
+
+							if (blockState.hasProperty(HugeMushroomBlock.WEST) && blockState.hasProperty(HugeMushroomBlock.EAST) && blockState.hasProperty(HugeMushroomBlock.NORTH) && blockState.hasProperty(HugeMushroomBlock.SOUTH) && blockState.hasProperty(HugeMushroomBlock.UP)) {
+								blockState = blockState
+										.setValue(HugeMushroomBlock.UP, y >= height - 1)
+										.setValue(HugeMushroomBlock.WEST, x < -k)
+										.setValue(HugeMushroomBlock.EAST, x > k)
+										.setValue(HugeMushroomBlock.NORTH, z < -k)
+										.setValue(HugeMushroomBlock.SOUTH, z > k);
+							}
+
+							this.setBlock(levelAccessor, mutableBlockPos, blockState);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	protected void makeSmoothCap(LevelAccessor levelAccessor, RandomSource random, BlockPos pos, int height, BlockPos.MutableBlockPos mutableBlockPos, HugeMushroomFeatureConfiguration featureConfiguration) {
+		for (int y = height - 2; y <= height + 1; ++y) {
+			int j = featureConfiguration.foliageRadius - Math.max(0, y - (height - 1)) + 1;
+
+			for (int x = -j; x <= j; ++x) {
+				for (int z = -j; z <= j; ++z) {
+					if (isInsideSmoothShape(height, j, x, y, z)) {
+						mutableBlockPos.setWithOffset(pos, x, y, z);
+						if (this.isReplaceable(levelAccessor, mutableBlockPos)) {
+							BlockState blockState = featureConfiguration.capProvider.getState(random, pos);
+
+							if (blockState.hasProperty(HugeMushroomBlock.WEST) && blockState.hasProperty(HugeMushroomBlock.EAST) && blockState.hasProperty(HugeMushroomBlock.NORTH) && blockState.hasProperty(HugeMushroomBlock.SOUTH) && blockState.hasProperty(HugeMushroomBlock.UP)) {
+								blockState = blockState
+										.setValue(HugeMushroomBlock.UP, !isInsideSmoothShape(height, j - (y > height - 2 ? 1 : 0), x, y + 1, z))
+										.setValue(HugeMushroomBlock.WEST, !isInsideSmoothShape(height, j, x - 1, y, z) && x < 0)
+										.setValue(HugeMushroomBlock.EAST, !isInsideSmoothShape(height, j, x + 1, y, z) && x > 0)
+										.setValue(HugeMushroomBlock.NORTH, !isInsideSmoothShape(height, j, x, y, z - 1) && z < 0)
+										.setValue(HugeMushroomBlock.SOUTH, !isInsideSmoothShape(height, j, x, y, z + 1) && z > 0);
+							}
+
+							this.setBlock(levelAccessor, mutableBlockPos, blockState);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private static boolean isInsideSmoothShape(int height, int j, int x, int y, int z) {
+		int i = y - (height - 2);
+		if (i == 4 || Math.abs(x) > j || Math.abs(z) > j) {
+			return false;
+		}
+		if (i >= 2) {
+			return true;
+		}
+
+		boolean xIsMin = x == -j;
+		boolean xIsMax = x == j;
+		boolean zIsMin = z == -j;
+		boolean zIsMax = z == j;
+		boolean xMinMax = xIsMin || xIsMax;
+		boolean zMinMax = zIsMin || zIsMax;
+
+		if (i == 1 && ((xMinMax && Math.abs(z) == j - 1) || (zMinMax && Math.abs(x) == j - 1))) {
+			return false;
+		}
+
+		return xMinMax != zMinMax || (Math.abs(x) == Math.abs(z) && Math.abs(x) == j - 1);
+	}
+
+	protected void makeSpheroidCap(LevelAccessor levelAccessor, RandomSource random, BlockPos pos, int height, BlockPos.MutableBlockPos mutableBlockPos, HugeMushroomFeatureConfiguration featureConfiguration) {
+		for (int y = height - 2; y <= height; ++y) {
+			int j = y == height - 1 ? featureConfiguration.foliageRadius + 2 : featureConfiguration.foliageRadius + 1;
+
+			for (int x = -j; x <= j; ++x) {
+				for (int z = -j; z <= j; ++z) {
+					double distance = Math.sqrt(x * x + z * z);
+					double maxDistance = (double) j + 0.1D;
+					if (distance <= maxDistance) {
+						mutableBlockPos.setWithOffset(pos, x, y, z);
+						if (this.isReplaceable(levelAccessor, mutableBlockPos)) {
+							BlockState blockState = featureConfiguration.capProvider.getState(random, pos);
+
+							if (blockState.hasProperty(HugeMushroomBlock.WEST) && blockState.hasProperty(HugeMushroomBlock.EAST) && blockState.hasProperty(HugeMushroomBlock.NORTH) && blockState.hasProperty(HugeMushroomBlock.SOUTH) && blockState.hasProperty(HugeMushroomBlock.UP)) {
+								blockState = blockState
+										.setValue(HugeMushroomBlock.UP, y > height - 2 && (y == height || distance > maxDistance - 1D))
+										.setValue(HugeMushroomBlock.WEST, Math.sqrt((x - 1) * (x - 1) + z * z) > maxDistance)
+										.setValue(HugeMushroomBlock.EAST, Math.sqrt((x + 1) * (x + 1) + z * z) > maxDistance)
+										.setValue(HugeMushroomBlock.NORTH, Math.sqrt(x * x + (z - 1) * (z - 1)) > maxDistance)
+										.setValue(HugeMushroomBlock.SOUTH, Math.sqrt(x * x + (z + 1) * (z + 1)) > maxDistance);
+							}
+
+							this.setBlock(levelAccessor, mutableBlockPos, blockState);
+						}
+					}
+				}
+			}
+		}
+	}
+}

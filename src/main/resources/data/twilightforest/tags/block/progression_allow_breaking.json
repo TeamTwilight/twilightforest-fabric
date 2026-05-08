@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "twilightforest:skull_chest",
+    "twilightforest:keepsake_casket",
+    {
+      "id": "gravestone:gravestone",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "twilightforest:moonworm_shot",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:twilight_scepter",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:lifedrain_scepter",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:zombie_scepter",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:fortification_scepter",
+                       "required":  false
+                   }
+               ]
+}

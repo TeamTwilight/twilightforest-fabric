@@ -1,11 +1,18 @@
 pluginManagement {
     repositories {
-        jcenter()
-        maven {
-            name = 'Fabric'
-            url = 'https://maven.fabricmc.net/'
-        }
-        maven { url = "https://maven.quiltmc.org/repository/release" }
+        maven { url = 'https://maven.fabricmc.net/' }
         gradlePluginPortal()
+        mavenCentral()
     }
 }
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
+    repositories {
+        maven { url = 'https://maven.fabricmc.net/' }
+        maven { url = 'https://mvn.devos.one/snapshots/' }
+        mavenCentral()
+    }
+}
+
+rootProject.name = 'codex-twilight'

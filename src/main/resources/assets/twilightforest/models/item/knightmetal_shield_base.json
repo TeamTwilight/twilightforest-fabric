@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:block/block",
+  "gui_light": "front",
+  "textures": {
+    "shield": "#shield",
+    "edge": "#edge",
+    "particle": "#edge"
+  },
+  "elements": [
+    {
+      "from": [ 3, 0, 7 ],
+      "to": [ 13, 16, 9 ],
+      "faces": {
+        "north": { "uv": [ 0, 0, 16, 16 ], "texture": "#shield" },
+        "south": { "uv": [ 16, 0, 0, 16 ], "texture": "#shield" },
+        "west": { "uv": [ 0, 0, 2, 16 ], "texture": "#edge" },
+        "east": { "uv": [ 14, 0, 16, 16 ], "texture": "#edge" },
+        "up": { "uv": [ 3, 7, 13, 9 ], "texture": "#edge" },
+        "down": { "uv": [ 3, 7, 13, 9 ], "texture": "#edge" }
+      }
+    },
+    {
+      "from": [ 6.5, 5, 9 ],
+      "to": [ 9.5, 11, 11 ],
+      "faces": {
+        "north": { "uv": [ 6, 5, 10, 11 ], "texture": "#edge" },
+        "south": { "uv": [ 6, 5, 10, 11 ], "texture": "#edge" },
+        "west": { "uv": [ 6, 5, 8, 11 ], "texture": "#edge" },
+        "east": { "uv": [ 8, 5, 10, 11 ], "texture": "#edge" },
+        "up": { "uv": [ 6, 5, 10, 7 ], "texture": "#edge" },
+        "down": { "uv": [ 6, 9, 10, 11 ], "texture": "#edge" }
+      }
+    }
+  ]
+}

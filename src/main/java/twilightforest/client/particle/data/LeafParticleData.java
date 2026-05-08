@@ -1,71 +1,33 @@
 package twilightforest.client.particle.data;
 
-import com.mojang.brigadier.StringReader;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import twilightforest.init.TFParticleType;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import org.jetbrains.annotations.NotNull;
+import twilightforest.init.TFParticleTypes;
 
-import javax.annotation.Nonnull;
+public record LeafParticleData(int r, int g, int b) implements ParticleOptions {
+	public static final MapCodec<LeafParticleData> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+			Codec.INT.fieldOf("r").forGetter(LeafParticleData::r),
+			Codec.INT.fieldOf("g").forGetter(LeafParticleData::g),
+			Codec.INT.fieldOf("b").forGetter(LeafParticleData::b)
+	).apply(instance, LeafParticleData::new));
 
-public class LeafParticleData implements ParticleOptions {
-	public final int r;
-	public final int g;
-	public final int b;
+	public static final StreamCodec<? super RegistryFriendlyByteBuf, LeafParticleData> STREAM_CODEC = StreamCodec.composite(
+			ByteBufCodecs.VAR_INT, LeafParticleData::r,
+			ByteBufCodecs.VAR_INT, LeafParticleData::g,
+			ByteBufCodecs.VAR_INT, LeafParticleData::b,
+			LeafParticleData::new
+	);
 
-	public LeafParticleData(int r, int g, int b) {
-		this.r = r;
-		this.g = g;
-		this.b = b;
-	}
-
-	@Nonnull
+	@NotNull
 	@Override
 	public ParticleType<?> getType() {
-		return TFParticleType.FALLEN_LEAF.get();
-	}
-
-	public static Codec<LeafParticleData> codecLeaf() {
-		return RecordCodecBuilder.create((instance) -> instance.group(
-				Codec.INT.fieldOf("r").forGetter((obj) -> obj.r),
-				Codec.INT.fieldOf("g").forGetter((obj) -> obj.g),
-				Codec.INT.fieldOf("b").forGetter((obj) -> obj.b))
-				.apply(instance, LeafParticleData::new));
-	}
-
-	@Override
-	public void writeToNetwork(@Nonnull FriendlyByteBuf buf) {
-		buf.writeVarInt(r);
-		buf.writeVarInt(g);
-		buf.writeVarInt(b);
-	}
-
-	@Nonnull
-	@Override
-	public String writeToString() {
-		return String.format("%d %d %d", r, g, b);
-	}
-
-	public static class Deserializer implements ParticleOptions.Deserializer<LeafParticleData> {
-		@Nonnull
-		@Override
-		public LeafParticleData fromCommand(@Nonnull ParticleType<LeafParticleData> type, @Nonnull StringReader reader) throws CommandSyntaxException {
-			reader.skipWhitespace();
-			int r = reader.readInt();
-			reader.skipWhitespace();
-			int g = reader.readInt();
-			reader.skipWhitespace();
-			int b = reader.readInt();
-			return new LeafParticleData(r, g, b);
-		}
-
-		@Nonnull
-		@Override
-		public LeafParticleData fromNetwork(@Nonnull ParticleType<LeafParticleData> type, FriendlyByteBuf buf) {
-			return new LeafParticleData(buf.readVarInt(), buf.readVarInt(), buf.readVarInt());
-		}
+		return TFParticleTypes.FALLEN_LEAF;
 	}
 }

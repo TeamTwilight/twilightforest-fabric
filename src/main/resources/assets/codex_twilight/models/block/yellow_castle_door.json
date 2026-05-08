@@ -1,0 +1,22 @@
+﻿{
+  "parent": "minecraft:block/block",
+  "connectable_blocks": [
+    "codex_twilight:pink_castle_door",
+    "codex_twilight:yellow_castle_door",
+    "codex_twilight:blue_castle_door",
+    "codex_twilight:violet_castle_door"
+  ],
+  "connected_texture": {
+    "emissivity": 15,
+    "render_disabled_faces": true,
+    "tint_index": 0
+  },
+  "loader": "codex_twilight:connected_texture_block",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "base_texture": "codex_twilight:block/castle_door",
+    "overlay_connected": "codex_twilight:block/castle_door_rune_ctm",
+    "overlay_texture": "codex_twilight:block/castle_door_rune_corners",
+    "particle": "codex_twilight:block/castle_door"
+  }
+}

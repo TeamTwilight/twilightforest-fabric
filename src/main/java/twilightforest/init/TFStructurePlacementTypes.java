@@ -1,21 +1,34 @@
 package twilightforest.init;
 
-import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
-import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacementType;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.components.structures.placements.BiomeForcedLandmarkPlacement;
+import twilightforest.world.components.structures.placements.AvoidLandmarkGridPlacement;
+import twilightforest.world.components.structures.placements.LandmarkGridPlacement;
 
-import java.util.function.Supplier;
+public final class TFStructurePlacementTypes {
+    public static final TFRegistryObject<StructurePlacementType<LandmarkGridPlacement>> GRID_LANDMARK_PLACEMENT_TYPE = placement("landmark_grid", () -> LandmarkGridPlacement.CODEC);
+    public static final TFRegistryObject<StructurePlacementType<LandmarkGridPlacement>> FORCED_LANDMARK_PLACEMENT_TYPE = placement("forced_landmark", () -> LandmarkGridPlacement.CODEC);
+    public static final TFRegistryObject<StructurePlacementType<AvoidLandmarkGridPlacement>> AVOID_GRID_LANDMARK_PLACEMENT_TYPE = placement("avoid_landmark_grid", () -> AvoidLandmarkGridPlacement.CODEC);
 
-public class TFStructurePlacementTypes {
-	public static final LazyRegistrar<StructurePlacementType<?>> STRUCTURE_PLACEMENT_TYPES = LazyRegistrar.create(Registries.STRUCTURE_PLACEMENT, TwilightForestMod.ID);
+    private TFStructurePlacementTypes() {
+    }
 
-	public static final RegistryObject<StructurePlacementType<BiomeForcedLandmarkPlacement>> FORCED_LANDMARK_PLACEMENT_TYPE = registerPlacer("forced_landmark", () -> () -> BiomeForcedLandmarkPlacement.CODEC);
+    public static void bootstrap() {
+        GRID_LANDMARK_PLACEMENT_TYPE.get();
+        FORCED_LANDMARK_PLACEMENT_TYPE.get();
+        AVOID_GRID_LANDMARK_PLACEMENT_TYPE.get();
+    }
 
-    private static <P extends StructurePlacement> RegistryObject<StructurePlacementType<P>> registerPlacer(String name, Supplier<StructurePlacementType<P>> factory) {
-        return STRUCTURE_PLACEMENT_TYPES.register(name, factory);
+    private static <P extends StructurePlacement> TFRegistryObject<StructurePlacementType<P>> placement(String path, StructurePlacementType<P> type) {
+        ResourceKey<StructurePlacementType<?>> key = ResourceKey.create(BuiltInRegistries.STRUCTURE_PLACEMENT.key(), TwilightForestMod.prefix(path));
+        @SuppressWarnings({"unchecked", "rawtypes"})
+        StructurePlacementType<P> registered = (StructurePlacementType<P>) Registry.register(BuiltInRegistries.STRUCTURE_PLACEMENT, key.location(), type);
+        @SuppressWarnings({"unchecked", "rawtypes"})
+        TFRegistryObject<StructurePlacementType<P>> holder = new TFRegistryObject(registered, key);
+        return holder;
     }
 }

@@ -1,0 +1,80 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:oak_drying_rack",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:spruce_drying_rack",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:birch_drying_rack",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:jungle_drying_rack",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:acacia_drying_rack",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:dark_oak_drying_rack",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:crimson_drying_rack",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:warped_drying_rack",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:vangrove_drying_rack",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:bamboo_drying_rack",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:cherry_drying_rack",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:twilight_oak_drying_rack",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:canopy_drying_rack",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:mangrove_drying_rack",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:dark_drying_rack",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:time_drying_rack",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:transformation_drying_rack",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:mining_drying_rack",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:sorting_drying_rack",
+                       "required":  false
+                   }
+               ]
+}

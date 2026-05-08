@@ -1,9 +1,9 @@
 {
 	"parent": "block/block",
 	"textures": {
-		"particle": "twilightforest:block/stone_twist/twist_y",
-		"top_cap": "twilightforest:block/stone_twist/cap/end",
-		"top_z": "twilightforest:block/stone_twist/cap/y"
+		"particle": "twilightforest:block/twisted_stone_pillar",
+		"top_cap": "twilightforest:block/twisted_stone_cap_end",
+		"top_z": "twilightforest:block/twisted_stone_cap_side"
 	},
 	"elements": [
 		{

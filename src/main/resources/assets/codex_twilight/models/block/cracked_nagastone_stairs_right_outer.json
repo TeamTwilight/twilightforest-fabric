@@ -1,0 +1,8 @@
+﻿{
+  "parent": "codex_twilight:block/util/bisected_outer_stairs",
+  "textures": {
+    "end": "codex_twilight:block/stone_tiles_weathered",
+    "middle": "codex_twilight:block/nagastone_bare_weathered",
+    "side": "codex_twilight:block/etched_nagastone_right_weathered"
+  }
+}

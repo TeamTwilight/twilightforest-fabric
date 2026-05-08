@@ -1,0 +1,65 @@
+﻿{
+    "values":  [
+                   "minecraft:bamboo",
+                   "minecraft:short_grass",
+                   "minecraft:tall_grass",
+                   "minecraft:fern",
+                   "minecraft:large_fern",
+                   "minecraft:dead_bush",
+                   "minecraft:sugar_cane",
+                   "minecraft:chorus_plant",
+                   "minecraft:chorus_flower",
+                   "minecraft:sweet_berry_bush",
+                   "minecraft:nether_wart",
+                   "minecraft:cocoa",
+                   "minecraft:vine",
+                   "minecraft:glow_lichen",
+                   "minecraft:red_mushroom",
+                   "minecraft:brown_mushroom",
+                   "minecraft:warped_fungus",
+                   "minecraft:crimson_fungus",
+                   "minecraft:attached_melon_stem",
+                   "minecraft:attached_pumpkin_stem",
+                   "minecraft:moss_carpet",
+                   "minecraft:pink_petals",
+                   "minecraft:big_dripleaf",
+                   "minecraft:big_dripleaf_stem",
+                   "minecraft:small_dripleaf",
+                   {
+                       "id":  "codex_twilight:fiddlehead",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:moss_patch",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:mayapple",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:clover_patch",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:mushgloom",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:giant_leaves",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:steeleaf_block",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:hardened_dark_leaves",
+                       "required":  false
+                   },
+                   "#minecraft:flowers",
+                   "#minecraft:leaves",
+                   "#minecraft:saplings",
+                   "#minecraft:crops"
+               ]
+}

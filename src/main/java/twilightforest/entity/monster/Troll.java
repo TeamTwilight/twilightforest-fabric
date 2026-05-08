@@ -1,22 +1,27 @@
 package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.tags.BlockTags;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.FleeSunGoal;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RestrictSunGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
@@ -24,212 +29,216 @@ import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import twilightforest.TwilightForestMod;
 import twilightforest.entity.projectile.ThrownBlock;
-import twilightforest.init.TFBlocks;
-import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
-import twilightforest.util.WorldUtil;
 
-import org.jetbrains.annotations.Nullable;
-import java.util.Objects;
+import java.util.List;
 
 public class Troll extends Monster implements RangedAttackMob {
+    private static final EntityDataAccessor<Boolean> ROCK_FLAG = SynchedEntityData.defineId(Troll.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<BlockState> ROCK_STATE = SynchedEntityData.defineId(Troll.class, EntityDataSerializers.BLOCK_STATE);
+    private static final ResourceLocation ROCK_FOLLOW_RANGE_ID = TwilightForestMod.prefix("troll_rock_follow_range");
+    private static final AttributeModifier ROCK_MODIFIER = new AttributeModifier(ROCK_FOLLOW_RANGE_ID, 24.0D, AttributeModifier.Operation.ADD_VALUE);
 
-	private static final EntityDataAccessor<Boolean> ROCK_FLAG = SynchedEntityData.defineId(Troll.class, EntityDataSerializers.BOOLEAN);
-	private static final AttributeModifier ROCK_MODIFIER = new AttributeModifier("Rock follow boost", 24, AttributeModifier.Operation.ADDITION);
+    private int rockCooldown = 300;
+    private BlockState rock = Blocks.AIR.defaultBlockState();
 
-	private RangedAttackGoal aiArrowAttack;
-	private MeleeAttackGoal aiAttackOnCollide;
-	private int rockCooldown;
-	@Nullable
-	private BlockState rock;
+    public Troll(EntityType<? extends Troll> type, Level level) {
+        super(type, level);
+    }
 
-	public Troll(EntityType<? extends Troll> type, Level world) {
-		super(type, world);
-		this.rockCooldown = 300;
-	}
+    public static AttributeSupplier.Builder registerAttributes() {
+        return Monster.createMonsterAttributes()
+                .add(Attributes.MAX_HEALTH, 30.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.28D)
+                .add(Attributes.ATTACK_DAMAGE, 7.0D)
+                .add(Attributes.FOLLOW_RANGE, 16.0D);
+    }
 
-	@Override
-	public void registerGoals() {
-		this.aiArrowAttack = new RangedAttackGoal(this, 1.0D, 20, 60, 15.0F);
-		this.aiAttackOnCollide = new MeleeAttackGoal(this, 1.2D, false);
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(ROCK_FLAG, false);
+        builder.define(ROCK_STATE, Blocks.AIR.defaultBlockState());
+    }
 
-		this.goalSelector.addGoal(1, new FloatGoal(this));
-		this.goalSelector.addGoal(2, new RestrictSunGoal(this));
-		this.goalSelector.addGoal(3, new FleeSunGoal(this, 1.0D));
-		this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-		this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
-		this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
-		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, Troll.class));
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+    @Override
+    protected void registerGoals() {
+        this.goalSelector.addGoal(1, new FloatGoal(this));
+        this.goalSelector.addGoal(2, new RestrictSunGoal(this));
+        this.goalSelector.addGoal(3, new FleeSunGoal(this, 1.0D));
+        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.2D, false));
+        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this, Troll.class));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+    }
 
-		if (!this.level().isClientSide()) {
-			this.setCombatTask();
-		}
-	}
+    @Override
+    public void tick() {
+        super.tick();
+        if (!this.level().isClientSide()) {
+            if (!this.hasRock() && this.getTarget() != null) {
+                if (this.rockCooldown > 0) {
+                    --this.rockCooldown;
+                } else {
+                    this.tryPickUpRock();
+                }
+            }
+            this.syncRockModifier();
+        }
+    }
 
-	public static AttributeSupplier.Builder registerAttributes() {
-		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 30.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.28D)
-				.add(Attributes.ATTACK_DAMAGE, 7.0D);
-	}
+    private void tryPickUpRock() {
+        BlockPos pos = BlockPos.containing(this.getX() - 2.0D + this.random.nextDouble() * 4.0D, this.getY() + this.random.nextDouble() * 3.0D, this.getZ() - 2.0D + this.random.nextDouble() * 4.0D);
+        Vec3 from = new Vec3(this.getBlockX() + 0.5D, pos.getY() + 0.5D, this.getBlockZ() + 0.5D);
+        Vec3 to = Vec3.atCenterOf(pos);
+        BlockHitResult hit = this.level().clip(new ClipContext(from, to, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, this));
+        BlockState state = this.level().getBlockState(pos);
+        if (hit.getBlockPos().equals(pos) && state.isSolidRender(this.level(), pos)) {
+            this.level().removeBlock(pos, false);
+            this.level().gameEvent(this, GameEvent.BLOCK_DESTROY, pos);
+            this.setRockState(state);
+            this.setHasRock(true);
+            this.playSound(TFSounds.TROLL_GRABS_ROCK, 1.0F, 1.0F);
+        }
+    }
 
-	@Override
-	public void tick() {
-		super.tick();
-		if (!this.level().isClientSide()) {
+    public boolean hasRock() {
+        return this.getEntityData().get(ROCK_FLAG);
+    }
 
-			if (!this.hasRock() && this.getTarget() != null) {
-				if (this.rockCooldown > 0) {
-					this.rockCooldown--;
-				} else {
-					//copied from EnderMan.EndermanTakeBlockGoal.tick()
-					RandomSource random = this.getRandom();
-					Level level = this.level();
-					int i = Mth.floor(this.getX() - 2.0D + random.nextDouble() * 4.0D);
-					int j = Mth.floor(this.getY() + random.nextDouble() * 3.0D);
-					int k = Mth.floor(this.getZ() - 2.0D + random.nextDouble() * 4.0D);
-					BlockPos blockpos = new BlockPos(i, j, k);
-					BlockState blockstate = level.getBlockState(blockpos);
-					Vec3 vec3 = new Vec3((double) this.getBlockX() + 0.5D, (double) j + 0.5D, (double) this.getBlockZ() + 0.5D);
-					Vec3 vec31 = new Vec3((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D);
-					BlockHitResult blockhitresult = level.clip(new ClipContext(vec3, vec31, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, this));
-					boolean flag = blockhitresult.getBlockPos().equals(blockpos);
-					if (blockstate.is(BlockTags.BASE_STONE_OVERWORLD) && flag) {
-						this.rock = level.getBlockState(blockpos);
-						level.removeBlock(blockpos, false);
-						level.gameEvent(this, GameEvent.BLOCK_DESTROY, blockpos);
-					}
+    public void setHasRock(boolean rock) {
+        this.getEntityData().set(ROCK_FLAG, rock);
+        if (!rock) {
+            this.setRockState(Blocks.AIR.defaultBlockState());
+        }
+        this.syncRockModifier();
+    }
 
-					if (this.rock != null) {
-						this.setHasRock(true);
-						ThrownBlock block = new ThrownBlock(level, this, this.rock);
-						block.startRiding(this);
-						level.addFreshEntity(block);
-					}
-				}
-			}
-		}
-	}
+    public BlockState getRockState() {
+        return this.getEntityData().get(ROCK_STATE);
+    }
 
-	@Override
-	public double getPassengersRidingOffset() {
-		return super.getPassengersRidingOffset() + 1.75D;
-	}
+    private void setRockState(BlockState state) {
+        this.rock = state == null ? Blocks.AIR.defaultBlockState() : state;
+        this.getEntityData().set(ROCK_STATE, this.rock);
+    }
 
-	@Override
-	public void positionRider(Entity entity, Entity.MoveFunction callback) {
-		super.positionRider(entity, callback);
-		entity.setXRot(this.getXRot());
-	}
+    private void syncRockModifier() {
+        if (this.level().isClientSide() || this.getAttribute(Attributes.FOLLOW_RANGE) == null) {
+            return;
+        }
+        if (this.hasRock()) {
+            if (!this.getAttribute(Attributes.FOLLOW_RANGE).hasModifier(ROCK_FOLLOW_RANGE_ID)) {
+                this.getAttribute(Attributes.FOLLOW_RANGE).addTransientModifier(ROCK_MODIFIER);
+            }
+        } else {
+            this.getAttribute(Attributes.FOLLOW_RANGE).removeModifier(ROCK_FOLLOW_RANGE_ID);
+        }
+    }
 
-	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(ROCK_FLAG, false);
-	}
+    @Override
+    public void performRangedAttack(LivingEntity target, float distanceFactor) {
+        BlockState rockState = this.getRockState();
+        if (this.hasRock() && !rockState.isAir()) {
+            ThrownBlock block = new ThrownBlock(this.level(), this, rockState);
+            double dx = target.getX() - this.getX();
+            double dy = target.getBoundingBox().minY + target.getBbHeight() / 3.0F - block.getY();
+            double dz = target.getZ() - this.getZ();
+            double horizontal = Math.sqrt(dx * dx + dz * dz);
+            block.shoot(dx, dy + horizontal * 0.2D, dz, 1.6F, Math.max(0.0F, 4.0F - this.level().getDifficulty().getId()));
+            this.level().addFreshEntity(block);
+            this.playSound(TFSounds.TROLL_THROWS_ROCK, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+            this.gameEvent(GameEvent.PROJECTILE_SHOOT);
+            this.setHasRock(false);
+            this.rockCooldown = 300;
+        }
+    }
 
-	public boolean hasRock() {
-		return this.getEntityData().get(ROCK_FLAG);
-	}
+    @Override
+    public boolean doHurtTarget(Entity entity) {
+        boolean hurt = super.doHurtTarget(entity);
+        if (hurt && this.hasRock() && entity instanceof LivingEntity living) {
+            this.performRangedAttack(living, 1.0F);
+        }
+        return hurt;
+    }
 
-	public void setHasRock(boolean rock) {
-		this.getEntityData().set(ROCK_FLAG, rock);
+    public double getPassengersRidingOffset() {
+        return 1.75D;
+    }
 
-		if (!this.level().isClientSide()) {
-			if (rock) {
-				if (!Objects.requireNonNull(getAttribute(Attributes.FOLLOW_RANGE)).hasModifier(ROCK_MODIFIER)) {
-					Objects.requireNonNull(this.getAttribute(Attributes.FOLLOW_RANGE)).addTransientModifier(ROCK_MODIFIER);
-				}
-			} else {
-				Objects.requireNonNull(this.getAttribute(Attributes.FOLLOW_RANGE)).removeModifier(ROCK_MODIFIER);
-			}
-			this.setCombatTask();
-		}
-	}
+    @Override
+    public void positionRider(Entity passenger, Entity.MoveFunction callback) {
+        super.positionRider(passenger, callback);
+        passenger.setXRot(this.getXRot());
+    }
 
-	@Override
-	public boolean doHurtTarget(Entity entity) {
-		return super.doHurtTarget(entity);
-	}
+    public Vec3 getHeldRockPosition() {
+        float yaw = this.yBodyRot * Mth.DEG_TO_RAD;
+        double sin = Mth.sin(yaw);
+        double cos = Mth.cos(yaw);
+        double localX = 0.0D;
+        double localZ = -0.62D;
+        double x = this.getX() + localX * cos - localZ * sin;
+        double z = this.getZ() + localX * sin + localZ * cos;
+        return new Vec3(x, this.getY() + 2.35D, z);
+    }
 
-	@Override
-	public void addAdditionalSaveData(CompoundTag compound) {
-		super.addAdditionalSaveData(compound);
-		compound.putBoolean("HasRock", this.hasRock());
-		compound.putInt("RockCooldown", this.rockCooldown);
-		if (this.rock != null) {
-			compound.put("RockState", NbtUtils.writeBlockState(this.rock));
-		}
-	}
+    @Override
+    protected void tickDeath() {
+        super.tickDeath();
+        if (this.deathTime % 5 == 0) {
+            for (int i = 0; i < 4; i++) {
+                double angle = (this.deathTime + i * 90.0D) * Mth.DEG_TO_RAD;
+                this.level().addParticle(net.minecraft.core.particles.ParticleTypes.HAPPY_VILLAGER, this.getX() + Math.cos(angle), this.getY() + 0.5D, this.getZ() + Math.sin(angle), 0.0D, 0.0D, 0.0D);
+            }
+        }
+    }
 
-	@Override
-	public void readAdditionalSaveData(CompoundTag compound) {
-		super.readAdditionalSaveData(compound);
-		this.setHasRock(compound.getBoolean("HasRock"));
-		this.rockCooldown = compound.getInt("RockCooldown");
-		this.rock = NbtUtils.readBlockState(this.level().holderLookup(Registries.BLOCK), compound.getCompound("RockState"));
-	}
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return TFSounds.TROLL_AMBIENT;
+    }
 
-	private void setCombatTask() {
-		this.goalSelector.removeGoal(this.aiAttackOnCollide);
-		this.goalSelector.removeGoal(this.aiArrowAttack);
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return TFSounds.TROLL_HURT;
+    }
 
-		if (this.hasRock()) {
-			this.goalSelector.addGoal(4, this.aiArrowAttack);
-		} else {
-			this.goalSelector.addGoal(4, this.aiAttackOnCollide);
-		}
-	}
+    @Override
+    protected SoundEvent getDeathSound() {
+        return TFSounds.TROLL_DEATH;
+    }
 
-	@Override
-	protected void tickDeath() {
-		super.tickDeath();
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putBoolean("HasRock", this.hasRock());
+        tag.putInt("RockCooldown", this.rockCooldown);
+        BlockState rockState = this.getRockState();
+        if (!rockState.isAir()) {
+            tag.put("RockState", net.minecraft.nbt.NbtUtils.writeBlockState(rockState));
+        }
+    }
 
-		if (this.deathTime % 5 == 0) {
-			this.ripenTrollBerNearby(this.deathTime / 5);
-		}
-	}
-
-	private void ripenTrollBerNearby(int offset) {
-		int range = 12;
-		for (BlockPos pos : WorldUtil.getAllAround(new BlockPos(this.blockPosition()), range)) {
-			ripenBer(offset, pos);
-		}
-	}
-
-	private void ripenBer(int offset, BlockPos pos) {
-		if (this.level().getBlockState(pos).getBlock() == TFBlocks.UNRIPE_TROLLBER.get() && this.getRandom().nextBoolean() && (Math.abs(pos.getX() + pos.getY() + pos.getZ()) % 5 == offset)) {
-			this.level().setBlockAndUpdate(pos, TFBlocks.TROLLBER.get().defaultBlockState());
-			this.level().levelEvent(2004, pos, 0);
-		}
-	}
-
-	@Override
-	public void performRangedAttack(LivingEntity target, float distanceFactor) {
-		if (this.hasRock()) {
-			ThrownBlock blocc = new ThrownBlock(this.level(), this, this.rock);
-
-			double d0 = target.getX() - this.getX();
-			double d1 = target.getBoundingBox().minY + target.getBbHeight() / 3.0F - blocc.getY();
-			double d2 = target.getZ() - this.getZ();
-			double d3 = Mth.sqrt((float) (d0 * d0 + d2 * d2));
-			blocc.shoot(d0, d1 + d3 * 0.2D, d2, 1.6F, 4 - this.level().getDifficulty().getId());
-
-			this.playSound(TFSounds.TROLL_THROWS_ROCK.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-			this.gameEvent(GameEvent.PROJECTILE_SHOOT);
-			this.level().addFreshEntity(blocc);
-			this.setHasRock(false);
-			if (!this.getPassengers().isEmpty() && Objects.requireNonNull(this.getFirstPassenger()).getType() == TFEntities.THROWN_BLOCK.get()) {
-				this.getFirstPassenger().discard();
-			}
-			this.rockCooldown = 300;
-			this.rock = null;
-		}
-	}
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        this.rockCooldown = tag.getInt("RockCooldown");
+        if (tag.contains("RockState")) {
+            this.setRockState(net.minecraft.nbt.NbtUtils.readBlockState(this.level().holderLookup(net.minecraft.core.registries.Registries.BLOCK), tag.getCompound("RockState")));
+        } else {
+            this.setRockState(Blocks.AIR.defaultBlockState());
+        }
+        this.setHasRock(tag.getBoolean("HasRock") && !this.rock.isAir());
+    }
 }

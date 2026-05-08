@@ -1,20 +1,17 @@
 package twilightforest.entity.boss;
 
-import io.github.fabricators_of_create.porting_lib.entity.MultiPartEntity;
-import io.github.fabricators_of_create.porting_lib.entity.PartEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.GlobalPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerBossEvent;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
@@ -31,528 +28,374 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.GameRules;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
-import twilightforest.TFConfig;
-import twilightforest.advancements.TFAdvancements;
-import twilightforest.entity.EnforcedHomePoint;
-import twilightforest.entity.IBreathAttacker;
 import twilightforest.entity.TFPart;
 import twilightforest.entity.ai.goal.HoverBeamGoal;
 import twilightforest.entity.ai.goal.HoverSummonGoal;
 import twilightforest.entity.ai.goal.HoverThenDropGoal;
 import twilightforest.entity.monster.IceCrystal;
-import twilightforest.init.*;
-import twilightforest.loot.TFLootTables;
-import twilightforest.util.EntityUtil;
-import twilightforest.util.LandmarkUtil;
-import twilightforest.util.WorldUtil;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFEntities;
+import twilightforest.init.TFDamageTypes;
+import twilightforest.init.TFSounds;
+import twilightforest.init.TFStructures;
+import twilightforest.util.entities.EntityUtil;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
-public class SnowQueen extends Monster implements IBreathAttacker, EnforcedHomePoint, MultiPartEntity {
-
-	private static final int MAX_SUMMONS = 6;
-	private static final EntityDataAccessor<Boolean> BEAM_FLAG = SynchedEntityData.defineId(SnowQueen.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<Byte> PHASE_FLAG = SynchedEntityData.defineId(SnowQueen.class, EntityDataSerializers.BYTE);
-	private static final EntityDataAccessor<Optional<GlobalPos>> HOME_POINT = SynchedEntityData.defineId(SnowQueen.class, EntityDataSerializers.OPTIONAL_GLOBAL_POS);
-
-	private final ServerBossEvent bossInfo = new ServerBossEvent(getDisplayName(), BossEvent.BossBarColor.WHITE, BossEvent.BossBarOverlay.PROGRESS);
-	private static final int MAX_DAMAGE_WHILE_BEAMING = 25;
-	private static final float BREATH_DAMAGE = 4.0F;
-
-	public enum Phase {SUMMON, DROP, BEAM}
-
-	public final SnowQueenIceShield[] iceArray = new SnowQueenIceShield[7];
-
-	private int summonsRemaining = 0;
-	private int successfulDrops;
-	private int maxDrops;
-	private int damageWhileBeaming;
-
-	private final List<ServerPlayer> hurtBy = new ArrayList<>();
-
-	public SnowQueen(EntityType<? extends SnowQueen> type, Level world) {
-		super(type, world);
-
-		for (int i = 0; i < this.iceArray.length; i++) {
-			this.iceArray[i] = new SnowQueenIceShield(this);
-		}
-
-		this.setCurrentPhase(Phase.SUMMON);
-
-		this.xpReward = 317;
-		this.moveControl = new FlyingMoveControl(this, 10, true);
-		setNoGravity(true);
-	}
-
-	@Override
-	protected void registerGoals() {
-		this.goalSelector.addGoal(1, new HoverSummonGoal(this));
-		this.goalSelector.addGoal(2, new HoverThenDropGoal(this, 80, 20));
-		this.goalSelector.addGoal(3, new HoverBeamGoal(this, 80, 100));
-		this.addRestrictionGoals(this, this.goalSelector);
-		this.goalSelector.addGoal(6, new MeleeAttackGoal(this, 1.0D, true));
-		this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
-		this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
-		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
-	}
-
-	@Override
-	public boolean isPushable() {
-		return false;
-	}
-
-	public static AttributeSupplier.Builder registerAttributes() {
-		return Monster.createMonsterAttributes()
-				.add(Attributes.MOVEMENT_SPEED, 0.23D)
-				.add(Attributes.FLYING_SPEED, 0.23D)
-				.add(Attributes.ATTACK_DAMAGE, 7.0D)
-				.add(Attributes.FOLLOW_RANGE, 40.0D)
-				.add(Attributes.MAX_HEALTH, 200.0D)
-				.add(Attributes.KNOCKBACK_RESISTANCE, 0.75D);
-	}
-
-	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(BEAM_FLAG, false);
-		this.getEntityData().define(PHASE_FLAG, (byte) 0);
-		this.getEntityData().define(HOME_POINT, Optional.empty());
-	}
-
-	@Override
-	protected SoundEvent getAmbientSound() {
-		return TFSounds.SNOW_QUEEN_AMBIENT.get();
-	}
-
-	@Override
-	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.SNOW_QUEEN_HURT.get();
-	}
-
-	@Override
-	protected SoundEvent getDeathSound() {
-		return TFSounds.SNOW_QUEEN_DEATH.get();
-	}
-
-	@Override
-	public void aiStep() {
-		super.aiStep();
-		if (!this.level().isClientSide()) {
-			this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
-		} else {
-			this.spawnParticles();
-		}
-	}
-
-	private void spawnParticles() {
-		// make snow particles
-		for (int i = 0; i < 3; i++) {
-			float px = (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.3F;
-			float py = this.getEyeHeight() + (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.5F;
-			float pz = (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.3F;
-
-			this.level().addParticle(TFParticleType.SNOW_GUARDIAN.get(), this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);
-		}
-
-		// during drop phase, all the ice blocks should make particles
-		if (this.getCurrentPhase() == Phase.DROP) {
-			for (Entity ice : this.iceArray) {
-				float px = (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.5F;
-				float py = (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.5F;
-				float pz = (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.5F;
-
-				this.level().addParticle(TFParticleType.SNOW_WARNING.get(), ice.xOld + px, ice.yOld + py, ice.zOld + pz, 0, 0, 0);
-			}
-		}
-
-		// when ice beaming, spew particles
-		if (isBreathing() && this.isAlive()) {
-			Vec3 look = this.getLookAngle();
-
-			double dist = 0.5;
-			double px = this.getX() + look.x() * dist;
-			double py = this.getY() + 1.7F + look.y() * dist;
-			double pz = this.getZ() + look.z() * dist;
-
-			for (int i = 0; i < 10; i++) {
-				double dx = look.x();
-				double dy = 0;
-				double dz = look.z();
-
-				double spread = 2 + this.getRandom().nextDouble() * 2.5;
-				double velocity = 2.0 + this.getRandom().nextDouble() * 0.15;
-
-				// beeeam
-				dx += this.getRandom().nextGaussian() * 0.0075D * spread;
-				dy += this.getRandom().nextGaussian() * 0.0075D * spread;
-				dz += this.getRandom().nextGaussian() * 0.0075D * spread;
-				dx *= velocity;
-				dy *= velocity;
-				dz *= velocity;
-
-				this.level().addParticle(TFParticleType.ICE_BEAM.get(), px, py, pz, dx, dy, dz);
-			}
-		}
-	}
-
-	@Override
-	public void tick() {
-		this.setDeltaMovement(this.getDeltaMovement().x(), this.getDeltaMovement().y() - 0.05D, this.getDeltaMovement().z());
-		super.tick();
-
-		for (int i = 0; i < this.iceArray.length; i++) {
-			this.iceArray[i].tick();
-			if (i < this.iceArray.length - 1) {
-				// set block position
-				Vec3 blockPos = this.getIceShieldPosition(i);
-
-				this.iceArray[i].setPos(blockPos.x(), blockPos.y(), blockPos.z());
-			} else {
-				// last block beneath
-				this.iceArray[i].setPos(this.getX(), this.getY() - 1, this.getZ());
-			}
-			this.iceArray[i].setYRot(this.getIceShieldAngle(i));
-
-			// collide things with the block
-			if (!this.level().isClientSide()) {
-				this.applyShieldCollisions(this.iceArray[i]);
-			}
-		}
-
-		// death animation
-		if (this.deathTime > 0) {
-			for (int k = 0; k < 5; k++) {
-				double d = this.getRandom().nextGaussian() * 0.02D;
-				double d1 = this.getRandom().nextGaussian() * 0.02D;
-				double d2 = this.getRandom().nextGaussian() * 0.02D;
-				this.level().addParticle(this.getRandom().nextBoolean() ? ParticleTypes.EXPLOSION : ParticleTypes.POOF,
-						(this.getX() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - this.getBbWidth(),
-						this.getY() + this.getRandom().nextFloat() * this.getBbHeight(),
-						(this.getZ() + this.getRandom().nextFloat() * this.getBbWidth() * 2.0F) - this.getBbWidth(), d, d1, d2);
-			}
-		}
-	}
-
-	@Override
-	public boolean removeWhenFarAway(double distance) {
-		return false;
-	}
-
-	@Override
-	public void checkDespawn() {
-		if (this.level().getDifficulty() == Difficulty.PEACEFUL) {
-			if (this.isRestrictionPointValid(this.level().dimension()) && this.level().isLoaded(this.getRestrictionPoint().pos())) {
-				this.level().setBlockAndUpdate(this.getRestrictionPoint().pos(), TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.get().defaultBlockState());
-			}
-			this.discard();
-		} else {
-			super.checkDespawn();
-		}
-	}
-
-	@Override
-	public void die(DamageSource cause) {
-		super.die(cause);
-		// mark the tower as defeated
-		if (!this.level().isClientSide()) {
-			this.bossInfo.setProgress(0.0F);
-			LandmarkUtil.markStructureConquered(this.level(), this, TFStructures.AURORA_PALACE, true);
-			for (ServerPlayer player : this.hurtBy) {
-				TFAdvancements.HURT_BOSS.trigger(player, this);
-			}
-
-			TFLootTables.entityDropsIntoContainer(this, cause, TFBlocks.TWILIGHT_OAK_CHEST.get().defaultBlockState(), EntityUtil.bossChestLocation(this));
-		}
-	}
-
-	@Override
-	protected boolean shouldDropLoot() {
-		return !TFConfig.COMMON_CONFIG.bossDropChests.get();
-	}
-
-	private void applyShieldCollisions(Entity collider) {
-		List<Entity> list = this.level().getEntities(collider, collider.getBoundingBox().inflate(-0.2F, -0.2F, -0.2F));
-
-		for (Entity collided : list) {
-			if (collided.isPushable()) {
-				this.applyShieldCollision(collider, collided);
-			}
-		}
-	}
-
-	/**
-	 * Do the effect where the shield hits something
-	 */
-	private void applyShieldCollision(Entity collider, Entity collided) {
-		if (collided != this) {
-			collided.push(collider);
-			if (collided instanceof LivingEntity && this.doHurtTarget(collided)) {
-				Vec3 motion = collided.getDeltaMovement();
-				collided.setDeltaMovement(motion.x(), motion.y() + 0.4, motion.z());
-				this.playSound(TFSounds.SNOW_QUEEN_ATTACK.get(), 1.0F, 1.0F);
-			}
-		}
-	}
-
-	@Override
-	public boolean doHurtTarget(Entity entity) {
-		DamageSource source = this.getCurrentPhase() == Phase.DROP ? TFDamageTypes.getDamageSource(this.level(), TFDamageTypes.SQUISH, TFEntities.SNOW_QUEEN.get()) : this.level().damageSources().mobAttack(this);
-		return EntityUtil.properlyApplyCustomDamageSource(this, entity, source);
-	}
-
-	@Override
-	protected void customServerAiStep() {
-		super.customServerAiStep();
-
-		// switch phases
-		if (this.getCurrentPhase() == Phase.SUMMON && this.getSummonsRemaining() == 0 && this.countMyMinions() <= 0) {
-			this.setCurrentPhase(Phase.DROP);
-		}
-		if (this.getCurrentPhase() == Phase.DROP && this.successfulDrops >= this.maxDrops) {
-			this.setCurrentPhase(Phase.BEAM);
-		}
-		if (this.getCurrentPhase() == Phase.BEAM && this.damageWhileBeaming >= MAX_DAMAGE_WHILE_BEAMING) {
-			this.setCurrentPhase(Phase.SUMMON);
-		}
-	}
-
-	@Override
-	public boolean hurt(DamageSource source, float damage) {
-		boolean result = super.hurt(source, damage);
-
-		if (result && this.getCurrentPhase() == Phase.BEAM) {
-			this.damageWhileBeaming += damage;
-		}
-
-		if (source.getEntity() instanceof ServerPlayer player && !this.hurtBy.contains(player)) {
-			this.hurtBy.add(player);
-		}
-		return result;
-
-	}
-
-	@Override
-	public void lavaHurt() {
-		if (!this.fireImmune()) {
-			this.setSecondsOnFire(5);
-			if (this.hurt(this.damageSources().lava(), 4F)) {
-				this.playSound(SoundEvents.GENERIC_BURN, 0.4F, 2.0F + this.random.nextFloat() * 0.4F);
-				EntityUtil.killLavaAround(this);
-			}
-		}
-	}
-
-	private Vec3 getIceShieldPosition(int idx) {
-		return this.getIceShieldPosition(this.getIceShieldAngle(idx), 1.0F);
-	}
-
-	private float getIceShieldAngle(int idx) {
-		return 60F * idx + (this.tickCount * 5.0F);
-	}
-
-	private Vec3 getIceShieldPosition(float angle, float distance) {
-		double dx = Math.cos((angle) * Math.PI / 180.0D) * distance;
-		double dz = Math.sin((angle) * Math.PI / 180.0D) * distance;
-
-		return new Vec3(this.getX() + dx, this.getY() + this.getShieldYOffset(), this.getZ() + dz);
-	}
-
-	private double getShieldYOffset() {
-		return 0.1F;
-	}
-
-	public void destroyBlocksInAABB(AABB box) {
-		if (this.level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
-			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
-				BlockState state = this.level().getBlockState(pos);
-				if (state.getBlock() == Blocks.ICE || state.getBlock() == Blocks.PACKED_ICE) {
-					this.level().destroyBlock(pos, false);
-					this.gameEvent(GameEvent.BLOCK_DESTROY);
-				}
-			}
-		}
-	}
-
-	@Override
-	public boolean isBreathing() {
-		return this.getEntityData().get(BEAM_FLAG);
-	}
-
-	@Override
-	public void setBreathing(boolean flag) {
-		this.getEntityData().set(BEAM_FLAG, flag);
-	}
-
-	public Phase getCurrentPhase() {
-		return Phase.values()[this.getEntityData().get(PHASE_FLAG)];
-	}
-
-	public void setCurrentPhase(Phase currentPhase) {
-		this.getEntityData().set(PHASE_FLAG, (byte) currentPhase.ordinal());
-
-		// set variables for current phase
-		if (currentPhase == Phase.SUMMON) {
-			this.setSummonsRemaining(MAX_SUMMONS);
-		}
-		if (currentPhase == Phase.DROP) {
-			this.successfulDrops = 0;
-			this.maxDrops = 2 + this.getRandom().nextInt(3);
-		}
-		if (currentPhase == Phase.BEAM) {
-			this.damageWhileBeaming = 0;
-		}
-	}
-
-	public int getSummonsRemaining() {
-		return this.summonsRemaining;
-	}
-
-	public void setSummonsRemaining(int summonsRemaining) {
-		this.summonsRemaining = summonsRemaining;
-	}
-
-	public void summonMinionAt(LivingEntity targetedEntity) {
-		IceCrystal minion = new IceCrystal(this.level());
-		minion.absMoveTo(this.getX(), this.getY(), this.getZ(), 0.0F, 0.0F);
-
-		this.level().addFreshEntity(minion);
-
-		for (int i = 0; i < 100; i++) {
-			double attemptX;
-			double attemptY;
-			double attemptZ;
-			if (this.isRestrictionPointValid(this.level().dimension())) {
-				BlockPos home = this.getRestrictionPoint().pos();
-				attemptX = home.getX() + this.getRandom().nextGaussian() * 3.0D;
-				attemptY = home.getY() + this.getRandom().nextGaussian() * 2.0D;
-				attemptZ = home.getZ() + this.getRandom().nextGaussian() * 3.0D;
-			} else {
-				attemptX = targetedEntity.getX() + this.getRandom().nextGaussian() * 6.0D;
-				attemptY = targetedEntity.getY() + this.getRandom().nextGaussian() * 8.0D;
-				attemptZ = targetedEntity.getZ() + this.getRandom().nextGaussian() * 6.0D;
-			}
-			if (minion.randomTeleport(attemptX, attemptY, attemptZ, true)) {
-				this.gameEvent(GameEvent.ENTITY_PLACE, minion);
-				break;
-			}
-		}
-
-		minion.setTarget(targetedEntity);
-		minion.setToDieIn30Seconds(); // don't stick around
-
-		this.summonsRemaining--;
-	}
-
-	public int countMyMinions() {
-		return this.level().getEntitiesOfClass(IceCrystal.class, new AABB(this.getX(), this.getY(), this.getZ(), this.getX() + 1, this.getY() + 1, this.getZ() + 1).inflate(32.0D, 16.0D, 32.0D)).size();
-	}
-
-	public void incrementSuccessfulDrops() {
-		this.successfulDrops++;
-	}
-
-	@Override
-	public void doBreathAttack(Entity target) {
-		target.hurt(TFDamageTypes.getDamageSource(this.level(), TFDamageTypes.CHILLING_BREATH, TFEntities.SNOW_QUEEN.get()), BREATH_DAMAGE);
-		// TODO: slow target?
-	}
-
-	@Override
-	public void setCustomName(@Nullable Component name) {
-		super.setCustomName(name);
-		this.bossInfo.setName(this.getDisplayName());
-	}
-
-	@Override
-	public void startSeenByPlayer(ServerPlayer player) {
-		super.startSeenByPlayer(player);
-		this.bossInfo.addPlayer(player);
-	}
-
-	@Override
-	public void stopSeenByPlayer(ServerPlayer player) {
-		super.stopSeenByPlayer(player);
-		this.bossInfo.removePlayer(player);
-	}
-
-	@Override
-	public void addAdditionalSaveData(CompoundTag compound) {
-		this.saveHomePointToNbt(compound);
-		super.addAdditionalSaveData(compound);
-	}
-
-	@Override
-	public void readAdditionalSaveData(CompoundTag compound) {
-		super.readAdditionalSaveData(compound);
-		this.loadHomePointFromNbt(compound);
-		if (this.hasCustomName()) {
-			this.bossInfo.setName(this.getDisplayName());
-		}
-	}
-
-	@Override
-	protected boolean canRide(Entity entity) {
-		return false;
-	}
-
-	@Override
-	public boolean isPushedByFluid() {
-		return false;
-	}
-
-	@Override
-	protected float getWaterSlowDown() {
-		return 1.0F;
-	}
-
-	@Override
-	public boolean canChangeDimensions() {
-		return false;
-	}
-
-	@Override
-	public boolean isMultipartEntity() {
-		return true;
-	}
-
-	@Override
-	public void recreateFromPacket(ClientboundAddEntityPacket packet) {
-		super.recreateFromPacket(packet);
-		TFPart.assignPartIDs(this);
-	}
-
-	/**
-	 * We need to do this for the bounding boxes on the parts to become active
-	 */
-	@Nullable
-	@Override
-	public PartEntity<?>[] getParts() {
-		return this.iceArray;
-	}
-
-	@Override
-	public @Nullable GlobalPos getRestrictionPoint() {
-		return this.getEntityData().get(HOME_POINT).orElse(null);
-	}
-
-	@Override
-	public void setRestrictionPoint(@Nullable GlobalPos pos) {
-		this.getEntityData().set(HOME_POINT, Optional.ofNullable(pos));
-	}
-
-	@Override
-	public int getHomeRadius() {
-		return 20;
-	}
+
+public class SnowQueen extends BaseTFBoss implements TFPart.Owner {
+    private static final int MAX_SUMMONS = 6;
+    private static final int ICE_SHIELD_COUNT = 7;
+    private static final EntityDataAccessor<Boolean> BEAM_FLAG = SynchedEntityData.defineId(SnowQueen.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Byte> PHASE_FLAG = SynchedEntityData.defineId(SnowQueen.class, EntityDataSerializers.BYTE);
+    private static final int MAX_DAMAGE_WHILE_BEAMING = 25;
+
+    private int summonsRemaining;
+    private int successfulDrops;
+    private int maxDrops;
+    private int damageWhileBeaming;
+    private int phaseTicks;
+    private final SnowQueenIceShield[] iceShields = new SnowQueenIceShield[ICE_SHIELD_COUNT];
+
+    public enum Phase {SUMMON, DROP, BEAM}
+
+    public SnowQueen(EntityType<? extends SnowQueen> type, Level level) {
+        super(type, level);
+        this.xpReward = 317;
+        this.moveControl = new FlyingMoveControl(this, 10, true);
+        this.setNoGravity(true);
+        this.setCurrentPhase(Phase.SUMMON);
+        for (int index = 0; index < this.iceShields.length; index++) {
+            this.iceShields[index] = new SnowQueenIceShield(this);
+        }
+    }
+
+    public static AttributeSupplier.Builder registerAttributes() {
+        return Monster.createMonsterAttributes()
+                .add(Attributes.MOVEMENT_SPEED, 0.23D)
+                .add(Attributes.FLYING_SPEED, 0.23D)
+                .add(Attributes.ATTACK_DAMAGE, 7.0D)
+                .add(Attributes.FOLLOW_RANGE, 40.0D)
+                .add(Attributes.MAX_HEALTH, 200.0D)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.75D);
+    }
+
+    @Override
+    protected BossEvent.BossBarColor getBossBarColor() {
+        return BossEvent.BossBarColor.WHITE;
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(BEAM_FLAG, false);
+        builder.define(PHASE_FLAG, (byte) 0);
+    }
+
+    @Override
+    protected void registerGoals() {
+        this.goalSelector.addGoal(1, new HoverSummonGoal(this));
+        this.goalSelector.addGoal(2, new HoverThenDropGoal(this, 80, 20));
+        this.goalSelector.addGoal(3, new HoverBeamGoal(this, 80, 100));
+        this.goalSelector.addGoal(6, new MeleeAttackGoal(this, 1.0D, true));
+        this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+    }
+
+    @Override
+    public void aiStep() {
+        super.aiStep();
+        if (this.level().isClientSide()) {
+            this.spawnParticles();
+        }
+        this.updateIceShieldDisplays();
+    }
+
+    @Override
+    protected void customServerAiStep() {
+        super.customServerAiStep();
+        if (this.getTarget() == null || !this.getTarget().isAlive()) {
+            Player nearest = this.level().getNearestPlayer(this, 40.0D);
+            if (nearest != null && !nearest.isCreative()) {
+                this.setTarget(nearest);
+            }
+        }
+        if (this.getCurrentPhase() == Phase.SUMMON && this.getSummonsRemaining() == 0 && this.countMyMinions() <= 0) {
+            this.setCurrentPhase(Phase.DROP);
+        }
+        if (this.getCurrentPhase() == Phase.DROP && this.successfulDrops >= this.maxDrops) {
+            this.setCurrentPhase(Phase.BEAM);
+        }
+        if (this.getCurrentPhase() == Phase.BEAM && this.damageWhileBeaming >= MAX_DAMAGE_WHILE_BEAMING) {
+            this.setCurrentPhase(Phase.SUMMON);
+        }
+    }
+
+    private void spawnParticles() {
+        for (int particle = 0; particle < 3; particle++) {
+            this.level().addParticle(ParticleTypes.SNOWFLAKE, this.getRandomX(0.6D), this.getY() + this.getEyeHeight() + (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.5F, this.getRandomZ(0.6D), 0.0D, 0.0D, 0.0D);
+        }
+        if (this.isBreathing()) {
+            Vec3 look = this.getLookAngle();
+            this.level().addParticle(ParticleTypes.SNOWFLAKE, this.getX() + look.x() * 0.5D, this.getY() + 1.7D, this.getZ() + look.z() * 0.5D, look.x() * 2.0D, look.y() * 2.0D, look.z() * 2.0D);
+        }
+    }
+
+    public void summonMinionAt(LivingEntity target) {
+        IceCrystal minion = TFEntities.ICE_CRYSTAL.get().create(this.level());
+        if (minion == null) {
+            return;
+        }
+        minion.moveTo(target.getX() + this.getRandom().nextGaussian() * 6.0D, target.getY() + 1.0D, target.getZ() + this.getRandom().nextGaussian() * 6.0D, 0.0F, 0.0F);
+        minion.setTarget(target);
+        minion.setToDieIn30Seconds();
+        this.level().addFreshEntity(minion);
+        this.summonsRemaining--;
+    }
+
+    public int getSummonsRemaining() {
+        return this.summonsRemaining;
+    }
+
+    public void setSummonsRemaining(int summonsRemaining) {
+        this.summonsRemaining = summonsRemaining;
+    }
+
+    public int countMyMinions() {
+        return this.level().getEntitiesOfClass(IceCrystal.class, this.getBoundingBox().inflate(32.0D, 16.0D, 32.0D)).size();
+    }
+
+    public void incrementSuccessfulDrops() {
+        this.successfulDrops++;
+        this.doDropImpact();
+    }
+
+    public void destroyBlocksInAABB(AABB box) {
+        if (!this.level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
+            return;
+        }
+        BlockPos min = BlockPos.containing(box.minX, box.minY, box.minZ);
+        BlockPos max = BlockPos.containing(box.maxX, box.maxY, box.maxZ);
+        for (BlockPos pos : BlockPos.betweenClosed(min, max)) {
+            BlockState state = this.level().getBlockState(pos);
+            if (state.is(BlockTags.ICE) && EntityUtil.canDestroyBlock(this.level(), pos, this)) {
+                this.level().destroyBlock(pos, false);
+            }
+        }
+    }
+
+    private void doDropImpact() {
+        AABB area = this.getBoundingBox().inflate(4.0D, 2.0D, 4.0D);
+        for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, area, entity -> entity != this)) {
+            if (entity.hurt(this.damageSources().mobAttack(this), 10.0F)) {
+                entity.push(0.0D, 0.6D, 0.0D);
+            }
+        }
+        this.playSound(TFSounds.SNOW_QUEEN_ATTACK, 1.0F, 1.0F);
+    }
+
+    private void updateIceShieldDisplays() {
+        if (!this.isAlive()) {
+            this.removeIceShieldDisplays();
+            return;
+        }
+        for (int index = 0; index < this.iceShields.length; index++) {
+            SnowQueenIceShield shield = this.iceShields[index];
+            shield.tick();
+            shield.activate();
+            Vec3 position = index < this.iceShields.length - 1 ? this.getIceShieldPosition(index) : new Vec3(this.getX(), this.getY() - 1.0D, this.getZ());
+            float yRot = index < this.iceShields.length - 1 ? this.getIceShieldAngle(index) : this.yBodyRot;
+            shield.setPos(position.x(), position.y(), position.z());
+            shield.setYRot(yRot);
+            shield.yRotO = yRot;
+            shield.renderYawOffset = yRot;
+            if (!this.level().isClientSide()) {
+                this.applyIceShieldCollisions(position);
+            }
+        }
+    }
+
+    private Vec3 getIceShieldPosition(int index) {
+        return this.getIceShieldPosition(this.getIceShieldAngle(index), 1.0F);
+    }
+
+    private float getIceShieldAngle(int index) {
+        return 60.0F * index + this.tickCount * 5.0F;
+    }
+
+    private Vec3 getIceShieldPosition(float angle, float distance) {
+        float radians = angle * Mth.DEG_TO_RAD;
+        double x = this.getX() + Mth.cos(radians) * distance;
+        double z = this.getZ() + Mth.sin(radians) * distance;
+        return new Vec3(x, this.getY() + 0.1D, z);
+    }
+
+    private void applyIceShieldCollisions(Vec3 position) {
+        AABB shieldBox = new AABB(position.x() - 0.375D, position.y() - 0.375D, position.z() - 0.375D, position.x() + 0.375D, position.y() + 0.375D, position.z() + 0.375D);
+        for (Projectile projectile : this.level().getEntitiesOfClass(Projectile.class, shieldBox, projectile -> projectile.isAlive() && projectile.getOwner() != this)) {
+            this.handleIceShieldProjectile(projectile);
+        }
+        for (Entity entity : this.level().getEntities(this, shieldBox, entity -> entity.isPushable() && entity != this)) {
+            entity.push(this);
+            if (entity instanceof LivingEntity && this.doHurtTarget(entity)) {
+                Vec3 motion = entity.getDeltaMovement();
+                entity.setDeltaMovement(motion.x(), motion.y() + 0.4D, motion.z());
+                this.playSound(TFSounds.SNOW_QUEEN_ATTACK, 1.0F, 1.0F);
+            }
+        }
+    }
+
+    private void handleIceShieldProjectile(Projectile projectile) {
+        if (projectile instanceof AbstractArrow arrow && arrow.getPierceLevel() > 0) {
+            return;
+        }
+        this.playSound(TFSounds.SNOW_QUEEN_BREAK, 1.0F, ((this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
+        projectile.discard();
+    }
+
+    private void removeIceShieldDisplays() {
+        for (SnowQueenIceShield shield : this.iceShields) {
+            shield.deactivate();
+        }
+    }
+
+    public boolean isBreathing() {
+        return this.getEntityData().get(BEAM_FLAG);
+    }
+
+    public void setBreathing(boolean breathing) {
+        this.getEntityData().set(BEAM_FLAG, breathing);
+    }
+
+    public Phase getCurrentPhase() {
+        return Phase.values()[this.getEntityData().get(PHASE_FLAG)];
+    }
+
+    public void setCurrentPhase(Phase phase) {
+        this.getEntityData().set(PHASE_FLAG, (byte) phase.ordinal());
+        this.phaseTicks = 0;
+        this.setBreathing(false);
+        if (phase == Phase.SUMMON) {
+            this.setSummonsRemaining(MAX_SUMMONS);
+        } else if (phase == Phase.DROP) {
+            this.successfulDrops = 0;
+            this.maxDrops = 2 + this.getRandom().nextInt(3);
+        } else if (phase == Phase.BEAM) {
+            this.damageWhileBeaming = 0;
+        }
+    }
+
+    public void doBreathAttack(Entity target) {
+        if (target.hurt(TFDamageTypes.entitySource(this.level(), TFDamageTypes.CHILLING_BREATH, this), 4.0F) && target instanceof LivingEntity living) {
+            living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 80, 1));
+        }
+    }
+
+    @Override
+    public boolean doHurtTarget(Entity entity) {
+        DamageSource source = this.getCurrentPhase() == Phase.DROP ? TFDamageTypes.entitySource(this.level(), TFDamageTypes.SQUISH, this) : this.damageSources().mobAttack(this);
+        return entity.hurt(source, (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+    }
+
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        boolean hurt = super.hurt(source, amount);
+        if (hurt && this.getCurrentPhase() == Phase.BEAM) {
+            this.damageWhileBeaming += amount;
+        }
+        return hurt;
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return TFSounds.SNOW_QUEEN_AMBIENT;
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return TFSounds.SNOW_QUEEN_HURT;
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return TFSounds.SNOW_QUEEN_DEATH;
+    }
+
+    @Override
+    public void die(DamageSource cause) {
+        super.die(cause);
+        this.removeIceShieldDisplays();
+    }
+
+    @Override
+    public void remove(RemovalReason reason) {
+        this.removeIceShieldDisplays();
+        super.remove(reason);
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putByte("Phase", (byte) this.getCurrentPhase().ordinal());
+        tag.putInt("SummonsRemaining", this.summonsRemaining);
+        tag.putInt("SuccessfulDrops", this.successfulDrops);
+        tag.putInt("MaxDrops", this.maxDrops);
+        tag.putInt("DamageWhileBeaming", this.damageWhileBeaming);
+        tag.putInt("PhaseTicks", this.phaseTicks);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        this.getEntityData().set(PHASE_FLAG, tag.getByte("Phase"));
+        this.summonsRemaining = tag.getInt("SummonsRemaining");
+        this.successfulDrops = tag.getInt("SuccessfulDrops");
+        this.maxDrops = tag.getInt("MaxDrops");
+        this.damageWhileBeaming = tag.getInt("DamageWhileBeaming");
+        this.phaseTicks = tag.getInt("PhaseTicks");
+    }
+
+    @Override
+    public TFPart<?>[] getParts() {
+        return this.iceShields;
+    }
+
+    @Override
+    public void recreateFromPacket(ClientboundAddEntityPacket packet) {
+        super.recreateFromPacket(packet);
+        TFPart.assignPartIDs(this);
+    }
+
+    @Override
+    public int getHomeRadius() {
+        return 30;
+    }
+
+    @Override
+    public ResourceKey<Structure> getHomeStructure() {
+        return TFStructures.AURORA_PALACE;
+    }
+
+    @Override
+    public Block getDeathContainer(RandomSource random) {
+        return TFBlocks.TWILIGHT_OAK_CHEST.get();
+    }
+
+    @Override
+    public Block getBossSpawner() {
+        return TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.get();
+    }
 }

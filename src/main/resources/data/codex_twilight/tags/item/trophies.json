@@ -1,0 +1,36 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:naga_trophy",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:lich_trophy",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:minoshroom_trophy",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:hydra_trophy",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:knight_phantom_trophy",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:ur_ghast_trophy",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:alpha_yeti_trophy",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:snow_queen_trophy",
+                       "required":  false
+                   }
+               ]
+}

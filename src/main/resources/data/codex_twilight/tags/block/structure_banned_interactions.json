@@ -1,0 +1,11 @@
+﻿{
+    "values":  [
+                   "minecraft:lever",
+                   {
+                       "id":  "codex_twilight:antibuilder",
+                       "required":  false
+                   },
+                   "#minecraft:buttons",
+                   "#c:chests"
+               ]
+}

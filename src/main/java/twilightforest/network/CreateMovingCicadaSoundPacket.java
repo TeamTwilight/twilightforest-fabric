@@ -1,54 +1,35 @@
 package twilightforest.network;
 
-import me.pepperbell.simplenetworking.S2CPacket;
-import me.pepperbell.simplenetworking.SimpleChannel;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import twilightforest.client.MovingCicadaSoundInstance;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import twilightforest.TwilightForestMod;
 
-import java.util.concurrent.Executor;
+/**
+ * 1:1 port of upstream {@code twilightforest.network.CreateMovingCicadaSoundPacket}
+ * — server tells client to start a moving cicada sound instance attached to the
+ * referenced entity (cicada-on-mob ride sound).
+ *
+ * <p>Codex Fabric port note: NF static {@code handle(...)} receiver dropped — the
+ * client {@code MovingCicadaSoundInstance} hookup lives in {@code CodexNetworking}
+ * client side.</p>
+ */
+public record CreateMovingCicadaSoundPacket(int entityID) implements CustomPacketPayload {
 
-public class CreateMovingCicadaSoundPacket implements S2CPacket {
-
-	private final int entityID;
-
-	public CreateMovingCicadaSoundPacket(int id) {
-		this.entityID = id;
-	}
+	public static final Type<CreateMovingCicadaSoundPacket> TYPE = new Type<>(TwilightForestMod.prefix("create_cicada_sound"));
+	public static final StreamCodec<RegistryFriendlyByteBuf, CreateMovingCicadaSoundPacket> STREAM_CODEC = CustomPacketPayload.codec((p, buf) -> p.write(buf), CreateMovingCicadaSoundPacket::new);
 
 	public CreateMovingCicadaSoundPacket(FriendlyByteBuf buf) {
-		this.entityID = buf.readInt();
+		this(buf.readInt());
+	}
+
+	public void write(FriendlyByteBuf buf) {
+		buf.writeInt(this.entityID());
 	}
 
 	@Override
-	public void encode(FriendlyByteBuf buf) {
-		buf.writeInt(this.entityID);
-	}
-
-	@Override
-	public void handle(Minecraft client, ClientPacketListener handler, PacketSender sender, SimpleChannel responseTarget) {
-		Handler.onMessage(this, client);
-	}
-
-	public static class Handler {
-
-		@SuppressWarnings("Convert2Lambda")
-		public static boolean onMessage(CreateMovingCicadaSoundPacket message, Executor ctx) {
-			ctx.execute(new Runnable() {
-				@Override
-				public void run() {
-					Entity entity = Minecraft.getInstance().level.getEntity(message.entityID);
-					if (entity instanceof LivingEntity living) {
-						Minecraft.getInstance().getSoundManager().queueTickingSound(new MovingCicadaSoundInstance(living));
-					}
-				}
-			});
-
-			return true;
-		}
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 }

@@ -1,0 +1,22 @@
+﻿{
+	"parent": "block/block",
+	"textures": {
+		"particle": "codex_twilight:block/twisted_stone_pillar",
+		"top_cap": "codex_twilight:block/twisted_stone_cap_end",
+		"top_z": "codex_twilight:block/twisted_stone_cap_side"
+	},
+	"elements": [
+		{
+			"from": [0, 13, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 3], "texture": "#top_z", "cullface": "north", "tintindex": 1},
+				"east": {"uv": [0, 0, 16, 3], "texture": "#top_z", "cullface": "east", "tintindex": 2},
+				"south": {"uv": [0, 0, 16, 3], "texture": "#top_z", "cullface": "south", "tintindex": 1},
+				"west": {"uv": [0, 0, 16, 3], "texture": "#top_z", "cullface": "west", "tintindex": 2},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#top_cap", "cullface": "up", "tintindex": 0},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#top_cap", "tintindex": 0}
+			}
+		}
+	]
+}

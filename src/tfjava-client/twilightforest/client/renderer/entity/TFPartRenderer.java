@@ -1,0 +1,109 @@
+package twilightforest.client.renderer.entity;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.ListModel;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
+import org.jetbrains.annotations.Nullable;
+import twilightforest.entity.TFPart;
+
+public abstract class TFPartRenderer<T extends TFPart<?>, M extends ListModel<T>> extends EntityRenderer<T> {
+    protected final M model;
+
+    protected TFPartRenderer(EntityRendererProvider.Context context, M model) {
+        super(context);
+        this.model = model;
+    }
+
+    @Override
+    public void render(T entity, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffer, int light) {
+        stack.pushPose();
+
+        float yRot = Mth.rotLerp(partialTicks, entity.prevRenderYawOffset, entity.renderYawOffset);
+        float xRot = Mth.lerp(partialTicks, entity.xRotO, entity.getXRot());
+        float ageInTicks = this.getBob(entity, partialTicks);
+        this.setupRotations(entity, stack, partialTicks);
+        stack.scale(-1.0F, -1.0F, 1.0F);
+        stack.translate(0.0D, -1.501F, 0.0D);
+
+        this.model.prepareMobModel(entity, 0.0F, 0.0F, partialTicks);
+        this.model.setupAnim(entity, 0.0F, 0.0F, ageInTicks, yRot, xRot);
+        boolean visible = this.isBodyVisible(entity);
+        boolean ghostly = !visible && !entity.isInvisibleTo(Minecraft.getInstance().player);
+        boolean glowing = Minecraft.getInstance().shouldEntityAppearGlowing(entity);
+        RenderType renderType = this.getRenderType(entity, visible, ghostly, glowing);
+        if (renderType != null) {
+            VertexConsumer consumer = buffer.getBuffer(renderType);
+            int overlay = this.getOverlayCoords(entity, OverlayTexture.NO_WHITE_U);
+            this.model.renderToBuffer(stack, consumer, light, overlay, ghostly ? 654311423 : -1);
+        }
+
+        stack.popPose();
+        super.render(entity, entityYaw, partialTicks, stack, buffer, light);
+    }
+
+    public int getOverlayCoords(T entity, float u) {
+        if (entity.getParent() instanceof LivingEntity living) {
+            return OverlayTexture.pack(
+                    OverlayTexture.u(u),
+                    OverlayTexture.v(living.hurtTime > 0 || living.deathTime > 0 || entity.hurtTime > 0 || entity.deathTime > 0));
+        }
+        return OverlayTexture.pack(OverlayTexture.u(u), OverlayTexture.v(entity.hurtTime > 0 || entity.deathTime > 0));
+    }
+
+    @Nullable
+    protected RenderType getRenderType(T entity, boolean visible, boolean ghostly, boolean glowing) {
+        ResourceLocation texture = this.getTextureLocation(entity);
+        if (ghostly) {
+            return RenderType.itemEntityTranslucentCull(texture);
+        } else if (visible) {
+            return this.model.renderType(texture);
+        } else {
+            return glowing ? RenderType.outline(texture) : null;
+        }
+    }
+
+    protected float getBob(T entity, float partialTicks) {
+        return (float) entity.tickCount + partialTicks;
+    }
+
+    protected void setupRotations(T entity, PoseStack stack, float partialTicks) {
+        if (entity.deathTime > 0) {
+            float f = ((float) entity.deathTime + partialTicks - 1.0F) / 20.0F * 1.6F;
+            f = Mth.sqrt(f);
+            if (f > 1.0F) {
+                f = 1.0F;
+            }
+            stack.mulPose(Axis.of(entity.getDirection().step()).rotationDegrees(f * this.getFlipDegrees(entity)));
+        } else if (this.isEntityUpsideDown(entity)) {
+            stack.translate(0.0F, entity.getBbHeight() + 0.1F, 0.0F);
+            stack.mulPose(Axis.ZP.rotationDegrees(180.0F));
+        }
+    }
+
+    protected float getFlipDegrees(T entity) {
+        return 90.0F;
+    }
+
+    protected boolean isBodyVisible(T entity) {
+        return !entity.isInvisible();
+    }
+
+    private boolean isEntityUpsideDown(T entity) {
+        if (entity.hasCustomName()) {
+            String name = ChatFormatting.stripFormatting(entity.getName().getString());
+            return name != null && (name.equalsIgnoreCase("dinnerbone") || name.equalsIgnoreCase("grumm"));
+        }
+        return false;
+    }
+}

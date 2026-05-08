@@ -1,0 +1,10 @@
+﻿{
+  "parent": "minecraft:item/generated",
+  "broken_modifier_directory": "travellers_modifiers/wings/broken/",
+  "loader": "codex_twilight:travellers_gear",
+  "modifier_directory": "travellers_modifiers/wings/",
+  "textures": {
+    "base": "codex_twilight:item/travellers_wings",
+    "broken": "codex_twilight:item/travellers_wings_broken"
+  }
+}

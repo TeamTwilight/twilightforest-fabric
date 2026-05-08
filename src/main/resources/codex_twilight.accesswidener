@@ -1,0 +1,111 @@
+accessWidener v2 named
+# Codex Fabric: upstream NeoForge uses an access transformer to expose IronBarsBlock's
+# ctor for canopy_window_pane registration. Fabric equivalent is this widener line.
+accessible method net/minecraft/world/level/block/IronBarsBlock <init> (Lnet/minecraft/world/level/block/state/BlockBehaviour$Properties;)V
+
+extendable class net/minecraft/world/level/levelgen/structure/StructureStart
+accessible field net/minecraft/world/level/levelgen/structure/StructureStart cachedBoundingBox Lnet/minecraft/world/level/levelgen/structure/BoundingBox;
+mutable field net/minecraft/world/level/levelgen/structure/StructureStart cachedBoundingBox Lnet/minecraft/world/level/levelgen/structure/BoundingBox;
+accessible field net/minecraft/world/level/levelgen/structure/StructurePiece orientation Lnet/minecraft/core/Direction;
+accessible field net/minecraft/world/level/levelgen/structure/StructurePiece mirror Lnet/minecraft/world/level/block/Mirror;
+accessible field net/minecraft/world/level/levelgen/structure/StructurePiece rotation Lnet/minecraft/world/level/block/Rotation;
+accessible field net/minecraft/world/level/levelgen/structure/pieces/StructurePiecesBuilder pieces Ljava/util/List;
+accessible field net/minecraft/world/level/block/entity/SignBlockEntity frontText Lnet/minecraft/world/level/block/entity/SignText;
+mutable field net/minecraft/world/level/block/entity/SignBlockEntity frontText Lnet/minecraft/world/level/block/entity/SignText;
+accessible field net/minecraft/world/level/BaseSpawner spawnCount I
+accessible field net/minecraft/world/level/BaseSpawner maxNearbyEntities I
+accessible field net/minecraft/world/level/BaseSpawner spawnRange I
+accessible field net/minecraft/world/level/BaseSpawner spawnDelay I
+accessible field net/minecraft/world/level/BaseSpawner spin D
+accessible field net/minecraft/world/level/BaseSpawner oSpin D
+accessible field net/minecraft/world/level/BaseSpawner displayEntity Lnet/minecraft/world/entity/Entity;
+accessible method net/minecraft/world/level/BaseSpawner isNearPlayer (Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)Z
+accessible method net/minecraft/world/level/BaseSpawner delay (Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)V
+accessible method net/minecraft/world/level/BaseSpawner getOrCreateNextSpawnData (Lnet/minecraft/world/level/Level;Lnet/minecraft/util/RandomSource;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/SpawnData;
+accessible field net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity litTime I
+accessible field net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity litDuration I
+accessible field net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity cookingProgress I
+accessible field net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity cookingTotalTime I
+accessible field net/minecraft/world/level/block/entity/BlockEntityType validBlocks Ljava/util/Set;
+mutable field net/minecraft/world/level/block/entity/BlockEntityType validBlocks Ljava/util/Set;
+accessible field net/minecraft/world/level/levelgen/Beardifier pieceIterator Lit/unimi/dsi/fastutil/objects/ObjectListIterator;
+accessible method net/minecraft/world/level/levelgen/Beardifier getBuryContribution (DDD)D
+accessible method net/minecraft/world/level/levelgen/Beardifier getBeardContribution (IIII)D
+accessible method net/minecraft/core/Holder$Reference bindKey (Lnet/minecraft/resources/ResourceKey;)V
+accessible method net/minecraft/world/level/levelgen/feature/TreeFeature updateLeaves (Lnet/minecraft/world/level/LevelAccessor;Lnet/minecraft/world/level/levelgen/structure/BoundingBox;Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;)Lnet/minecraft/world/phys/shapes/DiscreteVoxelShape;
+accessible method net/minecraft/server/level/ChunkMap generator ()Lnet/minecraft/world/level/chunk/ChunkGenerator;
+accessible method net/minecraft/world/level/material/MapColor <init> (II)V
+accessible method net/minecraft/world/level/levelgen/feature/trunkplacers/TrunkPlacerType <init> (Lcom/mojang/serialization/MapCodec;)V
+accessible method net/minecraft/world/level/levelgen/feature/foliageplacers/FoliagePlacerType <init> (Lcom/mojang/serialization/MapCodec;)V
+accessible method net/minecraft/world/level/levelgen/feature/treedecorators/TreeDecoratorType <init> (Lcom/mojang/serialization/MapCodec;)V
+accessible field net/minecraft/world/level/levelgen/feature/trunkplacers/TrunkPlacer baseHeight I
+accessible field net/minecraft/world/level/levelgen/feature/trunkplacers/TrunkPlacer heightRandA I
+accessible field net/minecraft/world/level/levelgen/feature/trunkplacers/TrunkPlacer heightRandB I
+accessible field net/minecraft/world/level/levelgen/carver/CaveCarverConfiguration floorLevel Lnet/minecraft/util/valueproviders/FloatProvider;
+accessible field net/minecraft/world/entity/projectile/AbstractArrow inGround Z
+accessible method net/minecraft/world/entity/projectile/AbstractArrow doPostHurtEffects (Lnet/minecraft/world/entity/LivingEntity;)V
+accessible method net/minecraft/world/level/storage/loot/LootTable shuffleAndSplitItems (Lit/unimi/dsi/fastutil/objects/ObjectArrayList;ILnet/minecraft/util/RandomSource;)V
+
+# P5 boss-bar pipeline (TFBossBarPacket + ServerTFBossBar + ClientTFBossBar)
+accessible method net/minecraft/network/protocol/game/ClientboundBossEventPacket encodeProperties (ZZZ)I
+accessible field net/minecraft/server/level/ServerBossEvent players Ljava/util/Set;
+accessible field net/minecraft/client/gui/components/BossHealthOverlay OVERLAY_BACKGROUND_SPRITES [Lnet/minecraft/resources/ResourceLocation;
+accessible field net/minecraft/client/gui/components/BossHealthOverlay OVERLAY_PROGRESS_SPRITES [Lnet/minecraft/resources/ResourceLocation;
+accessible field net/minecraft/client/gui/components/LerpingBossEvent setTime J
+mutable field net/minecraft/client/gui/components/LerpingBossEvent setTime J
+accessible method net/minecraft/client/gui/Gui renderFood (Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/entity/player/Player;II)V
+accessible method net/minecraft/client/gui/Gui canRenderCrosshairForSpectator (Lnet/minecraft/world/phys/HitResult;)Z
+accessible field net/minecraft/world/entity/LivingEntity jumping Z
+accessible field net/minecraft/world/entity/Entity dimensions Lnet/minecraft/world/entity/EntityDimensions;
+mutable field net/minecraft/world/entity/Entity dimensions Lnet/minecraft/world/entity/EntityDimensions;
+accessible field net/minecraft/world/entity/Entity stuckSpeedMultiplier Lnet/minecraft/world/phys/Vec3;
+mutable field net/minecraft/world/entity/Entity stuckSpeedMultiplier Lnet/minecraft/world/phys/Vec3;
+accessible method net/minecraft/world/entity/monster/AbstractSkeleton getStepSound ()Lnet/minecraft/sounds/SoundEvent;
+accessible method net/minecraft/world/entity/monster/AbstractSkeleton getStepSound ()Lnet/minecraft/sounds/SoundEvent;
+accessible method net/minecraft/core/particles/SimpleParticleType <init> (Z)V
+accessible class net/minecraft/world/inventory/MenuType$MenuSupplier
+accessible method net/minecraft/world/inventory/MenuType <init> (Lnet/minecraft/world/inventory/MenuType$MenuSupplier;Lnet/minecraft/world/flag/FeatureFlagSet;)V
+accessible class net/minecraft/client/gui/screens/MenuScreens$ScreenConstructor
+accessible method net/minecraft/client/gui/screens/MenuScreens register (Lnet/minecraft/world/inventory/MenuType;Lnet/minecraft/client/gui/screens/MenuScreens$ScreenConstructor;)V
+accessible method net/minecraft/world/level/saveddata/maps/MapItemSavedData <init> (IIBZZZLnet/minecraft/resources/ResourceKey;)V
+accessible field net/minecraft/world/level/saveddata/maps/MapItemSavedData centerX I
+mutable field net/minecraft/world/level/saveddata/maps/MapItemSavedData centerX I
+accessible field net/minecraft/world/level/saveddata/maps/MapItemSavedData centerZ I
+mutable field net/minecraft/world/level/saveddata/maps/MapItemSavedData centerZ I
+accessible field net/minecraft/world/level/saveddata/maps/MapItemSavedData scale B
+accessible field net/minecraft/world/level/saveddata/maps/MapItemSavedData dimension Lnet/minecraft/resources/ResourceKey;
+accessible field net/minecraft/world/level/saveddata/maps/MapItemSavedData colors [B
+mutable field net/minecraft/world/level/saveddata/maps/MapItemSavedData colors [B
+accessible field net/minecraft/world/level/saveddata/maps/MapItemSavedData bannerMarkers Ljava/util/Map;
+accessible field net/minecraft/world/level/saveddata/maps/MapItemSavedData frameMarkers Ljava/util/Map;
+accessible field net/minecraft/world/level/saveddata/maps/MapItemSavedData decorations Ljava/util/Map;
+accessible field net/minecraft/world/level/saveddata/maps/MapItemSavedData trackedDecorationCount I
+mutable field net/minecraft/world/level/saveddata/maps/MapItemSavedData trackedDecorationCount I
+accessible field net/minecraft/world/level/saveddata/maps/MapItemSavedData locked Z
+accessible method net/minecraft/world/level/saveddata/maps/MapItemSavedData setDecorationsDirty ()V
+accessible method net/minecraft/world/level/saveddata/maps/MapItemSavedData addDecoration (Lnet/minecraft/core/Holder;Lnet/minecraft/world/level/LevelAccessor;Ljava/lang/String;DDDLnet/minecraft/network/chat/Component;)V
+accessible field net/minecraft/client/renderer/LevelRenderer skyBuffer Lcom/mojang/blaze3d/vertex/VertexBuffer;
+accessible field net/minecraft/client/renderer/LevelRenderer darkBuffer Lcom/mojang/blaze3d/vertex/VertexBuffer;
+
+# Paired client model ports — upstream Twilight Forest FixedHumanoidModel calls these helpers.
+accessible method net/minecraft/client/model/HumanoidModel poseRightArm (Lnet/minecraft/world/entity/LivingEntity;)V
+accessible method net/minecraft/client/model/HumanoidModel poseLeftArm (Lnet/minecraft/world/entity/LivingEntity;)V
+accessible method net/minecraft/client/model/HumanoidModel getAttackArm (Lnet/minecraft/world/entity/LivingEntity;)Lnet/minecraft/world/entity/HumanoidArm;
+
+# Twilight Forest grass color modifier (Phase 1 codec swap + MM enum extension)
+mutable field net/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier CODEC Lcom/mojang/serialization/Codec;
+accessible field net/minecraft/world/level/biome/Biome TEMPERATURE_NOISE Lnet/minecraft/world/level/levelgen/synth/PerlinSimplexNoise;
+
+# Twilight Forest game rules
+accessible method net/minecraft/world/level/GameRules register (Ljava/lang/String;Lnet/minecraft/world/level/GameRules$Category;Lnet/minecraft/world/level/GameRules$Type;)Lnet/minecraft/world/level/GameRules$Key;
+accessible method net/minecraft/world/level/GameRules$BooleanValue create (ZLjava/util/function/BiConsumer;)Lnet/minecraft/world/level/GameRules$Type;
+accessible method net/minecraft/world/level/GameRules$IntegerValue create (I)Lnet/minecraft/world/level/GameRules$Type;
+accessible method net/minecraft/world/level/block/state/properties/BlockSetType register (Lnet/minecraft/world/level/block/state/properties/BlockSetType;)Lnet/minecraft/world/level/block/state/properties/BlockSetType;
+accessible method net/minecraft/world/level/block/state/properties/WoodType register (Lnet/minecraft/world/level/block/state/properties/WoodType;)Lnet/minecraft/world/level/block/state/properties/WoodType;
+accessible method net/minecraft/world/level/levelgen/structure/pools/SinglePoolElement sortBySelectionPriority (Ljava/util/List;)V
+accessible method net/minecraft/world/level/levelgen/structure/Structure findGenerationPoint (Lnet/minecraft/world/level/levelgen/structure/Structure$GenerationContext;)Ljava/util/Optional;
+accessible method net/minecraft/world/level/levelgen/structure/TemplateStructurePiece makeTemplateLocation ()Lnet/minecraft/resources/ResourceLocation;
+accessible method net/minecraft/world/level/BaseSpawner setNextSpawnData (Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/SpawnData;)V
+accessible field net/minecraft/world/level/block/entity/BrewingStandBlockEntity fuel I
+accessible field net/minecraft/world/level/block/entity/ChiseledBookShelfBlockEntity items Lnet/minecraft/core/NonNullList;
+

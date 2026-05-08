@@ -1,62 +1,39 @@
 package twilightforest.network;
 
-import me.pepperbell.simplenetworking.S2CPacket;
-import me.pepperbell.simplenetworking.SimpleChannel;
-import net.fabricmc.fabric.api.client.rendering.v1.DimensionRenderingRegistry.WeatherRenderer;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientPacketListener;
-import net.minecraft.client.renderer.DimensionSpecialEffects;
-import net.minecraft.network.FriendlyByteBuf;
+import com.mojang.datafixers.util.Pair;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.TwilightForestRenderInfo;
-import twilightforest.client.renderer.TFWeatherRenderer;
+import twilightforest.util.Codecs;
 
-import java.util.concurrent.Executor;
-import java.util.function.Supplier;
+import java.util.List;
+import java.util.Optional;
 
-public class StructureProtectionPacket implements S2CPacket {
+/**
+ * 1:1 port of upstream {@code twilightforest.network.StructureProtectionPacket} —
+ * server pushes a list of (BoundingBox, enabled-flag) pairs so the client weather
+ * renderer can switch protection-aware rain/snow off inside boss rooms.
+ *
+ * <p>Codex Fabric port note: NF static {@code handle(...)} dropped — the
+ * {@code DimensionSpecialEffectsManager} / {@code TFWeatherRenderer} dispatch is
+ * wired in {@code CodexNetworking} client side once those classes are ported.</p>
+ */
+public record StructureProtectionPacket(Optional<List<Pair<BoundingBox, Boolean>>> boxes) implements CustomPacketPayload {
 
-	private final BoundingBox sbb;
+	public static final Type<StructureProtectionPacket> TYPE = new Type<>(TwilightForestMod.prefix("change_protection_renderer"));
 
-	public StructureProtectionPacket(BoundingBox sbb) {
-		this.sbb = sbb;
-	}
-
-	public StructureProtectionPacket(FriendlyByteBuf buf) {
-		this.sbb = new BoundingBox(
-				buf.readInt(), buf.readInt(), buf.readInt(),
-				buf.readInt(), buf.readInt(), buf.readInt()
+	public static final StreamCodec<RegistryFriendlyByteBuf, StructureProtectionPacket> STREAM_CODEC =
+		StreamCodec.composite(
+			Codecs.listOf(Codecs.BOX_AND_FLAG_STREAM_CODEC).apply(ByteBufCodecs::optional),
+			StructureProtectionPacket::boxes,
+			StructureProtectionPacket::new
 		);
-	}
-
-	public void encode(FriendlyByteBuf buf) {
-		buf.writeInt(this.sbb.minX());
-		buf.writeInt(this.sbb.minY());
-		buf.writeInt(this.sbb.minZ());
-		buf.writeInt(this.sbb.maxX());
-		buf.writeInt(this.sbb.maxY());
-		buf.writeInt(this.sbb.maxZ());
-	}
 
 	@Override
-	public void handle(Minecraft client, ClientPacketListener handler, PacketSender sender, SimpleChannel responseTarget) {
-		Handler.onMessage(this, client);
-	}
-
-	public static class Handler {
-		public static boolean onMessage(StructureProtectionPacket message, Executor ctx) {
-			ctx.execute(() -> {
-				DimensionSpecialEffects info = DimensionSpecialEffects.EFFECTS.get(TwilightForestMod.prefix("renderer"));
-
-				// add weather box if needed
-				if (info instanceof TwilightForestRenderInfo) {
-					TFWeatherRenderer.setProtectedBox(message.sbb);
-				}
-			});
-
-			return true;
-		}
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 }

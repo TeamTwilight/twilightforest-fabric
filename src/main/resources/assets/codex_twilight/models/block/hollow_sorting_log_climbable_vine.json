@@ -1,0 +1,9 @@
+﻿{
+  "parent": "codex_twilight:block/vertical_hollow_log_vine",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "inner": "codex_twilight:block/stripped_sorting_log",
+    "side": "codex_twilight:block/sorting_log",
+    "top": "codex_twilight:block/sorting_log_top"
+  }
+}

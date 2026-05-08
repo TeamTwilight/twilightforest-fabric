@@ -1,0 +1,6 @@
+﻿{
+  "parent": "minecraft:block/template_fence_gate",
+  "textures": {
+    "texture": "codex_twilight:block/wood/planks_darkwood_3"
+  }
+}

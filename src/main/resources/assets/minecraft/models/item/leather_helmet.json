@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minecraft:item/leather_helmet"
+  },
+  "overrides": [
+    {
+      "predicate": {"custom_model_data": 31024},
+      "model": "codex_twilight:item/travellers_goggles"
+    }
+  ]
+}

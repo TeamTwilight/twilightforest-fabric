@@ -1,0 +1,12 @@
+﻿{
+  "loader": "neoforge:composite",
+  "parent": "block/block",
+  "children": {
+    "main": {
+      "parent": "codex_twilight:block/castle_door"
+    },
+    "overlay": {
+      "parent": "codex_twilight:block/castle_door_overlay"
+    }
+  }
+}

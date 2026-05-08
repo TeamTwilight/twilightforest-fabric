@@ -1,0 +1,10 @@
+﻿{
+    "values":  [
+                   "#minecraft:replaceable",
+                   "#minecraft:flowers",
+                   {
+                       "id":  "codex_twilight:mayapple",
+                       "required":  false
+                   }
+               ]
+}

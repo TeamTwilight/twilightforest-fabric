@@ -1,75 +1,131 @@
 package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LeapAtTargetGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
+import twilightforest.init.TFItemVisuals;
 import twilightforest.init.TFSounds;
 
+import java.util.List;
+
 public class HelmetCrab extends Monster {
+    private static final EntityDataAccessor<Boolean> BLUE = SynchedEntityData.defineId(HelmetCrab.class, EntityDataSerializers.BOOLEAN);
+    public float helmetRot;
+    public float helmetRotO;
 
-	public HelmetCrab(EntityType<? extends HelmetCrab> type, Level world) {
-		super(type, world);
-	}
+    public HelmetCrab(EntityType<? extends HelmetCrab> type, Level level) {
+        super(type, level);
+    }
 
-	@Override
-	protected void registerGoals() {
-		this.goalSelector.addGoal(0, new FloatGoal(this));
-		this.goalSelector.addGoal(2, new LeapAtTargetGoal(this, 0.28F));
-		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false));
-		this.goalSelector.addGoal(6, new RandomStrollGoal(this, 1.0D));
-		this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
-		this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
-		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
-	}
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(BLUE, false);
+    }
 
-	public static AttributeSupplier.Builder registerAttributes() {
-		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 13.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.28D)
-				.add(Attributes.ATTACK_DAMAGE, 3.0D)
-				.add(Attributes.ARMOR, 6.0D);
-	}
+    public static AttributeSupplier.Builder registerAttributes() {
+        return Monster.createMonsterAttributes()
+                .add(Attributes.MAX_HEALTH, 13.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.28D)
+                .add(Attributes.ATTACK_DAMAGE, 3.0D)
+                .add(Attributes.ARMOR, 6.0D);
+    }
 
-	@Override
-	public float getEyeHeight(Pose pose) {
-		return this.getBbHeight() * 0.4F;
-	}
+    @Override
+    protected void registerGoals() {
+        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(2, new LeapAtTargetGoal(this, 0.28F));
+        this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false));
+        this.goalSelector.addGoal(6, new RandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+    }
 
-	@Override
-	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.HELMET_CRAB_HURT.get();
-	}
+    @Override
+    public void tick() {
+        super.tick();
+        this.helmetRotO = this.helmetRot;
+        this.helmetRot = this.yHeadRotO;
+        while (this.helmetRot - this.helmetRotO < -180.0F) {
+            this.helmetRotO -= 360.0F;
+        }
+        while (this.helmetRot - this.helmetRotO >= 180.0F) {
+            this.helmetRotO += 360.0F;
+        }
+    }
 
-	@Override
-	protected SoundEvent getDeathSound() {
-		return TFSounds.HELMET_CRAB_DEATH.get();
-	}
+    @Override
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putBoolean("blue", this.isBlue());
+    }
 
-	@Override
-	protected void playStepSound(BlockPos pos, BlockState state) {
-		this.playSound(TFSounds.HELMET_CRAB_STEP.get(), 0.15F, 1.0F);
-	}
+    @Override
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        this.getEntityData().set(BLUE, compound.getBoolean("blue"));
+    }
 
-	@Override
-	public int getMaxSpawnClusterSize() {
-		return 4;
-	}
+    @Override
+    public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
+        this.getEntityData().set(BLUE, this.getRandom().nextInt(10000) == 0);
+        return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
+    }
 
-	@Override
-	public MobType getMobType() {
-		return MobType.ARTHROPOD;
-	}
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return TFSounds.HELMET_CRAB_AMBIENT;
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return TFSounds.HELMET_CRAB_HURT;
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return TFSounds.HELMET_CRAB_DEATH;
+    }
+
+    @Override
+    protected void playStepSound(BlockPos pos, BlockState state) {
+        this.playSound(TFSounds.HELMET_CRAB_STEP, 0.15F, 1.0F);
+    }
+
+    @Override
+    public int getMaxSpawnClusterSize() {
+        return 4;
+    }
+
+    public boolean isBlue() {
+        return this.getEntityData().get(BLUE);
+    }
 }

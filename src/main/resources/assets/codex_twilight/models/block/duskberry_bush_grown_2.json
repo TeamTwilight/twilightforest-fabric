@@ -1,0 +1,6 @@
+﻿{
+  "parent": "codex_twilight:block/abstract_bush_grown_2",
+  "textures": {
+    "all": "codex_twilight:block/duskberry_bush_ripe"
+  }
+}

@@ -1,0 +1,15 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:lich_bolt",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:twilight_scepter",
+                       "required":  false
+                   },
+                   "minecraft:magic",
+                   "minecraft:indirect_magic",
+                   "minecraft:sonic_boom"
+               ]
+}

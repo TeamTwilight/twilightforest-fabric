@@ -1,0 +1,105 @@
+﻿{
+        "parent":    "minecraft:block/block",
+        "textures":    {
+                                         "sign":    "twilightforest:item/twilight_oak_hanging_sign",
+                                         "particle":    "twilightforest:item/twilight_oak_hanging_sign"
+                                 },
+        "elements":    [
+                                         {
+                                                 "from":    [
+                                                                            2,
+                                                                            5,
+                                                                            7.5
+                                                                    ],
+                                                 "to":    [
+                                                                        14,
+                                                                        13,
+                                                                        8.5
+                                                                ],
+                                                 "faces":    {
+                                                                             "north":    {
+                                                                                                         "texture":    "#sign",
+                                                                                                         "uv":    [
+                                                                                                                                2,
+                                                                                                                                3,
+                                                                                                                                14,
+                                                                                                                                13
+                                                                                                                        ]
+                                                                                                 },
+                                                                             "south":    {
+                                                                                                         "texture":    "#sign",
+                                                                                                         "uv":    [
+                                                                                                                                2,
+                                                                                                                                3,
+                                                                                                                                14,
+                                                                                                                                13
+                                                                                                                        ]
+                                                                                                 }
+                                                                     }
+                                         },
+                                         {
+                                                 "from":    [
+                                                                            4,
+                                                                            13,
+                                                                            7.8
+                                                                    ],
+                                                 "to":    [
+                                                                        5,
+                                                                        16,
+                                                                        8.2
+                                                                ],
+                                                 "faces":    {
+                                                                             "north":    {
+                                                                                                         "texture":    "#sign",
+                                                                                                         "uv":    [
+                                                                                                                                4,
+                                                                                                                                0,
+                                                                                                                                5,
+                                                                                                                                3
+                                                                                                                        ]
+                                                                                                 },
+                                                                             "south":    {
+                                                                                                         "texture":    "#sign",
+                                                                                                         "uv":    [
+                                                                                                                                4,
+                                                                                                                                0,
+                                                                                                                                5,
+                                                                                                                                3
+                                                                                                                        ]
+                                                                                                 }
+                                                                     }
+                                         },
+                                         {
+                                                 "from":    [
+                                                                            11,
+                                                                            13,
+                                                                            7.8
+                                                                    ],
+                                                 "to":    [
+                                                                        12,
+                                                                        16,
+                                                                        8.2
+                                                                ],
+                                                 "faces":    {
+                                                                             "north":    {
+                                                                                                         "texture":    "#sign",
+                                                                                                         "uv":    [
+                                                                                                                                11,
+                                                                                                                                0,
+                                                                                                                                12,
+                                                                                                                                3
+                                                                                                                        ]
+                                                                                                 },
+                                                                             "south":    {
+                                                                                                         "texture":    "#sign",
+                                                                                                         "uv":    [
+                                                                                                                                11,
+                                                                                                                                0,
+                                                                                                                                12,
+                                                                                                                                3
+                                                                                                                        ]
+                                                                                                 }
+                                                                     }
+                                         }
+                                 ]
+}

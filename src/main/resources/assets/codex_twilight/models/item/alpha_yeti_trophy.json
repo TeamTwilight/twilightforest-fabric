@@ -1,0 +1,34 @@
+﻿{
+  "parent": "codex_twilight:item/template_trophy",
+  "display": {
+    "head": {
+      "rotation": [
+        180,
+        0,
+        180
+      ],
+      "scale": [
+        1.5,
+        1.5,
+        1.5
+      ],
+      "translation": [
+        0,
+        2,
+        0
+      ]
+    },
+    "codex_twilight:jarred": {
+      "rotation": [
+        0,
+        180,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        1
+      ]
+    }
+  }
+}

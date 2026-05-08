@@ -1,0 +1,18 @@
+{
+    "replace":  false,
+    "values":  [
+                   "twilightforest:forest",
+                   "twilightforest:dark_forest",
+                   "twilightforest:highlands",
+                   "twilightforest:clearing",
+                   "twilightforest:dense_forest",
+                   "twilightforest:enchanted_forest",
+                   "twilightforest:stream",
+                   "twilightforest:dark_forest_center",
+                   "twilightforest:spooky_forest",
+                   "twilightforest:snowy_forest",
+                   "twilightforest:glacier",
+                   "twilightforest:thornlands",
+                   "twilightforest:final_plateau"
+               ]
+}

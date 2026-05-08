@@ -1,0 +1,12 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:highlands",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:highlands",
+                       "required":  false
+                   }
+               ]
+}

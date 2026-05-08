@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:overworld",
+    {
+      "id": "twilightforest:twilight_forest_type",
+      "required": false
+    },
+    {
+      "id": "twilightforest:twilightforest_type",
+      "required": false
+    }
+  ]
+}

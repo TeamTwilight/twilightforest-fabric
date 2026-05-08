@@ -1,0 +1,9 @@
+﻿{
+  "parent": "codex_twilight:block/horizontal_hollow_log",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "inner": "codex_twilight:block/stripped_canopy_log",
+    "side": "codex_twilight:block/canopy_log",
+    "top": "codex_twilight:block/canopy_log_top"
+  }
+}

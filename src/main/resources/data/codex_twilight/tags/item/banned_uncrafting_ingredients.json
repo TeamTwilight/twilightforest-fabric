@@ -1,0 +1,32 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:infested_towerwood",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:hollow_oak_sapling",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:time_sapling",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:transformation_sapling",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:mining_sapling",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:sorting_sapling",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:transformation_powder",
+                       "required":  false
+                   }
+               ]
+}

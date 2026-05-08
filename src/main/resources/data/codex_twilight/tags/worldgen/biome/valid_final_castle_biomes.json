@@ -1,0 +1,12 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:final_plateau",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:final_plateau",
+                       "required":  false
+                   }
+               ]
+}

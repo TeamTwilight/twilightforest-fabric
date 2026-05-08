@@ -1,0 +1,51 @@
+{
+  "width": 32,
+  "height": 64,
+  "author": {
+    "translate": "magic_painting.twilightforest.castaway_paradise.author"
+  },
+  "back_texture": "twilightforest:magic_paintings/back",
+  "layers": [
+    {
+      "path": "sunset",
+      "parallax": {
+        "type": "view_angle",
+        "multiplier": 0.01,
+        "width": 64,
+        "height": 64
+      },
+      "fullbright": true,
+      "local_lighting": true
+    },
+    {
+      "path": "sun",
+      "fullbright": true,
+      "local_lighting": true
+    },
+    {
+      "path": "faraway_palm",
+      "fullbright": false,
+      "local_lighting": true
+    },
+    {
+      "path": "ocean",
+      "fullbright": false,
+      "local_lighting": true
+    },
+    {
+      "path": "deckchair",
+      "fullbright": false,
+      "local_lighting": true
+    },
+    {
+      "path": "palm_tree",
+      "fullbright": false,
+      "local_lighting": true
+    },
+    {
+      "path": "frame",
+      "fullbright": false,
+      "local_lighting": false
+    }
+  ]
+}

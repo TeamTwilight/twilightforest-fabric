@@ -1,0 +1,12 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:thorn_leaves",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:thorn_rose",
+                       "required":  false
+                   }
+               ]
+}

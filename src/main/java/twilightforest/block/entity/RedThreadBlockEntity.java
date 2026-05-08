@@ -7,6 +7,6 @@ import twilightforest.init.TFBlockEntities;
 
 public class RedThreadBlockEntity extends BlockEntity {
 	public RedThreadBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.RED_THREAD.get(), pos, state);
+		super(TFBlockEntities.RED_THREAD, pos, state);
 	}
 }

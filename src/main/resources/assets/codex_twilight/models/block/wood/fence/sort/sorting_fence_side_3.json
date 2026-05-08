@@ -1,0 +1,6 @@
+﻿{
+  "parent": "minecraft:block/fence_side",
+  "textures": {
+    "texture": "codex_twilight:block/wood/planks_sort_3"
+  }
+}

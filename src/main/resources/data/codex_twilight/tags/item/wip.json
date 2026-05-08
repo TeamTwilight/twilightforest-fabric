@@ -1,0 +1,44 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:auroralized_glass",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:quest_ram_banner_pattern",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:final_boss_boss_spawner",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:cube_talisman",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:cube_of_annihilation",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:cinder_furnace",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:cinder_log",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:cinder_wood",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:slider",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:brazier",
+                       "required":  false
+                   }
+               ]
+}

@@ -7,42 +7,38 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.init.TFParticleType;
 
 public abstract class BaseIceMob extends Monster {
-	public BaseIceMob(EntityType<? extends BaseIceMob> type, Level worldIn) {
-		super(type, worldIn);
-	}
+    protected BaseIceMob(EntityType<? extends BaseIceMob> type, Level level) {
+        super(type, level);
+    }
 
-	@Override
-	public void aiStep() {
-		if (!this.onGround() && this.getDeltaMovement().y() < 0.0D) {
-			Vec3 motion = getDeltaMovement();
-			this.setDeltaMovement(motion.x(), motion.y() * 0.6D, motion.z());
-		}
-		super.aiStep();
-		if (this.level().isClientSide()) {
-			// make snow particles
-			for (int i = 0; i < 3; i++) {
-				float px = (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.3F;
-				float py = this.getEyeHeight() + (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.5F;
-				float pz = (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.3F;
+    @Override
+    public void aiStep() {
+        if (!this.onGround() && this.getDeltaMovement().y() < 0.0D) {
+            Vec3 motion = this.getDeltaMovement();
+            this.setDeltaMovement(motion.x(), motion.y() * 0.6D, motion.z());
+        }
+        super.aiStep();
+        if (this.level().isClientSide()) {
+            for (int i = 0; i < 3; i++) {
+                float px = (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.3F;
+                float py = this.getEyeHeight() + (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.5F;
+                float pz = (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.3F;
+                this.level().addParticle(ParticleTypes.SNOWFLAKE, this.xOld + px, this.yOld + py, this.zOld + pz, 0.0D, 0.0D, 0.0D);
+                if (this.level().getBiome(this.blockPosition()).is(BiomeTags.SNOW_GOLEM_MELTS)) {
+                    this.level().addParticle(ParticleTypes.CLOUD, this.xOld + px, this.yOld + py, this.zOld + pz, 0.0D, 0.1D, 0.0D);
+                    this.level().addParticle(ParticleTypes.DRIPPING_WATER, this.xOld + px, this.yOld + py, this.zOld + pz, 0.0D, 0.0D, 0.0D);
+                }
+            }
+        }
+        if (!this.level().isClientSide() && this.level().getBiome(this.blockPosition()).is(BiomeTags.SNOW_GOLEM_MELTS) && this.tickCount % 20 == 0) {
+            this.hurt(this.damageSources().onFire(), 1.0F);
+        }
+    }
 
-				this.level().addParticle(TFParticleType.SNOW_GUARDIAN.get(), this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);
-				if (this.level().getBiome(this.blockPosition()).is(BiomeTags.SNOW_GOLEM_MELTS)) {
-					this.level().addParticle(ParticleTypes.CLOUD, this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0.1F, 0);
-					this.level().addParticle(ParticleTypes.DRIPPING_WATER, this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);
-				}
-			}
-		}
-		if (this.level().getBiome(this.blockPosition()).is(BiomeTags.SNOW_GOLEM_MELTS) && this.tickCount % 20 == 0) {
-			//BURN!!!
-			this.hurt(this.damageSources().onFire(), 1.0F);
-		}
-	}
-
-	@Override
-	protected boolean canRide(Entity entity) {
-		return false;
-	}
+    @Override
+    protected boolean canRide(Entity entity) {
+        return false;
+    }
 }

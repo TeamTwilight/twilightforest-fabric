@@ -1,0 +1,6 @@
+﻿{
+  "parent": "codex_twilight:block/abstract_bush_large_7",
+  "textures": {
+    "all": "codex_twilight:block/copper_oreberry"
+  }
+}

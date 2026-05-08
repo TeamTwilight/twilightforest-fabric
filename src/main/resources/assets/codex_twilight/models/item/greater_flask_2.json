@@ -1,0 +1,7 @@
+﻿{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "codex_twilight:item/greater_potion_flask_3",
+    "layer1": "codex_twilight:item/greater_potion_flask"
+  }
+}

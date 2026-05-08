@@ -1,0 +1,9 @@
+﻿{
+    "values":  [
+                   "minecraft:spruce",
+                   {
+                       "id":  "codex_twilight:canopy",
+                       "required":  false
+                   }
+               ]
+}

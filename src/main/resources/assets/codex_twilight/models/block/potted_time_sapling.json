@@ -1,0 +1,7 @@
+﻿{
+  "parent": "codex_twilight:block/potted_larger_sapling",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "plant": "codex_twilight:block/time_sapling"
+  }
+}

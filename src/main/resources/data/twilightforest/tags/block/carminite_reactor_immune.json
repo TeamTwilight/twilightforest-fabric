@@ -1,0 +1,27 @@
+{
+  "values": [
+    {
+      "id": "#minecraft:dragon_immune",
+      "required": false
+    },
+    {
+      "id": "#minecraft:wither_immune",
+      "required": false
+    },
+    {
+      "id": "#codex_twilight:common_protections",
+      "required": false
+    },
+    "minecraft:bedrock",
+    "minecraft:end_portal_frame",
+    "minecraft:end_portal",
+    "minecraft:barrier",
+    "minecraft:command_block",
+    "minecraft:chain_command_block",
+    "minecraft:repeating_command_block",
+    "twilightforest:carminite_reactor",
+    "twilightforest:reactor_debris",
+    "twilightforest:fake_gold",
+    "twilightforest:fake_diamond"
+  ]
+}

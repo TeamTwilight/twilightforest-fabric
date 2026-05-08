@@ -1,0 +1,36 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:mazestone",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:mazestone_brick",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:cracked_mazestone",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:mossy_mazestone",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:cut_mazestone",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:decorative_mazestone",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:mazestone_mosaic",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:mazestone_border",
+                       "required":  false
+                   }
+               ]
+}

@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:random_selector",
+  "config": {
+    "default": {
+      "feature": "codex_twilight:tf_oak_fallen_log",
+      "placement": []
+    },
+    "features": [
+      {
+        "chance": 0.1,
+        "feature": {
+          "feature": "codex_twilight:birch_fallen_log",
+          "placement": []
+        }
+      },
+      {
+        "chance": 0.2,
+        "feature": {
+          "feature": "codex_twilight:oak_fallen_log",
+          "placement": []
+        }
+      },
+      {
+        "chance": 0.4,
+        "feature": {
+          "feature": "codex_twilight:canopy_fallen_log",
+          "placement": []
+        }
+      }
+    ]
+  }
+}

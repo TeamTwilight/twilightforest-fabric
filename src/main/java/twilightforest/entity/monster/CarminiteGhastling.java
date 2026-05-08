@@ -6,7 +6,12 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
@@ -17,115 +22,118 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.init.TFSounds;
 
-import java.util.Objects;
-
 public class CarminiteGhastling extends CarminiteGhastguard {
+    private boolean minion;
 
-	private boolean isMinion = false;
+    public CarminiteGhastling(EntityType<? extends CarminiteGhastling> type, Level level) {
+        super(type, level);
+        this.wanderFactor = 4.0F;
+    }
 
-	public CarminiteGhastling(EntityType<? extends CarminiteGhastling> type, Level world) {
-		super(type, world);
-		this.wanderFactor = 4.0F;
+    public static AttributeSupplier.Builder registerAttributes() {
+        return CarminiteGhastguard.registerAttributes()
+                .add(Attributes.MAX_HEALTH, 10.0D)
+                .add(Attributes.FOLLOW_RANGE, 16.0D);
+    }
 
-		if (this.isMinion() && this.getAttribute(Attributes.MAX_HEALTH) != null) {
-			Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).setBaseValue(6);
-			this.setHealth(this.getMaxHealth());
-		}
-	}
+    @Override
+    public int getMaxSpawnClusterSize() {
+        return 16;
+    }
 
-	@Override
-	public int getMaxSpawnClusterSize() {
-		return 16;
-	}
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+        return 0.5F;
+    }
 
-	public static AttributeSupplier.Builder registerAttributes() {
-		return CarminiteGhastguard.registerAttributes()
-				.add(Attributes.MAX_HEALTH, 10)
-				.add(Attributes.FOLLOW_RANGE, 16.0D);
-	}
+    @Override
+    public boolean shouldAttack(LivingEntity living) {
+        ItemStack helmet = living.getItemBySlot(EquipmentSlot.HEAD);
+        if (!helmet.isEmpty() && helmet.is(Items.CARVED_PUMPKIN)) {
+            return false;
+        }
+        if (living.distanceTo(this) <= 3.5F) {
+            return living.hasLineOfSight(this);
+        }
+        Vec3 view = living.getViewVector(1.0F).normalize();
+        Vec3 toGhast = new Vec3(this.getX() - living.getX(), this.getBoundingBox().minY + this.getEyeHeight() - (living.getY() + living.getEyeHeight()), this.getZ() - living.getZ());
+        double length = toGhast.length();
+        toGhast = toGhast.normalize();
+        return view.dot(toGhast) > 1.0D - 0.025D / length && living.hasLineOfSight(this);
+    }
 
-	@Override
-	protected float getStandingEyeHeight(Pose pose, EntityDimensions size) {
-		return 0.5F;
-	}
+    public static boolean canSpawnHere(EntityType<CarminiteGhastling> entity, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource random) {
+        return level.getDifficulty() != Difficulty.PEACEFUL && (reason == MobSpawnType.MOB_SUMMONED || Monster.isDarkEnoughToSpawn(level, pos, random)) && checkMobSpawnRules(entity, level, reason, pos, random);
+    }
 
-	@Override
-	protected SoundEvent getAmbientSound() {
-		return TFSounds.CARMINITE_GHASTLING_AMBIENT.get();
-	}
+    public void makeBossMinion() {
+        this.wanderFactor = 0.005F;
+        this.minion = true;
+        if (this.getAttribute(Attributes.MAX_HEALTH) != null) {
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(6.0D);
+            this.setHealth(this.getMaxHealth());
+        }
+    }
 
-	@Override
-	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.CARMINITE_GHASTLING_HURT.get();
-	}
+    public boolean isMinion() {
+        return this.minion;
+    }
 
-	@Override
-	protected SoundEvent getDeathSound() {
-		return TFSounds.CARMINITE_GHASTLING_DEATH.get();
-	}
+    @Override
+    protected int getDisplayModel() {
+        return twilightforest.init.TFItemVisuals.carminiteGhastlingDisplay(this.getAttackStatus(), this.isCharging() || this.isDeadOrDying());
+    }
 
-	@Override
-	public SoundEvent getFireSound() {
-		return TFSounds.CARMINITE_GHASTLING_SHOOT.get();
-	}
+    @Override
+    protected float getDisplayScale() {
+        return 0.7F;
+    }
 
-	@Override
-	public SoundEvent getWarnSound() {
-		return TFSounds.CARMINITE_GHASTLING_WARN.get();
-	}
+    @Override
+    protected float getDisplayYOffset() {
+        return 0.2F;
+    }
 
-	// Loosely based on EnderMan.isLookingAtMe
-	@Override
-	public boolean shouldAttack(LivingEntity living) {
-		ItemStack helmet = living.getItemBySlot(EquipmentSlot.HEAD);
-		if (!helmet.isEmpty() && helmet.is(Items.PUMPKIN)) {
-			return false;
-		} else if (living.distanceTo(this) <= 3.5F) {
-			return living.hasLineOfSight(this);
-		} else {
-			Vec3 vec3d = living.getViewVector(1.0F).normalize();
-			Vec3 vec3d1 = new Vec3(this.getX() - living.getX(), this.getBoundingBox().minY + this.getEyeHeight() - (living.getY() + living.getEyeHeight()), this.getZ() - living.getZ());
-			double d0 = vec3d1.length();
-			vec3d1 = vec3d1.normalize();
-			double d1 = vec3d.dot(vec3d1);
-			return d1 > 1.0D - 0.025D / d0 && living.hasLineOfSight(this);
-		}
-	}
+    @Override
+    public boolean isIgnoringBlockTriggers() {
+        return true;
+    }
 
-	//This does not factor into whether the entity is a Minion or not. However, since it is spawned via MOB_SUMMONED, it will always spawn if that is the SpawnReason
-	public static boolean canSpawnHere(EntityType<CarminiteGhastling> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random) {
-		return world.getDifficulty() != Difficulty.PEACEFUL && (reason == MobSpawnType.MOB_SUMMONED || Monster.isDarkEnoughToSpawn(world, pos, random)) && checkMobSpawnRules(entity, world, reason, pos, random);
-	}
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return TFSounds.CARMINITE_GHASTLING_AMBIENT;
+    }
 
-	public void makeBossMinion() {
-		this.wanderFactor = 0.005F;
-		this.isMinion = true;
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return TFSounds.CARMINITE_GHASTLING_HURT;
+    }
 
-		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(6);
-		this.setHealth(this.getMaxHealth());
-	}
+    @Override
+    protected SoundEvent getDeathSound() {
+        return TFSounds.CARMINITE_GHASTLING_DEATH;
+    }
 
-	public boolean isMinion() {
-		return this.isMinion;
-	}
+    @Override
+    public SoundEvent getFireSound() {
+        return TFSounds.CARMINITE_GHASTLING_SHOOT;
+    }
 
-	@Override
-	public void addAdditionalSaveData(CompoundTag compound) {
-		compound.putBoolean("isMinion", this.isMinion);
-		super.addAdditionalSaveData(compound);
-	}
+    @Override
+    public SoundEvent getWarnSound() {
+        return TFSounds.CARMINITE_GHASTLING_WARN;
+    }
 
-	@Override
-	public void readAdditionalSaveData(CompoundTag compound) {
-		super.readAdditionalSaveData(compound);
-		if (compound.getBoolean("isMinion")) {
-			this.makeBossMinion();
-		}
-	}
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        tag.putBoolean("isMinion", this.minion);
+        super.addAdditionalSaveData(tag);
+    }
 
-	//prevents ghastlings from triggering the traps on accident
-	@Override
-	public boolean isIgnoringBlockTriggers() {
-		return true;
-	}
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        if (tag.getBoolean("isMinion")) {
+            this.makeBossMinion();
+        }
+    }
 }

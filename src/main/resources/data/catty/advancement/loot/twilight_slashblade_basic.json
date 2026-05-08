@@ -1,0 +1,37 @@
+{
+  "criteria": {
+    "kill_twilight_monster": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "dimension": "catty:twilight_realm"
+              }
+            }
+          }
+        ],
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "#catty:twilight_buff_targets"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "function": "catty:loot/twilight_slashblade_basic"
+  },
+  "requirements": [
+    [
+      "kill_twilight_monster"
+    ]
+  ]
+}

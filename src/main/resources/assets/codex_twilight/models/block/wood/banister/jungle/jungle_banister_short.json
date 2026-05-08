@@ -1,0 +1,6 @@
+﻿{
+  "parent": "codex_twilight:block/banister_short",
+  "textures": {
+    "texture": "minecraft:block/jungle_planks"
+  }
+}

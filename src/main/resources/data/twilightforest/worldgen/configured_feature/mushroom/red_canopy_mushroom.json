@@ -1,0 +1,33 @@
+{
+  "type": "twilightforest:weighted_list",
+  "config": [
+    {
+      "data": {
+        "feature": "twilightforest:mushroom/canopy_red_vanilla_mushroom",
+        "placement": []
+      },
+      "weight": 33
+    },
+    {
+      "data": {
+        "feature": "twilightforest:mushroom/canopy_red_smooth_mushroom",
+        "placement": []
+      },
+      "weight": 33
+    },
+    {
+      "data": {
+        "feature": "twilightforest:mushroom/canopy_red_spheroid_mushroom",
+        "placement": []
+      },
+      "weight": 33
+    },
+    {
+      "data": {
+        "feature": "twilightforest:mushroom/canopy_red_flat_mushroom",
+        "placement": []
+      },
+      "weight": 1
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+﻿{
+  "parent": "codex_twilight:block/abstract_bush_0",
+  "textures": {
+    "all": "codex_twilight:block/skyberry_bush"
+  }
+}

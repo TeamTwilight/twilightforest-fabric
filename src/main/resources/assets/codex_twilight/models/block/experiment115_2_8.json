@@ -1,0 +1,34 @@
+﻿{
+    "parent": "block/block",
+    "render_type": "minecraft:cutout",
+    "textures": {
+        "particle": "#bottom",
+        "bottom": "codex_twilight:block/experiment115/experiment115_bottom",
+        "inside": "codex_twilight:block/experiment115/experiment115_inner",
+        "top": "codex_twilight:block/experiment115/experiment115_top",
+        "top_2": "codex_twilight:block/transparent",
+        "side": "codex_twilight:block/experiment115/experiment115_side"
+    },
+    "elements": [
+        {
+            "from": [ 1, 0, 1 ],
+            "to": [ 8, 8, 8 ],
+            "faces": {
+                "down":  { "texture": "#bottom", "cullface": "down" },
+                "up":    { "texture": "#top" },
+                "north": { "texture": "#side" },
+                "south": { "texture": "#inside" },
+                "west":  { "texture": "#side" },
+                "east": { "texture": "#inside" }
+            }
+        }, {
+            "from": [ 1, 8, 1 ],
+            "to": [ 8, 8, 8 ],
+            "faces": {
+                "up":    { "texture": "#top_2", "neoforge_data": { "block_light": 15, "sky_light": 15 } }
+            }
+        }
+    ]
+}
+
+

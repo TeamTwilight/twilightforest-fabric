@@ -1,42 +1,33 @@
 package twilightforest.network;
 
-import me.pepperbell.simplenetworking.S2CPacket;
-import me.pepperbell.simplenetworking.SimpleChannel;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import twilightforest.TwilightForestMod;
 
-import java.util.concurrent.Executor;
+/**
+ * 1:1 port of upstream {@code twilightforest.network.EnforceProgressionStatusPacket}
+ * — server tells client whether progression-enforcement is on (so the client can
+ * adjust UI hints / boss-bar locks). Codex Fabric drops the NF
+ * {@code IPayloadContext}-based handler; the client receiver lives in
+ * {@code CodexNetworking} (or the user's TFGameRules wiring once that's ported).
+ */
+public record EnforceProgressionStatusPacket(boolean enforce) implements CustomPacketPayload {
 
-public class EnforceProgressionStatusPacket implements S2CPacket {
-
-	private final boolean enforce;
+	public static final Type<EnforceProgressionStatusPacket> TYPE = new Type<>(TwilightForestMod.prefix("sync_progression_status"));
+	public static final StreamCodec<RegistryFriendlyByteBuf, EnforceProgressionStatusPacket> STREAM_CODEC = CustomPacketPayload.codec((p, buf) -> p.write(buf), EnforceProgressionStatusPacket::new);
 
 	public EnforceProgressionStatusPacket(FriendlyByteBuf buf) {
-		this.enforce = buf.readBoolean();
+		this(buf.readBoolean());
 	}
 
-	public EnforceProgressionStatusPacket(boolean enforce) {
-		this.enforce = enforce;
-	}
-
-	public void encode(FriendlyByteBuf buf) {
+	public void write(FriendlyByteBuf buf) {
 		buf.writeBoolean(this.enforce);
 	}
 
 	@Override
-	public void handle(Minecraft client, ClientPacketListener handler, PacketSender sender, SimpleChannel responseTarget) {
-		Handler.onMessage(this, client);
-	}
-
-	public static class Handler {
-
-		public static boolean onMessage(EnforceProgressionStatusPacket message, Executor ctx) {
-			ctx.execute(() ->
-					Minecraft.getInstance().level.getGameRules().getRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE).set(message.enforce, null));
-			return true;
-		}
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 }

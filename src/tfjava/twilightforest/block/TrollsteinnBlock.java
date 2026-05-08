@@ -1,0 +1,126 @@
+package twilightforest.block;
+
+import com.google.common.collect.ImmutableMap;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import org.joml.Vector3f;
+
+import java.util.Map;
+
+/**
+ * 1:1 port of upstream {@code twilightforest.block.TrollsteinnBlock} — purple ore-like block
+ * with 6 directional "lit" booleans tracking which neighbour faces have light over the
+ * threshold. Emits redstone-comparator output equal to the brightest neighbour and shows
+ * purple sparkle particles on dim faces.
+ *
+ * <p>Codex Fabric port note: dropped the unused {@code ClientLevel} import; behaviour is
+ * otherwise byte-identical (the {@code calculateServerSkyDarken} helper is stand-alone math
+ * with no Fabric/NF API surface).</p>
+ */
+public class TrollsteinnBlock extends Block {
+	public static final int LIGHT_THRESHOLD = 7;
+	private static final BooleanProperty DOWN_LIT = BooleanProperty.create("down");
+	private static final BooleanProperty UP_LIT = BooleanProperty.create("up");
+	private static final BooleanProperty NORTH_LIT = BooleanProperty.create("north");
+	private static final BooleanProperty SOUTH_LIT = BooleanProperty.create("south");
+	private static final BooleanProperty WEST_LIT = BooleanProperty.create("west");
+	private static final BooleanProperty EAST_LIT = BooleanProperty.create("east");
+	private static final Map<Direction, BooleanProperty> PROPERTY_MAP = ImmutableMap.<Direction, BooleanProperty>builder()
+		.put(Direction.DOWN, DOWN_LIT)
+		.put(Direction.UP, UP_LIT)
+		.put(Direction.NORTH, NORTH_LIT)
+		.put(Direction.SOUTH, SOUTH_LIT)
+		.put(Direction.WEST, WEST_LIT)
+		.put(Direction.EAST, EAST_LIT).build();
+
+	public TrollsteinnBlock(Properties properties) {
+		super(properties);
+
+		this.registerDefaultState(this.getStateDefinition().any()
+			.setValue(DOWN_LIT, false).setValue(UP_LIT, false)
+			.setValue(NORTH_LIT, false).setValue(SOUTH_LIT, false)
+			.setValue(WEST_LIT, false).setValue(EAST_LIT, false));
+	}
+
+	/** Computation from vanilla {@code Level.updateSkyBrightness}. */
+	public static int calculateServerSkyDarken(Level level) {
+		double rainEffect = 1.0 - (double) (level.getRainLevel(1.0F) * 5.0F) / 16.0;
+		double thunderEffect = 1.0 - (double) (level.getThunderLevel(1.0F) * 5.0F) / 16.0;
+		double dayCycleEffect = 0.5 + 2.0 * Mth.clamp(Mth.cos(level.getTimeOfDay(1.0F) * (float) (Math.PI * 2)), -0.25, 0.25);
+		return (int) ((1.0 - dayCycleEffect * rainEffect * thunderEffect) * 11.0);
+	}
+
+	@Override
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		builder.add(DOWN_LIT, UP_LIT, NORTH_LIT, SOUTH_LIT, WEST_LIT, EAST_LIT);
+	}
+
+	@Override
+	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+		BlockState newState = state;
+		for (Direction direction : Direction.values())
+			newState = newState.setValue(PROPERTY_MAP.get(direction), level.getMaxLocalRawBrightness(pos.relative(direction)) > LIGHT_THRESHOLD);
+		if (!newState.equals(state)) level.setBlockAndUpdate(pos, newState);
+	}
+
+	@Override
+	@SuppressWarnings("deprecation")
+	public boolean hasAnalogOutputSignal(BlockState state) {
+		return true;
+	}
+
+	@Override
+	@SuppressWarnings("deprecation")
+	public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+		int peak = 0;
+		for (Direction direction : Direction.values())
+			peak = Math.max(level.getMaxLocalRawBrightness(pos.relative(direction)), peak);
+		return peak;
+	}
+
+	@Override
+	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+		BlockState ret = defaultBlockState();
+		for (Map.Entry<Direction, BooleanProperty> e : PROPERTY_MAP.entrySet()) {
+			Level level = ctx.getLevel();
+			BlockPos pos = ctx.getClickedPos();
+			int light = level.getMaxLocalRawBrightness(pos.relative(e.getKey()),
+				level.isClientSide() ? calculateServerSkyDarken(level) : level.getSkyDarken());
+			ret = ret.setValue(e.getValue(), light > LIGHT_THRESHOLD);
+		}
+		return ret;
+	}
+
+	@Override
+	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
+		if (rand.nextBoolean()) this.sparkle(level, pos);
+	}
+
+	private static final DustParticleOptions PURPL = new DustParticleOptions(new Vector3f(0.25F, 0.0F, 0.5F), 1.0F);
+
+	// [VanillaCopy] Based on RedstoneOreBlock.spawnParticles
+	private void sparkle(Level level, BlockPos pos) {
+		RandomSource random = level.getRandom();
+
+		for (Direction direction : Direction.values()) {
+			BlockPos blockpos = pos.relative(direction);
+			if (!level.getBlockState(blockpos).isSolidRender(level, blockpos) && level.getMaxLocalRawBrightness(pos.relative(direction)) <= LIGHT_THRESHOLD) {
+				Direction.Axis direction$axis = direction.getAxis();
+				double d1 = direction$axis == Direction.Axis.X ? 0.5 + 0.5625 * (double) direction.getStepX() : (double) random.nextFloat();
+				double d2 = direction$axis == Direction.Axis.Y ? 0.5 + 0.5625 * (double) direction.getStepY() : (double) random.nextFloat();
+				double d3 = direction$axis == Direction.Axis.Z ? 0.5 + 0.5625 * (double) direction.getStepZ() : (double) random.nextFloat();
+				level.addParticle(PURPL, (double) pos.getX() + d1, (double) pos.getY() + d2, (double) pos.getZ() + d3, 0.0, 0.0, 0.0);
+			}
+		}
+	}
+}

@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "twilightforest:block/mossy_etched_nagastone"
+    },
+    "facing=east": {
+      "model": "twilightforest:block/mossy_etched_nagastone_east"
+    },
+    "facing=north": {
+      "model": "twilightforest:block/mossy_etched_nagastone_north"
+    },
+    "facing=south": {
+      "model": "twilightforest:block/mossy_etched_nagastone_south"
+    },
+    "facing=up": {
+      "model": "twilightforest:block/mossy_etched_nagastone_up"
+    },
+    "facing=west": {
+      "model": "twilightforest:block/mossy_etched_nagastone_west"
+    }
+  }
+}

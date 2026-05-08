@@ -1,0 +1,137 @@
+package twilightforest.block;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.Stats;
+import net.minecraft.util.RandomSource;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.FireChargeItem;
+import net.minecraft.world.item.FlintAndSteelItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
+import twilightforest.init.TFParticleType;
+
+import java.util.Locale;
+
+/**
+ * 1:1 port of upstream {@code twilightforest.block.LightableBlock}.
+ *
+ * <p>NeoForge → Fabric translations:
+ * <ul>
+ *   <li>{@code stack.canPerformAction(ItemAbilities.FIRESTARTER_LIGHT)} → vanilla
+ *       {@code stack.getItem() instanceof FlintAndSteelItem || FireChargeItem}.
+ *       NeoForge ItemAbilities catalogues tool capabilities at the API layer; Fabric has
+ *       no equivalent so we fall back to instanceof checks against the two vanilla
+ *       firestarter item classes (modded firestarters that subclass these still work).</li>
+ *   <li>{@code TFParticleType.X} → codex's direct {@code ParticleOptions} field.</li>
+ * </ul>
+ */
+public interface LightableBlock {
+
+	EnumProperty<Lighting> LIGHTING = EnumProperty.create("lighting", Lighting.class);
+
+	default ItemInteractionResult tryLightCandles(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player) {
+		return this.tryLightCandles(stack, state, level, pos, player, InteractionHand.MAIN_HAND);
+	}
+
+	default ItemInteractionResult tryLightCandles(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand) {
+		if (stack.isEmpty() && player.getAbilities().mayBuild && state.getValue(LIGHTING) != Lighting.NONE) {
+			this.extinguish(player, state, level, pos);
+			return ItemInteractionResult.sidedSuccess(level.isClientSide());
+		} else if (this.canBeLit(state)) {
+			if (stack.getItem() instanceof FlintAndSteelItem || stack.getItem() instanceof FireChargeItem) {
+				if (!level.isClientSide()) {
+					this.setLit(level, state, pos, true);
+					level.playSound(null, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.4F + 0.8F);
+					level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
+					player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
+					if (stack.getItem() instanceof FlintAndSteelItem) {
+						stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
+					} else {
+						stack.consume(1, player);
+					}
+				}
+				return ItemInteractionResult.sidedSuccess(level.isClientSide());
+			}
+		}
+		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+	}
+
+	default void lightCandlesWithProjectile(Level level, BlockState state, BlockHitResult result, Projectile projectile) {
+		if (!level.isClientSide() && projectile.isOnFire() && this.canBeLit(state)) {
+			this.setLit(level, state, result.getBlockPos(), true);
+		}
+	}
+
+	default boolean canBeLit(BlockState state) {
+		return state.getValue(LIGHTING) == Lighting.NONE;
+	}
+
+	Iterable<Vec3> getParticleOffsets(BlockState state, LevelAccessor level, BlockPos pos);
+
+	default void addParticlesAndSound(Level level, BlockPos pos, double xFraction, double yFraction, double zFraction, RandomSource rand, Lighting lighting) {
+		this.addParticlesAndSound(level, pos.getX() + xFraction, pos.getY() + yFraction, pos.getZ() + zFraction, rand, lighting);
+	}
+
+	default void addParticlesAndSound(Level level, double x, double y, double z, RandomSource rand, Lighting lighting) {
+		float var3 = rand.nextFloat();
+		if (var3 < 0.3F) {
+			if (lighting == Lighting.NORMAL) level.addParticle(ParticleTypes.SMOKE, x, y, z, 0.0D, 0.0D, 0.0D);
+			if (var3 < 0.17F) {
+				level.playLocalSound(x + 0.5D, y + 0.5D, z + 0.5D, SoundEvents.CANDLE_AMBIENT, SoundSource.BLOCKS, 1.0F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.3F, false);
+			}
+		}
+
+		ParticleOptions particle = switch (lighting) {
+			default -> ParticleTypes.SMALL_FLAME;
+			case DIM -> TFParticleType.DIM_FLAME;
+			case OMINOUS -> TFParticleType.OMINOUS_FLAME;
+		};
+
+		level.addParticle(particle, x, y, z, 0.0D, 0.0D, 0.0D);
+	}
+
+	default void extinguish(@Nullable Player player, BlockState state, LevelAccessor accessor, BlockPos pos) {
+		this.setLit(accessor, state, pos, false);
+
+		if (state.getBlock() instanceof LightableBlock lightableBlock) {
+			lightableBlock.getParticleOffsets(state, accessor, pos).forEach((vec3) ->
+				accessor.addParticle(ParticleTypes.SMOKE, (double) pos.getX() + vec3.x, (double) pos.getY() + vec3.y, (double) pos.getZ() + vec3.z, 0.0D, 0.025D, 0.0D));
+		}
+
+		accessor.playSound(null, pos, SoundEvents.CANDLE_EXTINGUISH, SoundSource.BLOCKS, 1.0F, 1.0F);
+		accessor.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
+	}
+
+	default void setLit(LevelAccessor accessor, BlockState state, BlockPos pos, boolean lit) {
+		accessor.setBlock(pos, state.setValue(LIGHTING, lit ? Lighting.NORMAL : Lighting.NONE), Block.UPDATE_ALL_IMMEDIATE);
+	}
+
+	enum Lighting implements StringRepresentable {
+		NONE,
+		NORMAL,
+		DIM,
+		OMINOUS;
+
+		@Override
+		public String getSerializedName() {
+			return name().toLowerCase(Locale.ROOT);
+		}
+	}
+}

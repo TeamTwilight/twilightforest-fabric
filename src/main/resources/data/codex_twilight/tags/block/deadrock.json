@@ -1,0 +1,16 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:deadrock",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:cracked_deadrock",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:weathered_deadrock",
+                       "required":  false
+                   }
+               ]
+}

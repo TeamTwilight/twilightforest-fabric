@@ -1,0 +1,9 @@
+﻿{
+  "parent": "block/cube_column",
+  "textures": {
+    "particle": "codex_twilight:block/nagastone_cross_section",
+    "end": "codex_twilight:block/nagastone_cross_section",
+    "side": "codex_twilight:block/nagastone_long_vertical"
+  }
+}
+

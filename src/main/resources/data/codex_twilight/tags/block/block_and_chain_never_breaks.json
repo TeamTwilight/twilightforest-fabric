@@ -1,0 +1,37 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "#codex_twilight:mazestone",
+                       "required":  false
+                   },
+                   {
+                       "id":  "#codex_twilight:castle_blocks",
+                       "required":  false
+                   },
+                   {
+                       "id":  "#codex_twilight:deadrock",
+                       "required":  false
+                   },
+                   "#minecraft:wither_immune",
+                   {
+                       "id":  "codex_twilight:time_log_core",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:transformation_log_core",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:mining_log_core",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:sorting_log_core",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:giant_obsidian",
+                       "required":  false
+                   }
+               ]
+}

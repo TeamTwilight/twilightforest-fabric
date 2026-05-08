@@ -1,0 +1,20 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:timewood",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:transwood",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:minewood",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:sortwood",
+                       "required":  false
+                   }
+               ]
+}

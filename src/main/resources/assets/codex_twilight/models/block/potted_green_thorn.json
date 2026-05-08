@@ -1,0 +1,7 @@
+﻿{
+  "parent": "codex_twilight:block/potted_thorn_template",
+  "textures": {
+    "thorn_side": "codex_twilight:block/green_thorns_side",
+    "thorn_top": "codex_twilight:block/green_thorns_top"
+  }
+}

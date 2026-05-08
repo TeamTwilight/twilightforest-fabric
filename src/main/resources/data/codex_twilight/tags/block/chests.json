@@ -1,0 +1,36 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:twilight_oak_chest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:canopy_chest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:mangrove_chest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:dark_chest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:time_chest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:transformation_chest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:mining_chest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:sorting_chest",
+                       "required":  false
+                   }
+               ]
+}

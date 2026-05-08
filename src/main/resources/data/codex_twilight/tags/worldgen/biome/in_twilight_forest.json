@@ -1,0 +1,176 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:clearing",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:dense_forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:dense_mushroom_forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:firefly_forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:mushroom_forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:oak_savannah",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:spooky_forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:enchanted_forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:dense_mushroom_forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:lake",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:stream",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:underground",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:swamp",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:fire_swamp",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:dark_forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:dark_forest_center",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:snowy_forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:glacier",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:highlands",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:thornlands",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:final_plateau",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:clearing",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:dense_forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:dense_mushroom_forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:firefly_forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:mushroom_forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:oak_savannah",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:spooky_forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:enchanted_forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:lake",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:stream",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:underground",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:swamp",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:fire_swamp",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:dark_forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:dark_forest_center",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:snowy_forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:glacier",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:highlands",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:thornlands",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:final_plateau",
+                       "required":  false
+                   }
+               ]
+}

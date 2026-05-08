@@ -9,8 +9,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -20,137 +19,144 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.entity.IBreathAttacker;
-import twilightforest.entity.ai.goal.BreathAttackGoal;
 import twilightforest.init.TFDamageTypes;
+import twilightforest.init.TFItemVisuals;
 import twilightforest.init.TFSounds;
 
-public class FireBeetle extends Monster implements IBreathAttacker {
+import java.util.List;
 
-	private static final EntityDataAccessor<Boolean> BREATHING = SynchedEntityData.defineId(FireBeetle.class, EntityDataSerializers.BOOLEAN);
-	private static final int BREATH_DURATION = 10;
-	private static final int BREATH_DAMAGE = 2;
+public class FireBeetle extends Monster {
+    private static final EntityDataAccessor<Boolean> BREATHING = SynchedEntityData.defineId(FireBeetle.class, EntityDataSerializers.BOOLEAN);
+    private int breathTicks;
+    private int breathCooldown;
 
-	public FireBeetle(EntityType<? extends FireBeetle> type, Level world) {
-		super(type, world);
-	}
+    public FireBeetle(EntityType<? extends FireBeetle> type, Level level) {
+        super(type, level);
+    }
 
-	@Override
-	protected void registerGoals() {
-		this.goalSelector.addGoal(0, new FloatGoal(this));
-		this.goalSelector.addGoal(2, new BreathAttackGoal<>(this, 5F, 30, 0.1F));
-		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0F, false));
-		this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
-	}
+    public static AttributeSupplier.Builder registerAttributes() {
+        return Monster.createMonsterAttributes()
+                .add(Attributes.MAX_HEALTH, 25.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.23D)
+                .add(Attributes.ATTACK_DAMAGE, 4.0D);
+    }
 
-	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.getEntityData().define(BREATHING, false);
-	}
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(BREATHING, false);
+    }
 
-	public static AttributeSupplier.Builder registerAttributes() {
-		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 25.0D)
-				.add(Attributes.MOVEMENT_SPEED, 0.23D)
-				.add(Attributes.ATTACK_DAMAGE, 4.0D);
-	}
+    @Override
+    protected void registerGoals() {
+        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false));
+        this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+    }
 
-	@Override
-	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.FIRE_BEETLE_HURT.get();
-	}
+    @Override
+    public void aiStep() {
+        super.aiStep();
+        if (!this.level().isClientSide()) {
+            this.updateBreathAttack();
+        }
+        if (this.isBreathing()) {
+            this.spawnBreathParticles();
+            if (this.tickCount % 5 == 0) {
+                this.playSound(TFSounds.FIRE_BEETLE_SHOOT, this.getRandom().nextFloat() * 0.5F, this.getRandom().nextFloat() * 0.5F + 0.5F);
+            }
+        }
+    }
 
-	@Override
-	protected SoundEvent getDeathSound() {
-		return TFSounds.FIRE_BEETLE_DEATH.get();
-	}
+    private void updateBreathAttack() {
+        if (this.breathCooldown > 0) {
+            this.breathCooldown--;
+        }
+        LivingEntity target = this.getTarget();
+        if (target == null || !target.isAlive()) {
+            this.setBreathing(false);
+            return;
+        }
+        if (this.breathTicks > 0) {
+            this.breathTicks--;
+            this.setBreathing(true);
+            this.getLookControl().setLookAt(target, 30.0F, 30.0F);
+            if (this.distanceToSqr(target) < 25.0D && this.getSensing().hasLineOfSight(target) && this.tickCount % 5 == 0) {
+                this.doBreathAttack(target);
+            }
+            if (this.breathTicks <= 0) {
+                this.setBreathing(false);
+                this.breathCooldown = 30;
+            }
+        } else if (this.breathCooldown <= 0 && this.distanceToSqr(target) < 25.0D && this.getSensing().hasLineOfSight(target)) {
+            this.breathTicks = 10;
+        }
+    }
 
-	@Override
-	protected void playStepSound(BlockPos pos, BlockState block) {
-		playSound(TFSounds.FIRE_BEETLE_STEP.get(), 0.15F, 1.0F);
-	}
+    private void spawnBreathParticles() {
+        Vec3 look = this.getLookAngle();
+        double px = this.getX() + look.x() * 0.9D;
+        double py = this.getY() + 0.25D + look.y() * 0.9D;
+        double pz = this.getZ() + look.z() * 0.9D;
+        for (int i = 0; i < 2; i++) {
+            double spread = 5.0D + this.getRandom().nextDouble() * 2.5D;
+            double velocity = 0.15D + this.getRandom().nextDouble() * 0.15D;
+            this.level().addParticle(ParticleTypes.FLAME, px, py, pz, (look.x() + this.getRandom().nextGaussian() * 0.0075D * spread) * velocity, (look.y() + this.getRandom().nextGaussian() * 0.0075D * spread) * velocity, (look.z() + this.getRandom().nextGaussian() * 0.0075D * spread) * velocity);
+        }
+    }
 
-	@Override
-	public boolean isBreathing() {
-		return this.getEntityData().get(BREATHING);
-	}
+    public boolean isBreathing() {
+        return this.getEntityData().get(BREATHING);
+    }
 
-	@Override
-	public void setBreathing(boolean flag) {
-		this.getEntityData().set(BREATHING, flag);
-	}
+    public void setBreathing(boolean breathing) {
+        this.getEntityData().set(BREATHING, breathing);
+    }
 
-	@Override
-	public void aiStep() {
-		super.aiStep();
+    public void doBreathAttack(Entity target) {
+        if (!target.fireImmune() && target.hurt(TFDamageTypes.entitySource(this.level(), TFDamageTypes.SCORCHED, this), 2.0F)) {
+            target.igniteForSeconds(10.0F);
+        }
+    }
 
-		// when breathing fire, spew particles
-		if (this.isBreathing()) {
-			Vec3 look = this.getLookAngle();
+    @Override
+    public boolean doHurtTarget(Entity entity) {
+        if (this.isBreathing()) {
+            this.doBreathAttack(entity);
+            return true;
+        }
+        return super.doHurtTarget(entity);
+    }
 
-			double dist = 0.9;
-			double px = this.getX() + look.x() * dist;
-			double py = this.getY() + 0.25D + look.y() * dist;
-			double pz = this.getZ() + look.z() * dist;
+    @Override
+    public int getMaxHeadXRot() {
+        return 500;
+    }
 
-			for (int i = 0; i < 2; i++) {
-				double dx = look.x();
-				double dy = look.y();
-				double dz = look.z();
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return TFSounds.FIRE_BEETLE_AMBIENT;
+    }
 
-				double spread = 5 + this.getRandom().nextDouble() * 2.5;
-				double velocity = 0.15 + this.getRandom().nextDouble() * 0.15;
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return TFSounds.FIRE_BEETLE_HURT;
+    }
 
-				// spread flame
-				dx += this.getRandom().nextGaussian() * 0.0075D * spread;
-				dy += this.getRandom().nextGaussian() * 0.0075D * spread;
-				dz += this.getRandom().nextGaussian() * 0.0075D * spread;
-				dx *= velocity;
-				dy *= velocity;
-				dz *= velocity;
+    @Override
+    protected SoundEvent getDeathSound() {
+        return TFSounds.FIRE_BEETLE_DEATH;
+    }
 
-				this.level().addParticle(ParticleTypes.FLAME, px, py, pz, dx, dy, dz);
-			}
-
-			playSound(TFSounds.FIRE_BEETLE_SHOOT.get(), this.getRandom().nextFloat() * 0.5F, this.getRandom().nextFloat() * 0.5F);
-			this.gameEvent(GameEvent.PROJECTILE_SHOOT);
-		}
-	}
-
-	@Override
-	public int getMaxHeadXRot() {
-		return 500;
-	}
-
-	@Override
-	public float getEyeHeight(Pose pose) {
-		return this.getBbHeight() * 0.6F;
-	}
-
-	@Override
-	public MobType getMobType() {
-		return MobType.ARTHROPOD;
-	}
-
-	@Override
-	public void doBreathAttack(Entity target) {
-		if (!target.fireImmune() && target.hurt(TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.SCORCHED, this), BREATH_DAMAGE)) {
-			target.setSecondsOnFire(BREATH_DURATION);
-		}
-	}
-
-	@Override
-	public boolean doHurtTarget(Entity entity) {
-		if (this.isBreathing()) {
-			return entity.hurt(TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.SCORCHED, this), BREATH_DAMAGE);
-		}
-		return super.doHurtTarget(entity);
-	}
+    @Override
+    protected void playStepSound(BlockPos pos, BlockState state) {
+        this.playSound(TFSounds.FIRE_BEETLE_STEP, 0.15F, 1.0F);
+    }
 }

@@ -1,0 +1,36 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "#codex_twilight:twilight_oak_logs",
+                       "required":  false
+                   },
+                   {
+                       "id":  "#codex_twilight:canopy_logs",
+                       "required":  false
+                   },
+                   {
+                       "id":  "#codex_twilight:mangrove_logs",
+                       "required":  false
+                   },
+                   {
+                       "id":  "#codex_twilight:darkwood_logs",
+                       "required":  false
+                   },
+                   {
+                       "id":  "#codex_twilight:timewood_logs",
+                       "required":  false
+                   },
+                   {
+                       "id":  "#codex_twilight:transwood_logs",
+                       "required":  false
+                   },
+                   {
+                       "id":  "#codex_twilight:mining_logs",
+                       "required":  false
+                   },
+                   {
+                       "id":  "#codex_twilight:sortwood_logs",
+                       "required":  false
+                   }
+               ]
+}

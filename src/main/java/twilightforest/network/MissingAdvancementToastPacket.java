@@ -1,51 +1,33 @@
 package twilightforest.network;
 
-import me.pepperbell.simplenetworking.S2CPacket;
-import me.pepperbell.simplenetworking.SimpleChannel;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientPacketListener;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.item.ItemStack;
-import twilightforest.client.MissingAdvancementToast;
+import twilightforest.TwilightForestMod;
 
-import java.util.concurrent.Executor;
+/**
+ * 1:1 port of upstream {@code twilightforest.network.MissingAdvancementToastPacket}
+ * — server pushes a "you're missing required advancement" toast (with title + icon)
+ * to a client that tried to interact with a progression-locked feature.
+ *
+ * <p>Codex Fabric port note: NF static {@code handle(...)} receiver dropped — the
+ * client-side {@code Minecraft.getInstance().getToasts().addToast(...)} dispatch is
+ * wired in {@code CodexNetworking} client side once {@code MissingAdvancementToast}
+ * exists.</p>
+ */
+public record MissingAdvancementToastPacket(Component title, ItemStack icon) implements CustomPacketPayload {
 
-public class MissingAdvancementToastPacket implements S2CPacket {
-	private final Component title;
-	private final ItemStack icon;
+	public static final Type<MissingAdvancementToastPacket> TYPE = new Type<>(TwilightForestMod.prefix("missing_advancement_toast"));
+	public static final StreamCodec<RegistryFriendlyByteBuf, MissingAdvancementToastPacket> STREAM_CODEC = StreamCodec.composite(
+		ComponentSerialization.STREAM_CODEC, MissingAdvancementToastPacket::title,
+		ItemStack.STREAM_CODEC, MissingAdvancementToastPacket::icon,
+		MissingAdvancementToastPacket::new);
 
-	public MissingAdvancementToastPacket(Component title, ItemStack icon) {
-		this.title = title;
-		this.icon = icon;
+	@Override
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
-
-	public MissingAdvancementToastPacket(FriendlyByteBuf buf) {
-		this.title = buf.readComponent();
-		this.icon = buf.readItem();
-	}
-
-	public void encode(FriendlyByteBuf buf) {
-		buf.writeComponent(this.title);
-		buf.writeItem(this.icon);
-	}
-
-	public static class Handler {
-		@SuppressWarnings("Convert2Lambda")
-		public static boolean onMessage(MissingAdvancementToastPacket packet, Executor ctx) {
-			ctx.execute(new Runnable() {
-				@Override
-				public void run() {
-					Minecraft.getInstance().getToasts().addToast(new MissingAdvancementToast(packet.title, packet.icon));
-				}
-			});
-			return true;
-		}
-	}
-
-    @Override
-    public void handle(Minecraft client, ClientPacketListener handler, PacketSender sender, SimpleChannel responseTarget) {
-        Handler.onMessage(this, client);
-    }
 }

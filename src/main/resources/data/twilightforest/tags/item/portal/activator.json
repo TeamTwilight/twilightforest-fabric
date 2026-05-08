@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:diamond",
+    "#c:gems/diamond"
+  ]
+}

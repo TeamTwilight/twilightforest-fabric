@@ -1,0 +1,16 @@
+﻿{
+  "parent": "minecraft:block/block",
+  "connectable_blocks": [
+    "codex_twilight:auroralized_glass"
+  ],
+  "connected_texture": {
+    "render_disabled_faces": true,
+    "tint_index": 0
+  },
+  "loader": "codex_twilight:connected_texture_block",
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "overlay_connected": "codex_twilight:block/auroralized_glass_ct",
+    "overlay_texture": "codex_twilight:block/auroralized_glass"
+  }
+}

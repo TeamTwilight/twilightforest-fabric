@@ -1,0 +1,8 @@
+{
+    "replace":  false,
+    "values":  [
+                   "twilightforest:highlands",
+                   "twilightforest:snowy_forest",
+                   "twilightforest:glacier"
+               ]
+}

@@ -1,0 +1,6 @@
+﻿{
+  "parent": "codex_twilight:block/abstract_bush_grown_3",
+  "textures": {
+    "all": "codex_twilight:block/copper_oreberry_ripe"
+  }
+}

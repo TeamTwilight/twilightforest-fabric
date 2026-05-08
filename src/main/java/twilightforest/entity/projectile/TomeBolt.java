@@ -3,12 +3,14 @@ package twilightforest.entity.projectile;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ItemSupplier;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -16,73 +18,83 @@ import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import twilightforest.init.TFDamageTypes;
 
-public class TomeBolt extends TFThrowable implements ItemSupplier {
+public class TomeBolt extends ThrowableProjectile implements ItemSupplier {
+    public TomeBolt(EntityType<? extends TomeBolt> type, Level level) {
+        super(type, level);
+    }
 
-	public TomeBolt(EntityType<? extends TomeBolt> type, Level world, LivingEntity thrower) {
-		super(type, world, thrower);
-	}
+    public TomeBolt(EntityType<? extends TomeBolt> type, Level level, LivingEntity owner) {
+        super(type, owner, level);
+    }
 
-	public TomeBolt(EntityType<? extends TomeBolt> type, Level world) {
-		super(type, world);
-	}
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+    }
 
-	@Override
-	public void tick() {
-		super.tick();
-		this.makeTrail(ParticleTypes.CRIT, 5);
-	}
+    @Override
+    public void tick() {
+        super.tick();
+        this.makeTrail(ParticleTypes.CRIT, 5);
+        if (!this.onGround()) {
+            this.setDeltaMovement(this.getDeltaMovement().add(0.0D, 0.027D, 0.0D));
+        }
+    }
 
-	@Override
-	protected float getGravity() {
-		return 0.003F;
-	}
+    @Override
+    public void handleEntityEvent(byte id) {
+        if (id == 3) {
+            ParticleOptions particle = new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.PAPER));
+            for (int i = 0; i < 8; ++i) {
+                this.level().addParticle(particle, false, this.getX(), this.getY(), this.getZ(), this.random.nextGaussian() * 0.05D, this.random.nextDouble() * 0.2D, this.random.nextGaussian() * 0.05D);
+            }
+        } else {
+            super.handleEntityEvent(id);
+        }
+    }
 
+    @Override
+    protected void onHitEntity(EntityHitResult result) {
+        super.onHitEntity(result);
+        if (result.getEntity() instanceof LivingEntity living) {
+            if (living.hurt(TFDamageTypes.indirectSource(this.level(), this.random.nextBoolean() ? TFDamageTypes.LOST_WORDS : TFDamageTypes.SCHOOLED, this, this.getOwner()), 3.0F)) {
+                int duration = switch (this.level().getDifficulty()) {
+                    case EASY -> 2;
+                    case NORMAL -> 6;
+                    case HARD -> 8;
+                    default -> 4;
+                };
+                living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, duration * 20, 1));
+            }
+        }
+    }
 
-	@Environment(EnvType.CLIENT)
-	@Override
-	public void handleEntityEvent(byte id) {
-		if (id == 3) {
-			ParticleOptions particle = new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.PAPER));
-			for (int i = 0; i < 8; ++i) {
-				this.level().addParticle(particle, false, this.getX(), this.getY(), this.getZ(), this.random.nextGaussian() * 0.05D, this.random.nextDouble() * 0.2D, this.random.nextGaussian() * 0.05D);
-			}
-		} else {
-			super.handleEntityEvent(id);
-		}
-	}
+    @Override
+    protected void onHit(HitResult result) {
+        if (this.getOwner() != null && result instanceof BlockHitResult blockHitResult
+                && this.getOwner().blockPosition().equals(blockHitResult.getBlockPos())
+                && this.level().getBlockState(blockHitResult.getBlockPos()).getBlock() instanceof LecternBlock) {
+            return;
+        }
+        super.onHit(result);
+        if (!this.level().isClientSide()) {
+            this.level().broadcastEntityEvent(this, (byte) 3);
+            this.discard();
+        }
+    }
 
-	@Override
-	protected void onHitEntity(EntityHitResult result) {
-		super.onHitEntity(result);
-		if (result.getEntity() instanceof LivingEntity living) {
-			if (result.getEntity().hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), this.random.nextBoolean() ? TFDamageTypes.LOST_WORDS : TFDamageTypes.SCHOOLED, this.getOwner(), this), 3)) {
-				// inflict move slowdown
-				int duration = this.level().getDifficulty() == Difficulty.EASY ? 2 : this.level().getDifficulty() == Difficulty.NORMAL ? 6 : 8;
-				living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, duration * 20, 1));
-			}
-		}
-	}
+    @Override
+    public ItemStack getItem() {
+        return new ItemStack(Items.PAPER);
+    }
 
-	@Override
-	protected void onHit(HitResult result) {
-		if (this.getOwner() != null && result instanceof BlockHitResult blockHitResult &&
-				this.getOwner().blockPosition().equals(blockHitResult.getBlockPos()) &&
-				this.level().getBlockState(blockHitResult.getBlockPos()).getBlock() instanceof LecternBlock) {
-			return;
-		}
-		super.onHit(result);
-		if (!this.level().isClientSide()) {
-			this.level().broadcastEntityEvent(this, (byte) 3);
-			this.discard();
-		}
-	}
-
-	@Override
-	public ItemStack getItem() {
-		return new ItemStack(Items.PAPER);
-	}
+    private void makeTrail(ParticleOptions particle, int amount) {
+        for (int i = 0; i < amount; i++) {
+            double dx = this.getX() + 0.5D * (this.random.nextDouble() - this.random.nextDouble());
+            double dy = this.getY() + 0.5D * (this.random.nextDouble() - this.random.nextDouble());
+            double dz = this.getZ() + 0.5D * (this.random.nextDouble() - this.random.nextDouble());
+            this.level().addParticle(particle, dx, dy, dz, 0.0D, 0.0D, 0.0D);
+        }
+    }
 }

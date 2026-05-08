@@ -1,0 +1,13 @@
+﻿{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "codex_twilight:block/nagastone_cross_section",
+    "up": "codex_twilight:block/nagastone_tip_long",
+    "down": "codex_twilight:block/nagastone_bottom_long",
+    "west": "codex_twilight:block/nagastone_cross_section",
+    "north": "codex_twilight:block/nagastone_long_side",
+    "east": "codex_twilight:block/nagastone_cross_section",
+    "south": "codex_twilight:block/nagastone_long_side"
+  }
+}
+

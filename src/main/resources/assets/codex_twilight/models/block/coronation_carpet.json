@@ -1,0 +1,8 @@
+﻿{
+  "parent": "minecraft:block/carpet",
+  "loader": "codex_twilight:royal_rags",
+  "textures": {
+    "wool": "codex_twilight:block/coronation_carpet",
+    "wool_ctm": "codex_twilight:block/coronation_carpet_ctm"
+  }
+}

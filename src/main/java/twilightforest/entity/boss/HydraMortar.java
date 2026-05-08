@@ -2,28 +2,39 @@ package twilightforest.entity.boss;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
-import net.minecraft.world.level.*;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.level.Explosion;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFDamageTypes;
-import twilightforest.init.TFEntities;
 
+/**
+ * 1:1 port of upstream {@code twilightforest.entity.boss.HydraMortar} — Hydra-head
+ * mortar projectile that lobs a slow gravity-affected explosive ball; a "mega
+ * blast" variant ({@link #setToBlasting()}) detonates with much higher power and
+ * ignores blocks tagged {@link BlockTagGenerator#COMMON_PROTECTIONS}.
+ *
+ * <p>Codex Fabric port note: NeoForge {@code EventHooks.canEntityGrief} → vanilla
+ * {@code GameRules.RULE_MOBGRIEFING} check; upstream's 5-arg
+ * {@code TFDamageTypes.getIndirectEntityDamageSource(level, type, direct, cause,
+ * entityType)} is reduced to codex's 4-arg {@code TFDamageTypes.indirectSource(
+ * level, type, direct, cause)} — entity-type credit attribution is dropped, but
+ * direct/cause attribution still flows correctly so death messages still show the
+ * Hydra as the attacker.</p>
+ */
 public class HydraMortar extends ThrowableProjectile {
 
 	private static final int BURN_FACTOR = 5;
@@ -36,6 +47,7 @@ public class HydraMortar extends ThrowableProjectile {
 		super(type, world);
 	}
 
+	@SuppressWarnings("this-escape")
 	public HydraMortar(EntityType<? extends HydraMortar> type, Level world, HydraHead head) {
 		super(type, head.getParent(), world);
 
@@ -47,15 +59,12 @@ public class HydraMortar extends ThrowableProjectile {
 		double pz = head.getZ() + vector.z() * dist;
 
 		this.moveTo(px, py, pz, 0, 0);
-		// these are being set to extreme numbers when we get here, why?
 		head.setDeltaMovement(Vec3.ZERO);
 		this.shootFromRotation(head, head.getXRot(), head.getYRot(), -20.0F, 0.5F, 1F);
-
-		//TwilightForestMod.LOGGER.debug("Launching mortar! Current head motion is {}, {}", head.getDeltaMovement().x(), head.getDeltaMovement().z());
 	}
 
 	@Override
-	protected void defineSynchedData() {
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 
 	}
 
@@ -80,9 +89,9 @@ public class HydraMortar extends ThrowableProjectile {
 	protected void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
 		if (!this.megaBlast) {
-			//if we hit a wall, explode
+			// If we hit a wall, explode.
 			if (result.getDirection() != Direction.UP) this.detonate();
-			// we hit the ground
+			// We hit the ground.
 			this.setDeltaMovement(this.getDeltaMovement().x(), 0.0D, this.getDeltaMovement().z());
 			this.setOnGround(true);
 		} else {
@@ -127,12 +136,13 @@ public class HydraMortar extends ThrowableProjectile {
 
 	private void detonate() {
 		float explosionPower = megaBlast ? 4.0F : 0.1F;
+		// Codex Fabric: NF {@code EventHooks.canEntityGrief(level, this)} → vanilla mobgriefing rule.
 		boolean flag = this.level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
 		this.level().explode(this, this.getX(), this.getY(), this.getZ(), explosionPower, flag, Level.ExplosionInteraction.MOB);
 
 		for (Entity nearby : this.level().getEntities(this, this.getBoundingBox().inflate(1.0D, 1.0D, 1.0D))) {
-			if ((!nearby.fireImmune() || nearby instanceof Hydra || nearby instanceof HydraPart) && nearby.hurt(TFDamageTypes.getDamageSource(this.level(), TFDamageTypes.HYDRA_MORTAR, TFEntities.HYDRA.get()), DIRECT_DAMAGE)) {
-				nearby.setSecondsOnFire(BURN_FACTOR);
+			if ((!nearby.fireImmune() || nearby instanceof Hydra || nearby instanceof HydraPart) && nearby.hurt(TFDamageTypes.indirectSource(this.level(), TFDamageTypes.HYDRA_MORTAR, this, this.getOwner()), DIRECT_DAMAGE)) {
+				nearby.igniteForSeconds(BURN_FACTOR);
 			}
 		}
 
@@ -146,8 +156,8 @@ public class HydraMortar extends ThrowableProjectile {
 		if (source.getEntity() != null && !this.level().isClientSide()) {
 			Vec3 vec3d = source.getEntity().getLookAngle();
 			if (vec3d != null) {
-				// reflect faster and more accurately
-				this.shoot(vec3d.x(), vec3d.y(), vec3d.z(), 1.5F, 0.1F);  // reflect faster and more accurately
+				// Reflect faster and more accurately.
+				this.shoot(vec3d.x(), vec3d.y(), vec3d.z(), 1.5F, 0.1F);
 				this.setOnGround(false);
 				this.fuse += 20;
 			}
@@ -172,7 +182,7 @@ public class HydraMortar extends ThrowableProjectile {
 	}
 
 	/**
-	 * We need to set this so that the player can attack and reflect the bolt
+	 * We need to set this so that the player can attack and reflect the bolt.
 	 */
 	@Override
 	public float getPickRadius() {
@@ -180,7 +190,7 @@ public class HydraMortar extends ThrowableProjectile {
 	}
 
 	@Override
-	protected float getGravity() {
-		return 0.05F;
+	protected double getDefaultGravity() {
+		return 0.05D;
 	}
 }

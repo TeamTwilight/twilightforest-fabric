@@ -1,0 +1,58 @@
+{
+  "pools": [
+    {
+      "name": "slashblade_soul_shards",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "slashblade:proudsoul_tiny",
+          "weight": 12
+        },
+        {
+          "type": "minecraft:item",
+          "name": "slashblade:proudsoul",
+          "weight": 4
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance",
+          "chance": 0.08
+        }
+      ]
+    },
+    {
+      "name": "basic_slashblade_equipment",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "slashblade:slashblade_wood",
+          "weight": 9
+        },
+        {
+          "type": "minecraft:item",
+          "name": "slashblade:slashblade_bamboo",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "name": "slashblade:slashblade",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "slashblade:slashblade_white",
+          "weight": 1
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance",
+          "chance": 0.0125
+        }
+      ]
+    }
+  ]
+}

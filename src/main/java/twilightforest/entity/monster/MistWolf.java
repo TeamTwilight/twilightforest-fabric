@@ -13,62 +13,67 @@ import net.minecraft.world.level.Level;
 import twilightforest.init.TFSounds;
 
 public class MistWolf extends HostileWolf {
+    public MistWolf(EntityType<? extends MistWolf> type, Level level) {
+        super(type, level);
+    }
 
-	public MistWolf(EntityType<? extends MistWolf> type, Level world) {
-		super(type, world);
-	}
+    public static AttributeSupplier.Builder registerAttributes() {
+        return HostileWolf.registerAttributes()
+                .add(Attributes.MAX_HEALTH, 30.0D)
+                .add(Attributes.ATTACK_DAMAGE, 6.0D);
+    }
 
-	public static AttributeSupplier.Builder registerAttributes() {
-		return HostileWolf.registerAttributes()
-				.add(Attributes.MAX_HEALTH, 30.0D)
-				.add(Attributes.ATTACK_DAMAGE, 6);
-	}
+    @Override
+    protected int getDisplayModel() {
+        return twilightforest.init.TFItemVisuals.MIST_WOLF_DISPLAY;
+    }
 
-	@Override
-	public boolean doHurtTarget(Entity entity) {
-		if (super.doHurtTarget(entity)) {
-			float myBrightness = this.level().getMaxLocalRawBrightness(this.blockPosition());
+    @Override
+    protected float getDisplayScale() {
+        return 1.18F;
+    }
 
-			if (entity instanceof LivingEntity && myBrightness < 0.10F) {
-				int effectDuration = switch (this.level().getDifficulty()) {
-					case EASY -> 0;
-					case HARD -> 15;
-					default -> 7;
-				};
+    @Override
+    public boolean doHurtTarget(Entity entity) {
+        if (super.doHurtTarget(entity)) {
+            float brightness = this.level().getMaxLocalRawBrightness(this.blockPosition());
+            if (entity instanceof LivingEntity living && brightness < 0.10F && !this.level().getBlockState(this.blockPosition()).isSolid()) {
+                int duration = switch (this.level().getDifficulty()) {
+                    case EASY -> 0;
+                    case HARD -> 15;
+                    default -> 7;
+                };
+                if (duration > 0) {
+                    living.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, duration * 20, 0));
+                }
+            }
+            return true;
+        }
+        return false;
+    }
 
-				if (effectDuration > 0 && !this.level().getBlockState(this.blockPosition()).isSolid()) {
-					((LivingEntity) entity).addEffect(new MobEffectInstance(MobEffects.BLINDNESS, effectDuration * 20, 0));
-				}
-			}
+    @Override
+    protected SoundEvent getTargetSound() {
+        return TFSounds.MIST_WOLF_TARGET;
+    }
 
-			return true;
-		} else {
-			return false;
-		}
-	}
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return TFSounds.MIST_WOLF_AMBIENT;
+    }
 
-	@Override
-	protected SoundEvent getTargetSound() {
-		return TFSounds.MIST_WOLF_TARGET.get();
-	}
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return TFSounds.MIST_WOLF_HURT;
+    }
 
-	@Override
-	protected SoundEvent getAmbientSound() {
-		return TFSounds.MIST_WOLF_AMBIENT.get();
-	}
+    @Override
+    protected SoundEvent getDeathSound() {
+        return TFSounds.MIST_WOLF_DEATH;
+    }
 
-	@Override
-	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return TFSounds.MIST_WOLF_HURT.get();
-	}
-
-	@Override
-	protected SoundEvent getDeathSound() {
-		return TFSounds.MIST_WOLF_DEATH.get();
-	}
-
-	@Override
-	public float getVoicePitch() {
-		return (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 0.6F;
-	}
+    @Override
+    public float getVoicePitch() {
+        return (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 0.6F;
+    }
 }

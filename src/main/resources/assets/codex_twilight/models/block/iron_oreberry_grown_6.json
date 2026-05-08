@@ -1,0 +1,6 @@
+﻿{
+  "parent": "codex_twilight:block/abstract_bush_grown_6",
+  "textures": {
+    "all": "codex_twilight:block/iron_oreberry_ripe"
+  }
+}

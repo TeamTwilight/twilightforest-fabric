@@ -1,0 +1,9 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "#codex_twilight:deadrock",
+                       "required":  false
+                   },
+                   "minecraft:packed_ice"
+               ]
+}

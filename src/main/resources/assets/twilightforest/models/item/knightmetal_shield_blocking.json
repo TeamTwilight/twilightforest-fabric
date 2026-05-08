@@ -1,8 +1,10 @@
 {
-  "parent": "builtin/entity",
+  "parent": "twilightforest:item/knightmetal_shield_base",
   "gui_light": "front",
   "textures": {
-    "particle": "twilightforest:block/towerwood"
+    "shield": "twilightforest:model/knightmetal_shield",
+    "edge": "twilightforest:block/knightmetal_block",
+    "particle": "#edge"
   },
   "display": {
     "thirdperson_righthand": {

@@ -1,0 +1,16 @@
+{
+    "replace":  false,
+    "values":  [
+                   "twilightforest:forest",
+                   "twilightforest:dark_forest",
+                   "twilightforest:firefly_forest",
+                   "twilightforest:mushroom_forest",
+                   "twilightforest:clearing",
+                   "twilightforest:dense_forest",
+                   "twilightforest:enchanted_forest",
+                   "twilightforest:spooky_forest",
+                   "twilightforest:dark_forest_center",
+                   "twilightforest:dense_mushroom_forest",
+                   "twilightforest:snowy_forest"
+               ]
+}

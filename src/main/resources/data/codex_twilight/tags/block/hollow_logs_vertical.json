@@ -1,0 +1,76 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:hollow_oak_log_vertical",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:hollow_spruce_log_vertical",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:hollow_birch_log_vertical",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:hollow_jungle_log_vertical",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:hollow_acacia_log_vertical",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:hollow_dark_oak_log_vertical",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:hollow_crimson_stem_vertical",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:hollow_warped_stem_vertical",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:hollow_vangrove_log_vertical",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:hollow_cherry_log_vertical",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:hollow_twilight_oak_log_vertical",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:hollow_canopy_log_vertical",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:hollow_mangrove_log_vertical",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:hollow_dark_log_vertical",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:hollow_time_log_vertical",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:hollow_transformation_log_vertical",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:hollow_mining_log_vertical",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:hollow_sorting_log_vertical",
+                       "required":  false
+                   }
+               ]
+}

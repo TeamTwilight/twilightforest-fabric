@@ -1,0 +1,7 @@
+﻿{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "codex_twilight:item/glass_sword_solid",
+    "layer1": "codex_twilight:item/glass_sword_clear"
+  }
+}

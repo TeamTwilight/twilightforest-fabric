@@ -1,0 +1,11 @@
+{
+  "type": "catty:twilight_realm",
+  "generator": {
+    "type": "minecraft:noise",
+    "settings": "catty:twilight",
+    "biome_source": {
+      "type": "twilightforest:twilight_biomes",
+      "terrain_data": "twilightforest:biome_grid"
+    }
+  }
+}

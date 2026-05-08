@@ -1,0 +1,7 @@
+﻿{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "codex_twilight:block/stone_tiles_mossy",
+    "side": "codex_twilight:block/etched_nagastone_up_mossy"
+  }
+}

@@ -1,0 +1,8 @@
+﻿{
+  "parent": "minecraft:block/template_glass_pane_side_alt",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "edge": "codex_twilight:block/canopy_window",
+    "pane": "codex_twilight:block/canopy_window"
+  }
+}

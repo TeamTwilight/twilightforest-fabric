@@ -1,0 +1,55 @@
+package twilightforest.entity.ai.goal;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.gameevent.GameEvent;
+import twilightforest.entity.monster.Redcap;
+
+/**
+ * 1:1 port of upstream {@code twilightforest.entity.ai.goal.RedcapPlantTNTGoal} —
+ * places a TNT block at the redcap's feet when target is in range and looking
+ * away. Swaps the redcap's main-hand to the held-TNT visual while planting.
+ *
+ * <p>Codex Fabric port note: NF {@code EventHooks.canEntityGrief} is replaced with
+ * the equivalent vanilla {@code GameRules.RULE_MOBGRIEFING} check.</p>
+ */
+public class RedcapPlantTNTGoal extends RedcapBaseGoal {
+
+	public RedcapPlantTNTGoal(Redcap redcap) {
+		super(redcap);
+	}
+
+	@Override
+	public boolean canUse() {
+		LivingEntity attackTarget = this.redcap.getTarget();
+		return attackTarget != null
+			&& !this.redcap.heldTNT.isEmpty()
+			&& this.redcap.distanceToSqr(attackTarget) < 25
+			&& !this.isTargetLookingAtMe(attackTarget)
+			&& this.redcap.level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)
+			&& !this.isLitTNTNearby(8)
+			&& this.findBlockTNTNearby(5) == null;
+	}
+
+	@Override
+	public void start() {
+		BlockPos entityPos = new BlockPos(this.redcap.blockPosition());
+
+		this.redcap.setItemSlot(EquipmentSlot.MAINHAND, this.redcap.heldTNT);
+
+		if (this.redcap.level().isEmptyBlock(entityPos)) {
+			this.redcap.heldTNT.shrink(1);
+			this.redcap.playAmbientSound();
+			this.redcap.level().setBlockAndUpdate(entityPos, Blocks.TNT.defaultBlockState());
+			this.redcap.gameEvent(GameEvent.BLOCK_PLACE);
+		}
+	}
+
+	@Override
+	public void stop() {
+		this.redcap.setItemSlot(EquipmentSlot.MAINHAND, this.redcap.heldPick);
+	}
+}

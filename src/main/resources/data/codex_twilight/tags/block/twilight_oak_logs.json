@@ -1,0 +1,20 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:twilight_oak_log",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:stripped_twilight_oak_log",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:twilight_oak_wood",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:stripped_twilight_oak_wood",
+                       "required":  false
+                   }
+               ]
+}

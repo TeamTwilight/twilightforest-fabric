@@ -1,33 +1,49 @@
 {
-  "parent": "builtin/entity",
+  "parent": "minecraft:block/block",
   "textures": {
-    "particle": "block/soul_sand"
+    "base": "minecraft:block/soul_sand",
+    "trophy": "twilightforest:item/trophy",
+    "particle": "#base"
   },
-  "display": {
-    "head": {
-      "rotation": [ 180, 0, 180 ],
-      "translation": [ 0, 6, 0 ],
-      "scale":[ 1.6, 1.6, 1.6 ]
+  "elements": [
+    {
+      "from": [ 4, 0, 4 ],
+      "to": [ 12, 3, 12 ],
+      "faces": {
+        "down": { "uv": [ 4, 4, 12, 12 ], "texture": "#base" },
+        "up": { "uv": [ 4, 4, 12, 12 ], "texture": "#base" },
+        "north": { "uv": [ 4, 12, 12, 15 ], "texture": "#base" },
+        "south": { "uv": [ 4, 12, 12, 15 ], "texture": "#base" },
+        "west": { "uv": [ 4, 12, 12, 15 ], "texture": "#base" },
+        "east": { "uv": [ 4, 12, 12, 15 ], "texture": "#base" }
+      }
     },
-    "fixed": {
-      "rotation": [ 0, 180, 0 ],
-      "translation": [ 0, 2, 0],
-      "scale":[ 1, 1, 1 ]
+    {
+      "from": [ 6, 3, 6 ],
+      "to": [ 10, 8, 10 ],
+      "faces": {
+        "north": { "uv": [ 6, 8, 10, 13 ], "texture": "#base" },
+        "south": { "uv": [ 6, 8, 10, 13 ], "texture": "#base" },
+        "west": { "uv": [ 6, 8, 10, 13 ], "texture": "#base" },
+        "east": { "uv": [ 6, 8, 10, 13 ], "texture": "#base" }
+      }
     },
-    "ground": {
-      "rotation": [ 0, 0, 0 ],
-      "translation": [ 0, 3, 0 ],
-      "scale": [ 0.5, 0.5, 0.5 ]
-    },
-    "thirdperson_righthand": {
-      "rotation": [ 45, 135, 0 ],
-      "translation": [ 0, 3, 0 ],
-      "scale": [ 0.5, 0.5, 0.5 ]
-    },
-    "firstperson_righthand": {
-      "rotation": [ 0, 180, 0 ],
-      "translation": [ 0, 2, 0 ],
-      "scale": [ 1, 1, 1 ]
+    {
+      "from": [ 3, 8, 7.5 ],
+      "to": [ 13, 16, 7.5 ],
+      "faces": {
+        "north": { "uv": [ 0, 0, 16, 16 ], "texture": "#trophy" },
+        "south": { "uv": [ 16, 0, 0, 16 ], "texture": "#trophy" }
+      }
     }
+  ],
+  "display": {
+    "head": { "rotation": [ 180, 0, 180 ], "translation": [ 0, 6, 0 ], "scale": [ 1.6, 1.6, 1.6 ] },
+    "fixed": { "rotation": [ 0, 180, 0 ], "translation": [ 0, 4, -2 ], "scale": [ 1, 1, 1 ] },
+    "ground": { "rotation": [ 0, 0, 0 ], "translation": [ 0, 3, 0 ], "scale": [ 0.5, 0.5, 0.5 ] },
+    "thirdperson_righthand": { "rotation": [ 45, 135, 0 ], "translation": [ 0, 3, 0 ], "scale": [ 0.5, 0.5, 0.5 ] },
+    "firstperson_righthand": { "rotation": [ 0, 180, 0 ], "translation": [ 0, 2, 0 ], "scale": [ 1, 1, 1 ] },
+    "twilightforest:jarred": { "rotation": [ 0, 180, 0 ], "translation": [ 0, 0, 0 ], "scale": [ 1, 1, 1 ] },
+    "whatever:whatever": { "rotation": [ 0, 180, 0 ], "translation": [ 0, 0, 0 ], "scale": [ 1, 1, 1 ] }
   }
 }

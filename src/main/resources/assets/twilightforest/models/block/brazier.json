@@ -1,0 +1,90 @@
+{
+  "parent": "minecraft:block/block",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "base": "twilightforest:entity/brazier/brazier",
+    "lit": "twilightforest:entity/brazier/brazier_lit",
+    "overlay": "twilightforest:entity/brazier/brazier_overlay",
+    "particle": "#base"
+  },
+  "elements": [
+    {
+      "from": [ 2, 1, 2 ],
+      "to": [ 14, 6, 14 ],
+      "faces": {
+        "down": { "uv": [ 18, 18, 30, 30 ], "texture": "#base" },
+        "up": { "uv": [ 18, 18, 30, 30 ], "texture": "#overlay" },
+        "north": { "uv": [ 18, 30, 30, 35 ], "texture": "#base" },
+        "south": { "uv": [ 18, 30, 30, 35 ], "texture": "#base" },
+        "west": { "uv": [ 18, 30, 30, 35 ], "texture": "#base" },
+        "east": { "uv": [ 18, 30, 30, 35 ], "texture": "#base" }
+      }
+    },
+    {
+      "from": [ 3, 0, 3 ],
+      "to": [ 5, 3, 5 ],
+      "faces": {
+        "down": { "uv": [ 3, 3, 5, 5 ], "texture": "#base" },
+        "up": { "uv": [ 3, 3, 5, 5 ], "texture": "#base" },
+        "north": { "uv": [ 3, 5, 5, 8 ], "texture": "#base" },
+        "south": { "uv": [ 3, 5, 5, 8 ], "texture": "#base" },
+        "west": { "uv": [ 3, 5, 5, 8 ], "texture": "#base" },
+        "east": { "uv": [ 3, 5, 5, 8 ], "texture": "#base" }
+      }
+    },
+    {
+      "from": [ 11, 0, 3 ],
+      "to": [ 13, 3, 5 ],
+      "faces": {
+        "down": { "uv": [ 11, 3, 13, 5 ], "texture": "#base" },
+        "up": { "uv": [ 11, 3, 13, 5 ], "texture": "#base" },
+        "north": { "uv": [ 11, 5, 13, 8 ], "texture": "#base" },
+        "south": { "uv": [ 11, 5, 13, 8 ], "texture": "#base" },
+        "west": { "uv": [ 11, 5, 13, 8 ], "texture": "#base" },
+        "east": { "uv": [ 11, 5, 13, 8 ], "texture": "#base" }
+      }
+    },
+    {
+      "from": [ 3, 0, 11 ],
+      "to": [ 5, 3, 13 ],
+      "faces": {
+        "down": { "uv": [ 3, 11, 5, 13 ], "texture": "#base" },
+        "up": { "uv": [ 3, 11, 5, 13 ], "texture": "#base" },
+        "north": { "uv": [ 3, 13, 5, 16 ], "texture": "#base" },
+        "south": { "uv": [ 3, 13, 5, 16 ], "texture": "#base" },
+        "west": { "uv": [ 3, 13, 5, 16 ], "texture": "#base" },
+        "east": { "uv": [ 3, 13, 5, 16 ], "texture": "#base" }
+      }
+    },
+    {
+      "from": [ 11, 0, 11 ],
+      "to": [ 13, 3, 13 ],
+      "faces": {
+        "down": { "uv": [ 11, 11, 13, 13 ], "texture": "#base" },
+        "up": { "uv": [ 11, 11, 13, 13 ], "texture": "#base" },
+        "north": { "uv": [ 11, 13, 13, 16 ], "texture": "#base" },
+        "south": { "uv": [ 11, 13, 13, 16 ], "texture": "#base" },
+        "west": { "uv": [ 11, 13, 13, 16 ], "texture": "#base" },
+        "east": { "uv": [ 11, 13, 13, 16 ], "texture": "#base" }
+      }
+    },
+    {
+      "from": [ 3, 6, 7.5 ],
+      "to": [ 13, 14, 7.5 ],
+      "rotation": { "origin": [ 8, 10, 8 ], "axis": "y", "angle": 45 },
+      "faces": {
+        "north": { "uv": [ 0, 0, 10, 8 ], "texture": "#lit" },
+        "south": { "uv": [ 0, 0, 10, 8 ], "texture": "#lit" }
+      }
+    },
+    {
+      "from": [ 3, 6, 8.5 ],
+      "to": [ 13, 14, 8.5 ],
+      "rotation": { "origin": [ 8, 10, 8 ], "axis": "y", "angle": -45 },
+      "faces": {
+        "north": { "uv": [ 10, 0, 20, 8 ], "texture": "#overlay" },
+        "south": { "uv": [ 10, 0, 20, 8 ], "texture": "#overlay" }
+      }
+    }
+  ]
+}

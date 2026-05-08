@@ -1,0 +1,7 @@
+﻿{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "twilightforest:block/transparent"
+  },
+  "elements": []
+}

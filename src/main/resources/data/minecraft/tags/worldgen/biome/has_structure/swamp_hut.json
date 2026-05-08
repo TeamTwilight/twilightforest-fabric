@@ -1,0 +1,9 @@
+{
+    "replace":  false,
+    "values":  [
+                   "twilightforest:swamp",
+                   "twilightforest:fire_swamp",
+                   "twilightforest:lake",
+                   "twilightforest:stream"
+               ]
+}

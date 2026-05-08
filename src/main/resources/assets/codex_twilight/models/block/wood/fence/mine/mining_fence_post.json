@@ -1,0 +1,6 @@
+﻿{
+  "parent": "minecraft:block/fence_post",
+  "textures": {
+    "texture": "codex_twilight:block/wood/planks_mine_0"
+  }
+}

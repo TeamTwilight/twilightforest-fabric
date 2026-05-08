@@ -1,0 +1,47 @@
+{
+  "width": 48,
+  "height": 32,
+  "author": {
+    "translate": "magic_painting.twilightforest.the_hostile_paradise.author"
+  },
+  "back_texture": "twilightforest:magic_paintings/back",
+  "layers": [
+    {
+      "path": "1_background",
+      "fullbright": true,
+      "local_lighting": true
+    },
+    {
+      "path": "2_distant_islands_par",
+      "parallax": {
+        "type": "view_angle",
+        "multiplier": 0.02,
+        "width": 86,
+        "height": 38
+      },
+      "fullbright": true,
+      "local_lighting": true
+    },
+    {
+      "path": "3_gold_dungeon_par",
+      "parallax": {
+        "type": "view_angle",
+        "multiplier": 0.02,
+        "width": 78,
+        "height": 36
+      },
+      "fullbright": true,
+      "local_lighting": true
+    },
+    {
+      "path": "10_flowers_par",
+      "fullbright": true,
+      "local_lighting": true
+    },
+    {
+      "path": "13_frame",
+      "fullbright": false,
+      "local_lighting": false
+    }
+  ]
+}

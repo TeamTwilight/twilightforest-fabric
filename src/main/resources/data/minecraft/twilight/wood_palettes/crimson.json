@@ -1,0 +1,11 @@
+{
+  "planks": "minecraft:crimson_planks",
+  "stairs": "minecraft:crimson_stairs",
+  "slab": "minecraft:crimson_slab",
+  "button": "minecraft:crimson_button",
+  "fence": "minecraft:crimson_fence",
+  "gate": "minecraft:crimson_fence_gate",
+  "plate": "minecraft:crimson_pressure_plate",
+  "banister": "twilightforest:crimson_banister"
+}
+

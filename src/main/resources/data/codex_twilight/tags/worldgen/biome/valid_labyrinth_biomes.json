@@ -1,0 +1,12 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:swamp",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:swamp",
+                       "required":  false
+                   }
+               ]
+}

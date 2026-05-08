@@ -1,0 +1,16 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "#codex_twilight:hollow_logs_horizontal",
+                       "required":  false
+                   },
+                   {
+                       "id":  "#codex_twilight:hollow_logs_vertical",
+                       "required":  false
+                   },
+                   {
+                       "id":  "#codex_twilight:hollow_logs_climbable",
+                       "required":  false
+                   }
+               ]
+}

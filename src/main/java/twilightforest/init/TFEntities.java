@@ -1,279 +1,283 @@
 package twilightforest.init;
 
-import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
-import io.github.fabricators_of_create.porting_lib.util.LazySpawnEggItem;
-import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.animal.Chicken;
+import net.minecraft.world.entity.animal.Cow;
+import net.minecraft.world.entity.animal.Pig;
+import net.minecraft.world.entity.animal.PolarBear;
+import net.minecraft.world.entity.animal.Rabbit;
 import net.minecraft.world.entity.animal.Sheep;
-import net.minecraft.world.entity.monster.AbstractSkeleton;
+import net.minecraft.world.entity.animal.Wolf;
+import net.minecraft.world.entity.monster.Blaze;
+import net.minecraft.world.entity.monster.CaveSpider;
+import net.minecraft.world.entity.monster.Evoker;
+import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.Ravager;
+import net.minecraft.world.entity.monster.Skeleton;
+import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.monster.Spider;
+import net.minecraft.world.entity.monster.Stray;
+import net.minecraft.world.entity.monster.Vex;
 import net.minecraft.world.entity.monster.Zombie;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.levelgen.Heightmap;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.*;
-import twilightforest.entity.boss.*;
-import twilightforest.entity.monster.*;
-import twilightforest.entity.passive.*;
-import twilightforest.entity.projectile.*;
+import twilightforest.entity.SlideBlock;
+import twilightforest.entity.boss.AlphaYeti;
+import twilightforest.entity.boss.Hydra;
+import twilightforest.entity.boss.HydraMortar;
+import twilightforest.entity.boss.KnightPhantom;
+import twilightforest.entity.boss.Lich;
+import twilightforest.entity.boss.Minoshroom;
+import twilightforest.entity.boss.Naga;
+import twilightforest.entity.boss.PlateauBoss;
+import twilightforest.entity.boss.SnowQueen;
+import twilightforest.entity.boss.UrGhast;
+import twilightforest.entity.monster.Adherent;
+import twilightforest.entity.monster.ArmoredGiant;
+import twilightforest.entity.monster.BlockChainGoblin;
+import twilightforest.entity.monster.CarminiteGhastguard;
+import twilightforest.entity.monster.CarminiteGhastling;
+import twilightforest.entity.monster.CarminiteGolem;
+import twilightforest.entity.monster.DeathTome;
+import twilightforest.entity.monster.FireBeetle;
+import twilightforest.entity.monster.GiantMiner;
+import twilightforest.entity.monster.HarbingerCube;
+import twilightforest.entity.monster.HedgeSpider;
+import twilightforest.entity.monster.HelmetCrab;
+import twilightforest.entity.monster.HostileWolf;
+import twilightforest.entity.monster.KingSpider;
+import twilightforest.entity.monster.Kobold;
+import twilightforest.entity.monster.LichMinion;
+import twilightforest.entity.monster.IceCrystal;
+import twilightforest.entity.monster.LowerGoblinKnight;
+import twilightforest.entity.monster.LoyalZombie;
+import twilightforest.entity.monster.MazeSlime;
+import twilightforest.entity.monster.Minotaur;
+import twilightforest.entity.monster.MistWolf;
+import twilightforest.entity.monster.MosquitoSwarm;
+import twilightforest.entity.monster.PinchBeetle;
+import twilightforest.entity.monster.Redcap;
+import twilightforest.entity.monster.RedcapSapper;
+import twilightforest.entity.monster.RisingZombie;
+import twilightforest.entity.RovingCube;
+import twilightforest.entity.monster.SkeletonDruid;
+import twilightforest.entity.monster.SlimeBeetle;
+import twilightforest.entity.monster.SnowGuardian;
+import twilightforest.entity.monster.StableIceCore;
+import twilightforest.entity.monster.SwarmSpider;
+import twilightforest.entity.monster.TowerwoodBorer;
+import twilightforest.entity.monster.TowerBroodling;
+import twilightforest.entity.monster.Troll;
+import twilightforest.entity.monster.UnstableIceCore;
+import twilightforest.entity.monster.UpperGoblinKnight;
+import twilightforest.entity.monster.WinterWolf;
+import twilightforest.entity.monster.Wraith;
+import twilightforest.entity.monster.Yeti;
+import twilightforest.entity.passive.Bighorn;
+import twilightforest.entity.passive.Boar;
+import twilightforest.entity.passive.Deer;
+import twilightforest.entity.passive.DwarfRabbit;
+import twilightforest.entity.passive.Penguin;
+import twilightforest.entity.passive.QuestRam;
+import twilightforest.entity.passive.Raven;
+import twilightforest.entity.passive.Squirrel;
+import twilightforest.entity.passive.TinyBird;
+import twilightforest.entity.projectile.IceSnowball;
+import twilightforest.entity.projectile.ChainBlock;
+import twilightforest.entity.projectile.CubeOfAnnihilation;
+import twilightforest.entity.projectile.IceBomb;
+import twilightforest.entity.projectile.FallingIce;
+import twilightforest.entity.projectile.LichBolt;
+import twilightforest.entity.projectile.LichBomb;
+import twilightforest.entity.projectile.NatureBolt;
+import twilightforest.entity.projectile.SlimeProjectile;
+import twilightforest.entity.projectile.ThrownBlock;
+import twilightforest.entity.projectile.TomeBolt;
+import twilightforest.entity.projectile.UrGhastFireball;
 
-public class TFEntities {
+import java.lang.reflect.Method;
 
-	public static final LazyRegistrar<EntityType<?>> ENTITIES = LazyRegistrar.create(Registries.ENTITY_TYPE, TwilightForestMod.ID);
-	public static final LazyRegistrar<Item> SPAWN_EGGS = LazyRegistrar.create(Registries.ITEM, TwilightForestMod.ID);
+@SuppressWarnings({"unchecked", "rawtypes"})
+public final class TFEntities {
+    public static final TFRegistryObject<EntityType<Adherent>> ADHERENT = entity("adherent", EntityType.Builder.of(Adherent::new, MobCategory.MONSTER).sized(0.8F, 2.2F));
+    public static final TFRegistryObject<EntityType<AlphaYeti>> ALPHA_YETI = entity("alpha_yeti", EntityType.Builder.<AlphaYeti>of((type, level) -> new AlphaYeti(type, level), MobCategory.MONSTER).sized(3.8F, 5.0F).clientTrackingRange(10));
+    public static final TFRegistryObject<EntityType<ArmoredGiant>> ARMORED_GIANT = entity("armored_giant", EntityType.Builder.of(ArmoredGiant::new, MobCategory.MONSTER).sized(2.4F, 7.2F));
+    public static final TFRegistryObject<EntityType<Bighorn>> BIGHORN_SHEEP = entity("bighorn_sheep", EntityType.Builder.of(Bighorn::new, MobCategory.CREATURE).sized(0.9F, 1.3F));
+    public static final TFRegistryObject<EntityType<Boar>> BOAR = entity("boar", EntityType.Builder.of(Boar::new, MobCategory.CREATURE).sized(0.9F, 0.9F));
+    public static final TFRegistryObject<EntityType<BlockChainGoblin>> BLOCKCHAIN_GOBLIN = entity("blockchain_goblin", EntityType.Builder.<BlockChainGoblin>of((type, level) -> new BlockChainGoblin(type, level), MobCategory.MONSTER).sized(0.9F, 1.4F));
+    public static final TFRegistryObject<EntityType<TowerBroodling>> CARMINITE_BROODLING = entity("carminite_broodling", EntityType.Builder.<TowerBroodling>of((type, level) -> new TowerBroodling(type, level), MobCategory.MONSTER).sized(0.7F, 0.5F));
+    public static final TFRegistryObject<EntityType<CarminiteGhastguard>> CARMINITE_GHASTGUARD = entity("carminite_ghastguard", EntityType.Builder.<CarminiteGhastguard>of((type, level) -> new CarminiteGhastguard(type, level), MobCategory.MONSTER).sized(4.0F, 6.0F));
+    public static final TFRegistryObject<EntityType<CarminiteGhastling>> CARMINITE_GHASTLING = entity("carminite_ghastling", EntityType.Builder.<CarminiteGhastling>of((type, level) -> new CarminiteGhastling(type, level), MobCategory.MONSTER).sized(1.1F, 1.5F));
+    public static final TFRegistryObject<EntityType<CarminiteGolem>> CARMINITE_GOLEM = entity("carminite_golem", EntityType.Builder.<CarminiteGolem>of((type, level) -> new CarminiteGolem(type, level), MobCategory.MONSTER).sized(1.4F, 2.9F));
+    public static final TFRegistryObject<EntityType<CubeOfAnnihilation>> CUBE_OF_ANNIHILATION = projectile("cube_of_annihilation", EntityType.Builder.<CubeOfAnnihilation>of(CubeOfAnnihilation::new, MobCategory.MISC).sized(1.0F, 1.0F).clientTrackingRange(8).updateInterval(1));
+    public static final TFRegistryObject<EntityType<DeathTome>> DEATH_TOME = entity("death_tome", EntityType.Builder.of(DeathTome::new, MobCategory.MONSTER).sized(0.6F, 1.1F));
+    public static final TFRegistryObject<EntityType<Deer>> DEER = entity("deer", EntityType.Builder.of(Deer::new, MobCategory.CREATURE).sized(0.9F, 1.4F));
+    public static final TFRegistryObject<EntityType<DwarfRabbit>> DWARF_RABBIT = entity("dwarf_rabbit", EntityType.Builder.of(DwarfRabbit::new, MobCategory.CREATURE).sized(0.4F, 0.5F));
+    public static final TFRegistryObject<EntityType<FireBeetle>> FIRE_BEETLE = entity("fire_beetle", EntityType.Builder.<FireBeetle>of((type, level) -> new FireBeetle(type, level), MobCategory.MONSTER).sized(1.1F, 0.5F));
+    public static final TFRegistryObject<EntityType<GiantMiner>> GIANT_MINER = entity("giant_miner", EntityType.Builder.of(GiantMiner::new, MobCategory.MONSTER).sized(2.4F, 7.2F));
+    public static final TFRegistryObject<EntityType<HarbingerCube>> HARBINGER_CUBE = entity("harbinger_cube", EntityType.Builder.<HarbingerCube>of((type, level) -> new HarbingerCube(type, level), MobCategory.MONSTER).sized(1.9F, 2.4F));
+    public static final TFRegistryObject<EntityType<HedgeSpider>> HEDGE_SPIDER = entity("hedge_spider", EntityType.Builder.<HedgeSpider>of((type, level) -> new HedgeSpider(type, level), MobCategory.MONSTER).sized(1.4F, 0.9F));
+    public static final TFRegistryObject<EntityType<HelmetCrab>> HELMET_CRAB = entity("helmet_crab", EntityType.Builder.<HelmetCrab>of((type, level) -> new HelmetCrab(type, level), MobCategory.MONSTER).sized(0.8F, 1.1F));
+    public static final TFRegistryObject<EntityType<HostileWolf>> HOSTILE_WOLF = entity("hostile_wolf", EntityType.Builder.<HostileWolf>of((type, level) -> new HostileWolf(type, level), MobCategory.MONSTER).sized(0.6F, 0.85F));
+    public static final TFRegistryObject<EntityType<Hydra>> HYDRA = entity("hydra", EntityType.Builder.<Hydra>of((type, level) -> new Hydra(type, level), MobCategory.MONSTER).sized(16.0F, 12.0F).clientTrackingRange(10));
+    public static final TFRegistryObject<EntityType<HydraMortar>> HYDRA_MORTAR = projectile("hydra_mortar", EntityType.Builder.<HydraMortar>of(HydraMortar::new, MobCategory.MISC).sized(1.0F, 1.0F).clientTrackingRange(8).updateInterval(3));
+    public static final TFRegistryObject<EntityType<IceCrystal>> ICE_CRYSTAL = entity("ice_crystal", EntityType.Builder.<IceCrystal>of((type, level) -> new IceCrystal(type, level), MobCategory.MONSTER).sized(0.6F, 1.8F));
+    public static final TFRegistryObject<EntityType<KingSpider>> KING_SPIDER = entity("king_spider", EntityType.Builder.<KingSpider>of((type, level) -> new KingSpider(type, level), MobCategory.MONSTER).sized(1.6F, 1.6F));
+    public static final TFRegistryObject<EntityType<KnightPhantom>> KNIGHT_PHANTOM = entity("knight_phantom", EntityType.Builder.<KnightPhantom>of((type, level) -> new KnightPhantom(type, level), MobCategory.MONSTER).sized(1.25F, 2.5F).clientTrackingRange(10));
+    public static final TFRegistryObject<EntityType<Kobold>> KOBOLD = entity("kobold", EntityType.Builder.of(Kobold::new, MobCategory.MONSTER).sized(0.8F, 1.1F));
+    public static final TFRegistryObject<EntityType<Lich>> LICH = entity("lich", EntityType.Builder.<Lich>of((type, level) -> new Lich(type, level), MobCategory.MONSTER).sized(1.1F, 2.1F).clientTrackingRange(10));
+    public static final TFRegistryObject<EntityType<LichBolt>> LICH_BOLT = projectile("lich_bolt", EntityType.Builder.<LichBolt>of(LichBolt::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(2).updateInterval(2));
+    public static final TFRegistryObject<EntityType<LichBomb>> LICH_BOMB = projectile("lich_bomb", EntityType.Builder.<LichBomb>of(LichBomb::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(2).updateInterval(2));
+    public static final TFRegistryObject<EntityType<LichMinion>> LICH_MINION = entity("lich_minion", EntityType.Builder.<LichMinion>of((type, level) -> new LichMinion(type, level), MobCategory.MONSTER).sized(0.6F, 1.95F));
+    public static final TFRegistryObject<EntityType<LowerGoblinKnight>> LOWER_GOBLIN_KNIGHT = entity("lower_goblin_knight", EntityType.Builder.<LowerGoblinKnight>of((type, level) -> new LowerGoblinKnight(type, level), MobCategory.MONSTER).sized(0.7F, 1.1F));
+    public static final TFRegistryObject<EntityType<LoyalZombie>> LOYAL_ZOMBIE = entity("loyal_zombie", EntityType.Builder.<LoyalZombie>of((type, level) -> new LoyalZombie(type, level), MobCategory.MONSTER).sized(0.6F, 1.8F));
+    public static final TFRegistryObject<EntityType<MazeSlime>> MAZE_SLIME = entity("maze_slime", EntityType.Builder.<MazeSlime>of((type, level) -> new MazeSlime(type, level), MobCategory.MONSTER).sized(2.04F, 2.04F));
+    public static final TFRegistryObject<EntityType<Minoshroom>> MINOSHROOM = entity("minoshroom", EntityType.Builder.<Minoshroom>of((type, level) -> new Minoshroom(type, level), MobCategory.MONSTER).sized(1.49F, 2.5F).clientTrackingRange(10));
+    public static final TFRegistryObject<EntityType<Minotaur>> MINOTAUR = entity("minotaur", EntityType.Builder.<Minotaur>of((type, level) -> new Minotaur(type, level), MobCategory.MONSTER).sized(0.6F, 2.1F));
+    public static final TFRegistryObject<EntityType<MistWolf>> MIST_WOLF = entity("mist_wolf", EntityType.Builder.<MistWolf>of((type, level) -> new MistWolf(type, level), MobCategory.MONSTER).sized(1.4F, 1.9F));
+    public static final TFRegistryObject<EntityType<MosquitoSwarm>> MOSQUITO_SWARM = entity("mosquito_swarm", EntityType.Builder.<MosquitoSwarm>of((type, level) -> new MosquitoSwarm(type, level), MobCategory.MONSTER).sized(0.7F, 1.9F));
+    public static final TFRegistryObject<EntityType<Naga>> NAGA = entity("naga", EntityType.Builder.<Naga>of((type, level) -> new Naga(type, level), MobCategory.MONSTER).sized(2.0F, 3.0F).clientTrackingRange(10));
+    public static final TFRegistryObject<EntityType<NatureBolt>> NATURE_BOLT = projectile("nature_bolt", EntityType.Builder.<NatureBolt>of(NatureBolt::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(5).updateInterval(5));
+    public static final TFRegistryObject<EntityType<Penguin>> PENGUIN = entity("penguin", EntityType.Builder.of(Penguin::new, MobCategory.CREATURE).sized(0.6F, 1.1F));
+    public static final TFRegistryObject<EntityType<PinchBeetle>> PINCH_BEETLE = entity("pinch_beetle", EntityType.Builder.<PinchBeetle>of((type, level) -> new PinchBeetle(type, level), MobCategory.MONSTER).sized(1.2F, 0.5F));
+    public static final TFRegistryObject<EntityType<QuestRam>> QUEST_RAM = entity("quest_ram", EntityType.Builder.<QuestRam>of((type, level) -> new QuestRam(type, level), MobCategory.CREATURE).sized(1.25F, 2.9F));
+    public static final TFRegistryObject<EntityType<Raven>> RAVEN = entity("raven", EntityType.Builder.of(Raven::new, MobCategory.CREATURE).sized(0.4F, 0.7F));
+    public static final TFRegistryObject<EntityType<Redcap>> REDCAP = entity("redcap", EntityType.Builder.<Redcap>of((type, level) -> new Redcap(type, level), MobCategory.MONSTER).sized(0.9F, 1.4F));
+    public static final TFRegistryObject<EntityType<RedcapSapper>> REDCAP_SAPPER = entity("redcap_sapper", EntityType.Builder.<RedcapSapper>of((type, level) -> new RedcapSapper(type, level), MobCategory.MONSTER).sized(0.9F, 1.4F));
+    public static final TFRegistryObject<EntityType<RisingZombie>> RISING_ZOMBIE = entity("rising_zombie", EntityType.Builder.<RisingZombie>of((type, level) -> new RisingZombie(type, level), MobCategory.MONSTER).sized(0.6F, 1.95F));
+    public static final TFRegistryObject<EntityType<RovingCube>> ROVING_CUBE = entity("roving_cube", EntityType.Builder.<RovingCube>of((type, level) -> new RovingCube(type, level), MobCategory.MONSTER).sized(1.2F, 2.1F));
+    public static final TFRegistryObject<EntityType<SkeletonDruid>> SKELETON_DRUID = entity("skeleton_druid", EntityType.Builder.of(SkeletonDruid::new, MobCategory.MONSTER).sized(0.6F, 1.99F));
+    public static final TFRegistryObject<EntityType<SlideBlock>> SLIDER = projectile("slider", EntityType.Builder.<SlideBlock>of(SlideBlock::new, MobCategory.MISC).sized(0.98F, 0.98F).clientTrackingRange(8).updateInterval(1));
+    public static final TFRegistryObject<EntityType<SlimeBeetle>> SLIME_BEETLE = entity("slime_beetle", EntityType.Builder.<SlimeBeetle>of((type, level) -> new SlimeBeetle(type, level), MobCategory.MONSTER).sized(0.9F, 0.5F));
+    public static final TFRegistryObject<EntityType<SnowGuardian>> SNOW_GUARDIAN = entity("snow_guardian", EntityType.Builder.<SnowGuardian>of((type, level) -> new SnowGuardian(type, level), MobCategory.MONSTER).sized(0.6F, 1.8F));
+    public static final TFRegistryObject<EntityType<SnowQueen>> SNOW_QUEEN = entity("snow_queen", EntityType.Builder.<SnowQueen>of((type, level) -> new SnowQueen(type, level), MobCategory.MONSTER).sized(0.7F, 2.2F).clientTrackingRange(10));
+    public static final TFRegistryObject<EntityType<StableIceCore>> STABLE_ICE_CORE = entity("stable_ice_core", EntityType.Builder.<StableIceCore>of((type, level) -> new StableIceCore(type, level), MobCategory.MONSTER).sized(0.8F, 1.8F));
+    public static final TFRegistryObject<EntityType<Squirrel>> SQUIRREL = entity("squirrel", EntityType.Builder.of(Squirrel::new, MobCategory.CREATURE).sized(0.4F, 0.4F));
+    public static final TFRegistryObject<EntityType<SwarmSpider>> SWARM_SPIDER = entity("swarm_spider", EntityType.Builder.<SwarmSpider>of((type, level) -> new SwarmSpider(type, level), MobCategory.MONSTER).sized(0.8F, 0.4F));
+    public static final TFRegistryObject<EntityType<TowerwoodBorer>> TOWERWOOD_BORER = entity("towerwood_borer", EntityType.Builder.<TowerwoodBorer>of((type, level) -> new TowerwoodBorer(type, level), MobCategory.MONSTER).sized(0.4F, 0.3F));
+    public static final TFRegistryObject<EntityType<TomeBolt>> TOME_BOLT = projectile("tome_bolt", EntityType.Builder.<TomeBolt>of(TomeBolt::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(5).updateInterval(2));
+    public static final TFRegistryObject<EntityType<Troll>> TROLL = entity("troll", EntityType.Builder.<Troll>of((type, level) -> new Troll(type, level), MobCategory.MONSTER).sized(1.4F, 2.4F));
+    public static final TFRegistryObject<EntityType<UnstableIceCore>> UNSTABLE_ICE_CORE = entity("unstable_ice_core", EntityType.Builder.<UnstableIceCore>of((type, level) -> new UnstableIceCore(type, level), MobCategory.MONSTER).sized(0.8F, 1.8F));
+    public static final TFRegistryObject<EntityType<UpperGoblinKnight>> UPPER_GOBLIN_KNIGHT = entity("upper_goblin_knight", EntityType.Builder.<UpperGoblinKnight>of((type, level) -> new UpperGoblinKnight(type, level), MobCategory.MONSTER).sized(1.1F, 1.3F));
+    public static final TFRegistryObject<EntityType<UrGhast>> UR_GHAST = entity("ur_ghast", EntityType.Builder.<UrGhast>of((type, level) -> new UrGhast(type, level), MobCategory.MONSTER).sized(14.0F, 18.0F).clientTrackingRange(10));
+    public static final TFRegistryObject<EntityType<UrGhastFireball>> UR_GHAST_FIREBALL = projectile("ur_ghast_fireball", EntityType.Builder.<UrGhastFireball>of(UrGhastFireball::new, MobCategory.MISC).sized(1.0F, 1.0F).clientTrackingRange(8).updateInterval(10));
+    public static final TFRegistryObject<EntityType<WinterWolf>> WINTER_WOLF = entity("winter_wolf", EntityType.Builder.<WinterWolf>of((type, level) -> new WinterWolf(type, level), MobCategory.MONSTER).sized(1.4F, 1.9F));
+    public static final TFRegistryObject<EntityType<Wraith>> WRAITH = entity("wraith", EntityType.Builder.<Wraith>of((type, level) -> new Wraith(type, level), MobCategory.MONSTER).sized(0.6F, 1.8F).clientTrackingRange(8));
+    public static final TFRegistryObject<EntityType<Yeti>> YETI = entity("yeti", EntityType.Builder.of(Yeti::new, MobCategory.MONSTER).sized(1.4F, 2.4F));
+    public static final TFRegistryObject<EntityType<IceSnowball>> ICE_SNOWBALL = projectile("ice_snowball", EntityType.Builder.<IceSnowball>of(IceSnowball::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(5).updateInterval(2));
+    public static final TFRegistryObject<EntityType<IceBomb>> THROWN_ICE = projectile("thrown_ice", EntityType.Builder.<IceBomb>of(IceBomb::new, MobCategory.MISC).sized(0.75F, 0.75F).clientTrackingRange(5).updateInterval(2));
+    public static final TFRegistryObject<EntityType<FallingIce>> FALLING_ICE = projectile("falling_ice", EntityType.Builder.<FallingIce>of(FallingIce::new, MobCategory.MISC).sized(0.98F, 0.98F).clientTrackingRange(8).updateInterval(3));
+    public static final TFRegistryObject<EntityType<SlimeProjectile>> SLIME_BLOB = projectile("slime_blob", EntityType.Builder.<SlimeProjectile>of(SlimeProjectile::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(5).updateInterval(2));
+    public static final TFRegistryObject<EntityType<ChainBlock>> CHAIN_BLOCK = projectile("chain_block", EntityType.Builder.<ChainBlock>of(ChainBlock::new, MobCategory.MISC).sized(0.6F, 0.6F).clientTrackingRange(8).updateInterval(1));
+    public static final TFRegistryObject<EntityType<twilightforest.entity.projectile.IceArrow>> ICE_ARROW = projectile("ice_arrow", EntityType.Builder.<twilightforest.entity.projectile.IceArrow>of(twilightforest.entity.projectile.IceArrow::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20));
+    public static final TFRegistryObject<EntityType<twilightforest.entity.projectile.SeekerArrow>> SEEKER_ARROW = projectile("seeker_arrow", EntityType.Builder.<twilightforest.entity.projectile.SeekerArrow>of(twilightforest.entity.projectile.SeekerArrow::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20));
+    public static final TFRegistryObject<EntityType<twilightforest.entity.projectile.ThrownWep>> THROWN_WEP = projectile("thrown_wep", EntityType.Builder.<twilightforest.entity.projectile.ThrownWep>of(twilightforest.entity.projectile.ThrownWep::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20));
+    public static final TFRegistryObject<EntityType<twilightforest.entity.CharmEffect>> CHARM_EFFECT = projectile("charm_effect", EntityType.Builder.<twilightforest.entity.CharmEffect>of(twilightforest.entity.CharmEffect::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(8).updateInterval(20));
+    public static final TFRegistryObject<EntityType<twilightforest.entity.ProtectionBox>> PROTECTION_BOX = projectile("protection_box", EntityType.Builder.<twilightforest.entity.ProtectionBox>of(twilightforest.entity.ProtectionBox::new, MobCategory.MISC).sized(1.0F, 1.0F).clientTrackingRange(16).updateInterval(20));
+    public static final TFRegistryObject<EntityType<twilightforest.entity.monster.Boggard>> BOGGARD = entity("boggard", EntityType.Builder.<twilightforest.entity.monster.Boggard>of((type, level) -> new twilightforest.entity.monster.Boggard(type, level), MobCategory.MONSTER).sized(0.6F, 1.8F));
+    public static final TFRegistryObject<EntityType<twilightforest.entity.MagicPainting>> MAGIC_PAINTING = projectile("magic_painting", EntityType.Builder.<twilightforest.entity.MagicPainting>of(twilightforest.entity.MagicPainting::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(10).updateInterval(Integer.MAX_VALUE));
+    // Q24 cross-lane addition (Lane A authored with permission, lives under Lane-B-owned TFEntities for projectile registration unity)
+    public static final TFRegistryObject<EntityType<twilightforest.entity.projectile.TwilightWandBolt>> WAND_BOLT = projectile("wand_bolt", EntityType.Builder.<twilightforest.entity.projectile.TwilightWandBolt>of(twilightforest.entity.projectile.TwilightWandBolt::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(5).updateInterval(2));
+    public static final TFRegistryObject<EntityType<twilightforest.entity.projectile.MoonwormShot>> MOONWORM_SHOT = projectile("moonworm_shot", EntityType.Builder.<twilightforest.entity.projectile.MoonwormShot>of(twilightforest.entity.projectile.MoonwormShot::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(5).updateInterval(2));
+    public static final TFRegistryObject<EntityType<ThrownBlock>> THROWN_BLOCK = projectile("thrown_block", EntityType.Builder.<ThrownBlock>of(ThrownBlock::new, MobCategory.MISC).sized(0.75F, 0.75F).clientTrackingRange(8).updateInterval(3));
+    public static final TFRegistryObject<EntityType<TinyBird>> TINY_BIRD = entity("tiny_bird", EntityType.Builder.of(TinyBird::new, MobCategory.CREATURE).sized(0.4F, 0.7F));
+    public static final TFRegistryObject<EntityType<PlateauBoss>> PLATEAU_BOSS = entity("plateau_boss", EntityType.Builder.<PlateauBoss>of((type, level) -> new PlateauBoss(type, level), MobCategory.MONSTER).sized(1.0F, 1.0F).clientTrackingRange(10));
 
-	public static final RegistryObject<EntityType<Adherent>> ADHERENT = make(TFEntityNames.ADHERENT, Adherent::new, MobCategory.MONSTER, 0.8F, 2.2F, 0x0a0000, 0x00008b);
-	public static final RegistryObject<EntityType<AlphaYeti>> ALPHA_YETI = make(TFEntityNames.ALPHA_YETI, AlphaYeti::new, MobCategory.MONSTER, 3.8F, 5.0F, 0xcdcdcd, 0x29486e);
-	public static final RegistryObject<EntityType<ArmoredGiant>> ARMORED_GIANT = make(TFEntityNames.ARMORED_GIANT, ArmoredGiant::new, MobCategory.MONSTER, 2.4F, 7.2F, 0x239391, 0x9a9a9a);
-	public static final RegistryObject<EntityType<Bighorn>> BIGHORN_SHEEP = make(TFEntityNames.BIGHORN_SHEEP, Bighorn::new, MobCategory.CREATURE, 0.9F, 1.3F, 0xdbceaf, 0xd7c771);
-	public static final RegistryObject<EntityType<BlockChainGoblin>> BLOCKCHAIN_GOBLIN = make(TFEntityNames.BLOCKCHAIN_GOBLIN, BlockChainGoblin::new, MobCategory.MONSTER, 0.9F, 1.4F, 0xd3e7bc, 0x1f3fff);
-	public static final RegistryObject<EntityType<Boar>> BOAR = make(TFEntityNames.BOAR, Boar::new, MobCategory.CREATURE, 0.9F, 0.9F, 0x83653b, 0xffefca);
-	public static final RegistryObject<EntityType<TwilightBoat>> BOAT = buildNoEgg(TFEntityNames.BOAT, makeCastedBuilder(TwilightBoat.class, TwilightBoat::new, 1.375F, 0.5625F, 10, 3), false);
-	//public static final RegistryObject<EntityType<Boggard>> BOGGARD = make(TFEntityNames.BOGGARD, Boggard::new, MobCategory.MONSTER, 0.8F, 1.1F);
-	public static final RegistryObject<EntityType<TowerBroodling>> CARMINITE_BROODLING = make(TFEntityNames.CARMINITE_BROODLING, TowerBroodling::new, MobCategory.MONSTER, 0.7F, 0.5F, 0x343c14, 0xbaee02);
-	public static final RegistryObject<EntityType<CarminiteGhastguard>> CARMINITE_GHASTGUARD = make(TFEntityNames.CARMINITE_GHASTGUARD, CarminiteGhastguard::new, MobCategory.MONSTER, 4.0F, 6.0F, 0xbcbcbc, 0xb77878);
-	public static final RegistryObject<EntityType<CarminiteGhastling>> CARMINITE_GHASTLING = make(TFEntityNames.CARMINITE_GHASTLING, CarminiteGhastling::new, MobCategory.MONSTER, 1.1F, 1.5F, 0xbcbcbc, 0xa74343);
-	public static final RegistryObject<EntityType<CarminiteGolem>> CARMINITE_GOLEM = make(TFEntityNames.CARMINITE_GOLEM, CarminiteGolem::new, MobCategory.MONSTER, 1.4F, 2.9F, 0x6b3d20, 0xe2ddda);
-	public static final RegistryObject<EntityType<ChainBlock>> CHAIN_BLOCK = buildNoEgg(TFEntityNames.CHAIN_BLOCK, makeCastedBuilder(ChainBlock.class, ChainBlock::new, 0.6F, 0.6F, 80, 1), true);
-	public static final RegistryObject<EntityType<CharmEffect>> CHARM_EFFECT = make(TFEntityNames.CHARM_EFFECT, CharmEffect::new, MobCategory.MISC, 0.25F, 0.25F, 0, 0);
-	public static final RegistryObject<EntityType<TwilightChestBoat>> CHEST_BOAT = buildNoEgg(TFEntityNames.CHEST_BOAT, makeCastedBuilder(TwilightChestBoat.class, TwilightChestBoat::new, 1.375F, 0.5625F, 10, 3), false);
-	public static final RegistryObject<EntityType<CubeOfAnnihilation>> CUBE_OF_ANNIHILATION = buildNoEgg(TFEntityNames.CUBE_OF_ANNIHILATION, makeCastedBuilder(CubeOfAnnihilation.class, CubeOfAnnihilation::new, 1.0F, 1.0F, 80, 1), true);
-	public static final RegistryObject<EntityType<DeathTome>> DEATH_TOME = make(TFEntityNames.DEATH_TOME, DeathTome::new, MobCategory.MONSTER, 0.6F, 1.1F, 0x774e22, 0xdbcdbe);
-	public static final RegistryObject<EntityType<Deer>> DEER = make(TFEntityNames.DEER, Deer::new, MobCategory.CREATURE, 0.7F, 1.8F, 0x7b4d2e, 0x4b241d);
-	public static final RegistryObject<EntityType<DwarfRabbit>> DWARF_RABBIT = make(TFEntityNames.DWARF_RABBIT, DwarfRabbit::new, MobCategory.CREATURE, 0.4F, 0.4F, 0xfefeee, 0xccaa99);
-	public static final RegistryObject<EntityType<FallingIce>> FALLING_ICE = make(TFEntityNames.FALLING_ICE, FallingIce::new, MobCategory.MISC, 1.0F, 1.0F, true, 0, 0);
-	public static final RegistryObject<EntityType<FireBeetle>> FIRE_BEETLE = make(TFEntityNames.FIRE_BEETLE, FireBeetle::new, MobCategory.MONSTER, 1.1F, 0.5F, true, 0x1d0b00, 0xcb6f25);
-	public static final RegistryObject<EntityType<GiantMiner>> GIANT_MINER = make(TFEntityNames.GIANT_MINER, GiantMiner::new, MobCategory.MONSTER, 2.4F, 7.2F, 0x211b52, 0x9a9a9a);
-	public static final RegistryObject<EntityType<HarbingerCube>> HARBINGER_CUBE = make(TFEntityNames.HARBINGER_CUBE, HarbingerCube::new, MobCategory.MONSTER, 1.9F, 2.4F, true, 0x00000a, 0x8b0000);
-	public static final RegistryObject<EntityType<HedgeSpider>> HEDGE_SPIDER = make(TFEntityNames.HEDGE_SPIDER, HedgeSpider::new, MobCategory.MONSTER, 1.4F, 0.9F, 0x235f13, 0x562653);
-	public static final RegistryObject<EntityType<HelmetCrab>> HELMET_CRAB = make(TFEntityNames.HELMET_CRAB, HelmetCrab::new, MobCategory.MONSTER, 0.8F, 1.1F, 0xfb904b, 0xd3e7bc);
-	public static final RegistryObject<EntityType<HostileWolf>> HOSTILE_WOLF = make(TFEntityNames.HOSTILE_WOLF, HostileWolf::new, MobCategory.MONSTER, 0.6F, 0.85F, 0xd7d3d3, 0xab1e14);
-	public static final RegistryObject<EntityType<Hydra>> HYDRA = make(TFEntityNames.HYDRA, Hydra::new, MobCategory.MONSTER, 16.0F, 12.0F, true, 0x142940, 0x29806b);
-	public static final RegistryObject<EntityType<HydraMortar>> HYDRA_MORTAR = buildNoEgg(TFEntityNames.HYDRA_MORTAR, makeCastedBuilder(HydraMortar.class, HydraMortar::new, 0.75F, 0.75F, 150, 3), true);
-	public static final RegistryObject<EntityType<IceArrow>> ICE_ARROW = buildNoEgg(TFEntityNames.ICE_ARROW, makeCastedBuilder(IceArrow.class, IceArrow::new, 0.5F, 0.5F, 150, 1), false);
-	public static final RegistryObject<EntityType<IceBomb>> THROWN_ICE = buildNoEgg(TFEntityNames.THROWN_ICE, makeCastedBuilder(IceBomb.class, IceBomb::new, 1.0F, 1.0F, 80, 2), true);
-	public static final RegistryObject<EntityType<IceCrystal>> ICE_CRYSTAL = make(TFEntityNames.ICE_CRYSTAL, IceCrystal::new, MobCategory.MONSTER, 0.6F, 1.8F, 0xdce9fe, 0xadcafb);
-	public static final RegistryObject<EntityType<IceSnowball>> ICE_SNOWBALL = buildNoEgg(TFEntityNames.ICE_SNOWBALL, makeCastedBuilder(IceSnowball.class, IceSnowball::new, 0.25F, 0.25F, 150, 3), false);
-	public static final RegistryObject<EntityType<KingSpider>> KING_SPIDER = make(TFEntityNames.KING_SPIDER, KingSpider::new, MobCategory.MONSTER, 1.6F, 1.6F, 0x2c1a0e, 0xffc017);
-	public static final RegistryObject<EntityType<KnightPhantom>> KNIGHT_PHANTOM = make(TFEntityNames.KNIGHT_PHANTOM, KnightPhantom::new, MobCategory.MONSTER, 1.25F, 2.5F, 0xa6673b, 0xd3e7bc);
-	public static final RegistryObject<EntityType<Kobold>> KOBOLD = make(TFEntityNames.KOBOLD, Kobold::new, MobCategory.MONSTER, 0.8F, 1.1F, 0x372096, 0x895d1b);
-	public static final RegistryObject<EntityType<Lich>> LICH = make(TFEntityNames.LICH, Lich::new, MobCategory.MONSTER, 1.1F, 2.1F, 0xaca489, 0x360472);
-	public static final RegistryObject<EntityType<LichBolt>> LICH_BOLT = buildNoEgg(TFEntityNames.LICH_BOLT, makeCastedBuilder(LichBolt.class, LichBolt::new, 0.25F, 0.25F, 150, 2), false);
-	public static final RegistryObject<EntityType<LichBomb>> LICH_BOMB = buildNoEgg(TFEntityNames.LICH_BOMB, makeCastedBuilder(LichBomb.class, LichBomb::new, 0.25F, 0.25F, 150, 3), false);
-	public static final RegistryObject<EntityType<LichMinion>> LICH_MINION = make(TFEntityNames.LICH_MINION, LichMinion::new, MobCategory.MONSTER, 0.6F, 1.95F, 0, 0);
-	public static final RegistryObject<EntityType<LowerGoblinKnight>> LOWER_GOBLIN_KNIGHT = make(TFEntityNames.LOWER_GOBLIN_KNIGHT, LowerGoblinKnight::new, MobCategory.MONSTER, 0.7F, 1.1F, 0x566055, 0xd3e7bc);
-	public static final RegistryObject<EntityType<LoyalZombie>> LOYAL_ZOMBIE = make(TFEntityNames.LOYAL_ZOMBIE, LoyalZombie::new, MobCategory.MONSTER, 0.6F, 1.8F, 0, 0);
-	public static final RegistryObject<EntityType<MazeSlime>> MAZE_SLIME = make(TFEntityNames.MAZE_SLIME, MazeSlime::new, MobCategory.MONSTER, 2.04F, 2.04F, 0xa3a3a3, 0x2a3b17);
-	public static final RegistryObject<EntityType<Minoshroom>> MINOSHROOM = make(TFEntityNames.MINOSHROOM, Minoshroom::new, MobCategory.MONSTER, 1.49F, 2.5F, 0xa81012, 0xaa7d66);
-	public static final RegistryObject<EntityType<Minotaur>> MINOTAUR = make(TFEntityNames.MINOTAUR, Minotaur::new, MobCategory.MONSTER, 0.6F, 2.1F, 0x3f3024, 0xaa7d66);
-	public static final RegistryObject<EntityType<MistWolf>> MIST_WOLF = make(TFEntityNames.MIST_WOLF, MistWolf::new, MobCategory.MONSTER, 1.4F, 1.9F, 0x3a1411, 0xe2c88a);
-	public static final RegistryObject<EntityType<MoonwormShot>> MOONWORM_SHOT = buildNoEgg(TFEntityNames.MOONWORM_SHOT, makeCastedBuilder(MoonwormShot.class, MoonwormShot::new, 0.25F, 0.25F, 150, 3), false);
-	public static final RegistryObject<EntityType<MosquitoSwarm>> MOSQUITO_SWARM = make(TFEntityNames.MOSQUITO_SWARM, MosquitoSwarm::new, MobCategory.MONSTER, 0.7F, 1.9F, 0x080904, 0x2d2f21);
-	public static final RegistryObject<EntityType<Naga>> NAGA = make(TFEntityNames.NAGA, Naga::new, MobCategory.MONSTER, 2.0F, 3.0F, true, 0xa4d316, 0x1b380b);
-	public static final RegistryObject<EntityType<NatureBolt>> NATURE_BOLT = buildNoEgg(TFEntityNames.NATURE_BOLT, makeCastedBuilder(NatureBolt.class, NatureBolt::new, 0.25F, 0.25F, 150, 5), false);
-	public static final RegistryObject<EntityType<MagicPainting>> MAGIC_PAINTING = buildNoEgg(TFEntityNames.MAGIC_PAINTING, makeCastedBuilder(MagicPainting.class, MagicPainting::new, 0.5F, 0.5F, 10, Integer.MAX_VALUE), false);
-	public static final RegistryObject<EntityType<Penguin>> PENGUIN = make(TFEntityNames.PENGUIN, Penguin::new, MobCategory.CREATURE, 0.5F, 0.9F, 0x12151b, 0xf9edd2);
-	public static final RegistryObject<EntityType<PinchBeetle>> PINCH_BEETLE = make(TFEntityNames.PINCH_BEETLE, PinchBeetle::new, MobCategory.MONSTER, 1.2F, 0.5F, 0xbc9327, 0x241609);
-	public static final RegistryObject<EntityType<PlateauBoss>> PLATEAU_BOSS = make(TFEntityNames.PLATEAU_BOSS, PlateauBoss::new, MobCategory.MONSTER, 1F, 1F, true, 0, 0);
-	public static final RegistryObject<EntityType<ProtectionBox>> PROTECTION_BOX = buildNoEgg(TFEntityNames.PROTECTION_BOX, makeCastedBuilder(ProtectionBox.class, ProtectionBox::new, 0, 0, 80, 3).disableSaving().disableSummon(), true);
-	public static final RegistryObject<EntityType<QuestRam>> QUEST_RAM = make(TFEntityNames.QUEST_RAM, QuestRam::new, MobCategory.CREATURE, 1.25F, 2.9F, 0xfefeee, 0x33aadd);
-	public static final RegistryObject<EntityType<Raven>> RAVEN = make(TFEntityNames.RAVEN, Raven::new, MobCategory.CREATURE, 0.3F, 0.5F, 0x000011, 0x222233);
-	public static final RegistryObject<EntityType<Redcap>> REDCAP = make(TFEntityNames.REDCAP, Redcap::new, MobCategory.MONSTER, 0.9F, 1.4F, 0x3b3a6c, 0xab1e14);
-	public static final RegistryObject<EntityType<RedcapSapper>> REDCAP_SAPPER = make(TFEntityNames.REDCAP_SAPPER, RedcapSapper::new, MobCategory.MONSTER, 0.9F, 1.4F, 0x575d21, 0xab1e14);
-	public static final RegistryObject<EntityType<RisingZombie>> RISING_ZOMBIE = make(TFEntityNames.RISING_ZOMBIE, RisingZombie::new, MobCategory.MONSTER, 0.6F, 1.95F, 0, 0);
-	public static final RegistryObject<EntityType<RovingCube>> ROVING_CUBE = make(TFEntityNames.ROVING_CUBE, RovingCube::new, MobCategory.MONSTER, 1.2F, 2.1F, 0, 0);
-	public static final RegistryObject<EntityType<SeekerArrow>> SEEKER_ARROW = buildNoEgg(TFEntityNames.SEEKER_ARROW, makeCastedBuilder(SeekerArrow.class, SeekerArrow::new, 0.5F, 0.5F, 150, 1), false);
-	public static final RegistryObject<EntityType<SkeletonDruid>> SKELETON_DRUID = make(TFEntityNames.SKELETON_DRUID, SkeletonDruid::new, MobCategory.MONSTER, 0.6F, 1.99F, 0xa3a3a3, 0x2a3b17);
-	public static final RegistryObject<EntityType<SlideBlock>> SLIDER = buildNoEgg(TFEntityNames.SLIDER, makeCastedBuilder(SlideBlock.class, SlideBlock::new, 0.98F, 0.98F, 80, 1), false);
-	public static final RegistryObject<EntityType<SlimeBeetle>> SLIME_BEETLE = make(TFEntityNames.SLIME_BEETLE, SlimeBeetle::new, MobCategory.MONSTER, 0.9F, 0.5F, 0x0c1606, 0x60a74c);
-	public static final RegistryObject<EntityType<SlimeProjectile>> SLIME_BLOB = buildNoEgg(TFEntityNames.SLIME_BLOB, makeCastedBuilder(SlimeProjectile.class, SlimeProjectile::new, 0.25F, 0.25F, 150, 3), false);
-	public static final RegistryObject<EntityType<SnowGuardian>> SNOW_GUARDIAN = make(TFEntityNames.SNOW_GUARDIAN, SnowGuardian::new, MobCategory.MONSTER, 0.6F, 1.8F, 0xd3e7bc, 0xfefefe);
-	public static final RegistryObject<EntityType<SnowQueen>> SNOW_QUEEN = make(TFEntityNames.SNOW_QUEEN, SnowQueen::new, MobCategory.MONSTER, 0.7F, 2.2F, 0xb1b2d4, 0x87006e);
-	public static final RegistryObject<EntityType<Squirrel>> SQUIRREL = make(TFEntityNames.SQUIRREL, Squirrel::new, MobCategory.CREATURE, 0.3F, 0.5F, 0x904f12, 0xeeeeee);
-	public static final RegistryObject<EntityType<StableIceCore>> STABLE_ICE_CORE = make(TFEntityNames.STABLE_ICE_CORE, StableIceCore::new, MobCategory.MONSTER, 0.8F, 1.8F, 0xa1bff3, 0x7000f8);
-	public static final RegistryObject<EntityType<SwarmSpider>> SWARM_SPIDER = make(TFEntityNames.SWARM_SPIDER, SwarmSpider::new, MobCategory.MONSTER, 0.8F, 0.4F, 0x32022e, 0x17251e);
-	public static final RegistryObject<EntityType<ThrownBlock>> THROWN_BLOCK = buildNoEgg(TFEntityNames.THROWN_BLOCK, makeCastedBuilder(ThrownBlock.class, ThrownBlock::new, 1.0F, 1.0F, 80, 2), true);
-	public static final RegistryObject<EntityType<ThrownWep>> THROWN_WEP = make(TFEntityNames.THROWN_WEP, ThrownWep::new, MobCategory.MISC, 0.5F, 0.5F, 0, 0);
-	public static final RegistryObject<EntityType<TinyBird>> TINY_BIRD = make(TFEntityNames.TINY_BIRD, TinyBird::new, MobCategory.CREATURE, 0.3F, 0.3F, 0x33aadd, 0x1188ee);
-	public static final RegistryObject<EntityType<TomeBolt>> TOME_BOLT = buildNoEgg(TFEntityNames.TOME_BOLT, makeCastedBuilder(TomeBolt.class, TomeBolt::new, 0.25F, 0.25F, 150, 5), false);
-	public static final RegistryObject<EntityType<TowerwoodBorer>> TOWERWOOD_BORER = make(TFEntityNames.TOWERWOOD_BORER, TowerwoodBorer::new, MobCategory.MONSTER, 0.4F, 0.3F, 0x5d2b21, 0xaca03a);
-	public static final RegistryObject<EntityType<Troll>> TROLL = make(TFEntityNames.TROLL, Troll::new, MobCategory.MONSTER, 1.4F, 2.4F, 0x9ea98f, 0xb0948e);
-	public static final RegistryObject<EntityType<TwilightWandBolt>> WAND_BOLT = buildNoEgg(TFEntityNames.WAND_BOLT, makeCastedBuilder(TwilightWandBolt.class, TwilightWandBolt::new, 0.25F, 0.25F, 150, 5), false);
-	public static final RegistryObject<EntityType<UnstableIceCore>> UNSTABLE_ICE_CORE = make(TFEntityNames.UNSTABLE_ICE_CORE, UnstableIceCore::new, MobCategory.MONSTER, 0.8F, 1.8F, 0x9aacf5, 0x9b0fa5);
-	public static final RegistryObject<EntityType<UpperGoblinKnight>> UPPER_GOBLIN_KNIGHT = make(TFEntityNames.UPPER_GOBLIN_KNIGHT, UpperGoblinKnight::new, MobCategory.MONSTER, 1.1F, 1.3F, 0, 0);
-	public static final RegistryObject<EntityType<UrGhast>> UR_GHAST = make(TFEntityNames.UR_GHAST, UrGhast::new, MobCategory.MONSTER, 14.0F, 18.0F, true, 0xbcbcbc, 0xb77878);
-	public static final RegistryObject<EntityType<WinterWolf>> WINTER_WOLF = make(TFEntityNames.WINTER_WOLF, WinterWolf::new, MobCategory.MONSTER, 1.4F, 1.9F, 0xdfe3e5, 0xb2bcca);
-	public static final RegistryObject<EntityType<Wraith>> WRAITH = make(TFEntityNames.WRAITH, Wraith::new, MobCategory.MONSTER, 0.6F, 1.8F, true, 0x505050, 0x838383);
-	public static final RegistryObject<EntityType<Yeti>> YETI = make(TFEntityNames.YETI, Yeti::new, MobCategory.MONSTER, 1.4F, 2.4F, 0xdedede, 0x4675bb);
+    private TFEntities() {
+    }
 
-	private static <E extends Entity> RegistryObject<EntityType<E>> make(ResourceLocation id, EntityType.EntityFactory<E> factory, MobCategory classification, float width, float height, int primary, int secondary) {
-		return make(id, factory, classification, width, height, false, primary, secondary);
-	}
+    public static void addEntityAttributes() {
+        register(Zombie.createAttributes(), LICH_MINION, ARMORED_GIANT);
+        FabricDefaultAttributeRegistry.register(GIANT_MINER.get(), GiantMiner.registerAttributes().build());
+        register(Spider.createAttributes());
+        register(Ghast.createAttributes());
+        register(Skeleton.createAttributes(), SKELETON_DRUID);
+        register(PolarBear.createAttributes(), YETI);
+        register(Blaze.createAttributes());
+        register(Vex.createAttributes());
+        register(Sheep.createAttributes(), BIGHORN_SHEEP);
+        FabricDefaultAttributeRegistry.register(BOAR.get(), Boar.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(DEER.get(), Deer.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(DWARF_RABBIT.get(), DwarfRabbit.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(SQUIRREL.get(), Squirrel.registerAttributes().build());
+        register(Chicken.createAttributes(), RAVEN, TINY_BIRD);
+        FabricDefaultAttributeRegistry.register(PENGUIN.get(), Penguin.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(BLOCKCHAIN_GOBLIN.get(), BlockChainGoblin.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(CARMINITE_BROODLING.get(), TowerBroodling.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(CARMINITE_GHASTGUARD.get(), CarminiteGhastguard.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(CARMINITE_GHASTLING.get(), CarminiteGhastling.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(CARMINITE_GOLEM.get(), CarminiteGolem.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(KOBOLD.get(), Kobold.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(LOWER_GOBLIN_KNIGHT.get(), LowerGoblinKnight.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(DEATH_TOME.get(), DeathTome.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(FIRE_BEETLE.get(), FireBeetle.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(HEDGE_SPIDER.get(), Spider.createAttributes().build());
+        FabricDefaultAttributeRegistry.register(HELMET_CRAB.get(), HelmetCrab.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(YETI.get(), Yeti.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(ADHERENT.get(), Adherent.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(ALPHA_YETI.get(), AlphaYeti.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(HYDRA.get(), Hydra.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(HOSTILE_WOLF.get(), HostileWolf.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(HARBINGER_CUBE.get(), HarbingerCube.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(ICE_CRYSTAL.get(), IceCrystal.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(KING_SPIDER.get(), KingSpider.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(KNIGHT_PHANTOM.get(), KnightPhantom.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(LICH.get(), Lich.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(MAZE_SLIME.get(), MazeSlime.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(LOYAL_ZOMBIE.get(), LoyalZombie.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(MINOSHROOM.get(), Minoshroom.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(MINOTAUR.get(), Minotaur.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(MIST_WOLF.get(), MistWolf.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(MOSQUITO_SWARM.get(), MosquitoSwarm.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(NAGA.get(), Naga.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(PINCH_BEETLE.get(), PinchBeetle.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(PLATEAU_BOSS.get(), PlateauBoss.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(QUEST_RAM.get(), QuestRam.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(REDCAP.get(), Redcap.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(REDCAP_SAPPER.get(), RedcapSapper.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(RISING_ZOMBIE.get(), Monster.createMonsterAttributes().build());
+        FabricDefaultAttributeRegistry.register(ROVING_CUBE.get(), RovingCube.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(SLIME_BEETLE.get(), SlimeBeetle.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(SNOW_GUARDIAN.get(), SnowGuardian.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(SNOW_QUEEN.get(), SnowQueen.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(STABLE_ICE_CORE.get(), StableIceCore.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(SWARM_SPIDER.get(), SwarmSpider.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(TOWERWOOD_BORER.get(), TowerwoodBorer.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(TROLL.get(), Troll.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(UNSTABLE_ICE_CORE.get(), UnstableIceCore.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(UPPER_GOBLIN_KNIGHT.get(), UpperGoblinKnight.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(UR_GHAST.get(), UrGhast.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(WINTER_WOLF.get(), WinterWolf.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(WRAITH.get(), Wraith.registerAttributes().build());
+        FabricDefaultAttributeRegistry.register(BOGGARD.get(), twilightforest.entity.monster.Boggard.registerAttributes().build());
+    }
 
-	private static <E extends Entity> RegistryObject<EntityType<E>> make(ResourceLocation id, EntityType.EntityFactory<E> factory, MobCategory classification, float width, float height, boolean fireproof, int primary, int secondary) {
-		return build(id, makeBuilder(factory, classification, width, height, 80, 3), fireproof, primary, secondary);
-	}
+    private static <T extends Mob> TFRegistryObject<EntityType<T>> entity(String path, EntityType.Builder<T> builder) {
+        EntityType<T> type = Registry.register(BuiltInRegistries.ENTITY_TYPE, TwilightForestMod.prefix(path), builder.build(TwilightForestMod.ID + ":" + path));
+        markServerOnly(type);
+        return new TFRegistryObject<>(type);
+    }
 
-	private static <E extends Entity> RegistryObject<EntityType<E>> buildNoEgg(ResourceLocation id, FabricEntityTypeBuilder<E> builder, boolean fireproof) {
-		if (fireproof) builder.fireImmune();
-		return ENTITIES.register(id.getPath(), builder::build);
-	}
+    private static <T extends net.minecraft.world.entity.Entity> TFRegistryObject<EntityType<T>> projectile(String path, EntityType.Builder<T> builder) {
+        EntityType<T> type = Registry.register(BuiltInRegistries.ENTITY_TYPE, TwilightForestMod.prefix(path), builder.build(TwilightForestMod.ID + ":" + path));
+        markServerOnly(type);
+        return new TFRegistryObject<>(type);
+    }
 
-	@SuppressWarnings("unchecked")
-	private static <E extends Entity> RegistryObject<EntityType<E>> build(ResourceLocation id, FabricEntityTypeBuilder<E> builder, boolean fireproof, int primary, int secondary) {
-		if (fireproof) builder.fireImmune();
-		RegistryObject<EntityType<E>> ret = ENTITIES.register(id.getPath(), () -> builder.build());
-		if (primary != 0 && secondary != 0) {
-			SPAWN_EGGS.register(id.getPath() + "_spawn_egg", () -> new LazySpawnEggItem(() -> (EntityType<? extends Mob>) ret.get(), primary, secondary, new Item.Properties()));
-		}
-		return ret;
-	}
+    private static void markServerOnly(EntityType<?> type) {
+    }
 
-	private static <E extends Entity> FabricEntityTypeBuilder<E> makeCastedBuilder(@SuppressWarnings("unused") Class<E> cast, EntityType.EntityFactory<E> factory, float width, float height, int range, int interval) {
-		return makeBuilder(factory, MobCategory.MISC, width, height, range, interval);
-	}
-
-	private static <E extends Entity> FabricEntityTypeBuilder<E> makeBuilder(EntityType.EntityFactory<E> factory, MobCategory classification, float width, float height, int range, int interval) {
-		return FabricEntityTypeBuilder.create(classification, factory).
-				dimensions(EntityDimensions.fixed(width, height)).
-				trackRangeChunks(range).
-				trackedUpdateRate(interval).
-				forceTrackedVelocityUpdates(true);
-	}
-
-	public static void registerSpawnPlacements() {
-		SpawnPlacements.register(BOAR.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
-		SpawnPlacements.register(BIGHORN_SHEEP.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
-		SpawnPlacements.register(DEER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
-		SpawnPlacements.register(REDCAP.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-		SpawnPlacements.register(SKELETON_DRUID.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, SkeletonDruid::checkDruidSpawnRules);
-		SpawnPlacements.register(WRAITH.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Wraith::checkMonsterSpawnRules);
-		SpawnPlacements.register(HOSTILE_WOLF.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, HostileWolf::checkWolfSpawnRules);
-		SpawnPlacements.register(HYDRA.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules);
-		SpawnPlacements.register(LICH.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-		SpawnPlacements.register(PENGUIN.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Penguin::canSpawn);
-		SpawnPlacements.register(LICH_MINION.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-		SpawnPlacements.register(LOYAL_ZOMBIE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules);
-		SpawnPlacements.register(TINY_BIRD.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
-		SpawnPlacements.register(SQUIRREL.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
-		SpawnPlacements.register(DWARF_RABBIT.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
-		SpawnPlacements.register(RAVEN.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
-		SpawnPlacements.register(QUEST_RAM.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
-		SpawnPlacements.register(KOBOLD.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-		SpawnPlacements.register(MOSQUITO_SWARM.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-		SpawnPlacements.register(DEATH_TOME.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-		SpawnPlacements.register(MINOTAUR.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-		SpawnPlacements.register(MINOSHROOM.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-		SpawnPlacements.register(FIRE_BEETLE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-		SpawnPlacements.register(SLIME_BEETLE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-		SpawnPlacements.register(PINCH_BEETLE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-		SpawnPlacements.register(MIST_WOLF.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-		SpawnPlacements.register(CARMINITE_GHASTLING.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CarminiteGhastling::canSpawnHere);
-		SpawnPlacements.register(CARMINITE_GOLEM.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-		SpawnPlacements.register(TOWERWOOD_BORER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-		SpawnPlacements.register(CARMINITE_GHASTGUARD.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CarminiteGhastguard::ghastSpawnHandler);
-		SpawnPlacements.register(UR_GHAST.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CarminiteGhastguard::ghastSpawnHandler);
-		SpawnPlacements.register(BLOCKCHAIN_GOBLIN.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-		SpawnPlacements.register(UPPER_GOBLIN_KNIGHT.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-		SpawnPlacements.register(LOWER_GOBLIN_KNIGHT.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-		SpawnPlacements.register(HELMET_CRAB.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-		SpawnPlacements.register(KNIGHT_PHANTOM.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules);
-		SpawnPlacements.register(NAGA.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-		SpawnPlacements.register(SWARM_SPIDER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, SwarmSpider::getCanSpawnHere);
-		SpawnPlacements.register(KING_SPIDER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-		SpawnPlacements.register(CARMINITE_BROODLING.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-		SpawnPlacements.register(HEDGE_SPIDER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, HedgeSpider::canSpawn);
-		SpawnPlacements.register(REDCAP_SAPPER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-		SpawnPlacements.register(MAZE_SLIME.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, MazeSlime::getCanSpawnHere);
-		SpawnPlacements.register(YETI.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Yeti::yetiSnowyForestSpawnHandler);
-		SpawnPlacements.register(ALPHA_YETI.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-		SpawnPlacements.register(WINTER_WOLF.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WinterWolf::canSpawnHere);
-		SpawnPlacements.register(SNOW_GUARDIAN.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-		SpawnPlacements.register(STABLE_ICE_CORE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-		SpawnPlacements.register(UNSTABLE_ICE_CORE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-		SpawnPlacements.register(SNOW_QUEEN.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-		SpawnPlacements.register(TROLL.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-		SpawnPlacements.register(GIANT_MINER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, GiantMiner::canSpawn);
-		SpawnPlacements.register(ARMORED_GIANT.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, GiantMiner::canSpawn);
-		SpawnPlacements.register(ICE_CRYSTAL.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-		SpawnPlacements.register(HARBINGER_CUBE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-		SpawnPlacements.register(ADHERENT.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-		SpawnPlacements.register(ROVING_CUBE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-		SpawnPlacements.register(RISING_ZOMBIE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
-	}
-
-	public static void addEntityAttributes() {
-		FabricDefaultAttributeRegistry.register(BOAR.get(), Boar.registerAttributes());
-		FabricDefaultAttributeRegistry.register(BIGHORN_SHEEP.get(), Sheep.createAttributes());
-		FabricDefaultAttributeRegistry.register(DEER.get(), Deer.registerAttributes());
-		FabricDefaultAttributeRegistry.register(REDCAP.get(), Redcap.registerAttributes());
-		FabricDefaultAttributeRegistry.register(SWARM_SPIDER.get(), SwarmSpider.registerAttributes());
-		FabricDefaultAttributeRegistry.register(NAGA.get(), Naga.registerAttributes());
-		FabricDefaultAttributeRegistry.register(SKELETON_DRUID.get(), AbstractSkeleton.createAttributes());
-		FabricDefaultAttributeRegistry.register(HOSTILE_WOLF.get(), HostileWolf.registerAttributes());
-		FabricDefaultAttributeRegistry.register(WRAITH.get(), Wraith.registerAttributes());
-		FabricDefaultAttributeRegistry.register(HEDGE_SPIDER.get(), Spider.createAttributes());
-		FabricDefaultAttributeRegistry.register(HYDRA.get(), Hydra.registerAttributes());
-		FabricDefaultAttributeRegistry.register(LICH.get(), Lich.registerAttributes());
-		FabricDefaultAttributeRegistry.register(PENGUIN.get(), Penguin.registerAttributes());
-		FabricDefaultAttributeRegistry.register(LICH_MINION.get(), Zombie.createAttributes());
-		FabricDefaultAttributeRegistry.register(LOYAL_ZOMBIE.get(), LoyalZombie.registerAttributes());
-		FabricDefaultAttributeRegistry.register(TINY_BIRD.get(), TinyBird.registerAttributes());
-		FabricDefaultAttributeRegistry.register(SQUIRREL.get(), Squirrel.registerAttributes());
-		FabricDefaultAttributeRegistry.register(DWARF_RABBIT.get(), DwarfRabbit.registerAttributes());
-		FabricDefaultAttributeRegistry.register(RAVEN.get(), Raven.registerAttributes());
-		FabricDefaultAttributeRegistry.register(QUEST_RAM.get(), QuestRam.registerAttributes());
-		FabricDefaultAttributeRegistry.register(KOBOLD.get(), Kobold.registerAttributes());
-		FabricDefaultAttributeRegistry.register(MOSQUITO_SWARM.get(), MosquitoSwarm.registerAttributes());
-		FabricDefaultAttributeRegistry.register(DEATH_TOME.get(), DeathTome.registerAttributes());
-		FabricDefaultAttributeRegistry.register(MINOTAUR.get(), Minotaur.registerAttributes());
-		FabricDefaultAttributeRegistry.register(MINOSHROOM.get(), Minoshroom.registerAttributes());
-		FabricDefaultAttributeRegistry.register(FIRE_BEETLE.get(), FireBeetle.registerAttributes());
-		FabricDefaultAttributeRegistry.register(SLIME_BEETLE.get(), SlimeBeetle.registerAttributes());
-		FabricDefaultAttributeRegistry.register(PINCH_BEETLE.get(), PinchBeetle.registerAttributes());
-		FabricDefaultAttributeRegistry.register(MAZE_SLIME.get(), MazeSlime.registerAttributes());
-		FabricDefaultAttributeRegistry.register(REDCAP_SAPPER.get(), RedcapSapper.registerAttributes());
-		FabricDefaultAttributeRegistry.register(MIST_WOLF.get(), MistWolf.registerAttributes());
-		FabricDefaultAttributeRegistry.register(KING_SPIDER.get(), KingSpider.registerAttributes());
-		FabricDefaultAttributeRegistry.register(CARMINITE_GHASTLING.get(), CarminiteGhastling.registerAttributes());
-		FabricDefaultAttributeRegistry.register(CARMINITE_GHASTGUARD.get(), CarminiteGhastguard.registerAttributes());
-		FabricDefaultAttributeRegistry.register(CARMINITE_GOLEM.get(), CarminiteGolem.registerAttributes());
-		FabricDefaultAttributeRegistry.register(TOWERWOOD_BORER.get(), TowerwoodBorer.registerAttributes());
-		FabricDefaultAttributeRegistry.register(CARMINITE_BROODLING.get(), TowerBroodling.registerAttributes());
-		FabricDefaultAttributeRegistry.register(UR_GHAST.get(), UrGhast.registerAttributes());
-		FabricDefaultAttributeRegistry.register(BLOCKCHAIN_GOBLIN.get(), BlockChainGoblin.registerAttributes());
-		FabricDefaultAttributeRegistry.register(UPPER_GOBLIN_KNIGHT.get(), UpperGoblinKnight.registerAttributes());
-		FabricDefaultAttributeRegistry.register(LOWER_GOBLIN_KNIGHT.get(), LowerGoblinKnight.registerAttributes());
-		FabricDefaultAttributeRegistry.register(HELMET_CRAB.get(), HelmetCrab.registerAttributes());
-		FabricDefaultAttributeRegistry.register(KNIGHT_PHANTOM.get(), KnightPhantom.registerAttributes());
-		FabricDefaultAttributeRegistry.register(YETI.get(), Yeti.registerAttributes());
-		FabricDefaultAttributeRegistry.register(ALPHA_YETI.get(), AlphaYeti.registerAttributes());
-		FabricDefaultAttributeRegistry.register(WINTER_WOLF.get(), WinterWolf.registerAttributes());
-		FabricDefaultAttributeRegistry.register(SNOW_GUARDIAN.get(), SnowGuardian.registerAttributes());
-		FabricDefaultAttributeRegistry.register(STABLE_ICE_CORE.get(), StableIceCore.registerAttributes());
-		FabricDefaultAttributeRegistry.register(UNSTABLE_ICE_CORE.get(), UnstableIceCore.registerAttributes());
-		FabricDefaultAttributeRegistry.register(SNOW_QUEEN.get(), SnowQueen.registerAttributes());
-		FabricDefaultAttributeRegistry.register(TROLL.get(), Troll.registerAttributes());
-		FabricDefaultAttributeRegistry.register(GIANT_MINER.get(), GiantMiner.registerAttributes());
-		FabricDefaultAttributeRegistry.register(ARMORED_GIANT.get(), GiantMiner.registerAttributes());
-		FabricDefaultAttributeRegistry.register(ICE_CRYSTAL.get(), IceCrystal.registerAttributes());
-		FabricDefaultAttributeRegistry.register(HARBINGER_CUBE.get(), HarbingerCube.registerAttributes());
-		FabricDefaultAttributeRegistry.register(ADHERENT.get(), Adherent.registerAttributes());
-		FabricDefaultAttributeRegistry.register(ROVING_CUBE.get(), RovingCube.registerAttributes());
-		FabricDefaultAttributeRegistry.register(PLATEAU_BOSS.get(), PlateauBoss.registerAttributes());
-
-		//event.put(BOGGARD.get(), Boggard.registerAttributes().create());
-		FabricDefaultAttributeRegistry.register(RISING_ZOMBIE.get(), Zombie.createAttributes());
-	}
-
-	public static void init() {
-		registerSpawnPlacements();
-		addEntityAttributes();
-	}
+    @SafeVarargs
+    private static <T extends LivingEntity> void register(AttributeSupplier.Builder attributes, TFRegistryObject<? extends EntityType<? extends T>>... entityTypes) {
+        for (TFRegistryObject<? extends EntityType<? extends T>> entityType : entityTypes) {
+            FabricDefaultAttributeRegistry.register(entityType.get(), attributes.build());
+        }
+    }
 }

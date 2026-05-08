@@ -1,0 +1,9 @@
+﻿{
+  "parent": "codex_twilight:block/horizontal_hollow_log_plant",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "carpet": "codex_twilight:block/mosspatch",
+    "overhang": "codex_twilight:block/moss_overhang",
+    "plant": "minecraft:block/short_grass"
+  }
+}

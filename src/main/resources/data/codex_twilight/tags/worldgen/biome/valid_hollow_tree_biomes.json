@@ -1,0 +1,68 @@
+﻿{
+    "values":  [
+                   {
+                       "id":  "codex_twilight:dense_forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:fire_swamp",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:dense_mushroom_forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:firefly_forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:mushroom_forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:oak_savannah",
+                       "required":  false
+                   },
+                   {
+                       "id":  "codex_twilight:enchanted_forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:dense_forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:fire_swamp",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:dense_mushroom_forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:firefly_forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:mushroom_forest",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:oak_savannah",
+                       "required":  false
+                   },
+                   {
+                       "id":  "twilightforest:enchanted_forest",
+                       "required":  false
+                   }
+               ]
+}

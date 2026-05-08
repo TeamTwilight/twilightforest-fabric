@@ -1,0 +1,8 @@
+﻿{
+  "parent": "minecraft:block/door_bottom_right_open",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "bottom": "codex_twilight:block/wood/door/time_lower",
+    "top": "codex_twilight:block/wood/door/time_upper"
+  }
+}

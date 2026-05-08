@@ -1,0 +1,6 @@
+﻿{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "codex_twilight:item/brittle_potion_flask_damaged"
+  }
+}

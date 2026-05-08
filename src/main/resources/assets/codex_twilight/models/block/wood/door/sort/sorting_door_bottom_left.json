@@ -1,0 +1,9 @@
+﻿{
+  "parent": "codex_twilight:block/util/corrected_door_bottom_left",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "bottom": "codex_twilight:block/wood/door/sort_lower",
+    "side": "codex_twilight:block/wood/door/sort_side",
+    "top": "codex_twilight:block/wood/door/sort_upper"
+  }
+}

@@ -1,0 +1,9 @@
+﻿{
+  "parent": "codex_twilight:block/hollow_log_moss",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "inner": "codex_twilight:block/stripped_mangrove_log",
+    "side": "codex_twilight:block/mangrove_log",
+    "top": "codex_twilight:block/mangrove_log_top"
+  }
+}

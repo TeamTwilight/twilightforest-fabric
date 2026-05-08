@@ -1,0 +1,17 @@
+{
+  "_comment": "Phase F2.1 — codex-twilight stick.json keeps only true held-item CMD overrides for the TF magic scepters (31002 = scepter_of_twilight, 31003 = scepter_of_life_drain). Entity-display overrides (31100+) and the F1.15 ItemDisplay-overlay path were dropped here when paired client renderers took over rendering of TF mobs (see PLAN_F2). If you add a new held weapon that paired-client-disguises to STICK, append a new override here and keep its CMD inside the 31000-31099 weapon band.",
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "minecraft:item/stick"
+  },
+  "overrides": [
+    {
+      "predicate": { "custom_model_data": 31002 },
+      "model": "codex_twilight:item/scepter_of_twilight"
+    },
+    {
+      "predicate": { "custom_model_data": 31003 },
+      "model": "codex_twilight:item/scepter_of_life_drain"
+    }
+  ]
+}

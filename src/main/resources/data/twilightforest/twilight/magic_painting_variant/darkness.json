@@ -1,0 +1,60 @@
+{
+  "width": 64,
+  "height": 32,
+  "author": {
+    "translate": "magic_painting.twilightforest.darkness.author"
+  },
+  "back_texture": "twilightforest:magic_paintings/back",
+  "layers": [
+    {
+      "path": "background",
+      "fullbright": true,
+      "local_lighting": true
+    },
+    {
+      "path": "sky",
+      "parallax": {
+        "type": "view_angle",
+        "multiplier": 0.01,
+        "width": 128,
+        "height": 32
+      },
+      "opacity_modifier": {
+        "type": "sine_time",
+        "multiplier": 0.03,
+        "invert": false,
+        "min": 0.0,
+        "max": 1.0
+      },
+      "fullbright": true,
+      "local_lighting": true
+    },
+    {
+      "path": "terrain",
+      "fullbright": false,
+      "local_lighting": true
+    },
+    {
+      "path": "gems",
+      "fullbright": true,
+      "local_lighting": true
+    },
+    {
+      "path": "lightning",
+      "opacity_modifier": {
+        "type": "lightning",
+        "multiplier": 1.0,
+        "invert": false,
+        "min": 0.0,
+        "max": 1.0
+      },
+      "fullbright": true,
+      "local_lighting": true
+    },
+    {
+      "path": "frame",
+      "fullbright": false,
+      "local_lighting": false
+    }
+  ]
+}
