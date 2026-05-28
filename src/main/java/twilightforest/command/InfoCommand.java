@@ -20,7 +20,7 @@ import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-import net.neoforged.fml.loading.FMLLoader;
+import net.neoforged.fml.loading.FMLEnvironment;
 import twilightforest.events.EntityEvents;
 import twilightforest.util.landmarks.LandmarkUtil;
 import twilightforest.world.components.structures.start.TFStructureStart;
@@ -43,15 +43,15 @@ public class InfoCommand {
 
 		BlockPos pos = BlockPos.containing(source.getPosition());
 
-		Optional<Registry<Structure>> possibleStructureRegistry = level.registryAccess().registry(Registries.STRUCTURE);
+		Optional<Registry<Structure>> possibleStructureRegistry = level.registryAccess().lookup(Registries.STRUCTURE);
 		Optional<StructureStart> possibleNearLandmark = LandmarkUtil.locateNearestLandmarkStart(level, SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
 
-		if (possibleStructureRegistry.isEmpty() || possibleNearLandmark.isEmpty() || !(possibleNearLandmark.get().getStructure() instanceof LandmarkStructure landmarkStructure)) return 0;
+		if (possibleNearLandmark.isEmpty() || !(possibleNearLandmark.get().getStructure() instanceof LandmarkStructure landmarkStructure)) return 0;
 		StructureStart structureStart = possibleNearLandmark.get();
 
-		Identifier key = possibleStructureRegistry.get().getKey(landmarkStructure);
+		Identifier key = possibleStructureRegistry.orElseThrow().getKey(landmarkStructure);
 
-		if (FMLLoader.isProduction()) {
+		if (FMLEnvironment.isProduction()) {
 			source.sendSuccess(() -> Component.translatable("commands.tffeature.info.wip").withStyle(ChatFormatting.RED, ChatFormatting.BOLD), false);
 		}
 
