@@ -20,8 +20,6 @@ import java.util.stream.Collectors;
 
 @Component
 public final class StructureTemplateDefinitions extends CodecResourceReloadListener<StructureTemplateDefinition> {
-	@Deprecated // Use dependency injection instead
-	public static final StructureTemplateDefinitions INSTANCE = new StructureTemplateDefinitions();
 
 	private final Map<Identifier, Map<Identifier, TemplatePoolInstance>> rawTemplatePools = new HashMap<>();
 	private final Map<Identifier, WeightedList<TemplatePoolEntry>> templatePools = new HashMap<>();
@@ -91,7 +89,7 @@ public final class StructureTemplateDefinitions extends CodecResourceReloadListe
 
 	// TODO initializeStubFromPool to return GenerationStub
 
-	@Deprecated
+	@Deprecated // Prefer below initializeTemplateFromPool
 	@Nullable
 	public TwilightJigsawPiece initializeTemplateFromPool(Identifier templatePool, BlockPos parentJunctionPos, FrontAndTop parentOrientation, String selectName, RandomSource rand, int genDepth, StructureTemplateManager structureManager) {
 		Optional<TemplatePoolEntry> entryOptional = this.getRandomEntry(rand, templatePool);
