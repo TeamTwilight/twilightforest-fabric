@@ -4,10 +4,9 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.server.MinecraftServer;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.TwilightForestMod;
-import twilightforest.init.TFGameRules;
+import twilightforest.client.renderer.TFWeatherRenderer;
 
 public record EnforceProgressionStatusPacket(boolean enforce) implements CustomPacketPayload {
 
@@ -28,14 +27,6 @@ public record EnforceProgressionStatusPacket(boolean enforce) implements CustomP
 	}
 
 	public static void handle(EnforceProgressionStatusPacket message, IPayloadContext ctx) {
-		ctx.enqueueWork(() -> {
-			// FIXME level no longer has access to game rules
-
-			MinecraftServer server = ctx.player().level().getServer();
-
-			if(server != null) {
-				server.getGameRules().set(TFGameRules.ENFORCED_PROGRESSION_RULE.get(), message.enforce(), null);
-			}
-		});
+		ctx.enqueueWork(() -> TFWeatherRenderer.setProgressionEnforced(message.enforce));
 	}
 }
