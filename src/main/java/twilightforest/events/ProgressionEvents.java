@@ -30,6 +30,7 @@ import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.GameRuleChangedEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
@@ -65,6 +66,7 @@ public class ProgressionEvents {
 
 	@PostConstruct
 	private void setup() {
+		NeoForge.EVENT_BUS.addListener(this::gameRuleChanged);
 		NeoForge.EVENT_BUS.addListener(this::preventLockedAreaBlockBreaking);
 		NeoForge.EVENT_BUS.addListener(this::preventLockedAreaBlockPlacing);
 		NeoForge.EVENT_BUS.addListener(this::preventLockedAreaBlockInteracting);
@@ -72,6 +74,17 @@ public class ProgressionEvents {
 		NeoForge.EVENT_BUS.addListener(this::preventLockedAreaEntityDamage);
 		NeoForge.EVENT_BUS.addListener(this::performProtectionAndPortalChecks);
 		NeoForge.EVENT_BUS.addListener(this::syncProgressionGameRuleStatus);
+	}
+
+	/**
+	 * Notify all players' clients of gamerule change if progression is the change.
+	 */
+	private void gameRuleChanged(GameRuleChangedEvent event) {
+		if (event.getGameRule() != TFGameRules.ENFORCED_PROGRESSION_RULE.value())
+			return;
+
+		boolean progressionEnforced = ServerLifecycleHooks.getCurrentServer().getGameRules().get(TFGameRules.ENFORCED_PROGRESSION_RULE.value());
+		PacketDistributor.sendToAllPlayers(new EnforceProgressionStatusPacket(progressionEnforced));
 	}
 
 	/**
@@ -304,10 +317,13 @@ public class ProgressionEvents {
 	}
 
 	/**
-	 * TFWeatherRenderer.progressionEnforced defaults to true on the client, so it's up to the server (via this listener) to notify true status
+	 * TFWeatherRenderer.progressionEnforced defaults to true on the client, so it's up to the server (via this listener) to notify true status when the player logs in
 	 */
 	private void syncProgressionGameRuleStatus(PlayerEvent.PlayerLoggedInEvent event) {
+		if (!(event.getEntity() instanceof ServerPlayer serverPlayer))
+			return;
+
         boolean progressionEnforced = ServerLifecycleHooks.getCurrentServer().getGameRules().get(TFGameRules.ENFORCED_PROGRESSION_RULE.value());
-		PacketDistributor.sendToAllPlayers(new EnforceProgressionStatusPacket(progressionEnforced));
+		PacketDistributor.sendToPlayer(serverPlayer, new EnforceProgressionStatusPacket(progressionEnforced));
 	}
 }
