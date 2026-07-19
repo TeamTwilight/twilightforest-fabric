@@ -29,9 +29,6 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 import twilightforest.world.components.structures.util.StructureTemplateDefinitions;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
-@ParametersAreNonnullByDefault
 public class FinalCastleBossGazeboComponent extends TFStructureComponentOld {
 
 	public static final Identifier GAZEBO_TEMP_POOL = TwilightForestMod.prefix("final_castle/temp/gazebo");
