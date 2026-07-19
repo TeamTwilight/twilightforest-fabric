@@ -70,12 +70,6 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 		return twilightJigsawPiece;
 	}
 
-	@Nullable
-	@Deprecated // FIXME Callers should call structureTemplateDefinitions.initializeTemplateFromPool directly
-	public static TwilightJigsawPiece initializeTemplateFromPool(Identifier templatePool, BlockPos.MutableBlockPos parentJunctionPos, FrontAndTop parentOrientation, String selectName, RandomSource rand, int genDepth, StructureTemplateManager structureManager) {
-		return structureTemplateDefinitions.initializeTemplateFromPool(templatePool, parentJunctionPos, parentOrientation, selectName, rand, genDepth, structureManager);
-	}
-
 	public static TwilightJigsawPiece defaultForTemplate(int genDepth, StructureTemplateManager structureManager, Identifier templateLocation, JigsawPlaceContext jigsawContext, TemplatePoolInstance templatePoolInstance, StructureProcessorList serializedProcessors) {
 		TwilightJigsawPiece twilightJigsawPiece = new TwilightJigsawPiece(TFStructurePieceTypes.TFJigsawTemplate.value(), genDepth, structureManager, templateLocation, jigsawContext, templatePoolInstance, serializedProcessors, templatePoolInstance.poolAliases());
 		twilightJigsawPiece.placeSettings().addProcessor(JigsawReplacementProcessor.INSTANCE);
