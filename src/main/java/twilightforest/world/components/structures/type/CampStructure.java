@@ -56,7 +56,6 @@ public class CampStructure extends Structure implements DecorationClearance {
 
 		return Optional.of(new GenerationStub(freePosition, structurePiecesBuilder -> {
 			Identifier templatePool = TwilightForestMod.prefix("camp/structure_start");
-			// TODO Instead use StructureTemplateDefinitions.initializeStubFromPool
 			TwilightJigsawPiece twilightJigsawPiece = structureTemplateDefinitions.initializeTemplateFromPool(templatePool, freePosition.mutable(), oriented, templatePool.toString(), random, 0, context.structureTemplateManager());
 
 			if (twilightJigsawPiece == null) return;

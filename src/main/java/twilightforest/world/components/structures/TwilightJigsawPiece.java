@@ -2,7 +2,6 @@ package twilightforest.world.components.structures;
 
 import com.mojang.serialization.DynamicOps;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.FrontAndTop;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.*;
 import net.minecraft.resources.RegistryOps;
@@ -32,7 +31,6 @@ import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.structures.markerhandler.TemplateMarkerHandler;
 import twilightforest.world.components.structures.util.*;
 
-import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Predicate;
 
