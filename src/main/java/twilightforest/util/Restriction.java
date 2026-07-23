@@ -29,14 +29,11 @@ import java.util.Optional;
  */
 public record Restriction(@Nullable ResourceKey<Structure> hintStructureKey, ResourceKey<Enforcement> enforcement, float multiplier, @Nullable ItemStackTemplate lockedBiomeToast, List<Identifier> advancements) {
 
-public record Restriction(@Nullable ResourceKey<Structure> hintStructureKey, ResourceKey<Enforcement> enforcement,
-						  float multiplier, @Nullable ItemStackTemplate lockedBiomeToast, List<Identifier> advancements) {
-
 	public static final Codec<Restriction> CODEC = RecordCodecBuilder.create((recordCodecBuilder) -> recordCodecBuilder.group(
 		ResourceKey.codec(Registries.STRUCTURE).optionalFieldOf("structure_key").forGetter((restriction) -> Optional.ofNullable(restriction.hintStructureKey())),
 		ResourceKey.codec(TFRegistries.Keys.ENFORCEMENT).fieldOf("enforcement").forGetter(Restriction::enforcement),
 		Codec.FLOAT.fieldOf("multiplier").forGetter(Restriction::multiplier),
-			ItemStackTemplate.CODEC.optionalFieldOf("locked_biome_toast").forGetter((restriction) -> Optional.ofNullable(restriction.lockedBiomeToast())),
+		ItemStackTemplate.CODEC.optionalFieldOf("locked_biome_toast").forGetter((restriction) -> Optional.ofNullable(restriction.lockedBiomeToast())),
 		ExtraCodecs.nonEmptyList(Identifier.CODEC.listOf()).fieldOf("advancements").forGetter(Restriction::advancements)
 	).apply(recordCodecBuilder, Restriction::create));
 
@@ -63,7 +60,7 @@ public record Restriction(@Nullable ResourceKey<Structure> hintStructureKey, Res
 			return Optional.empty();
 		}
 
-		return Optional.empty();
+		return Optional.of(restrictions);
 	}
 
 	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
