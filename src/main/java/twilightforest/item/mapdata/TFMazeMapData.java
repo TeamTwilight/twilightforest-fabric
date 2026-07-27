@@ -21,6 +21,7 @@ import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 import java.util.HashMap;
 import java.util.Map;
 
+// FIXME this class should be totally fixed
 public class TFMazeMapData extends MapItemSavedData {
 	private static final Map<String, TFMazeMapData> CLIENT_DATA = new HashMap<>();
 

@@ -54,6 +54,7 @@ public class MazeMapItem extends MapItem {
 	@Nullable
 	public static TFMazeMapData getData(ItemStack stack, Level level) {
 		MapId id = stack.get(DataComponents.MAP_ID);
+		// FIXME fix this after fixing TFMazeMapData
 		return id == null ? null : TFMazeMapData.getMazeMapData(level, getMapName(id.id()));
 	}
 
@@ -81,6 +82,7 @@ public class MazeMapItem extends MapItem {
 		TFMazeMapData mapdata = new TFMazeMapData(scaledX, scaledZ, (byte) scale, trackingPosition, unlimitedTracking, false, dimension);
 		mapdata.calculateMapCenter(level, x, y, z); // call our own map center calculation
 		mapdata.ore = ore;
+		// FIXME fix this after fixing TFMazeMapData
 		TFMazeMapData.registerMazeMapData(level, mapdata, getMapName(i.id())); // call our own register method
 		stack.set(DataComponents.MAP_ID, i);
 		return mapdata;
