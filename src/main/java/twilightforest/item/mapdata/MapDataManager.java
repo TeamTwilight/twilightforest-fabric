@@ -2,6 +2,7 @@ package twilightforest.item.mapdata;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.maps.MapId;
+import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import org.jspecify.annotations.Nullable;
 
 import java.util.HashMap;
@@ -44,5 +45,10 @@ public final class MapDataManager {
 
 	public static void saveClientMazeMapData(MapId id, TFMazeMapData data) {
 		MAZE_MAP_CLIENT_DATA.put(id, data);
+	}
+
+	public static void clearCache(ClientPlayerNetworkEvent.LoggingOut event) {
+		MAGIC_MAP_CLIENT_DATA.clear();
+		MAZE_MAP_CLIENT_DATA.clear();
 	}
 }
