@@ -1,6 +1,7 @@
 package twilightforest.client.model.block.connected;
 
-import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
+import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
+import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
@@ -17,17 +18,21 @@ import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import io.github.fabricators_of_create.porting_lib.models.data.ModelData;
+import io.github.fabricators_of_create.porting_lib.models.data.ModelProperty;
 import io.github.fabricators_of_create.porting_lib.render_types.RenderTypeGroup;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.client.model.block.IDynamicBakedModel;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Supplier;
 
 @SuppressWarnings("deprecation")
 public class ConnectedTextureModel implements IDynamicBakedModel, FabricBakedModel {
+
+	private static final ModelProperty<CastleDoorData> DATA = new ModelProperty<>();
 
 	private final EnumSet<Direction> enabledFaces;
 	private final boolean renderOnDisabledFaces;
@@ -38,7 +43,7 @@ public class ConnectedTextureModel implements IDynamicBakedModel, FabricBakedMod
 	private final ItemOverrides overrides;
 	private final ItemTransforms transforms;
 	private final List<Block> validConnectors;
-	private final RenderTypeGroup renderTypes;
+	private final RenderMaterial material;
 
 	public ConnectedTextureModel(EnumSet<Direction> enabledFaces, boolean renderOnDisabledFaces, List<Block> connectableBlocks, @Nullable List<BakedQuad>[] baseQuads, BakedQuad[][][] quads, TextureAtlasSprite particle, ItemOverrides overrides, ItemTransforms transforms, RenderTypeGroup group) {
 		this.enabledFaces = enabledFaces;
@@ -49,35 +54,45 @@ public class ConnectedTextureModel implements IDynamicBakedModel, FabricBakedMod
 		this.particle = particle;
 		this.overrides = overrides;
 		this.transforms = transforms;
-		this.renderTypes = group;
+		this.material = group.isEmpty() ? RendererAccess.INSTANCE.getRenderer().materialFinder().find() : group.material();
 	}
 
 	@Override
 	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource rand, ModelData data, @Nullable RenderType renderType) {
-		// This model uses emitBlockQuads for rendering because it requires level/pos context.
-		return List.of();
+		if (side != null) {
+			int faceIndex = side.get3DDataValue();
+			CastleDoorData ctmData = data.get(DATA);
+			ArrayList<BakedQuad> quads = new ArrayList<>(4 + (this.baseQuads != null ? 4 : 0));
+			if (this.baseQuads != null) {
+				quads.addAll(this.baseQuads[faceIndex]);
+			}
+			if (this.enabledFaces.contains(side) || this.renderOnDisabledFaces) {
+				for (int quad = 0; quad < 4; ++quad) {
+					ConnectionLogic connectionType = ctmData != null && this.enabledFaces.contains(side) ? ctmData.logic[faceIndex][quad] : ConnectionLogic.NONE;
+					quads.add(this.quads[faceIndex][quad][connectionType.ordinal()]);
+				}
+			}
+			return quads;
+		} else {
+			return List.of();
+		}
 	}
 
 	@Override
 	public void emitBlockQuads(BlockAndTintGetter level, BlockState state, BlockPos pos, Supplier<RandomSource> randomSupplier, RenderContext context) {
-		CastleDoorData data = this.computeData(level, pos, state);
+		ModelData data = this.getModelData(level, pos, state, ModelData.EMPTY);
 		QuadEmitter emitter = context.getEmitter();
+		RandomSource random = randomSupplier.get();
 
-		for (Direction face : Direction.values()) {
-			Direction[] directions = ConnectionLogic.AXIS_PLANE_DIRECTIONS[face.getAxis().ordinal()];
-			int faceIndex = face.get3DDataValue();
-
-			if (this.baseQuads != null) {
-				for (BakedQuad quad : this.baseQuads[faceIndex]) {
-					this.emitBakedQuad(emitter, quad);
-				}
-			}
-
-			if (this.enabledFaces.contains(face) || this.renderOnDisabledFaces) {
-				for (int quad = 0; quad < 4; ++quad) {
-					ConnectionLogic connectionType = this.enabledFaces.contains(face) ? data.logic[faceIndex][quad] : ConnectionLogic.NONE;
-					this.emitBakedQuad(emitter, this.quads[faceIndex][quad][connectionType.ordinal()]);
-				}
+		for (Direction side : Direction.values()) {
+			List<BakedQuad> sideQuads = this.getQuads(state, side, random, data, null);
+			// Only cull the face when the adjacent block is NOT a valid CTM connector.
+			// This allows the CTM overlay to render between adjacent opaque CTM blocks.
+			BlockState neighborState = level.getBlockState(pos.relative(side));
+			Direction cull = this.validConnectors.stream().anyMatch(neighborState::is) ? null : side;
+			for (BakedQuad quad : sideQuads) {
+				emitter.fromVanilla(quad, this.material, cull);
+				emitter.emit();
 			}
 		}
 	}
@@ -89,25 +104,19 @@ public class ConnectedTextureModel implements IDynamicBakedModel, FabricBakedMod
 			int faceIndex = face.get3DDataValue();
 			if (this.baseQuads != null) {
 				for (BakedQuad quad : this.baseQuads[faceIndex]) {
-					this.emitBakedQuad(emitter, quad);
+					emitter.fromVanilla(quad, this.material, null);
+					emitter.emit();
 				}
 			}
 			for (int quad = 0; quad < 4; ++quad) {
-				this.emitBakedQuad(emitter, this.quads[faceIndex][quad][ConnectionLogic.NONE.ordinal()]);
+				emitter.fromVanilla(this.quads[faceIndex][quad][ConnectionLogic.NONE.ordinal()], this.material, null);
+				emitter.emit();
 			}
 		}
 	}
 
-	private void emitBakedQuad(QuadEmitter emitter, BakedQuad quad) {
-		emitter.fromVanilla(quad.getVertices(), 0);
-		emitter.spriteBake(quad.getSprite(), MutableQuadView.BAKE_LOCK_UV);
-		emitter.colorIndex(quad.getTintIndex());
-		emitter.cullFace(quad.getDirection());
-		emitter.material(this.renderTypes.material());
-		emitter.emit();
-	}
-
-	private CastleDoorData computeData(BlockAndTintGetter getter, BlockPos pos, BlockState state) {
+	@Override
+	public ModelData getModelData(BlockAndTintGetter getter, BlockPos pos, BlockState state, ModelData modelData) {
 		CastleDoorData data = new CastleDoorData();
 
 		for (Direction face : Direction.values()) {
@@ -130,17 +139,17 @@ public class ConnectedTextureModel implements IDynamicBakedModel, FabricBakedMod
 			}
 		}
 
-		return data;
+		return modelData.derive().with(DATA, data).build();
 	}
 
 	private boolean shouldConnectSide(BlockAndTintGetter getter, BlockPos pos, Direction face, Direction side) {
 		BlockState neighborState = getter.getBlockState(pos.relative(side));
-		return this.validConnectors.stream().anyMatch(neighborState::is) && Block.shouldRenderFace(neighborState, getter, pos, face, pos.relative(face));
+		return this.validConnectors.stream().anyMatch(neighborState::is);
 	}
 
 	private boolean isCornerBlockPresent(BlockAndTintGetter getter, BlockPos pos, Direction face, Direction side1, Direction side2) {
 		BlockState neighborState = getter.getBlockState(pos.relative(side1).relative(side2));
-		return this.validConnectors.stream().anyMatch(neighborState::is) && Block.shouldRenderFace(neighborState, getter, pos, face, pos.relative(face));
+		return this.validConnectors.stream().anyMatch(neighborState::is);
 	}
 
 	@Override

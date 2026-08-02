@@ -180,7 +180,7 @@ public class TFClientSetup implements ClientModInitializer {
 			loaders.put(TwilightForestMod.prefix("royal_rags"), RoyalRagsModelLoader.INSTANCE);
 			loaders.put(TwilightForestMod.prefix("travellers_gear"), TravellersGearItemModel.Loader.INSTANCE);
 			loaders.put(TwilightForestMod.prefix("force_field"), ForceFieldModelLoader.INSTANCE);
-		loaders.put(TwilightForestMod.prefix("force_field_item"), ForceFieldItemModel.Loader.INSTANCE);
+			loaders.put(TwilightForestMod.prefix("force_field_item"), ForceFieldItemModel.Loader.INSTANCE);
 			loaders.put(SeparateTransformsModel.ID, SeparateTransformsModel.Loader.INSTANCE);
 
 		});
@@ -205,7 +205,7 @@ public class TFClientSetup implements ClientModInitializer {
 				ResourceLocation location = lid.resourceLocation();
 				String name = location.getPath();
 				if (lid.customPath() != null) name = lid.customPath();
-				pluginContext.addModels(ModelResourceLocation.inventory(TwilightForestMod.prefix("block/lid/" + name)).id());
+				pluginContext.addModels(TwilightForestMod.prefix("block/lid/" + name));
 			}
 
 			// Use Fabric API's modifyModelAfterBake for model modifications and jar lid caching
@@ -221,16 +221,17 @@ public class TFClientSetup implements ClientModInitializer {
 					result = new ConditionalMippedModel(result);
 				}
 
-				// Cache jar lids
-				JarRenderer.LID_LOCATION_LIST.get().forEach(lid -> {
-					String name = lid.resourceLocation().getPath();
-					if (lid.customPath() != null) name = lid.customPath();
-					ResourceLocation modelId = ModelResourceLocation.inventory(TwilightForestMod.prefix("block/lid/" + name)).id();
-					var topLevelId = context.topLevelId();
-					if (topLevelId != null && topLevelId.equals(modelId)) {
-						JarRenderer.LIDS.put(lid.lid(), model);
-					}
-				});
+				// Cache jar lids - match on resourceId which is the plain ResourceLocation for standalone models
+				var resourceId = context.resourceId();
+				if (resourceId != null) {
+					JarRenderer.LID_LOCATION_LIST.get().forEach(lid -> {
+						String name = lid.resourceLocation().getPath();
+						if (lid.customPath() != null) name = lid.customPath();
+						if (resourceId.equals(TwilightForestMod.prefix("block/lid/" + name))) {
+							JarRenderer.LIDS.put(lid.lid(), model);
+						}
+					});
+				}
 
 				return result;
 			});
@@ -769,7 +770,7 @@ public class TFClientSetup implements ClientModInitializer {
 
 		// Register the player icon renderer for magic maps
 		io.github.fabricators_of_create.porting_lib.gui.map.MapDecorationRendererManager.register(
-			MapDecorationTypes.PLAYER.value(), playerIconRenderer);
+			net.minecraft.world.level.saveddata.maps.MapDecorationTypes.PLAYER.value(), playerIconRenderer);
 	}
 
 	private void registerTooltipComponents() {

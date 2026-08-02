@@ -47,6 +47,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.components.item.JarLid;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.init.*;
 
@@ -129,13 +130,19 @@ public abstract class CritterBlock extends BaseEntityBlock implements Equipable 
 			ItemContainerContents contents = stack.getComponents().get(DataComponents.CONTAINER);
 			if (contents == null || contents.copyOne().isEmpty()) {
 				if (this == TFBlocks.FIREFLY.get()) {
-					ItemStack newStack = Util.make(new ItemStack(TFBlocks.FIREFLY_JAR.get()), jar -> jar.set(TFDataComponents.JAR_LID.get(), stack.get(TFDataComponents.JAR_LID.get())));
+					JarLid lid = stack.get(TFDataComponents.JAR_LID.get());
+					ItemStack newStack = Util.make(new ItemStack(TFBlocks.FIREFLY_JAR.get()), jar -> {
+						if (lid != null) jar.set(TFDataComponents.JAR_LID.get(), lid);
+					});
 					stack.consume(1, player);
 					player.getInventory().add(newStack);
 					level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 					return ItemInteractionResult.sidedSuccess(level.isClientSide());
 				} else if (this == TFBlocks.CICADA.get()) {
-					ItemStack newStack = Util.make(new ItemStack(TFBlocks.CICADA_JAR.get()), jar -> jar.set(TFDataComponents.JAR_LID.get(), stack.get(TFDataComponents.JAR_LID.get())));
+					JarLid lid = stack.get(TFDataComponents.JAR_LID.get());
+					ItemStack newStack = Util.make(new ItemStack(TFBlocks.CICADA_JAR.get()), jar -> {
+						if (lid != null) jar.set(TFDataComponents.JAR_LID.get(), lid);
+					});
 					stack.consume(1, player);
 					player.getInventory().add(newStack);
 					if (level.isClientSide())

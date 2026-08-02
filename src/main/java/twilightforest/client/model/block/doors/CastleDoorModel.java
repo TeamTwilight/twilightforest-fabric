@@ -114,12 +114,12 @@ public class CastleDoorModel implements BakedModel, FabricBakedModel {
 
 	private boolean shouldConnectSide(BlockAndTintGetter getter, BlockPos pos, Direction face, Direction side) {
 		BlockState neighborState = getter.getBlockState(pos.relative(side));
-		return Arrays.stream(this.validConnectors).anyMatch(neighborState::is) && Block.shouldRenderFace(neighborState, getter, pos, face, pos.relative(face));
+		return Arrays.stream(this.validConnectors).anyMatch(neighborState::is);
 	}
 
 	private boolean isCornerBlockPresent(BlockAndTintGetter getter, BlockPos pos, Direction face, Direction side1, Direction side2) {
 		BlockState neighborState = getter.getBlockState(pos.relative(side1).relative(side2));
-		return Arrays.stream(this.validConnectors).anyMatch(neighborState::is) && Block.shouldRenderFace(neighborState, getter, pos, face, pos.relative(face));
+		return Arrays.stream(this.validConnectors).anyMatch(neighborState::is);
 	}
 
 	@Override

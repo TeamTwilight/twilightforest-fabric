@@ -2,6 +2,7 @@ package twilightforest.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -28,6 +29,7 @@ import io.github.fabricators_of_create.porting_lib.models.data.ModelData;
 import io.github.fabricators_of_create.porting_lib.core.util.Lazy;
 import io.github.fabricators_of_create.porting_lib.registry.DeferredBlock;
 
+import twilightforest.TwilightForestMod;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.block.entity.MasonJarBlockEntity;
 import twilightforest.init.TFBlocks;
@@ -109,6 +111,22 @@ public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRendere
 		return 256;
 	}
 
+	public static BakedModel getLidModel(Item lid) {
+		BakedModel model = LIDS.get(lid);
+		if (model == null) {
+			for (LidResource lidResource : LID_LOCATION_LIST.get()) {
+				if (lidResource.lid() == lid) {
+					String name = lidResource.resourceLocation().getPath();
+					if (lidResource.customPath() != null) name = lidResource.customPath();
+					model = Minecraft.getInstance().getModelManager().getModel(TwilightForestMod.prefix("block/lid/" + name));
+					if (model != null) LIDS.put(lid, model);
+					return model;
+				}
+			}
+		}
+		return model;
+	}
+
 	@Override
 	public void render(T blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
 		poseStack.pushPose();
@@ -136,7 +154,8 @@ public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRendere
 		}
 
 		BlockState state = blockEntity.getBlockState();
-		if (LIDS.containsKey(blockEntity.lid)) renderModel(LIDS.get(blockEntity.lid), state, this.blockRenderer, poseStack, buffer, packedLight, packedOverlay);
+		BakedModel lidModel = getLidModel(blockEntity.lid);
+		if (lidModel != null) renderModel(lidModel, state, this.blockRenderer, poseStack, buffer, packedLight, packedOverlay);
 		renderJarModel(state, this.blockRenderer, poseStack, buffer, packedLight, packedOverlay);
 		this.renderContents(blockEntity, partialTick, poseStack, buffer, packedLight, packedOverlay);
 

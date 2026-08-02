@@ -22,6 +22,7 @@ import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.SkullBlockRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -232,8 +233,9 @@ public class ISTER extends BlockEntityWithoutLevelRenderer {
 			} else if (block instanceof JarBlock jarBlock) {
 				JarRenderer.renderJarModel(block.defaultBlockState(), minecraft.getBlockRenderer(), pose, buffers, light, overlay);
 				JarLid jarLid = stack.getComponents().get(TFDataComponents.JAR_LID.get());
-				Item lid = jarLid == null || !JarRenderer.LIDS.containsKey(jarLid.lid()) ? jarBlock.getDefaultLid() : jarLid.lid();
-				JarRenderer.renderModel(JarRenderer.LIDS.get(lid), block.defaultBlockState(), minecraft.getBlockRenderer(), pose, buffers, light, overlay);
+				Item lid = jarLid == null ? jarBlock.getDefaultLid() : jarLid.lid();
+				BakedModel lidModel = JarRenderer.getLidModel(lid);
+				JarRenderer.renderModel(lidModel, block.defaultBlockState(), minecraft.getBlockRenderer(), pose, buffers, light, overlay);
 
 				if (jarBlock instanceof MasonJarBlock) {
 					ItemContainerContents contents = stack.getComponents().get(DataComponents.CONTAINER);

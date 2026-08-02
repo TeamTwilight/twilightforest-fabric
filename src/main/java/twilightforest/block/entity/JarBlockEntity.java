@@ -95,7 +95,7 @@ public class JarBlockEntity extends BlockEntity {
 	@Override
 	protected void applyImplicitComponents(DataComponentInput input) {
 		super.applyImplicitComponents(input);
-		this.lid = input.getOrDefault(TFDataComponents.JAR_LID.get(), new JarLid(TFBlocks.TWILIGHT_OAK_LOG.asItem())).lid();
+		this.lid = input.getOrDefault(TFDataComponents.JAR_LID.get(), new JarLid(this.getBlockState().getBlock() instanceof JarBlock jarBlock ? jarBlock.getDefaultLid() : TFBlocks.TWILIGHT_OAK_LOG.asItem())).lid();
 	}
 
 	@Override

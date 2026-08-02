@@ -171,8 +171,15 @@ public class MagicMapItem extends MapItem {
 	}
 
 	private MagicMapBiomeColor getMapColorPerBiome(Holder<Biome> biome, Registry<Biome> biomeRegistry) {
-		MagicMapBiomeColor color = biome.getData(TFDataMaps.MAGIC_MAP_BIOME_COLOR);
-		return color != null ? color : new MagicMapBiomeColor(MapColor.COLOR_MAGENTA);
+		// Use RegistryInjection directly instead of Holder.getData() to avoid
+		// NoSuchMethodError when Porting Lib's injected_interfaces are not processed
+		// for jar-in-jar bundled mods. MappedRegistryMixin adds this interface via
+		// a class-level mixin, so instanceof works regardless.
+		if (biomeRegistry instanceof io.github.fabricators_of_create.porting_lib.resources.injections.RegistryInjection<Biome> injection) {
+			MagicMapBiomeColor color = injection.getData(TFDataMaps.MAGIC_MAP_BIOME_COLOR, biome.unwrapKey().orElse(null));
+			return color != null ? color : new MagicMapBiomeColor(MapColor.COLOR_MAGENTA);
+		}
+		return new MagicMapBiomeColor(MapColor.COLOR_MAGENTA);
 	}
 
 	@Override
