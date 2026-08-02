@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version "${loom_version}"
+	id 'net.fabricmc.fabric-loom-remap' version "${loom_version}"
 	id 'maven-publish'
 }
 
@@ -52,18 +52,15 @@ repositories {
 		}
 	}
 	maven {
-		name = "Tama's Maven" // Beanification
-		url = "https://maven.tamaized.com/releases/"
-		content {
-			includeGroup("tamaized")
-		}
-	}
-	maven {
 		name = "Modrinth"
 		url = "https://api.modrinth.com/maven"
 		content {
 			includeGroup("maven.modrinth")
 		}
+	}
+	maven {
+		name = "Sleeping Town"
+		url = "https://repo.sleeping.town/"
 	}
 	maven {
 		name = "Ladysnake"
@@ -134,6 +131,7 @@ dependencies {
 	modCompileOnly("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}") {
 		exclude group: "mezz.jei", module: "jei-${minecraft_version}-common-api"
 	}
+	modCompileOnly "dev.emi:trinkets:${trinkets_version}"
 	modCompileOnly "me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}"
 	modCompileOnly "maven.modrinth:fRiHVvU7:mYQ3bJs5" // EMI
 
