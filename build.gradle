@@ -141,35 +141,18 @@ loom {
 	accessWidenerPath = file("src/main/resources/twilightforest.accesswidener")
 
 	runs {
-		configureEach {
-			ideConfigGenerated = true
-			vmArg("-Dmixin.debug.export=true")
-		}
-
-		client {
-			client()
-			configName = "Minecraft Client"
-			runDir = "run/client"
-			// Client forks its own JVM; give it enough heap to load large saves (avoids OOM
-			// like "Ran out of memory trying to read summary of world folder").
-			vmArg("-Xmx4G")
-		}
-
-		server {
-			server()
-			configName = "Minecraft Server"
-			runDir = "run/server"
-		}
-
 		data {
 			client()
-			configName = "Data Generation"
-			runDir = "run/data"
-			vmArg("-Dfabric-api.datagen")
-			vmArg("-Dfabric-api.datagen.output-dir=${file("src/generated/resources")}")
-			vmArg("-Dfabric-api.datagen.modid=${mod_id}")
+
+			name "Data Generation"
+			vmArg "-Dfabric-api.datagen"
+			vmArg "-Dfabric-api.datagen.output-dir=${file("src/main/generated")}"
+			vmArg "-Dfabric-api.datagen.modid=twilightforest"
+			vmArg "-Dmixin.debug.export=true"
+			vmArg "-Dporting_lib.datagen.existing_resources=${file('src/main/resources/').getAbsolutePath()}"
 		}
 	}
+
 }
 
 processResources {
