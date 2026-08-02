@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -28,20 +27,17 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import io.github.fabricators_of_create.porting_lib.client_extensions.IClientItemExtensions;
 import io.github.fabricators_of_create.porting_lib.client_events.event.client.InputEvent;
 import io.github.fabricators_of_create.porting_lib.client_events.event.client.ComputeFovModifierEvent;
 import io.github.fabricators_of_create.porting_lib.client_events.event.client.RenderArmEvent;
 import io.github.fabricators_of_create.porting_lib.client_events.event.client.MovementInputUpdateCallback;
 import twilightforest.TwilightForestMod;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.*;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
 import twilightforest.item.travellers_gear.TravellersGearLogic;
-import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 import twilightforest.network.*;
 
 @Environment(EnvType.CLIENT)
@@ -49,30 +45,25 @@ public class TravellersClientEvents {
 
 	public static final TravellersClientEvents INSTANCE = new TravellersClientEvents();
 
-	static {
-		TFBeanRegistry.register(TravellersClientEvents.class, INSTANCE);
-		TFBeanRegistry.addPostInit(INSTANCE::init);
-	}
-
 	private static boolean isZoomKeyHeld(Player player) {
 		return TFKeyBinds.ZOOM_KEY.isDown() && !player.isScoping();
 	}
 
-	private void init() {
+	public static void init() {
 		// Available in Porting-Lib:
-		InputEvent.Key.EVENT.register(this::handleDoubleJump);
-		InputEvent.Key.EVENT.register(this::cycleItemDisplayMap);
-		InputEvent.Key.EVENT.register(this::swapHotbar);
-		InputEvent.Key.EVENT.register(this::toggleRedThreadVision);
-		ComputeFovModifierEvent.EVENT.register(this::updateZoomState);
-		RenderArmEvent.EVENT.register(this::renderGlovesInFirstPerson);
+		InputEvent.Key.EVENT.register(INSTANCE::handleDoubleJump);
+		InputEvent.Key.EVENT.register(INSTANCE::cycleItemDisplayMap);
+		InputEvent.Key.EVENT.register(INSTANCE::swapHotbar);
+		InputEvent.Key.EVENT.register(INSTANCE::toggleRedThreadVision);
+		ComputeFovModifierEvent.EVENT.register(INSTANCE::updateZoomState);
+		RenderArmEvent.EVENT.register(INSTANCE::renderGlovesInFirstPerson);
 
 		// MovementInputUpdateCallback - different API, needs adaptation
-		MovementInputUpdateCallback.EVENT.register(this::handleMovementInput);
+		MovementInputUpdateCallback.EVENT.register(INSTANCE::handleMovementInput);
 
 		// Fabric API: Client tick events for per-frame updates
-		ClientTickEvents.END_CLIENT_TICK.register(this::handleStealth);
-		ClientTickEvents.END_CLIENT_TICK.register(this::updateGradualGlideState);
+		ClientTickEvents.END_CLIENT_TICK.register(INSTANCE::handleStealth);
+		ClientTickEvents.END_CLIENT_TICK.register(INSTANCE::updateGradualGlideState);
 
 		// slowZoomSensitivity needs CalculatePlayerTurnEvent - not available in Porting-Lib
 	}

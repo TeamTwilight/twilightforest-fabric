@@ -2,17 +2,12 @@ package twilightforest.world.components.structures.selectors;
 
 import com.mojang.datafixers.util.Pair;
 import twilightforest.init.TFBlocks;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.world.components.structures.util.SimpleRandomBlockSelector;
 
 import java.util.List;
 
 public class IceTowerRandomBlockSelectorFactory {
 	public static final IceTowerRandomBlockSelectorFactory INSTANCE = new IceTowerRandomBlockSelectorFactory();
-
-	static {
-		TFBeanRegistry.register(IceTowerRandomBlockSelectorFactory.class, INSTANCE);
-	}
 
 	public SimpleRandomBlockSelector make() {
 		return new SimpleRandomBlockSelector(

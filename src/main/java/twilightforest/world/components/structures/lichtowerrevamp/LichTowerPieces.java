@@ -4,7 +4,6 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
-import twilightforest.util.TFBeanRegistry;
 
 import java.util.HashSet;
 import java.util.List;
@@ -116,8 +115,4 @@ public final class LichTowerPieces {
 	);
 
 	public static final LichTowerPieces INSTANCE = new LichTowerPieces();
-
-	static {
-		TFBeanRegistry.register(LichTowerPieces.class, INSTANCE);
-	}
 }

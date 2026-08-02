@@ -17,7 +17,6 @@ import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import twilightforest.init.TFStructurePieceTypes;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.util.TFStructureHelper;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
@@ -25,29 +24,22 @@ import twilightforest.world.components.structures.TwilightJigsawPiece;
 import twilightforest.world.components.structures.util.SortablePiece;
 
 public class LichTowerRoomDecor extends TwilightJigsawPiece implements SortablePiece {
-	private static LichTowerUtil lichTowerUtil;
-
-	private static LichTowerUtil getLichTowerUtil() {
-		if (lichTowerUtil == null) {
-			lichTowerUtil = TFBeanRegistry.get(LichTowerUtil.class);
-		}
-		return lichTowerUtil;
-	}
+	private static final LichTowerUtil lichTowerUtil = LichTowerUtil.INSTANCE;
 
 	public LichTowerRoomDecor(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		super(TFStructurePieceTypes.LICH_TOWER_DECOR.value(), compoundTag, ctx, readSettings(compoundTag));
 
-		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(getLichTowerUtil().getRoomSpawnerProcessor()));
+		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(lichTowerUtil.getRoomSpawnerProcessor()));
 	}
 
 	public LichTowerRoomDecor(int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext) {
 		super(TFStructurePieceTypes.LICH_TOWER_DECOR.value(), genDepth, structureManager, templateLocation, jigsawContext);
 
-		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(getLichTowerUtil().getRoomSpawnerProcessor()));
+		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(lichTowerUtil.getRoomSpawnerProcessor()));
 	}
 
 	public static void addDecor(TwilightJigsawPiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int newDepth, StructureTemplateManager structureManager) {
-		ResourceLocation decorId = getLichTowerUtil().rollRandomDecor(context.random(), false);
+		ResourceLocation decorId = lichTowerUtil.rollRandomDecor(context.random(), false);
 		JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(parent.templatePosition(), connection.pos(), connection.orientation(), structureManager, decorId, "twilightforest:lich_tower/decor", context.random());
 
 		if (placeableJunction != null) {

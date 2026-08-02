@@ -21,7 +21,6 @@ import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.RotationUtil;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 import twilightforest.world.components.structures.util.StructureTemplateDefinitions;
@@ -32,14 +31,7 @@ public class FinalCastleBellTower21Component extends FinalCastleMazeTower13Compo
 
 	private static final int FLOORS = 8;
 
-	private static StructureTemplateDefinitions structureTemplateDefinitions;
-
-	private static StructureTemplateDefinitions getStructureTemplateDefinitions() {
-		if (structureTemplateDefinitions == null) {
-			structureTemplateDefinitions = TFBeanRegistry.get(StructureTemplateDefinitions.class);
-		}
-		return structureTemplateDefinitions;
-	}
+	private static final StructureTemplateDefinitions structureTemplateDefinitions = StructureTemplateDefinitions.INSTANCE;
 
 	public FinalCastleBellTower21Component(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFFCBelTo.get(), nbt);
@@ -71,7 +63,7 @@ public class FinalCastleBellTower21Component extends FinalCastleMazeTower13Compo
 		list.addPiece(roof);
 		roof.addChildren(this, list, rand);
 
-		TwilightJigsawPiece templatePiece = getStructureTemplateDefinitions().initializeTemplateFromPool(BELL_TOWER_TEMP_POOL, this.getWorldPos(0, 9, 10), this.rotation.rotation().rotate(FrontAndTop.WEST_UP), "twilightforest:final_castle/room", rand, this.genDepth + 1, ServerLifecycleHooks.getCurrentServer().getStructureManager());
+		TwilightJigsawPiece templatePiece = structureTemplateDefinitions.initializeTemplateFromPool(BELL_TOWER_TEMP_POOL, this.getWorldPos(0, 9, 10), this.rotation.rotation().rotate(FrontAndTop.WEST_UP), "twilightforest:final_castle/room", rand, this.genDepth + 1, ServerLifecycleHooks.getCurrentServer().getStructureManager());
 		if (templatePiece != null) {
 			list.addPiece(templatePiece);
 		}

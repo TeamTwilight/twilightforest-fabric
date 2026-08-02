@@ -20,7 +20,6 @@ import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.util.WorldUtil;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 import twilightforest.world.components.structures.util.DecorationClearance;
 import twilightforest.world.components.structures.util.StructureTemplateDefinitions;
@@ -34,14 +33,7 @@ public class CampStructure extends Structure implements DecorationClearance {
 		Structure.settingsCodec(instance)
 	).apply(instance, CampStructure::new));
 
-	private static StructureTemplateDefinitions structureTemplateDefinitions;
-
-	private static StructureTemplateDefinitions getStructureTemplateDefinitions() {
-		if (structureTemplateDefinitions == null) {
-			structureTemplateDefinitions = TFBeanRegistry.get(StructureTemplateDefinitions.class);
-		}
-		return structureTemplateDefinitions;
-	}
+	private static final StructureTemplateDefinitions structureTemplateDefinitions = StructureTemplateDefinitions.INSTANCE;
 
 	protected CampStructure(StructureSettings settings) {
 		super(settings);
@@ -62,7 +54,7 @@ public class CampStructure extends Structure implements DecorationClearance {
 
 		return Optional.of(new GenerationStub(freePosition, structurePiecesBuilder -> {
 			ResourceLocation templatePool = TwilightForestMod.prefix("camp/structure_start");
-			TwilightJigsawPiece twilightJigsawPiece = getStructureTemplateDefinitions().initializeTemplateFromPool(templatePool, freePosition, oriented, templatePool.toString(), context, 0, false);
+			TwilightJigsawPiece twilightJigsawPiece = structureTemplateDefinitions.initializeTemplateFromPool(templatePool, freePosition, oriented, templatePool.toString(), context, 0, false);
 
 			if (twilightJigsawPiece == null) return;
 

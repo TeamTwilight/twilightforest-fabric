@@ -8,19 +8,10 @@ import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
-import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
-import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
-import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.server.packs.PackType;
-import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.SpawnPlacements;
@@ -35,22 +26,17 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.FlowerPotBlock;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.levelgen.Heightmap;
-import org.jetbrains.annotations.Nullable;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.command.TFCommand;
-import twilightforest.config.ConfigSetup;
 import twilightforest.data.custom.stalactites.entry.StalactiteReloadListener;
 import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.entity.passive.DwarfRabbitVariant;
 import twilightforest.entity.passive.TinyBirdVariant;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.init.custom.ChunkBlanketProcessors;
-import twilightforest.init.custom.StructureSpeleothemConfigs;
 import twilightforest.init.custom.TemplateMarkerHandlers;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 import twilightforest.util.Restriction;
@@ -63,46 +49,27 @@ import twilightforest.entity.RovingCube;
 import twilightforest.entity.boss.*;
 import twilightforest.entity.monster.*;
 import twilightforest.entity.passive.*;
-import twilightforest.entity.passive.quest.QuestReloadListener;
 import twilightforest.init.*;
-import twilightforest.init.custom.BiomeLayerStack;
-import twilightforest.init.custom.ChunkBlanketProcessors;
-import twilightforest.init.custom.TemplateMarkerHandlers;
-import twilightforest.init.custom.TravellersModifiersManager;
-import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 import twilightforest.loot.modifiers.GiantToolGroupingModifier;
 import twilightforest.network.*;
 import twilightforest.util.HolidayEvent;
-import twilightforest.util.Restriction;
-import twilightforest.util.woods.WoodPalette;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
-import twilightforest.world.components.layer.BiomeDensitySource;
-import twilightforest.world.components.structures.StructureSpeleothemConfig;
 import twilightforest.world.components.structures.util.StructureTemplateDefinitions;
-import twilightforest.world.components.structures.util.TemplateMarkerHandlerList;
 
 public class RegistrationEvents {
 
 	public static final RegistrationEvents INSTANCE = new RegistrationEvents();
-	static {
-		TFBeanRegistry.register(RegistrationEvents.class, INSTANCE);
-		TFBeanRegistry.addPostInit(INSTANCE::init);
-	}
 
-	private TFCommand tfCommand;
+	private final TFCommand tfCommand = TFCommand.INSTANCE;
 
-	private HolidayEvent holidayEvent;
+	private final HolidayEvent holidayEvent = HolidayEvent.INSTANCE;
 
-	private StructureTemplateDefinitions structureTemplateDefinitions;
+	private final StructureTemplateDefinitions structureTemplateDefinitions = StructureTemplateDefinitions.INSTANCE;
 
-	private void init() {
-		this.tfCommand = TFBeanRegistry.get(TFCommand.class);
-		this.holidayEvent = TFBeanRegistry.get(HolidayEvent.class);
-		this.structureTemplateDefinitions = TFBeanRegistry.get(StructureTemplateDefinitions.class);
-
+	public static void init() {
 		// Register commands - uses Fabric CommandRegistrationCallback
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
-			this.tfCommand.register(dispatcher, registryAccess);
+			INSTANCE.tfCommand.register(dispatcher, registryAccess);
 		});
 
 		// Register reload listeners - must be registered BEFORE server starts to participate in initial data pack load
@@ -111,7 +78,7 @@ public class RegistrationEvents {
 		// ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new QuestReloadListener());
 		// ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(TravellersModifiersManager.CacheInvalidationReloadListener.INSTANCE);
 		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(StalactiteReloadListener.INSTANCE);
-		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(this.structureTemplateDefinitions);
+		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(INSTANCE.structureTemplateDefinitions);
 
 		// Config sync on player login
 		ServerLifecycleEvents.SYNC_DATA_PACK_CONTENTS.register((player, joined) -> {

@@ -23,7 +23,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import io.github.fabricators_of_create.porting_lib.entity.events.EntityJoinLevelEvent;
 
 import io.github.fabricators_of_create.porting_lib.entity.events.player.PlayerInteractEvent;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.entity.monster.DeathTome;
 import twilightforest.entity.passive.Bighorn;
 import twilightforest.entity.passive.DwarfRabbit;
@@ -35,17 +34,13 @@ import twilightforest.init.TFEntities;
 public class MiscEvents {
 
 	public static final MiscEvents INSTANCE = new MiscEvents();
-	static {
-		TFBeanRegistry.register(MiscEvents.class, INSTANCE);
-		TFBeanRegistry.addPostInit(INSTANCE::init);
-	}
 
-	private void init() {
+	public static void init() {
 		// EntityJoinLevelEvent and PlayerInteractEvent are available in Porting-Lib
 		/*
-		EntityJoinLevelEvent.EVENT.register(this::addPrey);
-		PlayerInteractEvent.RightClickBlock.EVENT.register(this::addTomesToLecterns);
-		PlayerInteractEvent.RightClickBlock.EVENT.register(this::washOffCloth);
+		EntityJoinLevelEvent.EVENT.register(INSTANCE::addPrey);
+		PlayerInteractEvent.RightClickBlock.EVENT.register(INSTANCE::addTomesToLecterns);
+		PlayerInteractEvent.RightClickBlock.EVENT.register(INSTANCE::washOffCloth);
 		*/
 	}
 

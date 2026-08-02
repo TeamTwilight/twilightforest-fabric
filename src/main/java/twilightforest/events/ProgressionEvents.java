@@ -24,15 +24,12 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 
 
-import twilightforest.util.TFFakePlayer;
-import twilightforest.util.TFTriState;
 import io.github.fabricators_of_create.porting_lib.entity.events.living.LivingHurtEvent;
 import io.github.fabricators_of_create.porting_lib.entity.events.player.PlayerInteractEvent;
 import io.github.fabricators_of_create.porting_lib.entity.events.tick.PlayerTickEvent;
 import io.github.fabricators_of_create.porting_lib.level.BlockSnapshot;
 import io.github.fabricators_of_create.porting_lib.level.events.BlockEvent;
 import twilightforest.network.PacketDistributor;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.BlockTagGenerator;
@@ -59,18 +56,14 @@ import java.util.*;
 public class ProgressionEvents {
 
 	public static final ProgressionEvents INSTANCE = new ProgressionEvents();
-	static {
-		TFBeanRegistry.register(ProgressionEvents.class, INSTANCE);
-		TFBeanRegistry.addPostInit(INSTANCE::init);
-	}
 
-	private void init() {
-		BlockEvent.BreakEvent.EVENT.register(this::preventLockedAreaBlockBreaking);
-		PlayerInteractEvent.RightClickBlock.EVENT.register(this::preventLockedAreaBlockPlacing);
-		PlayerInteractEvent.RightClickBlock.EVENT.register(this::preventLockedAreaBlockInteracting);
-		BlockEvent.EntityMultiPlaceEvent.EVENT.register(this::preventLockedAreaMultiblocks);
-		LivingHurtEvent.EVENT.register(this::preventLockedAreaEntityDamage);
-		PlayerTickEvent.Post.EVENT.register(this::performProtectionAndPortalChecks);
+	public static void init() {
+		BlockEvent.BreakEvent.EVENT.register(INSTANCE::preventLockedAreaBlockBreaking);
+		PlayerInteractEvent.RightClickBlock.EVENT.register(INSTANCE::preventLockedAreaBlockPlacing);
+		PlayerInteractEvent.RightClickBlock.EVENT.register(INSTANCE::preventLockedAreaBlockInteracting);
+		BlockEvent.EntityMultiPlaceEvent.EVENT.register(INSTANCE::preventLockedAreaMultiblocks);
+		LivingHurtEvent.EVENT.register(INSTANCE::preventLockedAreaEntityDamage);
+		PlayerTickEvent.Post.EVENT.register(INSTANCE::performProtectionAndPortalChecks);
 	}
 
 	/**

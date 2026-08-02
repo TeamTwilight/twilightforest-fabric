@@ -33,7 +33,6 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.BoundingBoxUtils;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.world.components.structures.selectors.StrongholdStonesRandomBlockSelectorFactory;
 
 import java.util.Iterator;
@@ -45,14 +44,8 @@ import java.util.function.Predicate;
 public abstract class TFStructureComponentOld extends TFStructureComponent implements PieceBeardifierModifier {
 
 	protected static final BlockState AIR = Blocks.AIR.defaultBlockState();
-	private static StrongholdStonesRandomBlockSelectorFactory strongholdStones;
+	private static final StrongholdStonesRandomBlockSelectorFactory strongholdStones = StrongholdStonesRandomBlockSelectorFactory.INSTANCE;
 
-	private static StrongholdStonesRandomBlockSelectorFactory getStrongholdStonesFactory() {
-		if (strongholdStones == null) {
-			strongholdStones = TFBeanRegistry.get(StrongholdStonesRandomBlockSelectorFactory.class);
-		}
-		return strongholdStones;
-	}
 
 	public TFStructureComponentOld(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
@@ -475,7 +468,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 	}
 
 	protected static BlockSelector getStrongholdStones() {
-		return getStrongholdStonesFactory().make();
+		return strongholdStones.make();
 	}
 
 	protected Direction getStructureRelativeRotation(Rotation rotationsCW) {

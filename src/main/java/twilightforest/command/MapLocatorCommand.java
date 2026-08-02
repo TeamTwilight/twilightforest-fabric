@@ -29,15 +29,9 @@ import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 
 import java.util.Collection;
 import java.util.Collections;
-import twilightforest.util.TFBeanRegistry;
 
 public class MapLocatorCommand {
-
 	public static final MapLocatorCommand INSTANCE = new MapLocatorCommand();
-
-	static {
-		TFBeanRegistry.register(MapLocatorCommand.class, INSTANCE);
-	}
 
 	// [vanillacopy] LocateCommand.java
 	private final DynamicCommandExceptionType ERROR_STRUCTURE_INVALID = new DynamicCommandExceptionType(

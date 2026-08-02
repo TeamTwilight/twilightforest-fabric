@@ -14,21 +14,13 @@ import twilightforest.world.components.processors.StateTransfiguringProcessor;
 import twilightforest.world.components.structures.camp.CampPieces;
 import twilightforest.world.components.structures.util.TemplateMarkerHandlerList;
 import twilightforest.world.components.structures.util.TemplatePoolInstance;
-import twilightforest.util.TFBeanRegistry;
 
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class CampStructureDefinitionGenerator extends StructureTemplateDefinitionProvider {
-	private static CampPieces campPieces;
-
-	private static CampPieces getCampPieces() {
-		if (campPieces == null) {
-			campPieces = TFBeanRegistry.get(CampPieces.class);
-		}
-		return campPieces;
-	}
+	private static final CampPieces campPieces = CampPieces.INSTANCE;
 
 	public CampStructureDefinitionGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
 		super(output, lookupProvider, TwilightForestMod.ID, existingFileHelper, "Camp");
@@ -42,9 +34,9 @@ public class CampStructureDefinitionGenerator extends StructureTemplateDefinitio
 	private void generatePoolsWithProvider(HolderLookup.Provider provider) {
 		Holder.Reference<TemplateMarkerHandlerList> campMarkers = this.getMarkers(provider, TemplateMarkerHandlers.CAMP_MARKER_HANDLERS);
 
-		this.add("camp/campfire_east", getCampPieces().start, this.weightedRigidTemplate(100, 1, null, campMarkers, null, null));
-		this.add("camp/campfire_south", getCampPieces().start, this.weightedRigidTemplate(100, 1, null, campMarkers, null, null));
-		this.add("camp/campfire_west", getCampPieces().start, this.weightedRigidTemplate(100, 1, null, campMarkers, null, null));
+		this.add("camp/campfire_east", campPieces.start, this.weightedRigidTemplate(100, 1, null, campMarkers, null, null));
+		this.add("camp/campfire_south", campPieces.start, this.weightedRigidTemplate(100, 1, null, campMarkers, null, null));
+		this.add("camp/campfire_west", campPieces.start, this.weightedRigidTemplate(100, 1, null, campMarkers, null, null));
 
 		this.configureTents(provider);
 
@@ -81,67 +73,67 @@ public class CampStructureDefinitionGenerator extends StructureTemplateDefinitio
 				.build()
 		));
 
-		this.add("camp/tent/solo_tent", getCampPieces().tent, this.weightedRigidTemplate(100, 1, 0, campMarkers, randomizedProcessors, null));
-		this.add("camp/tent/duo_tent", getCampPieces().tent, this.weightedRigidTemplate(75, 1, 0, campMarkers, randomizedProcessors, null));
-		this.add("camp/tent/open_tent", getCampPieces().tent, this.weightedRigidTemplate(75, 1, 0, campMarkers, randomizedProcessors, null));
-		this.add("camp/tent/luxury_tent", getCampPieces().tent, this.weightedRigidTemplate(50, 1, 0, campMarkers, randomizedProcessors, null));
+		this.add("camp/tent/solo_tent", campPieces.tent, this.weightedRigidTemplate(100, 1, 0, campMarkers, randomizedProcessors, null));
+		this.add("camp/tent/duo_tent", campPieces.tent, this.weightedRigidTemplate(75, 1, 0, campMarkers, randomizedProcessors, null));
+		this.add("camp/tent/open_tent", campPieces.tent, this.weightedRigidTemplate(75, 1, 0, campMarkers, randomizedProcessors, null));
+		this.add("camp/tent/luxury_tent", campPieces.tent, this.weightedRigidTemplate(50, 1, 0, campMarkers, randomizedProcessors, null));
 	}
 
 	private void configureRackPaths() {
-		TemplatePoolInstance pathTemplateData = this.weightedPathTemplate(100, null, Map.of(getCampPieces().deco.toString(), getCampPieces().rack.toString()));
+		TemplatePoolInstance pathTemplateData = this.weightedPathTemplate(100, null, Map.of(campPieces.deco.toString(), campPieces.rack.toString()));
 
-		this.add("camp/path/path_2x4", getCampPieces().rackPath, pathTemplateData);
-		this.add("camp/path/path_3x4", getCampPieces().rackPath, pathTemplateData);
+		this.add("camp/path/path_2x4", campPieces.rackPath, pathTemplateData);
+		this.add("camp/path/path_3x4", campPieces.rackPath, pathTemplateData);
 	}
 
 	private void configureBigPaths() {
 		TemplatePoolInstance pathTemplateData = this.weightedPathTemplate(25, null, null);
 
-		this.addEmpty(getCampPieces().mainPath, 300);
+		this.addEmpty(campPieces.mainPath, 300);
 
-		this.add("camp/path/intersection_left", getCampPieces().mainPath, pathTemplateData);
-		this.add("camp/path/intersection_right", getCampPieces().mainPath, pathTemplateData);
-		this.add("camp/path/intersection_short", getCampPieces().mainPath, pathTemplateData);
-		this.add("camp/path/j_path", getCampPieces().mainPath, pathTemplateData);
-		this.add("camp/path/l_path", getCampPieces().mainPath, pathTemplateData);
+		this.add("camp/path/intersection_left", campPieces.mainPath, pathTemplateData);
+		this.add("camp/path/intersection_right", campPieces.mainPath, pathTemplateData);
+		this.add("camp/path/intersection_short", campPieces.mainPath, pathTemplateData);
+		this.add("camp/path/j_path", campPieces.mainPath, pathTemplateData);
+		this.add("camp/path/l_path", campPieces.mainPath, pathTemplateData);
 	}
 
 	private void configureSmallPaths() {
 		TemplatePoolInstance pathTemplateData = this.weightedPathTemplate(50, null, null);
 
-		this.addEmpty(getCampPieces().path, 300);
+		this.addEmpty(campPieces.path, 300);
 
-		this.addToAllPools("camp/path/path_2x4", pathTemplateData, getCampPieces().mainPath, getCampPieces().path);
-		this.addToAllPools("camp/path/path_2x6", pathTemplateData, getCampPieces().mainPath, getCampPieces().path);
-		this.addToAllPools("camp/path/path_2x7", pathTemplateData, getCampPieces().mainPath, getCampPieces().path);
-		this.addToAllPools("camp/path/path_3x4", pathTemplateData, getCampPieces().mainPath, getCampPieces().path);
+		this.addToAllPools("camp/path/path_2x4", pathTemplateData, campPieces.mainPath, campPieces.path);
+		this.addToAllPools("camp/path/path_2x6", pathTemplateData, campPieces.mainPath, campPieces.path);
+		this.addToAllPools("camp/path/path_2x7", pathTemplateData, campPieces.mainPath, campPieces.path);
+		this.addToAllPools("camp/path/path_3x4", pathTemplateData, campPieces.mainPath, campPieces.path);
 	}
 
 	private void configureDeco(Holder.Reference<TemplateMarkerHandlerList> campMarkers) {
 		TemplatePoolInstance twoLayerTemplateData = this.weightedRigidTemplate(100, 2, 0, campMarkers, null, null);
 		TemplatePoolInstance berryTemplateData = this.weightedRigidTemplate(75, 2, 0, campMarkers, null, null);
 
-		this.addToAllPools("camp/deco/double_drying_rack", twoLayerTemplateData, getCampPieces().deco, getCampPieces().rack);
-		this.addToAllPools("camp/deco/long_drying_rack", twoLayerTemplateData, getCampPieces().deco, getCampPieces().rack);
+		this.addToAllPools("camp/deco/double_drying_rack", twoLayerTemplateData, campPieces.deco, campPieces.rack);
+		this.addToAllPools("camp/deco/long_drying_rack", twoLayerTemplateData, campPieces.deco, campPieces.rack);
 
-		this.add("camp/deco/garden_1x3", getCampPieces().deco, twoLayerTemplateData);
-		this.add("camp/deco/garden_2x4", getCampPieces().deco, twoLayerTemplateData);
-		this.add("camp/deco/garden_straight", getCampPieces().deco, twoLayerTemplateData);
-		this.add("camp/deco/garden_u", getCampPieces().deco, twoLayerTemplateData);
+		this.add("camp/deco/garden_1x3", campPieces.deco, twoLayerTemplateData);
+		this.add("camp/deco/garden_2x4", campPieces.deco, twoLayerTemplateData);
+		this.add("camp/deco/garden_straight", campPieces.deco, twoLayerTemplateData);
+		this.add("camp/deco/garden_u", campPieces.deco, twoLayerTemplateData);
 
-		this.add("camp/deco/berries_staked", getCampPieces().deco, berryTemplateData);
-		this.add("camp/deco/berries_trellis", getCampPieces().deco, berryTemplateData);
-		this.add("camp/deco/blackberry_wall", getCampPieces().deco, berryTemplateData);
-		this.add("camp/deco/blueberry_wall", getCampPieces().deco, berryTemplateData);
-		this.add("camp/deco/raspberry_wall", getCampPieces().deco, berryTemplateData);
-		this.add("camp/deco/berries_support", getCampPieces().deco, berryTemplateData);
+		this.add("camp/deco/berries_staked", campPieces.deco, berryTemplateData);
+		this.add("camp/deco/berries_trellis", campPieces.deco, berryTemplateData);
+		this.add("camp/deco/blackberry_wall", campPieces.deco, berryTemplateData);
+		this.add("camp/deco/blueberry_wall", campPieces.deco, berryTemplateData);
+		this.add("camp/deco/raspberry_wall", campPieces.deco, berryTemplateData);
+		this.add("camp/deco/berries_support", campPieces.deco, berryTemplateData);
 
-		this.add("camp/deco/compost_large", getCampPieces().deco, twoLayerTemplateData);
-		this.add("camp/deco/compost_small", getCampPieces().deco, twoLayerTemplateData);
+		this.add("camp/deco/compost_large", campPieces.deco, twoLayerTemplateData);
+		this.add("camp/deco/compost_small", campPieces.deco, twoLayerTemplateData);
 
-		this.add("camp/deco/repair_station", getCampPieces().deco, twoLayerTemplateData);
+		this.add("camp/deco/repair_station", campPieces.deco, twoLayerTemplateData);
 
-		this.add("camp/deco/pen", getCampPieces().deco, twoLayerTemplateData);
+		this.add("camp/deco/pen", campPieces.deco, twoLayerTemplateData);
 
 		TemplatePoolInstance.ChooseRandomProcessors randomizedWoods = new TemplatePoolInstance.ChooseRandomProcessors(List.of(
 			SimpleWeightedRandomList.<StructureProcessor>builder()
@@ -153,10 +145,10 @@ public class CampStructureDefinitionGenerator extends StructureTemplateDefinitio
 		));
 		TemplatePoolInstance lumberTemplateData = this.weightedRigidTemplate(100, 1, 0, campMarkers, randomizedWoods, null);
 
-		this.add("camp/deco/lumber1", getCampPieces().deco, lumberTemplateData);
-		this.add("camp/deco/lumber2", getCampPieces().deco, lumberTemplateData);
-		this.add("camp/deco/lumber3", getCampPieces().deco, lumberTemplateData);
+		this.add("camp/deco/lumber1", campPieces.deco, lumberTemplateData);
+		this.add("camp/deco/lumber2", campPieces.deco, lumberTemplateData);
+		this.add("camp/deco/lumber3", campPieces.deco, lumberTemplateData);
 
-		this.addEmpty(getCampPieces().deco, 1000);
+		this.addEmpty(campPieces.deco, 1000);
 	}
 }

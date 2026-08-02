@@ -14,7 +14,6 @@ import io.github.fabricators_of_create.porting_lib.core.util.ServerLifecycleHook
 import twilightforest.TFRegistries;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.init.custom.WoodPalettes;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.util.woods.WoodPalette;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
@@ -26,21 +25,14 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class LichTowerSpawnerBridge extends TwilightJigsawPiece {
-	private static LichTowerUtil lichTowerUtil;
-
-	private static LichTowerUtil getLichTowerUtil() {
-		if (lichTowerUtil == null) {
-			lichTowerUtil = TFBeanRegistry.get(LichTowerUtil.class);
-		}
-		return lichTowerUtil;
-	}
+	private static final LichTowerUtil lichTowerUtil = LichTowerUtil.INSTANCE;
 
 	private final boolean invertedPalette;
 
 	public LichTowerSpawnerBridge(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		super(TFStructurePieceTypes.LICH_SPAWNER_BRIDGE.get(), compoundTag, ctx, readSettings(compoundTag));
 
-		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(getLichTowerUtil().getCentralBridgeSpawnerProcessor()));
+		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(lichTowerUtil.getCentralBridgeSpawnerProcessor()));
 
 		this.invertedPalette = compoundTag.getBoolean("inverted");
 
@@ -67,7 +59,7 @@ public class LichTowerSpawnerBridge extends TwilightJigsawPiece {
 	public LichTowerSpawnerBridge(int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext, boolean invertedPalette) {
 		super(TFStructurePieceTypes.LICH_SPAWNER_BRIDGE.get(), genDepth, structureManager, templateLocation, jigsawContext);
 
-		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(getLichTowerUtil().getCentralBridgeSpawnerProcessor()));
+		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(lichTowerUtil.getCentralBridgeSpawnerProcessor()));
 
 		this.invertedPalette = invertedPalette;
 

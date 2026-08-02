@@ -10,15 +10,9 @@ import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import twilightforest.init.TFDataAttachments;
-import twilightforest.util.TFBeanRegistry;
 
 public class ShieldCommand {
-
 	public static final ShieldCommand INSTANCE = new ShieldCommand();
-
-	static {
-		TFBeanRegistry.register(ShieldCommand.class, INSTANCE);
-	}
 
 	public LiteralArgumentBuilder<CommandSourceStack> register() {
 		return Commands.literal("shield")

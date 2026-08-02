@@ -24,7 +24,6 @@ import net.fabricmc.loader.api.FabricLoader;
 import io.github.fabricators_of_create.porting_lib.entity.events.living.LivingDeathEvent;
 import twilightforest.network.PacketDistributor;
 import io.github.fabricators_of_create.porting_lib.registry.DeferredItem;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.block.entity.SkullChestBlockEntity;
@@ -45,23 +44,19 @@ import java.util.List;
 public class CharmEvents {
 
 	public static final CharmEvents INSTANCE = new CharmEvents();
-	static {
-		TFBeanRegistry.register(CharmEvents.class, INSTANCE);
-		TFBeanRegistry.addPostInit(INSTANCE::init);
-	}
 
 	public static final String CHARM_INV_TAG = "TFCharmInventory";
 	public static final String CASKET_DAMAGE_TAG = "CasketDamage";
 	public static final String CONSUMED_CHARM_TAG = "CharmStack";
 
-	private void init() {
+	public static void init() {
 		// LivingDeathEvent is available in Porting-Lib
 		/*
-		LivingDeathEvent.EVENT.register(this::applyCharmOfLife);
-		LivingDeathEvent.EVENT.register(this::applyKeepingAndCasket);
+		LivingDeathEvent.EVENT.register(INSTANCE::applyCharmOfLife);
+		LivingDeathEvent.EVENT.register(INSTANCE::applyKeepingAndCasket);
 		*/
 		// PlayerRespawnEvent needs migration to Fabric API ServerPlayerEvents.AFTER_RESPAWN
-		// NeoForge.EVENT_BUS.addListener(this::returnItemsOnRespawn);
+		// NeoForge.EVENT_BUS.addListener(INSTANCE::returnItemsOnRespawn);
 	}
 
 	// Check for charm of life first to stop a player from dying

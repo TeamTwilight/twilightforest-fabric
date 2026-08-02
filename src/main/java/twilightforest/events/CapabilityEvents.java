@@ -14,7 +14,6 @@ import io.github.fabricators_of_create.porting_lib.entity.events.living.LivingHu
 import io.github.fabricators_of_create.porting_lib.entity.events.player.PlayerEvents;
 import io.github.fabricators_of_create.porting_lib.entity.events.tick.EntityTickEvent;
 import io.github.fabricators_of_create.porting_lib.entity.events.tick.PlayerTickEvent;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.components.entity.FortificationShieldAttachment;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFDataAttachments;
@@ -25,17 +24,13 @@ import twilightforest.world.TFTeleporter;
 public class CapabilityEvents {
 
 	public static final CapabilityEvents INSTANCE = new CapabilityEvents();
-	static {
-		TFBeanRegistry.register(CapabilityEvents.class, INSTANCE);
-		TFBeanRegistry.addPostInit(INSTANCE::init);
-	}
 
-	private void init() {
-		EntityTickEvent.Post.EVENT.register(this::updateShields);
-		PlayerTickEvent.Post.EVENT.register(this::updatePlayerCaps);
-		LivingHurtEvent.EVENT.register(this::absorbShieldHits);
+	public static void init() {
+		EntityTickEvent.Post.EVENT.register(INSTANCE::updateShields);
+		PlayerTickEvent.Post.EVENT.register(INSTANCE::updatePlayerCaps);
+		LivingHurtEvent.EVENT.register(INSTANCE::absorbShieldHits);
 		// PlayerRespawnEvent needs migration to Fabric API ServerPlayerEvents.AFTER_RESPAWN
-		PlayerEvents.PlayerLoggedInEvent.EVENT.register(this::playerLogsIn);
+		PlayerEvents.PlayerLoggedInEvent.EVENT.register(INSTANCE::playerLogsIn);
 	}
 
 		private void updateShields(EntityTickEvent.Post event) {

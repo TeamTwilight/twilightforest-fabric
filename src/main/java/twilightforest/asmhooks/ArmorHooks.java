@@ -8,21 +8,13 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.init.TFDataComponents;
 import twilightforest.util.ArmorUtil;
 
 @SuppressWarnings({"JavadocReference", "unused"})
 public class ArmorHooks {
 
-	private static ArmorUtil armorUtil;
-
-	public static ArmorUtil getArmorUtil() {
-		if (armorUtil == null) {
-			armorUtil = TFBeanRegistry.get(ArmorUtil.class);
-		}
-		return armorUtil;
-	}
+	private static final ArmorUtil armorUtil = ArmorUtil.INSTANCE;
 
 	/**
 	 * {@link twilightforest.asm.transformers.armor.ArmorVisibilityRenderingTransformer}<p/>
@@ -32,7 +24,7 @@ public class ArmorHooks {
 	 * Targets: {@link net.minecraft.world.entity.LivingEntity.getArmorCoverPercentage()}
 	 */
 	public static double modifyArmorVisibility(double o, LivingEntity entity) {
-		return o - getArmorUtil().getShroudedArmorPercentage(entity);
+		return o - armorUtil.getShroudedArmorPercentage(entity);
 	}
 
 	/**

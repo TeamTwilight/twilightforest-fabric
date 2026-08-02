@@ -24,7 +24,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructurePieceTypes;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.structures.markerhandler.TemplateMarkerHandler;
@@ -39,14 +38,7 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 
 	private static final Logger LOGGER = LogManager.getLogger(TwilightForestMod.ID + "/TwilightJigsawPiece");
 
-	private static StructureTemplateDefinitions structureTemplateDefinitions;
-
-	private static StructureTemplateDefinitions getStructureTemplateDefinitions() {
-		if (structureTemplateDefinitions == null) {
-			structureTemplateDefinitions = TFBeanRegistry.get(StructureTemplateDefinitions.class);
-		}
-		return structureTemplateDefinitions;
-	}
+	private static final StructureTemplateDefinitions structureTemplateDefinitions = StructureTemplateDefinitions.INSTANCE;
 
 	private static final String NBT_JIGSAW_SOURCE = "source";
 	private static final String NBT_JIGSAW_CONNECTIONS = "connections";
@@ -218,7 +210,7 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 	protected void processJigsaw(TwilightJigsawPiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
 		ResourceLocation templatePool = ResourceLocation.parse(this.poolAliases.getOrDefault(connection.pool(), connection.pool()));
 		BlockPos parentJunctionPos = this.templatePosition.offset(connection.pos());
-		TwilightJigsawPiece jigsawPiece = getStructureTemplateDefinitions().initializeTemplateFromPool(templatePool, parentJunctionPos, connection.orientation(), connection.target(), context, this.genDepth + 1, parent.projection == StructureTemplatePool.Projection.TERRAIN_MATCHING);
+		TwilightJigsawPiece jigsawPiece = structureTemplateDefinitions.initializeTemplateFromPool(templatePool, parentJunctionPos, connection.orientation(), connection.target(), context, this.genDepth + 1, parent.projection == StructureTemplatePool.Projection.TERRAIN_MATCHING);
 
 		if (jigsawPiece == null)
 			return;

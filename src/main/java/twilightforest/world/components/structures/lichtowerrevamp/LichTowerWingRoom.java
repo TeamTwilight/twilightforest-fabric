@@ -61,7 +61,6 @@ import twilightforest.loot.TFLootTables;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.DirectionUtil;
 import twilightforest.util.RotationUtil;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.util.WorldUtil;
 import twilightforest.util.entities.EntityUtil;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
@@ -75,14 +74,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 public final class LichTowerWingRoom extends TwilightJigsawPiece implements SpawnIndexProvider {
-	private static LichTowerUtil lichTowerUtil;
-
-	private static LichTowerUtil getLichTowerUtil() {
-		if (lichTowerUtil == null) {
-			lichTowerUtil = TFBeanRegistry.get(LichTowerUtil.class);
-		}
-		return lichTowerUtil;
-	}
+	private static final LichTowerUtil lichTowerUtil = LichTowerUtil.INSTANCE;
 
 	private final int roomSize;
 	private final boolean generateGround;
@@ -94,7 +86,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Spaw
 	public LichTowerWingRoom(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		super(TFStructurePieceTypes.LICH_WING_ROOM.get(), compoundTag, ctx, readSettings(compoundTag));
 
-		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(getLichTowerUtil().getRoomSpawnerProcessor()));
+		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(lichTowerUtil.getRoomSpawnerProcessor()));
 		this.placeSettings().setLiquidSettings(LiquidSettings.IGNORE_WATERLOGGING);
 
 		this.roomSize = compoundTag.getInt("room_size");
@@ -108,13 +100,13 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Spaw
 	public LichTowerWingRoom(StructureTemplateManager structureManager, int genDepth, JigsawPlaceContext jigsawContext, ResourceLocation roomId, int roomSize, boolean generateGround, boolean canGenerateLadder, RandomSource random) {
 		super(TFStructurePieceTypes.LICH_WING_ROOM.get(), genDepth, structureManager, roomId, jigsawContext);
 
-		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(getLichTowerUtil().getRoomSpawnerProcessor()));
+		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(lichTowerUtil.getRoomSpawnerProcessor()));
 		this.placeSettings().setLiquidSettings(LiquidSettings.IGNORE_WATERLOGGING);
 
 		this.roomSize = roomSize;
 		this.generateGround = generateGround;
 
-		Set<String> ladderPlacements = canGenerateLadder ? getLichTowerUtil().getLadderPlacementsForSize(this.roomSize) : Collections.emptySet();
+		Set<String> ladderPlacements = canGenerateLadder ? lichTowerUtil.getLadderPlacementsForSize(this.roomSize) : Collections.emptySet();
 		this.ladderIndex = canGenerateLadder ? this.pickFirstIndex(this.getSpareJigsaws(), ladderPlacements::contains) : -1;
 
 		this.jigsawLadderTarget = this.shouldLadderUpwards() ? this.getSpareJigsaws().get(this.ladderIndex).target() : "";
@@ -239,16 +231,16 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Spaw
 				FrontAndTop orientationToMatch = getVerticalOrientation(connection, Direction.DOWN, this);
 
 				if (this.generateGround) {
-					ResourceLocation trim = getLichTowerUtil().getTrim(context.random(), this.roomSize);
+					ResourceLocation trim = lichTowerUtil.getTrim(context.random(), this.roomSize);
 					this.tryBeard(pieceAccessor, context, connection, trim, orientationToMatch, true, true);
 				} else {
-					for (ResourceLocation beardLocation : getLichTowerUtil().shuffledBeards(context.random(), this.roomSize)) {
+					for (ResourceLocation beardLocation : lichTowerUtil.shuffledBeards(context.random(), this.roomSize)) {
 						if (this.tryBeard(pieceAccessor, context, connection, beardLocation, orientationToMatch, false, false)) {
 							return;
 						}
 					}
 
-					ResourceLocation fallbackBeard = getLichTowerUtil().getFallbackBeard(context.random(), this.roomSize);
+					ResourceLocation fallbackBeard = lichTowerUtil.getFallbackBeard(context.random(), this.roomSize);
 					this.tryBeard(pieceAccessor, context, connection, fallbackBeard, orientationToMatch, true, false);
 				}
 			}
@@ -259,10 +251,10 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Spaw
 
 		if (this.ladderIndex == jigsawIndex && this.jigsawLadderTarget.equals(connection.target())) {
 			int ladderOffset = Integer.parseInt(this.jigsawLadderTarget.substring(this.jigsawLadderTarget.length() - 1));
-			ResourceLocation roomId = getLichTowerUtil().getRoomUpwards(context.random(), this.roomSize, ladderOffset);
+			ResourceLocation roomId = lichTowerUtil.getRoomUpwards(context.random(), this.roomSize, ladderOffset);
 			if (roomId != null && (this.templateName.equals(roomId.toString()) || (parent.getTemplateName().equals(roomId.toString())))) {
 				// 1 chance at reroll if template is same as current or parent's
-				roomId = getLichTowerUtil().getRoomUpwards(context.random(), this.roomSize, ladderOffset);
+				roomId = lichTowerUtil.getRoomUpwards(context.random(), this.roomSize, ladderOffset);
 				// Otherwise if a repeat gets rolled -- how lucky!
 			}
 			BlockPos topPos = connection.pos().offset(0, this.boundingBox.getYSpan() - connection.pos().getY() - 1, 0);
@@ -311,13 +303,13 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Spaw
 		BoundingBox roofExtension = BoundingBoxUtils.extrusionFrom(this.boundingBox.minX(), this.boundingBox.maxY() + 1, this.boundingBox.minZ(), this.boundingBox.maxX(), this.boundingBox.maxY() + 1, this.boundingBox.maxZ(), orientationToMatch.top().getOpposite(), 1);
 		boolean doSideAttachment = connection.orientation().front().getAxis().isHorizontal() && pieceAccessor.findCollisionPiece(roofExtension) != null;
 
-		for (ResourceLocation roofLocation : getLichTowerUtil().shuffledRoofs(context.random(), this.roomSize, doSideAttachment)) {
+		for (ResourceLocation roofLocation : lichTowerUtil.shuffledRoofs(context.random(), this.roomSize, doSideAttachment)) {
 			if (tryRoof(pieceAccessor, context, connection, roofLocation, orientationToMatch, false, this, this.genDepth + 1, this.structureManager)) {
 				return true;
 			}
 		}
 
-		ResourceLocation fallbackRoof = getLichTowerUtil().getFallbackRoof(context.random(), this.roomSize, doSideAttachment);
+		ResourceLocation fallbackRoof = lichTowerUtil.getFallbackRoof(context.random(), this.roomSize, doSideAttachment);
 		tryRoof(pieceAccessor, context, connection, fallbackRoof, orientationToMatch, true, this, this.genDepth + 1, this.structureManager);
 		return false;
 	}

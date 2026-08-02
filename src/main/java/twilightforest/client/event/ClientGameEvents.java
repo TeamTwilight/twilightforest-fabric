@@ -6,12 +6,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
-import net.minecraft.client.model.HeadedModel;
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
@@ -21,24 +15,19 @@ import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
@@ -48,11 +37,7 @@ import io.github.fabricators_of_create.porting_lib.client_events.event.client.Vi
 import io.github.fabricators_of_create.porting_lib.client_events.event.client.ComputeFovModifierEvent;
 import io.github.fabricators_of_create.porting_lib.level.events.LevelEvent;
 
-
-
 import twilightforest.TwilightForestMod;
-import twilightforest.block.GiantBlock;
-import twilightforest.block.MiniatureStructureBlock;
 import twilightforest.block.entity.GrowingBeanstalkBlockEntity;
 import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.ISTER;
@@ -62,57 +47,42 @@ import twilightforest.client.TFShaders;
 import twilightforest.client.renderer.entity.MagicPaintingRenderer;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
-import twilightforest.entity.boss.bar.ClientTFBossBar;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.*;
 import twilightforest.item.*;
 import twilightforest.util.HolderMatcher;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.util.entities.EntityRenderingUtil;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 
 @Environment(EnvType.CLIENT)
 public class ClientGameEvents {
 	public static final ClientGameEvents INSTANCE = new ClientGameEvents();
 
 	private final VoxelShape GIANT_BLOCK = Shapes.box(0.0D, 0.0D, 0.0D, 4.0D, 4.0D, 4.0D);
-	private final MutableComponent WIP_TEXT = Component.translatable("misc.twilightforest.wip").withStyle(ChatFormatting.RED);
-	private final MutableComponent EMPERORS_CLOTH_TOOLTIP = Component.translatable("item.twilightforest.emperors_cloth.desc").withStyle(ChatFormatting.GRAY);
+	private static final MutableComponent WIP_TEXT = Component.translatable("misc.twilightforest.wip").withStyle(ChatFormatting.RED);
+	private static final MutableComponent EMPERORS_CLOTH_TOOLTIP = Component.translatable("item.twilightforest.emperors_cloth.desc").withStyle(ChatFormatting.GRAY);
 
 	private boolean firstTitleScreenShown = false;
 
 	public static int time = 0;
 	private float shakeIntensity = 0.0F;
 
-	private int aurora = 0;
-	private int lastAurora = 0;
+	private static int aurora = 0;
+	private static int lastAurora = 0;
 
-	private HolderMatcher holderMatcher;
+	private final HolderMatcher holderMatcher = HolderMatcher.INSTANCE;
 
-	private HolderMatcher getHolderMatcher() {
-		if (holderMatcher == null) {
-			holderMatcher = TFBeanRegistry.get(HolderMatcher.class);
-		}
-		return holderMatcher;
-	}
-
-	public ClientGameEvents() {
-		TFBeanRegistry.register(ClientGameEvents.class, this);
-		TFBeanRegistry.addPostInit(this::init);
-	}
-
-	private void init() {
+	public static void init() {
 		// Available in Porting-Lib:
-		SelectMusicEvent.EVENT.register(this::setMusicInDimension);
-		ViewportEvent.ComputeCameraAngles.EVENT.register(this::shakeCamera);
-		ComputeFovModifierEvent.EVENT.register(this::updateBowFOV);
+		SelectMusicEvent.EVENT.register(INSTANCE::setMusicInDimension);
+		ViewportEvent.ComputeCameraAngles.EVENT.register(INSTANCE::shakeCamera);
+		ComputeFovModifierEvent.EVENT.register(INSTANCE::updateBowFOV);
 
 		// Fabric API: Client tick events
-		ClientTickEvents.END_CLIENT_TICK.register(this::clientTick);
-		ClientTickEvents.END_CLIENT_TICK.register(this::killVignette);
+		ClientTickEvents.END_CLIENT_TICK.register(INSTANCE::clientTick);
+		ClientTickEvents.END_CLIENT_TICK.register(INSTANCE::killVignette);
 
 		// Fabric API: Item tooltip events
 		ItemTooltipCallback.EVENT.register((ItemStack stack, Item.TooltipContext context, TooltipFlag flag, List<Component> tooltip) -> addCustomTooltips(stack, context, flag, tooltip));
@@ -151,7 +121,7 @@ public class ClientGameEvents {
 		// HudRenderCallback.EVENT.register(this::removeHostileMountHealth);
 
 		// Fabric API: Screen events
-		ScreenEvents.AFTER_INIT.register(this::handleGameBootup);
+		ScreenEvents.AFTER_INIT.register(INSTANCE::handleGameBootup);
 		// Splash customization handled via SplashRendererMixin
 		// clearEntityRenderUtilMap - ScreenEvents.REMOVE not available in Fabric API 1.21.1
 		// ScreenEvents.remove(screen -> clearEntityRenderUtilMap(screen));
@@ -206,7 +176,7 @@ public class ClientGameEvents {
 			if (mc.level != null && mc.cameraEntity != null && !TFConfig.getValidAuroraBiomes(mc.level.registryAccess()).isEmpty()) {
 				RegistryAccess access = mc.level.registryAccess();
 				Holder<Biome> biome = mc.level.getBiome(mc.cameraEntity.blockPosition());
-				if (TFConfig.getValidAuroraBiomes(access).stream().anyMatch(c -> getHolderMatcher().match(c, biome)))
+				if (TFConfig.getValidAuroraBiomes(access).stream().anyMatch(c -> holderMatcher.match(c, biome)))
 					aurora++;
 				else
 					aurora--;
@@ -262,7 +232,7 @@ public class ClientGameEvents {
 		}
 	}
 
-	private void addCustomTooltips(ItemStack item, Item.TooltipContext tooltipContext, TooltipFlag flag, List<Component> tooltip) {
+	private static void addCustomTooltips(ItemStack item, Item.TooltipContext tooltipContext, TooltipFlag flag, List<Component> tooltip) {
 		if (item.has(TFDataComponents.EMPERORS_CLOTH.get())) {
 			tooltip.add(1, EMPERORS_CLOTH_TOOLTIP);
 		}
@@ -293,7 +263,7 @@ public class ClientGameEvents {
 		if (!EntityRenderingUtil.ENTITY_MAP.isEmpty()) EntityRenderingUtil.ENTITY_MAP.clear();
 	}
 
-	private void translateBookAuthor(ItemStack stack, Item.TooltipContext tooltipContext, TooltipFlag flag, List<Component> tooltip) {
+	private static void translateBookAuthor(ItemStack stack, Item.TooltipContext tooltipContext, TooltipFlag flag, List<Component> tooltip) {
 		if (stack.getItem() instanceof WrittenBookItem && stack.has(DataComponents.WRITTEN_BOOK_CONTENT)) {
 			if (stack.has(TFDataComponents.TRANSLATABLE_BOOK.get())) {
 				for (int i = 0; i < tooltip.size(); i++) {

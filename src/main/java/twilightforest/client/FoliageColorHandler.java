@@ -7,7 +7,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import io.github.fabricators_of_create.porting_lib.entity.events.EntityLeaveLevelEvent;
 import twilightforest.init.TFBiomes;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.world.components.BiomeColorAlgorithms;
 
 import java.util.HashMap;
@@ -17,12 +16,7 @@ public final class FoliageColorHandler {
 
 	public static final FoliageColorHandler INSTANCE = new FoliageColorHandler();
 
-	static {
-		TFBeanRegistry.register(FoliageColorHandler.class, INSTANCE);
-		TFBeanRegistry.addPostInit(INSTANCE::init);
-	}
-
-	private BiomeColorAlgorithms biomeColorAlgorithms;
+	private final BiomeColorAlgorithms biomeColorAlgorithms = BiomeColorAlgorithms.INSTANCE;
 
 	private final Map<ResourceKey<Biome>, Handler> REGISTRY = new HashMap<>() {{
 		put(TFBiomes.SPOOKY_FOREST, (o, x, z) -> biomeColorAlgorithms.spookyFoliage(x, z));
@@ -34,8 +28,7 @@ public final class FoliageColorHandler {
 
 	private final Map<Biome, Handler> HANDLES = new MapMaker().weakKeys().makeMap(); // Concurrent + Weak + Hash
 
-	private void init() {
-		this.biomeColorAlgorithms = TFBeanRegistry.get(BiomeColorAlgorithms.class);
+	public void init() {
 		EntityLeaveLevelEvent.EVENT.register(event -> {
 			if (event.getLevel().isClientSide()) {
 				HANDLES.clear();
@@ -63,5 +56,4 @@ public final class FoliageColorHandler {
 		int apply(int o, double x, double z);
 
 	}
-
 }

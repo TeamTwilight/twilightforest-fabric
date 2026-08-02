@@ -21,7 +21,6 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.structures.SpawnIndexProvider;
@@ -29,14 +28,7 @@ import twilightforest.world.components.structures.TwilightJigsawPiece;
 import twilightforest.world.components.structures.util.SortablePiece;
 
 public final class LichTowerBase extends TwilightJigsawPiece implements SpawnIndexProvider, SortablePiece {
-	private static LichTowerUtil lichTowerUtil;
-
-	private static LichTowerUtil getLichTowerUtil() {
-		if (lichTowerUtil == null) {
-			lichTowerUtil = TFBeanRegistry.get(LichTowerUtil.class);
-		}
-		return lichTowerUtil;
-	}
+	private static final LichTowerUtil lichTowerUtil = LichTowerUtil.INSTANCE;
 
 	private final int casketWingIndex;
 
@@ -71,7 +63,7 @@ public final class LichTowerBase extends TwilightJigsawPiece implements SpawnInd
 			case "twilightforest:lich_tower/bridge" -> {
 				ResourceLocation room;
 				if (jigsawIndex == this.casketWingIndex) {
-					room = getLichTowerUtil().getKeepsakeCasketRoom(context.random());
+					room = lichTowerUtil.getKeepsakeCasketRoom(context.random());
 				} else {
 					room = null;
 				}
@@ -80,7 +72,7 @@ public final class LichTowerBase extends TwilightJigsawPiece implements SpawnInd
 				}
 			}
 			case "twilightforest:lich_tower/decor" -> {
-				ResourceLocation decorId = getLichTowerUtil().rollRandomDecor(context.random(), true);
+				ResourceLocation decorId = lichTowerUtil.rollRandomDecor(context.random(), true);
 				JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), connection.orientation(), this.structureManager, decorId, "twilightforest:lich_tower/decor", context.random());
 
 				if (placeableJunction != null) {

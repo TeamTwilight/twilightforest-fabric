@@ -12,23 +12,16 @@ import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import twilightforest.util.TFFakePlayer;
 import twilightforest.TFRegistries;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.modifiers.InsertableTravellersModifier;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifiable;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
-import twilightforest.util.TFBeanRegistry;
 
 import java.util.function.Function;
 
 public class TravellersGearCommand {
-
 	public static final TravellersGearCommand INSTANCE = new TravellersGearCommand();
-
-	static {
-		TFBeanRegistry.register(TravellersGearCommand.class, INSTANCE);
-	}
 
 	private static final DynamicCommandExceptionType ERROR_INVALID_MODIFIER = new DynamicCommandExceptionType(p_304101_ -> Component.translatableEscape("commands.tffeature.invalid_modifier", p_304101_));
 	private final SimpleCommandExceptionType ERROR_NOT_RUN_BY_PLAYER = new SimpleCommandExceptionType(Component.translatable("commands.tffeature.not_player"));

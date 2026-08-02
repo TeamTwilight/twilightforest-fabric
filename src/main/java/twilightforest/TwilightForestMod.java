@@ -12,12 +12,13 @@ import net.minecraft.world.entity.animal.Parrot;
 import net.minecraft.world.level.block.ComposterBlock;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import twilightforest.client.FoliageColorHandler;
 import twilightforest.config.ConfigSetup;
+import twilightforest.events.*;
 import twilightforest.init.*;
 import twilightforest.init.custom.*;
 import io.github.fabricators_of_create.porting_lib.util.DeferredSpawnEggItem;
 import twilightforest.util.TFBoatTypes;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.util.TFRemapper;
 
 import java.lang.reflect.Field;
@@ -34,76 +35,11 @@ public final class TwilightForestMod implements ModInitializer {
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
-	static {
-		// Initialize all DI components (replaces Beanification)
-		initComponents();
-	}
-
-	@SuppressWarnings("unused")
-	private static void initComponents() {
-		// Trigger class loading for all @Component classes to register themselves
-		// Order matters: classes without dependencies first, then dependent classes
-		try {
-			// Simple classes (no dependencies)
-			Class.forName("twilightforest.util.ArmorUtil");
-			Class.forName("twilightforest.util.DisplayUtil");
-			Class.forName("twilightforest.util.DirectionUtil");
-			Class.forName("twilightforest.util.HolderMatcher");
-			Class.forName("twilightforest.util.ModidPrefixUtil");
-			Class.forName("twilightforest.util.HolidayEvent");
-			Class.forName("twilightforest.util.multiparts.MultipartEntityUtil");
-			Class.forName("twilightforest.world.components.BiomeColorAlgorithms");
-			Class.forName("twilightforest.world.components.structures.util.StructureTemplateDefinitions");
-			Class.forName("twilightforest.world.components.structures.lichtowerrevamp.LichTowerUtil");
-			Class.forName("twilightforest.world.components.structures.lichtowerrevamp.LichTowerPieces");
-			Class.forName("twilightforest.world.components.structures.camp.CampPieces");
-			Class.forName("twilightforest.world.components.structures.selectors.CastleRandomBlockSelectorFactory");
-			Class.forName("twilightforest.world.components.structures.selectors.IceTowerRandomBlockSelectorFactory");
-			Class.forName("twilightforest.world.components.structures.selectors.KnightStonesRandomBlockSelectorFactory");
-			Class.forName("twilightforest.world.components.structures.selectors.MazestoneRandomBlockSelectoryFactory");
-			Class.forName("twilightforest.world.components.structures.selectors.StrongholdStonesRandomBlockSelectorFactory");
-			Class.forName("twilightforest.world.components.structures.selectors.TowerwoodRandomBlockSelectorFactory");
-			Class.forName("twilightforest.entity.passive.quest.ram.QuestingRamCurrentContext");
-			Class.forName("twilightforest.data.helpers.AdvancementDataMultiRequirements");
-			Class.forName("twilightforest.client.FoliageColorHandler");
-			Class.forName("twilightforest.client.event.TravellersClientEvents");
-			// Command classes (depends on above)
-			Class.forName("twilightforest.command.ShieldCommand");
-			Class.forName("twilightforest.command.ClearDisplayCommand");
-			Class.forName("twilightforest.command.CenterCommand");
-			Class.forName("twilightforest.command.ConquerCommand");
-			Class.forName("twilightforest.command.CountLootCommand");
-			Class.forName("twilightforest.command.CountTemplateCommand");
-			Class.forName("twilightforest.command.GenerateBookCommand");
-			Class.forName("twilightforest.command.InfoCommand");
-			Class.forName("twilightforest.command.MapBiomesCommand");
-			Class.forName("twilightforest.command.MapLocatorCommand");
-			Class.forName("twilightforest.command.SinisterSpawnerCommand");
-			Class.forName("twilightforest.command.TravellersGearCommand");
-			Class.forName("twilightforest.command.TFTeleportCommand");
-			Class.forName("twilightforest.command.DisplayPiecesCommand");
-			Class.forName("twilightforest.command.StructureDistanceCommand");
-			Class.forName("twilightforest.command.TFCommand");
-			// Event classes (depends on commands)
-			Class.forName("twilightforest.events.RegistrationEvents");
-			Class.forName("twilightforest.events.EntityEvents");
-			Class.forName("twilightforest.events.MiscEvents");
-			Class.forName("twilightforest.events.ToolEvents");
-			Class.forName("twilightforest.events.ProgressionEvents");
-			Class.forName("twilightforest.events.HostileMountEvents");
-			Class.forName("twilightforest.events.CapabilityEvents");
-			Class.forName("twilightforest.events.CharmEvents");
-			Class.forName("twilightforest.events.TravellersGearEvents");
-		} catch (ClassNotFoundException e) {
-			LOGGER.error("Failed to initialize component: {}", e.getMessage());
-		}
-		// Run all @PostConstruct equivalents
-		TFBeanRegistry.runPostInit();
-	}
-
 	@Override
 	public void onInitialize() {
 		Reflection.initialize(ConfigSetup.class);
+
+		initializeEvents();
 
 		TFGameRules.register();
 
@@ -218,6 +154,18 @@ public final class TwilightForestMod implements ModInitializer {
 
 	public static ResourceLocation getEnvTexture(String name) {
 		return ResourceLocation.fromNamespaceAndPath(ID, ENVIRO_DIR + name);
+	}
+
+	private void initializeEvents() {
+		CapabilityEvents.init();
+		CharmEvents.init();
+		EntityEvents.init();
+		HostileMountEvents.init();
+		MiscEvents.init();
+		ProgressionEvents.init();
+		RegistrationEvents.init();
+		ToolEvents.init();
+		TravellersGearEvents.init();
 	}
 
 	private void registerCompostables() {

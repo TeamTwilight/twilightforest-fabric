@@ -13,7 +13,6 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.util.TFTriState;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.block.CloudBlock;
 import twilightforest.block.SnowLoggable;
 import twilightforest.block.WroughtIronFenceBlock;
@@ -25,14 +24,7 @@ import twilightforest.init.custom.TravellersModifiersManager;
 @SuppressWarnings({"JavadocReference", "unused"})
 public class BlockHooks {
 
-	private static FoliageColorHandler foliageColorHandler;
-
-	public static FoliageColorHandler getFoliageColorHandler() {
-		if (foliageColorHandler == null) {
-			foliageColorHandler = TFBeanRegistry.get(FoliageColorHandler.class);
-		}
-		return foliageColorHandler;
-	}
+	private static final FoliageColorHandler foliageColorHandler = FoliageColorHandler.INSTANCE;
 
 	/**
 	 * {@link twilightforest.asm.transformers.cloud.IsRainingAtTransformer}<p/>
@@ -110,7 +102,7 @@ public class BlockHooks {
 	 * {@link net.minecraft.client.renderer.BiomeColors#FOLIAGE_COLOR_RESOLVER}
 	 */
 	public static int resolveFoliageColor(int o, Biome biome, double x, double z) {
-		return getFoliageColorHandler().get(o, biome, x, z);
+		return foliageColorHandler.get(o, biome, x, z);
 	}
 
 	/**

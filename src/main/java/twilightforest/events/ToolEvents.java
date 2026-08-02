@@ -36,7 +36,6 @@ import io.github.fabricators_of_create.porting_lib.entity.events.living.MobEffec
 import io.github.fabricators_of_create.porting_lib.level.events.BlockEvent;
 
 import org.jetbrains.annotations.Nullable;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.block.GiantBlock;
 import twilightforest.components.entity.GiantPickaxeMiningAttachment;
 import twilightforest.data.tags.BlockTagGenerator;
@@ -50,22 +49,18 @@ import java.util.List;
 public class ToolEvents {
 
 	public static final ToolEvents INSTANCE = new ToolEvents();
-	static {
-		TFBeanRegistry.register(ToolEvents.class, INSTANCE);
-		TFBeanRegistry.addPostInit(INSTANCE::init);
-	}
 
 	private static final int KNIGHTMETAL_BONUS_DAMAGE = 2;
 	private static final int MINOTAUR_AXE_BONUS_DAMAGE = 7;
 
-	private void init() {
-		ProjectileImpactEvent.EVENT.register(this::onEnderBowHit);
-		LivingHurtEvent.EVENT.register(this::fieryToolSetFire);
-		LivingHurtEvent.EVENT.register(this::doKnightmetalToolLogic);
-		LivingHurtEvent.EVENT.register(this::addExtraAxeChargingDamage);
-		BlockEvent.BreakEvent.EVENT.register(this::damageNonMazebreakerToolsMore);
-		MobEffectEvent.Applicable.EVENT.register(this::preventFatigueWithPocketWatch);
-		BlockEvent.BreakEvent.EVENT.register(this::handleGiantPickaxeMining);
+	public static void init() {
+		ProjectileImpactEvent.EVENT.register(INSTANCE::onEnderBowHit);
+		LivingHurtEvent.EVENT.register(INSTANCE::fieryToolSetFire);
+		LivingHurtEvent.EVENT.register(INSTANCE::doKnightmetalToolLogic);
+		LivingHurtEvent.EVENT.register(INSTANCE::addExtraAxeChargingDamage);
+		BlockEvent.BreakEvent.EVENT.register(INSTANCE::damageNonMazebreakerToolsMore);
+		MobEffectEvent.Applicable.EVENT.register(INSTANCE::preventFatigueWithPocketWatch);
+		BlockEvent.BreakEvent.EVENT.register(INSTANCE::handleGiantPickaxeMining);
 		// TagsUpdatedEvent needs migration to Fabric API
 	}
 

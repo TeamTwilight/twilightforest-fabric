@@ -9,16 +9,10 @@ import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 
 public class CenterCommand {
-
 	public static final CenterCommand INSTANCE = new CenterCommand();
-
-	static {
-		TFBeanRegistry.register(CenterCommand.class, INSTANCE);
-	}
 
 	public LiteralArgumentBuilder<CommandSourceStack> register() {
 		return Commands.literal("center").requires(cs -> cs.hasPermission(2)).executes(this::run);

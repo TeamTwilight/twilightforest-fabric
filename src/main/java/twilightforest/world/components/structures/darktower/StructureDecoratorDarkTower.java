@@ -2,19 +2,11 @@ package twilightforest.world.components.structures.darktower;
 
 import net.minecraft.world.level.block.Blocks;
 import twilightforest.init.TFBlocks;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.world.components.structures.TFStructureDecorator;
 import twilightforest.world.components.structures.selectors.TowerwoodRandomBlockSelectorFactory;
 
 public class StructureDecoratorDarkTower extends TFStructureDecorator {
-	private static TowerwoodRandomBlockSelectorFactory towerwood;
-
-	private static TowerwoodRandomBlockSelectorFactory getTowerwood() {
-		if (towerwood == null) {
-			towerwood = TFBeanRegistry.get(TowerwoodRandomBlockSelectorFactory.class);
-		}
-		return towerwood;
-	}
+	private static TowerwoodRandomBlockSelectorFactory towerwood = TowerwoodRandomBlockSelectorFactory.INSTANCE;
 
 	public StructureDecoratorDarkTower() {
 		this.blockState = TFBlocks.TOWERWOOD.get().defaultBlockState();
@@ -23,7 +15,7 @@ public class StructureDecoratorDarkTower extends TFStructureDecorator {
 		this.stairState = Blocks.SPRUCE_STAIRS.defaultBlockState();
 		this.pillarState = TFBlocks.ENCASED_TOWERWOOD.get().defaultBlockState();
 		this.platformState = TFBlocks.ENCASED_TOWERWOOD.get().defaultBlockState();
-		this.randomBlocks = getTowerwood().make();
+		this.randomBlocks = towerwood.make();
 	}
 
 }

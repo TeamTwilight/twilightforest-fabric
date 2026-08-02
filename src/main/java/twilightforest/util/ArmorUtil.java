@@ -2,20 +2,10 @@ package twilightforest.util;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.DyedItemColor;
 import twilightforest.init.TFDataComponents;
-import twilightforest.item.ArcticArmorItem;
-import twilightforest.util.TFBeanRegistry;
-
-import java.util.OptionalInt;
 
 public class ArmorUtil {
-
 	public static final ArmorUtil INSTANCE = new ArmorUtil();
-
-	static {
-		TFBeanRegistry.register(ArmorUtil.class, INSTANCE);
-	}
 
 	public float getShroudedArmorPercentage(LivingEntity entity) {
 		int shroudedArmor = 0;

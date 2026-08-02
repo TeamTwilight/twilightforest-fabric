@@ -2,17 +2,12 @@ package twilightforest.world.components.structures.selectors;
 
 import com.mojang.datafixers.util.Pair;
 import twilightforest.init.TFBlocks;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.world.components.structures.util.SimpleRandomBlockSelector;
 
 import java.util.List;
 
 public class KnightStonesRandomBlockSelectorFactory {
 	public static final KnightStonesRandomBlockSelectorFactory INSTANCE = new KnightStonesRandomBlockSelectorFactory();
-
-	static {
-		TFBeanRegistry.register(KnightStonesRandomBlockSelectorFactory.class, INSTANCE);
-	}
 
 	public SimpleRandomBlockSelector make() {
 		return new SimpleRandomBlockSelector(

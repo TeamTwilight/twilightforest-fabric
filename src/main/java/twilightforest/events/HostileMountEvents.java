@@ -10,7 +10,6 @@ import io.github.fabricators_of_create.porting_lib.entity.events.EntityMountEven
 import io.github.fabricators_of_create.porting_lib.entity.events.EntityTeleportEvent;
 import io.github.fabricators_of_create.porting_lib.entity.events.living.LivingHurtEvent;
 import io.github.fabricators_of_create.porting_lib.entity.events.tick.EntityTickEvent;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.entity.IHostileMount;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFDataAttachments;
@@ -18,19 +17,15 @@ import twilightforest.init.TFDataAttachments;
 public class HostileMountEvents {
 
 	public static final HostileMountEvents INSTANCE = new HostileMountEvents();
-	static {
-		TFBeanRegistry.register(HostileMountEvents.class, INSTANCE);
-		TFBeanRegistry.addPostInit(INSTANCE::init);
-	}
 
 	public static volatile boolean allowDismount = false;
 
-	private void init() {
-		LivingHurtEvent.EVENT.register(this::handleMountDamage);
+	public static void init() {
+		LivingHurtEvent.EVENT.register(INSTANCE::handleMountDamage);
 		// EntityTeleportEvent is available in Porting-Lib
-		// EntityTeleportEvent.EVENT.register(this::preventTeleportingOffHostileMounts);
-		EntityMountEvent.EVENT.register(this::preventMountDismount);
-		EntityTickEvent.Post.EVENT.register(this::preventHostilMountCrouching);
+		// EntityTeleportEvent.EVENT.register(INSTANCE::preventTeleportingOffHostileMounts);
+		EntityMountEvent.EVENT.register(INSTANCE::preventMountDismount);
+		EntityTickEvent.Post.EVENT.register(INSTANCE::preventHostilMountCrouching);
 	}
 
 	private void handleMountDamage(LivingHurtEvent event) {

@@ -22,7 +22,6 @@ import net.fabricmc.loader.api.FabricLoader;
 import twilightforest.events.EntityEvents;
 import twilightforest.util.landmarks.LandmarkUtil;
 import twilightforest.world.components.structures.start.TFStructureStart;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.world.components.structures.util.LandmarkStructure;
 
 import java.util.List;
@@ -30,12 +29,7 @@ import java.util.Optional;
 import java.util.StringJoiner;
 
 public class InfoCommand {
-
 	public static final InfoCommand INSTANCE = new InfoCommand();
-
-	static {
-		TFBeanRegistry.register(InfoCommand.class, INSTANCE);
-	}
 
 	public LiteralArgumentBuilder<CommandSourceStack> register() {
 		return Commands.literal("info").requires(cs -> cs.hasPermission(2)).executes(this::run);

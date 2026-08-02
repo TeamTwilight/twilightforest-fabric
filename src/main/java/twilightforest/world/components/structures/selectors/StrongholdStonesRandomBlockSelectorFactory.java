@@ -2,17 +2,12 @@ package twilightforest.world.components.structures.selectors;
 
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.world.level.block.Blocks;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.world.components.structures.util.SimpleRandomBlockSelector;
 
 import java.util.List;
 
 public class StrongholdStonesRandomBlockSelectorFactory {
 	public static final StrongholdStonesRandomBlockSelectorFactory INSTANCE = new StrongholdStonesRandomBlockSelectorFactory();
-
-	static {
-		TFBeanRegistry.register(StrongholdStonesRandomBlockSelectorFactory.class, INSTANCE);
-	}
 
 	public SimpleRandomBlockSelector make() {
 		return new SimpleRandomBlockSelector(

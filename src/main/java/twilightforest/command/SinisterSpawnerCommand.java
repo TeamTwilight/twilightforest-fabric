@@ -17,16 +17,11 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.ReloadableServerRegistries;
 import net.minecraft.world.level.storage.loot.LootTable;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.block.entity.spawner.SinisterSpawnerBlockEntity;
 
 public class SinisterSpawnerCommand {
-
 	public static final SinisterSpawnerCommand INSTANCE = new SinisterSpawnerCommand();
 
-	static {
-		TFBeanRegistry.register(SinisterSpawnerCommand.class, INSTANCE);
-	}
 	// Copied from LootCommand.SUGGEST_LOOT_TABLE
 	public static final SuggestionProvider<CommandSourceStack> SUGGEST_LOOT_TABLE = (context, builder) -> {
 		ReloadableServerRegistries.Holder holder = context.getSource().getServer().reloadableRegistries();

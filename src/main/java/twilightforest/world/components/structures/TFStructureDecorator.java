@@ -3,7 +3,6 @@ package twilightforest.world.components.structures;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.world.components.structures.darktower.StructureDecoratorDarkTower;
 import twilightforest.world.components.structures.finalcastle.StructureTFDecoratorCastle;
 import twilightforest.world.components.structures.icetower.IceTowerDecorator;
@@ -17,14 +16,7 @@ import twilightforest.world.components.structures.stronghold.StrongholdDecorator
  * @author Ben
  */
 public class TFStructureDecorator {
-	private static StrongholdStonesRandomBlockSelectorFactory strongholdStones;
-
-	private static StrongholdStonesRandomBlockSelectorFactory getStrongholdStones() {
-		if (strongholdStones == null) {
-			strongholdStones = TFBeanRegistry.get(StrongholdStonesRandomBlockSelectorFactory.class);
-		}
-		return strongholdStones;
-	}
+	private static final StrongholdStonesRandomBlockSelectorFactory strongholdStones = StrongholdStonesRandomBlockSelectorFactory.INSTANCE;
 
 	public BlockState blockState = Blocks.STONE.defaultBlockState();
 	public BlockState accentState = Blocks.COBBLESTONE.defaultBlockState();
@@ -35,7 +27,7 @@ public class TFStructureDecorator {
 	public BlockState floorState = Blocks.STONE_BRICKS.defaultBlockState();
 	public BlockState roofState = Blocks.STONE_BRICKS.defaultBlockState();
 
-	public StructurePiece.BlockSelector randomBlocks = getStrongholdStones().make();
+	public StructurePiece.BlockSelector randomBlocks = strongholdStones.make();
 
 	public static String getDecoString(TFStructureDecorator deco) {
 		if (deco instanceof StructureDecoratorDarkTower) {

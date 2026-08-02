@@ -2,13 +2,9 @@ package twilightforest.events;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -22,7 +18,6 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
-import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -45,7 +40,6 @@ import io.github.fabricators_of_create.porting_lib.event.common.GrindstoneEvent;
 import io.github.fabricators_of_create.porting_lib.transfer.item.ItemHandlerHelper;
 import twilightforest.network.PacketDistributor;
 import io.github.fabricators_of_create.porting_lib.core.util.ServerLifecycleHooks;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.components.entity.SlimySolesAttachment;
 import twilightforest.init.*;
 import twilightforest.init.custom.TravellersModifiersManager;
@@ -56,44 +50,38 @@ import twilightforest.network.GradualGlidePacket;
 import twilightforest.network.ParticlePacket;
 
 import java.util.*;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class TravellersGearEvents {
 
 	public static final TravellersGearEvents INSTANCE = new TravellersGearEvents();
-	static {
-		TFBeanRegistry.register(TravellersGearEvents.class, INSTANCE);
-		TFBeanRegistry.addPostInit(INSTANCE::init);
-	}
 
 	private static final List<AttachmentType<?>> ATTACHMENTS_TO_PRESERVE_ON_DEATH = List.of(
 		TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION
 	);
 
-	private void init() {
-		ProjectileImpactEvent.EVENT.register(this::magnetizeArrows);
-		ProjectileImpactEvent.EVENT.register(this::performPerfectDodge);
-		LivingFallEvent.EVENT.register(this::reduceSlimySolesFallDamage);
-		PlayerTickEvent.Pre.EVENT.register(this::tickMovementModifiers);
-		PlayerTickEvent.Post.EVENT.register(this::performStealth);
-		PlayerTickEvent.Pre.EVENT.register(this::disableHighStepWhileSneaking);
-		EntityTickEvent.Post.EVENT.register(this::updateOtherModifiers);
-		LivingEvents.LivingJumpEvent.EVENT.register(this::cancelSlimySolesJump);
-		ItemAttributeModifierEvent.EVENT.register(this::activateAndDeactivateTravellersModifiers);
+	public static void init() {
+		ProjectileImpactEvent.EVENT.register(INSTANCE::magnetizeArrows);
+		ProjectileImpactEvent.EVENT.register(INSTANCE::performPerfectDodge);
+		LivingFallEvent.EVENT.register(INSTANCE::reduceSlimySolesFallDamage);
+		PlayerTickEvent.Pre.EVENT.register(INSTANCE::tickMovementModifiers);
+		PlayerTickEvent.Post.EVENT.register(INSTANCE::performStealth);
+		PlayerTickEvent.Pre.EVENT.register(INSTANCE::disableHighStepWhileSneaking);
+		EntityTickEvent.Post.EVENT.register(INSTANCE::updateOtherModifiers);
+		LivingEvents.LivingJumpEvent.EVENT.register(INSTANCE::cancelSlimySolesJump);
+		ItemAttributeModifierEvent.EVENT.register(INSTANCE::activateAndDeactivateTravellersModifiers);
 		// AnvilUpdateEvent needs migration to Fabric API
-		// NeoForge.EVENT_BUS.addListener(this::cancelCombiningTravellersGear);
+		// NeoForge.EVENT_BUS.addListener(INSTANCE::cancelCombiningTravellersGear);
 		// PlayerSpawnPhantomsEvent needs migration to Fabric API
-		// NeoForge.EVENT_BUS.addListener(this::cancelPhantomSpawns);
-		PlayerEvents.ItemCraftedEvent.EVENT.register(this::fireCraftingModifierTrigger);
+		// NeoForge.EVENT_BUS.addListener(INSTANCE::cancelPhantomSpawns);
+		PlayerEvents.ItemCraftedEvent.EVENT.register(INSTANCE::fireCraftingModifierTrigger);
 		// GrindstoneEvent.OnTakeItem lacks getPlayer(), needs custom mixin
-		// GrindstoneEvent.OnTakeItem.EVENT.register(this::extractItemsFromSwapHotbarModifier);
-		GrindstoneEvent.OnPlaceItem.EVENT.register(this::removeModifiersFromTravellersGear);
+		// GrindstoneEvent.OnTakeItem.EVENT.register(INSTANCE::extractItemsFromSwapHotbarModifier);
+		GrindstoneEvent.OnPlaceItem.EVENT.register(INSTANCE::removeModifiersFromTravellersGear);
 		// ArmorHurtEvent needs migration to Fabric API LivingArmorDamageCallback
-		// NeoForge.EVENT_BUS.addListener(this::stopDamagingTravellersGear);
-		// NeoForge.EVENT_BUS.addListener(this::setLastDamageArmorTime);
-		PlayerEvents.Clone.EVENT.register(this::keepAttachmentsOnDeath);
+		// NeoForge.EVENT_BUS.addListener(INSTANCE::stopDamagingTravellersGear);
+		// NeoForge.EVENT_BUS.addListener(INSTANCE::setLastDamageArmorTime);
+		PlayerEvents.Clone.EVENT.register(INSTANCE::keepAttachmentsOnDeath);
 	}
 
 	private void magnetizeArrows(ProjectileImpactEvent event) {

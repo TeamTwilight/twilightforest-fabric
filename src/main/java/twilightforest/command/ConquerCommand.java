@@ -11,18 +11,12 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import twilightforest.util.landmarks.LandmarkUtil;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.world.components.structures.start.TFStructureStart;
 
 import java.util.Optional;
 
 public class ConquerCommand {
-
 	public static final ConquerCommand INSTANCE = new ConquerCommand();
-
-	static {
-		TFBeanRegistry.register(ConquerCommand.class, INSTANCE);
-	}
 
 	private final SimpleCommandExceptionType NOT_IN_STRUCTURE = new SimpleCommandExceptionType(Component.translatable("commands.tffeature.structure.required"));
 

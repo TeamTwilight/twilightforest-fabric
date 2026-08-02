@@ -14,17 +14,12 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.init.TFDimension;
-import twilightforest.util.TFBeanRegistry;
 
 import java.util.Locale;
 
 public class TFTeleportCommand {
-
 	public static final TFTeleportCommand INSTANCE = new TFTeleportCommand();
 
-	static {
-		TFBeanRegistry.register(TFTeleportCommand.class, INSTANCE);
-	}
 	private static final SimpleCommandExceptionType PLAYER_ONLY = new SimpleCommandExceptionType(Component.translatable("commands.tffeature.teleport.player_only"));
 	private static final SimpleCommandExceptionType DIMENSION_MISSING = new SimpleCommandExceptionType(Component.translatable("commands.tffeature.teleport.dimension_missing"));
 	private static final SimpleCommandExceptionType INVALID_POSITION = new SimpleCommandExceptionType(Component.translatable("commands.teleport.invalidPosition"));

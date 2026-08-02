@@ -6,16 +6,10 @@ import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.biome.Biome;
 import twilightforest.util.ColorUtil;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.util.landmarks.LegacyLandmarkPlacements;
-import twilightforest.world.components.structures.type.QuestGroveStructure;
 
 public class BiomeColorAlgorithms {
 	public static final BiomeColorAlgorithms INSTANCE = new BiomeColorAlgorithms();
-
-	static {
-		TFBeanRegistry.register(BiomeColorAlgorithms.class, INSTANCE);
-	}
 
 	public int enchanted(int originalColor, int x, int z) {  // 附魔森林颜色算法待验证
 		BlockPos center = LegacyLandmarkPlacements.getNearestCenterXZ(x / 16, z / 16);  // Center is quest grove

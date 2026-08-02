@@ -19,15 +19,10 @@ import net.minecraft.world.level.levelgen.structure.*;
 
 import java.util.Comparator;
 import java.util.List;
-import twilightforest.util.TFBeanRegistry;
 
 public class CountTemplateCommand {
-
 	public static final CountTemplateCommand INSTANCE = new CountTemplateCommand();
 
-	static {
-		TFBeanRegistry.register(CountTemplateCommand.class, INSTANCE);
-	}
 	public LiteralArgumentBuilder<CommandSourceStack> register() {
 		return Commands.literal("count_template").requires(cs -> cs.hasPermission(Commands.LEVEL_GAMEMASTERS))
 			.then(Commands.argument("filter_structure", ResourceKeyArgument.key(Registries.STRUCTURE)).executes(this::countTemplates));

@@ -6,19 +6,13 @@ import net.minecraft.world.entity.Entity;
 import twilightforest.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.client.BakedMultiPartRenderers;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.entity.TFPart;
 import twilightforest.network.UpdateTFMultipartPacket;
 
 import java.util.Iterator;
 
 public class MultipartEntityUtil {
-
 	public static final MultipartEntityUtil INSTANCE = new MultipartEntityUtil();
-
-	static {
-		TFBeanRegistry.register(MultipartEntityUtil.class, INSTANCE);
-	}
 
 	public Iterator<Entity> injectTFPartEntities(Iterator<Entity> iter) {
 		return new MultipartEntityIteratorWrapper(iter);

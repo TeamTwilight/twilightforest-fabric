@@ -21,7 +21,6 @@ import net.fabricmc.loader.api.FabricLoader;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFDataMaps;
 import twilightforest.util.ColorUtil;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.util.datamaps.MagicMapBiomeColor;
 
 import java.io.IOException;
@@ -35,12 +34,7 @@ import java.util.Map;
  * Thank you @SuperCoder79 (from Twitter) for sharing the original code! Code sourced from a LGPL project
  */
 public class MapBiomesCommand {
-
 	public static final MapBiomesCommand INSTANCE = new MapBiomesCommand();
-
-	static {
-		TFBeanRegistry.register(MapBiomesCommand.class, INSTANCE);
-	}
 
 	private final DecimalFormat numberFormat = new DecimalFormat("#.00");
 

@@ -18,7 +18,6 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import io.github.fabricators_of_create.porting_lib.resources.events.AddReloadListenersEvent;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 
@@ -27,10 +26,6 @@ import java.util.stream.Collectors;
 
 public final class StructureTemplateDefinitions extends CodecResourceReloadListener<StructureTemplateDefinition> {
 	public static final StructureTemplateDefinitions INSTANCE = new StructureTemplateDefinitions();
-
-	static {
-		TFBeanRegistry.register(StructureTemplateDefinitions.class, INSTANCE);
-	}
 
 	private final Map<ResourceLocation, Map<ResourceLocation, TemplatePoolInstance>> rawTemplatePools = new HashMap<>();
 	private final Map<ResourceLocation, WeightedRandomList<TemplatePoolEntry>> templatePools = new HashMap<>();

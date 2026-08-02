@@ -13,11 +13,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
-import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
-import twilightforest.util.TFBeanRegistry;
 import twilightforest.world.components.structures.selectors.KnightStonesRandomBlockSelectorFactory;
 import twilightforest.world.components.structures.selectors.StrongholdStonesRandomBlockSelectorFactory;
 import twilightforest.world.components.structures.TFStructureComponentOld;
@@ -28,22 +26,8 @@ import java.util.List;
 
 
 public abstract class KnightStrongholdComponent extends TFStructureComponentOld {
-	private static StrongholdStonesRandomBlockSelectorFactory strongholdStones;
-	private static KnightStonesRandomBlockSelectorFactory knightStones;
-
-	private static StrongholdStonesRandomBlockSelectorFactory getStrongholdStonesFactory() {
-		if (strongholdStones == null) {
-			strongholdStones = TFBeanRegistry.get(StrongholdStonesRandomBlockSelectorFactory.class);
-		}
-		return strongholdStones;
-	}
-
-	private static KnightStonesRandomBlockSelectorFactory getKnightStones() {
-		if (knightStones == null) {
-			knightStones = TFBeanRegistry.get(KnightStonesRandomBlockSelectorFactory.class);
-		}
-		return knightStones;
-	}
+	private static final StrongholdStonesRandomBlockSelectorFactory strongholdStones = StrongholdStonesRandomBlockSelectorFactory.INSTANCE;
+	private static final KnightStonesRandomBlockSelectorFactory knightStones = KnightStonesRandomBlockSelectorFactory.INSTANCE;
 
 	public final List<BlockPos> doors = new ArrayList<>();
 
@@ -500,8 +484,8 @@ public abstract class KnightStrongholdComponent extends TFStructureComponentOld 
 					BlockState state = this.getBlock(world, x, y, z, sbb);
 
 					BlockState stateBelow = this.getBlock(world, x, y - 1, z, sbb).getBlock().defaultBlockState();
-					boolean isKnightStone = getKnightStones().make().getStates().contains(stateBelow);
-					boolean isStrongholdStone = getStrongholdStonesFactory().make().getStates().contains(stateBelow);
+					boolean isKnightStone = knightStones.make().getStates().contains(stateBelow);
+					boolean isStrongholdStone = strongholdStones.make().getStates().contains(stateBelow);
 
 					boolean isValidSurface = !state.isAir() && (state.is(BlockTags.BASE_STONE_OVERWORLD) || state.is(BlockTags.DIRT));
 					boolean isAirWithChance = state.isAir() && rand.nextInt(3) == 0;

@@ -64,7 +64,6 @@ import io.github.fabricators_of_create.porting_lib.event.common.ExplosionEvents;
 import io.github.fabricators_of_create.porting_lib.level.events.BlockEvent;
 import io.github.fabricators_of_create.porting_lib.level.events.LevelEvent;
 import twilightforest.network.PacketDistributor;
-import twilightforest.util.TFBeanRegistry;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.DrinkFromFlaskTrigger;
@@ -97,38 +96,33 @@ import java.util.Optional;
 public class EntityEvents {
 
 	public static final EntityEvents INSTANCE = new EntityEvents();
-	static {
-		TFBeanRegistry.register(EntityEvents.class, INSTANCE);
-		TFBeanRegistry.addPostInit(INSTANCE::init);
-	}
 
-	private QuestingRamCurrentContext questingRamCurrentContext;
+	private final QuestingRamCurrentContext questingRamCurrentContext = QuestingRamCurrentContext.INSTANCE;
 
 	private static final boolean SHIELD_PARRY_MOD_LOADED = FabricLoader.getInstance().isModLoaded("parry");
 
-	private void init() {
-		this.questingRamCurrentContext = TFBeanRegistry.get(QuestingRamCurrentContext.class);
-		LivingDeathEvent.EVENT.register(this::ominousFireConversion);
-		LivingHurtEvent.EVENT.register(this::zombifiedPlayerAttacks);
-		AdvancementEvent.EARN.register(this::alertPlayerCastleIsWIP);
-		PlayerInteractEvent.RightClickBlock.EVENT.register(this::attachLeadToWroughtFence);
-		PlayerInteractEvent.LeftClickEmpty.EVENT.register(this::wipeOreMeterOnLeftClick);
-		LivingDamageEvent.DAMAGE.register(this::entityHurts);
-		BlockEvent.BreakEvent.EVENT.register(this::onCasketBreak);
-		LivingHurtEvent.EVENT.register(this::reduceFrostedEffectIfOnFire);
-		ProjectileImpactEvent.EVENT.register(this::onParryProjectile);
-		PlayerInteractEvent.RightClickBlock.EVENT.register(this::createSkullCandle);
-		LivingEvents.LivingJumpEvent.EVENT.register(this::addCloudJumpParticles);
-		LevelEvent.PotentialSpawns.EVENT.register(this::structureSpecialSpawns);
-		AttackEntityEvent.EVENT.register(this::removeCastleTextIfAttacked);
+	public static void init() {
+		LivingDeathEvent.EVENT.register(INSTANCE::ominousFireConversion);
+		LivingHurtEvent.EVENT.register(INSTANCE::zombifiedPlayerAttacks);
+		AdvancementEvent.EARN.register(INSTANCE::alertPlayerCastleIsWIP);
+		PlayerInteractEvent.RightClickBlock.EVENT.register(INSTANCE::attachLeadToWroughtFence);
+		PlayerInteractEvent.LeftClickEmpty.EVENT.register(INSTANCE::wipeOreMeterOnLeftClick);
+		LivingDamageEvent.DAMAGE.register(INSTANCE::entityHurts);
+		BlockEvent.BreakEvent.EVENT.register(INSTANCE::onCasketBreak);
+		LivingHurtEvent.EVENT.register(INSTANCE::reduceFrostedEffectIfOnFire);
+		ProjectileImpactEvent.EVENT.register(INSTANCE::onParryProjectile);
+		PlayerInteractEvent.RightClickBlock.EVENT.register(INSTANCE::createSkullCandle);
+		LivingEvents.LivingJumpEvent.EVENT.register(INSTANCE::addCloudJumpParticles);
+		LevelEvent.PotentialSpawns.EVENT.register(INSTANCE::structureSpecialSpawns);
+		AttackEntityEvent.EVENT.register(INSTANCE::removeCastleTextIfAttacked);
 		// FinalizeSpawnEvent needs migration to Fabric API EntitySpawnCallback
-		LivingDamageEvent.DAMAGE.register(this::addQualifiedGroupPlayerIfNeeded);
-		LivingDeathEvent.EVENT.register(this::grantGroupAdvancementIfNeeded);
-		ExplosionEvents.DETONATE.register(this::lichBombsDontBlowUpItems);
-		OnDatapackSyncCallback.EVENT.register(this::handleQuestSyncing);
-		AdvancementEvent.EARN.register(this::resetFlaskLogic);
-		EntityJoinLevelEvent.EVENT.register(this::handleLeashPathingOverrides);
-		EntityJoinLevelEvent.EVENT.register(this::stopEndermenFromGrabbingBlocksInTF);
+		LivingDamageEvent.DAMAGE.register(INSTANCE::addQualifiedGroupPlayerIfNeeded);
+		LivingDeathEvent.EVENT.register(INSTANCE::grantGroupAdvancementIfNeeded);
+		ExplosionEvents.DETONATE.register(INSTANCE::lichBombsDontBlowUpItems);
+		OnDatapackSyncCallback.EVENT.register(INSTANCE::handleQuestSyncing);
+		AdvancementEvent.EARN.register(INSTANCE::resetFlaskLogic);
+		EntityJoinLevelEvent.EVENT.register(INSTANCE::handleLeashPathingOverrides);
+		EntityJoinLevelEvent.EVENT.register(INSTANCE::stopEndermenFromGrabbingBlocksInTF);
 	}
 
 	private void ominousFireConversion(LivingDeathEvent event) {

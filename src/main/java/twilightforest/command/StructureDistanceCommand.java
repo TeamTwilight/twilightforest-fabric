@@ -21,23 +21,11 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import twilightforest.util.DisplayUtil;
-import twilightforest.util.TFBeanRegistry;
 
 public class StructureDistanceCommand {
 	public static final StructureDistanceCommand INSTANCE = new StructureDistanceCommand();
 
-	private DisplayUtil displayUtil;
-
-	private DisplayUtil getDisplayUtil() {
-		if (displayUtil == null) {
-			displayUtil = TFBeanRegistry.get(DisplayUtil.class);
-		}
-		return displayUtil;
-	}
-
-	public StructureDistanceCommand() {
-		TFBeanRegistry.register(StructureDistanceCommand.class, this);
-	}
+	private final DisplayUtil displayUtil = DisplayUtil.INSTANCE;
 
 	public ArgumentBuilder<CommandSourceStack, ?> register() {
 		return Commands.literal("generator_radius").requires(cs -> cs.hasPermission(Commands.LEVEL_GAMEMASTERS))
@@ -80,18 +68,18 @@ public class StructureDistanceCommand {
 				default -> Blocks.GLASS.defaultBlockState();
 			};
 
-			this.getDisplayUtil().spawnBlockDisplay(level, boundingBox, displayState, -0.1f);
+			displayUtil.spawnBlockDisplay(level, boundingBox, displayState, -0.1f);
 
 			double x = (boundingBox.minX() + boundingBox.maxX() + 1) * 0.5;
 			double z = (boundingBox.minZ() + boundingBox.maxZ() + 1) * 0.5;
 
 			String deltaChunkCoord = diffX + ", " + diffZ;
-			this.getDisplayUtil().setTextEntity(level, x, boundingBox.maxY() + 1, z, Display.BillboardConstraints.CENTER, Component.literal(deltaChunkCoord));
+			displayUtil.setTextEntity(level, x, boundingBox.maxY() + 1, z, Display.BillboardConstraints.CENTER, Component.literal(deltaChunkCoord));
 
 			Component radiusInfo = squareRadiusDist == 0
 				? Component.translatable("commands.tffeature.generator_radius.center_chunk")
 				: Component.translatable("commands.tffeature.generator_radius.radius", squareRadiusDist);
-			this.getDisplayUtil().setTextEntity(level, x, boundingBox.maxY() + 2, z, Display.BillboardConstraints.CENTER, radiusInfo);
+			displayUtil.setTextEntity(level, x, boundingBox.maxY() + 2, z, Display.BillboardConstraints.CENTER, radiusInfo);
 		}
 
 		return 0;
