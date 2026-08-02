@@ -1,6 +1,7 @@
 package twilightforest.client.model.block.carpet;
 
-import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
+import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
+import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
@@ -38,7 +39,7 @@ public class RoyalRagsModel implements IDynamicBakedModel, FabricBakedModel {
 	private final TextureAtlasSprite particle;
 	private final ItemOverrides overrides;
 	private final ItemTransforms transforms;
-	private final RenderTypeGroup renderTypes;
+	private final RenderMaterial material;
 	private final Block[] validConnectors = {TFBlocks.CORONATION_CARPET.value()};
 	private static final ModelProperty<LoftyCarpetData> DATA = new ModelProperty<>();
 
@@ -48,33 +49,41 @@ public class RoyalRagsModel implements IDynamicBakedModel, FabricBakedModel {
 		this.particle = particle;
 		this.overrides = overrides;
 		this.transforms = transforms;
-		this.renderTypes = group;
+		this.material = group.isEmpty() ? RendererAccess.INSTANCE.getRenderer().materialFinder().find() : group.material();
 	}
 
 	@Override
 	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource rand, ModelData data, @Nullable RenderType renderType) {
-		// This model uses emitBlockQuads for rendering because it requires level/pos context.
+		if (side != null) {
+			ArrayList<BakedQuad> quads = new ArrayList<>(4 + (this.baseQuads != null ? 4 : 0));
+			if (side.getAxis().isHorizontal()) {
+				if (this.baseQuads != null) {
+					quads.addAll(this.baseQuads[side.get2DDataValue()]);
+				}
+			} else {
+				int faceIndex = side.get3DDataValue();
+				LoftyCarpetData carpetData = data.get(DATA);
+				for (int quad = 0; quad < 4; ++quad) {
+					ConnectionLogic connectionType = carpetData != null ? carpetData.logic[faceIndex][quad] : ConnectionLogic.NONE;
+					quads.add(this.quads[faceIndex][quad][connectionType.ordinal()]);
+				}
+			}
+			return quads;
+		}
 		return List.of();
 	}
 
 	@Override
 	public void emitBlockQuads(BlockAndTintGetter level, BlockState state, BlockPos pos, Supplier<RandomSource> randomSupplier, RenderContext context) {
-		LoftyCarpetData data = this.computeData(level, pos, state);
+		ModelData data = this.getModelData(level, pos, state, ModelData.EMPTY);
 		QuadEmitter emitter = context.getEmitter();
+		RandomSource random = randomSupplier.get();
 
-		for (Direction face : Direction.values()) {
-			if (face.getAxis().isHorizontal()) {
-				if (this.baseQuads != null) {
-					for (BakedQuad quad : this.baseQuads[face.get2DDataValue()]) {
-						this.emitBakedQuad(emitter, quad);
-					}
-				}
-			} else {
-				int faceIndex = face.get3DDataValue();
-				for (int quad = 0; quad < 4; ++quad) {
-					ConnectionLogic connectionType = data.logic[faceIndex][quad];
-					this.emitBakedQuad(emitter, this.quads[faceIndex][quad][connectionType.ordinal()]);
-				}
+		for (Direction side : Direction.values()) {
+			List<BakedQuad> sideQuads = this.getQuads(state, side, random, data, null);
+			for (BakedQuad quad : sideQuads) {
+				emitter.fromVanilla(quad, this.material, null);
+				emitter.emit();
 			}
 		}
 	}
@@ -86,28 +95,22 @@ public class RoyalRagsModel implements IDynamicBakedModel, FabricBakedModel {
 			if (face.getAxis().isHorizontal()) {
 				if (this.baseQuads != null) {
 					for (BakedQuad quad : this.baseQuads[face.get2DDataValue()]) {
-						this.emitBakedQuad(emitter, quad);
+						emitter.fromVanilla(quad, this.material, null);
+						emitter.emit();
 					}
 				}
 			} else {
 				int faceIndex = face.get3DDataValue();
 				for (int quad = 0; quad < 4; ++quad) {
-					this.emitBakedQuad(emitter, this.quads[faceIndex][quad][ConnectionLogic.NONE.ordinal()]);
+					emitter.fromVanilla(this.quads[faceIndex][quad][ConnectionLogic.NONE.ordinal()], this.material, null);
+					emitter.emit();
 				}
 			}
 		}
 	}
 
-	private void emitBakedQuad(QuadEmitter emitter, BakedQuad quad) {
-		emitter.fromVanilla(quad.getVertices(), 0);
-		emitter.spriteBake(quad.getSprite(), MutableQuadView.BAKE_LOCK_UV);
-		emitter.colorIndex(quad.getTintIndex());
-		emitter.cullFace(quad.getDirection());
-		emitter.material(this.renderTypes.material());
-		emitter.emit();
-	}
-
-	private LoftyCarpetData computeData(BlockAndTintGetter getter, BlockPos pos, BlockState state) {
+	@Override
+	public ModelData getModelData(BlockAndTintGetter getter, BlockPos pos, BlockState state, ModelData modelData) {
 		LoftyCarpetData data = new LoftyCarpetData();
 
 		for (Direction face : Direction.values()) {
@@ -130,7 +133,7 @@ public class RoyalRagsModel implements IDynamicBakedModel, FabricBakedModel {
 			}
 		}
 
-		return data;
+		return modelData.derive().with(DATA, data).build();
 	}
 
 	private boolean shouldConnectSide(BlockAndTintGetter getter, BlockPos pos, Direction face, Direction side) {

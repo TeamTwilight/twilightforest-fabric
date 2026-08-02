@@ -178,6 +178,9 @@ public final class TwilightForestMod implements ModInitializer {
 		twilightforest.events.RegistrationEvents.createDataMaps();
 		twilightforest.events.RegistrationEvents.setRegistriesForDatapack();
 
+		// Inject the original wooden drying racks, railings, etc. into the original Creative Mode tab (refer to NeoForge version addToTabs)
+		TFCreativeTabs.addCreativeTabEntries();
+
 		// Register grass color modifiers for client-side rendering (must be called at mod init, not just datapack bootstrap)
 		TFBiomes.registerGrassColorModifiers();
 

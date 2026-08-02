@@ -16,6 +16,7 @@ import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
+import twilightforest.util.WorldUtil;
 import twilightforest.world.components.structures.QuestGrove;
 import twilightforest.world.components.structures.util.ConquerableStructure;
 
@@ -39,6 +40,11 @@ public class QuestGroveStructure extends ConquerableStructure {
 	@Override
 	public StructureType<?> type() {
 		return TFStructureTypes.QUEST_GROVE.get();
+	}
+
+	@Override
+	public int adjustForTerrain(GenerationContext context, int x, int z) {
+		return WorldUtil.adjustForTerrain(context, x, z, 16, 4) + 4;
 	}
 
 	public static QuestGroveStructure buildStructureConfig(BootstrapContext<Structure> context) {
