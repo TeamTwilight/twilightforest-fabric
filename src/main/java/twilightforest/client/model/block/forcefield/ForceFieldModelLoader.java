@@ -6,9 +6,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.client.renderer.block.model.BlockElement;
 import net.minecraft.util.GsonHelper;
-import net.neoforged.neoforge.client.model.geometry.IGeometryLoader;
+import io.github.fabricators_of_create.porting_lib.models.geometry.IGeometryLoader;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.client.model.block.forcefield.ForceFieldModel.ExtraDirection;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,9 +25,9 @@ public class ForceFieldModelLoader implements IGeometryLoader<UnbakedForceFieldM
 
 		if (json.has("elements")) {
 			for (JsonElement jsonElement : GsonHelper.getAsJsonArray(json, "elements")) {
-				ExtraDirection direction = null;
+				ForceFieldModel.ExtraDirection direction = null;
 				boolean b = false;
-				List<ExtraDirection> parents = new ArrayList<>();
+				List<ForceFieldModel.ExtraDirection> parents = new ArrayList<>();
 
 				if (jsonElement instanceof JsonObject element) {
 					if (element.get("condition") instanceof JsonObject condition) {
@@ -46,7 +45,7 @@ public class ForceFieldModelLoader implements IGeometryLoader<UnbakedForceFieldM
 		return new UnbakedForceFieldModel(elementsAndConditions);
 	}
 
-	public record Condition(@Nullable ExtraDirection direction, boolean b, List<ExtraDirection> parents) {
+	public record Condition(@Nullable ForceFieldModel.ExtraDirection direction, boolean b, List<ForceFieldModel.ExtraDirection> parents) {
 
 	}
 }

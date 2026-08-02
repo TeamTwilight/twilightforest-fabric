@@ -15,7 +15,7 @@ public class PortalOverlay {
 	public static void render(GuiGraphics graphics, Minecraft minecraft, Player player) {
 		Window window = minecraft.getWindow();
 		if (player != null) {
-			TFPortalAttachment portal = player.getData(TFDataAttachments.TF_PORTAL_COOLDOWN);
+			TFPortalAttachment portal = player.getAttachedOrCreate(TFDataAttachments.TF_PORTAL_COOLDOWN);
 			if (portal.getPortalTimer() > 0) {
 				RenderSystem.disableDepthTest();
 				RenderSystem.depthMask(false);

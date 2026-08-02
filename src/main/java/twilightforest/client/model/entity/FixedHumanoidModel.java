@@ -71,11 +71,11 @@ public class FixedHumanoidModel<T extends LivingEntity> extends HumanoidModel<T>
 
 		this.setupAttackAnimation(entity, ageInTicks);
 
-		if (this.rightArmPose != HumanoidModel.ArmPose.SPYGLASS) {
+		if (this.rightArmPose != ArmPose.SPYGLASS) {
 			AnimationUtils.bobModelPart(this.rightArm, ageInTicks, 1.0F);
 		}
 
-		if (this.leftArmPose != HumanoidModel.ArmPose.SPYGLASS) {
+		if (this.leftArmPose != ArmPose.SPYGLASS) {
 			AnimationUtils.bobModelPart(this.leftArm, ageInTicks, -1.0F);
 		}
 

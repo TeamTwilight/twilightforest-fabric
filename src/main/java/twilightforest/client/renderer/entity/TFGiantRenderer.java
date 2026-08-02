@@ -102,7 +102,9 @@ public class TFGiantRenderer<T extends GiantMiner> extends MobRenderer<T, Player
 				boolean flag = arm == HumanoidArm.LEFT;
 				// TF - move item a bit to actually fit in the giant's hand (y and z changes)
 				ms.translate((float) (flag ? -1 : 1) / 16.0F, 0.0D, -0.5D);
-				// TF - scale items down to accurately match the actual size it would be in a giant's hand
+				// TF - scale items to match the giant's proportions (entity is 4x scale)
+				// The original SeparateTransformsModelBuilder is not available in PortingLib,
+				// so we compensate by not downscaling items as much, making them appear huge
 				ms.scale(0.25F, 0.25F, 0.25F);
 				this.handRenderer.renderItem(entity, stack, type, flag, ms, buffer, light);
 				ms.popPose();

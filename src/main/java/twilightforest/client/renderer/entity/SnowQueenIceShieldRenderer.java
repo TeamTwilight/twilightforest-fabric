@@ -3,6 +3,7 @@ package twilightforest.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -15,7 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.model.data.ModelData;
+import io.github.fabricators_of_create.porting_lib.models.data.ModelData;
 import twilightforest.entity.boss.SnowQueenIceShield;
 
 public class SnowQueenIceShieldRenderer<T extends SnowQueenIceShield> extends EntityRenderer<T> {
@@ -34,8 +35,7 @@ public class SnowQueenIceShieldRenderer<T extends SnowQueenIceShield> extends En
 				stack.translate(-0.5D, 0.0D, -0.5D);
 				BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
 				var model = dispatcher.getBlockModel(blockstate);
-				for (var renderType : model.getRenderTypes(blockstate, RandomSource.create(blockstate.getSeed(entity.blockPosition())), ModelData.EMPTY))
-					dispatcher.getModelRenderer().tesselateBlock(level, model, blockstate, blockpos, stack, buffer.getBuffer(renderType), false, RandomSource.create(), blockstate.getSeed(entity.blockPosition()), OverlayTexture.NO_OVERLAY, ModelData.EMPTY, renderType);
+				dispatcher.getModelRenderer().tesselateBlock(level, model, blockstate, blockpos, stack, buffer.getBuffer(RenderType.cutout()), false, RandomSource.create(), blockstate.getSeed(entity.blockPosition()), OverlayTexture.NO_OVERLAY);
 				stack.popPose();
 				super.render(entity, entityYaw, partialTicks, stack, buffer, light);
 			}

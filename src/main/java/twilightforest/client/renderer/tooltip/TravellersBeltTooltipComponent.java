@@ -19,8 +19,9 @@ public class TravellersBeltTooltipComponent implements ClientTooltipComponent {
 
 	public TravellersBeltTooltipComponent(TravellersArmorBeltItem.Tooltip tooltip) {
 		ItemContainerContents contents = tooltip.contents();
+		List<ItemStack> stacks = contents.stream().toList();
 		for (int i = 0; i < 9; i++) {
-			ItemStack stack = contents.getSlots() <= i ? ItemStack.EMPTY : contents.getStackInSlot(i);
+			ItemStack stack = i >= stacks.size() ? ItemStack.EMPTY : stacks.get(i);
 			this.contents.add(stack);
 		}
 	}

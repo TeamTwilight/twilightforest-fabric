@@ -1,11 +1,10 @@
 package twilightforest.client.event;
 
-import com.ibm.icu.text.RuleBasedNumberFormat;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.SplashRenderer;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.HumanoidModel;
@@ -26,6 +25,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -34,24 +34,32 @@ import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.fml.ModList;
-import net.neoforged.neoforge.client.event.*;
-import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
-import tamaized.beanification.PostConstruct;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
+import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
+import io.github.fabricators_of_create.porting_lib.client_events.event.client.SelectMusicEvent;
+import io.github.fabricators_of_create.porting_lib.client_events.event.client.ViewportEvent;
+import io.github.fabricators_of_create.porting_lib.client_events.event.client.ComputeFovModifierEvent;
+import io.github.fabricators_of_create.porting_lib.level.events.LevelEvent;
+
+
+
 import twilightforest.TwilightForestMod;
-import tamaized.beanification.Autowired;
 import twilightforest.block.GiantBlock;
 import twilightforest.block.MiniatureStructureBlock;
 import twilightforest.block.entity.GrowingBeanstalkBlockEntity;
 import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.ISTER;
 import twilightforest.client.OptifineWarningScreen;
+import twilightforest.client.TFClientSetup;
 import twilightforest.client.TFShaders;
 import twilightforest.client.renderer.entity.MagicPaintingRenderer;
-import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.entity.boss.bar.ClientTFBossBar;
@@ -59,16 +67,17 @@ import twilightforest.events.HostileMountEvents;
 import twilightforest.init.*;
 import twilightforest.item.*;
 import twilightforest.util.HolderMatcher;
+import twilightforest.util.TFBeanRegistry;
 import twilightforest.util.entities.EntityRenderingUtil;
 
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 
-@tamaized.beanification.Component(dist = Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class ClientGameEvents {
+	public static final ClientGameEvents INSTANCE = new ClientGameEvents();
+
 	private final VoxelShape GIANT_BLOCK = Shapes.box(0.0D, 0.0D, 0.0D, 4.0D, 4.0D, 4.0D);
 	private final MutableComponent WIP_TEXT = Component.translatable("misc.twilightforest.wip").withStyle(ChatFormatting.RED);
 	private final MutableComponent EMPERORS_CLOTH_TOOLTIP = Component.translatable("item.twilightforest.emperors_cloth.desc").withStyle(ChatFormatting.GRAY);
@@ -81,68 +90,92 @@ public class ClientGameEvents {
 	private int aurora = 0;
 	private int lastAurora = 0;
 
-	@Autowired(dist = Dist.CLIENT)
 	private HolderMatcher holderMatcher;
 
-	@PostConstruct
-	private void setup() {
-		NeoForge.EVENT_BUS.addListener(this::addCustomTooltips);
-		NeoForge.EVENT_BUS.addListener(this::clientTick);
-		NeoForge.EVENT_BUS.addListener(this::customizeSplashes);
-		NeoForge.EVENT_BUS.addListener(this::clearEntityRenderUtilMap);
-		NeoForge.EVENT_BUS.addListener(this::handleGameBootup);
-		NeoForge.EVENT_BUS.addListener(this::killVignette);
-		NeoForge.EVENT_BUS.addListener(this::removeHostileMountHealth);
-		NeoForge.EVENT_BUS.addListener(this::renderAurora);
-		NeoForge.EVENT_BUS.addListener(this::renderCustomBossbars);
-		NeoForge.EVENT_BUS.addListener(this::renderGiantBlockOutlines);
-		NeoForge.EVENT_BUS.addListener(this::setMusicInDimension);
-		NeoForge.EVENT_BUS.addListener(this::shakeCamera);
-		NeoForge.EVENT_BUS.addListener(this::translateBookAuthor);
-		NeoForge.EVENT_BUS.addListener(this::unrenderHeadWithTrophies);
-		NeoForge.EVENT_BUS.addListener(this::updateBowFOV);
-
-		NeoForge.EVENT_BUS.addListener(CloudEvents::renderPrecipitation);
-		NeoForge.EVENT_BUS.addListener(CloudEvents::tickWeatherEffects);
-
-		NeoForge.EVENT_BUS.addListener(FogHandler::renderFog);
-		NeoForge.EVENT_BUS.addListener(FogHandler::unloadFog);
-
-		NeoForge.EVENT_BUS.addListener(LockedBiomeToastHandler::tickLockedToastLogic);
+	private HolderMatcher getHolderMatcher() {
+		if (holderMatcher == null) {
+			holderMatcher = TFBeanRegistry.get(HolderMatcher.class);
+		}
+		return holderMatcher;
 	}
 
-	private void handleGameBootup(ScreenEvent.Init.Post event) {
-		if (firstTitleScreenShown || !(event.getScreen() instanceof TitleScreen)) return;
+	public ClientGameEvents() {
+		TFBeanRegistry.register(ClientGameEvents.class, this);
+		TFBeanRegistry.addPostInit(this::init);
+	}
+
+	private void init() {
+		// Available in Porting-Lib:
+		SelectMusicEvent.EVENT.register(this::setMusicInDimension);
+		ViewportEvent.ComputeCameraAngles.EVENT.register(this::shakeCamera);
+		ComputeFovModifierEvent.EVENT.register(this::updateBowFOV);
+
+		// Fabric API: Client tick events
+		ClientTickEvents.END_CLIENT_TICK.register(this::clientTick);
+		ClientTickEvents.END_CLIENT_TICK.register(this::killVignette);
+
+		// Fabric API: Item tooltip events
+		ItemTooltipCallback.EVENT.register((ItemStack stack, Item.TooltipContext context, TooltipFlag flag, List<Component> tooltip) -> addCustomTooltips(stack, context, flag, tooltip));
+		ItemTooltipCallback.EVENT.register((ItemStack stack, Item.TooltipContext context, TooltipFlag flag, List<Component> tooltip) -> translateBookAuthor(stack, context, flag, tooltip));
+
+		// Fabric API: World render events
+		WorldRenderEvents.LAST.register((WorldRenderContext context) -> {
+			if (Minecraft.getInstance().level == null) return;
+
+			if ((aurora > 0 || lastAurora > 0) && TFShaders.AURORA != null) {
+				Tesselator tesselator = Tesselator.getInstance();
+				BufferBuilder buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+
+				float tickDelta = context.tickCounter().getGameTimeDeltaPartialTick(false);
+				final float scale = 2048F * (Minecraft.getInstance().gameRenderer.getRenderDistance() / 32F);
+				Vec3 pos = context.camera().getPosition();
+				float y = (float) (256F - pos.y());
+				buffer.addVertex(-scale, y, scale).setColor(1F, 1F, 1F, 1F);
+				buffer.addVertex(-scale, y, -scale).setColor(1F, 1F, 1F, 1F);
+				buffer.addVertex(scale, y, -scale).setColor(1F, 1F, 1F, 1F);
+				buffer.addVertex(scale, y, scale).setColor(1F, 1F, 1F, 1F);
+
+				RenderSystem.enableBlend();
+				RenderSystem.enableDepthTest();
+				RenderSystem.setShaderColor(1F, 1F, 1F, Mth.lerp(tickDelta, (float) lastAurora, (float) aurora) / 60F * 0.5F);
+				TFShaders.AURORA.invokeThenEndTesselator(
+					Minecraft.getInstance().level == null ? 0 : Math.abs((int) Minecraft.getInstance().level.getBiomeManager().biomeZoomSeed),
+					(float) pos.x(), (float) pos.y(), (float) pos.z(), buffer);
+				RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
+				RenderSystem.disableDepthTest();
+				RenderSystem.disableBlend();
+			}
+		});
+
+		// removeHostileMountHealth is handled by GuiMixin
+		// HudRenderCallback.EVENT.register(this::removeHostileMountHealth);
+
+		// Fabric API: Screen events
+		ScreenEvents.AFTER_INIT.register(this::handleGameBootup);
+		// Splash customization handled via SplashRendererMixin
+		// clearEntityRenderUtilMap - ScreenEvents.REMOVE not available in Fabric API 1.21.1
+		// ScreenEvents.remove(screen -> clearEntityRenderUtilMap(screen));
+		ViewportEvent.RenderFog.EVENT.register(FogHandler::renderFog);
+		// FogHandler.unloadFog → LevelEvent.Unload (Porting-Lib level_events)
+		LevelEvent.Unload.EVENT.register(FogHandler::unloadFog);
+		// LockedBiomeToastHandler.tickLockedToastLogic → ClientTickEvents.END_CLIENT_TICK
+	}
+
+	private void handleGameBootup(Minecraft client, Screen screen, int scaledWidth, int scaledHeight) {
+		if (firstTitleScreenShown || !(screen instanceof TitleScreen)) return;
 
 		// Registering this resource listener earlier than the main screen will cause a crash
 		// Yes, crashing happens if registered to RegisterClientReloadListenersEvent
-		if (Minecraft.getInstance().getResourceManager() instanceof ReloadableResourceManager resourceManager) {
+		if (client.getResourceManager() instanceof ReloadableResourceManager resourceManager) {
 			resourceManager.registerReloadListener(ISTER.INSTANCE.get());
 			TwilightForestMod.LOGGER.debug("Registered ISTER listener");
 		}
 
-		if (ClientRegistrationEvents.isOptifinePresent() && !TFConfig.disableOptifineNagScreen) {
-			Minecraft.getInstance().setScreen(new OptifineWarningScreen(event.getScreen()));
+		if (TFClientSetup.isOptifinePresent() && !TFConfig.disableOptifineNagScreen) {
+			client.setScreen(new OptifineWarningScreen(screen));
 		}
 
 		firstTitleScreenShown = true;
-	}
-
-	private void customizeSplashes(ScreenEvent.Init.Post event) {
-		if (event.getScreen() instanceof TitleScreen title) {
-			SplashRenderer renderer = title.splash;
-			if (renderer != null) {
-				LocalDate date = LocalDate.now();
-				if (date.getMonth() == Month.AUGUST && date.getDayOfMonth() == 19) {
-					RuleBasedNumberFormat formatter = new RuleBasedNumberFormat(Locale.US, RuleBasedNumberFormat.ORDINAL);
-					renderer.splash = String.format("Happy %s birthday to the Twilight Forest!", formatter.format(date.getYear() - 2011));
-				}
-			}
-		}
-	}
-
-	private void clearEntityRenderUtilMap(ScreenEvent.Closing event) {
-		if (!EntityRenderingUtil.ENTITY_MAP.isEmpty()) EntityRenderingUtil.ENTITY_MAP.clear();
 	}
 
 	private void setMusicInDimension(SelectMusicEvent event) {
@@ -152,49 +185,9 @@ public class ClientGameEvents {
 		}
 	}
 
-	/**
-	 * Stop the game from rendering the mount health for unfriendly creatures
-	 */
-	private void removeHostileMountHealth(RenderGuiLayerEvent.Pre event) {
-		if (VanillaGuiLayers.VEHICLE_HEALTH == event.getName()) {
-			if (HostileMountEvents.isRidingUnfriendly(Minecraft.getInstance().player)) {
-				event.setCanceled(true);
-			}
-		}
-	}
+	// removeHostileMountHealth is handled by GuiMixin
 
-	/**
-	 * Render aurora effect as needed
-	 */
-	private void renderAurora(RenderLevelStageEvent event) {
-		if (Minecraft.getInstance().level == null) return;
-
-		if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER && (aurora > 0 || lastAurora > 0) && TFShaders.AURORA != null) {
-			Tesselator tesselator = Tesselator.getInstance();
-			BufferBuilder buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-
-			final float scale = 2048F * (Minecraft.getInstance().gameRenderer.getRenderDistance() / 32F);
-			Vec3 pos = event.getCamera().getPosition();
-			float y = (float) (256F - pos.y());
-			buffer.addVertex(-scale, y, scale).setColor(1F, 1F, 1F, 1F);
-			buffer.addVertex(-scale, y, -scale).setColor(1F, 1F, 1F, 1F);
-			buffer.addVertex(scale, y, -scale).setColor(1F, 1F, 1F, 1F);
-			buffer.addVertex(scale, y, scale).setColor(1F, 1F, 1F, 1F);
-
-			RenderSystem.enableBlend();
-			RenderSystem.enableDepthTest();
-			RenderSystem.setShaderColor(1F, 1F, 1F, (Mth.lerp(event.getPartialTick().getGameTimeDeltaTicks(), lastAurora, aurora)) / 60F * 0.5F);
-			TFShaders.AURORA.invokeThenEndTesselator(
-				Minecraft.getInstance().level == null ? 0 : Mth.abs((int) Minecraft.getInstance().level.getBiomeManager().biomeZoomSeed),
-				(float) pos.x(), (float) pos.y(), (float) pos.z(), buffer);
-			RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
-			RenderSystem.disableDepthTest();
-			RenderSystem.disableBlend();
-		}
-	}
-
-	private void killVignette(RenderFrameEvent.Pre event) {
-		Minecraft minecraft = Minecraft.getInstance();
+	private void killVignette(Minecraft minecraft) {
 		// only fire if we're in the twilight forest
 		if (minecraft.level != null && TFDimension.DIMENSION_KEY.equals(minecraft.level.dimension())) {
 			minecraft.gui.vignetteBrightness = 0.0F;
@@ -205,9 +198,7 @@ public class ClientGameEvents {
 		}
 	}
 
-	private void clientTick(ClientTickEvent.Post event) {
-		Minecraft mc = Minecraft.getInstance();
-
+	private void clientTick(Minecraft mc) {
 		if (!mc.isPaused()) {
 			time++;
 
@@ -215,7 +206,7 @@ public class ClientGameEvents {
 			if (mc.level != null && mc.cameraEntity != null && !TFConfig.getValidAuroraBiomes(mc.level.registryAccess()).isEmpty()) {
 				RegistryAccess access = mc.level.registryAccess();
 				Holder<Biome> biome = mc.level.getBiome(mc.cameraEntity.blockPosition());
-				if (TFConfig.getValidAuroraBiomes(access).stream().anyMatch(c -> holderMatcher.match(c, biome)))
+				if (TFConfig.getValidAuroraBiomes(access).stream().anyMatch(c -> getHolderMatcher().match(c, biome)))
 					aurora++;
 				else
 					aurora--;
@@ -271,15 +262,13 @@ public class ClientGameEvents {
 		}
 	}
 
-	private void addCustomTooltips(ItemTooltipEvent event) {
-		ItemStack item = event.getItemStack();
-
-		if (item.has(TFDataComponents.EMPERORS_CLOTH)) {
-			event.getToolTip().add(1, EMPERORS_CLOTH_TOOLTIP);
+	private void addCustomTooltips(ItemStack item, Item.TooltipContext tooltipContext, TooltipFlag flag, List<Component> tooltip) {
+		if (item.has(TFDataComponents.EMPERORS_CLOTH.get())) {
+			tooltip.add(1, EMPERORS_CLOTH_TOOLTIP);
 		}
 
 		if (item.is(ItemTagGenerator.WIP)) {
-			event.getToolTip().add(WIP_TEXT);
+			tooltip.add(WIP_TEXT);
 		}
 	}
 
@@ -298,65 +287,25 @@ public class ClientGameEvents {
 		}
 	}
 
-	private void unrenderHeadWithTrophies(RenderLivingEvent.Pre<?, ?> event) {
-		ItemStack stack = event.getEntity().getItemBySlot(EquipmentSlot.HEAD);
-		boolean visible = !(stack.getItem() instanceof TrophyItem) && !areCuriosEquipped(event.getEntity());
-		boolean isPlayer = event.getEntity() instanceof Player;
-		if (event.getRenderer().getModel() instanceof HeadedModel headedModel) {
-			headedModel.getHead().visible = visible && (!isPlayer || headedModel.getHead().visible);  // some mods like Better Combat can move player's head and hide it in the first person view
-			if (event.getRenderer().getModel() instanceof HumanoidModel<?> humanoidModel) {
-				humanoidModel.hat.visible = visible && (!isPlayer || humanoidModel.hat.visible);
-			}
-		}
+	// unrenderHeadWithTrophies is handled by LivingEntityRendererMixin
+
+	private static void clearEntityRenderUtilMap(Screen screen) {
+		if (!EntityRenderingUtil.ENTITY_MAP.isEmpty()) EntityRenderingUtil.ENTITY_MAP.clear();
 	}
 
-	private boolean areCuriosEquipped(LivingEntity entity) {
-		if (ModList.get().isLoaded("curios")) {
-			return CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof TrophyItem);
-		}
-		return false;
-	}
-
-	private void translateBookAuthor(ItemTooltipEvent event) {
-		ItemStack stack = event.getItemStack();
+	private void translateBookAuthor(ItemStack stack, Item.TooltipContext tooltipContext, TooltipFlag flag, List<Component> tooltip) {
 		if (stack.getItem() instanceof WrittenBookItem && stack.has(DataComponents.WRITTEN_BOOK_CONTENT)) {
-			if (stack.has(TFDataComponents.TRANSLATABLE_BOOK)) {
-				List<Component> components = event.getToolTip();
-				for (int i = 0; i < components.size(); i++) {
-					Component component = components.get(i);
+			if (stack.has(TFDataComponents.TRANSLATABLE_BOOK.get())) {
+				for (int i = 0; i < tooltip.size(); i++) {
+					Component component = tooltip.get(i);
 					if (component.toString().contains("book.byAuthor")) {
-						components.set(i, (Component.translatable("book.byAuthor", Component.translatable(TwilightForestMod.ID + ".book.author"))).withStyle(component.getStyle()));
+						tooltip.set(i, (Component.translatable("book.byAuthor", Component.translatable(TwilightForestMod.ID + ".book.author"))).withStyle(component.getStyle()));
 					}
 				}
 			}
 		}
 	}
 
-	private void renderGiantBlockOutlines(RenderHighlightEvent.Block event) {
-		BlockPos pos = event.getTarget().getBlockPos();
-		BlockState state = event.getCamera().getEntity().level().getBlockState(pos);
-
-		if (state.getBlock() instanceof MiniatureStructureBlock) {
-			event.setCanceled(true);
-			return;
-		}
-
-		LocalPlayer player = Minecraft.getInstance().player;
-		if (player != null && (player.getMainHandItem().getItem() instanceof GiantPickItem || (player.getMainHandItem().getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof GiantBlock))) {
-			event.setCanceled(true);
-			if (!state.isAir() && player.level().getWorldBorder().isWithinBounds(pos)) {
-				BlockPos offsetPos = new BlockPos(pos.getX() & ~0b11, pos.getY() & ~0b11, pos.getZ() & ~0b11);
-				VertexConsumer consumer = event.getMultiBufferSource().getBuffer(RenderType.lines());
-				Vec3 xyz = Vec3.atLowerCornerOf(offsetPos).subtract(event.getCamera().getPosition());
-				LevelRenderer.renderShape(event.getPoseStack(), consumer, GIANT_BLOCK, xyz.x(), xyz.y(), xyz.z(), 0.0F, 0.0F, 0.0F, 0.45F);
-			}
-		}
-	}
-
-	private void renderCustomBossbars(CustomizeGuiOverlayEvent.BossEventProgress event) {
-		if (event.getBossEvent() instanceof ClientTFBossBar bossEvent) {
-			event.setCanceled(true);
-			bossEvent.renderBossBar(event.getGuiGraphics(), event.getX(), event.getY());
-		}
-	}
+	// renderGiantBlockOutlines is handled by LevelRendererHitOutlineMixin
+	// renderCustomBossbars is handled by BossHealthOverlayMixin
 }

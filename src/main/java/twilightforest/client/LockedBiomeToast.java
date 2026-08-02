@@ -20,6 +20,6 @@ public record LockedBiomeToast(ItemStack item) implements Toast {
 		graphics.drawString(component.getMinecraft().font, TITLE, 25, 7, -256, false);
 		graphics.drawString(component.getMinecraft().font, DESCRIPTION, 25, 18, 16777215, false);
 
-		return timer >= 10000L ? Toast.Visibility.HIDE : Toast.Visibility.SHOW;
+		return timer >= 10000L ? Visibility.HIDE : Visibility.SHOW;
 	}
 }

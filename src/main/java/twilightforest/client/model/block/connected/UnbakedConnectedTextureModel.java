@@ -11,12 +11,12 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.client.RenderTypeGroup;
-import net.neoforged.neoforge.client.model.ExtraFaceData;
-import net.neoforged.neoforge.client.model.SimpleModelState;
-import net.neoforged.neoforge.client.model.geometry.IGeometryBakingContext;
-import net.neoforged.neoforge.client.model.geometry.IUnbakedGeometry;
-import net.neoforged.neoforge.client.model.geometry.UnbakedGeometryHelper;
+import io.github.fabricators_of_create.porting_lib.render_types.RenderTypeGroup;
+import io.github.fabricators_of_create.porting_lib.models.ExtraFaceData;
+import io.github.fabricators_of_create.porting_lib.models.geometry.SimpleModelState;
+import io.github.fabricators_of_create.porting_lib.models.geometry.IGeometryBakingContext;
+import io.github.fabricators_of_create.porting_lib.models.geometry.IUnbakedGeometry;
+import io.github.fabricators_of_create.porting_lib.models.UnbakedGeometryHelper;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.joml.Vector3f;
 
@@ -36,18 +36,11 @@ public class UnbakedConnectedTextureModel implements IUnbakedGeometry<UnbakedCon
 	private final BlockElement[][][] faceElements;
 
 	public UnbakedConnectedTextureModel(EnumSet<Direction> enabledFaces, boolean renderOnDisabledFaces, List<Block> connectableBlocks, int baseTintIndex, int baseEmissivity, int tintIndex, int emissivity) {
-		//a list of block faces that should have connected textures.
 		this.enabledFaces = enabledFaces;
-		//whether or not the overlay texture should render on disabled faces or not. Defaults to true
 		this.renderOnDisabledFaces = renderOnDisabledFaces;
-		//a list of blocks this block can connect its texture to
 		this.connectableBlocks = connectableBlocks;
-		//base elements - the base block. No Connected Textures on this bit.
-		//the array is made of the directions and quads
 		this.baseElements = new BlockElement[6][4];
 
-		//face elements - the connected bit of the model.
-		//the array is made of the directions, quads, and each logic value in the ConnectionLogic class
 		this.faceElements = new BlockElement[6][4][5];
 		ExtraFaceData baseFace = new ExtraFaceData(-1, baseEmissivity, baseEmissivity, false);
 		ExtraFaceData overlayFace = new ExtraFaceData(-1, emissivity, emissivity, true);
@@ -59,10 +52,10 @@ public class UnbakedConnectedTextureModel implements IUnbakedGeometry<UnbakedCon
 			for(int i = 0; i < 4; ++i) {
 				Vec3i corner = face.getNormal().offset(planeDirections[i].getNormal()).offset(planeDirections[(i + 1) % 4].getNormal()).offset(1, 1, 1).multiply(8);
 				BlockElement element = new BlockElement(new Vector3f((float)Math.min(center.getX(), corner.getX()), (float)Math.min(center.getY(), corner.getY()), (float)Math.min(center.getZ(), corner.getZ())), new Vector3f((float)Math.max(center.getX(), corner.getX()), (float)Math.max(center.getY(), corner.getY()), (float)Math.max(center.getZ(), corner.getZ())), Map.of(), null, true);
-				this.baseElements[face.get3DDataValue()][i] = new BlockElement(element.from, element.to, Map.of(face, new BlockElementFace(face, baseTintIndex, "", new BlockFaceUV(ConnectionLogic.NONE.remapUVs(element.uvsByFace(face)), 0), baseFace, new MutableObject<>())), null, true);
+				this.baseElements[face.get3DDataValue()][i] = new BlockElement(element.from, element.to, Map.of(face, new BlockElementFace(face, baseTintIndex, "", new BlockFaceUV(ConnectionLogic.NONE.remapUVs(element.uvsByFace(face)), 0))), null, true);
 
 				for (ConnectionLogic logic : ConnectionLogic.values()) {
-					this.faceElements[face.get3DDataValue()][i][logic.ordinal()] = new BlockElement(element.from, element.to, Map.of(face, new BlockElementFace(face, tintIndex, "", new BlockFaceUV(logic.remapUVs(element.uvsByFace(face)), 0), overlayFace, new MutableObject<>())), null, true);
+					this.faceElements[face.get3DDataValue()][i][logic.ordinal()] = new BlockElement(element.from, element.to, Map.of(face, new BlockElementFace(face, tintIndex, "", new BlockFaceUV(logic.remapUVs(element.uvsByFace(face)), 0))), null, true);
 				}
 			}
 		}
@@ -75,8 +68,7 @@ public class UnbakedConnectedTextureModel implements IUnbakedGeometry<UnbakedCon
 			modelState = new SimpleModelState(modelState.getRotation().compose(transformation), modelState.isUvLocked());
 		}
 
-		//making an array list like this is cursed, would not recommend
-		@SuppressWarnings("unchecked") //this is fine, I hope
+		@SuppressWarnings("unchecked")
 		List<BakedQuad>[] baseQuads = (List<BakedQuad>[]) Array.newInstance(List.class, 6);
 
 		if (context.hasMaterial("base_texture")) {
@@ -93,8 +85,6 @@ public class UnbakedConnectedTextureModel implements IUnbakedGeometry<UnbakedCon
 			baseQuads = null;
 		}
 
-		//we'll use this to figure out which texture to use with the Connected Texture logic
-		//NONE uses the first one, everything else uses the 2nd one
 		TextureAtlasSprite[] sprites = new TextureAtlasSprite[]{spriteGetter.apply(context.getMaterial("overlay_texture")), spriteGetter.apply(context.getMaterial("overlay_connected")), spriteGetter.apply(context.getMaterial("particle"))};
 		if (!context.hasMaterial("particle")) {
 			sprites[2] = sprites[0];

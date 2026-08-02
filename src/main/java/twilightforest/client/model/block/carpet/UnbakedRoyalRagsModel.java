@@ -10,11 +10,11 @@ import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.client.RenderTypeGroup;
-import net.neoforged.neoforge.client.model.SimpleModelState;
-import net.neoforged.neoforge.client.model.geometry.IGeometryBakingContext;
-import net.neoforged.neoforge.client.model.geometry.IUnbakedGeometry;
-import net.neoforged.neoforge.client.model.geometry.UnbakedGeometryHelper;
+import io.github.fabricators_of_create.porting_lib.render_types.RenderTypeGroup;
+import io.github.fabricators_of_create.porting_lib.models.geometry.SimpleModelState;
+import io.github.fabricators_of_create.porting_lib.models.geometry.IGeometryBakingContext;
+import io.github.fabricators_of_create.porting_lib.models.geometry.IUnbakedGeometry;
+import io.github.fabricators_of_create.porting_lib.models.UnbakedGeometryHelper;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.joml.Vector3f;
 import twilightforest.client.model.block.connected.ConnectionLogic;
@@ -25,22 +25,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-//for now, im keeping this hardcoded to a 2 layer block, with the overlay layer being fullbright and tinted.
-//It might be worth expanding this in the future to be more flexible for other kinds of blocks (1 layer blocks, determining emissivity and tinting per layer, maybe >2 layer blocks?) but for now, I see no point.
-//I only wanted this system for castle doors after all!
 public class UnbakedRoyalRagsModel implements IUnbakedGeometry<UnbakedRoyalRagsModel> {
 
 	private final BlockElement[][] baseElements;
 	private final BlockElement[][][] faceElements;
 
 	public UnbakedRoyalRagsModel() {
-		//base elements - the side faces without ctm. No Connected Textures on this bit.
-		//the array is made of horizontal directions (Direction.get2DDataValue) and quads
 		this.baseElements = new BlockElement[4][4];
 
-		//face elements - the connected bit of the model.
-		//the array is made of the directions, quads, and each logic value in the ConnectionLogic class
-		//Topmost array indexes to up/dpwn directions (Direction.get3DDataValue, down = 0, up = 1) then inside are quads
 		this.faceElements = new BlockElement[2][4][5];
 		Vec3i center = new Vec3i(8, 8, 8);
 
@@ -55,7 +47,7 @@ public class UnbakedRoyalRagsModel implements IUnbakedGeometry<UnbakedRoyalRagsM
 					this.baseElements[face.get2DDataValue()][quad] = new BlockElement(element.from, element.to, Map.of(face, new BlockElementFace(face, -1, "", new BlockFaceUV(ConnectionLogic.NONE.remapUVs(element.uvsByFace(face)), 0))), null, true);
 				} else {
 					for (ConnectionLogic connectionType : ConnectionLogic.values()) {
-						this.faceElements[face.get3DDataValue()][quad][connectionType.ordinal()] = new BlockElement(element.from, element.to, Map.of(face, new BlockElementFace(face, 0, "", new BlockFaceUV(connectionType.remapUVs(element.uvsByFace(face)), 0), null, new MutableObject<>())), null, true);
+						this.faceElements[face.get3DDataValue()][quad][connectionType.ordinal()] = new BlockElement(element.from, element.to, Map.of(face, new BlockElementFace(face, 0, "", new BlockFaceUV(connectionType.remapUVs(element.uvsByFace(face)), 0))), null, true);
 					}
 				}
 			}
@@ -70,8 +62,7 @@ public class UnbakedRoyalRagsModel implements IUnbakedGeometry<UnbakedRoyalRagsM
 			modelState = new SimpleModelState(modelState.getRotation().compose(transformation), modelState.isUvLocked());
 		}
 
-		//making an array list like this is cursed, would not recommend
-		@SuppressWarnings("unchecked") //this is fine, I hope
+		@SuppressWarnings("unchecked")
 		List<BakedQuad>[] baseQuads = (List<BakedQuad>[]) Array.newInstance(List.class, 4);
 		TextureAtlasSprite baseTexture = spriteGetter.apply(context.getMaterial("wool"));
 
@@ -83,8 +74,6 @@ public class UnbakedRoyalRagsModel implements IUnbakedGeometry<UnbakedRoyalRagsM
 			}
 		}
 
-		//we'll use this to figure out which texture to use with the Connected Texture logic
-		//NONE uses the first one, everything else uses the 2nd one
 		TextureAtlasSprite[] sprites = new TextureAtlasSprite[]{spriteGetter.apply(context.getMaterial("wool")), spriteGetter.apply(context.getMaterial("wool_ctm"))};
 
 		BakedQuad[][][] quads = new BakedQuad[2][4][5];

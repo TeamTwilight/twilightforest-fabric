@@ -6,17 +6,15 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.SpawnerRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BaseSpawner;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import twilightforest.block.entity.spawner.SinisterSpawnerBlockEntity;
 
 // [VANILLA COPY] SpawnerRenderer (Type bound changed to CursedSpawnerEntity)
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class SinisterSpawnerRenderer implements BlockEntityRenderer<SinisterSpawnerBlockEntity> {
     private final EntityRenderDispatcher entityRenderer;
 
@@ -36,9 +34,4 @@ public class SinisterSpawnerRenderer implements BlockEntityRenderer<SinisterSpaw
         }
     }
 
-    @Override
-    public AABB getRenderBoundingBox(SinisterSpawnerBlockEntity blockEntity) {
-        BlockPos pos = blockEntity.getBlockPos();
-        return new AABB(pos.getX() - 1.0, pos.getY() - 1.0, pos.getZ() - 1.0, pos.getX() + 2.0, pos.getY() + 2.0, pos.getZ() + 2.0);
     }
-}

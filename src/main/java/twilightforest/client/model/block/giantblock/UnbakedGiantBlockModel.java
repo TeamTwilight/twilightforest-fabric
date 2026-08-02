@@ -8,9 +8,9 @@ import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.client.RenderTypeGroup;
-import net.neoforged.neoforge.client.model.geometry.IGeometryBakingContext;
-import net.neoforged.neoforge.client.model.geometry.IUnbakedGeometry;
+import io.github.fabricators_of_create.porting_lib.render_types.RenderTypeGroup;
+import io.github.fabricators_of_create.porting_lib.models.geometry.IGeometryBakingContext;
+import io.github.fabricators_of_create.porting_lib.models.geometry.IUnbakedGeometry;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -33,6 +33,8 @@ public record UnbakedGiantBlockModel(ResourceLocation parent) implements IUnbake
 
 		ResourceLocation renderTypeHint = context.getRenderTypeHint();
 		RenderTypeGroup renderTypes = renderTypeHint != null ? context.getRenderType(renderTypeHint) : RenderTypeGroup.EMPTY;
-		return new GiantBlockModel(sprites, spriteGetter.apply(context.getMaterial("particle")), overrides, context.getTransforms(), renderTypes);
+		TextureAtlasSprite particleSprite = spriteGetter.apply(
+			context.hasMaterial("particle") ? context.getMaterial("particle") : context.getMaterial("all"));
+		return new GiantBlockModel(sprites, particleSprite, overrides, context.getTransforms(), renderTypes);
 	}
 }

@@ -9,20 +9,20 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.MapDecorationTextureManager;
 import net.minecraft.world.level.saveddata.maps.MapDecoration;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import net.neoforged.neoforge.client.gui.map.IMapDecorationRenderer;
 import org.joml.Matrix4f;
 import twilightforest.item.mapdata.TFMagicMapData;
 
 public class MagicMapPlayerIconRenderer implements IMapDecorationRenderer {
 
-	//[VanillaCopy] of MapRenderer.RenderInstance.draw, but with a set depth offset instead of relying on index.
-	//this allows the icon to render on top of everything else instead of sometimes on top, sometimes behind
+	//[VanillaCopy] of MapRenderer.MapInstance.draw, but with a set depth offset instead of relying on index.
+	//this allows the player icon to render on top of everything else instead of sometimes on top, sometimes behind.
+	//The position is also slightly offset to make the map look less accurate, matching the Neoforge behavior.
 	@Override
 	public boolean render(MapDecoration decoration, PoseStack stack, MultiBufferSource bufferSource, MapItemSavedData mapData, MapDecorationTextureManager decorationTextures, boolean inItemFrame, int packedLight, int index) {
 		if (mapData instanceof TFMagicMapData) {
 			stack.pushPose();
-			stack.translate(0.0F + (float)decoration.x() / 2.0F + 64.0F, 0.0F + (float)decoration.y() / 2.0F + 64.0F, -0.02F);
-			stack.mulPose(Axis.ZP.rotationDegrees((float)(decoration.rot() * 360) / 16.0F));
+			stack.translate(0.0F + (float) decoration.x() / 2.0F + 64.0F, 0.0F + (float) decoration.y() / 2.0F + 64.0F, -0.02F);
+			stack.mulPose(Axis.ZP.rotationDegrees((float) (decoration.rot() * 360) / 16.0F));
 			stack.scale(4.0F, 4.0F, 3.0F);
 			stack.translate(-0.125F, 0.125F, 0.0F);
 			Matrix4f matrix4f1 = stack.last().pose();

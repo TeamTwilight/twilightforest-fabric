@@ -11,7 +11,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.Tags;
+import io.github.fabricators_of_create.porting_lib.tags.Tags;
 import twilightforest.block.DryingRackBlock;
 import twilightforest.block.entity.DryingRackBlockEntity;
 import twilightforest.data.tags.ItemTagGenerator;

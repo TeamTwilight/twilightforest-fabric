@@ -1,6 +1,7 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -19,7 +20,10 @@ public class KnightPhantomRenderer extends HumanoidMobRenderer<KnightPhantom, Kn
 	public KnightPhantomRenderer(EntityRendererProvider.Context context, KnightPhantomModel model, float shadowSize) {
 		super(context, model, shadowSize);
 		this.addLayer(new ItemInHandLayer<>(this, context.getItemInHandRenderer()));
-		this.addLayer(new HumanoidArmorLayer<>(this, new KnightPhantomModel(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)), new KnightPhantomModel(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)), context.getModelManager()));
+		// Use vanilla HumanoidModel for the armor layer instead of KnightPhantomModel,
+		// because KnightPhantomModel.renderToBuffer only renders when charging,
+		// which would hide the armor when the phantom is not charging.
+		this.addLayer(new HumanoidArmorLayer<>(this, new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER_INNER_ARMOR)), new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)), context.getModelManager()));
 	}
 
 	@Override

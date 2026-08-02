@@ -5,9 +5,8 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import twilightforest.TwilightForestMod;
-
 //TODO
-// I would like to look at migrating the models to using EntityModelJson (https://www.curseforge.com/minecraft/mc-mods/entity-model-json) in the future.
+// Future consideration: migrate models to EntityModelJson (https://www.curseforge.com/minecraft/mc-mods/entity-model-json)
 // we can make the pack depend on it to load the new models instead of having them hardcoded here.
 // could also shade the mod since I dont trust people to actually download the mod. I can already see the bug reports flooding in, yikes
 public class JappaPackReloadListener implements ResourceManagerReloadListener {

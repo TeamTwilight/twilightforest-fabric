@@ -3,10 +3,10 @@ package twilightforest.client.particle;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class CustomTextureParticle extends TextureSheetParticle {
     private final boolean fullBright;
 	private final float uo;
@@ -61,8 +61,16 @@ public class CustomTextureParticle extends TextureSheetParticle {
 		return this.sprite.getV((this.vo + 1.0F) / 4.0F);
 	}
 
-	@OnlyIn(Dist.CLIENT)
-	public record Factory(SpriteSet sprite, boolean fullBright) implements ParticleProvider<SimpleParticleType> {
+	@Environment(EnvType.CLIENT)
+	public static class Factory implements ParticleProvider<SimpleParticleType> {
+		private final SpriteSet sprite;
+		private final boolean fullBright;
+
+		public Factory(SpriteSet sprite, boolean fullBright) {
+			this.sprite = sprite;
+			this.fullBright = fullBright;
+		}
+
 		@Override
 		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
 			CustomTextureParticle particle = new CustomTextureParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, this.fullBright);
@@ -71,8 +79,14 @@ public class CustomTextureParticle extends TextureSheetParticle {
 		}
 	}
 
-	@OnlyIn(Dist.CLIENT)
-	public record ShieldBreak(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
+	@Environment(EnvType.CLIENT)
+	public static class ShieldBreak implements ParticleProvider<SimpleParticleType> {
+		private final SpriteSet sprite;
+
+		public ShieldBreak(SpriteSet sprite) {
+			this.sprite = sprite;
+		}
+
 		@Override
 		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
 			CustomTextureParticle particle = new CustomTextureParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, true);

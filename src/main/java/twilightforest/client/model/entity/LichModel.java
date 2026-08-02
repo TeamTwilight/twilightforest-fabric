@@ -63,7 +63,7 @@ public class LichModel<T extends Lich> extends HumanoidModel<T> implements Troph
 		partdefinition.addOrReplaceChild("left_arm", CubeListBuilder.create().mirror()
 				.texOffs(0, 16)
 				.addBox(-1.0F, -2.0F, -1.0F, 2.0F, 12.0F, 2.0F),
-			PartPose.offset(5.0F, 2.0F, 0.0F));
+			PartPose.offset(5.0F, -2.0F, 0.0F));
 
 		partdefinition.addOrReplaceChild("right_leg", CubeListBuilder.create()
 				.texOffs(0, 16)

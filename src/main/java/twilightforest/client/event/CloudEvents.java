@@ -25,8 +25,11 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.client.event.ClientTickEvent;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
+
+
 import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.block.CloudBlock;
 import twilightforest.client.renderer.TFWeatherRenderer;
@@ -43,9 +46,16 @@ public class CloudEvents {
 
 	}
 
-	protected static void tickWeatherEffects(ClientTickEvent.Post event) {
-		Minecraft mc = Minecraft.getInstance();
+	/**
+	 * Register Fabric API callbacks for cloud weather effects.
+	 * Called from {@link twilightforest.client.TFClientSetup#onInitializeClient()}.
+	 */
+	public static void register() {
+		ClientTickEvents.END_CLIENT_TICK.register(CloudEvents::tickWeatherEffects);
+		WorldRenderEvents.AFTER_TRANSLUCENT.register(CloudEvents::renderPrecipitation);
+	}
 
+	protected static void tickWeatherEffects(Minecraft mc) {
 		if (!mc.isPaused()) {
 			if (mc.level != null && TFConfig.getClientCloudBlockPrecipitationDistance() > 0) { // Semi vanilla copy of the weather tick, but made to work with cloud blocks instead
 				Vec3 vec3 = mc.gameRenderer.getMainCamera().getPosition();
@@ -95,7 +105,7 @@ public class CloudEvents {
 				}
 
 				if (!RENDER_HELPER.isEmpty()) {
-					RandomSource randomsource = RandomSource.create((long) mc.levelRenderer.getTicks() * 312987231L);
+					RandomSource randomsource = RandomSource.create(mc.level.getGameTime() * 312987231L);
 					BlockPos particlePos = null;
 					int particleCount = 100 / (mc.options.particles().get() == ParticleStatus.DECREASED ? 2 : 1);
 
@@ -149,112 +159,109 @@ public class CloudEvents {
 		}
 	}
 
-	protected static void renderPrecipitation(RenderLevelStageEvent event) {
-		if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER && TFConfig.getClientCloudBlockPrecipitationDistance() > 0 && !RENDER_HELPER.isEmpty()) {
-			Minecraft minecraft = Minecraft.getInstance();
-			if (minecraft.level == null) return;
-			float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(false);
-			LightTexture lightTexture = minecraft.gameRenderer.lightTexture();
-			int ticks = minecraft.levelRenderer.getTicks();
-			lightTexture.turnOnLightLayer();
+	protected static void renderPrecipitation(WorldRenderContext context) {
+		if (TFConfig.getClientCloudBlockPrecipitationDistance() <= 0 || RENDER_HELPER.isEmpty()) return;
 
-			Vec3 vec3 = event.getCamera().getPosition();
-			double camX = vec3.x();
-			double camY = vec3.y();
-			double camZ = vec3.z();
+		Minecraft minecraft = Minecraft.getInstance();
+		if (minecraft.level == null) return;
 
-			int floorX = Mth.floor(camX);
-			int floorY = Mth.floor(camY);
-			int floorZ = Mth.floor(camZ);
+		float partialTick = context.tickCounter().getGameTimeDeltaPartialTick(false);
+		LightTexture lightTexture = minecraft.gameRenderer.lightTexture();
+		int ticks = (int) minecraft.level.getGameTime();
+		lightTexture.turnOnLightLayer();
 
-			Tesselator tesselator = Tesselator.getInstance();
-			BufferBuilder bufferbuilder = null;
-			RenderSystem.disableCull();
-			RenderSystem.enableBlend();
-			RenderSystem.enableDepthTest();
-			RenderSystem.depthMask(Minecraft.useShaderTransparency());
+		Vec3 vec3 = context.camera().getPosition();
+		double camX = vec3.x();
+		double camY = vec3.y();
+		double camZ = vec3.z();
 
-			int renderDistance = Minecraft.useFancyGraphics() ? 10 : 5;
+		int floorX = Mth.floor(camX);
+		int floorY = Mth.floor(camY);
+		int floorZ = Mth.floor(camZ);
 
-			int tesselatorCheck = -1;
-			float fullTick = (float) ticks + partialTick;
-			RenderSystem.setShader(GameRenderer::getParticleShader);
-			BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
+		Tesselator tesselator = Tesselator.getInstance();
+		BufferBuilder bufferbuilder = null;
+		RenderSystem.disableCull();
+		RenderSystem.enableBlend();
+		RenderSystem.enableDepthTest();
+		RenderSystem.depthMask(Minecraft.useShaderTransparency());
 
-			for (PrecipitationRenderHelper helper : RENDER_HELPER) {
-				BlockPos pos = helper.cloudPos();
-				int roofX = pos.getX();
-				int roofZ = pos.getZ();
+		int renderDistance = Minecraft.useFancyGraphics() ? 10 : 5;
 
-				int botY = Math.max(helper.rainOnY(), floorY - renderDistance);
-				int topY = Math.min(pos.getY(), floorY + renderDistance);
-				if (topY - botY <= 0) continue;
+		int tesselatorCheck = -1;
+		float fullTick = (float) ticks + partialTick;
+		RenderSystem.setShader(GameRenderer::getParticleShader);
+		BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
 
-				// Due to the fact the positions only update once every 10 ticks, a fast player can get far enough from the blocks to cause a block difference too large
-				int rainS = Mth.clamp((roofZ - floorZ + 16) * 32 + roofX - floorX + 16, 0, 1023); // Array size is 1024, so we make sure it doesn't fail
-				double rainX = (double) TFWeatherRenderer.rainxs[rainS] * 0.5D;
-				double rainZ = (double) TFWeatherRenderer.rainzs[rainS] * 0.5D;
-				mutableBlockPos.set(roofX, camY, roofZ);
+		for (PrecipitationRenderHelper helper : RENDER_HELPER) {
+			BlockPos pos = helper.cloudPos();
+			int roofX = pos.getX();
+			int roofZ = pos.getZ();
 
-				RandomSource random = RandomSource.create((long) roofX * roofX * 3121 + roofX * 45238971L ^ (long) roofZ * roofZ * 418711 + roofZ * 13761L);
-				if (helper.precipitation() == Biome.Precipitation.RAIN) {
-					if (tesselatorCheck != 0) {
-						if (tesselatorCheck >= 0) BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
+			int botY = Math.max(helper.rainOnY(), floorY - renderDistance);
+			int topY = Math.min(pos.getY(), floorY + renderDistance);
+			if (topY - botY <= 0) continue;
 
-						tesselatorCheck = 0;
-						RenderSystem.setShaderTexture(0, TFWeatherRenderer.RAIN_TEXTURES);
-						bufferbuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
-					}
+			int rainS = Mth.clamp((roofZ - floorZ + 16) * 32 + roofX - floorX + 16, 0, 1023);
+			double rainX = (double) TFWeatherRenderer.rainxs[rainS] * 0.5D;
+			double rainZ = (double) TFWeatherRenderer.rainzs[rainS] * 0.5D;
+			mutableBlockPos.set(roofX, (int) camY, roofZ);
 
-					int offset = ticks + roofX * roofX * 3121 + roofX * 45238971 + roofZ * roofZ * 418711 + roofZ * 13761 & 31;
-					float uvOffset = -((float) offset + partialTick) / 32.0F * (3.0F + random.nextFloat());
-					double xDiff = (double) roofX + 0.5D - camX;
-					double zDiff = (double) roofZ + 0.5D - camZ;
-					float distance = (float) Math.sqrt(xDiff * xDiff + zDiff * zDiff) / (float) renderDistance;
-					float alpha = ((1.0F - distance * distance) * 0.5F + 0.5F) * helper.precipitationLevel();
-					mutableBlockPos.set(roofX, Math.max(helper.rainOnY(), floorY), roofZ);
-					int lightColor = LevelRenderer.getLightColor(minecraft.level, mutableBlockPos);
+			RandomSource random = RandomSource.create((long) roofX * roofX * 3121 + roofX * 45238971L ^ (long) roofZ * roofZ * 418711 + roofZ * 13761L);
+			if (helper.precipitation() == Biome.Precipitation.RAIN) {
+				if (tesselatorCheck != 0) {
+					if (tesselatorCheck >= 0) BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
 
-					bufferbuilder.addVertex((float) (roofX - camX - rainX + 0.5D), (float) (topY - camY), (float) (roofZ - camZ - rainZ + 0.5D)).setUv(0.0F, (float) botY * 0.25F + uvOffset).setColor(1.0F, 1.0F, 1.0F, alpha).setLight(lightColor);
-					bufferbuilder.addVertex((float) (roofX - camX + rainX + 0.5D), (float) (topY - camY), (float) (roofZ - camZ + rainZ + 0.5D)).setUv(1.0F, (float) botY * 0.25F + uvOffset).setColor(1.0F, 1.0F, 1.0F, alpha).setLight(lightColor);
-					bufferbuilder.addVertex((float) (roofX - camX + rainX + 0.5D), (float) (botY - camY), (float) (roofZ - camZ + rainZ + 0.5D)).setUv(1.0F, (float) topY * 0.25F + uvOffset).setColor(1.0F, 1.0F, 1.0F, alpha).setLight(lightColor);
-					bufferbuilder.addVertex((float) (roofX - camX - rainX + 0.5D), (float) (botY - camY), (float) (roofZ - camZ - rainZ + 0.5D)).setUv(0.0F, (float) topY * 0.25F + uvOffset).setColor(1.0F, 1.0F, 1.0F, alpha).setLight(lightColor);
-				} else if (helper.precipitation() == Biome.Precipitation.SNOW) {
-					if (tesselatorCheck != 1) {
-						if (tesselatorCheck == 0) BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
-
-						tesselatorCheck = 1;
-						RenderSystem.setShaderTexture(0, TFWeatherRenderer.SNOW_TEXTURES);
-						bufferbuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
-					}
-
-					float offset = -((float) (ticks & 511) + partialTick) / 512.0F;
-					float uOffset = (float) (random.nextDouble() + (double) fullTick * 0.01D * (double) ((float) random.nextGaussian()));
-					float vOffset = (float) (random.nextDouble() + (double) (fullTick * (float) random.nextGaussian()) * 0.001D);
-					double xDiff = (double) roofX + 0.5D - camX;
-					double zDiff = (double) roofZ + 0.5D - camZ;
-					float distance = (float) Math.sqrt(xDiff * xDiff + zDiff * zDiff) / (float) renderDistance;
-					float alpha = ((1.0F - distance * distance) * 0.3F + 0.5F) * helper.precipitationLevel();
-					mutableBlockPos.set(roofX, Math.max(helper.rainOnY(), floorY), roofZ);
-
-					int lightColor = LevelRenderer.getLightColor(minecraft.level, mutableBlockPos);
-					int v = lightColor >> 16 & '\uffff';
-					int u = lightColor & '\uffff';
-					v = (v * 3 + 240) / 4;
-					u = (u * 3 + 240) / 4;
-
-					bufferbuilder.addVertex((float) (roofX - camX - rainX + 0.5D), (float) (topY - camY), (float) (roofZ - camZ - rainZ + 0.5D)).setUv(0.0F + uOffset, (float) botY * 0.25F + offset + vOffset).setColor(1.0F, 1.0F, 1.0F, alpha).setUv2(u, v);
-					bufferbuilder.addVertex((float) (roofX - camX + rainX + 0.5D), (float) (topY - camY), (float) (roofZ - camZ + rainZ + 0.5D)).setUv(1.0F + uOffset, (float) botY * 0.25F + offset + vOffset).setColor(1.0F, 1.0F, 1.0F, alpha).setUv2(u, v);
-					bufferbuilder.addVertex((float) (roofX - camX + rainX + 0.5D), (float) (botY - camY), (float) (roofZ - camZ + rainZ + 0.5D)).setUv(1.0F + uOffset, (float) topY * 0.25F + offset + vOffset).setColor(1.0F, 1.0F, 1.0F, alpha).setUv2(u, v);
-					bufferbuilder.addVertex((float) (roofX - camX - rainX + 0.5D), (float) (botY - camY), (float) (roofZ - camZ - rainZ + 0.5D)).setUv(0.0F + uOffset, (float) topY * 0.25F + offset + vOffset).setColor(1.0F, 1.0F, 1.0F, alpha).setUv2(u, v);
+					tesselatorCheck = 0;
+					RenderSystem.setShaderTexture(0, TFWeatherRenderer.RAIN_TEXTURES);
+					bufferbuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
 				}
+
+				int offset = ticks + roofX * roofX * 3121 + roofX * 45238971 + roofZ * roofZ * 418711 + roofZ * 13761 & 31;
+				float uvOffset = -((float) offset + partialTick) / 32.0F * (3.0F + random.nextFloat());
+				double xDiff = (double) roofX + 0.5D - camX;
+				double zDiff = (double) roofZ + 0.5D - camZ;
+				float distance = (float) Math.sqrt(xDiff * xDiff + zDiff * zDiff) / (float) renderDistance;
+				float alpha = ((1.0F - distance * distance) * 0.5F + 0.5F) * helper.precipitationLevel();
+				mutableBlockPos.set(roofX, Math.max(helper.rainOnY(), floorY), roofZ);
+				int lightColor = LevelRenderer.getLightColor(minecraft.level, mutableBlockPos);
+
+				bufferbuilder.addVertex((float) (roofX - camX - rainX + 0.5D), (float) (topY - camY), (float) (roofZ - camZ - rainZ + 0.5D)).setUv(0.0F, (float) botY * 0.25F + uvOffset).setColor(1.0F, 1.0F, 1.0F, alpha).setLight(lightColor);
+				bufferbuilder.addVertex((float) (roofX - camX + rainX + 0.5D), (float) (topY - camY), (float) (roofZ - camZ + rainZ + 0.5D)).setUv(1.0F, (float) botY * 0.25F + uvOffset).setColor(1.0F, 1.0F, 1.0F, alpha).setLight(lightColor);
+				bufferbuilder.addVertex((float) (roofX - camX + rainX + 0.5D), (float) (botY - camY), (float) (roofZ - camZ + rainZ + 0.5D)).setUv(1.0F, (float) topY * 0.25F + uvOffset).setColor(1.0F, 1.0F, 1.0F, alpha).setLight(lightColor);
+				bufferbuilder.addVertex((float) (roofX - camX - rainX + 0.5D), (float) (botY - camY), (float) (roofZ - camZ - rainZ + 0.5D)).setUv(0.0F, (float) topY * 0.25F + uvOffset).setColor(1.0F, 1.0F, 1.0F, alpha).setLight(lightColor);
+			} else if (helper.precipitation() == Biome.Precipitation.SNOW) {
+				if (tesselatorCheck != 1) {
+					if (tesselatorCheck == 0) BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
+
+					tesselatorCheck = 1;
+					RenderSystem.setShaderTexture(0, TFWeatherRenderer.SNOW_TEXTURES);
+					bufferbuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
+				}
+
+				int offset = ticks + roofX * roofX * 3121 + roofX * 45238971 + roofZ * roofZ * 418711 + roofZ * 13761 & 31;
+				float uvOffset = -((float) offset + partialTick) / 32.0F * (3.0F + random.nextFloat());
+				double xDiff = (double) roofX + 0.5D - camX;
+				double zDiff = (double) roofZ + 0.5D - camZ;
+				float distance = (float) Math.sqrt(xDiff * xDiff + zDiff * zDiff) / (float) renderDistance;
+				float alpha = ((1.0F - distance * distance) * 0.5F + 0.5F) * helper.precipitationLevel();
+				mutableBlockPos.set(roofX, Math.max(helper.rainOnY(), floorY), roofZ);
+				int lightColor = LevelRenderer.getLightColor(minecraft.level, mutableBlockPos);
+
+				bufferbuilder.addVertex((float) (roofX - camX - rainX + 0.5D), (float) (topY - camY), (float) (roofZ - camZ - rainZ + 0.5D)).setUv(0.0F, (float) botY * 0.25F + uvOffset).setColor(1.0F, 1.0F, 1.0F, alpha).setLight(lightColor);
+				bufferbuilder.addVertex((float) (roofX - camX + rainX + 0.5D), (float) (topY - camY), (float) (roofZ - camZ + rainZ + 0.5D)).setUv(1.0F, (float) botY * 0.25F + uvOffset).setColor(1.0F, 1.0F, 1.0F, alpha).setLight(lightColor);
+				bufferbuilder.addVertex((float) (roofX - camX + rainX + 0.5D), (float) (botY - camY), (float) (roofZ - camZ + rainZ + 0.5D)).setUv(1.0F, (float) topY * 0.25F + uvOffset).setColor(1.0F, 1.0F, 1.0F, alpha).setLight(lightColor);
+				bufferbuilder.addVertex((float) (roofX - camX - rainX + 0.5D), (float) (botY - camY), (float) (roofZ - camZ - rainZ + 0.5D)).setUv(0.0F, (float) topY * 0.25F + uvOffset).setColor(1.0F, 1.0F, 1.0F, alpha).setLight(lightColor);
 			}
-
-			if (tesselatorCheck >= 0) BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());;
-
-			RenderSystem.enableCull();
-			RenderSystem.disableBlend();
-			lightTexture.turnOffLightLayer();
 		}
+
+		if (tesselatorCheck >= 0) {
+			BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
+		}
+
+		RenderSystem.enableCull();
+		RenderSystem.disableBlend();
+		RenderSystem.depthMask(true);
+		lightTexture.turnOffLightLayer();
 	}
 }

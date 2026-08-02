@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -16,7 +17,7 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.model.data.ModelData;
+import io.github.fabricators_of_create.porting_lib.models.data.ModelData;
 import twilightforest.entity.projectile.ThrownBlock;
 
 /**
@@ -41,8 +42,7 @@ public class ThrownBlockRenderer extends EntityRenderer<ThrownBlock> {
 				ms.translate(-0.5D, 0.0D, -0.5D);
 				BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
 				var model = dispatcher.getBlockModel(blockstate);
-				for (var renderType : model.getRenderTypes(blockstate, RandomSource.create(entity.getId()), ModelData.EMPTY))
-					dispatcher.getModelRenderer().tesselateBlock(world, model, blockstate, blockpos, ms, buffers.getBuffer(renderType), false, RandomSource.create(), entity.getId(), OverlayTexture.NO_OVERLAY, ModelData.EMPTY, renderType);
+				dispatcher.getModelRenderer().tesselateBlock(world, model, blockstate, blockpos, ms, buffers.getBuffer(RenderType.cutout()), false, RandomSource.create(), entity.getId(), OverlayTexture.NO_OVERLAY);
 				ms.popPose();
 				super.render(entity, yaw, partialTicks, ms, buffers, light);
 			}

@@ -9,8 +9,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameType;
-import net.neoforged.api.distmarker.Dist;
-import tamaized.beanification.Autowired;
 import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.passive.QuestRam;
@@ -21,8 +19,9 @@ public class QuestingRamIndicatorOverlay {
 	private static final ResourceLocation QUESTING_RAM_CHECK_SPRITE = TwilightForestMod.prefix("questing_ram_check");
 	private static final ResourceLocation QUESTING_RAM_X_SPRITE = TwilightForestMod.prefix("questing_ram_x");
 
-	@Autowired(dist = Dist.CLIENT)
-	private static QuestingRamCurrentContext questingRamCurrentContext;
+	// QuestingRamCurrentContext is a simple wrapper with a FALLBACK default - instantiate directly
+	// since static fields cannot be injected via Beanification on Fabric
+	private static final QuestingRamCurrentContext questingRamCurrentContext = new QuestingRamCurrentContext();
 
 	public static void render(Minecraft minecraft, GuiGraphics graphics, Gui gui, Player player) {
 		if (player != null && !minecraft.options.hideGui && TFConfig.showQuestRamCrosshairIndicator) {

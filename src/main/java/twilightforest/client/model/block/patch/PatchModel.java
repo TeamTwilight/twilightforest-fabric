@@ -2,22 +2,16 @@ package twilightforest.client.model.block.patch;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.math.Transformation;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.neoforged.neoforge.client.ChunkRenderTypeSet;
-import net.neoforged.neoforge.client.model.SimpleModelState;
-import net.neoforged.neoforge.client.model.data.ModelData;
-import org.jetbrains.annotations.NotNull;
+import io.github.fabricators_of_create.porting_lib.models.geometry.SimpleModelState;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import twilightforest.block.PatchBlock;
-import twilightforest.init.TFBlocks;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,14 +30,13 @@ public record PatchModel(TextureAtlasSprite texture, boolean shaggify) implement
 	private List<BakedQuad> getQuads(boolean north, boolean east, boolean south, boolean west, RandomSource posRandom) {
 		List<BakedQuad> list = new ArrayList<>();
 
-		BoundingBox bb = PatchBlock.AABBFromRandom(posRandom);
+		net.minecraft.world.level.levelgen.structure.BoundingBox bb = PatchBlock.AABBFromRandom(posRandom);
 
 		this.quadsFromAABB(list, west ? 0 : bb.minX(), bb.minY(), north ? 0 : bb.minZ(), east ? 16 : bb.maxX(), bb.maxY(), south ? 16 : bb.maxZ());
 
 		if (!this.shaggify)
 			return ImmutableList.copyOf(list);
 
-		// Poll these seeds before entering branching code, otherwise placing neighbors will cause odd changes
 		long westSeed = posRandom.nextLong();
 		long eastSeed = posRandom.nextLong();
 		long northSeed = posRandom.nextLong();
@@ -52,7 +45,6 @@ public record PatchModel(TextureAtlasSprite texture, boolean shaggify) implement
 		int minY = bb.minY();
 		int maxY = bb.maxY();
 
-		// add on shaggy edges
 		if (!west) {
 			long seed = westSeed;
 			seed = seed * seed * 42317861L + seed * 7L;
@@ -66,12 +58,10 @@ public record PatchModel(TextureAtlasSprite texture, boolean shaggify) implement
 			int maxZ = bb.maxZ();
 
 			if (maxZ - ((num1 + num2 + num3)) > minZ) {
-				// draw two blobs
 				int innerZ = bb.maxZ() - num2;
 				this.quadsFromAABB(list, bb.minX() - 1, minY, minZ, bb.minX(), maxY, minZ + num1);
 				this.quadsFromAABB(list, bb.minX() - 1, minY, innerZ - num3, bb.minX(), maxY, innerZ);
 			} else {
-				//draw one blob
 				this.quadsFromAABB(list, bb.minX() - 1, minY, minZ, bb.minX(), maxY, maxZ - num2);
 			}
 		}
@@ -89,12 +79,10 @@ public record PatchModel(TextureAtlasSprite texture, boolean shaggify) implement
 			int maxZ = bb.maxZ();
 
 			if (maxZ - ((num1 + num2 + num3)) > minZ) {
-				// draw two blobs
 				int innerZ = maxZ - num2;
 				this.quadsFromAABB(list, bb.maxX(), minY, minZ, bb.maxX() + 1, maxY, minZ + num1);
 				this.quadsFromAABB(list, bb.maxX(), minY, innerZ - num3, bb.maxX() + 1, maxY, innerZ);
 			} else {
-				//draw one blob
 				this.quadsFromAABB(list, bb.maxX(), minY, minZ, bb.maxX() + 1, maxY, maxZ - num2);
 			}
 		}
@@ -156,8 +144,6 @@ public record PatchModel(TextureAtlasSprite texture, boolean shaggify) implement
 		return BAKERY.bakeQuad(new Vector3f(minX, minY, minZ), new Vector3f(maxX, maxY, maxZ), face, this.texture, direction, new SimpleModelState(Transformation.identity()), null, true);
 	}
 
-	// --- Boilerplating ---------------------------------------------------
-
 	@Override
 	public boolean useAmbientOcclusion() {
 		return false;
@@ -185,14 +171,11 @@ public record PatchModel(TextureAtlasSprite texture, boolean shaggify) implement
 
 	@Override
 	public ItemOverrides getOverrides() {
-		return ItemOverrides.EMPTY; //I doubt we need to do anything here
+		return ItemOverrides.EMPTY;
 	}
 
 	@Override
-	public ChunkRenderTypeSet getRenderTypes(@NotNull BlockState state, @NotNull RandomSource rand, @NotNull ModelData data) {
-		if (state.is(TFBlocks.CLOVER_PATCH)) {
-			return ChunkRenderTypeSet.of(RenderType.cutout());
-		}
-		return BakedModel.super.getRenderTypes(state, rand, data);
+	public ItemTransforms getTransforms() {
+		return ItemTransforms.NO_TRANSFORMS;
 	}
 }

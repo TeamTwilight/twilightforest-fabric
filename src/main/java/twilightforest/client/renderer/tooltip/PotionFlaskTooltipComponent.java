@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+
 import org.joml.Matrix4f;
 import twilightforest.TwilightForestMod;
 import twilightforest.components.item.PotionFlaskComponent;
@@ -79,7 +79,7 @@ public class PotionFlaskTooltipComponent implements ClientTooltipComponent {
 
 	@Override
 	public void renderImage(Font font, int x, int y, GuiGraphics graphics) {
-		int offs = 113; //TODO replace with 4th param in 1.21.2+ so things properly center
+		int offs = 113; // replace with 4th param in 1.21.2+ so things properly center
 		if (this.component.potion().potion().isEmpty()) {
 			graphics.drawWordWrap(font, EMPTY_DESCRIPTION, x, y, WIDTH, 11184810);
 		} else {
@@ -123,7 +123,7 @@ public class PotionFlaskTooltipComponent implements ClientTooltipComponent {
 		int red = (color >> 16) & 255;
 		int green = (color >> 8) & 255;
 		int blue = color & 255;
-		TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(IClientFluidTypeExtensions.of(Fluids.WATER).getStillTexture());
+		TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(ResourceLocation.withDefaultNamespace("block/water_still"));
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
 		int xTileCount = desiredWidth / 16;

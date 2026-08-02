@@ -24,15 +24,17 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.item.component.ItemContainerContents;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.neoforge.attachment.AttachmentType;
-import net.neoforged.neoforge.client.event.*;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import tamaized.beanification.Component;
-import tamaized.beanification.PostConstruct;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import io.github.fabricators_of_create.porting_lib.client_extensions.IClientItemExtensions;
+import io.github.fabricators_of_create.porting_lib.client_events.event.client.InputEvent;
+import io.github.fabricators_of_create.porting_lib.client_events.event.client.ComputeFovModifierEvent;
+import io.github.fabricators_of_create.porting_lib.client_events.event.client.RenderArmEvent;
+import io.github.fabricators_of_create.porting_lib.client_events.event.client.MovementInputUpdateCallback;
 import twilightforest.TwilightForestMod;
+import twilightforest.util.TFBeanRegistry;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.*;
@@ -42,98 +44,111 @@ import twilightforest.item.travellers_gear.TravellersGearLogic;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 import twilightforest.network.*;
 
-@Component(dist = Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class TravellersClientEvents {
+
+	public static final TravellersClientEvents INSTANCE = new TravellersClientEvents();
+
+	static {
+		TFBeanRegistry.register(TravellersClientEvents.class, INSTANCE);
+		TFBeanRegistry.addPostInit(INSTANCE::init);
+	}
 
 	private static boolean isZoomKeyHeld(Player player) {
 		return TFKeyBinds.ZOOM_KEY.isDown() && !player.isScoping();
 	}
 
-	@PostConstruct
-	private void setup() {
-		NeoForge.EVENT_BUS.addListener(this::handleDoubleJump);
-		NeoForge.EVENT_BUS.addListener(this::handleAgileRanger);
-		NeoForge.EVENT_BUS.addListener(this::handleStraightAhead);
-		NeoForge.EVENT_BUS.addListener(this::speedUpControlledWhileSneaking);
-		NeoForge.EVENT_BUS.addListener(this::handleSidestep);
-		NeoForge.EVENT_BUS.addListener(this::handleStealth);
-		NeoForge.EVENT_BUS.addListener(this::updateZoomState);
-		NeoForge.EVENT_BUS.addListener(this::updateGradualGlideState);
-		NeoForge.EVENT_BUS.addListener(this::cycleItemDisplayMap);
-		NeoForge.EVENT_BUS.addListener(this::slowZoomSensitivity);
-		NeoForge.EVENT_BUS.addListener(this::swapHotbar);
-		NeoForge.EVENT_BUS.addListener(this::toggleRedThreadVision);
-		NeoForge.EVENT_BUS.addListener(this::renderGlovesInFirstPerson);
+	private void init() {
+		// Available in Porting-Lib:
+		InputEvent.Key.EVENT.register(this::handleDoubleJump);
+		InputEvent.Key.EVENT.register(this::cycleItemDisplayMap);
+		InputEvent.Key.EVENT.register(this::swapHotbar);
+		InputEvent.Key.EVENT.register(this::toggleRedThreadVision);
+		ComputeFovModifierEvent.EVENT.register(this::updateZoomState);
+		RenderArmEvent.EVENT.register(this::renderGlovesInFirstPerson);
+
+		// MovementInputUpdateCallback - different API, needs adaptation
+		MovementInputUpdateCallback.EVENT.register(this::handleMovementInput);
+
+		// Fabric API: Client tick events for per-frame updates
+		ClientTickEvents.END_CLIENT_TICK.register(this::handleStealth);
+		ClientTickEvents.END_CLIENT_TICK.register(this::updateGradualGlideState);
+
+		// slowZoomSensitivity needs CalculatePlayerTurnEvent - not available in Porting-Lib
 	}
 
-	private void handleAgileRanger(MovementInputUpdateEvent event) {
-		if (!(event.getEntity() instanceof LocalPlayer localPlayer))
-			return;
+	// Adapter for MovementInputUpdateCallback that combines handleAgileRanger, handleStraightAhead, speedUpControlledWhileSneaking, handleSidestep
+	private void handleMovementInput(Player player, Input input) {
+		if (!(player instanceof LocalPlayer localPlayer)) return;
+		handleAgileRanger(localPlayer, input);
+		handleStraightAhead(localPlayer, input);
+		speedUpControlledWhileSneaking(localPlayer, input);
+		handleSidestep(localPlayer, input);
+	}
+
+	private void handleAgileRanger(LocalPlayer localPlayer, Input input) {
 		ItemStack leggingsStack = localPlayer.getItemBySlot(EquipmentSlot.LEGS);
-		Float agileRangerModifier = leggingsStack.get(TFDataComponents.AGILE_RANGER_MODIFIER);
+		Float agileRangerModifier = leggingsStack.get(TFDataComponents.AGILE_RANGER_MODIFIER.get());
 		if (!TravellersModifiersManager.isModifierActive(localPlayer, leggingsStack, TravellersModifiersManager.AGILE_RANGER_MODIFIER) || agileRangerModifier == null)
 			return;
 		ItemStack stack = localPlayer.getUseItem();
 		boolean isLegalItem = (stack.getItem() instanceof ProjectileWeaponItem || stack.is(ItemTagGenerator.TRAVELLERS_AGILE_RANGER_WHITELISTED)) && !stack.is(ItemTagGenerator.TRAVELLERS_AGILE_RANGER_BLACKLISTED);
 		if (localPlayer.isUsingItem() && !localPlayer.isPassenger() && isLegalItem) {
-			Input input = event.getInput();
 			input.leftImpulse *= agileRangerModifier;
 			input.forwardImpulse *= agileRangerModifier;
 		}
 	}
 
-	private void handleStraightAhead(MovementInputUpdateEvent event) {
-		if (!(event.getEntity() instanceof LocalPlayer localPlayer))
-			return;
+	private void handleStraightAhead(LocalPlayer localPlayer, Input input) {
 		ItemStack bootsStack = localPlayer.getItemBySlot(EquipmentSlot.FEET);
-		Double multiplier = bootsStack.get(TFDataComponents.STRAIGHT_AHEAD_MULTIPLIER);
+		Double multiplier = bootsStack.get(TFDataComponents.STRAIGHT_AHEAD_MULTIPLIER.get());
 		AttributeInstance attributeInstance = localPlayer.getAttributes().getInstance(Attributes.MOVEMENT_SPEED);
 		if (attributeInstance == null)
 			return;
 
-		Input input = localPlayer.input;
-		if (!TravellersModifiersManager.isModifierActive(localPlayer, bootsStack, TravellersModifiersManager.STRAIGHT_AHEAD_MODIFIER) || multiplier == null || input.forwardImpulse <= 0)
+		Input localInput = localPlayer.input;
+		if (!TravellersModifiersManager.isModifierActive(localPlayer, bootsStack, TravellersModifiersManager.STRAIGHT_AHEAD_MODIFIER) || multiplier == null || localInput.forwardImpulse <= 0)
 			multiplier = 1D;
 		attributeInstance.addOrUpdateTransientModifier(new AttributeModifier(TFAttributeModifiers.STRAIGHT_AHEAD_ATTRIBUTE_MODIFIER_LOCATION, multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 		input.leftImpulse /= multiplier;
 	}
 
-	private void speedUpControlledWhileSneaking(MovementInputUpdateEvent event) {
-		if (!(event.getEntity() instanceof LocalPlayer localPlayer) || !localPlayer.getData(TFDataAttachments.IS_GRADUALLY_GLIDING) || !localPlayer.isShiftKeyDown())
+	private void speedUpControlledWhileSneaking(LocalPlayer localPlayer, Input input) {
+		if (!localPlayer.getAttachedOrCreate(TFDataAttachments.IS_GRADUALLY_GLIDING) || !localPlayer.isShiftKeyDown())
 			return;
 		localPlayer.input.forwardImpulse /= 0.2F;
 		localPlayer.input.leftImpulse /= 0.2F;
 	}
 
-	private void handleSidestep(MovementInputUpdateEvent event) {
-		if (!(event.getEntity() instanceof LocalPlayer localPlayer) || !localPlayer.onGround())
+	private void handleSidestep(LocalPlayer localPlayer, Input input) {
+		if (!localPlayer.onGround())
 			return;
 
-		Input input = localPlayer.input;
-		boolean lastImpulseZero = localPlayer.getData(TFDataAttachments.LAST_HORIZONTAL_IMPULSE) == 0;
-		boolean sameImpulseDirection = Math.signum(localPlayer.getData(TFDataAttachments.LAST_NON_ZERO_HORIZONTAL_IMPULSE)) == Math.signum(input.leftImpulse);
+		Input localInput = localPlayer.input;
+		boolean lastImpulseZero = localPlayer.getAttachedOrCreate(TFDataAttachments.LAST_HORIZONTAL_IMPULSE) == 0;
+		boolean sameImpulseDirection = Math.signum(localPlayer.getAttachedOrCreate(TFDataAttachments.LAST_NON_ZERO_HORIZONTAL_IMPULSE)) == Math.signum(localInput.leftImpulse);
 		int currentTime = localPlayer.tickCount;
-		int lastWalkingTime = localPlayer.getData(TFDataAttachments.LAST_HORIZONTAL_WALKING_TIME);
+		int lastWalkingTime = localPlayer.getAttachedOrCreate(TFDataAttachments.LAST_HORIZONTAL_WALKING_TIME);
 		boolean hasDoubleTapped = currentTime - lastWalkingTime < 4;
 
-		if (lastImpulseZero && sameImpulseDirection && hasDoubleTapped && input.leftImpulse != 0) {
-			boolean isLeftSidestep = input.leftImpulse > 0;
+		if (lastImpulseZero && sameImpulseDirection && hasDoubleTapped && localInput.leftImpulse != 0) {
+			boolean isLeftSidestep = localInput.leftImpulse > 0;
 			if (TravellersGearLogic.tryPerformSidestep(localPlayer, isLeftSidestep)) {
-				localPlayer.connection.send(new PerformSidestepPacket(isLeftSidestep));
+				ClientPlayNetworking.send(new PerformSidestepPacket(isLeftSidestep));
 			}
 		}
 
-		localPlayer.setData(TFDataAttachments.LAST_HORIZONTAL_IMPULSE, input.leftImpulse);
-		if (input.leftImpulse != 0) {
-			localPlayer.setData(TFDataAttachments.LAST_HORIZONTAL_WALKING_TIME, currentTime);
-			localPlayer.setData(TFDataAttachments.LAST_NON_ZERO_HORIZONTAL_IMPULSE, input.leftImpulse);
+		localPlayer.setAttached(TFDataAttachments.LAST_HORIZONTAL_IMPULSE, localInput.leftImpulse);
+		if (localInput.leftImpulse != 0) {
+			localPlayer.setAttached(TFDataAttachments.LAST_HORIZONTAL_WALKING_TIME, currentTime);
+			localPlayer.setAttached(TFDataAttachments.LAST_NON_ZERO_HORIZONTAL_IMPULSE, localInput.leftImpulse);
 		}
 	}
 
-	private void handleStealth(RenderFrameEvent.Pre event) {
-		if (Minecraft.getInstance().level == null)
+	private void handleStealth(Minecraft client) {
+		if (client.level == null)
 			return;
-		for (Entity entity : Minecraft.getInstance().level.entitiesForRendering()) {
+		for (Entity entity : client.level.entitiesForRendering()) {
 			if (!(entity instanceof Player player)) continue;
 			TravellersGearLogic.travellersStealth(player, player1 -> player1.setInvisible(true));  // call it on client to make player invisible instantly
 		}
@@ -142,14 +157,14 @@ public class TravellersClientEvents {
 	private void handleDoubleJump(InputEvent.Key event) {
 		if (!(Minecraft.getInstance().player instanceof LocalPlayer localPlayer) || ignoreKeyEvent(event, Minecraft.getInstance().options.keyJump))
 			return;
-		int lastJumpKeyPressTime = localPlayer.getData(TFDataAttachments.LAST_JUMP_KEY_PRESS_TIME);
+		int lastJumpKeyPressTime = localPlayer.getAttachedOrCreate(TFDataAttachments.LAST_JUMP_KEY_PRESS_TIME);
 		boolean pressedKey = event.getAction() == InputConstants.PRESS;
 		if (pressedKey)
-			localPlayer.setData(TFDataAttachments.LAST_JUMP_KEY_PRESS_TIME, localPlayer.tickCount);
-		boolean avoidCreativeFly = localPlayer.mayFly() && localPlayer.tickCount - lastJumpKeyPressTime <= 6;
+			localPlayer.setAttached(TFDataAttachments.LAST_JUMP_KEY_PRESS_TIME, localPlayer.tickCount);
+		boolean avoidCreativeFly = localPlayer.getAbilities().mayfly && localPlayer.tickCount - lastJumpKeyPressTime <= 6;
 		if (pressedKey && !avoidCreativeFly && TravellersModifiersManager.isModifierActive(localPlayer, TravellersModifiersManager.DOUBLE_JUMP_MODIFIER)) {
 			if (TravellersGearLogic.performDoubleJump(localPlayer)) {
-				localPlayer.connection.send(new PerformDoubleJumpPacket());
+				ClientPlayNetworking.send(new PerformDoubleJumpPacket());
 			}
 		}
 	}
@@ -157,37 +172,37 @@ public class TravellersClientEvents {
 	private void updateZoomState(ComputeFovModifierEvent event) {
 		LocalPlayer player = Minecraft.getInstance().player;
 		if (player == null) return;
-		boolean wasUsingZoom = player.getData(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER);
+		boolean wasUsingZoom = player.getAttachedOrCreate(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER);
 		ItemStack headStack = player.getItemBySlot(EquipmentSlot.HEAD);
-		Float zoomModifier = headStack.get(TFDataComponents.ZOOM_ABILITY_MODIFIER);
+		Float zoomModifier = headStack.get(TFDataComponents.ZOOM_ABILITY_MODIFIER.get());
 		boolean isUsingZoom = isZoomKeyHeld(player) && TravellersModifiersManager.isModifierActive(player, headStack, TravellersModifiersManager.ZOOM_ABILITY) && zoomModifier != null;
 		if (isUsingZoom)
 			event.setNewFovModifier(event.getNewFovModifier() * zoomModifier);
 		if (isUsingZoom == wasUsingZoom)
 			return;
 
-		player.setData(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER, isUsingZoom);
+		player.setAttached(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER, isUsingZoom);
 		player.playSound(isUsingZoom ? TFSounds.GOGGLES_ZOOM_IN.get() : TFSounds.GOGGLES_ZOOM_OUT.get());
-		player.connection.send(new GogglesZoomPacket(isUsingZoom, player.getUUID()));
+		ClientPlayNetworking.send(new GogglesZoomPacket(isUsingZoom, player.getUUID()));
 	}
 
-	private void updateGradualGlideState(RenderFrameEvent.Pre event) {
-		LocalPlayer player = Minecraft.getInstance().player;
+	private void updateGradualGlideState(Minecraft client) {
+		LocalPlayer player = client.player;
 		if (player == null) return;
-		boolean wasGraduallyGliding = player.getData(TFDataAttachments.IS_GRADUALLY_GLIDING);
+		boolean wasGraduallyGliding = player.getAttachedOrCreate(TFDataAttachments.IS_GRADUALLY_GLIDING);
 		boolean shiftHeld = player.isShiftKeyDown();
 		boolean isGraduallyGliding = TFConfig.manualTravellersWingsGradualGlideDefault == shiftHeld && player.getKnownMovement().y() < 0 && !player.onGround();
 		if (isGraduallyGliding == wasGraduallyGliding)
 			return;
 
-		player.setData(TFDataAttachments.IS_GRADUALLY_GLIDING, isGraduallyGliding);
-		player.connection.send(new GradualGlidePacket(isGraduallyGliding, player.getUUID()));
+		player.setAttached(TFDataAttachments.IS_GRADUALLY_GLIDING, isGraduallyGliding);
+		ClientPlayNetworking.send(new GradualGlidePacket(isGraduallyGliding, player.getUUID()));
 	}
 
 	private void cycleItemDisplayMap(InputEvent.Key event) {
 		if (!(Minecraft.getInstance().player instanceof LocalPlayer localPlayer) || !TFKeyBinds.ITEM_DISPLAY_MAP_CYCLE_KEY.consumeClick())
 			return;
-		localPlayer.connection.send(CycleMapSlotPacket.INSTANCE);
+		ClientPlayNetworking.send(CycleMapSlotPacket.INSTANCE);
 	}
 
 	private void swapHotbar(InputEvent.Key event) {
@@ -199,43 +214,15 @@ public class TravellersClientEvents {
 		ItemContainerContents containerContents = legArmor.get(DataComponents.CONTAINER);
 		if (!TravellersArmorBeltItem.hasSwapHotbar(player, legArmor) || containerContents == null)
 			return;
-		localPlayer.connection.send(SwapHotbarPacket.INSTANCE);
+		ClientPlayNetworking.send(SwapHotbarPacket.INSTANCE);
 	}
 
 	private void toggleRedThreadVision(InputEvent.Key event) {
-		this.toggleBooleanDataAttachment(TFKeyBinds.RED_THREAD_VISION_KEY.consumeClick(), TravellersModifiersManager.RED_THREAD_VISION_MODIFIER, TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION);
-	}
-
-	private void toggleBooleanDataAttachment(boolean pressed, ResourceKey<TravellersModifier> modifier, DeferredHolder<AttachmentType<?>, AttachmentType<Boolean>> attachment) {
-		if (!pressed)
-			return;
-
+		if (!TFKeyBinds.RED_THREAD_VISION_KEY.consumeClick()) return;
 		Player player = Minecraft.getInstance().player;
-		if (player == null || !TravellersModifiersManager.isModifierActive(player, modifier))
-			return;
-
-		boolean current = player.getData(attachment.get());
-		player.setData(attachment.get(), !current);
-	}
-
-	private void slowZoomSensitivity(CalculatePlayerTurnEvent event) {
-		Player player = Minecraft.getInstance().player; // Player is never null but we need to check for null to avoid warnings
-		if (event.getCinematicCameraEnabled() || player == null)
-			return;
-
-		ItemStack headStack = player.getItemBySlot(EquipmentSlot.HEAD);
-		Float zoomModifier = headStack.get(TFDataComponents.ZOOM_ABILITY_MODIFIER);
-		if (zoomModifier == null || !isZoomKeyHeld(player))
-			return;
-
-		double mouseSensitivity = event.getMouseSensitivity();
-		// vanilla math for turning is (m * 0.6 + 0.2)³ * 8; where m is the mouse sensitivity
-		// vanilla spyglasses avoid using the "* 8" part, so we probably want to as well
-		// the mod value to reverse that was borrowed from IE since they also have zoom functionality
-		// we can then divide by our zoom modifier (and add 0.05 to slow it down slightly) to set the sensitivity to a reasonable value when zooming
-		double mod = 0.5D - 1 / (6 * mouseSensitivity);
-		double fovMod = zoomModifier + 0.05F;
-		event.setMouseSensitivity(mod * mouseSensitivity / fovMod);
+		if (player == null || !TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.RED_THREAD_VISION_MODIFIER)) return;
+		boolean current = player.getAttachedOrCreate(TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION);
+		player.setAttached(TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION, !current);
 	}
 
 	private boolean ignoreKeyEvent(InputEvent.Key event, KeyMapping key) {
@@ -247,9 +234,10 @@ public class TravellersClientEvents {
 		if (TFConfig.firstPersonGloveOverlay) {
 			AbstractClientPlayer player = event.getPlayer();
 			ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
-			if (chestStack.has(TFDataComponents.TRAVELLERS_HAS_GLOVES) && !chestStack.has(TFDataComponents.EMPERORS_CLOTH)) {
+			if (chestStack.has(TFDataComponents.TRAVELLERS_HAS_GLOVES.get()) && !chestStack.has(TFDataComponents.EMPERORS_CLOTH.get())) {
 				PlayerRenderer renderer = (PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
-				HumanoidModel<AbstractClientPlayer> model = (HumanoidModel<AbstractClientPlayer>) IClientItemExtensions.of(TFItems.TRAVELLERS_GLOVES.get()).getHumanoidArmorModel(player, chestStack, EquipmentSlot.CHEST, renderer.getModel());
+				// IClientItemExtensions.of() API changed in 1.21.1 - using renderer.getModel() instead
+				HumanoidModel<AbstractClientPlayer> model = renderer.getModel();
 				ModelPart armPart = event.getArm() == HumanoidArm.RIGHT ? model.rightArm : model.leftArm;
 				model.attackTime = 0.0F;
 				model.crouching = false;

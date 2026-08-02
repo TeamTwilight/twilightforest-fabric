@@ -6,10 +6,12 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.material.FogType;
-import net.neoforged.neoforge.client.event.ViewportEvent;
-import net.neoforged.neoforge.event.level.LevelEvent;
+
+
 import twilightforest.client.TwilightForestRenderInfo;
 import twilightforest.init.TFBiomes;
+import io.github.fabricators_of_create.porting_lib.client_events.event.client.ViewportEvent;
+import io.github.fabricators_of_create.porting_lib.level.events.LevelEvent;
 
 import javax.annotation.Nullable;
 

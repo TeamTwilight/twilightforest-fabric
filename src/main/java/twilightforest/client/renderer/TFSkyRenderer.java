@@ -17,6 +17,7 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
+import twilightforest.mixin.LevelRendererAccessor;
 
 public class TFSkyRenderer {
 
@@ -38,8 +39,9 @@ public class TFSkyRenderer {
 		RenderSystem.depthMask(false);
 		RenderSystem.setShaderColor(f, f1, f2, 1.0F);
 		ShaderInstance shaderinstance = RenderSystem.getShader();
-		levelRenderer.skyBuffer.bind();
-		levelRenderer.skyBuffer.drawWithShader(stack.last().pose(), projectionMatrix, shaderinstance);
+		LevelRendererAccessor accessor = (LevelRendererAccessor) levelRenderer;
+		accessor.getSkyBuffer().bind();
+		accessor.getSkyBuffer().drawWithShader(stack.last().pose(), projectionMatrix, shaderinstance);
 		VertexBuffer.unbind();
 		RenderSystem.enableBlend();
 		/* TF - snip out sunrise/sunset since that doesn't happen here
@@ -61,14 +63,17 @@ public class TFSkyRenderer {
 		 */
 		float f10 = 1.0F; // TF - stars are always bright
 
-		//if (f10 > 0.0F) { Always true
+		// Lazy initialization - VertexBuffer requires an active OpenGL context
+		if (starBuffer == null) {
+			createStars();
+		}
+
 		RenderSystem.setShaderColor(f10, f10, f10, f10);
 		FogRenderer.setupNoFog();
 		starBuffer.bind();
 		starBuffer.drawWithShader(stack.last().pose(), projectionMatrix, GameRenderer.getPositionShader());
 		VertexBuffer.unbind();
 		setupFog.run();
-		//}
 
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem.disableBlend();
@@ -79,8 +84,8 @@ public class TFSkyRenderer {
 		if (d0 < 0.0D) {
 			stack.pushPose();
 			stack.translate(0.0F, 12.0F, 0.0F);
-			levelRenderer.darkBuffer.bind();
-			levelRenderer.darkBuffer.drawWithShader(stack.last().pose(), projectionMatrix, shaderinstance);
+			accessor.getDarkBuffer().bind();
+			accessor.getDarkBuffer().drawWithShader(stack.last().pose(), projectionMatrix, shaderinstance);
 			VertexBuffer.unbind();
 			stack.popPose();
 		}
@@ -91,7 +96,8 @@ public class TFSkyRenderer {
 	}
 
 	// [VanillaCopy] LevelRenderer.createStars
-	public static void createStars() {
+	// Called lazily on first renderSky call, since VertexBuffer requires an active OpenGL context
+	private static void createStars() {
 		if (starBuffer != null) {
 			starBuffer.close();
 		}

@@ -1,5 +1,9 @@
 package twilightforest.client.model.block.carpet;
 
+import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
+import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
+import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
+import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
@@ -12,32 +16,29 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.ChunkRenderTypeSet;
-import net.neoforged.neoforge.client.RenderTypeGroup;
-import net.neoforged.neoforge.client.model.IDynamicBakedModel;
-import net.neoforged.neoforge.client.model.data.ModelData;
-import net.neoforged.neoforge.client.model.data.ModelProperty;
+import io.github.fabricators_of_create.porting_lib.render_types.RenderTypeGroup;
+import io.github.fabricators_of_create.porting_lib.models.data.ModelData;
+import io.github.fabricators_of_create.porting_lib.models.data.ModelProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.client.model.block.IDynamicBakedModel;
 import twilightforest.client.model.block.connected.ConnectionLogic;
 import twilightforest.init.TFBlocks;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
 @SuppressWarnings("deprecation")
-public class RoyalRagsModel implements IDynamicBakedModel {
+public class RoyalRagsModel implements IDynamicBakedModel, FabricBakedModel {
 	@Nullable
 	private final List<BakedQuad>[] baseQuads;
 	private final BakedQuad[][][] quads;
 	private final TextureAtlasSprite particle;
 	private final ItemOverrides overrides;
 	private final ItemTransforms transforms;
-	private final ChunkRenderTypeSet blockRenderTypes;
-	private final List<RenderType> itemRenderTypes;
-	private final List<RenderType> fabulousItemRenderTypes;
-	// FIXME Generalize
+	private final RenderTypeGroup renderTypes;
 	private final Block[] validConnectors = {TFBlocks.CORONATION_CARPET.value()};
 	private static final ModelProperty<LoftyCarpetData> DATA = new ModelProperty<>();
 
@@ -47,40 +48,66 @@ public class RoyalRagsModel implements IDynamicBakedModel {
 		this.particle = particle;
 		this.overrides = overrides;
 		this.transforms = transforms;
-		this.blockRenderTypes = !group.isEmpty() ? ChunkRenderTypeSet.of(group.block()) : null;
-		this.itemRenderTypes = !group.isEmpty() ? List.of(group.entity()) : null;
-		this.fabulousItemRenderTypes = !group.isEmpty() ? List.of(group.entityFabulous()) : null;
+		this.renderTypes = group;
 	}
 
-	@NotNull
 	@Override
-	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource random, @NotNull ModelData extraData, @Nullable RenderType type) {
-		if (side != null) {
-			ArrayList<BakedQuad> quads = new ArrayList<>(4 + (this.baseQuads != null ? 4 : 0));
-			if (side.getAxis().isHorizontal()) {
+	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource rand, ModelData data, @Nullable RenderType renderType) {
+		// This model uses emitBlockQuads for rendering because it requires level/pos context.
+		return List.of();
+	}
+
+	@Override
+	public void emitBlockQuads(BlockAndTintGetter level, BlockState state, BlockPos pos, Supplier<RandomSource> randomSupplier, RenderContext context) {
+		LoftyCarpetData data = this.computeData(level, pos, state);
+		QuadEmitter emitter = context.getEmitter();
+
+		for (Direction face : Direction.values()) {
+			if (face.getAxis().isHorizontal()) {
 				if (this.baseQuads != null) {
-					quads.addAll(this.baseQuads[side.get2DDataValue()]);
+					for (BakedQuad quad : this.baseQuads[face.get2DDataValue()]) {
+						this.emitBakedQuad(emitter, quad);
+					}
 				}
 			} else {
-				int faceIndex = side.get3DDataValue();
-				LoftyCarpetData data = extraData.get(DATA);
+				int faceIndex = face.get3DDataValue();
 				for (int quad = 0; quad < 4; ++quad) {
-					//if our model data is null (I really hope it isn't) we can skip connected textures since we dont have the info we need
-					//i'd rather do this than crash the game or skip rendering the block entirely
-					ConnectionLogic connectionType = data != null ? data.logic[faceIndex][quad] : ConnectionLogic.NONE;
-					quads.add(this.quads[faceIndex][quad][connectionType.ordinal()]);
+					ConnectionLogic connectionType = data.logic[faceIndex][quad];
+					this.emitBakedQuad(emitter, this.quads[faceIndex][quad][connectionType.ordinal()]);
 				}
 			}
-
-			return quads;
-		} else {
-			return List.of();
 		}
 	}
 
-	@NotNull
 	@Override
-	public ModelData getModelData(@NotNull BlockAndTintGetter getter, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull ModelData modelData) {
+	public void emitItemQuads(ItemStack stack, Supplier<RandomSource> randomSupplier, RenderContext context) {
+		QuadEmitter emitter = context.getEmitter();
+		for (Direction face : Direction.values()) {
+			if (face.getAxis().isHorizontal()) {
+				if (this.baseQuads != null) {
+					for (BakedQuad quad : this.baseQuads[face.get2DDataValue()]) {
+						this.emitBakedQuad(emitter, quad);
+					}
+				}
+			} else {
+				int faceIndex = face.get3DDataValue();
+				for (int quad = 0; quad < 4; ++quad) {
+					this.emitBakedQuad(emitter, this.quads[faceIndex][quad][ConnectionLogic.NONE.ordinal()]);
+				}
+			}
+		}
+	}
+
+	private void emitBakedQuad(QuadEmitter emitter, BakedQuad quad) {
+		emitter.fromVanilla(quad.getVertices(), 0);
+		emitter.spriteBake(quad.getSprite(), MutableQuadView.BAKE_LOCK_UV);
+		emitter.colorIndex(quad.getTintIndex());
+		emitter.cullFace(quad.getDirection());
+		emitter.material(this.renderTypes.material());
+		emitter.emit();
+	}
+
+	private LoftyCarpetData computeData(BlockAndTintGetter getter, BlockPos pos, BlockState state) {
 		LoftyCarpetData data = new LoftyCarpetData();
 
 		for (Direction face : Direction.values()) {
@@ -103,7 +130,7 @@ public class RoyalRagsModel implements IDynamicBakedModel {
 			}
 		}
 
-		return modelData.derive().with(DATA, data).build();
+		return data;
 	}
 
 	private boolean shouldConnectSide(BlockAndTintGetter getter, BlockPos pos, Direction face, Direction side) {
@@ -154,27 +181,6 @@ public class RoyalRagsModel implements IDynamicBakedModel {
 		return this.transforms;
 	}
 
-	@NotNull
-	@Override
-	public ChunkRenderTypeSet getRenderTypes(@NotNull BlockState state, @NotNull RandomSource rand, @NotNull ModelData data) {
-		return this.blockRenderTypes != null ? this.blockRenderTypes : IDynamicBakedModel.super.getRenderTypes(state, rand, data);
-	}
-
-	@NotNull
-	@Override
-	public List<RenderType> getRenderTypes(@NotNull ItemStack stack, boolean fabulous) {
-		if (!fabulous) {
-			if (this.itemRenderTypes != null) {
-				return this.itemRenderTypes;
-			}
-		} else if (this.fabulousItemRenderTypes != null) {
-			return this.fabulousItemRenderTypes;
-		}
-
-		return IDynamicBakedModel.super.getRenderTypes(stack, fabulous);
-	}
-
-	//we need a class to make model data. Fine, here you go
 	private static final class LoftyCarpetData {
 		private final ConnectionLogic[][] logic = new ConnectionLogic[6][4];
 

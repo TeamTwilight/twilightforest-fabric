@@ -1,18 +1,12 @@
 package twilightforest.client;
 
-import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Matrix4f;
-import twilightforest.client.renderer.TFSkyRenderer;
-import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.init.TFBiomes;
 
 import java.util.Optional;
@@ -56,18 +50,7 @@ public class TwilightForestRenderInfo extends DimensionSpecialEffects {
 		//Make the fog on these biomes much much darker, maybe pitch black even. Do we keep this harsher fog underground too?
 	}
 
-	@Override
-	public boolean renderSky(ClientLevel level, int ticks, float partialTick, Matrix4f modelViewMatrix, Camera camera, Matrix4f projectionMatrix, boolean isFoggy, Runnable setupFog) {
-		return TFSkyRenderer.renderSky(level, partialTick, modelViewMatrix, camera, projectionMatrix, setupFog);
-	}
-
-	@Override
-	public boolean renderSnowAndRain(ClientLevel level, int ticks, float partialTick, LightTexture lightTexture, double camX, double camY, double camZ) {
-		return TFWeatherRenderer.renderSnowAndRain(level, ticks, partialTick, lightTexture, new Vec3(camX, camY, camZ));
-	}
-
-	@Override
-	public boolean tickRain(ClientLevel level, int ticks, Camera camera) {
-		return TFWeatherRenderer.tickRain(level, ticks, camera.getBlockPosition());
-	}
+	// renderSky, renderSnowAndRain, and tickRain were removed from DimensionSpecialEffects in 1.21.1.
+// These are now handled via LevelRendererMixin, which injects into LevelRenderer's methods
+// and calls TFSkyRenderer/TFWeatherRenderer when in the Twilight Forest dimension.
 }

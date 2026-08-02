@@ -4,10 +4,10 @@ import com.google.common.base.Preconditions;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.client.model.generators.CustomLoaderBuilder;
-import net.neoforged.neoforge.client.model.generators.ModelBuilder;
-import net.neoforged.neoforge.client.model.generators.ModelFile;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import io.github.fabricators_of_create.porting_lib.models.generators.CustomLoaderBuilder;
+import io.github.fabricators_of_create.porting_lib.models.generators.ModelBuilder;
+import io.github.fabricators_of_create.porting_lib.models.generators.ModelFile;
+import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 
 import java.util.ArrayList;

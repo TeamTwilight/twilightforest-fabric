@@ -17,9 +17,9 @@ public class TFRenderTypes extends RenderType {
 	}
 
 	public static final RenderType PROTECTION_BOX = create("protection_box", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true,
-		RenderType.CompositeState.builder()
+		CompositeState.builder()
 			.setShaderState(RENDERTYPE_ENERGY_SWIRL_SHADER)
-			.setTextureState(new RenderStateShard.TextureStateShard(TwilightForestMod.getModelTexture("protectionbox.png"), false, false))
+			.setTextureState(new TextureStateShard(TwilightForestMod.getModelTexture("protectionbox.png"), false, false))
 			.setTexturingState(new ProtectionBoxTexturingStateShard())
 			.setTransparencyState(TRANSLUCENT_TRANSPARENCY)
 			.setCullState(NO_CULL)
@@ -36,16 +36,16 @@ public class TFRenderTypes extends RenderType {
 	});
 
 	public static final RenderType SHADOW_CLONE = create("shadow_clone", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, true, true,
-		RenderType.CompositeState.builder()
+		CompositeState.builder()
 			.setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_CULL_SHADER)
-			.setTextureState(new RenderStateShard.TextureStateShard(LichRenderer.TEXTURE, false, false))
+			.setTextureState(new TextureStateShard(LichRenderer.TEXTURE, false, false))
 			.setTransparencyState(TRANSPARENCY_STATE_SHARD)
 			.setCullState(NO_CULL)
 			.setLightmapState(LIGHTMAP)
 			.setOverlayState(OVERLAY)
 			.createCompositeState(true));
 
-	public static final class ProtectionBoxTexturingStateShard extends RenderStateShard.TexturingStateShard {
+	public static final class ProtectionBoxTexturingStateShard extends TexturingStateShard {
 		public ProtectionBoxTexturingStateShard() {
 			super("protection_offset_texturing", () -> {
 				float tick = (float) (Minecraft.getInstance().cameraEntity != null ? Minecraft.getInstance().cameraEntity.tickCount : 0) + Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);

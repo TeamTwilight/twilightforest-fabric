@@ -1,6 +1,10 @@
 package twilightforest.client.model.block.giantblock;
 
-import com.google.common.collect.Iterables;
+import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
+import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
+import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
+import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
+import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -11,59 +15,75 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.ChunkRenderTypeSet;
-import net.neoforged.neoforge.client.RenderTypeGroup;
-import net.neoforged.neoforge.client.model.IDynamicBakedModel;
-import net.neoforged.neoforge.client.model.data.ModelData;
-import net.neoforged.neoforge.client.model.data.ModelProperty;
+import io.github.fabricators_of_create.porting_lib.models.data.ModelData;
+import io.github.fabricators_of_create.porting_lib.render_types.RenderTypeGroup;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import twilightforest.block.GiantBlock;
+import twilightforest.client.model.block.IDynamicBakedModel;
 import twilightforest.util.Vec2i;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
-public class GiantBlockModel implements IDynamicBakedModel {
+import com.google.common.collect.Iterables;
 
-	private static final ModelProperty<GiantBlockData> DATA = new ModelProperty<>();
+public class GiantBlockModel implements IDynamicBakedModel, FabricBakedModel {
+
 	private static final FaceBakery FACE_BAKERY = new FaceBakery();
+	private static final RenderMaterial SOLID = RendererAccess.INSTANCE.getRenderer().materialFinder().find();
 
 	private final TextureAtlasSprite[] textures;
 	private final TextureAtlasSprite particle;
 	private final ItemOverrides overrides;
 	private final ItemTransforms transforms;
-	private final ChunkRenderTypeSet blockRenderTypes;
-	private final List<RenderType> itemRenderTypes;
-	private final List<RenderType> fabulousItemRenderTypes;
+	private final RenderMaterial material;
 
 	public GiantBlockModel(TextureAtlasSprite[] texture, TextureAtlasSprite particle, ItemOverrides overrides, ItemTransforms transforms, RenderTypeGroup group) {
 		this.textures = texture;
 		this.particle = particle;
 		this.overrides = overrides;
 		this.transforms = transforms;
-		this.blockRenderTypes = !group.isEmpty() ? ChunkRenderTypeSet.of(group.block()) : null;
-		this.itemRenderTypes = !group.isEmpty() ? List.of(group.entity()) : null;
-		this.fabulousItemRenderTypes = !group.isEmpty() ? List.of(group.entityFabulous()) : null;
+		this.material = group.isEmpty() ? SOLID : group.material();
 	}
 
 	@Override
-	public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource rand, @NotNull ModelData extraData, @Nullable RenderType renderType) {
-		List<BakedQuad> quads = new ArrayList<>();
+	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource rand, ModelData data, @Nullable RenderType renderType) {
+		return List.of();
+	}
 
-		if (extraData.has(DATA) && side != null) {
-			BlockPos pos = extraData.get(DATA).pos();
+	@Override
+	public void emitBlockQuads(BlockAndTintGetter level, BlockState state, BlockPos pos, Supplier<RandomSource> randomSupplier, RenderContext context) {
+		QuadEmitter emitter = context.getEmitter();
+
+		for (Direction side : Direction.values()) {
+			// Cull faces that are inside the 4x4x4 giant block volume
+			if (Iterables.contains(GiantBlock.getVolume(pos), pos.offset(side.getStepX(), side.getStepY(), side.getStepZ()))) {
+				continue;
+			}
+
 			Vec2i coords = this.calculateOffset(side, pos.offset(this.magicOffsetFromDir(side)));
 
 			TextureAtlasSprite sprite = this.textures[this.textures.length > 1 ? side.ordinal() : 0];
 
-			if (!Iterables.contains(GiantBlock.getVolume(pos), pos.offset(side.getNormal()))) {
-				quads.add(FACE_BAKERY.bakeQuad(new Vector3f(0.0F, 0.0F, 0.0F), new Vector3f(16.0F, 16.0F, 16.0F), new BlockElementFace(side, side.ordinal(), side.name(), new BlockFaceUV(new float[]{0.0F + coords.x, 0.0F + coords.z, 4.0F + coords.x, 4.0F + coords.z}, 0)), sprite, side, BlockModelRotation.X0_Y0, null, true));
-			}
+			BakedQuad quad = FACE_BAKERY.bakeQuad(
+				new Vector3f(0.0F, 0.0F, 0.0F),
+				new Vector3f(16.0F, 16.0F, 16.0F),
+				new BlockElementFace(side, side.ordinal(), side.name(), new BlockFaceUV(new float[]{0.0F + coords.x, 0.0F + coords.z, 4.0F + coords.x, 4.0F + coords.z}, 0)),
+				sprite,
+				side,
+				BlockModelRotation.X0_Y0,
+				null,
+				true
+			);
+			emitter.fromVanilla(quad, this.material, quad.getDirection());
+			emitter.emit();
 		}
+	}
 
-		return quads;
+	@Override
+	public void emitItemQuads(ItemStack stack, Supplier<RandomSource> randomSupplier, RenderContext context) {
 	}
 
 	//based on the offsets written in the original giant block json
@@ -111,14 +131,6 @@ public class GiantBlockModel implements IDynamicBakedModel {
 	}
 
 	@Override
-	public @NotNull ModelData getModelData(@NotNull BlockAndTintGetter level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull ModelData modelData) {
-		if (modelData == ModelData.EMPTY) {
-			modelData = ModelData.builder().with(DATA, new GiantBlockData(level, pos)).build();
-		}
-		return modelData;
-	}
-
-	@Override
 	public boolean useAmbientOcclusion() {
 		return true;
 	}
@@ -152,29 +164,5 @@ public class GiantBlockModel implements IDynamicBakedModel {
 	@Override
 	public ItemTransforms getTransforms() {
 		return this.transforms;
-	}
-
-	@NotNull
-	@Override
-	public ChunkRenderTypeSet getRenderTypes(@NotNull BlockState state, @NotNull RandomSource rand, @NotNull ModelData data) {
-		return this.blockRenderTypes != null ? this.blockRenderTypes : IDynamicBakedModel.super.getRenderTypes(state, rand, data);
-	}
-
-	@NotNull
-	@Override
-	public List<RenderType> getRenderTypes(@NotNull ItemStack stack, boolean fabulous) {
-		if (!fabulous) {
-			if (this.itemRenderTypes != null) {
-				return this.itemRenderTypes;
-			}
-		} else if (this.fabulousItemRenderTypes != null) {
-			return this.fabulousItemRenderTypes;
-		}
-
-		return IDynamicBakedModel.super.getRenderTypes(stack, fabulous);
-	}
-
-	//modeldata holder
-	public record GiantBlockData(BlockAndTintGetter getter, BlockPos pos) {
 	}
 }

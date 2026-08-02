@@ -5,8 +5,8 @@ import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.*;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.client.model.geometry.IGeometryBakingContext;
-import net.neoforged.neoforge.client.model.geometry.IUnbakedGeometry;
+import io.github.fabricators_of_create.porting_lib.models.geometry.IGeometryBakingContext;
+import io.github.fabricators_of_create.porting_lib.models.geometry.IUnbakedGeometry;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -26,7 +26,6 @@ public class UnbakedNoiseVaryingModel implements IUnbakedGeometry<UnbakedNoiseVa
 	public void resolveParents(Function<ResourceLocation, UnbakedModel> modelGetter, IGeometryBakingContext context) {
 		for (String variant : this.importVariants) {
 			BlockModel checkedParent = resolveParent(modelGetter, variant);
-
 			this.variants.add(checkedParent);
 		}
 	}
@@ -37,19 +36,16 @@ public class UnbakedNoiseVaryingModel implements IUnbakedGeometry<UnbakedNoiseVa
 			blockModel.resolveParents(modelGetter);
 			return blockModel;
 		}
-
 		return (BlockModel) modelGetter.apply(ModelBakery.MISSING_MODEL_LOCATION);
 	}
 
 	@Override
 	public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides) {
 		BakedModel[] bakedVariants = new BakedModel[this.importVariants.length];
-
 		for (int i = 0; i < bakedVariants.length; i++) {
 			BlockModel variant = this.variants.get(i);
 			bakedVariants[i] = variant.bake(baker, variant, spriteGetter, modelState, variant.getGuiLight().lightLikeBlock());
 		}
-
 		return new NoiseVaryingModel(bakedVariants);
 	}
 }

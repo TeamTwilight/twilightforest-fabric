@@ -4,7 +4,6 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
-import net.minecraft.world.phys.AABB;
 
 public class TransformationParticle extends TextureSheetParticle {
 	private final double xStart;
@@ -89,8 +88,4 @@ public class TransformationParticle extends TextureSheetParticle {
 		}
 	}
 
-	@Override
-	public AABB getRenderBoundingBox(float partialTicks) {
-		return AABB.INFINITE;
 	}
-}

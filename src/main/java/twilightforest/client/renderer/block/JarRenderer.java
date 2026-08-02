@@ -16,21 +16,20 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity.WobbleStyle;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RotationSegment;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.neoforge.client.RenderTypeHelper;
-import net.neoforged.neoforge.client.model.data.ModelData;
-import net.neoforged.neoforge.common.util.Lazy;
-import net.neoforged.neoforge.registries.DeferredBlock;
-import tamaized.beanification.Autowired;
-import tamaized.beanification.Configurable;
+import net.fabricmc.api.EnvType;
+
+import io.github.fabricators_of_create.porting_lib.models.data.ModelData;
+import io.github.fabricators_of_create.porting_lib.core.util.Lazy;
+import io.github.fabricators_of_create.porting_lib.registry.DeferredBlock;
+
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.block.entity.MasonJarBlockEntity;
-import twilightforest.enums.extensions.TFItemDisplayContextEnumExtension;
 import twilightforest.init.TFBlocks;
 
 import javax.annotation.Nullable;
@@ -146,40 +145,36 @@ public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRendere
 
 	public static void renderJarModel(BlockState blockState, BlockRenderDispatcher blockRenderer, PoseStack stack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
 		BakedModel bakedModel = blockRenderer.getBlockModel(blockState);
-		renderModel(bakedModel, blockState, blockRenderer, stack, buffer, packedLight, packedOverlay);
+		if (bakedModel != null) {
+			renderModel(bakedModel, blockState, blockRenderer, stack, buffer, packedLight, packedOverlay);
+		}
 	}
 
 	public static void renderModel(BakedModel bakedModel, BlockState blockState, BlockRenderDispatcher blockRenderer, PoseStack stack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
+		if (bakedModel == null) return;
 		int color = blockRenderer.blockColors.getColor(blockState, null, null, 0);
 		float r = (float) (color >> 16 & 0xFF) / 255.0F;
 		float g = (float) (color >> 8 & 0xFF) / 255.0F;
 		float b = (float) (color & 0xFF) / 255.0F;
-		for (RenderType rt : bakedModel.getRenderTypes(blockState, RandomSource.create(42), ModelData.EMPTY))
-			blockRenderer.getModelRenderer()
-				.renderModel(
-					stack.last(),
-					buffer.getBuffer(RenderTypeHelper.getEntityRenderType(rt, false)),
-					blockState,
-					bakedModel,
-					r,
-					g,
-					b,
-					packedLight,
-					packedOverlay,
-					ModelData.EMPTY,
-					rt
-				);
+		blockRenderer.getModelRenderer()
+			.renderModel(
+				stack.last(),
+				buffer.getBuffer(RenderType.cutout()),
+				blockState,
+				bakedModel,
+				r,
+				g,
+				b,
+				packedLight,
+				packedOverlay
+			);
 	}
 
 	public void renderContents(T blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
 
 	}
 
-	@Configurable
 	public static class MasonJarRenderer extends JarRenderer<MasonJarBlockEntity> {
-
-		@Autowired(dist = Dist.CLIENT)
-		private TFItemDisplayContextEnumExtension itemDisplayContextEnumExtension;
 
 		protected final ItemRenderer itemRenderer;
 		protected final EntityRenderDispatcher entityRender;
@@ -203,7 +198,7 @@ public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRendere
 				poseStack.mulPose(Axis.YN.rotationDegrees(RotationSegment.convertToDegrees(blockEntity.getItemRotation())));
 
 				poseStack.scale(0.5F, 0.5F, 0.5F);
-				this.itemRenderer.renderStatic(stack, itemDisplayContextEnumExtension.JARRED, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, null, 0);
+				this.itemRenderer.renderStatic(stack, ItemDisplayContext.FIXED, packedLight, OverlayTexture.NO_OVERLAY, poseStack, buffer, null, 0);
 
 
 				poseStack.popPose();

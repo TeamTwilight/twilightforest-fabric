@@ -14,13 +14,13 @@ public record MissingAdvancementToast(Component title, ItemStack icon) implement
 	private static final ResourceLocation BACKGROUND_SPRITE = ResourceLocation.withDefaultNamespace("toast/advancement");
 
 	@Override
-	public Toast.Visibility render(GuiGraphics graphics, ToastComponent component, long timer) {
+	public Visibility render(GuiGraphics graphics, ToastComponent component, long timer) {
 		graphics.blitSprite(BACKGROUND_SPRITE, 0, 0, this.width(), this.height());
 		graphics.renderFakeItem(this.icon(), 6, 8);
 		graphics.drawString(component.getMinecraft().font, UPPER_TEXT, 25, 7, 0xffffffff, false);
 		graphics.drawString(component.getMinecraft().font, this.title(), 25, 18, 0xffffff, false);
 
 		// 10 seconds as millis
-		return timer >= 10000L ? Toast.Visibility.HIDE : Toast.Visibility.SHOW;
+		return timer >= 10000L ? Visibility.HIDE : Visibility.SHOW;
 	}
 }

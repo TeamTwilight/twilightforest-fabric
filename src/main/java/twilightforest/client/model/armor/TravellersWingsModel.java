@@ -170,8 +170,8 @@ public class TravellersWingsModel extends HumanoidModel<LivingEntity> {
 	public void setupModelAnimations(LivingEntity entity, float f, float f1, double ageInTicks, float netHeadYaw, float headPitch) {
 		this.bodyParts().forEach(modelPart -> modelPart.getAllParts().forEach(ModelPart::resetPose));
 		super.setupAnim(entity, f, f1, (float) ageInTicks, netHeadYaw, headPitch);
-		TravellersWingsAnimAttachment animAttachment = entity.getData(TFDataAttachments.TRAVELLERS_WINGS_ANIM);
-		TravellersWingsAttachment attachment = entity.getData(TFDataAttachments.TRAVELLERS_WINGS);
+		TravellersWingsAnimAttachment animAttachment = entity.getAttachedOrCreate(TFDataAttachments.TRAVELLERS_WINGS_ANIM);
+		TravellersWingsAttachment attachment = entity.getAttachedOrCreate(TFDataAttachments.TRAVELLERS_WINGS);
 
 		double dtInTicks = ageInTicks - animAttachment.oldAgeInTicks;
 

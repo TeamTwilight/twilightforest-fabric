@@ -5,25 +5,42 @@ import com.mojang.blaze3d.platform.TextureUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
+import net.minecraft.util.Unit;
+import net.minecraft.util.profiling.ProfilerFiller;
+import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.world.entity.vehicle.Boat;
 import twilightforest.TwilightForestMod;
+import twilightforest.util.TFBoatTypes;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.EnumMap;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class TextureGeneratorReloadListener implements ResourceManagerReloadListener {
+public class TextureGeneratorReloadListener implements IdentifiableResourceReloadListener {
 	public static final TextureGeneratorReloadListener INSTANCE = new TextureGeneratorReloadListener();
 	private static final EnumMap<Boat.Type, AbstractTexture> BOAT_CACHE = new EnumMap<>(Boat.Type.class);
 	private static final AtomicReference<NativeImage> ref = new AtomicReference<>();
 
 	@Override
-	public void onResourceManagerReload(ResourceManager manager) {
-		// Get a default boat chest texture
-		ResourceLocation oak = getTextureLocation(Boat.Type.OAK);
+	public ResourceLocation getFabricId() {
+		return TwilightForestMod.prefix("texture_generator");
+	}
+
+	@Override
+	public CompletableFuture<Void> reload(PreparationBarrier barrier, ResourceManager manager, ProfilerFiller preparationsProfiler, ProfilerFiller reloadProfiler, Executor backgroundExecutor, Executor gameExecutor) {
+		return barrier.wait(Unit.INSTANCE).thenRunAsync(() -> {
+			onResourceManagerReload(manager);
+		}, gameExecutor);
+	}
+
+	private void onResourceManagerReload(ResourceManager manager) {
+		// Get a default boat chest texture (vanilla oak)
+		ResourceLocation oak = ResourceLocation.withDefaultNamespace("textures/entity/chest_boat/oak.png");
 
 		manager.getResource(oak).ifPresent(vanillaResource -> {
 			try (InputStream vanillaStream = vanillaResource.open()) {
@@ -31,9 +48,10 @@ public class TextureGeneratorReloadListener implements ResourceManagerReloadList
 					int defaultScale = 128;
 					int vanillaScale = vanillaImage.getWidth() / defaultScale;
 					for (Boat.Type type : Boat.Type.values()) {
-						ResourceLocation location = getTextureLocation(type);
-						if (location.getNamespace().equals(TwilightForestMod.ID)) { // We only want to do this to our boats
-							manager.getResource(location).ifPresent(tfResource -> {
+						String name = getTFTextureName(type);
+						if (name == null) continue; // Only process TF custom types
+						ResourceLocation location = TwilightForestMod.prefix("textures/entity/chest_boat/" + name + ".png");
+						manager.getResource(location).ifPresent(tfResource -> {
 								try (InputStream tfStream = tfResource.open()) {
 									try (NativeImage tfImage = NativeImage.read(tfStream)) {
 										int tfScale = tfImage.getWidth() / defaultScale;
@@ -102,7 +120,6 @@ public class TextureGeneratorReloadListener implements ResourceManagerReloadList
 									// Fail silently, no boat texture bullshit here
 								}
 							});
-						}
 					}
 				}
 			} catch (IOException e) {
@@ -112,7 +129,15 @@ public class TextureGeneratorReloadListener implements ResourceManagerReloadList
 		ref.set(null);
 	}
 
-	private static ResourceLocation getTextureLocation(Boat.Type type) {
-		return ResourceLocation.parse(type.getName()).withPrefix("textures/entity/chest_boat/").withSuffix(".png");
+	private static String getTFTextureName(Boat.Type type) {
+		if (type == TFBoatTypes.TWILIGHT_OAK) return "twilight_oak";
+		if (type == TFBoatTypes.CANOPY) return "canopy";
+		if (type == TFBoatTypes.MANGROVE_TYPE) return "mangrove";
+		if (type == TFBoatTypes.DARK) return "dark";
+		if (type == TFBoatTypes.TIME) return "time";
+		if (type == TFBoatTypes.TRANSFORMATION) return "transformation";
+		if (type == TFBoatTypes.MINING) return "mining";
+		if (type == TFBoatTypes.SORTING) return "sorting";
+		return null;
 	}
 }

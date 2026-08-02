@@ -3,7 +3,8 @@ package twilightforest.client.event;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+
 import twilightforest.client.LockedBiomeToast;
 import twilightforest.config.TFConfig;
 import twilightforest.util.landmarks.LandmarkUtil;
@@ -16,8 +17,16 @@ public class LockedBiomeToastHandler {
 	private static boolean shownToast = false;
 	private static int timeUntilToast = 60;
 
-	protected static void tickLockedToastLogic(ClientTickEvent.Post event) {
-		Player player = Minecraft.getInstance().player;
+	/**
+	 * Register Fabric API callback for locked biome toast logic.
+	 * Called from {@link twilightforest.client.TFClientSetup#onInitializeClient()}.
+	 */
+	public static void register() {
+		ClientTickEvents.END_CLIENT_TICK.register(LockedBiomeToastHandler::tickLockedToastLogic);
+	}
+
+	protected static void tickLockedToastLogic(Minecraft client) {
+		Player player = client.player;
 		if (player == null || !(player.level() instanceof ClientLevel level))
 			return;
 
@@ -29,7 +38,7 @@ public class LockedBiomeToastHandler {
 			if (restriction.isPresent() && restriction.get().lockedBiomeToast() != null) {
 				timeUntilToast--;
 				if (!shownToast && timeUntilToast <= 0) {
-					Minecraft.getInstance().getToasts().addToast(new LockedBiomeToast(restriction.get().lockedBiomeToast()));
+					client.getToasts().addToast(new LockedBiomeToast(restriction.get().lockedBiomeToast()));
 					shownToast = true;
 				}
 			} else {

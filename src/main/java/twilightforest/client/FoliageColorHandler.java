@@ -5,21 +5,23 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent;
-import tamaized.beanification.Autowired;
-import tamaized.beanification.Component;
-import tamaized.beanification.PostConstruct;
+import io.github.fabricators_of_create.porting_lib.entity.events.EntityLeaveLevelEvent;
 import twilightforest.init.TFBiomes;
+import twilightforest.util.TFBeanRegistry;
 import twilightforest.world.components.BiomeColorAlgorithms;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Component
 public final class FoliageColorHandler {
 
-	@Autowired
+	public static final FoliageColorHandler INSTANCE = new FoliageColorHandler();
+
+	static {
+		TFBeanRegistry.register(FoliageColorHandler.class, INSTANCE);
+		TFBeanRegistry.addPostInit(INSTANCE::init);
+	}
+
 	private BiomeColorAlgorithms biomeColorAlgorithms;
 
 	private final Map<ResourceKey<Biome>, Handler> REGISTRY = new HashMap<>() {{
@@ -32,9 +34,9 @@ public final class FoliageColorHandler {
 
 	private final Map<Biome, Handler> HANDLES = new MapMaker().weakKeys().makeMap(); // Concurrent + Weak + Hash
 
-	@PostConstruct(PostConstruct.Bus.GAME)
-	private void setup(IEventBus bus) {
-		bus.addListener(EntityLeaveLevelEvent.class, event -> {
+	private void init() {
+		this.biomeColorAlgorithms = TFBeanRegistry.get(BiomeColorAlgorithms.class);
+		EntityLeaveLevelEvent.EVENT.register(event -> {
 			if (event.getLevel().isClientSide()) {
 				HANDLES.clear();
 			}

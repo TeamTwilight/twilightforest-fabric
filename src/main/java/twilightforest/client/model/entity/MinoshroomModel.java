@@ -231,11 +231,11 @@ public class MinoshroomModel<T extends Minoshroom> extends HumanoidModel<T> impl
 			}
 		}
 
-		if (this.rightArmPose != HumanoidModel.ArmPose.SPYGLASS) {
+		if (this.rightArmPose != ArmPose.SPYGLASS) {
 			AnimationUtils.bobModelPart(this.rightArm, ageInTicks, 1.0F);
 		}
 
-		if (this.leftArmPose != HumanoidModel.ArmPose.SPYGLASS) {
+		if (this.leftArmPose != ArmPose.SPYGLASS) {
 			AnimationUtils.bobModelPart(this.leftArm, ageInTicks, -1.0F);
 		}
 

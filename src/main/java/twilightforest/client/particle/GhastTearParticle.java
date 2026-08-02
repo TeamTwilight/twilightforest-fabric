@@ -13,14 +13,14 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.neoforged.neoforge.client.model.data.ModelData;
+import io.github.fabricators_of_create.porting_lib.models.data.ModelData;
 import twilightforest.init.TFSounds;
 
 public class GhastTearParticle extends TextureSheetParticle {
 
 	public GhastTearParticle(ClientLevel level, double x, double y, double z, Item item) {
 		super(level, x, y, z, 0.0D, 0.0D, 0.0D);
-		this.sprite = Minecraft.getInstance().getItemRenderer().getItemModelShaper().getItemModel(item).getParticleIcon(ModelData.EMPTY);
+		this.sprite = Minecraft.getInstance().getItemRenderer().getItemModelShaper().getItemModel(item).getParticleIcon();
 		this.rCol = this.gCol = this.bCol = 1.0F;
 		this.quadSize = 2.0F;
 		this.gravity = 0.6F;

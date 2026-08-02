@@ -424,7 +424,7 @@ public class TFWeatherRenderer {
 
 	/**
 	 * [VanillaCopy]:<br>
-	 * {@link net.minecraft.client.renderer.LevelRenderer#tickRain(Camera)}<br>
+	 * {@link LevelRenderer#tickRain(Camera)}<br>
 	 */
 	public static boolean tickRain(ClientLevel level, int partialTicks, BlockPos blockpos) {
 		//TF - render rain if the Ur-Ghast is alive as well

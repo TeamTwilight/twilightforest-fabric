@@ -6,8 +6,8 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 public class DoubleJumpParticle extends ExplodeParticle {
 	protected DoubleJumpParticle(
@@ -17,7 +17,7 @@ public class DoubleJumpParticle extends ExplodeParticle {
 		this.quadSize *= 0.5F;
 	}
 
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	public record Provider(SpriteSet sprite) implements ParticleProvider<SimpleParticleType> {
 
 		@Override

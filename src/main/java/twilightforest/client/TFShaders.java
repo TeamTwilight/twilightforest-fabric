@@ -3,10 +3,11 @@ package twilightforest.client;
 import com.mojang.blaze3d.shaders.Uniform;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ShaderInstance;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceProvider;
-import net.neoforged.neoforge.client.event.RegisterShadersEvent;
+
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 
@@ -17,14 +18,25 @@ public class TFShaders {
 	public static ShaderInstance RED_THREAD;
 	public static PositionAwareShaderInstance AURORA;
 
-	public static void registerShaders(RegisterShadersEvent event) {
+	public static void registerShaders() {
+		// Defer shader loading to after client is fully initialized and resources are available
+		ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
+			loadShaders();
+		});
+	}
+
+	private static void loadShaders() {
+		ResourceProvider resourceProvider = Minecraft.getInstance().getResourceManager();
 		try {
-			event.registerShader(new ShaderInstance(event.getResourceProvider(), TwilightForestMod.prefix("red_thread/red_thread"), DefaultVertexFormat.BLOCK),
-				shader -> RED_THREAD = shader);
-			event.registerShader(new PositionAwareShaderInstance(event.getResourceProvider(), TwilightForestMod.prefix("aurora/aurora"), DefaultVertexFormat.POSITION_COLOR),
-				shader -> AURORA = (PositionAwareShaderInstance) shader);
-		} catch (IOException e) {
-			e.printStackTrace();
+			// Use "modid:path" format - ShaderInstanceMixin will handle the namespace
+			RED_THREAD = new ShaderInstance(resourceProvider, "twilightforest:red_thread/red_thread", DefaultVertexFormat.BLOCK);
+		} catch (Exception e) {
+			TwilightForestMod.LOGGER.warn("Failed to load red_thread shader: {}", e.getMessage());
+		}
+		try {
+			AURORA = new PositionAwareShaderInstance(resourceProvider, "twilightforest:aurora/aurora", DefaultVertexFormat.POSITION_COLOR);
+		} catch (Exception e) {
+			TwilightForestMod.LOGGER.warn("Failed to load aurora shader: {}", e.getMessage());
 		}
 	}
 
@@ -32,7 +44,7 @@ public class TFShaders {
 
 		private ShaderInstance last;
 
-		public BindableShaderInstance(ResourceProvider p_173336_, ResourceLocation shaderLocation, VertexFormat p_173338_) throws IOException {
+		public BindableShaderInstance(ResourceProvider p_173336_, String shaderLocation, VertexFormat p_173338_) throws IOException {
 			super(p_173336_, shaderLocation, p_173338_);
 		}
 
@@ -82,7 +94,7 @@ public class TFShaders {
 		@Nullable
 		public final Uniform POSITION;
 
-		public PositionAwareShaderInstance(ResourceProvider p_173336_, ResourceLocation shaderLocation, VertexFormat p_173338_) throws IOException {
+		public PositionAwareShaderInstance(ResourceProvider p_173336_, String shaderLocation, VertexFormat p_173338_) throws IOException {
 			super(p_173336_, shaderLocation, p_173338_);
 			SEED = getUniform("SeedContext");
 			POSITION = getUniform("PositionContext");
