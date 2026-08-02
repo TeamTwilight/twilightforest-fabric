@@ -48,7 +48,7 @@
       "twilightforest.data.DataGenerators"
     ]
   },
-  "accessWidener": "twilightforest.accesswidener",
+  "accessWidener": "twilightforest.classtweaker",
   "mixins": [
     "twilightforest.mixins.json"
   ],

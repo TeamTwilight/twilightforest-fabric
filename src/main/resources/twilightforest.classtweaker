@@ -1,4 +1,4 @@
-accessWidener v2 named
+classTweaker v2 named
 
 # Sets Custom Display Component for container UI
 accessible field net/minecraft/world/level/block/entity/BaseContainerBlockEntity name Lnet/minecraft/network/chat/Component;
