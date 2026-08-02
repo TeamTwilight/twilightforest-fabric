@@ -1,18 +1,16 @@
 package twilightforest.network;
 
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.neoforged.neoforge.client.DimensionSpecialEffectsManager;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.TwilightForestRenderInfo;
 import twilightforest.client.renderer.TFWeatherRenderer;
-import twilightforest.init.TFDimension;
 import twilightforest.util.Codecs;
 
 import java.util.List;
@@ -36,9 +34,11 @@ public record StructureProtectionPacket(Optional<List<Pair<BoundingBox, Boolean>
 
 	public static void handle(StructureProtectionPacket message, IPayloadContext ctx) {
 		ctx.enqueueWork(() -> {
-			DimensionSpecialEffects info = DimensionSpecialEffectsManager.getForType(TFDimension.DIMENSION_RENDERER);
+			// In Fabric, the current dimension's DimensionSpecialEffects is accessed via
+			// Minecraft.getInstance().level.effects(), which is the Fabric equivalent of
+			// NeoForge's DimensionSpecialEffectsManager.getForType().
+			DimensionSpecialEffects info = Minecraft.getInstance().level != null ? Minecraft.getInstance().level.effects() : null;
 
-			// Now you have a List<Pair<BoundingBox, Boolean>>
 			if (info instanceof TwilightForestRenderInfo) {
 				TFWeatherRenderer.setProtectedBoxes(message.boxes().orElse(null));
 			}

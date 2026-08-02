@@ -4,8 +4,8 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
+import twilightforest.network.PacketDistributor;
+import twilightforest.network.IPayloadContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFDataAttachments;
 
@@ -25,10 +25,10 @@ public record GradualGlidePacket(boolean isGraduallyGliding, UUID playerUUID) im
 			if (player == null)
 				return;
 			if (player.level().isClientSide()) {
-				player.setData(TFDataAttachments.IS_GRADUALLY_GLIDING, packet.isGraduallyGliding);
+				player.setAttached(TFDataAttachments.IS_GRADUALLY_GLIDING, packet.isGraduallyGliding);
 				return;
 			}
-			player.setData(TFDataAttachments.IS_GRADUALLY_GLIDING, packet.isGraduallyGliding);
+			player.setAttached(TFDataAttachments.IS_GRADUALLY_GLIDING, packet.isGraduallyGliding);
 			PacketDistributor.sendToPlayersTrackingEntity(player, new GradualGlidePacket(packet.isGraduallyGliding, player.getUUID()));
 		});
 	}

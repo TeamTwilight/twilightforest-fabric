@@ -8,7 +8,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
+import twilightforest.network.IPayloadContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.MagicMapItem;
 import twilightforest.item.mapdata.TFMagicMapData;

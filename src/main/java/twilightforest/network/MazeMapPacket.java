@@ -8,13 +8,13 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
+import twilightforest.network.IPayloadContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.MazeMapItem;
 import twilightforest.item.mapdata.TFMazeMapData;
 
 // Rewraps vanilla ClientboundMapItemDataPacket to properly add our own data
-public record MazeMapPacket(ClientboundMapItemDataPacket inner, boolean ore, int yCenter) implements CustomPacketPayload {
+public record MazeMapPacket(ClientboundMapItemDataPacket inner, boolean ore, int yCenter, int centerX, int centerZ) implements CustomPacketPayload {
 
 	public static final Type<MazeMapPacket> TYPE = new Type<>(TwilightForestMod.prefix("maze_map"));
 
@@ -22,6 +22,8 @@ public record MazeMapPacket(ClientboundMapItemDataPacket inner, boolean ore, int
 		ClientboundMapItemDataPacket.STREAM_CODEC, MazeMapPacket::inner,
 		ByteBufCodecs.BOOL, MazeMapPacket::ore,
 		ByteBufCodecs.INT, MazeMapPacket::yCenter,
+		ByteBufCodecs.VAR_INT, MazeMapPacket::centerX,
+		ByteBufCodecs.VAR_INT, MazeMapPacket::centerZ,
 		MazeMapPacket::new
 	);
 
@@ -43,7 +45,7 @@ public record MazeMapPacket(ClientboundMapItemDataPacket inner, boolean ore, int
 					String s = MazeMapItem.getMapName(message.inner().mapId().id());
 					TFMazeMapData mapdata = TFMazeMapData.getMazeMapData(level, s);
 					if (mapdata == null) {
-						mapdata = new TFMazeMapData(0, 0, message.inner().scale(), false, false, message.inner().locked(), level.dimension());
+						mapdata = new TFMazeMapData(message.centerX(), message.centerZ(), message.inner().scale(), false, false, message.inner().locked(), level.dimension());
 						TFMazeMapData.registerMazeMapData(level, mapdata, s);
 					}
 

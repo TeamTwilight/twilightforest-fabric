@@ -14,7 +14,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
+import twilightforest.network.IPayloadContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.CharmEffect;
