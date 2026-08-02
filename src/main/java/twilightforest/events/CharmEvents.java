@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.fabricmc.loader.api.FabricLoader;
 
-import twilightforest.util.TFFakePlayer;
 import io.github.fabricators_of_create.porting_lib.entity.events.living.LivingDeathEvent;
 import twilightforest.network.PacketDistributor;
 import io.github.fabricators_of_create.porting_lib.registry.DeferredItem;
@@ -29,7 +28,7 @@ import twilightforest.util.TFBeanRegistry;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.block.entity.SkullChestBlockEntity;
-import twilightforest.compat.curios.CuriosCompat;
+import twilightforest.compat.trinkets.TrinketsCompat;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.enums.BlockLoggingEnum;
@@ -102,8 +101,8 @@ public class CharmEvents {
 	*/
 
 	private static boolean handleCharmOfLife(Player player) {
-		boolean charm2 = TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_LIFE_2.get(), getPlayerData(player), false) || hasCharmCurio(TFItems.CHARM_OF_LIFE_2.get(), player);
-		boolean charm1 = !charm2 && (TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_LIFE_1.get(), getPlayerData(player), false) || hasCharmCurio(TFItems.CHARM_OF_LIFE_1.get(), player));
+		boolean charm2 = TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_LIFE_2.get(), getPlayerData(player), false) || hasCharmTrinket(TFItems.CHARM_OF_LIFE_2.get(), player);
+		boolean charm1 = !charm2 && (TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_LIFE_1.get(), getPlayerData(player), false) || hasCharmTrinket(TFItems.CHARM_OF_LIFE_1.get(), player));
 
 		if (charm2 || charm1) {
 			if (charm1) {
@@ -184,7 +183,7 @@ public class CharmEvents {
 		if (mergedCheck.stream().filter(stack -> !stack.is(charm)).allMatch(ItemStack::isEmpty)) return false;
 
 		//do we even have a charm? No? Then stop operation
-		if (!TFItemStackUtils.consumeInventoryItem(player, charm, getPlayerData(player), true) && !hasCharmCurio(charm.value(), player)) return false;
+		if (!TFItemStackUtils.consumeInventoryItem(player, charm, getPlayerData(player), true) && !hasCharmTrinket(charm.value(), player)) return false;
 
 		boolean keptACasket = keepWholeListAndCheckCasket(keptInventory.items, inventorySlots, charm == TFItems.CHARM_OF_KEEPING_3);
 		keptACasket = keepWholeListAndCheckCasket(keptInventory.armor, player.getInventory().armor, keptACasket);
@@ -351,9 +350,9 @@ public class CharmEvents {
 		return keptCasket || skipCasketCheck;
 	}
 
-	private static boolean hasCharmCurio(Item item, Player player) {
-		if (FabricLoader.getInstance().isModLoaded("curios")) {
-			return CuriosCompat.findAndConsumeCurio(item, player);
+	private static boolean hasCharmTrinket(Item item, Player player) {
+		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
+			return TrinketsCompat.findAndConsumeTrinket(item, player);
 		}
 
 		return false;

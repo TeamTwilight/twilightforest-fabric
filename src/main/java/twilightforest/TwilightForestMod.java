@@ -182,9 +182,9 @@ public final class TwilightForestMod implements ModInitializer {
 		TFBiomes.registerGrassColorModifiers();
 
 		// Compat mods - will be handled via Fabric's mod loading
-		if (FabricLoader.getInstance().isModLoaded("curios")) {
-			// Curios compat will be registered via fabric.mod.json entrypoints
-			LOGGER.info("Curios detected, loading compat");
+		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
+			// Trinkets compat will be registered via fabric.mod.json entrypoints
+			LOGGER.info("Trinkets detected, loading compat");
 		}
 
 		// Register compostables (migrated from NeoForge DataMaps)

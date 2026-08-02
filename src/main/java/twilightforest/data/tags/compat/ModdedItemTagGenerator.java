@@ -22,9 +22,6 @@ public class ModdedItemTagGenerator extends ItemTagsProvider {
 	public static final TagKey<Item> AC_FERROMAGNETIC_ITEMS = createTagFor("alexscaves", "ferromagnetic_items");
 	public static final TagKey<Item> AC_RAW_MEATS = createTagFor("alexscaves", "raw_meats");
 
-	public static final TagKey<Item> CURIOS_CHARM = createTagFor("curios", "charm");
-	public static final TagKey<Item> CURIOS_HEAD = createTagFor("curios", "head");
-
 	public static final TagKey<Item> CA_PLANTS = createTagFor("createaddition", "plants");
 	public static final TagKey<Item> CA_PLANT_FOODS = createTagFor("createaddition", "plant_foods");
 
@@ -59,31 +56,6 @@ public class ModdedItemTagGenerator extends ItemTagsProvider {
 				TFItems.FIERY_SWORD.get(), TFItems.FIERY_PICKAXE.get(), TFItems.MAZEBREAKER_PICKAXE.get());
 
 		tag(AC_RAW_MEATS).add(TFItems.RAW_VENISON.get(), TFItems.RAW_MEEF.get());
-
-		tag(CURIOS_CHARM).add(
-			TFItems.CHARM_OF_LIFE_1.get(), TFItems.CHARM_OF_LIFE_2.get(),
-			TFItems.CHARM_OF_KEEPING_1.get(), TFItems.CHARM_OF_KEEPING_2.get(), TFItems.CHARM_OF_KEEPING_3.get()
-		);
-
-		tag(CURIOS_HEAD).add(
-			TFItems.NAGA_TROPHY.get(),
-			TFItems.LICH_TROPHY.get(),
-			TFItems.MINOSHROOM_TROPHY.get(),
-			TFItems.HYDRA_TROPHY.get(),
-			TFItems.KNIGHT_PHANTOM_TROPHY.get(),
-			TFItems.UR_GHAST_TROPHY.get(),
-			TFItems.ALPHA_YETI_TROPHY.get(),
-			TFItems.SNOW_QUEEN_TROPHY.get(),
-			TFItems.QUEST_RAM_TROPHY.get(),
-			TFBlocks.CICADA.get().asItem(),
-			TFBlocks.FIREFLY.get().asItem(),
-			TFBlocks.MOONWORM.get().asItem(),
-			TFItems.CREEPER_SKULL_CANDLE.get(),
-			TFItems.PIGLIN_SKULL_CANDLE.get(),
-			TFItems.PLAYER_SKULL_CANDLE.get(),
-			TFItems.SKELETON_SKULL_CANDLE.get(),
-			TFItems.WITHER_SKELETON_SKULL_CANDLE.get(),
-			TFItems.ZOMBIE_SKULL_CANDLE.get());
 
 		tag(CA_PLANT_FOODS).add(TFItems.TORCHBERRIES.get());
 

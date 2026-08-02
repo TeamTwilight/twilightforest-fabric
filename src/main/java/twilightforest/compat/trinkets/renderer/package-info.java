@@ -1,6 +1,6 @@
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package twilightforest.compat.curios.renderer;
+package twilightforest.compat.trinkets.renderer;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 

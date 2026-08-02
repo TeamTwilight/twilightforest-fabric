@@ -19,23 +19,18 @@ import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.fabricmc.loader.api.FabricLoader;
 
 import io.github.fabricators_of_create.porting_lib.entity.events.EntityJoinLevelEvent;
 
 import io.github.fabricators_of_create.porting_lib.entity.events.player.PlayerInteractEvent;
-import twilightforest.network.PacketDistributor;
 import twilightforest.util.TFBeanRegistry;
-import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.entity.monster.DeathTome;
 import twilightforest.entity.passive.Bighorn;
 import twilightforest.entity.passive.DwarfRabbit;
 import twilightforest.entity.passive.Squirrel;
 import twilightforest.entity.passive.TinyBird;
-import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFEntities;
-import twilightforest.network.CreateMovingCicadaSoundPacket;
 
 public class MiscEvents {
 
@@ -84,10 +79,10 @@ public class MiscEvents {
 		// Vanilla doesn't have a hook for this in the item class, so we handle it here.
 		// We only need to check equipping; unequipping is handled by the sound instance.
 
-		// Skip if cicada is in a curios slot
-		 if (FabricLoader.getInstance().isModLoaded("curios")) {
+		// Skip if cicada is in a trinkets slot
+		 if (FabricLoader.getInstance().isModLoaded("trinkets")) {
 		 	try {
-		 		if (CuriosCompat.isCurioEquipped(living, stack -> stack.is(TFBlocks.CICADA.asItem()))) return;
+		 		if (TrinketsCompat.isTrinketEquipped(living, stack -> stack.is(TFBlocks.CICADA.asItem()))) return;
 		 	} catch (NoClassDefFoundError ignored) {}
 		 }
 

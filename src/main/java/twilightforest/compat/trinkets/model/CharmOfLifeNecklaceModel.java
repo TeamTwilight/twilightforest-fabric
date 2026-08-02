@@ -1,4 +1,4 @@
-package twilightforest.compat.curios.model;
+package twilightforest.compat.trinkets.model;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
