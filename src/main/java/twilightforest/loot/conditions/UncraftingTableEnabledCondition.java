@@ -23,7 +23,7 @@ public class UncraftingTableEnabledCondition implements LootItemCondition {
 		return !TFConfig.disableEntireTable;
 	}
 
-	public static LootItemCondition.Builder uncraftingTableEnabled() {
+	public static Builder uncraftingTableEnabled() {
 		return UncraftingTableEnabledCondition::new;
 	}
 }

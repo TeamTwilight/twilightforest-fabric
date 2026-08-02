@@ -32,8 +32,8 @@ public class MultiplayerBasedAdditionLootFunction extends LootItemConditionalFun
 		this.value = value;
 	}
 
-	public static MultiplayerBasedAdditionLootFunction.Builder addForAllParticipatingPlayers(NumberProvider additionPerPlayer) {
-		return new MultiplayerBasedAdditionLootFunction.Builder(additionPerPlayer);
+	public static Builder addForAllParticipatingPlayers(NumberProvider additionPerPlayer) {
+		return new Builder(additionPerPlayer);
 	}
 
 	@Override
@@ -44,8 +44,8 @@ public class MultiplayerBasedAdditionLootFunction extends LootItemConditionalFun
 	@Override
 	protected ItemStack run(ItemStack stack, LootContext context) {
 		if (TFConfig.multiplayerFightAdjuster.adjustsLootRolls()) {
-			if (context.hasParam(LootContextParams.THIS_ENTITY) && context.getParam(LootContextParams.THIS_ENTITY).hasData(TFDataAttachments.MULTIPLAYER_FIGHT)) {
-				int qualifiedPlayers = context.getParam(LootContextParams.THIS_ENTITY).getData(TFDataAttachments.MULTIPLAYER_FIGHT).getQualifiedPlayers().size();
+			if (context.hasParam(LootContextParams.THIS_ENTITY) && context.getParam(LootContextParams.THIS_ENTITY).hasAttached(TFDataAttachments.MULTIPLAYER_FIGHT)) {
+				int qualifiedPlayers = context.getParam(LootContextParams.THIS_ENTITY).getAttachedOrCreate(TFDataAttachments.MULTIPLAYER_FIGHT).getQualifiedPlayers().size();
 				if (qualifiedPlayers > 1) {
 					int participatingPlayers = qualifiedPlayers - 1;
 					int extraItems = this.value.getInt(context) * participatingPlayers;
@@ -57,7 +57,7 @@ public class MultiplayerBasedAdditionLootFunction extends LootItemConditionalFun
 		return stack;
 	}
 
-	public static class Builder extends LootItemConditionalFunction.Builder<MultiplayerBasedAdditionLootFunction.Builder> {
+	public static class Builder extends LootItemConditionalFunction.Builder<Builder> {
 		private final NumberProvider count;
 
 		public Builder(NumberProvider pLootingMultiplier) {
@@ -65,7 +65,7 @@ public class MultiplayerBasedAdditionLootFunction extends LootItemConditionalFun
 		}
 
 		@Override
-		protected MultiplayerBasedAdditionLootFunction.Builder getThis() {
+		protected Builder getThis() {
 			return this;
 		}
 

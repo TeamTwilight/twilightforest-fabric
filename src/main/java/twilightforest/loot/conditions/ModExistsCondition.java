@@ -6,7 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
-import net.neoforged.fml.ModList;
+import net.fabricmc.loader.api.FabricLoader;
 import twilightforest.init.TFLoot;
 
 // Loot condition for checking if a mod exists.
@@ -18,7 +18,7 @@ public class ModExistsCondition implements LootItemCondition {
 	private final String modID;
 
 	public ModExistsCondition(String modID) {
-		this.exists = ModList.get().isLoaded(modID);
+		this.exists = FabricLoader.getInstance().isModLoaded(modID);
 		this.modID = modID;
 	}
 
@@ -32,7 +32,7 @@ public class ModExistsCondition implements LootItemCondition {
 		return this.exists;
 	}
 
-	public static LootItemCondition.Builder builder(String modid) {
+	public static Builder builder(String modid) {
 		return () -> new ModExistsCondition(modid);
 	}
 }

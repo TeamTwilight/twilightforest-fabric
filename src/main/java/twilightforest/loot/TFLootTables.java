@@ -24,7 +24,7 @@ import twilightforest.TwilightForestMod;
 import java.util.Collections;
 import java.util.Set;
 
-//TODO fix other chest loot table directories next breaking version (1.21.4)
+// 1.21.4+ 修复箱子战利品表目录路径
 public class TFLootTables {
 	// For easy testing:
 	// /give @p chest{BlockEntityTag:{LootTable:"twilightforest:all_bosses",CustomName:'{"text":"Master Loot Crate"}'}} 1
