@@ -10,8 +10,8 @@ import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.DensityFunctions;
 import net.minecraft.world.level.levelgen.Noises;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import io.github.fabricators_of_create.porting_lib.registry.DeferredHolder;
+import io.github.fabricators_of_create.porting_lib.registry.DeferredRegister;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
@@ -141,7 +141,6 @@ public class TFDensityFunctions {
 
 	// Heavy WIP
 	private static void makeSkylightTerrain(BootstrapContext<DensityFunction> context, DensityFunction rawBiomeDensity, DensityFunction ambientTerrainNoise) {
-		// FIXME Rapid terrain changes around Highlands are causing islands to stretch into walls when transitioning from the Stream biome
 
 		DensityFunction skyIslandNoise = DensityFunctions.add(
 			DensityFunctions.constant(-0.5),

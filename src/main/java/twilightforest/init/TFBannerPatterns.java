@@ -4,7 +4,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.entity.BannerPattern;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import io.github.fabricators_of_create.porting_lib.registry.DeferredRegister;
 import twilightforest.TwilightForestMod;
 
 public class TFBannerPatterns {

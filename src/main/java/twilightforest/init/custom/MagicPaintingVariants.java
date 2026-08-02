@@ -37,7 +37,7 @@ public class MagicPaintingVariants {
 	public static final ResourceKey<MagicPaintingVariant> CASTAWAY_PARADISE = makeKey(TwilightForestMod.prefix("castaway_paradise"));
 	public static final ResourceKey<MagicPaintingVariant> MUSIC_IN_THE_MIRE = makeKey(TwilightForestMod.prefix("music_in_the_mire"));
 
-	public static final ResourceKey<MagicPaintingVariant> DEFAULT = MagicPaintingVariants.LUCID_LANDS; // FIXME Switch to a smaller one once available or create a blank 1x1 that's not accessible by normal means
+	public static final ResourceKey<MagicPaintingVariant> DEFAULT = MagicPaintingVariants.LUCID_LANDS; // Switch to a smaller one once available, or create a blank 1x1 not accessible by normal means
 
 	private static ResourceKey<MagicPaintingVariant> makeKey(ResourceLocation name) {
 		return ResourceKey.create(TFRegistries.Keys.MAGIC_PAINTINGS, name);

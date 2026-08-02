@@ -161,7 +161,7 @@ public class TravellersModifiersManager {
 	}
 
 	public static MutableComponent getModifierTooltipComponent(Holder.Reference<TravellersModifier> modifier) {
-		return TooltipStringInterpolator.render(modifier.getKey().location().toLanguageKey(modifier.value().getPrefix()));
+		return TooltipStringInterpolator.render(modifier.key().location().toLanguageKey(modifier.value().getPrefix()));
 	}
 
 	public static List<Holder.Reference<TravellersModifier>> findAllInsertableModifiers(HolderLookup.Provider registries, ItemStack stack) {
@@ -212,7 +212,7 @@ public class TravellersModifiersManager {
 		if (MISSING_MODIFIERS.contains(modifierKey))
 			return Optional.empty();
 
-		Optional<Holder.Reference<TravellersModifier>> modifier = registries.holder(modifierKey);
+		Optional<Holder.Reference<TravellersModifier>> modifier = registries.lookupOrThrow(TFRegistries.Keys.TRAVELLERS_MODIFIERS).get(modifierKey);
 		if (modifier.isPresent()) {
 			CACHED_MODIFIERS.put(modifierKey, modifier.get().value());
 			return Optional.of(modifier.get().value());

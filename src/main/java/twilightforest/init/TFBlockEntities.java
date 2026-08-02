@@ -2,8 +2,10 @@ package twilightforest.init;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.entity.TrappedChestBlockEntity;
+import io.github.fabricators_of_create.porting_lib.registry.DeferredHolder;
+import io.github.fabricators_of_create.porting_lib.registry.DeferredRegister;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.entity.*;
 import twilightforest.block.entity.bookshelf.ChiseledCanopyShelfBlockEntity;
@@ -77,6 +79,17 @@ public class TFBlockEntities {
 			TFBlocks.CREEPER_SKULL_CANDLE.get(), TFBlocks.CREEPER_WALL_SKULL_CANDLE.get(),
 			TFBlocks.PLAYER_SKULL_CANDLE.get(), TFBlocks.PLAYER_WALL_SKULL_CANDLE.get(),
 			TFBlocks.PIGLIN_SKULL_CANDLE.get(), TFBlocks.PIGLIN_WALL_SKULL_CANDLE.get()).build(null));
+
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ChestBlockEntity>> TF_CHEST = BLOCK_ENTITIES.register("tf_chest", () ->
+		BlockEntityType.Builder.of(ChestBlockEntity::new,
+			TFBlocks.TWILIGHT_OAK_CHEST.get(), TFBlocks.CANOPY_CHEST.get(), TFBlocks.MANGROVE_CHEST.get(),
+			TFBlocks.DARK_CHEST.get(), TFBlocks.TIME_CHEST.get(), TFBlocks.TRANSFORMATION_CHEST.get(),
+			TFBlocks.MINING_CHEST.get(), TFBlocks.SORTING_CHEST.get()).build(null));
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TrappedChestBlockEntity>> TF_TRAPPED_CHEST = BLOCK_ENTITIES.register("tf_trapped_chest", () ->
+		BlockEntityType.Builder.of(TrappedChestBlockEntity::new,
+			TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.get(), TFBlocks.CANOPY_TRAPPED_CHEST.get(), TFBlocks.MANGROVE_TRAPPED_CHEST.get(),
+			TFBlocks.DARK_TRAPPED_CHEST.get(), TFBlocks.TIME_TRAPPED_CHEST.get(), TFBlocks.TRANSFORMATION_TRAPPED_CHEST.get(),
+			TFBlocks.MINING_TRAPPED_CHEST.get(), TFBlocks.SORTING_TRAPPED_CHEST.get()).build(null));
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ChiseledCanopyShelfBlockEntity>> CHISELED_CANOPY_BOOKSHELF = BLOCK_ENTITIES.register("chiseled_canopy_bookshelf", () ->
 		BlockEntityType.Builder.of(ChiseledCanopyShelfBlockEntity::new, TFBlocks.CHISELED_CANOPY_BOOKSHELF.get()).build(null));

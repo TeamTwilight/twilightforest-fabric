@@ -2,53 +2,142 @@ package twilightforest.init;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.serialization.Codec;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Unit;
-import net.neoforged.neoforge.attachment.AttachmentType;
-import net.neoforged.neoforge.attachment.IAttachmentHolder;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentSyncPredicate;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import twilightforest.TwilightForestMod;
 import twilightforest.components.entity.*;
 import twilightforest.util.Codecs;
 
 public class TFDataAttachments {
-	public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, TwilightForestMod.ID);
 
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Boolean>> FEATHER_FAN = ATTACHMENT_TYPES.register("feather_fan_falling", () -> AttachmentType.builder(() -> false).serialize(Codec.BOOL).sync(ByteBufCodecs.BOOL).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<PotionFlaskTrackingAttachment>> FLASK_DOSES = ATTACHMENT_TYPES.register("flask_doses", () -> AttachmentType.builder(PotionFlaskTrackingAttachment::new).serialize(PotionFlaskTrackingAttachment.CODEC).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<FortificationShieldAttachment>> FORTIFICATION_SHIELDS = ATTACHMENT_TYPES.register("fortification_shields", () -> AttachmentType.builder(FortificationShieldAttachment::new).serialize(FortificationShieldAttachment.CODEC).sync(FortificationShieldAttachment.STREAM_CODEC).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<GiantPickaxeMiningAttachment>> GIANT_PICKAXE_MINING = ATTACHMENT_TYPES.register("giant_pickaxe_mining", () -> AttachmentType.builder(GiantPickaxeMiningAttachment::new).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<YetiThrowAttachment>> YETI_THROWING = ATTACHMENT_TYPES.register("yeti_throwing", () -> AttachmentType.builder(YetiThrowAttachment::new).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<MultiplayerInclusivityAttachment>> MULTIPLAYER_FIGHT = ATTACHMENT_TYPES.register("multiplayer_fight", () -> AttachmentType.builder(MultiplayerInclusivityAttachment::new).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<TFPortalAttachment>> TF_PORTAL_COOLDOWN = ATTACHMENT_TYPES.register("tf_portal_cooldown", () -> AttachmentType.builder(TFPortalAttachment::new).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<SmashBlocksEnchantmentAttachment>> SMASH_BLOCKS = ATTACHMENT_TYPES.register("smash_blocks", () -> AttachmentType.builder(() -> new SmashBlocksEnchantmentAttachment()).serialize(SmashBlocksEnchantmentAttachment.CODEC).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<GameProfile>> ZOMBIFIED_PLAYER = ATTACHMENT_TYPES.register("zombified_player", () -> AttachmentType.builder(() -> UUIDUtil.createOfflineProfile("GizmoTheMoonPig")).serialize(Codecs.SIMPLE_GAME_PROFILE).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Unit>> LEASH_PATHFINDER_OVERRIDE = ATTACHMENT_TYPES.register("leashed_pathfinder_override", () -> AttachmentType.builder(() -> Unit.INSTANCE).serialize(Codec.unit(Unit.INSTANCE)).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Unit>> BANISHED_TO_TWILIGHT_FOREST = ATTACHMENT_TYPES.register("twilightforest_banished", () -> AttachmentType.builder(() -> Unit.INSTANCE).serialize(Codec.unit(Unit.INSTANCE)).copyOnDeath().build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<TravellersWingsAttachment>> TRAVELLERS_WINGS = ATTACHMENT_TYPES.register("travellers_wings", () -> AttachmentType.builder(TravellersWingsAttachment::new).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<TravellersWingsAnimAttachment>> TRAVELLERS_WINGS_ANIM = ATTACHMENT_TYPES.register("travellers_wings_anim", () -> AttachmentType.builder(TravellersWingsAnimAttachment::new).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Boolean>> IS_USING_GOGGLES_ZOOM_MODIFIER = ATTACHMENT_TYPES.register("is_using_goggles_zoom_modifier", () -> AttachmentType.builder(() -> false).serialize(Codec.BOOL).sync(ByteBufCodecs.BOOL).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Boolean>> TRAVELLERS_GOGGLES_RED_THREAD_VISION = ATTACHMENT_TYPES.register("travellers_goggles_red_thread_vision", () -> AttachmentType.builder(() -> true).serialize(Codec.BOOL).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Long>> LAST_TICK_WATER_WALKING = ATTACHMENT_TYPES.register("last_tick_water_walking", () -> AttachmentType.builder(() -> 0L).serialize(Codec.LONG).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Boolean>> HAS_DOUBLE_JUMP = ATTACHMENT_TYPES.register("has_double_jump", () -> AttachmentType.builder(() -> false).serialize(Codec.BOOL).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Integer>> DOUBLE_JUMP_VALIDATOR = ATTACHMENT_TYPES.register("double_jump_validator", () -> AttachmentType.builder(() -> 0).serialize(Codec.INT).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Integer>> DOUBLE_JUMP_VALIDATOR_LAST_CHECK = ATTACHMENT_TYPES.register("double_jump_validator_last_check", () -> AttachmentType.builder(() -> 0).serialize(Codec.INT).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Double>> TEMPORARY_SAVED_STRAIGHT_AHEAD = ATTACHMENT_TYPES.register("temporary_saved_straight_ahead", () -> AttachmentType.builder(() -> 1D).serialize(Codec.DOUBLE).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Long>> LAST_DAMAGE_ARMOR_TIME = ATTACHMENT_TYPES.register("last_damage_armor_time", () -> AttachmentType.builder(() -> 0L).serialize(Codec.LONG).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Integer>> LAST_JUMP_KEY_PRESS_TIME = ATTACHMENT_TYPES.register("last_jump_key_press_time", () -> AttachmentType.builder(() -> 0).serialize(Codec.INT).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Float>> LAST_HORIZONTAL_IMPULSE = ATTACHMENT_TYPES.register("last_horizontal_impulse", () -> AttachmentType.builder(() -> 0F).serialize(Codec.FLOAT).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Float>> LAST_NON_ZERO_HORIZONTAL_IMPULSE = ATTACHMENT_TYPES.register("last_non_horizontal_impulse", () -> AttachmentType.builder(() -> 0F).serialize(Codec.FLOAT).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Integer>> LAST_HORIZONTAL_WALKING_TIME = ATTACHMENT_TYPES.register("last_horizontal_walking_time", () -> AttachmentType.builder(() -> 0).serialize(Codec.INT).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Integer>> SIDESTEP_VALIDATOR = ATTACHMENT_TYPES.register("sidestep_validator", () -> AttachmentType.builder(() -> 0).serialize(Codec.INT).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Integer>> SIDESTEP_VALIDATOR_LAST_CHECK = ATTACHMENT_TYPES.register("sidestep_validator_last_check", () -> AttachmentType.builder(() -> 0).serialize(Codec.INT).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<Boolean>> IS_GRADUALLY_GLIDING = ATTACHMENT_TYPES.register("is_gradually_gliding", () -> AttachmentType.builder(() -> false).serialize(Codec.BOOL).sync(ByteBufCodecs.BOOL).build());
-	public static final DeferredHolder<AttachmentType<?>, AttachmentType<SlimySolesAttachment>> SLIMY_SOLES_BOUNCE_INFO = ATTACHMENT_TYPES.register("slimy_soles_bounce_info", () -> AttachmentType.builder(SlimySolesAttachment::new).serialize(SlimySolesAttachment.CODEC).build());
+	public static final AttachmentType<Boolean> FEATHER_FAN = AttachmentRegistry.create(
+		id("feather_fan_falling"),
+		b -> b.initializer(() -> false).persistent(Codec.BOOL).syncWith(ByteBufCodecs.BOOL, AttachmentSyncPredicate.all())
+	);
+	public static final AttachmentType<PotionFlaskTrackingAttachment> FLASK_DOSES = AttachmentRegistry.create(
+		id("flask_doses"),
+		b -> b.initializer(PotionFlaskTrackingAttachment::new).persistent(PotionFlaskTrackingAttachment.CODEC)
+	);
+	public static final AttachmentType<FortificationShieldAttachment> FORTIFICATION_SHIELDS = AttachmentRegistry.create(
+		id("fortification_shields"),
+		b -> b.initializer(FortificationShieldAttachment::new).persistent(FortificationShieldAttachment.CODEC).syncWith(FortificationShieldAttachment.STREAM_CODEC, AttachmentSyncPredicate.all())
+	);
+	public static final AttachmentType<GiantPickaxeMiningAttachment> GIANT_PICKAXE_MINING = AttachmentRegistry.create(
+		id("giant_pickaxe_mining"),
+		b -> b.initializer(GiantPickaxeMiningAttachment::new)
+	);
+	public static final AttachmentType<YetiThrowAttachment> YETI_THROWING = AttachmentRegistry.create(
+		id("yeti_throwing"),
+		b -> b.initializer(YetiThrowAttachment::new)
+	);
+	public static final AttachmentType<MultiplayerInclusivityAttachment> MULTIPLAYER_FIGHT = AttachmentRegistry.create(
+		id("multiplayer_fight"),
+		b -> b.initializer(MultiplayerInclusivityAttachment::new)
+	);
+	public static final AttachmentType<TFPortalAttachment> TF_PORTAL_COOLDOWN = AttachmentRegistry.create(
+		id("tf_portal_cooldown"),
+		b -> b.initializer(TFPortalAttachment::new)
+	);
+	public static final AttachmentType<SmashBlocksEnchantmentAttachment> SMASH_BLOCKS = AttachmentRegistry.create(
+		id("smash_blocks"),
+		b -> b.initializer(() -> new SmashBlocksEnchantmentAttachment()).persistent(SmashBlocksEnchantmentAttachment.CODEC)
+	);
+	public static final AttachmentType<GameProfile> ZOMBIFIED_PLAYER = AttachmentRegistry.create(
+		id("zombified_player"),
+		b -> b.initializer(() -> UUIDUtil.createOfflineProfile("GizmoTheMoonPig")).persistent(Codecs.SIMPLE_GAME_PROFILE)
+	);
+	public static final AttachmentType<Unit> LEASH_PATHFINDER_OVERRIDE = AttachmentRegistry.create(
+		id("leashed_pathfinder_override"),
+		b -> b.initializer(() -> Unit.INSTANCE).persistent(Codec.unit(Unit.INSTANCE))
+	);
+	public static final AttachmentType<Unit> BANISHED_TO_TWILIGHT_FOREST = AttachmentRegistry.create(
+		id("twilightforest_banished"),
+		b -> b.initializer(() -> Unit.INSTANCE).persistent(Codec.unit(Unit.INSTANCE)).copyOnDeath()
+	);
+	public static final AttachmentType<TravellersWingsAttachment> TRAVELLERS_WINGS = AttachmentRegistry.create(
+		id("travellers_wings"),
+		b -> b.initializer(TravellersWingsAttachment::new)
+	);
+	public static final AttachmentType<TravellersWingsAnimAttachment> TRAVELLERS_WINGS_ANIM = AttachmentRegistry.create(
+		id("travellers_wings_anim"),
+		b -> b.initializer(TravellersWingsAnimAttachment::new)
+	);
+	public static final AttachmentType<Boolean> IS_USING_GOGGLES_ZOOM_MODIFIER = AttachmentRegistry.create(
+		id("is_using_goggles_zoom_modifier"),
+		b -> b.initializer(() -> false).persistent(Codec.BOOL).syncWith(ByteBufCodecs.BOOL, AttachmentSyncPredicate.all())
+	);
+	public static final AttachmentType<Boolean> TRAVELLERS_GOGGLES_RED_THREAD_VISION = AttachmentRegistry.create(
+		id("travellers_goggles_red_thread_vision"),
+		b -> b.initializer(() -> true).persistent(Codec.BOOL)
+	);
+	public static final AttachmentType<Long> LAST_TICK_WATER_WALKING = AttachmentRegistry.create(
+		id("last_tick_water_walking"),
+		b -> b.initializer(() -> 0L).persistent(Codec.LONG)
+	);
+	public static final AttachmentType<Boolean> HAS_DOUBLE_JUMP = AttachmentRegistry.create(
+		id("has_double_jump"),
+		b -> b.initializer(() -> false).persistent(Codec.BOOL)
+	);
+	public static final AttachmentType<Integer> DOUBLE_JUMP_VALIDATOR = AttachmentRegistry.create(
+		id("double_jump_validator"),
+		b -> b.initializer(() -> 0).persistent(Codec.INT)
+	);
+	public static final AttachmentType<Integer> DOUBLE_JUMP_VALIDATOR_LAST_CHECK = AttachmentRegistry.create(
+		id("double_jump_validator_last_check"),
+		b -> b.initializer(() -> 0).persistent(Codec.INT)
+	);
+	public static final AttachmentType<Double> TEMPORARY_SAVED_STRAIGHT_AHEAD = AttachmentRegistry.create(
+		id("temporary_saved_straight_ahead"),
+		b -> b.initializer(() -> 1D).persistent(Codec.DOUBLE)
+	);
+	public static final AttachmentType<Long> LAST_DAMAGE_ARMOR_TIME = AttachmentRegistry.create(
+		id("last_damage_armor_time"),
+		b -> b.initializer(() -> 0L).persistent(Codec.LONG)
+	);
+	public static final AttachmentType<Integer> LAST_JUMP_KEY_PRESS_TIME = AttachmentRegistry.create(
+		id("last_jump_key_press_time"),
+		b -> b.initializer(() -> 0).persistent(Codec.INT)
+	);
+	public static final AttachmentType<Float> LAST_HORIZONTAL_IMPULSE = AttachmentRegistry.create(
+		id("last_horizontal_impulse"),
+		b -> b.initializer(() -> 0F).persistent(Codec.FLOAT)
+	);
+	public static final AttachmentType<Float> LAST_NON_ZERO_HORIZONTAL_IMPULSE = AttachmentRegistry.create(
+		id("last_non_horizontal_impulse"),
+		b -> b.initializer(() -> 0F).persistent(Codec.FLOAT)
+	);
+	public static final AttachmentType<Integer> LAST_HORIZONTAL_WALKING_TIME = AttachmentRegistry.create(
+		id("last_horizontal_walking_time"),
+		b -> b.initializer(() -> 0).persistent(Codec.INT)
+	);
+	public static final AttachmentType<Integer> SIDESTEP_VALIDATOR = AttachmentRegistry.create(
+		id("sidestep_validator"),
+		b -> b.initializer(() -> 0).persistent(Codec.INT)
+	);
+	public static final AttachmentType<Integer> SIDESTEP_VALIDATOR_LAST_CHECK = AttachmentRegistry.create(
+		id("sidestep_validator_last_check"),
+		b -> b.initializer(() -> 0).persistent(Codec.INT)
+	);
+	public static final AttachmentType<Boolean> IS_GRADUALLY_GLIDING = AttachmentRegistry.create(
+		id("is_gradually_gliding"),
+		b -> b.initializer(() -> false).persistent(Codec.BOOL).syncWith(ByteBufCodecs.BOOL, AttachmentSyncPredicate.all())
+	);
+	public static final AttachmentType<SlimySolesAttachment> SLIMY_SOLES_BOUNCE_INFO = AttachmentRegistry.create(
+		id("slimy_soles_bounce_info"),
+		b -> b.initializer(SlimySolesAttachment::new).persistent(SlimySolesAttachment.CODEC)
+	);
 
-	private static <T> T directCopy(T attachment, IAttachmentHolder holder, HolderLookup.Provider provider) {
-		return attachment;
+	private static ResourceLocation id(String name) {
+		return ResourceLocation.fromNamespaceAndPath(TwilightForestMod.ID, name);
+	}
+
+	public static void register() {
+		// Attachment types are registered at class load time via AttachmentRegistry.create()
+		// This method exists for compatibility with the existing registration pattern
 	}
 }

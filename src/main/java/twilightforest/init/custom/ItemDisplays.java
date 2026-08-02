@@ -2,8 +2,8 @@ package twilightforest.init.custom;
 
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.MapItem;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import io.github.fabricators_of_create.porting_lib.registry.DeferredHolder;
+import io.github.fabricators_of_create.porting_lib.registry.DeferredRegister;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.overlay.display.ClockDisplay;

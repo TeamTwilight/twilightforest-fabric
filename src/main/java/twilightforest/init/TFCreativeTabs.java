@@ -15,9 +15,9 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
-import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+
+import io.github.fabricators_of_create.porting_lib.registry.DeferredHolder;
+import io.github.fabricators_of_create.porting_lib.registry.DeferredRegister;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.AbstractSkullCandleBlock;
@@ -33,7 +33,7 @@ public class TFCreativeTabs {
 
 	public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, TwilightForestMod.ID);
 
-	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> BLOCKS = TABS.register("blocks", () -> CreativeModeTab.builder()
+	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> BLOCKS = TABS.register("blocks", () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP, 10)
 		.title(Component.translatable("itemGroup.twilightforest.blocks"))
 		.icon(() -> new ItemStack(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE))
 		.displayItems((parameters, output) -> {
@@ -429,8 +429,8 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.ARCTIC_FUR_BLOCK);
 		}).build());
 
-	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ITEMS = TABS.register("items", () -> CreativeModeTab.builder()
-		.withTabsBefore(BLOCKS.getKey())
+	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ITEMS = TABS.register("blocks_items", () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP, 11)
+		// withTabsBefore 在 1.21.1 中已移除，标签页排序由 CreativeModeTab.Row 和 column 自动处理
 		.title(Component.translatable("itemGroup.twilightforest.items"))
 		.icon(() -> new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE))
 		.displayItems((parameters, output) -> {
@@ -515,8 +515,8 @@ public class TFCreativeTabs {
 			createSpawnEggsAlphabetical(output);
 		}).build());
 
-	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EQUIPMENT = TABS.register("equipment", () -> CreativeModeTab.builder()
-		.withTabsBefore(ITEMS.getKey())
+	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EQUIPMENT = TABS.register("equipment", () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP, 12)
+		// withTabsBefore 在 1.21.1 中已移除
 		.title(Component.translatable("itemGroup.twilightforest.equipment"))
 		.icon(() -> new ItemStack(TFItems.KNIGHTMETAL_PICKAXE.get()))
 		.displayItems((parameters, output) -> {
@@ -600,8 +600,8 @@ public class TFCreativeTabs {
 			output.accept(TFItems.MOONWORM_QUEEN);
 		}).build());
 
-	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> FOOD = TABS.register("food", () -> CreativeModeTab.builder()
-		.withTabsBefore(EQUIPMENT.getKey())
+	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> FOOD = TABS.register("food", () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP, 13)
+		// withTabsBefore 在 1.21.1 中已移除
 		.title(Component.translatable("itemGroup.twilightforest.food"))
 		.icon(() -> new ItemStack(TFItems.COOKED_MEEF.get()))
 		.displayItems((parameters, output) -> {
@@ -658,14 +658,14 @@ public class TFCreativeTabs {
 
 	private static void createDefaultSkullCandle(CreativeModeTab.Output output, ItemLike item) {
 		ItemStack stack = new ItemStack(item);
-		stack.set(TFDataComponents.SKULL_CANDLES, new SkullCandles(AbstractSkullCandleBlock.CandleColors.PLAIN.getValue(), 1));
+		stack.set(TFDataComponents.SKULL_CANDLES.get(), new SkullCandles(AbstractSkullCandleBlock.CandleColors.PLAIN.getValue(), 1));
 		output.accept(stack);
 	}
 
 	private static void createCaskets(CreativeModeTab.Output output) {
 		for (int i = 0; i< 3; i++) {
 			ItemStack stack = new ItemStack(TFItems.KEEPSAKE_CASKET.get());
-			stack.set(TFDataComponents.CASKET_DAMAGE, i);
+			stack.set(TFDataComponents.CASKET_DAMAGE.get(), i);
 			output.accept(stack);
 		}
 	}
@@ -678,7 +678,7 @@ public class TFCreativeTabs {
 		List<Component> GLASS_SWORD_COMPONENTS = List.of(Component.translatable("item.twilightforest.glass_sword.desc").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
 		loreSword.set(DataComponents.LORE, new ItemLore(GLASS_SWORD_COMPONENTS, GLASS_SWORD_COMPONENTS));
 		loreSword.set(DataComponents.UNBREAKABLE, new Unbreakable(true));
-		loreSword.set(TFDataComponents.INFINITE_GLASS_SWORD, Unit.INSTANCE);
+		loreSword.set(TFDataComponents.INFINITE_GLASS_SWORD.get(), Unit.INSTANCE);
 
 		output.accept(loreSword);
 	}
@@ -686,6 +686,8 @@ public class TFCreativeTabs {
 	private static final Comparator<Holder<MagicPaintingVariant>> MAGIC_COMPARATOR = Comparator.comparing(Holder::value, Comparator.<MagicPaintingVariant>comparingInt((variant) ->
 		variant.height() * variant.width()).thenComparing(MagicPaintingVariant::width));
 
+	// 空心原木已通过 TFCreativeTabs.BLOCKS 和 ITEMS 标签页添加，无需原版建筑方块标签页注入
+	/*
 	public static void addToTabs(BuildCreativeModeTabContentsEvent event) {
 		if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
 			event.insertAfter(new ItemStack(Items.OAK_WOOD), TFItems.HOLLOW_OAK_LOG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
@@ -729,9 +731,10 @@ public class TFCreativeTabs {
 				.listElements().sorted(MAGIC_COMPARATOR)
 				.forEach(holder -> {
 					ItemStack itemstack = new ItemStack(TFItems.MAGIC_PAINTING.get());
-					itemstack.set(TFDataComponents.MAGIC_PAINTING_VARIANT, holder);
+					itemstack.set(TFDataComponents.MAGIC_PAINTING_VARIANT.get(), holder);
 					event.accept(itemstack);
 				});
 		}
 	}
+	*/
 }

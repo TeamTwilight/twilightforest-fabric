@@ -3,7 +3,7 @@ package twilightforest.init;
 import com.google.common.base.Suppliers;
 import net.minecraft.Util;
 import net.minecraft.world.level.GameRules;
-import net.neoforged.neoforge.network.PacketDistributor;
+import twilightforest.network.PacketDistributor;
 import twilightforest.network.EnforceProgressionStatusPacket;
 
 import java.util.HashSet;
@@ -15,9 +15,7 @@ public class TFGameRules {
 
 	public static final Supplier<GameRules.Key<GameRules.BooleanValue>> ENFORCED_PROGRESSION_RULE = register("tfEnforcedProgression",
 		GameRules.Category.UPDATES,
-		GameRules.BooleanValue.create(true, (server, value) ->
-			// sends a packet to every player online when this changes
-			PacketDistributor.sendToAllPlayers(new EnforceProgressionStatusPacket(value.get()))
+		GameRules.BooleanValue.create(true, (server, value) -> PacketDistributor.sendToAllPlayers(server, new EnforceProgressionStatusPacket(value.get()))
 		)
 	);
 

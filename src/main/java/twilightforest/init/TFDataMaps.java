@@ -4,7 +4,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.registries.datamaps.DataMapType;
+import io.github.fabricators_of_create.porting_lib.resources.data_maps.DataMapType;
 import twilightforest.TwilightForestMod;
 import twilightforest.util.datamaps.CrumbledBlock;
 import twilightforest.util.datamaps.EntityTransformation;

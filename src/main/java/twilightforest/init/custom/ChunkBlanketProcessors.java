@@ -7,7 +7,9 @@ import net.minecraft.core.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
@@ -15,8 +17,8 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import io.github.fabricators_of_create.porting_lib.registry.DeferredHolder;
+import io.github.fabricators_of_create.porting_lib.registry.DeferredRegister;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBiomes;
@@ -74,7 +76,35 @@ public final class ChunkBlanketProcessors {
 		Function<BlockPos, Holder<Biome>> biomeGetter = worldGenRegion::getBiome;
 
 		while (modifierIterator.hasNext()) {
-			modifierIterator.next().processChunk(worldGenRegion.getRandom().fork(), biomeGetter, chunkAccess);
+			modifierIterator.next().processChunk(RandomSource.create(worldGenRegion.getSeed() + chunkAccess.getPos().toLong()), biomeGetter, chunkAccess);
+		}
+	}
+
+	/**
+	 * Chunk blanketing variant that works with ServerLevel during surface generation.
+	 * Used by {@link twilightforest.mixin.ChunkStatusMixin} when WorldGenRegion is not available.
+	 */
+	public static void chunkBlanketing(ChunkAccess chunkAccess, ServerLevel serverLevel) {
+		ChunkPos chunkPos = chunkAccess.getPos();
+
+		Set<Holder<Biome>> biomesInChunk = new ObjectArraySet<>();
+
+		// Read biomes directly from the chunk being processed
+		for (LevelChunkSection levelchunksection : chunkAccess.getSections()) {
+			levelchunksection.getBiomes().getAll(biomesInChunk::add);
+		}
+
+		Iterator<ChunkBlanketProcessor> modifierIterator = serverLevel.registryAccess()
+			.registry(TFRegistries.Keys.CHUNK_BLANKET_PROCESSORS)
+			.map(Registry::stream)
+			.orElseGet(Stream::empty)
+			.filter(modifier -> modifier.biomesForApplication().stream().anyMatch(biomesInChunk::contains))
+			.iterator();
+
+		Function<BlockPos, Holder<Biome>> biomeGetter = serverLevel::getBiome;
+
+		while (modifierIterator.hasNext()) {
+			modifierIterator.next().processChunk(RandomSource.create(serverLevel.getSeed() + chunkAccess.getPos().toLong()), biomeGetter, chunkAccess);
 		}
 	}
 }

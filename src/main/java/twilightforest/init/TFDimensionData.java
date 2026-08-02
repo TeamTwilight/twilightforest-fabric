@@ -23,8 +23,7 @@ import java.util.OptionalLong;
 public class TFDimensionData {
 
 	// Avoid at all costs. If you need SeaLevel info instead and are ServerSide, use WorldUtil.getGeneratorSeaLevel()
-	// TODO How should we fix this for clients? Would need to sync serverlevel's sealevel to clients
-	@Deprecated // FIXME Make private
+	@Deprecated
 	public static final int SEALEVEL = 0;
 
 	public static final ResourceKey<DimensionType> TWILIGHT_DIM_TYPE = ResourceKey.create(Registries.DIMENSION_TYPE, TwilightForestMod.prefix("twilight_forest_type"));
@@ -63,7 +62,7 @@ public class TFDimensionData {
 		DensityFunction finalDensity = new DensityFunctions.HolderHolder(densityFunctions.getOrThrow(skylight ? TFDensityFunctions.SKYLIGHT_TERRAIN : TFDensityFunctions.FORESTED_TERRAIN));
 
 		NoiseSettings tfNoise = NoiseSettings.create(
-			-32, //TODO Deliberate over this. For now it'll be -32
+			-32, // 海平面高度待确定
 			256,
 			2,
 			2

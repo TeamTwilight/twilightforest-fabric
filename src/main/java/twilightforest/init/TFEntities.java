@@ -4,9 +4,8 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.item.Item;
-import net.neoforged.neoforge.common.DeferredSpawnEggItem;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import io.github.fabricators_of_create.porting_lib.registry.DeferredHolder;
+import io.github.fabricators_of_create.porting_lib.registry.DeferredRegister;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.*;
 import twilightforest.entity.boss.*;
@@ -138,7 +137,7 @@ public class TFEntities {
 		if (fireproof) builder.fireImmune();
 		DeferredHolder<EntityType<?>, EntityType<E>> ret = ENTITIES.register(id.getPath(), () -> builder.build(id.toString()));
 		if (primary != 0 && secondary != 0) {
-			SPAWN_EGGS.register(id.getPath() + "_spawn_egg", () -> new DeferredSpawnEggItem(() -> (EntityType<? extends Mob>) ret.get(), primary, secondary, new Item.Properties()));
+			SPAWN_EGGS.register(id.getPath() + "_spawn_egg", () -> new TFSpawnEggItem((EntityType<? extends Mob>) ret.get(), primary, secondary, new Item.Properties()));
 		}
 		return ret;
 	}
@@ -150,9 +149,11 @@ public class TFEntities {
 	private static <E extends Entity> EntityType.Builder<E> makeBuilder(EntityType.EntityFactory<E> factory, MobCategory classification, float width, float height, int range, int interval, float ridingOffset) {
 		return EntityType.Builder.of(factory, classification)
 			.sized(width, height)
-			.setTrackingRange(range)
-			.setUpdateInterval(interval)
-			.setShouldReceiveVelocityUpdates(true)
-			.ridingOffset(ridingOffset);
+			.clientTrackingRange(range)
+			.updateInterval(interval)
+			// setShouldReceiveVelocityUpdates 在 1.21.1 中已移除
+			// .setShouldReceiveVelocityUpdates(true)
+			.ridingOffset(ridingOffset)
+			;
 	}
 }
