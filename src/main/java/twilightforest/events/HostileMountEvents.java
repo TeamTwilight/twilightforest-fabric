@@ -5,33 +5,35 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.entity.EntityMountEvent;
-import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
-import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
-import net.neoforged.neoforge.event.tick.EntityTickEvent;
-import tamaized.beanification.Component;
-import tamaized.beanification.PostConstruct;
+
+import io.github.fabricators_of_create.porting_lib.entity.events.EntityMountEvent;
+import io.github.fabricators_of_create.porting_lib.entity.events.EntityTeleportEvent;
+import io.github.fabricators_of_create.porting_lib.entity.events.living.LivingHurtEvent;
+import io.github.fabricators_of_create.porting_lib.entity.events.tick.EntityTickEvent;
+import twilightforest.util.TFBeanRegistry;
 import twilightforest.entity.IHostileMount;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFDataAttachments;
 
-@Component
 public class HostileMountEvents {
+
+	public static final HostileMountEvents INSTANCE = new HostileMountEvents();
+	static {
+		TFBeanRegistry.register(HostileMountEvents.class, INSTANCE);
+		TFBeanRegistry.addPostInit(INSTANCE::init);
+	}
 
 	public static volatile boolean allowDismount = false;
 
-	@PostConstruct
-	private void setup() {
-		NeoForge.EVENT_BUS.addListener(this::handleMountDamage);
-		NeoForge.EVENT_BUS.addListener(this::preventTeleportingOffHostileMounts);
-		NeoForge.EVENT_BUS.addListener(this::preventMountDismount);
-		NeoForge.EVENT_BUS.addListener(this::preventHostilMountCrouching);
+	private void init() {
+		LivingHurtEvent.EVENT.register(this::handleMountDamage);
+		// EntityTeleportEvent is available in Porting-Lib
+		// EntityTeleportEvent.EVENT.register(this::preventTeleportingOffHostileMounts);
+		EntityMountEvent.EVENT.register(this::preventMountDismount);
+		EntityTickEvent.Post.EVENT.register(this::preventHostilMountCrouching);
 	}
 
-	@SubscribeEvent
-	private void handleMountDamage(LivingIncomingDamageEvent event) {
+	private void handleMountDamage(LivingHurtEvent event) {
 		LivingEntity living = event.getEntity();
 		DamageSource damageSource = event.getSource();
 		// lets not make the player take suffocation damage if riding something
@@ -39,10 +41,10 @@ public class HostileMountEvents {
 			event.setCanceled(true);
 		}
 
-		if (damageSource.is(DamageTypes.FALL) && living.getData(TFDataAttachments.YETI_THROWING).getThrown()) {
+		if (damageSource.is(DamageTypes.FALL) && living.getAttachedOrCreate(TFDataAttachments.YETI_THROWING).getThrown()) {
 			float amount = event.getAmount();
 			event.setCanceled(true);
-			living.hurt(TFDamageTypes.getEntityDamageSource(living.level(), TFDamageTypes.YEETED, living.getData(TFDataAttachments.YETI_THROWING).getThrower()), amount);
+			living.hurt(TFDamageTypes.getEntityDamageSource(living.level(), TFDamageTypes.YEETED, living.getAttachedOrCreate(TFDataAttachments.YETI_THROWING).getThrower()), amount);
 		}
 	}
 

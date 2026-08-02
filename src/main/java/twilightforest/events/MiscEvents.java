@@ -19,14 +19,13 @@ import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.neoforged.fml.ModList;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
-import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
-import tamaized.beanification.Component;
-import tamaized.beanification.PostConstruct;
+import net.fabricmc.loader.api.FabricLoader;
+
+import io.github.fabricators_of_create.porting_lib.entity.events.EntityJoinLevelEvent;
+
+import io.github.fabricators_of_create.porting_lib.entity.events.player.PlayerInteractEvent;
+import twilightforest.network.PacketDistributor;
+import twilightforest.util.TFBeanRegistry;
 import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.entity.monster.DeathTome;
 import twilightforest.entity.passive.Bighorn;
@@ -38,15 +37,21 @@ import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFEntities;
 import twilightforest.network.CreateMovingCicadaSoundPacket;
 
-@Component
 public class MiscEvents {
 
-	@PostConstruct
-	private void setup() {
-		NeoForge.EVENT_BUS.addListener(this::addPrey);
-		NeoForge.EVENT_BUS.addListener(this::updateCicadaSoundsOnHead);
-		NeoForge.EVENT_BUS.addListener(this::addTomesToLecterns);
-		NeoForge.EVENT_BUS.addListener(this::washOffCloth);
+	public static final MiscEvents INSTANCE = new MiscEvents();
+	static {
+		TFBeanRegistry.register(MiscEvents.class, INSTANCE);
+		TFBeanRegistry.addPostInit(INSTANCE::init);
+	}
+
+	private void init() {
+		// EntityJoinLevelEvent and PlayerInteractEvent are available in Porting-Lib
+		/*
+		EntityJoinLevelEvent.EVENT.register(this::addPrey);
+		PlayerInteractEvent.RightClickBlock.EVENT.register(this::addTomesToLecterns);
+		PlayerInteractEvent.RightClickBlock.EVENT.register(this::washOffCloth);
+		*/
 	}
 
 	private void addPrey(EntityJoinLevelEvent event) {
@@ -71,21 +76,26 @@ public class MiscEvents {
 		}
 	}
 
+	// LivingEquipmentChangeEvent needs migration to Fabric API
+	/*
 	private void updateCicadaSoundsOnHead(LivingEquipmentChangeEvent event) {
 		LivingEntity living = event.getEntity();
 
-		// from what I can see, vanilla doesn't have a hook for this in the item class. So this will have to do.
-		// we only have to check equipping, when its unequipped the sound instance handles the rest
+		// Vanilla doesn't have a hook for this in the item class, so we handle it here.
+		// We only need to check equipping; unequipping is handled by the sound instance.
 
-		//if we have a cicada in our curios slot, don't try to run this
-		 if (ModList.get().isLoaded("curios")) {
-		 	if (CuriosCompat.isCurioEquipped(living, stack -> stack.is(TFBlocks.CICADA.asItem()))) return;
+		// Skip if cicada is in a curios slot
+		 if (FabricLoader.getInstance().isModLoaded("curios")) {
+		 	try {
+		 		if (CuriosCompat.isCurioEquipped(living, stack -> stack.is(TFBlocks.CICADA.asItem()))) return;
+		 	} catch (NoClassDefFoundError ignored) {}
 		 }
 
 		if (!living.level().isClientSide() && event.getSlot() == EquipmentSlot.HEAD && event.getTo().is(TFBlocks.CICADA.asItem())) {
 			PacketDistributor.sendToPlayersTrackingEntityAndSelf(living, new CreateMovingCicadaSoundPacket(living.getId()));
 		}
 	}
+	*/
 
 	private void addTomesToLecterns(PlayerInteractEvent.RightClickBlock event) {
 		Player player = event.getEntity();
@@ -117,9 +127,9 @@ public class MiscEvents {
 		if (event.isCanceled()) return;
 		BlockState state = event.getLevel().getBlockState(event.getPos());
 		if (!state.is(Blocks.WATER_CAULDRON) || state.getValue(LayeredCauldronBlock.LEVEL) <= 0) return;
-		if (event.getItemStack().has(TFDataComponents.EMPERORS_CLOTH)) {
+		if (event.getItemStack().has(TFDataComponents.EMPERORS_CLOTH.get())) {
 			LayeredCauldronBlock.lowerFillLevel(state, event.getLevel(), event.getPos());
-			event.getItemStack().remove(TFDataComponents.EMPERORS_CLOTH);
+			event.getItemStack().remove(TFDataComponents.EMPERORS_CLOTH.get());
 			event.getEntity().awardStat(Stats.CLEAN_ARMOR);
 			event.setCancellationResult(InteractionResult.SUCCESS);
 			event.setCanceled(true);

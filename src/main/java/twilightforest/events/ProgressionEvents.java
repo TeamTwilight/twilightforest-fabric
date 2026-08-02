@@ -22,17 +22,17 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.util.BlockSnapshot;
-import net.neoforged.neoforge.common.util.FakePlayer;
-import net.neoforged.neoforge.common.util.TriState;
-import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import net.neoforged.neoforge.event.level.BlockEvent;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
-import tamaized.beanification.Component;
-import tamaized.beanification.PostConstruct;
+
+
+import twilightforest.util.TFFakePlayer;
+import twilightforest.util.TFTriState;
+import io.github.fabricators_of_create.porting_lib.entity.events.living.LivingHurtEvent;
+import io.github.fabricators_of_create.porting_lib.entity.events.player.PlayerInteractEvent;
+import io.github.fabricators_of_create.porting_lib.entity.events.tick.PlayerTickEvent;
+import io.github.fabricators_of_create.porting_lib.level.BlockSnapshot;
+import io.github.fabricators_of_create.porting_lib.level.events.BlockEvent;
+import twilightforest.network.PacketDistributor;
+import twilightforest.util.TFBeanRegistry;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.BlockTagGenerator;
@@ -56,17 +56,21 @@ import java.util.*;
 /**
  * A class to store events relating to progression
  */
-@Component
 public class ProgressionEvents {
 
-	@PostConstruct
-	private void setup() {
-		NeoForge.EVENT_BUS.addListener(this::preventLockedAreaBlockBreaking);
-		NeoForge.EVENT_BUS.addListener(this::preventLockedAreaBlockPlacing);
-		NeoForge.EVENT_BUS.addListener(this::preventLockedAreaBlockInteracting);
-		NeoForge.EVENT_BUS.addListener(this::preventLockedAreaMultiblocks);
-		NeoForge.EVENT_BUS.addListener(this::preventLockedAreaEntityDamage);
-		NeoForge.EVENT_BUS.addListener(this::performProtectionAndPortalChecks);
+	public static final ProgressionEvents INSTANCE = new ProgressionEvents();
+	static {
+		TFBeanRegistry.register(ProgressionEvents.class, INSTANCE);
+		TFBeanRegistry.addPostInit(INSTANCE::init);
+	}
+
+	private void init() {
+		BlockEvent.BreakEvent.EVENT.register(this::preventLockedAreaBlockBreaking);
+		PlayerInteractEvent.RightClickBlock.EVENT.register(this::preventLockedAreaBlockPlacing);
+		PlayerInteractEvent.RightClickBlock.EVENT.register(this::preventLockedAreaBlockInteracting);
+		BlockEvent.EntityMultiPlaceEvent.EVENT.register(this::preventLockedAreaMultiblocks);
+		LivingHurtEvent.EVENT.register(this::preventLockedAreaEntityDamage);
+		PlayerTickEvent.Post.EVENT.register(this::performProtectionAndPortalChecks);
 	}
 
 	/**
@@ -121,7 +125,9 @@ public class ProgressionEvents {
 		Level level = player.level();
 
 		if (!level.isClientSide() && level instanceof ServerLevel serverLevel && isBlockProtectedFromInteraction(level, event.getPos()) && isAreaProtected(serverLevel, player, event.getPos())) {
-			event.setUseBlock(TriState.FALSE);
+			// TriState has been ported to Fabric
+			// event.setUseBlock(TriState.FALSE);
+			event.setCanceled(true);
 		}
 	}
 
@@ -131,7 +137,8 @@ public class ProgressionEvents {
 	 */
 	private static boolean isAreaProtected(ServerLevel level, Player player, BlockPos pos) {
 		if (player.getAbilities().instabuild || player.isSpectator() ||
-			!LandmarkUtil.isProgressionEnforced(level) || player instanceof FakePlayer) {
+			// FakePlayer check has been ported to Fabric
+			!LandmarkUtil.isProgressionEnforced(level) /* || player instanceof FakePlayer */) {
 			return false;
 		}
 
@@ -159,8 +166,8 @@ public class ProgressionEvents {
 		return false;
 	}
 
-	//TODO make ignored entities into a tag
-	private void preventLockedAreaEntityDamage(LivingIncomingDamageEvent event) {
+	// 忽略的实体应改为标签
+	private void preventLockedAreaEntityDamage(LivingHurtEvent event) {
 		LivingEntity living = event.getEntity();
 		// cancel attacks in protected areas
 		if (living.level() instanceof ServerLevel serverLevel && living instanceof Enemy && event.getSource().getEntity() instanceof Player && !(living instanceof Kobold)

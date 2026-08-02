@@ -25,18 +25,18 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.damagesource.DamageContainer;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.event.EventHooks;
-import net.neoforged.neoforge.event.TagsUpdatedEvent;
-import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
-import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
-import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
-import net.neoforged.neoforge.event.level.BlockEvent;
+
+
+import io.github.fabricators_of_create.porting_lib.tags.Tags;
+import twilightforest.util.TFEventHooks;
+
+import io.github.fabricators_of_create.porting_lib.entity.events.ProjectileImpactEvent;
+import io.github.fabricators_of_create.porting_lib.entity.events.living.LivingHurtEvent;
+import io.github.fabricators_of_create.porting_lib.entity.events.living.MobEffectEvent;
+import io.github.fabricators_of_create.porting_lib.level.events.BlockEvent;
+
 import org.jetbrains.annotations.Nullable;
-import tamaized.beanification.Component;
-import tamaized.beanification.PostConstruct;
+import twilightforest.util.TFBeanRegistry;
 import twilightforest.block.GiantBlock;
 import twilightforest.components.entity.GiantPickaxeMiningAttachment;
 import twilightforest.data.tags.BlockTagGenerator;
@@ -47,22 +47,26 @@ import twilightforest.loot.modifiers.GiantToolGroupingModifier;
 
 import java.util.List;
 
-@Component
 public class ToolEvents {
+
+	public static final ToolEvents INSTANCE = new ToolEvents();
+	static {
+		TFBeanRegistry.register(ToolEvents.class, INSTANCE);
+		TFBeanRegistry.addPostInit(INSTANCE::init);
+	}
 
 	private static final int KNIGHTMETAL_BONUS_DAMAGE = 2;
 	private static final int MINOTAUR_AXE_BONUS_DAMAGE = 7;
 
-	@PostConstruct
-	private void setup() {
-		NeoForge.EVENT_BUS.addListener(this::onEnderBowHit);
-		NeoForge.EVENT_BUS.addListener(this::fieryToolSetFire);
-		NeoForge.EVENT_BUS.addListener(this::doKnightmetalToolLogic);
-		NeoForge.EVENT_BUS.addListener(this::addExtraAxeChargingDamage);
-		NeoForge.EVENT_BUS.addListener(this::damageNonMazebreakerToolsMore);
-		NeoForge.EVENT_BUS.addListener(this::preventFatigueWithPocketWatch);
-		NeoForge.EVENT_BUS.addListener(this::handleGiantPickaxeMining);
-		NeoForge.EVENT_BUS.addListener(this::refreshOreMagnetCache);
+	private void init() {
+		ProjectileImpactEvent.EVENT.register(this::onEnderBowHit);
+		LivingHurtEvent.EVENT.register(this::fieryToolSetFire);
+		LivingHurtEvent.EVENT.register(this::doKnightmetalToolLogic);
+		LivingHurtEvent.EVENT.register(this::addExtraAxeChargingDamage);
+		BlockEvent.BreakEvent.EVENT.register(this::damageNonMazebreakerToolsMore);
+		MobEffectEvent.Applicable.EVENT.register(this::preventFatigueWithPocketWatch);
+		BlockEvent.BreakEvent.EVENT.register(this::handleGiantPickaxeMining);
+		// TagsUpdatedEvent needs migration to Fabric API
 	}
 
 	private void onEnderBowHit(ProjectileImpactEvent evt) {
@@ -72,7 +76,8 @@ public class ToolEvents {
 			&& result.getEntity() instanceof LivingEntity living
 			&& arrow.getOwner() != result.getEntity() && !result.getEntity().getType().is(Tags.EntityTypes.BOSSES)) {
 
-			if (arrow.getPersistentData().contains(EnderBowItem.KEY)) {
+			// Use Entity tags instead of persistent data (removed in 1.21.1)
+			if (arrow.getTags().contains(EnderBowItem.KEY)) {
 				double sourceX = player.getX(), sourceY = player.getY(), sourceZ = player.getZ();
 				float sourceYaw = player.getYRot(), sourcePitch = player.getXRot();
 				@Nullable Entity playerVehicle = player.getVehicle();
@@ -100,32 +105,31 @@ public class ToolEvents {
 		}
 	}
 
-	private void fieryToolSetFire(LivingIncomingDamageEvent event) {
+	private void fieryToolSetFire(LivingHurtEvent event) {
 		if (event.getSource().getEntity() instanceof LivingEntity living && (living.getMainHandItem().is(TFItems.FIERY_SWORD.get()) || living.getMainHandItem().is(TFItems.FIERY_PICKAXE.get())) && !event.getEntity().fireImmune()) {
 			event.getEntity().igniteForSeconds(1);
 		}
 	}
 
-	private void doKnightmetalToolLogic(LivingIncomingDamageEvent event) {
+	private void doKnightmetalToolLogic(LivingHurtEvent event) {
 		if (!event.isCanceled()) {
 			LivingEntity target = event.getEntity();
 
-			DamageContainer container = event.getContainer();
-			if (!target.level().isClientSide() && container.getSource().getDirectEntity() instanceof LivingEntity living) {
+			if (!target.level().isClientSide() && event.getSource().getDirectEntity() instanceof LivingEntity living) {
 				ItemStack weapon = living.getMainHandItem();
 
 				if (!weapon.isEmpty()) {
 					if (target.getArmorValue() > 0 && (weapon.is(TFItems.KNIGHTMETAL_PICKAXE.get()) || weapon.is(TFItems.KNIGHTMETAL_SWORD.get()))) {
 						if (target.getArmorCoverPercentage() > 0) {
 							int moreBonus = (int) (KNIGHTMETAL_BONUS_DAMAGE * target.getArmorCoverPercentage());
-							container.setNewDamage(container.getNewDamage() + moreBonus);
+							event.setAmount(event.getAmount() + moreBonus);
 						} else {
-							container.setNewDamage(container.getNewDamage() + KNIGHTMETAL_BONUS_DAMAGE);
+							event.setAmount(event.getAmount() + KNIGHTMETAL_BONUS_DAMAGE);
 						}
 						// enchantment attack sparkles
 						((ServerLevel) target.level()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
 					} else if (target.getArmorValue() == 0 && weapon.is(TFItems.KNIGHTMETAL_AXE.get())) {
-						container.setNewDamage(container.getOriginalDamage() + KNIGHTMETAL_BONUS_DAMAGE);
+						event.setAmount(event.getAmount() + KNIGHTMETAL_BONUS_DAMAGE);
 						// enchantment attack sparkles
 						((ServerLevel) target.level()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
 					}
@@ -134,14 +138,13 @@ public class ToolEvents {
 		}
 	}
 
-	private void addExtraAxeChargingDamage(LivingIncomingDamageEvent event) {
+	private void addExtraAxeChargingDamage(LivingHurtEvent event) {
 		if (!event.isCanceled()) {
 			LivingEntity target = event.getEntity();
-			DamageContainer container = event.getContainer();
-			if (!target.level().isClientSide() && container.getSource().getDirectEntity() instanceof LivingEntity living && living.isSprinting()) {
+			if (!target.level().isClientSide() && event.getSource().getDirectEntity() instanceof LivingEntity living && living.isSprinting()) {
 				ItemStack weapon = living.getMainHandItem();
 				if (!weapon.isEmpty() && weapon.getItem() instanceof MinotaurAxeItem) {
-					container.setNewDamage(container.getNewDamage() + MINOTAUR_AXE_BONUS_DAMAGE);
+					event.setAmount(event.getAmount() + MINOTAUR_AXE_BONUS_DAMAGE);
 					// enchantment attack sparkles
 					((ServerLevel) target.level()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
 				}
@@ -169,7 +172,7 @@ public class ToolEvents {
 		BlockState state = event.getState();
 
 		if (event.getPlayer() instanceof ServerPlayer player && canHarvestWithGiantPick(player, state, pos)) {
-			var attachment = player.getData(TFDataAttachments.GIANT_PICKAXE_MINING);
+			var attachment = player.getAttachedOrCreate(TFDataAttachments.GIANT_PICKAXE_MINING);
 
 			if (shouldBreakGiantBlock(player, attachment)) {
 				attachment.setBreaking(true); // Tell the capability that a block breaking loop is happening, so it knows to fail the if check above. Otherwise, this would go on forever
@@ -212,13 +215,15 @@ public class ToolEvents {
 	}
 
 	private static boolean canHarvestWithGiantPick(Player player, BlockState state, BlockPos pos) {
-		return player.getMainHandItem().getItem() instanceof GiantPickItem && EventHooks.doPlayerHarvestCheck(player, state, player.level(), pos);
+		return player.getMainHandItem().getItem() instanceof GiantPickItem && TFEventHooks.doPlayerHarvestCheck(player, state, player.level(), pos);
 	}
 
 	private static boolean shouldBreakGiantBlock(Player player, GiantPickaxeMiningAttachment attachment) {
 		return attachment.getMining() == player.level().getGameTime() && !attachment.getBreaking();
 	}
 
+	// TagsUpdatedEvent needs migration to Fabric API
+	/*
 	private void refreshOreMagnetCache(TagsUpdatedEvent event) {
 		OreMagnetItem.MAGNET_ORE_TO_BLOCK_REPLACEMENTS.clear();
 		OreMagnetItem.TREE_ORE_TO_BLOCK_REPLACEMENTS.clear();
@@ -256,4 +261,5 @@ public class ToolEvents {
 			OreMagnetItem.TREE_ORE_TO_BLOCK_REPLACEMENTS.put(Blocks.ANCIENT_DEBRIS, Blocks.NETHERRACK);
 		}
 	}
+	*/
 }
