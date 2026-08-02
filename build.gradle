@@ -115,10 +115,8 @@ dependencies {
 		"transfer"
 	]
 
-	dependencies {
-		portingLibModules.each { module ->
-			include(modImplementation "io.github.fabricators_of_create.Porting-Lib:${module}:${porting_lib_version}+${minecraft_version}")
-		}
+	portingLibModules.each { module ->
+		include(modImplementation "io.github.fabricators_of_create.Porting-Lib:${module}:${porting_lib_version}+${minecraft_version}")
 	}
 
 	// Javax annotations (used by many TF classes)
