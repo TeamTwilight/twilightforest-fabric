@@ -1,0 +1,61 @@
+{
+  "required": true,
+  "package": "twilightforest.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "BeardifierMixin",
+    "ChunkStatusMixin",
+    "DamageSourcesMixin",
+    "EntityMixin",
+    "LivingEntityMixin",
+    "MobMixin",
+    "PathFinderMixin",
+    "PlayerMixin",
+    "StructureStartMixin",
+    "MapItemMixin",
+    "MapItemSavedDataMixin",
+    "SnowLayerBlockMixin",
+    "WrittenBookItemMixin",
+    "AxeItemMixin",
+    "FireBlockMixin",
+    "SlimeBlockMixin",
+    "ServerEntityMixin",
+    "ServerLevelMixin",
+    "BiomeMixin",
+    "BlockEntityMixin",
+    "BlockEntityTypeMixin",
+    "BoatMixin",
+    "ChestBoatMixin",
+    "MushroomBlockMixin",
+    "NoiseBasedChunkGeneratorMixin"
+  ],
+  "client": [
+    "LevelRendererHitOutlineMixin",
+    "LevelRendererMixin",
+    "LevelRendererAccessor",
+    "BossHealthOverlayMixin",
+    "GuiMixin",
+    "WalkNodeEvaluatorMixin",
+    "SplashRendererMixin",
+    "TitleScreenMixin",
+    "EntityRenderDispatcherMixin",
+    "LivingEntityRendererMixin",
+    "ArmorRenderLayerMixin",
+    "ElytraLayerMixin",
+    "CapeLayerMixin",
+    "ShaderInstanceMixin",
+    "BoatRendererMixin",
+    "ItemInHandRendererMixin",
+    "MapInstanceMixin",
+    "MinecraftMixin",
+    "ItemRendererMixin",
+    "ModelBakeryMixin",
+    "WeightedBakedModelMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixinextras": {
+    "minVersion": "0.5.0-rc.2"
+  }
+}

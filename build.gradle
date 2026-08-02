@@ -1,87 +1,14 @@
-import net.neoforged.moddevgradle.internal.RunGameTask
-
-buildscript {
-	repositories {
-		maven {
-			name 'Beanification'
-			url 'https://maven.tamaized.com/releases/'
-			content {
-				includeGroup("tamaized")
-			}
-		}
-	}
-	dependencies {
-		classpath "tamaized:beanification:${beanification_version}:gradle"
-	}
-}
-
 plugins {
-	id 'java-library'
-	id 'eclipse'
-	id 'idea'
-	id 'org.jetbrains.gradle.plugin.idea-ext' version "1.1.10"
+	id 'fabric-loom' version "${loom_version}"
 	id 'maven-publish'
-	// Version List: https://projects.neoforged.net/neoforged/ModDevGradle
-	id 'net.neoforged.moddev' version "${mdg_version}"
-	id "com.dorongold.task-tree" version "4.0.0"
-	id 'com.gradleup.shadow' version '8.3.3'
 }
 
-apply plugin: 'tamaized.beanification'
-
-configurations {
-	shade
-}
-
-shadowJar {
-	dependsOn(tasks.named("jar"))
-	afterEvaluate {
-		from({ tasks.named("jar").get().outputs })
-	}
-	archiveClassifier.set('universal')
-	configurations = [project.configurations.shade]
-	relocate 'tamaized.beanification', "${project.mod_id}.beanification"
-}
-
-jar {
-	archiveClassifier = "slim"
-}
-
-def secrets = new Properties()
-def secretsFile = file('secrets.properties')
-if (secretsFile.exists()) {
-	secretsFile.withInputStream {
-		stream -> secrets.load(stream)
-	}
-
-	fileTree("secrets").matching {
-		include "**/*.properties"
-	}.each {
-		File file ->
-			file.withInputStream {
-				stream -> secrets.load(stream)
-			}
-	}
-}
-
-idea {
-	project.settings.compiler.javac {
-		// Disable “Report use of deprecated features” https://github.com/JetBrains/gradle-idea-ext-plugin/wiki#javac-settings-of-idea-compiler
-		generateDeprecationWarnings = false
-	}
-
-	module {
-		downloadJavadoc = true
-		downloadSources = true
-	}
-}
-
-version = (hasProperty("CIRevision") ? CIRevision : project.mod_version)
-group = group_name
+version = project.mod_version
+group = project.group_name
 
 java {
 	toolchain {
-		languageVersion.set(JavaLanguageVersion.of(21))
+		languageVersion = JavaLanguageVersion.of(21)
 	}
 }
 
@@ -89,181 +16,182 @@ base {
 	archivesName = "${project.mod_id}-${project.minecraft_version}"
 }
 
-subprojects {
-	version = project(":").version
-}
-
-neoForge {
-	// we need the subprojects to evaluate first so that the sourceSets are properly constructed
-	evaluationDependsOnChildren()
-
-	def mod_id = project.mod_id
-	version = project.neo_version
-
-	validateAccessTransformers = true
-
-	mods {
-		"${mod_id}" {
-			it.sourceSet this.sourceSets.main
-		}
-
-		'tf-asm' {
-			it.sourceSet project(":tf-asm").sourceSets.main
-		}
-	}
-
-	def mainMod = mods."${project.mod_id}"
-
-	unitTest {
-		enable()
-		testedMod = mainMod
-	}
-
-	runs {
-		configureEach {
-			gameDirectory = project.file('run')
-			systemProperty 'forge.logging.console.level', 'debug'
-			logLevel = org.slf4j.event.Level.DEBUG
-		}
-
-		client {
-			client()
-			systemProperty 'forge.enabledGameTestNamespaces', mod_id
-			programArguments.addAll '--username', secrets.getProperty("username") ?: 'Dev', secrets.getProperty("uuid") ? '--uuid' : '', secrets.getProperty("uuid") ?: '', '-Xss10m'
-		}
-
-		server {
-			server()
-			systemProperty 'forge.enabledGameTestNamespaces', mod_id
-			programArgument '--nogui'
-		}
-
-		data {
-			data()
-			gameDirectory = project.file('run-data')
-			programArguments.addAll '--mod', mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
-		}
-	}
-}
-
-afterEvaluate { // DO NOT ASK... it fixes the runClient and family tasks :harold:
-	tasks.withType(RunGameTask).configureEach {
-		classpathProvider.setFrom(classpathProvider.files.stream().filter(f -> !f.toString().contains('tf-asm')).toList())
-	}
-}
-
-jar {
-	exclude 'data/twilightforest/function/**'
-}
-
+// Include generated resources
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
 	mavenLocal()
 	maven {
-		name 'Jared\'s Maven' // JEI
-		url 'https://maven.blamejared.com/'
+		name = "ParchmentMC"
+		url = "https://maven.parchmentmc.org/"
 	}
 	maven {
-		name = "OctoStudios" //Curios
-		url = uri("https://maven.octo-studios.com/releases")
+		name = "Jared's Maven" // JEI
+		url = "https://maven.blamejared.com/"
 	}
 	maven {
-		name 'Shedaniel\'s Maven' //REI
-		url "https://maven.shedaniel.me"
+		name = "Shedaniel's Maven" // REI
+		url = "https://maven.shedaniel.me"
 	}
 	maven {
-		name = "TerraformersMC" //EMI
+		name = "TerraformersMC" // ModMenu
 		url = "https://maven.terraformersmc.com/"
 	}
-	maven { // TOP
-		url "https://maven.k-4u.nl"
-	}
-	maven { //CS
-		url "https://nexus.resourcefulbees.com/repository/maven-public/"
-	}
-    maven {
-        name 'Curseforge Maven' // Jade
-        url "https://www.cursemaven.com"
-        content {
-            includeGroup "curse.maven"
-        }
-    }
 	maven {
-		name 'Tama\'s Maven' // Beanification
-		url 'https://maven.tamaized.com/releases/'
+		name = "Modrinth"
+		url = "https://api.modrinth.com/maven"
+		content {
+			includeGroup "maven.modrinth"
+		}
+	}
+	maven {
+		name = "Curseforge Maven" // Jade
+		url = "https://www.cursemaven.com"
+		content {
+			includeGroup "curse.maven"
+		}
+	}
+	maven {
+		name = "Tama's Maven" // Beanification
+		url = "https://maven.tamaized.com/releases/"
 		content {
 			includeGroup("tamaized")
 		}
 	}
+	maven {
+		name = "Modrinth"
+		url = "https://api.modrinth.com/maven"
+		content {
+			includeGroup("maven.modrinth")
+		}
+	}
+	maven {
+		name = "Ladysnake"
+		url = "https://maven.ladysnake.org/releases"
+	}
+	maven {
+		name = "Jitpack"
+		url = "https://jitpack.io"
+	}
+	maven {
+		name = "Devos Maven"
+		url = "https://mvn.devos.one/snapshots/"
+	}
 }
 
 dependencies {
-	jarJar implementation(project(":tf-asm"))
+	// Minecraft
+	minecraft "com.mojang:minecraft:${minecraft_version}"
 
-	def beanification = "tamaized:beanification:${project.beanification_version}"
-	implementation beanification
-	shade beanification
-	testImplementation "${beanification}:tests"
-	testCompileOnly "${beanification}:test-sources"
-
-	//make sure to only pick one of these when testing (switch others to compileOnly)
-	implementation "mezz.jei:jei-${project.minecraft_version}-neoforge:${project.jei_version}"
-	compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:${project.rei_version}"
-	compileOnly "dev.emi:emi-neoforge:${project.emi_version}+${project.minecraft_version}"
-
-	// theillusivec4
-	implementation "top.theillusivec4.curios:curios-neoforge:${project.curios_version}+${project.base_minecraft_version}"
-
-	//curse maven
-	implementation "curse.maven:jade-324717:5529595"
-	implementation "curse.maven:cosmetic-armor-reworked-237307:5427303"
-	runtimeOnly "curse.maven:worldedit-225608:5830452"
-	runtimeOnly "curse.maven:jeed-532286:6550600"
-//	runtimeOnly "curse.maven:museum-curator-859070:4629894"
-	if (project.enable_tips_mod == 'true') {
-		runtimeOnly "curse.maven:tips-306549:5844057"
-		runtimeOnly "curse.maven:bookshelf-228525:6098975"
-		runtimeOnly "curse.maven:prickle-1023259:5836410"
+	// Mappings
+	mappings loom.layered {
+		it.officialMojangMappings { nameSyntheticMembers = false }
+		it.parchment("org.parchmentmc.data:parchment-${parchment_minecraft_version}:${parchment_version}@zip")
 	}
-	runtimeOnly "curse.maven:suggestion-provider-fix-469647:5598604"
 
-	compileOnly "mcjty.theoneprobe:theoneprobe:${project.top_version}"
+	// Fabric Loader
+	modImplementation "net.fabricmc:fabric-loader:${loader_version}"
 
-    //mods we dont have compat with but are nice to have
-	runtimeOnly "com.telepathicgrunt:CommandStructures-Neoforge:4.3.2+1.20.6"
+	// Fabric API
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
 
-	testImplementation group: 'net.neoforged', name: 'testframework', version: project.neo_version
-	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.10.3'
-	testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.3'
-	testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.12.0'
+	// Porting-Lib modules (from Devos Maven) - bundled via jar-in-jar so players don't need it as a separate dependency
+	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:core:3.1.0-beta.87+1.21.1")
+	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:common:3.1.0-beta.87+1.21.1")
+	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:base:3.1.0-beta.87+1.21.1")
+	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:attributes:3.1.0-beta.87+1.21.1")
+	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:blocks:3.1.0-beta.87+1.21.1")
+	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:client_events:3.1.0-beta.87+1.21.1")
+	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:client_extensions:3.1.0-beta.87+1.21.1")
+	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:config:3.1.0-beta.87+1.21.1")
+	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:data:3.1.0-beta.87+1.21.1")
+	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:entity:3.1.0-beta.87+1.21.1")
+	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:entity_data_serializers:3.1.0-beta.87+1.21.1")
+	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:fluids:3.1.0-beta.87+1.21.1")
+	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:gui_utils:3.1.0-beta.87+1.21.1")
+	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:item_abilities:3.1.0-beta.87+1.21.1")
+	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:items:3.1.0-beta.87+1.21.1")
+	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:level_events:3.1.0-beta.87+1.21.1")
+	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:loot:3.1.0-beta.87+1.21.1")
+	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:mixin_extensions:3.1.0-beta.87+1.21.1")
+	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:model_data:3.1.0-beta.87+1.21.1")
+	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:model_loader:3.1.0-beta.87+1.21.1")
+	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:models:3.1.0-beta.87+1.21.1")
+	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:registry:3.1.0-beta.87+1.21.1")
+	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:render_types:3.1.0-beta.87+1.21.1")
+	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:resources:3.1.0-beta.87+1.21.1")
+	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:tags:3.1.0-beta.87+1.21.1")
+	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:transfer:3.1.0-beta.87+1.21.1")
+
+	// Mixin Extras
+	include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:${mixin_extras_version}")))
+
+	// Javax annotations (used by many TF classes)
+	implementation "javax.annotation:javax.annotation-api:1.3.2"
+	implementation "com.google.code.findbugs:jsr305:3.0.2"
+
+	// Compat mods (compileOnly for optional mods)
+	modCompileOnly("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}") {
+		exclude group: "mezz.jei", module: "jei-${minecraft_version}-common-api"
+	}
+	modCompileOnly "me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}"
+	modCompileOnly "maven.modrinth:fRiHVvU7:mYQ3bJs5" // EMI
+
+	// ModMenu for config screen
+	modImplementation "com.terraformersmc:modmenu:11.0.3"
+
+	// Jade (compileOnly + localRuntime for dev environment; not a mandatory dependency)
+	modCompileOnly "maven.modrinth:jade:${jade_version}"
+	modLocalRuntime "maven.modrinth:jade:${jade_version}"
 }
 
-configurations.testImplementation {
-	exclude module: 'tf-asm'
-}
+loom {
+	accessWidenerPath = file("src/main/resources/twilightforest.accesswidener")
 
-test {
-	useJUnitPlatform()
-	testLogging {
-		events "failed"
+	runs {
+		configureEach {
+			ideConfigGenerated = true
+			vmArg("-Dmixin.debug.export=true")
+		}
 
-		showExceptions true
-		exceptionFormat "full"
-		showCauses true
-		showStackTraces true
+		client {
+			client()
+			configName = "Minecraft Client"
+			runDir = "run/client"
+			// Client forks its own JVM; give it enough heap to load large saves (avoids OOM
+			// like "Ran out of memory trying to read summary of world folder").
+			vmArg("-Xmx4G")
+		}
 
-		showStandardStreams = false
+		server {
+			server()
+			configName = "Minecraft Server"
+			runDir = "run/server"
+		}
+
+		data {
+			client()
+			configName = "Data Generation"
+			runDir = "run/data"
+			vmArg("-Dfabric-api.datagen")
+			vmArg("-Dfabric-api.datagen.output-dir=${file("src/generated/resources")}")
+			vmArg("-Dfabric-api.datagen.modid=${mod_id}")
+		}
 	}
 }
 
 processResources {
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 	def ver = project.version
-	filesMatching("META-INF/neoforge.mods.toml") {
+	inputs.property "version", ver
+
+	filesMatching("fabric.mod.json") {
 		expand([
-			'file'           : [
-				'jarVersion': ver
-			]
+			"version"             : ver,
+			"loader_version"      : loader_version,
+			"minecraft_version"   : minecraft_version,
+			"fabric_api_version"  : fabric_api_version,
+			"java_version"        : java.toolchain.languageVersion.get().asInt()
 		])
 	}
 }
@@ -274,48 +202,197 @@ jar {
 			'Specification-Title'     : mod_id,
 			'Specification-Vendor'    : "TeamTwilight",
 			'Specification-Version'   : "1",
-			'Implementation-Title'    : this.project.name,
-			'Implementation-Version'  : this.project.jar.archiveVersion,
+			'Implementation-Title'    : project.name,
+			'Implementation-Version'  : project.version,
 			'Implementation-Vendor'   : "TeamTwilight",
 			'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
 		])
 	}
 }
 
-def mavenUser = System.getenv("MAVEN_USER")?: secrets.getProperty("maven_username")
-def mavenToken = System.getenv("MAVEN_PASS")?: secrets.getProperty("maven_password")
+tasks.withType(JavaCompile).configureEach {
+	options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation,-this-escape"
+	options.encoding = 'UTF-8'
+}
+
+// ============================================================================
+// Fix jar-in-jar: sanitize every nested Porting-Lib module's fabric.mod.json.
+//
+// Loom's `include` flattens Porting-Lib modules into META-INF/jars but leaves
+// each nested jar's own metadata intact. Problems this task corrects:
+//   1. `porting_lib_core` depends on `porting_lib_gametest`, which is NOT
+//      included here. Fabric Loader silently DROPS a nested mod whose
+//      dependencies aren't satisfied (unlike top-level mods), cascading to ALL
+//      porting-lib modules -> NoClassDefFoundError: ...DeferredRegister at runtime.
+//   2. Nested modules reference `jars` entries that are ALSO bundled at the top
+//      level (mixinextras) -> keep only the ones that only exist inside the
+//      nested jar (e.g. night-config core/toml in porting_lib_config), otherwise
+//      those bundled libraries never get loaded.
+// This task drops any `depends` entry that isn't satisfied by the bundled
+// modules or the base environment, and prunes duplicate `jars` entries.
+// ============================================================================
+def ENV_MOD_IDS = ['fabricloader', 'fabric-api', 'minecraft', 'java', 'mixinextras'] as Set
+
+def stripNestedJarMetadata(byte[] nestedJarBytes, Set knownModIds, Set topLevelJarNames) {
+	def out = new ByteArrayOutputStream()
+	def zos = new java.util.zip.ZipOutputStream(out, java.nio.charset.StandardCharsets.UTF_8)
+	def zin = new java.util.zip.ZipInputStream(new ByteArrayInputStream(nestedJarBytes), java.nio.charset.StandardCharsets.UTF_8)
+	byte[] buf = new byte[8192]
+	java.util.zip.ZipEntry entry
+	while ((entry = zin.getNextEntry()) != null) {
+		zos.putNextEntry(new java.util.zip.ZipEntry(entry.name))
+		if (entry.name == 'fabric.mod.json') {
+			def jsonBytes = new ByteArrayOutputStream()
+			int m
+			while ((m = zin.read(buf)) > 0) {
+				jsonBytes.write(buf, 0, m)
+			}
+			def json = new groovy.json.JsonSlurper().parseText(new String(jsonBytes.toByteArray(), 'UTF-8'))
+			// Keep `jars` entries that reference library jars bundled inside this
+			// nested jar (e.g. night-config core/toml in porting_lib_config), but
+			// drop entries whose file is already bundled at the top level
+			// (e.g. mixinextras) to avoid duplicate loading.
+			if (json.jars instanceof List) {
+				def kept = json.jars.findAll { j ->
+					def fname = (j.file ?: '').toString().tokenize('/').last()
+					!topLevelJarNames.contains(fname)
+				}
+				if (kept.isEmpty()) {
+					json.remove('jars')
+				} else {
+					json.jars = kept
+				}
+			}
+			if (json.depends instanceof Map) {
+				def filtered = [:]
+				json.depends.each { k, v ->
+					if (knownModIds.contains(k)) {
+						filtered[k] = v
+					}
+				}
+				if (filtered.isEmpty()) {
+					json.remove('depends')
+				} else {
+					json.depends = filtered
+				}
+			}
+			zos.write(groovy.json.JsonOutput.toJson(json).getBytes('UTF-8'))
+		} else {
+			int n
+			while ((n = zin.read(buf)) > 0) {
+				zos.write(buf, 0, n)
+			}
+		}
+		zos.closeEntry()
+	}
+	zin.close()
+	zos.close()
+	return out.toByteArray()
+}
+
+tasks.named('remapJar') {
+	doLast {
+		def jarFile = archiveFile.get().asFile
+		def tmpFile = File.createTempFile('twilightforest-fixed', '.jar')
+		tmpFile.deleteOnExit()
+		try {
+			// Pass 1: collect the mod ids of every bundled nested jar so we can tell
+			// which `depends` entries are actually satisfiable at runtime, plus the
+			// file names already bundled at the top level.
+			Set knownModIds = new HashSet(ENV_MOD_IDS)
+			Set topLevelJarNames = new HashSet()
+			def zf = new java.util.zip.ZipFile(jarFile, java.nio.charset.StandardCharsets.UTF_8)
+			try {
+				def collectEntries = zf.entries()
+				byte[] cb = new byte[8192]
+				while (collectEntries.hasMoreElements()) {
+					def centry = collectEntries.nextElement()
+					if (centry.isDirectory()) continue
+					if (centry.name.startsWith('META-INF/jars/') && centry.name.endsWith('.jar')) {
+						topLevelJarNames.add(centry.name.tokenize('/').last())
+						def cis = zf.getInputStream(centry)
+						def inner = new ByteArrayOutputStream()
+						int cm
+						while ((cm = cis.read(cb)) > 0) {
+							inner.write(cb, 0, cm)
+						}
+						cis.close()
+						def czin = new java.util.zip.ZipInputStream(new ByteArrayInputStream(inner.toByteArray()), java.nio.charset.StandardCharsets.UTF_8)
+						try {
+							def ce
+							while ((ce = czin.getNextEntry()) != null) {
+								if (ce.name == 'fabric.mod.json') {
+									def cj = new ByteArrayOutputStream()
+									int cn
+									while ((cn = czin.read(cb)) > 0) {
+										cj.write(cb, 0, cn)
+									}
+									def cjson = new groovy.json.JsonSlurper().parseText(new String(cj.toByteArray(), 'UTF-8'))
+									if (cjson.id) {
+										knownModIds.add(cjson.id as String)
+									}
+									break
+								}
+							}
+						} finally {
+							czin.close()
+						}
+					}
+				}
+			} finally {
+				zf.close()
+			}
+
+			// Pass 2: rewrite the jar, sanitizing each nested jar's metadata.
+			def zos = new java.util.zip.ZipOutputStream(new BufferedOutputStream(new FileOutputStream(tmpFile)), java.nio.charset.StandardCharsets.UTF_8)
+			def zf2 = new java.util.zip.ZipFile(jarFile, java.nio.charset.StandardCharsets.UTF_8)
+			byte[] buf = new byte[8192]
+			try {
+				def entries = zf2.entries()
+				while (entries.hasMoreElements()) {
+					def entry = entries.nextElement()
+					if (entry.isDirectory()) continue
+					zos.putNextEntry(new java.util.zip.ZipEntry(entry.name))
+					def is = zf2.getInputStream(entry)
+					try {
+						if (entry.name.startsWith('META-INF/jars/') && entry.name.endsWith('.jar')) {
+							def inner = new ByteArrayOutputStream()
+							int m
+							while ((m = is.read(buf)) > 0) {
+								inner.write(buf, 0, m)
+							}
+							zos.write(stripNestedJarMetadata(inner.toByteArray(), knownModIds, topLevelJarNames))
+						} else {
+							int n
+							while ((n = is.read(buf)) > 0) {
+								zos.write(buf, 0, n)
+							}
+						}
+					} finally {
+						is.close()
+					}
+					zos.closeEntry()
+				}
+			} finally {
+				zf2.close()
+			}
+			zos.close()
+			jarFile.delete()
+			if (!tmpFile.renameTo(jarFile)) {
+				java.nio.file.Files.copy(tmpFile.toPath(), jarFile.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING)
+				tmpFile.delete()
+			}
+			logger.lifecycle("Sanitized nested jar-in-jar metadata (stripped {} unsatisfied deps) from {}", 'jars', jarFile.name)
+		} catch (Exception e) {
+			throw new GradleException("Failed to sanitize nested jar-in-jar metadata from ${jarFile}", e)
+		}
+	}
+}
 
 publishing {
 	publications {
 		create('mavenJava', MavenPublication) {
-			afterEvaluate {
-				artifact this.project.shadowJar
-				artifact this.project.sourceJar
-			}
-			groupId mavenUser
-			artifactId this.project.mod_id
-		}
-	}
-	repositories {
-		maven {
-			url "https://maven.tamaized.com/releases"
-			credentials {
-				username mavenUser
-				password mavenToken
-			}
+			from components.java
 		}
 	}
 }
-
-tasks.register('sourceJar', Jar) {
-	dependsOn 'classes'
-	from sourceSets.main.allSource
-	archiveClassifier = 'sources'
-}
-
-tasks.withType(JavaCompile).configureEach {
-	options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation,-this-escape" << "-Werror"
-	options.encoding = 'UTF-8'
-}
-
-build.dependsOn shadowJar

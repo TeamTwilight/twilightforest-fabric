@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "id": "twilightforest",
+  "version": "${version}",
+  "name": "The Twilight Forest",
+  "description": "An enchanted forest dimension.",
+  "authors": [
+    "Benimatic",
+    "AtomicBlom",
+    "Drullkus",
+    "Killer_Demon",
+    "quadraxis",
+    "Tamaized",
+    "williewillus",
+    "Andromander",
+    "GizmoTheMoonPig",
+    "jodlodi",
+    "SleepyHorse"
+  ],
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/the-twilight-forest",
+    "sources": "https://github.com/TeamTwilight/twilightforest",
+    "issues": "https://github.com/TeamTwilight/twilightforest/issues"
+  },
+  "license": "LGPL-2.1",
+  "icon": "icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "twilightforest.TwilightForestMod"
+    ],
+    "client": [
+      "twilightforest.client.TFClientSetup"
+    ],
+    "rei_client": [
+      "twilightforest.compat.rei.TFREIClientPlugin"
+    ],
+    "rei_server": [
+      "twilightforest.compat.rei.TFREIServerPlugin"
+    ],
+    "emi": [
+      "twilightforest.compat.emi.TFEmiCompat"
+    ],
+    "jade": [
+      "twilightforest.compat.jade.JadeCompat"
+    ],
+    "fabric-datagen": [
+      "twilightforest.data.DataGenerators"
+    ]
+  },
+  "mixins": [
+    "twilightforest.mixins.json"
+  ],
+  "accessWidener": "twilightforest.accesswidener",
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": ">=${fabric_api_version}",
+    "minecraft": ">=1.21 <=1.21.1",
+    "java": ">=${java_version}"
+  },
+  "suggests": {
+    "jei": "*",
+    "roughlyenoughitems": "*",
+    "emi": "*",
+    "jade": "*",
+    "modmenu": "*"
+  },
+  "custom": {
+    "loom:injected_interfaces": {
+      "io/github/fabricators_of_create/porting_lib/models/CompositeModel\$Baked": [
+        "net/fabricmc/fabric/api/renderer/v1/model/FabricBakedModel"
+      ]
+    },
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/teamtwilight"
+      }
+    }
+  }
+}
