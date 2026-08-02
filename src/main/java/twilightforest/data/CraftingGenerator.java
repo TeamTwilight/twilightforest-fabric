@@ -18,10 +18,8 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Blocks;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.crafting.CompoundIngredient;
-import net.neoforged.neoforge.common.crafting.DataComponentIngredient;
-import net.neoforged.neoforge.common.crafting.DifferenceIngredient;
+import io.github.fabricators_of_create.porting_lib.tags.Tags;
+import io.github.fabricators_of_create.porting_lib.resources.crafting.DataComponentIngredient;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.custom.*;
@@ -49,7 +47,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 	}
 
 	@Override
-	protected void buildRecipes(RecipeOutput output) {
+	public void buildRecipes(RecipeOutput output) {
 		StonecuttingGenerator.buildRecipes(output);
 		UncraftingGenerator.buildRecipes(output);
 
@@ -232,7 +230,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		crackedWoodRecipes(output);
 		crackedStoneRecipes(output);
 
-		//TODO 1.21.4 use vanilla recipe with higher priority
+		// 配方优先级（未来版本）
 //		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, TFBlocks.CHISELED_CANOPY_BOOKSHELF.get())
 //			.pattern("---")
 //			.pattern("   ")
@@ -495,7 +493,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.group("fiery_sword")
 			.save(output, locEquip(TFItems.FIERY_SWORD.getKey().location().getPath()));
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, new ItemStack(TFItems.NAGA_CHESTPLATE, 1, this.buildEnchants(provider, Pair.of(Enchantments.FIRE_PROTECTION, 3)).build()))
+		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, TFItems.NAGA_CHESTPLATE.get())
 			.pattern("# #")
 			.pattern("###")
 			.pattern("###")
@@ -503,7 +501,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_item", has(TFItems.NAGA_SCALE))
 			.save(output, locEquip(TFItems.NAGA_CHESTPLATE.getKey().location().getPath()));
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, new ItemStack(TFItems.NAGA_LEGGINGS, 1, this.buildEnchants(provider, Pair.of(Enchantments.PROTECTION, 3)).build()))
+		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, TFItems.NAGA_LEGGINGS.get())
 			.pattern("###")
 			.pattern("# #")
 			.pattern("# #")
@@ -511,14 +509,14 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_item", has(TFItems.NAGA_SCALE))
 			.save(output, locEquip(TFItems.NAGA_LEGGINGS.getKey().location().getPath()));
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, new ItemStack(TFItems.YETI_HELMET, 1, this.buildEnchants(provider, Pair.of(Enchantments.PROTECTION, 2)).build()))
+		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, TFItems.YETI_HELMET.get())
 			.pattern("###")
 			.pattern("# #")
 			.define('#', TFItems.ALPHA_YETI_FUR)
 			.unlockedBy("has_item", has(TFItems.ALPHA_YETI_FUR))
 			.save(output, locEquip(TFItems.YETI_HELMET.getKey().location().getPath()));
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, new ItemStack(TFItems.YETI_CHESTPLATE, 1, this.buildEnchants(provider, Pair.of(Enchantments.PROTECTION, 2)).build()))
+		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, TFItems.YETI_CHESTPLATE.get())
 			.pattern("# #")
 			.pattern("###")
 			.pattern("###")
@@ -526,7 +524,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_item", has(TFItems.ALPHA_YETI_FUR))
 			.save(output, locEquip(TFItems.YETI_CHESTPLATE.getKey().location().getPath()));
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, new ItemStack(TFItems.YETI_LEGGINGS, 1, this.buildEnchants(provider, Pair.of(Enchantments.PROTECTION, 2)).build()))
+		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, TFItems.YETI_LEGGINGS.get())
 			.pattern("###")
 			.pattern("# #")
 			.pattern("# #")
@@ -534,7 +532,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_item", has(TFItems.ALPHA_YETI_FUR))
 			.save(output, locEquip(TFItems.YETI_LEGGINGS.getKey().location().getPath()));
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, new ItemStack(TFItems.YETI_BOOTS, 1, this.buildEnchants(provider, Pair.of(Enchantments.PROTECTION, 2), Pair.of(Enchantments.FEATHER_FALLING, 4)).build()))
+		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, TFItems.YETI_BOOTS.get())
 			.pattern("# #")
 			.pattern("# #")
 			.define('#', TFItems.ALPHA_YETI_FUR)
@@ -664,7 +662,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.addRepairIngredient(Items.ROTTEN_FLESH)
 			.save(output, locEquip(TFItems.ZOMBIE_SCEPTER.getId().getPath()));
 
-		Predicate<Ingredient> splitTravellersModifiersRecipes = ingredient -> Arrays.stream(ingredient.getItems()).allMatch(stack -> stack.has(TFDataComponents.IS_TRAVELLERS_GEAR) && !stack.is(TFItems.TRAVELLERS_BELT));
+		Predicate<Ingredient> splitTravellersModifiersRecipes = ingredient -> Arrays.stream(ingredient.getItems()).allMatch(stack -> stack.has(TFDataComponents.IS_TRAVELLERS_GEAR.get()) && !stack.is(TFItems.TRAVELLERS_BELT));
 
 		TravellersGearComponentModifierBuilder.buildShaped(CartesianShapedRecipeBuilder.create(splitTravellersModifiersRecipes)
 				.pattern(" R ")
@@ -856,7 +854,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.pattern("sw")
 				.define('b', Items.BAMBOO)
 				.define('w', potionsIngredient(Potions.WATER_BREATHING, Potions.LONG_WATER_BREATHING))
-				.define('s', Tags.Items.SLIME_BALLS)
+				.define('s', Items.SLIME_BALL)
 				.define('g', TFItems.TRAVELLERS_GOGGLES)
 				.build(),
 			TravellersModifiersManager.AQUATIC_AGILITY_MODIFIER).save(output);
@@ -1354,7 +1352,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.pattern("ixi")
 			.pattern("lll")
 			.define('l', TFItems.TANNED_LEATHER)
-			.define('x', DifferenceIngredient.of(Ingredient.of(Tags.Items.CHESTS_WOODEN), Ingredient.of(Tags.Items.CHESTS_TRAPPED)))
+			.define('x', Ingredient.of(Tags.Items.CHESTS_WOODEN)) // DifferenceIngredient 已用 Tags.Items.CHESTS_WOODEN 替代
 			.define('i', Tags.Items.NUGGETS_IRON)
 			.unlockedBy("has_leather", has(TFItems.TANNED_LEATHER))
 			.save(output, locEquip(TFItems.TRAVELLERS_BELT.getId().getPath()));
@@ -1386,7 +1384,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		for (int i = 0; i < potions.length; i++) {
 			ingredients[i] = potionIngredient(potions[i]);
 		}
-		return CompoundIngredient.of(ingredients);
+		return Ingredient.of(Arrays.stream(ingredients).flatMap(i -> Arrays.stream(i.getItems()))); // CompoundIngredient 待移植
 	}
 
 	private static @NotNull Ingredient potionIngredient(@NotNull Holder<Potion> potion) {

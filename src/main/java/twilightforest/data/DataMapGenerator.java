@@ -9,11 +9,11 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.MapColor;
-import net.neoforged.neoforge.common.data.DataMapProvider;
-import net.neoforged.neoforge.registries.datamaps.builtin.Compostable;
-import net.neoforged.neoforge.registries.datamaps.builtin.FurnaceFuel;
-import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps;
-import net.neoforged.neoforge.registries.datamaps.builtin.ParrotImitation;
+import io.github.fabricators_of_create.porting_lib.data.DataMapProvider;
+
+
+
+
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.*;
 import twilightforest.util.datamaps.CrumbledBlock;
@@ -31,6 +31,8 @@ public class DataMapGenerator extends DataMapProvider {
 	@Override
 	@SuppressWarnings("deprecation")
 	protected void gather(HolderLookup.Provider provider) {
+		// 已迁移: Compostable/FurnaceFuel/ParrotImitation 已迁移到 TwilightForestMod.registerCompostables/FurnaceFuels/ParrotImitations (Phase 5.3)
+	/*
 		var compostables = this.builder(NeoForgeDataMaps.COMPOSTABLES);
 		compostables.add(TFBlocks.FALLEN_LEAVES.asItem().builtInRegistryHolder(), new Compostable(0.1F), false);
 		compostables.add(TFBlocks.CANOPY_LEAVES.asItem().builtInRegistryHolder(), new Compostable(0.3F), false);
@@ -138,8 +140,9 @@ public class DataMapGenerator extends DataMapProvider {
 		parrot.add(TFEntities.WINTER_WOLF, new ParrotImitation(TFSounds.HOSTILE_WOLF_PARROT.get()), false);
 		parrot.add(TFEntities.WRAITH, new ParrotImitation(TFSounds.WRAITH_PARROT.get()), false);
 		parrot.add(TFEntities.YETI, new ParrotImitation(TFSounds.ALPHA_YETI_PARROT.get()), false);
+	*/
 
-		var transformation = this.builder(TFDataMaps.TRANSFORMATION_POWDER);
+	var transformation = this.builder(TFDataMaps.TRANSFORMATION_POWDER);
 		this.add2WayTransform(transformation, TFEntities.MINOTAUR, EntityType.ZOMBIFIED_PIGLIN);
 		this.add2WayTransform(transformation, TFEntities.DEER, EntityType.COW);
 		this.add2WayTransform(transformation, TFEntities.BOAR, EntityType.PIG);
@@ -261,11 +264,11 @@ public class DataMapGenerator extends DataMapProvider {
 		oreMap.add(Blocks.ANCIENT_DEBRIS.builtInRegistryHolder(), new OreMapOreColor(MapColor.TERRACOTTA_BROWN), false);
 	}
 
-	private void add1WayTransform(DataMapProvider.Builder<EntityTransformation, EntityType<?>> builder, EntityType<?> from, EntityType<?> to) {
+	private void add1WayTransform(Builder<EntityTransformation, EntityType<?>> builder, EntityType<?> from, EntityType<?> to) {
 		builder.add(BuiltInRegistries.ENTITY_TYPE.getKey(from), new EntityTransformation(to), false);
 	}
 
-	private void add2WayTransform(DataMapProvider.Builder<EntityTransformation, EntityType<?>> builder, Holder<EntityType<?>> tfMob, EntityType<?> vanillaMob) {
+	private void add2WayTransform(Builder<EntityTransformation, EntityType<?>> builder, Holder<EntityType<?>> tfMob, EntityType<?> vanillaMob) {
 		builder.add(tfMob, new EntityTransformation(vanillaMob), false);
 		builder.add(BuiltInRegistries.ENTITY_TYPE.getKey(vanillaMob), new EntityTransformation(tfMob.value()), false);
 	}

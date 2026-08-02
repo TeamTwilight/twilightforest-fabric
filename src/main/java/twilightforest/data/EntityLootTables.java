@@ -23,7 +23,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceWit
 import net.minecraft.world.level.storage.loot.providers.number.BinomialDistributionGenerator;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.neoforged.neoforge.registries.DeferredHolder;
+import io.github.fabricators_of_create.porting_lib.registry.DeferredHolder;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFItems;
@@ -636,8 +636,8 @@ public class EntityLootTables extends EntityLootSubProvider {
 		return LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(wool))).withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(NestedLootTable.lootTableReference(EntityType.SHEEP.getDefaultLootTable())));
 	}
 
-	@Override
-	protected Stream<EntityType<?>> getKnownEntityTypes() {
+	// getKnownEntityTypes() does not override any method in 1.21.1 - kept as a utility method
+	public Stream<EntityType<?>> getKnownEntityTypes() {
 		return TFEntities.ENTITIES.getEntries().stream().map(DeferredHolder::value);
 	}
 }

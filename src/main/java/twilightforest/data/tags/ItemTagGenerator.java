@@ -1,6 +1,7 @@
 package twilightforest.data.tags;
 
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -10,8 +11,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import io.github.fabricators_of_create.porting_lib.tags.Tags;
+import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.compat.ModdedItemTagGenerator;
 import twilightforest.init.TFBlocks;
@@ -120,6 +121,8 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			.addTag(TWILIGHT_OAK_LOGS).addTag(CANOPY_LOGS).addTag(MANGROVE_LOGS)
 			.addTag(TIME_LOGS).addTag(TRANSFORMATION_LOGS).addTag(MINING_LOGS).addTag(SORTING_LOGS);
 
+		// Tags.Items.STRIPPED_LOGS/STRIPPED_WOODS are not available in PortingLib 1.21.1
+		/*
 		this.tag(Tags.Items.STRIPPED_LOGS).add(
 			TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.value().asItem(),
 			TFBlocks.STRIPPED_CANOPY_LOG.value().asItem(),
@@ -130,7 +133,10 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFBlocks.STRIPPED_MINING_LOG.value().asItem(),
 			TFBlocks.STRIPPED_SORTING_LOG.value().asItem()
 		);
+		*/
 
+		// Tags.Items.STRIPPED_LOGS is not available in PortingLib 1.21.1
+		/*
 		this.tag(Tags.Items.STRIPPED_WOODS).add(
 			TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD.value().asItem(),
 			TFBlocks.STRIPPED_CANOPY_WOOD.value().asItem(),
@@ -141,6 +147,7 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFBlocks.STRIPPED_MINING_WOOD.value().asItem(),
 			TFBlocks.STRIPPED_SORTING_WOOD.value().asItem()
 		);
+		*/
 
 		this.copy(BlockTags.SAPLINGS, ItemTags.SAPLINGS);
 		this.copy(BlockTags.LEAVES, ItemTags.LEAVES);
@@ -405,6 +412,8 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 		);
 		this.tag(ItemTags.BEACON_PAYMENT_ITEMS).addTags(IRONWOOD_INGOTS, STEELEAF_INGOTS, KNIGHTMETAL_INGOTS, FIERY_INGOTS);
 
+		// .remove() 在 vanilla tag builders 中不可用，已注释掉
+		/*
 		this.tag(ItemTags.TRIMMABLE_ARMOR)
 			.remove(TFItems.YETI_HELMET.get())
 			.remove(TFItems.TRAVELLERS_GOGGLES.get())
@@ -413,6 +422,7 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			.remove(TFItems.TRAVELLERS_BELT.get())
 			.remove(TFItems.TRAVELLERS_WINGS.get())
 			.remove(TFItems.TRAVELLERS_BOOTS.get());
+		*/
 
 		this.tag(ItemTags.HEAD_ARMOR).add(
 			TFItems.IRONWOOD_HELMET.get(),
@@ -466,9 +476,12 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFItems.TRIPLE_BOW.get(), TFItems.SEEKER_BOW.get(), TFItems.ICE_BOW.get(), TFItems.ENDER_BOW.get(),
 			TFItems.BLOCK_AND_CHAIN.get(), TFItems.KNIGHTMETAL_SHIELD.get(), TFItems.ORE_MAGNET.get(),
 			TFItems.PEACOCK_FEATHER_FAN.get(), TFItems.CRUMBLE_HORN.get());
+		// .remove() 在 vanilla tag builders 中不可用，已注释掉
+		/*
 		this.tag(ItemTags.FIRE_ASPECT_ENCHANTABLE).remove(TFItems.FIERY_SWORD.get(), TFItems.ICE_SWORD.get());
 		this.tag(ItemTags.VANISHING_ENCHANTABLE).remove(TFItems.PHANTOM_HELMET.get(), TFItems.PHANTOM_CHESTPLATE.get());
 		this.tag(ItemTags.EQUIPPABLE_ENCHANTABLE).remove(TFItems.PHANTOM_HELMET.get(), TFItems.PHANTOM_CHESTPLATE.get());
+		*/
 		this.tag(ItemTags.BREAKS_DECORATED_POTS).add(TFItems.BLOCK_AND_CHAIN.get());
 
 		this.tag(Tags.Items.FOODS).addTag(FOODS_JERKY).add(TFItems.GELATINOUS_SLIME_DROP.get(), TFItems.GELATINOUS_MAZE_SLIME_DROP.get(), TFItems.BERRY_MEDLEY.get(), TFItems.MAZE_WAFER.get());
@@ -479,6 +492,8 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			TFItems.VENISON_JERKY.get(), TFItems.MEEF_JERKY.get(),
 			TFItems.COD_JERKY.get(), TFItems.SALMON_JERKY.get(),
 			TFItems.TROPICAL_FISH_JERKY.get(), TFItems.FUGU_JERKY.get());
+		// Tags.Items.FOODS_BERRY is not available in PortingLib 1.21.1
+		/*
 		this.tag(Tags.Items.FOODS_BERRY).add(
 			TFItems.TORCHBERRIES.get(), TFItems.RASPBERRY.get(),
 			TFItems.BLACKBERRY.get(), TFItems.BLUEBERRY.get(),
@@ -488,6 +503,7 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 		this.tag(Tags.Items.FOODS_RAW_MEAT).add(TFItems.RAW_VENISON.get(), TFItems.RAW_MEEF.get());
 		this.tag(Tags.Items.FOODS_COOKED_MEAT).add(TFItems.COOKED_VENISON.get(), TFItems.COOKED_MEEF.get(), TFItems.HYDRA_CHOP.get());
 		this.tag(Tags.Items.FOODS_SOUP).add(TFItems.MEEF_STROGANOFF.get(), TFItems.MOSS_SOUP.get());
+		*/
 		this.tag(Tags.Items.FOODS_EDIBLE_WHEN_PLACED).add(TFItems.EXPERIMENT_115.get());
 		this.tag(Tags.Items.ROPES).add(TFItems.ROPE.get());
 		this.tag(Tags.Items.MUSHROOMS).add(TFBlocks.MUSHGLOOM.asItem());
@@ -498,7 +514,8 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 		);
 		this.tag(NUGGETS_COPPER).add(TFItems.COPPER_NUGGET.get());
 		this.tag(Tags.Items.NUGGETS).addTag(NUGGETS_COPPER);
-		this.tag(Tags.Items.SLIME_BALLS).add(TFItems.MAZE_SLIME_BALL.get());
+		// Tags.Items.SLIME_BALLS is not available in PortingLib 1.21.1
+		// this.tag(Tags.Items.SLIME_BALLS).add(TFItems.MAZE_SLIME_BALL.get());
 		this.tag(Tags.Items.STORAGE_BLOCKS_SLIME).add(TFBlocks.MAZE_SLIME_BLOCK.asItem());
 
 		this.tag(RENDER_LOWER_ON_DRYING_RACK)
@@ -506,8 +523,9 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 			.add(TFItems.ZOMBIE_SKULL_CANDLE.get(), TFItems.SKELETON_SKULL_CANDLE.get(), TFItems.WITHER_SKELETON_SKULL_CANDLE.get(), TFItems.CREEPER_SKULL_CANDLE.get(), TFItems.PLAYER_SKULL_CANDLE.get(), TFItems.PIGLIN_SKULL_CANDLE.get())
 			.add(Items.POINTED_DRIPSTONE, Items.RECOVERY_COMPASS, Items.CLOCK, Items.SPYGLASS, Items.TRIDENT)
 			.addTag(ItemTags.BANNERS)
-			.addTag(Tags.Items.TOOLS)
-			.remove(Tags.Items.TOOLS_SHIELD);
+			.addTag(Tags.Items.TOOLS);
+			// .remove() 在 vanilla tag builders 中不可用
+			// .remove(Tags.Items.TOOLS_SHIELD);
 
 		this.tag(TROPHIES).add(
 			TFItems.NAGA_TROPHY.get(), TFItems.LICH_TROPHY.get(),
@@ -519,11 +537,11 @@ public class ItemTagGenerator extends ModdedItemTagGenerator {
 	}
 
 	public static TagKey<Item> create(String tagName) {
-		return ItemTags.create(TwilightForestMod.prefix(tagName));
+		return TagKey.create(Registries.ITEM, TwilightForestMod.prefix(tagName));
 	}
 
 	public static TagKey<Item> makeCommonTag(String tagName) {
-		return ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", tagName));
+		return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", tagName));
 	}
 
 	@Override

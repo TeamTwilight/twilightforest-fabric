@@ -471,14 +471,8 @@ public class LangGenerator extends TFLangProvider {
 		this.addBlock(TFBlocks.ROOT_STRAND, "Root Strands");
 		this.addBlock(TFBlocks.FALLEN_LEAVES, "Fallen Leaves");
 		this.addBlock(TFBlocks.MAYAPPLE, "Mayapple");
-		this.addBlock(TFBlocks.POTTED_MAYAPPLE, "Potted Mayapple");
 		this.addBlock(TFBlocks.FIDDLEHEAD, "Fiddlehead Fern");
-		this.addBlock(TFBlocks.POTTED_FIDDLEHEAD, "Potted Fiddlehead");
 		this.addBlock(TFBlocks.MUSHGLOOM, "Mushgloom");
-		this.addBlock(TFBlocks.POTTED_MUSHGLOOM, "Potted Mushgloom");
-		this.addBlock(TFBlocks.POTTED_THORN, "Potted Thorn");
-		this.addBlock(TFBlocks.POTTED_GREEN_THORN, "Potted Green Thorn");
-		this.addBlock(TFBlocks.POTTED_DEAD_THORN, "Potted Burnt Thorn");
 
 		this.addBlock(TFBlocks.HEDGE, "Hedge");
 		this.addBlock(TFBlocks.ROOT_BLOCK, "Roots");

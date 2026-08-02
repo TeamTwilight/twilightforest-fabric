@@ -6,7 +6,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import io.github.fabricators_of_create.porting_lib.resources.events.AddReloadListenersEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;

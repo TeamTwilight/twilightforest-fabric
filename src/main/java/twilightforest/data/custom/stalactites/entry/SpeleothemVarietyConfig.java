@@ -15,7 +15,7 @@ import java.util.List;
  * @param oreChance        A floating-point decimal number representing the percent chance of a Stalactite being replaced with an Ore Stalactite. Effectively an interpolation between the two weighted lists.
  * @param stalactiteChance The chance for generating a Stalactite or Ore Stalactite at a given point in the lattice
  * @param stalagmiteChance The chance for generating a Stalagmite at all at a given point in the lattice
- * @param replace          Whether if prior configurations should be replaced. FIXME Ordering shuffled by underlying code from Vanilla, Datapack hierarchy not respected
+ * @param replace          Whether if prior configurations should be replaced.
  *                         <p>
  *                         An example:
  *                         <pre>{@code

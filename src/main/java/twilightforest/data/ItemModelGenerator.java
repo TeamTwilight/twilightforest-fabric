@@ -10,18 +10,17 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
-import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
-import net.neoforged.neoforge.client.model.generators.ModelFile;
-import net.neoforged.neoforge.client.model.generators.loaders.ItemLayerModelBuilder;
-import net.neoforged.neoforge.client.model.generators.loaders.SeparateTransformsModelBuilder;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredItem;
-import tamaized.beanification.Autowired;
+import io.github.fabricators_of_create.porting_lib.models.generators.ItemModelBuilder;
+import io.github.fabricators_of_create.porting_lib.models.generators.ItemModelProvider;
+import io.github.fabricators_of_create.porting_lib.models.generators.ModelFile;
+import io.github.fabricators_of_create.porting_lib.models.generators.loaders.ItemLayerModelBuilder;
+import io.github.fabricators_of_create.porting_lib.models.generators.loaders.SeparateTransformsModelBuilder;
+import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
+import io.github.fabricators_of_create.porting_lib.registry.DeferredHolder;
+import io.github.fabricators_of_create.porting_lib.registry.DeferredItem;
+
 import twilightforest.TwilightForestMod;
 import twilightforest.data.custom.TravellersGearItemModelBuilder;
-import twilightforest.enums.extensions.TFItemDisplayContextEnumExtension;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFItems;
@@ -32,9 +31,6 @@ import static twilightforest.TwilightForestMod.prefix;
 
 @SuppressWarnings("SameParameterValue")
 public class ItemModelGenerator extends ItemModelProvider {
-
-	@Autowired
-	private static TFItemDisplayContextEnumExtension itemDisplayContextEnumExtension;
 
 	public ItemModelGenerator(PackOutput output, ExistingFileHelper existingFileHelper) {
 		super(output, TwilightForestMod.ID, existingFileHelper);
@@ -97,15 +93,28 @@ public class ItemModelGenerator extends ItemModelProvider {
 			.transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(75.0F, 45.0F, 0.0F).translation(0.0F, 2.5F * giant, 0.0F).scale(0.375F * giant).end()
 			.transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0.0F, 45.0F, 0.0F).translation(0.0F, -2.5F * giant, -2.5F * giant).scale(0.40F * giant).end()
 			.transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(1.0F, 225.0F, 0.0F).translation(0.0F, -2.5F * giant, -2.5F * giant).scale(0.40F * giant).end().end()
-			.element().allFaces((direction, faceBuilder) -> faceBuilder.uvs(0, 0, 16, 16).texture(direction.getAxis() == Direction.Axis.Y ? "#top" : "#all").tintindex(0).cullface(direction).end().end()).end();
+			.element().allFaces((direction, faceBuilder) -> faceBuilder.uvs(0, 0, 16, 16).texture(direction.getAxis() == Direction.Axis.Y ? "#top" : "#all").cullface(direction).end().end()).end();
 
 		ItemModelBuilder gui_giant = withExistingParent("giant_block_gui", ResourceLocation.withDefaultNamespace("block/cube")).transforms()
+			.transform(ItemDisplayContext.GUI).rotation(30.0F, 45.0F, 0.0F).scale(0.625F).end().end()
+			.element().allFaces((direction, faceBuilder) -> faceBuilder.uvs(0, 0, 4, 4).texture(direction.getAxis() == Direction.Axis.Y ? "#top" : "#all").cullface(direction).end().end()).end();
+
+		// Leaf-specific models with tintindex for foliage color
+		ItemModelBuilder giant_leaves_block = withExistingParent("giant_leaves_base", ResourceLocation.withDefaultNamespace("block/cube")).transforms()
+			.transform(ItemDisplayContext.GROUND).translation(0.0F, 3.0F, 0.0F).scale(0.25F * giant).end()
+			.transform(ItemDisplayContext.FIXED).scale(0.5F * giant * 0.625F).end()
+			.transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(75.0F, 45.0F, 0.0F).translation(0.0F, 2.5F * giant, 0.0F).scale(0.375F * giant).end()
+			.transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0.0F, 45.0F, 0.0F).translation(0.0F, -2.5F * giant, -2.5F * giant).scale(0.40F * giant).end()
+			.transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(1.0F, 225.0F, 0.0F).translation(0.0F, -2.5F * giant, -2.5F * giant).scale(0.40F * giant).end().end()
+			.element().allFaces((direction, faceBuilder) -> faceBuilder.uvs(0, 0, 16, 16).texture(direction.getAxis() == Direction.Axis.Y ? "#top" : "#all").tintindex(0).cullface(direction).end().end()).end();
+
+		ItemModelBuilder gui_giant_leaves = withExistingParent("giant_leaves_gui", ResourceLocation.withDefaultNamespace("block/cube")).transforms()
 			.transform(ItemDisplayContext.GUI).rotation(30.0F, 45.0F, 0.0F).scale(0.625F).end().end()
 			.element().allFaces((direction, faceBuilder) -> faceBuilder.uvs(0, 0, 4, 4).texture(direction.getAxis() == Direction.Axis.Y ? "#top" : "#all").tintindex(0).cullface(direction).end().end()).end();
 
 		toGiantModel(TFBlocks.GIANT_COBBLESTONE.get(), ResourceLocation.withDefaultNamespace("block/cobblestone"), giant_block, gui_giant);
 		toGiantModel(TFBlocks.GIANT_LOG.get(), ResourceLocation.withDefaultNamespace("block/oak_log"), ResourceLocation.withDefaultNamespace("block/oak_log_top"), giant_block, gui_giant);
-		toGiantModel(TFBlocks.GIANT_LEAVES.get(), ResourceLocation.withDefaultNamespace("block/oak_leaves"), giant_block, gui_giant);
+		toGiantModel(TFBlocks.GIANT_LEAVES.get(), ResourceLocation.withDefaultNamespace("block/oak_leaves"), giant_leaves_block, gui_giant_leaves);
 		toGiantModel(TFBlocks.GIANT_OBSIDIAN.get(), ResourceLocation.withDefaultNamespace("block/obsidian"), giant_block, gui_giant);
 
 		ItemModelBuilder giant_tool = withExistingParent("giant_tool_base", ResourceLocation.withDefaultNamespace("item/generated")).transforms()
@@ -477,21 +486,21 @@ public class ItemModelGenerator extends ItemModelProvider {
 		withExistingParent(TFItems.LICH_TROPHY.getId().toString(), templateTrophy);
 		withExistingParent(TFItems.MINOSHROOM_TROPHY.getId().toString(), templateTrophy);
 		withExistingParent(TFItems.HYDRA_TROPHY.getId().toString(), templateTrophy).transforms()
-			.transform(itemDisplayContextEnumExtension.JARRED).translation(0, 0, 1).rotation(0, 180, 0).end().end();
+			.transform(ItemDisplayContext.FIXED).translation(0, 0, 1).rotation(0, 180, 0).end().end();
 		withExistingParent(TFItems.KNIGHT_PHANTOM_TROPHY.getId().toString(), templateTrophy).transforms()
-			.transform(itemDisplayContextEnumExtension.JARRED).scale(0.85F).rotation(0, 180, 0).end().end();
+			.transform(ItemDisplayContext.FIXED).scale(0.85F).rotation(0, 180, 0).end().end();
 		withExistingParent(TFItems.UR_GHAST_TROPHY.getId().toString(), templateTrophy).transforms()
 			.transform(ItemDisplayContext.HEAD).scale(1.6F).translation(0, 18, 0).rotation(180, 0, 180).end()
 			.transform(ItemDisplayContext.FIXED).translation(0, 14, -2).rotation(0, 180, 0).end()
 			.transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).scale(0.5F).translation(0, 4, 3.6F).rotation(45, 135, 0).end()
 			.transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).translation(0, 11, 0).rotation(0, 180, 0).end()
-			.transform(itemDisplayContextEnumExtension.JARRED).scale(0.85F).translation(0, 14, 0).rotation(0, 180, 0).end().end();
+			.transform(ItemDisplayContext.FIXED).scale(0.85F).translation(0, 14, 0).rotation(0, 180, 0).end().end();
 		withExistingParent(TFItems.ALPHA_YETI_TROPHY.getId().toString(), templateTrophy).transforms()
 			.transform(ItemDisplayContext.HEAD).scale(1.5F).translation(0, 2, 0).rotation(180, 0, 180).end()
-			.transform(itemDisplayContextEnumExtension.JARRED).translation(0, 0, 1).rotation(0, 180, 0).end().end();
+			.transform(ItemDisplayContext.FIXED).translation(0, 0, 1).rotation(0, 180, 0).end().end();
 		withExistingParent(TFItems.SNOW_QUEEN_TROPHY.getId().toString(), templateTrophy);
 		withExistingParent(TFItems.QUEST_RAM_TROPHY.getId().toString(), templateTrophy).transforms()
-			.transform(itemDisplayContextEnumExtension.JARRED).scale(0.85F).rotation(0, 180, 0).end().end();
+			.transform(ItemDisplayContext.FIXED).scale(0.85F).rotation(0, 180, 0).end().end();
 		withExistingParent(TFItems.MYSTIC_CROWN.getId().toString(), templateTrophy);
 
 		withExistingParent(TFItems.CREEPER_SKULL_CANDLE.getId().toString(), prefix("item/template_skull_candle"));
@@ -829,12 +838,14 @@ public class ItemModelGenerator extends ItemModelProvider {
 
 	@SuppressWarnings("UnusedReturnValue")
 	private ItemModelBuilder forcefield(String name, ResourceLocation... layers) {
-		ItemModelBuilder builder = withExistingParent(name, "item/generated");
-		for (int i = 0; i < layers.length; i++) {
-			builder = builder.texture("layer" + i, layers[i]);
-		}
-		builder = builder.customLoader(ItemLayerModelBuilder::begin).emissive(15, 15, 0).renderType("minecraft:translucent", 0).end();
-		return builder;
+		// Force field items use a flat generated icon (parent "minecraft:item/generated") whose layer0
+		// points directly at the pre-colored per-color block texture (e.g. block/blue_force_field). This
+		// mirrors the upstream item icon, but with a per-color texture instead of upstream's runtime tint
+		// (NeoForge's ItemModelUtils.tintedModel is unavailable on Fabric, and Fabric's emitItemQuads path
+		// doesn't apply item tint to the translucent fullbright icon — so the pre-colored textures avoid
+		// both the broken tint and the "rod/stick" geometry from the force_field block loader).
+		// Manual models are in: src/main/resources/assets/twilightforest/models/item/*_force_field.json
+		return null;
 	}
 
 	private ItemModelBuilder singleTexFullbright(DeferredHolder<Item, ? extends Item> item) {
@@ -953,12 +964,9 @@ public class ItemModelGenerator extends ItemModelProvider {
 	private void toGiantItemModel(DeferredHolder<Item, Item> item, ResourceLocation parent, ItemModelBuilder base, int x, int y) {
 		String name = item.getId().getPath();
 
-		ItemModelBuilder gui = getBuilder(name + "_gui").texture("all", parent)
-			.element().from(0, 0, 0).to(16, 16, 0).face(Direction.SOUTH).texture("#all").uvs(x, y, x + 8, y + 8).tintindex(0).end().end();
-
-		withExistingParent(name, parent).customLoader(SeparateTransformsModelBuilder::begin)
-			.base(withExistingParent(name + "_base", base.getLocation()).texture("layer0", parent))
-			.perspective(ItemDisplayContext.GUI, gui.texture("all", parent)).end();
+		// Use giant_tool_base as parent with the stone texture for proper display transforms
+		// The separate_transforms loader is not available in this version of PortingLib
+		withExistingParent(name, base.getLocation()).texture("layer0", parent);
 	}
 
 	private void trimmedArmor(DeferredHolder<Item, ArmorItem> armor) {
@@ -1065,7 +1073,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		for (DeferredItem<? extends Item> item : items) {
 			String id = item.getId().getPath();
 			String modifierID = id.replace("travellers_", "");
-			withExistingParent(id, "neoforge:item/default").texture("base", prefix("item/" + id)).texture("broken", prefix("item/" + id + "_broken"))
+			withExistingParent(id, "forge:item/default").texture("base", prefix("item/" + id)).texture("broken", prefix("item/" + id + "_broken"))
 				.customLoader((parent, helper) -> TravellersGearItemModelBuilder.begin(parent, "travellers_modifiers/" + modifierID + "/", "travellers_modifiers/" + modifierID + "/broken/", helper)).end();
 		}
 	}

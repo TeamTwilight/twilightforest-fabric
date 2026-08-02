@@ -1,6 +1,7 @@
 package twilightforest.data.tags.compat;
 
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceLocation;
@@ -8,7 +9,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.init.TFBlocks;
@@ -34,7 +35,7 @@ public class ModdedItemTagGenerator extends ItemTagsProvider {
 	public static final TagKey<Item> RANDOMIUM_BLACKLIST = createTagFor("randomium", "blacklist");
 
 	public ModdedItemTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> future, CompletableFuture<TagLookup<Block>> provider, ExistingFileHelper helper) {
-		super(output, future, provider, TwilightForestMod.ID, helper);
+		super(output, future, provider);
 	}
 
 	@Override
@@ -102,7 +103,8 @@ public class ModdedItemTagGenerator extends ItemTagsProvider {
 
 		tag(RANDOMIUM_BLACKLIST).addTag(ItemTagGenerator.WIP).add(TFItems.GLASS_SWORD.get(), //this one is here because the ore can give the unbreakable one
 			TFBlocks.TIME_LOG_CORE.get().asItem(), TFBlocks.TRANSFORMATION_LOG_CORE.get().asItem(),
-			TFBlocks.MINING_LOG_CORE.get().asItem(), TFBlocks.SORTING_LOG_CORE.get().asItem(),
+			TFBlocks.MINING_LOG_CORE.get().asItem(),
+			TFBlocks.SORTING_LOG_CORE.get().asItem(),
 			TFBlocks.ANTIBUILDER.get().asItem(), TFBlocks.STRONGHOLD_SHIELD.get().asItem(),
 			TFBlocks.LOCKED_VANISHING_BLOCK.get().asItem(), TFBlocks.BROWN_THORNS.get().asItem(),
 			TFBlocks.GREEN_THORNS.get().asItem(), TFBlocks.BURNT_THORNS.get().asItem(),
@@ -116,6 +118,6 @@ public class ModdedItemTagGenerator extends ItemTagsProvider {
 	}
 
 	private static TagKey<Item> createTagFor(String modid, String tagName) {
-		return ItemTags.create(ResourceLocation.fromNamespaceAndPath(modid, tagName));
+		return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(modid, tagName));
 	}
 }

@@ -8,7 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFBlocks;
@@ -31,7 +31,7 @@ public class ModdedBlockTagGenerator extends IntrinsicHolderTagsProvider<Block> 
 	public static final TagKey<Block> FD_HEAT_SOURCES = createTagFor("farmersdelight", "heat_sources");
 
 	public ModdedBlockTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> future, ExistingFileHelper helper) {
-		super(output, Registries.BLOCK, future, block -> block.builtInRegistryHolder().key(), TwilightForestMod.ID, helper);
+		super(output, Registries.BLOCK, future, block -> block.builtInRegistryHolder().key());
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class ModdedBlockTagGenerator extends IntrinsicHolderTagsProvider<Block> 
 		tag(PASSIVE_BOILER_HEATERS).addTag(BlockTagGenerator.STORAGE_BLOCKS_FIERY);
 		tag(TREE_ATTACHMENTS).add(
 			TFBlocks.TIME_LOG_CORE.get(), TFBlocks.TRANSFORMATION_LOG_CORE.get(),
-			TFBlocks.MINING_LOG_CORE.get(), TFBlocks.SORTING_LOG_CORE.get(),
+			TFBlocks.MINING_LOG_CORE.get(),
 			TFBlocks.ROOT_BLOCK.get(), TFBlocks.LIVEROOT_BLOCK.get(),
 			TFBlocks.MANGROVE_ROOT.get(), TFBlocks.FIREFLY.get(), TFBlocks.CICADA.get());
 
@@ -63,6 +63,6 @@ public class ModdedBlockTagGenerator extends IntrinsicHolderTagsProvider<Block> 
 	}
 
 	private static TagKey<Block> createTagFor(String modid, String tagName) {
-		return BlockTags.create(ResourceLocation.fromNamespaceAndPath(modid, tagName));
+		return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(modid, tagName));
 	}
 }

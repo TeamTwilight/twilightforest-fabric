@@ -24,15 +24,17 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import net.neoforged.neoforge.common.data.LanguageProvider;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredItem;
+import io.github.fabricators_of_create.porting_lib.data.LanguageProvider;
+import io.github.fabricators_of_create.porting_lib.registry.DeferredHolder;
+import io.github.fabricators_of_create.porting_lib.registry.DeferredItem;
 import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFKeyBindsCategories;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
+import twilightforest.init.custom.TravellersModifiersManager;
 
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -218,11 +220,11 @@ public abstract class TFLangProvider extends LanguageProvider {
 	}
 
 	public void addTravellersModifier(HolderLookup.Provider registries, ResourceKey<TravellersModifier> modifier, String name) {
-		this.add(modifier.location().toLanguageKey(registries.holderOrThrow(modifier).value().getPrefix()), name);
+		this.add(modifier.location().toLanguageKey(registries.lookupOrThrow(TFRegistries.Keys.TRAVELLERS_MODIFIERS).getOrThrow(modifier).value().getPrefix()), name);
 	}
 
 	public void addTravellersDescription(HolderLookup.Provider registries, ResourceKey<TravellersModifier> modifier, String description) {
-		this.add(modifier.location().toLanguageKey(registries.holderOrThrow(modifier).value().getPrefix(), "description"), description);
+		this.add(modifier.location().toLanguageKey(registries.lookupOrThrow(TFRegistries.Keys.TRAVELLERS_MODIFIERS).getOrThrow(modifier).value().getPrefix(), "description"), description);
 	}
 
 	public void createTip(String key, String translation) {

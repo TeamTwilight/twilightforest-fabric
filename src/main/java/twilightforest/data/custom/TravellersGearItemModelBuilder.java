@@ -1,9 +1,9 @@
 package twilightforest.data.custom;
 
 import com.google.gson.JsonObject;
-import net.neoforged.neoforge.client.model.generators.CustomLoaderBuilder;
-import net.neoforged.neoforge.client.model.generators.ModelBuilder;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import io.github.fabricators_of_create.porting_lib.models.generators.CustomLoaderBuilder;
+import io.github.fabricators_of_create.porting_lib.models.generators.ModelBuilder;
+import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 
 public class TravellersGearItemModelBuilder<T extends ModelBuilder<T>> extends CustomLoaderBuilder<T> {

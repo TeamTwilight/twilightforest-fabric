@@ -6,7 +6,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.StructureTagsProvider;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructures;
@@ -18,10 +18,11 @@ public class StructureTagGenerator extends StructureTagsProvider {
 	public static final TagKey<Structure> LANDMARK = TagKey.create(Registries.STRUCTURE, TwilightForestMod.prefix("landmark"));
 
 	public StructureTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper helper) {
-		super(output, provider, TwilightForestMod.ID, helper);
+		super(output, provider);
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	protected void addTags(HolderLookup.Provider p_256087_) {
 		this.tag(LANDMARK).add(
 			TFStructures.HEDGE_MAZE,

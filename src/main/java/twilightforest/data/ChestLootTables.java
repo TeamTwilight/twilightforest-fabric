@@ -606,7 +606,7 @@ public record ChestLootTables(HolderLookup.Provider registries) implements LootT
 					.add(LootItem.lootTableItem(Items.DIAMOND))
 					.add(LootItem.lootTableItem(Items.WRITABLE_BOOK).setWeight(2))
 					.add(LootItem.lootTableItem(Items.BOOK).apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries(), UniformGenerator.between(20, 30))).setWeight(2))
-					.add(LootItem.lootTableItem(Items.BOOK).apply(new SetEnchantmentsFunction.Builder().withEnchantment(this.registries.holderOrThrow(TFEnchantments.RENEWAL), ConstantValue.exactly(1.0F))))));
+					.add(LootItem.lootTableItem(Items.BOOK).apply(new SetEnchantmentsFunction.Builder().withEnchantment(this.registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(TFEnchantments.RENEWAL), ConstantValue.exactly(1.0F))))));
 
 		register.accept(TFLootTables.TOWER_ROOM,
 			LootTable.lootTable()
@@ -651,7 +651,7 @@ public record ChestLootTables(HolderLookup.Provider registries) implements LootT
 					.add(LootItem.lootTableItem(TFItems.CHARM_OF_LIFE_1).setWeight(75))
 					.add(LootItem.lootTableItem(Items.BOOK).apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries(), UniformGenerator.between(20, 30))).setWeight(75))
 					.add(LootItem.lootTableItem(Items.GOLDEN_AXE).apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries(), ConstantValue.exactly(20))).setWeight(75))
-					//TODO XP Charm
+					// XP Charm 功能待实现
 					.add(LootItem.lootTableItem(Items.ENCHANTED_GOLDEN_APPLE).setWeight(25))
 					.add(LootItem.lootTableItem(TFItems.MOONWORM_QUEEN.value()).setWeight(25))
 					.add(LootItem.lootTableItem(TFItems.PEACOCK_FEATHER_FAN.value()).setWeight(25))));

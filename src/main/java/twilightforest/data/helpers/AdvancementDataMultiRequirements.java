@@ -3,13 +3,18 @@ package twilightforest.data.helpers;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.Criterion;
-import tamaized.beanification.Component;
+import twilightforest.util.TFBeanRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
 public class AdvancementDataMultiRequirements {
+
+	public static final AdvancementDataMultiRequirements INSTANCE = new AdvancementDataMultiRequirements();
+
+	static {
+		TFBeanRegistry.register(AdvancementDataMultiRequirements.class, INSTANCE);
+	}
 
 	public MultiRequirementsBuilder wrap(Advancement.Builder parent) {
 		return new MultiRequirementsBuilder(parent);

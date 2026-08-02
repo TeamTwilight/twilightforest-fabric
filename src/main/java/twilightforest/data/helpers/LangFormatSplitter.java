@@ -302,7 +302,7 @@ public class LangFormatSplitter {
 					}
 					isChoice = true;
 				}
-				//Forge added Format types
+				// Format types added by Forge
 				case "modinfo" -> {
 					if (formatStyle == null || (!formatStyle.equals("id") && !formatStyle.equals("name"))) {
 						//modinfo only supports id, and name, and is not valid if the type is missing

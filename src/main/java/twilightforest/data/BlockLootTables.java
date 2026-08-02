@@ -29,10 +29,11 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.neoforged.neoforge.common.ItemAbilities;
-import net.neoforged.neoforge.common.loot.CanItemPerformAbility;
-import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredHolder;
+import io.github.fabricators_of_create.porting_lib.tool.ItemAbilities;
+import io.github.fabricators_of_create.porting_lib.tool.loot.CanItemPerformAbility;
+
+import io.github.fabricators_of_create.porting_lib.registry.DeferredBlock;
+import io.github.fabricators_of_create.porting_lib.registry.DeferredHolder;
 import twilightforest.block.*;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.init.TFBlocks;
@@ -55,7 +56,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 	}
 
 	@Override
-	protected void generate() {
+	public void generate() {
 		HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
 
 		dropSelf(TFBlocks.TOWERWOOD.get());
@@ -306,22 +307,22 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.TERRORCOTTA_LINES.value());
 		dropSelf(TFBlocks.CORONATION_CARPET.value());
 
-		dropPottedContents(TFBlocks.POTTED_TWILIGHT_OAK_SAPLING.get());
-		dropPottedContents(TFBlocks.POTTED_CANOPY_SAPLING.get());
-		dropPottedContents(TFBlocks.POTTED_MANGROVE_SAPLING.get());
-		dropPottedContents(TFBlocks.POTTED_DARKWOOD_SAPLING.get());
-		dropPottedContents(TFBlocks.POTTED_HOLLOW_OAK_SAPLING.get());
-		dropPottedContents(TFBlocks.POTTED_RAINBOW_OAK_SAPLING.get());
-		dropPottedContents(TFBlocks.POTTED_TIME_SAPLING.get());
-		dropPottedContents(TFBlocks.POTTED_TRANSFORMATION_SAPLING.get());
-		dropPottedContents(TFBlocks.POTTED_MINING_SAPLING.get());
-		dropPottedContents(TFBlocks.POTTED_SORTING_SAPLING.get());
-		dropPottedContents(TFBlocks.POTTED_MAYAPPLE.get());
-		dropPottedContents(TFBlocks.POTTED_FIDDLEHEAD.get());
-		dropPottedContents(TFBlocks.POTTED_MUSHGLOOM.get());
-		add(TFBlocks.POTTED_THORN.get(), createSingleItemTable(Items.FLOWER_POT));
-		add(TFBlocks.POTTED_GREEN_THORN.get(), createSingleItemTable(Items.FLOWER_POT));
-		add(TFBlocks.POTTED_DEAD_THORN.get(), createSingleItemTable(Items.FLOWER_POT));
+		//		dropPottedContents(TFBlocks.POTTED_TWILIGHT_OAK_SAPLING.get());
+//		dropPottedContents(TFBlocks.POTTED_CANOPY_SAPLING.get());
+//		dropPottedContents(TFBlocks.POTTED_MANGROVE_SAPLING.get());
+//		dropPottedContents(TFBlocks.POTTED_DARKWOOD_SAPLING.get());
+//		dropPottedContents(TFBlocks.POTTED_HOLLOW_OAK_SAPLING.get());
+//		dropPottedContents(TFBlocks.POTTED_RAINBOW_OAK_SAPLING.get());
+//		dropPottedContents(TFBlocks.POTTED_TIME_SAPLING.get());
+//		dropPottedContents(TFBlocks.POTTED_TRANSFORMATION_SAPLING.get());
+//		dropPottedContents(TFBlocks.POTTED_MINING_SAPLING.get());
+//		dropPottedContents(TFBlocks.POTTED_SORTING_SAPLING.get());
+//		dropPottedContents(TFBlocks.POTTED_MAYAPPLE.get());
+//		dropPottedContents(TFBlocks.POTTED_FIDDLEHEAD.get());
+//		dropPottedContents(TFBlocks.POTTED_MUSHGLOOM.get());
+//		add(TFBlocks.POTTED_THORN.get(), createSingleItemTable(Items.FLOWER_POT));
+//		add(TFBlocks.POTTED_GREEN_THORN.get(), createSingleItemTable(Items.FLOWER_POT));
+//		add(TFBlocks.POTTED_DEAD_THORN.get(), createSingleItemTable(Items.FLOWER_POT));
 
 		dropSelf(TFBlocks.OAK_BANISTER.get());
 		dropSelf(TFBlocks.SPRUCE_BANISTER.get());
@@ -802,20 +803,19 @@ public class BlockLootTables extends BlockLootSubProvider {
 
 	//[VanillaCopy] of a few different methods from BlockLoot. These are here just so we can use the modded shears thing
 	@Override
-	protected LootTable.Builder createShearsDispatchTable(Block block, LootPoolEntryContainer.Builder<?> builder) {
+	public LootTable.Builder createShearsDispatchTable(Block block, LootPoolEntryContainer.Builder<?> builder) {
 		return createSelfDropDispatchTable(block, HAS_SHEARS, builder);
 	}
 
 	@Override
-	protected LootTable.Builder createSilkTouchOrShearsDispatchTable(Block block, LootPoolEntryContainer.Builder<?> builder) {
+	public LootTable.Builder createSilkTouchOrShearsDispatchTable(Block block, LootPoolEntryContainer.Builder<?> builder) {
 		return createSelfDropDispatchTable(block, HAS_SHEARS.or(this.hasSilkTouch()), builder);
 	}
 
-	protected static LootTable.Builder createShearsOnlyDrop(ItemLike p_124287_) {
+	public static LootTable.Builder createShearsOnlyDrop(ItemLike p_124287_) {
 		return LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).when(HAS_SHEARS).add(LootItem.lootTableItem(p_124287_)));
 	}
 
-	@Override
 	protected Iterable<Block> getKnownBlocks() {
 		return TFBlocks.BLOCKS.getEntries().stream().map(DeferredHolder::value).collect(Collectors.toList());
 	}

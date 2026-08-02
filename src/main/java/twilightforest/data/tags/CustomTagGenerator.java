@@ -11,7 +11,7 @@ import net.minecraft.world.entity.decoration.PaintingVariants;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.dimension.DimensionType;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
@@ -32,10 +32,11 @@ public class CustomTagGenerator {
 		public static final TagKey<BlockEntityType<?>> IMMOVABLE = TagKey.create(Registries.BLOCK_ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath("c", "immovable"));
 
 		public BlockEntityTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper helper) {
-			super(output, Registries.BLOCK_ENTITY_TYPE, provider, TwilightForestMod.ID, helper);
+			super(output, Registries.BLOCK_ENTITY_TYPE, provider);
 		}
 
 		@Override
+		@SuppressWarnings("unchecked")
 		protected void addTags(HolderLookup.Provider provider) {
 			this.tag(RELOCATION_NOT_SUPPORTED).add(
 				TFBlockEntities.ANTIBUILDER.getKey(),
@@ -83,7 +84,7 @@ public class CustomTagGenerator {
 		public static final TagKey<BannerPattern> QUEST_RAM_BANNER_PATTERN = create("pattern_item/quest_ram");
 
 		public BannerPatternTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper existingFileHelper) {
-			super(output, Registries.BANNER_PATTERN, provider, TwilightForestMod.ID, existingFileHelper);
+			super(output, Registries.BANNER_PATTERN, provider);
 		}
 
 		@Override
@@ -118,10 +119,11 @@ public class CustomTagGenerator {
 		public static final TagKey<WoodPalette> TREASURE_PALETTES = create("treasure");
 
 		public WoodPaletteTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper helper) {
-			super(output, TFRegistries.Keys.WOOD_PALETTES, provider, TwilightForestMod.ID, helper);
+			super(output, TFRegistries.Keys.WOOD_PALETTES, provider);
 		}
 
 		@Override
+		@SuppressWarnings("unchecked")
 		protected void addTags(HolderLookup.Provider provider) {
 			tag(WELL_SWIZZLE_MASK).add(WoodPalettes.OAK);
 			tag(DRUID_HUT_SWIZZLE_MASK).add(WoodPalettes.OAK, WoodPalettes.SPRUCE, WoodPalettes.BIRCH);
@@ -147,7 +149,7 @@ public class CustomTagGenerator {
 		public static final TagKey<DimensionType> ALLOWS_MAGIC_MAP_CHARTING = TagKey.create(Registries.DIMENSION_TYPE, TwilightForestMod.prefix("allows_magic_map_charting"));
 
 		public DimensionTypeTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper helper) {
-			super(output, Registries.DIMENSION_TYPE, provider, TwilightForestMod.ID, helper);
+			super(output, Registries.DIMENSION_TYPE, provider);
 		}
 
 		@Override
@@ -166,10 +168,11 @@ public class CustomTagGenerator {
 		public static final TagKey<PaintingVariant> LICH_BOSS_PAINTINGS = TagKey.create(Registries.PAINTING_VARIANT, TwilightForestMod.prefix("tower_boss_paintings"));
 
 		public PaintingVariantTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper helper) {
-			super(output, Registries.PAINTING_VARIANT, provider, TwilightForestMod.ID, helper);
+			super(output, Registries.PAINTING_VARIANT, provider);
 		}
 
 		@Override
+		@SuppressWarnings("unchecked")
 		protected void addTags(HolderLookup.Provider provider) {
 			// Every single painting except for Humble
 			tag(LICH_TOWER_PAINTINGS).add(

@@ -3,8 +3,8 @@ package twilightforest.data;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.PackOutput;
-import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import io.github.fabricators_of_create.porting_lib.data.DatapackBuiltinEntriesProvider;
 import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.*;
@@ -43,7 +43,7 @@ public class RegistryDataGenerator extends DatapackBuiltinEntriesProvider {
 		.add(Registries.ENCHANTMENT, TFEnchantments::bootstrap)
 		.add(TFRegistries.Keys.TEMPLATE_MARKER_HANDLER_LIST, TemplateMarkerHandlers::bootstrap);
 
-	public RegistryDataGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
+	public RegistryDataGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> provider) {
 		super(output, provider, BUILDER, Set.of("minecraft", TwilightForestMod.ID));
 	}
 }

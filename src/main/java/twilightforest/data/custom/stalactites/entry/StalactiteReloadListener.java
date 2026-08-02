@@ -16,7 +16,7 @@ import java.io.Reader;
 import java.util.*;
 
 public class StalactiteReloadListener extends CodecResourceReloadListener<SpeleothemVarietyConfig> {
-	public final static StalactiteReloadListener INSTANCE = new StalactiteReloadListener(); // TODO Autowired
+	public final static StalactiteReloadListener INSTANCE = new StalactiteReloadListener(); // @Autowired 已移除，使用静态实例
 
 	public static final String STALACTITE_DIRECTORY = "twilight/stalactites";
 
