@@ -1,18 +1,24 @@
 package twilightforest.util.multiparts;
 
+import io.github.fabricators_of_create.porting_lib.entity.MultiPartEntity;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.world.entity.Entity;
-import net.neoforged.neoforge.network.PacketDistributor;
+import twilightforest.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
-import tamaized.beanification.Component;
 import twilightforest.client.BakedMultiPartRenderers;
+import twilightforest.util.TFBeanRegistry;
 import twilightforest.entity.TFPart;
 import twilightforest.network.UpdateTFMultipartPacket;
 
 import java.util.Iterator;
 
-@Component
 public class MultipartEntityUtil {
+
+	public static final MultipartEntityUtil INSTANCE = new MultipartEntityUtil();
+
+	static {
+		TFBeanRegistry.register(MultipartEntityUtil.class, INSTANCE);
+	}
 
 	public Iterator<Entity> injectTFPartEntities(Iterator<Entity> iter) {
 		return new MultipartEntityIteratorWrapper(iter);
@@ -20,13 +26,15 @@ public class MultipartEntityUtil {
 
 	@Nullable
 	public EntityRenderer<?> tryLookupTFPartRenderer(@Nullable EntityRenderer<?> renderer, Entity entity) {
-		if (entity instanceof TFPart<?> part)
-			return BakedMultiPartRenderers.lookup(part.renderer());
+		if (entity instanceof TFPart<?> part) {
+			EntityRenderer<?> partRenderer = BakedMultiPartRenderers.lookup(part.renderer());
+			return partRenderer != null ? partRenderer : renderer;
+		}
 		return renderer;
 	}
 
 	public Entity sendDirtyMultipartEntityData(Entity entity) {
-		if (entity.isMultipartEntity())
+		if (entity instanceof MultiPartEntity)
 			PacketDistributor.sendToPlayersTrackingEntity(entity, new UpdateTFMultipartPacket(entity));
 		return entity;
 	}

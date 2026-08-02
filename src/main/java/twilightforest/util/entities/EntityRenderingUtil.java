@@ -23,10 +23,10 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.ModList;
-import net.neoforged.neoforge.client.event.ScreenEvent;
-import net.neoforged.neoforgespi.language.IModInfo;
+import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.ModContainer;
+
+
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
@@ -196,9 +196,9 @@ public class EntityRenderingUtil {
 	}
 
 	public static String getModIdForTooltip(String modId) {
-		return ModList.get().getModContainerById(modId)
-			.map(ModContainer::getModInfo)
-			.map(IModInfo::getDisplayName)
+		return FabricLoader.getInstance().getModContainer(modId)
+			.map(ModContainer::getMetadata)
+			.map(metadata -> metadata.getName())
 			.orElseGet(() -> StringUtils.capitalize(modId));
 	}
 }

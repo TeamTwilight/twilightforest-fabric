@@ -22,7 +22,6 @@ import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.BoundingBoxUtils;
@@ -45,7 +44,6 @@ public final class FeaturePlacers {
 
 		mob.setPersistenceRequired();
 		mob.moveTo(pos, 0.0F, 0.0F);
-		EventHooks.finalizeMobSpawn(mob, levelAccessor, levelAccessor.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null);
 		if (mob instanceof EnforcedHomePoint home) {
 			home.setRestrictionPoint(GlobalPos.of(levelAccessor.getLevel().dimension(), pos));
 		}

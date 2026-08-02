@@ -1,7 +1,8 @@
 package twilightforest.util.multiparts;
 
+import io.github.fabricators_of_create.porting_lib.entity.MultiPartEntity;
+import io.github.fabricators_of_create.porting_lib.entity.PartEntity;
 import net.minecraft.world.entity.Entity;
-import net.neoforged.neoforge.entity.PartEntity;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.TFPart;
 
@@ -32,8 +33,8 @@ public class MultipartEntityIteratorWrapper implements Iterator<Entity> {
 			return next;
 		}
 		Entity next = delegate.next();
-		if (next.isMultipartEntity()) {
-			PartEntity<?>[] arr = next.getParts();
+		if (next instanceof MultiPartEntity mpe) {
+			PartEntity<?>[] arr = mpe.getParts();
 			// getParts is nullable, the annotation is used incorrectly
 			//noinspection ConstantValue
 			if (arr != null) {

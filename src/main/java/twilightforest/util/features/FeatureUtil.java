@@ -11,7 +11,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
-// TODO Split into FeatureLogic and FeaturePlacers
 @Deprecated
 public final class FeatureUtil {
 

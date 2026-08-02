@@ -34,8 +34,8 @@ import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.fml.util.ObfuscationReflectionHelper;
-import net.neoforged.neoforge.event.EventHooks;
+import net.fabricmc.loader.api.FabricLoader;
+import twilightforest.util.TFEventHooks;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EnforcedHomePoint;
@@ -63,9 +63,9 @@ public class EntityUtil {
 		float hardness = state.getDestroySpeed(world, pos);
 		return hardness >= 0f && hardness < 50f && !state.isAir()
 			&& !(world.getBlockEntity(pos) instanceof Container)
-			&& state.getBlock().canEntityDestroy(state, world, pos, entity)
-			&& (/* rude type limit */!(entity instanceof LivingEntity)
-			|| EventHooks.onEntityDestroyBlock((LivingEntity) entity, pos, state));
+			// canEntityDestroy is NeoForge-only; using TFEventHooks.onEntityDestroyBlock instead
+		&& (/* rude type limit */!(entity instanceof LivingEntity)
+			|| TFEventHooks.onEntityDestroyBlock((LivingEntity) entity, pos, state));
 	}
 
 	/**
@@ -88,21 +88,30 @@ public class EntityUtil {
 	}
 
 	private static final MethodHandles.Lookup LOOKUP = MethodHandles.lookup();
-	private static final Method LivingEntity_getDeathSound = ObfuscationReflectionHelper.findMethod(LivingEntity.class, "getDeathSound");
+	private static final Method LivingEntity_getDeathSound;
 	private static final MethodHandle handle_LivingEntity_getDeathSound;
-	private static final Method HangingEntity_setDirection = ObfuscationReflectionHelper.findMethod(HangingEntity.class, "setDirection", Direction.class);
+	private static final Method HangingEntity_setDirection;
 	private static final MethodHandle handle_HangingEntity_setDirection;
 
 	static {
+		Method tmp_LivingEntity_getDeathSound = null;
+		Method tmp_HangingEntity_setDirection = null;
 		MethodHandle tmp_handle_LivingEntity_getDeathSound = null;
 		MethodHandle tmp_handle_HangingEntity_setDirection = null;
 
 		try {
-			tmp_handle_LivingEntity_getDeathSound = LOOKUP.unreflect(LivingEntity_getDeathSound);
-			tmp_handle_HangingEntity_setDirection = LOOKUP.unreflect(HangingEntity_setDirection);
-		} catch (IllegalAccessException e) {
+			tmp_LivingEntity_getDeathSound = LivingEntity.class.getDeclaredMethod("getDeathSound");
+			tmp_LivingEntity_getDeathSound.setAccessible(true);
+			tmp_handle_LivingEntity_getDeathSound = LOOKUP.unreflect(tmp_LivingEntity_getDeathSound);
+
+			tmp_HangingEntity_setDirection = HangingEntity.class.getDeclaredMethod("setDirection", Direction.class);
+			tmp_HangingEntity_setDirection.setAccessible(true);
+			tmp_handle_HangingEntity_setDirection = LOOKUP.unreflect(tmp_HangingEntity_setDirection);
+		} catch (NoSuchMethodException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
+		LivingEntity_getDeathSound = tmp_LivingEntity_getDeathSound;
+		HangingEntity_setDirection = tmp_HangingEntity_setDirection;
 		handle_LivingEntity_getDeathSound = tmp_handle_LivingEntity_getDeathSound;
 		handle_HangingEntity_setDirection = tmp_handle_HangingEntity_setDirection;
 	}
@@ -292,7 +301,8 @@ public class EntityUtil {
 		if (!(oldEntity.level() instanceof ServerLevel level)) return false;
 		var newEntity = newType.create(level);
 		if (newEntity == null) return false;
-		if (!(newEntity instanceof LivingEntity living) || EventHooks.canLivingConvert(oldEntity, (EntityType<? extends LivingEntity>) living.getType(), timer -> {})) {
+		// TFEventHooks.canLivingConvert is NeoForge-specific; skipping event check on Fabric
+		if (!(newEntity instanceof LivingEntity living)) {
 			var passengerSave = oldEntity.getPassengers();
 			if (oldEntity instanceof Mob mob && newEntity instanceof Mob newMob) {
 				newEntity = mob.convertTo((EntityType<? extends Mob>) newMob.getType(), true);
@@ -310,7 +320,7 @@ public class EntityUtil {
 						}
 					}
 
-					EventHooks.finalizeMobSpawn(mob, level, level.getCurrentDifficultyAt(oldEntity.blockPosition()), MobSpawnType.CONVERSION, null);
+					TFEventHooks.finalizeMobSpawn(mob, level, level.getCurrentDifficultyAt(oldEntity.blockPosition()), MobSpawnType.CONVERSION, null);
 				}
 
 				oldEntity.level().addFreshEntity(newEntity);
@@ -347,7 +357,7 @@ public class EntityUtil {
 				}
 			}
 
-			if (newEntity instanceof LivingEntity living) EventHooks.onLivingConvert(oldEntity, living);
+			if (newEntity instanceof LivingEntity living) TFEventHooks.onLivingConvert(oldEntity, living);
 			level.playSound(null, newEntity.blockPosition(), TFSounds.POWDER_USE.get(), newEntity.getSoundSource());
 			return true;
 		}

@@ -85,10 +85,6 @@ public final class FeatureLogic {
 		);
 	}
 
-	//private static final ImmutableSet<Material> MATERIAL_WHITELIST = ImmutableSet.of(Material.DIRT, Material.GRASS, Material.LEAVES, Material.WOOD, Material.PLANT, Material.STONE);
-
-	//FIXME turn this into a tag list, see MATERIAL_WHITELIST
-	//turn isSolid into said tag
 	public static boolean isAreaClear(BlockGetter world, BlockPos min, BlockPos max) {
 		for (BlockPos pos : BlockPos.betweenClosed(min, max)) {
 			BlockState state = world.getBlockState(pos);

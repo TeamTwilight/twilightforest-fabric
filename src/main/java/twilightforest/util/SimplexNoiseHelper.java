@@ -20,7 +20,7 @@ import net.minecraft.util.Mth;
  * <p>
  * <a href="https://github.com/SRombauts/SimplexNoise/blob/master/references/SimplexNoise.java">https://github.com/SRombauts/SimplexNoise/blob/master/references/SimplexNoise.java</a>
  * <p>
- * TODO There's multiple SimplexNoise classes, would be great to benchmark all 3 implementations and see which one's the fastest
+ // 性能优化：建议对比 3 种 SimplexNoise 实现选择最快的
  *  @see org.joml.SimplexNoise
  *  @see net.minecraft.world.level.levelgen.synth.SimplexNoise
  */

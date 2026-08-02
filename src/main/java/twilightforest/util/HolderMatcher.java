@@ -1,10 +1,15 @@
 package twilightforest.util;
 
 import net.minecraft.core.Holder;
-import tamaized.beanification.Component;
+import twilightforest.util.TFBeanRegistry;
 
-@Component
 public class HolderMatcher {
+
+	public static final HolderMatcher INSTANCE = new HolderMatcher();
+
+	static {
+		TFBeanRegistry.register(HolderMatcher.class, INSTANCE);
+	}
 
 	public <T> boolean match(Holder<T> a, Holder<T> b) {
 		if (a.kind() == Holder.Kind.DIRECT || b.kind() == Holder.Kind.DIRECT) {

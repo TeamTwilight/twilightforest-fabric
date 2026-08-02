@@ -20,7 +20,7 @@ import net.minecraft.world.item.component.BlockItemStateProperties;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.ItemLike;
-import org.codehaus.plexus.util.StringUtils;
+//import org.codehaus.plexus.util.StringUtils;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.events.CharmEvents;
 import twilightforest.init.TFDataComponents;
@@ -47,9 +47,9 @@ public class TFItemStackUtils {
 				if (blockItemStateProperties != null && blockItemStateProperties.properties().containsKey(KeepsakeCasketBlock.BREAKAGE.getName())) {
 					String propertyValueString = blockItemStateProperties.properties().get(KeepsakeCasketBlock.BREAKAGE.getName());
 
-					persistentTag.putInt(CharmEvents.CASKET_DAMAGE_TAG, StringUtils.isNumeric(propertyValueString) ? Integer.parseInt(propertyValueString) : 0);
-				} else if (stack.has(TFDataComponents.CASKET_DAMAGE)) {
-					persistentTag.putInt(CharmEvents.CASKET_DAMAGE_TAG, stack.getOrDefault(TFDataComponents.CASKET_DAMAGE, 0));
+					persistentTag.putInt(CharmEvents.CASKET_DAMAGE_TAG, isNumeric(propertyValueString) ? Integer.parseInt(propertyValueString) : 0);
+				} else if (stack.has(TFDataComponents.CASKET_DAMAGE.get())) {
+					persistentTag.putInt(CharmEvents.CASKET_DAMAGE_TAG, stack.getOrDefault(TFDataComponents.CASKET_DAMAGE.get(), 0));
 				}
 				stack.shrink(1);
 				return true;
@@ -162,7 +162,10 @@ public class TFItemStackUtils {
 
 	public static void hurtButDontBreak(ItemStack stack, int amount, ServerLevel level, @Nullable LivingEntity entity) {
 		if (stack.isDamageableItem()) {
-			amount = stack.getItem().damageItem(stack, amount, entity, item -> {});
+			// Forge damageItem 已迁移到 1.21.1 标准 API
+			if (entity != null) {
+				stack.hurtAndBreak(amount, entity, LivingEntity.getSlotForHand(entity.getUsedItemHand()));
+			}
 			if (entity == null || !entity.hasInfiniteMaterials()) {
 				if (amount > 0) {
 					amount = EnchantmentHelper.processDurabilityChange(level, stack, amount);
@@ -198,6 +201,16 @@ public class TFItemStackUtils {
 				itementity.setNoPickUpDelay();
 				itementity.setTarget(player.getUUID());
 			}
+		}
+	}
+
+	private static boolean isNumeric(String str) {
+		if (str == null || str.isEmpty()) return false;
+		try {
+			Integer.parseInt(str);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
 		}
 	}
 }

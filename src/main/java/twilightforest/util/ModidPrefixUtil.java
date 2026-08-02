@@ -1,10 +1,15 @@
 package twilightforest.util;
 
 import twilightforest.TwilightForestMod;
-import tamaized.beanification.Component;
+import twilightforest.util.TFBeanRegistry;
 
-@Component
 public class ModidPrefixUtil {
+
+	public static final ModidPrefixUtil INSTANCE = new ModidPrefixUtil();
+
+	static {
+		TFBeanRegistry.register(ModidPrefixUtil.class, INSTANCE);
+	}
 
 	public String stringPrefix(String suffix) {
 		return TwilightForestMod.ID.concat(":").concat(suffix);
