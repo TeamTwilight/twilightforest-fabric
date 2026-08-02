@@ -76,7 +76,7 @@ public class PinchBeetle extends Monster implements IHostileMount {
 	@Override
 	public void aiStep() {
 		super.aiStep();
-		this.dimensions = this.getDimensions(this.getPose());
+		this.refreshDimensions(); // Using 1.21.1 standard refreshDimensions() instead of NeoForge dimensions field assignment
 
 		if (!this.getPassengers().isEmpty()) {
 			Entity passenger = this.getPassengers().getFirst();

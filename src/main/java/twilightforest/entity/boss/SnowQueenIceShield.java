@@ -16,7 +16,7 @@ public class SnowQueenIceShield extends TFPart<SnowQueen> {
 
 	public SnowQueenIceShield(SnowQueen parent) {
 		super(parent);
-		this.dimensions = EntityDimensions.scalable(0.75F, 0.75F);
+		this.setSize(EntityDimensions.scalable(0.75F, 0.75F));
 	}
 
 	@Override

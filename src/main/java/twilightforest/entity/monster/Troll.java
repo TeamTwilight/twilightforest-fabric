@@ -130,7 +130,7 @@ public class Troll extends Monster implements RangedAttackMob {
 	}
 
 	@Override
-	public void positionRider(Entity entity, Entity.MoveFunction callback) {
+	public void positionRider(Entity entity, MoveFunction callback) {
 		super.positionRider(entity, callback);
 		entity.setYRot(this.yBodyRot);
 		entity.yRotO = this.yBodyRotO;

@@ -8,8 +8,8 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.network.PacketDistributor;
+import io.github.fabricators_of_create.porting_lib.tags.Tags;
+import twilightforest.network.PacketDistributor;
 import twilightforest.components.entity.YetiThrowAttachment;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.events.HostileMountEvents;
@@ -31,7 +31,7 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 		return this.mob.getPassengers().isEmpty() &&
 			this.mob.getTarget() != null &&
 			!this.mob.getTarget().getType().is(Tags.EntityTypes.BOSSES) &&
-			this.mob.getTarget().getData(TFDataAttachments.YETI_THROWING).getThrowCooldown() <= 0 &&
+			this.mob.getTarget().getAttachedOrCreate(TFDataAttachments.YETI_THROWING).getThrowCooldown() <= 0 &&
 			super.canUse();
 	}
 
@@ -80,7 +80,7 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 			Vec3 throwVec = new Vec3(this.mob.getLookAngle().x() * 2.0D, 0.9, this.mob.getLookAngle().z() * 2.0D);
 
 			if (rider instanceof Player player) {
-				var attachment = player.getData(TFDataAttachments.YETI_THROWING);
+				var attachment = player.getAttachedOrCreate(TFDataAttachments.YETI_THROWING);
 				attachment.setThrown(player, true, this.mob);
 				// Make it so other yetis won't try to pick us up for a bit, 10 seconds seems fair
 				attachment.setThrowVector(throwVec);

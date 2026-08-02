@@ -27,7 +27,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
+import twilightforest.network.PacketDistributor;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.entity.ai.goal.FlockToSameKindGoal;
 import twilightforest.entity.ai.goal.PanicOnFlockDeathGoal;
@@ -294,7 +294,7 @@ public class Kobold extends Monster {
 		private final Kobold mob;
 
 		public SeekBreadGoal(Kobold mob) {
-			this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+			this.setFlags(EnumSet.of(Flag.MOVE));
 			this.mob = mob;
 		}
 

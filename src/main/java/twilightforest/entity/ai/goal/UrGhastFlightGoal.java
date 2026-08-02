@@ -64,7 +64,7 @@ public class UrGhastFlightGoal extends Goal {
 				}
 			}
 
-			// TODO reintroduce wanderFactor somehow? Would need to change move helper or add extra fields here
+			// wanderFactor 待重新引入
 
 			double x = this.pointsToVisit.get(this.currentPoint).getX();
 			double y = this.pointsToVisit.get(this.currentPoint).getY() + (this.ghast.getRestrictionPoint() != null ? HOVER_ALTITUDE : 0);

@@ -34,9 +34,8 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
+import twilightforest.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
-import tamaized.beanification.Autowired;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.ai.goal.QuestRamEatWoolGoal;
 import twilightforest.entity.passive.quest.ram.QuestingRamCurrentContext;
@@ -45,13 +44,20 @@ import twilightforest.init.TFSounds;
 import twilightforest.init.TFStructures;
 import twilightforest.network.ParticlePacket;
 import twilightforest.util.landmarks.LandmarkUtil;
+import twilightforest.util.TFBeanRegistry;
 
 import java.util.Optional;
 
 public class QuestRam extends Animal implements EnforcedHomePoint {
 
-	@Autowired
 	private static QuestingRamCurrentContext questingRamCurrentContext;
+
+	private static QuestingRamCurrentContext getQuestingRamCurrentContext() {
+		if (questingRamCurrentContext == null) {
+			questingRamCurrentContext = TFBeanRegistry.get(QuestingRamCurrentContext.class);
+		}
+		return questingRamCurrentContext;
+	}
 
 	private static final EntityDataAccessor<Integer> DATA_COLOR = SynchedEntityData.defineId(QuestRam.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Boolean> DATA_REWARDED = SynchedEntityData.defineId(QuestRam.class, EntityDataSerializers.BOOLEAN);
@@ -76,7 +82,7 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 	}
 
 	public boolean isItemTempting(ItemStack stack) {
-		for (var questEntry : questingRamCurrentContext.getContext().questItems().entrySet()) {
+		for (var questEntry : getQuestingRamCurrentContext().getContext().questItems().entrySet()) {
 			if (questEntry.getValue().test(stack)) {
 				DyeColor color = questEntry.getKey();
 				return color != null && !this.isColorPresent(color);
@@ -133,7 +139,7 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 	private void rewardQuest() {
 		// todo flesh the context out more
 		LootParams ctx = new LootParams.Builder((ServerLevel) this.level()).withParameter(LootContextParams.THIS_ENTITY, this).create(LootContextParamSets.PIGLIN_BARTER);
-		ObjectArrayList<ItemStack> rewards = this.level().getServer().reloadableRegistries().getLootTable(questingRamCurrentContext.getContext().lootTable()).getRandomItems(ctx);
+		ObjectArrayList<ItemStack> rewards = this.level().getServer().reloadableRegistries().getLootTable(getQuestingRamCurrentContext().getContext().lootTable()).getRandomItems(ctx);
 		rewards.forEach(stack -> this.spawnAtLocation(stack, 1.0F));
 
 		for (ServerPlayer player : this.level().getEntitiesOfClass(ServerPlayer.class, getBoundingBox().inflate(16.0D, 16.0D, 16.0D))) {
@@ -162,7 +168,7 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 	}
 
 	public boolean tryAccept(ItemStack stack) {
-		for (var questEntry : questingRamCurrentContext.getContext().questItems().entrySet()) {
+		for (var questEntry : getQuestingRamCurrentContext().getContext().questItems().entrySet()) {
 			if (questEntry.getValue().test(stack)) {
 				DyeColor color = questEntry.getKey();
 				if (color != null && !this.isColorPresent(color)) {

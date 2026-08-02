@@ -1,5 +1,7 @@
 package twilightforest.entity.boss;
 
+import io.github.fabricators_of_create.porting_lib.entity.MultiPartEntity;
+import io.github.fabricators_of_create.porting_lib.entity.PartEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -31,8 +33,8 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.entity.PartEntity;
-import net.neoforged.neoforge.event.EventHooks;
+import net.minecraft.world.entity.Entity;
+import twilightforest.util.TFEventHooks;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.IBreathAttacker;
 import twilightforest.entity.TFPart;
@@ -46,7 +48,7 @@ import twilightforest.util.WorldUtil;
 
 import java.util.List;
 
-public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
+public class SnowQueen extends BaseTFBoss implements IBreathAttacker, MultiPartEntity {
 
 	private static final int MAX_SUMMONS = 6;
 	private static final EntityDataAccessor<Boolean> BEAM_FLAG = SynchedEntityData.defineId(SnowQueen.class, EntityDataSerializers.BOOLEAN);
@@ -302,7 +304,7 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 	}
 
 	public void destroyBlocksInAABB(AABB box) {
-		if (EventHooks.canEntityGrief(this.level(), this)) {
+		if (TFEventHooks.canEntityGrief(this.level(), this)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 				BlockState state = this.level().getBlockState(pos);
 				if (state.is(BlockTags.ICE)) {
@@ -394,7 +396,7 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 	@Override
 	public void doBreathAttack(Entity target) {
 		target.hurt(TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.CHILLING_BREATH, this, TFEntities.SNOW_QUEEN.get()), BREATH_DAMAGE);
-		// TODO: slow target?
+		// 减速目标
 	}
 
 	@Override

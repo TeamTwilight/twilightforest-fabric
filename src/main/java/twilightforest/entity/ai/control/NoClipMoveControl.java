@@ -16,7 +16,7 @@ public class NoClipMoveControl extends MoveControl {
 
 	@Override
 	public void tick() {
-		if (this.operation == MoveControl.Operation.MOVE_TO) {
+		if (this.operation == Operation.MOVE_TO) {
 			double dx = this.getWantedX() - this.parentEntity.getX();
 			double dy = this.getWantedY() - this.parentEntity.getY();
 			double dz = this.getWantedZ() - this.parentEntity.getZ();

@@ -31,7 +31,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.event.EventHooks;
+import twilightforest.util.TFEventHooks;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.entity.ai.control.NoClipMoveControl;
 import twilightforest.entity.ai.goal.UrGhastAttackGoal;
@@ -257,7 +257,7 @@ public class UrGhast extends BaseTFBoss {
 
 			minion.moveTo(sx, sy, sz, level.getRandom().nextFloat() * 360.0F, 0.0F);
 			minion.makeBossMinion();
-			EventHooks.finalizeMobSpawn(minion, level, level.getCurrentDifficultyAt(minion.blockPosition()), MobSpawnType.MOB_SUMMONED, null);
+			TFEventHooks.finalizeMobSpawn(minion, level, level.getCurrentDifficultyAt(minion.blockPosition()), MobSpawnType.MOB_SUMMONED, null);
 			if (minion.checkSpawnRules(level, MobSpawnType.MOB_SUMMONED)) {
 				level.addFreshEntity(minion);
 				minion.spawnAnim();
@@ -347,15 +347,35 @@ public class UrGhast extends BaseTFBoss {
 
 	private List<BlockPos> scanForTraps(ServerLevel level) {
 		PoiManager poimanager = level.getPoiManager();
+		BlockPos scanCenter = this.getLogicalScanPoint();
+		int radius = this.getHomeRadius();
 		Stream<PoiRecord> stream = poimanager.getInRange(type ->
 				type.is(TFPOITypes.GHAST_TRAP.getKey()),
-			this.getLogicalScanPoint(),
-			this.getHomeRadius(),
+			scanCenter,
+			radius,
 			PoiManager.Occupancy.ANY);
-		return stream.map(PoiRecord::getPos)
+		List<BlockPos> traps = stream.map(PoiRecord::getPos)
 			.filter(trapPos -> level.canSeeSky(trapPos.above()))
-			.sorted(Comparator.comparingDouble(trapPos -> trapPos.distSqr(this.getLogicalScanPoint())))
+			.sorted(Comparator.comparingDouble(trapPos -> trapPos.distSqr(scanCenter)))
 			.collect(Collectors.toList());
+
+		// Fallback: if POI scan found nothing, scan blocks directly.
+		// On Fabric, WorldGenRegion.setBlock() during structure generation does not
+		// trigger POI updates, so Ghast Trap POI records may never be created.
+		if (traps.isEmpty()) {
+			int minY = Math.max(level.getMinBuildHeight(), scanCenter.getY() - radius);
+			int maxY = Math.min(level.getMaxBuildHeight(), scanCenter.getY() + radius);
+			traps = BlockPos.betweenClosedStream(
+					scanCenter.offset(-radius, 0, -radius).atY(minY),
+					scanCenter.offset(radius, 0, radius).atY(maxY)
+				)
+				.filter(pos -> level.getBlockState(pos).is(TFBlocks.GHAST_TRAP.get()))
+				.filter(pos -> level.canSeeSky(pos.above()))
+				.sorted(Comparator.comparingDouble(pos -> pos.distSqr(scanCenter)))
+				.collect(Collectors.toList());
+		}
+
+		return traps;
 	}
 
 	private void doTantrumDamageEffects() {
@@ -481,13 +501,13 @@ public class UrGhast extends BaseTFBoss {
 				BlockPos ground = getBlockPosBelowThatAffectsMyMovement();
 				float f = 0.91F;
 				if (this.onGround()) {
-					f = this.level().getBlockState(ground).getFriction(this.level(), ground, this) * 0.91F;
+					f = this.level().getBlockState(ground).getBlock().getFriction() * 0.91F;
 				}
 
 				float f1 = 0.16277137F / (f * f * f);
 				f = 0.91F;
 				if (this.onGround()) {
-					f = this.level().getBlockState(ground).getFriction(this.level(), ground, this) * 0.91F;
+					f = this.level().getBlockState(ground).getBlock().getFriction() * 0.91F;
 				}
 
 				this.moveRelative(this.onGround() ? 0.1F * f1 : 0.02F, vec3);
@@ -566,10 +586,13 @@ public class UrGhast extends BaseTFBoss {
 		}
 	}
 
+	// makePoofParticles 在 1.21.1 中是 final，行为已移至 handleEntityEvent
+	/*
 	@Override
 	public void makePoofParticles() {
 
 	}
+	*/
 
 	@Override
 	public int getBossBarColor() {

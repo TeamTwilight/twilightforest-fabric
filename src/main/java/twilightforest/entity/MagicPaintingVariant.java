@@ -77,7 +77,7 @@ public record MagicPaintingVariant(int width, int height, List<Layer> layers, Co
 				LINEAR_TIME("linear_time"),
 				SINE_TIME("sine_time");
 
-				static final Codec<Parallax.Type> CODEC = StringRepresentable.fromEnum(Parallax.Type::values);
+				static final Codec<Type> CODEC = StringRepresentable.fromEnum(Type::values);
 				private final String name;
 
 				Type(String pName) {
@@ -112,7 +112,7 @@ public record MagicPaintingVariant(int width, int height, List<Layer> layers, Co
 			public static final Codec<MobEffectCategory> MOB_EFFECT_CATEGORY_CODEC = Codec.stringResolver(MobEffectCategory::toString, MobEffectCategory::valueOf);
 
 			public static final Codec<OpacityModifier> CODEC = RecordCodecBuilder.create((recordCodecBuilder) -> recordCodecBuilder.group(
-				OpacityModifier.Type.CODEC.fieldOf("type").forGetter(OpacityModifier::type),
+				Type.CODEC.fieldOf("type").forGetter(OpacityModifier::type),
 				ExtraCodecs.POSITIVE_FLOAT.fieldOf("multiplier").forGetter(OpacityModifier::multiplier),
 				Codec.BOOL.fieldOf("invert").forGetter(OpacityModifier::invert),
 				Codec.FLOAT.fieldOf("min").forGetter(OpacityModifier::min),
@@ -141,7 +141,7 @@ public record MagicPaintingVariant(int width, int height, List<Layer> layers, Co
 				HOLDING_ITEM("holding_item", false, true),
 				MOB_EFFECT_CATEGORY("mob_effect_category", false, true);
 
-				static final Codec<OpacityModifier.Type> CODEC = StringRepresentable.fromEnum(OpacityModifier.Type::values);
+				static final Codec<Type> CODEC = StringRepresentable.fromEnum(Type::values);
 				private final String name;
 				private final boolean usesRange; // Is this modifier forced to have a defined range
 				private final boolean toThePowerOfItsMultiplier; // Is this modifier's alpha calculated to the power of its multiplier value

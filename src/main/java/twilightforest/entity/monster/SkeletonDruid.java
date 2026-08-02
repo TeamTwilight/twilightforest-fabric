@@ -24,6 +24,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.projectile.NatureBolt;
 import twilightforest.init.TFEntities;
@@ -69,7 +70,7 @@ public class SkeletonDruid extends AbstractSkeleton {
 	}
 
 	@Override
-	protected SoundEvent getStepSound() {
+	public SoundEvent getStepSound() {
 		return TFSounds.SKELETON_DRUID_STEP.get();
 	}
 

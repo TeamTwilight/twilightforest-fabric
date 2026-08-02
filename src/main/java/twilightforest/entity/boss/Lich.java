@@ -52,7 +52,7 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
+import twilightforest.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.LightableBlock;
 import twilightforest.block.OminousCandleBlock;
@@ -475,7 +475,7 @@ public class Lich extends BaseTFBoss {
 
 					PacketDistributor.sendToPlayersTrackingEntity(this, particlePacket);
 
-					clone.remove(Entity.RemovalReason.DISCARDED);
+					clone.remove(RemovalReason.DISCARDED);
 				}
 			}
 		}
@@ -1055,7 +1055,11 @@ public class Lich extends BaseTFBoss {
 		int phase = this.getPhase();
 		if (phase == 1) this.getBossBar().setProgress((float) (this.getShieldStrength()) / (float) (this.getAttributeValue(TFAttributes.SHIELD_STRENGTH)));
 		else this.getBossBar().setProgress(this.getHealth() / this.getMaxHealth());
-		if (phase != this.previousPhase) this.getBossBar().updateStyle(this.getBossBarColor(), this.getBossBarOverlay(), this.previousPhase != 1);
+		if (phase != this.previousPhase) {
+			this.getBossBar().setColor(getBossBarNamedColor());
+			this.getBossBar().setOverlay(this.getBossBarOverlay());
+			this.getBossBar().setDarkenScreen(this.previousPhase != 1);
+		}
 		this.previousPhase = phase;
 	}
 
@@ -1069,6 +1073,11 @@ public class Lich extends BaseTFBoss {
 	public int getBossBarColor() {
 		if (this.getShieldStrength() > 0) return 0xFFD800;
 		return this.getPhase() == 2 ? 0xBE23FF : 0xFF0000;
+	}
+
+	private BossEvent.BossBarColor getBossBarNamedColor() {
+		if (this.getShieldStrength() > 0) return BossEvent.BossBarColor.YELLOW;
+		return this.getPhase() == 2 ? BossEvent.BossBarColor.PURPLE : BossEvent.BossBarColor.RED;
 	}
 
 	@Override

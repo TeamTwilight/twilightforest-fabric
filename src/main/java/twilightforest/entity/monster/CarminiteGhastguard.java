@@ -60,7 +60,7 @@ public class CarminiteGhastguard extends Ghast implements EnforcedHomePoint {
 	protected void registerGoals() {
 		this.goalSelector.addGoal(5, new GhastguardHomedFlightGoal(this));
 		this.goalSelector.addGoal(5, new GhastguardRandomFlyGoal(this));
-		this.goalSelector.addGoal(7, new Ghast.GhastLookGoal(this));
+		this.goalSelector.addGoal(7, new GhastLookGoal(this));
 		this.goalSelector.addGoal(7, this.attackGoal = new GhastguardAttackGoal(this));
 		this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
 	}

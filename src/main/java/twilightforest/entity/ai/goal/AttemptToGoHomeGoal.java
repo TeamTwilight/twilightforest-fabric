@@ -19,7 +19,7 @@ public class AttemptToGoHomeGoal<T extends PathfinderMob & EnforcedHomePoint> ex
 	public AttemptToGoHomeGoal(T mob, double speedModifier) {
 		this.mob = mob;
 		this.speedModifier = speedModifier;
-		this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+		this.setFlags(EnumSet.of(Flag.MOVE));
 	}
 
 	@Override

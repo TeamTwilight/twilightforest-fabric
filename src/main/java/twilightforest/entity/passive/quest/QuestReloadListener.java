@@ -10,16 +10,22 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import twilightforest.TwilightForestMod;
-import tamaized.beanification.Autowired;
 import twilightforest.entity.passive.quest.ram.QuestingRamContext;
 import twilightforest.entity.passive.quest.ram.QuestingRamCurrentContext;
+import twilightforest.util.TFBeanRegistry;
 
 import java.util.Map;
 
 public class QuestReloadListener extends SimpleJsonResourceReloadListener {
 
-	@Autowired
 	private static QuestingRamCurrentContext questingRamCurrentContext;
+
+	private static QuestingRamCurrentContext getQuestingRamCurrentContext() {
+		if (questingRamCurrentContext == null) {
+			questingRamCurrentContext = TFBeanRegistry.get(QuestingRamCurrentContext.class);
+		}
+		return questingRamCurrentContext;
+	}
 
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
@@ -32,7 +38,7 @@ public class QuestReloadListener extends SimpleJsonResourceReloadListener {
 		boolean found = false;
 		for (var entry : object.entrySet()) {
 			if (entry.getKey().getPath().equals("questing_ram")) {
-				questingRamCurrentContext.setContext(QuestingRamContext.CODEC.parse(JsonOps.INSTANCE, entry.getValue()).getOrThrow(JsonParseException::new));
+				getQuestingRamCurrentContext().setContext(QuestingRamContext.CODEC.parse(JsonOps.INSTANCE, entry.getValue()).getOrThrow(JsonParseException::new));
 				TwilightForestMod.LOGGER.debug("Questing Ram quest set by mod {}", entry.getKey().getNamespace());
 				found = true;
 			}
@@ -40,7 +46,7 @@ public class QuestReloadListener extends SimpleJsonResourceReloadListener {
 
 		if (!found) {
 			TwilightForestMod.LOGGER.error("Questing Ram quest file not found. Defaulting to fallback");
-			questingRamCurrentContext.setContext(QuestingRamContext.FALLBACK);
+			getQuestingRamCurrentContext().setContext(QuestingRamContext.FALLBACK);
 		}
 	}
 }

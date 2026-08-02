@@ -46,7 +46,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.network.PacketDistributor;
+import twilightforest.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.control.NoClipMoveControl;
@@ -342,13 +342,13 @@ public class KnightPhantom extends BaseTFBoss {
 				BlockPos ground = getBlockPosBelowThatAffectsMyMovement();
 				float f = 0.91F;
 				if (this.onGround()) {
-					f = this.level().getBlockState(ground).getFriction(this.level(), ground, this) * 0.91F;
+					f = this.level().getBlockState(ground).getBlock().getFriction() * 0.91F;
 				}
 
 				float f1 = 0.16277137F / (f * f * f);
 				f = 0.91F;
 				if (this.onGround()) {
-					f = this.level().getBlockState(ground).getFriction(this.level(), ground, this) * 0.91F;
+					f = this.level().getBlockState(ground).getBlock().getFriction() * 0.91F;
 				}
 
 				this.moveRelative(this.onGround() ? 0.1F * f1 : 0.02F, vec3);
@@ -578,8 +578,8 @@ public class KnightPhantom extends BaseTFBoss {
 	@Override
 	protected void tickDeath() {
 		super.tickDeath();
-		if (this.deathTime >= DYING_TICKS && this.dimensions != UNTOUCHABLE) { // Remove the mob's hitbox if it enters a certain part of it's dying animation
-			EntityDimensions oldDimensions = this.dimensions;
+		if (this.deathTime >= DYING_TICKS && this.getDimensions(this.getPose()) != UNTOUCHABLE) { // Remove the mob's hitbox if it enters a certain part of it's dying animation
+			EntityDimensions oldDimensions = this.getDimensions(this.getPose());
 			this.dimensions = UNTOUCHABLE;
 			this.reapplyPosition();
 			boolean flag = (double) UNTOUCHABLE.width() <= 4.0 && (double) UNTOUCHABLE.height() <= 4.0;
@@ -650,10 +650,13 @@ public class KnightPhantom extends BaseTFBoss {
 		}
 	}
 
+	// makePoofParticles 在 1.21.1 中是 final，行为已移至 handleEntityEvent
+	/*
 	@Override
 	public void makePoofParticles() {
 		// We poof before the mob gets removed, so blank this out.
 	}
+	*/
 
 	@Override
 	public Component getBossBarTitle() {

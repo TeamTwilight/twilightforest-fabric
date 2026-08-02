@@ -1,9 +1,14 @@
 package twilightforest.entity.passive.quest.ram;
 
-import tamaized.beanification.Component;
+import twilightforest.util.TFBeanRegistry;
 
-@Component
 public class QuestingRamCurrentContext {
+
+	public static final QuestingRamCurrentContext INSTANCE = new QuestingRamCurrentContext();
+
+	static {
+		TFBeanRegistry.register(QuestingRamCurrentContext.class, INSTANCE);
+	}
 
 	private QuestingRamContext context = QuestingRamContext.FALLBACK;
 

@@ -15,7 +15,7 @@ public class UrGhastLookGoal extends Goal {
 	@SuppressWarnings("this-escape")
 	public UrGhastLookGoal(UrGhast pGhast) {
 		this.ghast = pGhast;
-		this.setFlags(EnumSet.of(Goal.Flag.LOOK));
+		this.setFlags(EnumSet.of(Flag.LOOK));
 	}
 
 	@Override

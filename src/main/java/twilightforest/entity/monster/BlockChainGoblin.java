@@ -285,23 +285,4 @@ public class BlockChainGoblin extends Monster {
 			return (this.getEntityData().get(DATA_CHAINLENGTH) & 0xFF) / 127.0F;
 		}
 	}
-
-	@Override
-	public boolean isMultipartEntity() {
-		return true;
-	}
-
-	@Override
-	public void recreateFromPacket(ClientboundAddEntityPacket packet) {
-		super.recreateFromPacket(packet);
-		TFPart.assignPartIDs(this);
-	}
-
-	/**
-	 * We need to do this for the bounding boxes on the parts to become active
-	 */
-	@Override
-	public MultipartGenericsAreDumb[] getParts() {
-		return partsArray;
-	}
 }

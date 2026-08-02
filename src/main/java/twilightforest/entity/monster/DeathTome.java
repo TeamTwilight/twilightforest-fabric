@@ -158,7 +158,7 @@ public class DeathTome extends Monster implements RangedAttackMob {
 		}
 	}
 
-	//TODO replace with LivingEntity.isLookingAtMe in 1.21.4
+	// 1.21.4+ 可替换为 LivingEntity.isLookingAtMe
 	private boolean isInPlayersView(LivingEntity target, double tolerance, boolean scaleByDistance, boolean visual, double... yValues) {
 		Vec3 vec3 = target.getViewVector(1.0F).normalize();
 

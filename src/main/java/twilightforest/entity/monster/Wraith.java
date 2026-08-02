@@ -264,7 +264,7 @@ public class Wraith extends FlyingMob implements Enemy, EnforcedHomePoint {
 		public MoveTowardsHomeGoal(Wraith mob, double speedModifier) {
 			this.mob = mob;
 			this.speedModifier = speedModifier;
-			this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+			this.setFlags(EnumSet.of(Flag.MOVE));
 		}
 
 		@Override

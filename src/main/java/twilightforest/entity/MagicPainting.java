@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class MagicPainting extends HangingEntity {
-	private static final EntityDataAccessor<Holder<MagicPaintingVariant>> MAGIC_PAINTING_VARIANT = SynchedEntityData.defineId(MagicPainting.class, TFDataSerializers.MAGIC_PAINTING_VARIANT.value());
+	private static final EntityDataAccessor<Holder<MagicPaintingVariant>> MAGIC_PAINTING_VARIANT = SynchedEntityData.defineId(MagicPainting.class, TFDataSerializers.MAGIC_PAINTING_VARIANT);
 
 	public MagicPainting(EntityType<? extends MagicPainting> entityType, Level level) {
 		super(entityType, level);
@@ -165,7 +165,7 @@ public class MagicPainting extends HangingEntity {
 
 	@Override
 	public void playPlacementSound() {
-		this.playSound(SoundEvents.PAINTING_PLACE, 1.0F, 1.0F);//FIXME
+		this.playSound(SoundEvents.PAINTING_PLACE, 1.0F, 1.0F);
 	}
 
 	@Override
@@ -198,7 +198,7 @@ public class MagicPainting extends HangingEntity {
 	@NotNull
 	public ItemStack getPickResult() {
 		ItemStack itemStack = new ItemStack(TFItems.MAGIC_PAINTING.get());
-		itemStack.set(TFDataComponents.MAGIC_PAINTING_VARIANT, this.getVariant());
+		itemStack.set(TFDataComponents.MAGIC_PAINTING_VARIANT.get(), this.getVariant());
 		return itemStack;
 	}
 

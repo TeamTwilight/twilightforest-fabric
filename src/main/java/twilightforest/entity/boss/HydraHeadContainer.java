@@ -17,7 +17,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
+import twilightforest.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
@@ -350,10 +350,10 @@ public class HydraHeadContainer {
 		// only actually do these things on the server
 		if (!this.hydra.level().isClientSide()) {
 			// make sure this is set up
-			if (!this.isDead() && this.headEntity.dimensions.width() == 0) {
+			if (!this.isDead() && this.headEntity.getBbWidth() == 0) {
 				this.headEntity.activate();
 				this.performOnAllNecks(HydraPart::activate);
-			} else if (!this.isActive() && this.headEntity.dimensions.width() > 0) {
+			} else if (!this.isActive() && this.headEntity.getBbWidth() > 0) {
 				this.headEntity.deactivate();
 				this.performOnAllNecks(HydraPart::deactivate);
 			}
@@ -719,7 +719,7 @@ public class HydraHeadContainer {
 		}
 	}
 
-	// TODO this seems copied from somewhere?
+	// 此代码似乎从某处复制
 	@SuppressWarnings("ConstantConditions")
 	@Nullable
 	private Entity getHeadLookTarget() {

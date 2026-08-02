@@ -20,7 +20,7 @@ public class QuestRamEatWoolGoal extends Goal {
 	public QuestRamEatWoolGoal(QuestRam ram) {
 		this.ram = ram;
 		this.navigation = ram.getNavigation();
-		this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+		this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
 	}
 
 	@Override

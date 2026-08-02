@@ -34,7 +34,7 @@ import java.util.Optional;
 
 public class TinyBird extends FlyingBird implements VariantHolder<Holder<TinyBirdVariant>> {
 
-	private static final EntityDataAccessor<Holder<TinyBirdVariant>> VARIANT = SynchedEntityData.defineId(TinyBird.class, TFDataSerializers.TINY_BIRD_VARIANT.get());
+	private static final EntityDataAccessor<Holder<TinyBirdVariant>> VARIANT = SynchedEntityData.defineId(TinyBird.class, TFDataSerializers.TINY_BIRD_VARIANT);
 
 	public TinyBird(EntityType<? extends TinyBird> type, Level level) {
 		super(type, level);

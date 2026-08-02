@@ -54,7 +54,7 @@ public class AvoidAnyEntityGoal<T extends Entity> extends Goal {
 		this.farSpeed = nearSpeedIn;
 		this.nearSpeed = farSpeedIn;
 		this.navigation = entityIn.getNavigation();
-		this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+		this.setFlags(EnumSet.of(Flag.MOVE));
 	}
 
 	@Override

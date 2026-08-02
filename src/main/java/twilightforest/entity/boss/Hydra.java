@@ -1,5 +1,7 @@
 package twilightforest.entity.boss;
 
+import io.github.fabricators_of_create.porting_lib.entity.MultiPartEntity;
+import io.github.fabricators_of_create.porting_lib.entity.PartEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -29,8 +31,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.entity.PartEntity;
-import net.neoforged.neoforge.event.EventHooks;
+import net.minecraft.world.entity.Entity;
+import twilightforest.util.TFEventHooks;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.TFPart;
 import twilightforest.init.*;
@@ -43,7 +45,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @SuppressWarnings("this-escape")
-public class Hydra extends BaseTFBoss {
+public class Hydra extends BaseTFBoss implements MultiPartEntity {
 
 	private static final int TICKS_BEFORE_HEALING = 1000;
 	private static final int HEAD_RESPAWN_TICKS = 140;
@@ -56,7 +58,7 @@ public class Hydra extends BaseTFBoss {
 	private static final int SECONDARY_FLAME_CHANCE = 10;
 	private static final int SECONDARY_MORTAR_CHANCE = 16;
 
-	private static final EntityDataAccessor<List<String>> HEAD_NAMES = SynchedEntityData.defineId(Hydra.class, TFDataSerializers.STRING_LIST.get());
+	private static final EntityDataAccessor<List<String>> HEAD_NAMES = SynchedEntityData.defineId(Hydra.class, TFDataSerializers.STRING_LIST);
 	public final HydraHeadContainer[] hc = new HydraHeadContainer[MAX_HEADS];
 
 	private final HydraPart[] partArray;
@@ -256,7 +258,7 @@ public class Hydra extends BaseTFBoss {
 		}
 	}
 
-	// TODO modernize this more (old AI copypasta still kind of here)
+	// 现代化旧 AI
 	private int numTicksToChaseTarget;
 
 	@Override
@@ -344,7 +346,7 @@ public class Hydra extends BaseTFBoss {
 			this.setYRot(this.getYRot() + this.randomYawVelocity);
 			this.setXRot(0);
 
-			// TODO: while we are idle, consider having the heads breathe fire on passive mobs
+			// 空闲时对被动生物喷火
 
 			// set idle heads to no target
 			for (int i = 0; i < MAX_HEADS; i++) {
@@ -556,7 +558,7 @@ public class Hydra extends BaseTFBoss {
 	}
 
 	private void destroyBlocksInAABB(AABB box) {
-		if (this.deathTime <= 0 && EventHooks.canEntityGrief(this.level(), this)) {
+		if (this.deathTime <= 0 && TFEventHooks.canEntityGrief(this.level(), this)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 				if (EntityUtil.canDestroyBlock(this.level(), pos, this)) {
 					this.level().destroyBlock(pos, false);

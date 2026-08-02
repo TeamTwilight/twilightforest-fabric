@@ -20,7 +20,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.fluids.FluidType;
+import io.github.fabricators_of_create.porting_lib.fluids.FluidType;
 
 public class RisingZombie extends Monster {
 
@@ -63,7 +63,7 @@ public class RisingZombie extends Monster {
 			if (!this.level().isClientSide()) {
 				this.getEntityData().set(RISING_TICKS, this.getRisingTicks() + 1);
 				if (this.getRisingTicks() % 10 == 0 && this.getRisingTicks() < 130) {
-					this.level().playSound(null, this.blockPosition(), state.getSoundType(this.level(), pos, null).getBreakSound(), SoundSource.BLOCKS, 1.0F, this.getRandom().nextFloat() * 0.15F + 0.7F);
+					this.level().playSound(null, this.blockPosition(), state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 1.0F, this.getRandom().nextFloat() * 0.15F + 0.7F);
 				}
 			} else {
 				if (!this.level().isEmptyBlock(this.blockPosition().below())) {
@@ -109,7 +109,7 @@ public class RisingZombie extends Monster {
 		return SoundEvents.ZOMBIE_DEATH;
 	}
 
-	//TODO replace with LivingEntity.isLookingAtMe in 1.21.4+
+	// 1.21.4+ 可替换为 LivingEntity.isLookingAtMe
 	public boolean isLookingInMyDirection(Player player, double width, boolean useLength, boolean checkAir, double... offsets) {
 		Vec3 vec3 = player.getViewVector(1.0F).normalize();
 
@@ -175,10 +175,11 @@ public class RisingZombie extends Monster {
 		return false;
 	}
 
-	@Override
-	public boolean isPushedByFluid(FluidType type) {
-		return false;
-	}
+	// isPushedByFluid is NeoForge-specific, not needed on Fabric
+	// @Override
+	// public boolean isPushedByFluid(FluidType type) {
+	// 	return false;
+	// }
 
 	@Override
 	public boolean canUsePortal(boolean force) {

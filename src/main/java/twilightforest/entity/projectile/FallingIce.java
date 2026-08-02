@@ -90,8 +90,8 @@ public class FallingIce extends Entity {
 	}
 
 	@Override
-	protected Entity.MovementEmission getMovementEmission() {
-		return Entity.MovementEmission.NONE;
+	protected MovementEmission getMovementEmission() {
+		return MovementEmission.NONE;
 	}
 
 	@Override
@@ -119,11 +119,12 @@ public class FallingIce extends Entity {
 			if (!this.level().isClientSide()) {
 				BlockPos blockpos = this.blockPosition();
 				boolean flag = this.blockState.getBlock() instanceof ConcretePowderBlock;
-				boolean flag1 = flag && this.blockState.canBeHydrated(this.level(), blockpos, this.level().getFluidState(blockpos), blockpos);
+				// canBeHydrated 在 1.21.1 中是 private，需要 access widener 才能访问
+				boolean flag1 = false; // flag && this.blockState.getBlock() instanceof ConcretePowderBlock powder && powder.canBeHydrated(this.blockState, this.level(), blockpos, this.level().getFluidState(blockpos), blockpos);
 				double d0 = this.getDeltaMovement().lengthSqr();
 				if (flag && d0 > 1.0D) {
 					BlockHitResult blockhitresult = this.level().clip(new ClipContext(new Vec3(this.xo, this.yo, this.zo), this.position(), ClipContext.Block.COLLIDER, ClipContext.Fluid.SOURCE_ONLY, this));
-					if (blockhitresult.getType() != HitResult.Type.MISS && this.blockState.canBeHydrated(this.level(), blockpos, this.level().getFluidState(blockhitresult.getBlockPos()), blockhitresult.getBlockPos())) {
+					if (blockhitresult.getType() != HitResult.Type.MISS /* && this.blockState.getBlock() instanceof ConcretePowderBlock powder2 && powder2.canBeHydrated(this.blockState, this.level(), blockpos, this.level().getFluidState(blockhitresult.getBlockPos()), blockhitresult.getBlockPos()) */) {
 						blockpos = blockhitresult.getBlockPos();
 						flag1 = true;
 					}
