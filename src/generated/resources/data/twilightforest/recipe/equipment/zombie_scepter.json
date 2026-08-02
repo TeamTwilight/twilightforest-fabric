@@ -1,0 +1,13 @@
+{
+  "type": "twilightforest:scepter_repair",
+  "durability": 9,
+  "repair_ingredients": [
+    {
+      "item": "minecraft:potion"
+    },
+    {
+      "item": "minecraft:rotten_flesh"
+    }
+  ],
+  "scepter": "twilightforest:zombie_scepter"
+}

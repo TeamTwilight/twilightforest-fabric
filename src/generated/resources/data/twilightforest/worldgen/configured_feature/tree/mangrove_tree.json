@@ -1,0 +1,130 @@
+{
+  "type": "minecraft:tree",
+  "config": {
+    "decorators": [
+      {
+        "type": "twilightforest:trunkside_decorator",
+        "deco_provider": {
+          "type": "minecraft:simple_state_provider",
+          "state": {
+            "Name": "twilightforest:firefly",
+            "Properties": {
+              "facing": "up"
+            }
+          }
+        },
+        "placement_count": 2,
+        "probability_of_placement": 1.0
+      },
+      {
+        "type": "twilightforest:tree_roots",
+        "additional_random_strands": 1,
+        "base_strand_count": 3,
+        "exposed_roots_provider": {
+          "type": "minecraft:simple_state_provider",
+          "state": {
+            "Name": "twilightforest:mangrove_root"
+          }
+        },
+        "ground_roots_provider": {
+          "type": "minecraft:weighted_state_provider",
+          "entries": [
+            {
+              "data": {
+                "Name": "twilightforest:root"
+              },
+              "weight": 4
+            },
+            {
+              "data": {
+                "Name": "twilightforest:liveroot_block"
+              },
+              "weight": 1
+            }
+          ]
+        },
+        "rootPenetrability": 1,
+        "root_length": 12,
+        "y_offset": 0
+      },
+      {
+        "type": "minecraft:leave_vine",
+        "probability": 0.125
+      }
+    ],
+    "dirt_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "minecraft:dirt"
+      }
+    },
+    "foliage_placer": {
+      "type": "twilightforest:spheroid_foliage_placer",
+      "horizontal_radius": 2.5,
+      "offset": 0,
+      "random_add_horizontal": 2,
+      "random_add_vertical": 0,
+      "shag_factor": 15,
+      "vertical_filler_bias": -0.25,
+      "vertical_radius": 1.5
+    },
+    "foliage_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "twilightforest:mangrove_leaves",
+        "Properties": {
+          "distance": "7",
+          "persistent": "false",
+          "waterlogged": "false"
+        }
+      }
+    },
+    "force_dirt": false,
+    "ignore_vines": false,
+    "minimum_size": {
+      "type": "minecraft:two_layers_feature_size",
+      "limit": 4,
+      "lower_size": 1,
+      "upper_size": 1
+    },
+    "trunk_placer": {
+      "type": "twilightforest:trunk_mover_upper",
+      "offset_up": 4,
+      "trunk_placer": {
+        "type": "twilightforest:branching_trunk_placer",
+        "base_height": 7,
+        "branch_config": {
+          "branch_provider": {
+            "type": "minecraft:simple_state_provider",
+            "state": {
+              "Name": "twilightforest:mangrove_wood",
+              "Properties": {
+                "axis": "y"
+              }
+            }
+          },
+          "count_minimum": 0,
+          "downwards_pitch": 0.25,
+          "length": 6.0,
+          "random_add_count": 3,
+          "random_add_length": 2.0,
+          "spacing_yaw": 0.3
+        },
+        "branch_start_offset_down": 6,
+        "height_rand_a": 4,
+        "height_rand_b": 0,
+        "perpendicular_branches": false,
+        "prevent_exposed_root": false
+      }
+    },
+    "trunk_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "twilightforest:mangrove_log",
+        "Properties": {
+          "axis": "y"
+        }
+      }
+    }
+  }
+}

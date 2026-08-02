@@ -1,0 +1,7 @@
+{
+  "parent": "twilightforest:block/potted_larger_sapling",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "plant": "twilightforest:block/mangrove_sapling"
+  }
+}

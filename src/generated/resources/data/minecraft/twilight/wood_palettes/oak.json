@@ -1,0 +1,10 @@
+{
+  "banister": "twilightforest:oak_banister",
+  "button": "minecraft:oak_button",
+  "fence": "minecraft:oak_fence",
+  "gate": "minecraft:oak_fence_gate",
+  "planks": "minecraft:oak_planks",
+  "plate": "minecraft:oak_pressure_plate",
+  "slab": "minecraft:oak_slab",
+  "stairs": "minecraft:oak_stairs"
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:builtin/entity",
+  "textures": {
+    "particle": "twilightforest:block/stripped_transformation_log"
+  }
+}

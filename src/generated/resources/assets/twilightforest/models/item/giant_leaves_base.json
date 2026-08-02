@@ -1,0 +1,7 @@
+{
+  "parent": "twilightforest:item/giant_block_base",
+  "textures": {
+    "all": "minecraft:block/oak_leaves",
+    "top": "minecraft:block/oak_leaves"
+  }
+}
