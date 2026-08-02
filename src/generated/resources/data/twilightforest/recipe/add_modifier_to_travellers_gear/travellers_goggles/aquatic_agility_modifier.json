@@ -13,26 +13,7 @@
       "s": {
         "tag": "c:slime_balls"
       },
-      "w": [
-        {
-          "type": "neoforge:components",
-          "components": {
-            "minecraft:potion_contents": {
-              "potion": "minecraft:water_breathing"
-            }
-          },
-          "items": "minecraft:potion"
-        },
-        {
-          "type": "neoforge:components",
-          "components": {
-            "minecraft:potion_contents": {
-              "potion": "minecraft:long_water_breathing"
-            }
-          },
-          "items": "minecraft:potion"
-        }
-      ]
+      "w": {"item": "minecraft:potion"}
     },
     "pattern": [
       " b",

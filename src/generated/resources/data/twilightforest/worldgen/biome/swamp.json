@@ -7,7 +7,6 @@
     "fog_color": 16161,
     "foliage_color": 4809015,
     "grass_color": 6056270,
-    "grass_color_modifier": "twilightforest:swamp",
     "mood_sound": {
       "block_search_extent": 8,
       "offset": 2.0,

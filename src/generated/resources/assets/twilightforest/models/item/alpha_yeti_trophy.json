@@ -1,6 +1,18 @@
 {
   "parent": "twilightforest:item/template_trophy",
   "display": {
+    "fixed": {
+      "rotation": [
+        0,
+        180,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        1
+      ]
+    },
     "head": {
       "rotation": [
         180,
@@ -16,18 +28,6 @@
         0,
         2,
         0
-      ]
-    },
-    "twilightforest:jarred": {
-      "rotation": [
-        0,
-        180,
-        0
-      ],
-      "translation": [
-        0,
-        0,
-        1
       ]
     }
   }

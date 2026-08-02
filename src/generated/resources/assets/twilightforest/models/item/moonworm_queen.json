@@ -1,4 +1,4 @@
-{
+﻿{
   "parent": "minecraft:item/handheld",
   "display": {
     "thirdperson_lefthand": {
@@ -36,8 +36,8 @@
       ]
     }
   },
-  "loader": "neoforge:item_layers",
-  "neoforge_data": {
+  "loader": "porting_lib:item_layers",
+  "porting_lib_data": {
     "layers": {
       "0": {
         "block_light": 15,

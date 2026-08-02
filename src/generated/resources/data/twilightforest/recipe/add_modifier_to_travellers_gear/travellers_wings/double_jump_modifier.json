@@ -4,35 +4,7 @@
   "modifier_key": "twilightforest:double_jump",
   "pattern": {
     "key": {
-      "L": [
-        {
-          "type": "neoforge:components",
-          "components": {
-            "minecraft:potion_contents": {
-              "potion": "minecraft:leaping"
-            }
-          },
-          "items": "minecraft:potion"
-        },
-        {
-          "type": "neoforge:components",
-          "components": {
-            "minecraft:potion_contents": {
-              "potion": "minecraft:long_leaping"
-            }
-          },
-          "items": "minecraft:potion"
-        },
-        {
-          "type": "neoforge:components",
-          "components": {
-            "minecraft:potion_contents": {
-              "potion": "minecraft:strong_leaping"
-            }
-          },
-          "items": "minecraft:potion"
-        }
-      ],
+      "L": {"item": "minecraft:potion"},
       "P": {
         "item": "minecraft:piston"
       },

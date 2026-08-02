@@ -8,7 +8,6 @@
     "fog_color": 12648408,
     "foliage_color": 65535,
     "grass_color": 65535,
-    "grass_color_modifier": "twilightforest:enchanted_forest",
     "mood_sound": {
       "block_search_extent": 8,
       "offset": 2.0,

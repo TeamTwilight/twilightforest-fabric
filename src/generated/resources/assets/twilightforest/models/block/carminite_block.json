@@ -5,7 +5,7 @@
       "faces": {
         "down": {
           "cullface": "down",
-          "neoforge_data": {
+          "porting_lib_data": {
             "block_light": 4,
             "sky_light": 4
           },
@@ -13,7 +13,7 @@
         },
         "east": {
           "cullface": "east",
-          "neoforge_data": {
+          "porting_lib_data": {
             "block_light": 4,
             "sky_light": 4
           },
@@ -21,7 +21,7 @@
         },
         "north": {
           "cullface": "north",
-          "neoforge_data": {
+          "porting_lib_data": {
             "block_light": 4,
             "sky_light": 4
           },
@@ -29,7 +29,7 @@
         },
         "south": {
           "cullface": "south",
-          "neoforge_data": {
+          "porting_lib_data": {
             "block_light": 4,
             "sky_light": 4
           },
@@ -37,7 +37,7 @@
         },
         "up": {
           "cullface": "up",
-          "neoforge_data": {
+          "porting_lib_data": {
             "block_light": 4,
             "sky_light": 4
           },
@@ -45,7 +45,7 @@
         },
         "west": {
           "cullface": "west",
-          "neoforge_data": {
+          "porting_lib_data": {
             "block_light": 4,
             "sky_light": 4
           },
@@ -67,7 +67,7 @@
       "faces": {
         "down": {
           "cullface": "down",
-          "neoforge_data": {
+          "porting_lib_data": {
             "block_light": 7,
             "sky_light": 7
           },
@@ -76,7 +76,7 @@
         },
         "east": {
           "cullface": "east",
-          "neoforge_data": {
+          "porting_lib_data": {
             "block_light": 7,
             "sky_light": 7
           },
@@ -85,7 +85,7 @@
         },
         "north": {
           "cullface": "north",
-          "neoforge_data": {
+          "porting_lib_data": {
             "block_light": 7,
             "sky_light": 7
           },
@@ -94,7 +94,7 @@
         },
         "south": {
           "cullface": "south",
-          "neoforge_data": {
+          "porting_lib_data": {
             "block_light": 7,
             "sky_light": 7
           },
@@ -103,7 +103,7 @@
         },
         "up": {
           "cullface": "up",
-          "neoforge_data": {
+          "porting_lib_data": {
             "block_light": 7,
             "sky_light": 7
           },
@@ -112,7 +112,7 @@
         },
         "west": {
           "cullface": "west",
-          "neoforge_data": {
+          "porting_lib_data": {
             "block_light": 7,
             "sky_light": 7
           },

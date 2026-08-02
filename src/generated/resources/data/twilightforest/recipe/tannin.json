@@ -2,15 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "type": "neoforge:components",
-      "components": {
-        "minecraft:potion_contents": {
-          "potion": "minecraft:water"
-        }
-      },
-      "items": "minecraft:potion"
-    },
+    {"item": "minecraft:potion"},
     {
       "item": "twilightforest:twilight_oak_sapling"
     },

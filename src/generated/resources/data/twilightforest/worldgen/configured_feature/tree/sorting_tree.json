@@ -1,22 +1,7 @@
 {
   "type": "minecraft:tree",
   "config": {
-    "decorators": [
-      {
-        "type": "twilightforest:core_placer",
-        "core_position": 2,
-        "deco_provider": {
-          "type": "minecraft:simple_state_provider",
-          "state": {
-            "Name": "twilightforest:sorting_log_core",
-            "Properties": {
-              "active": "false",
-              "axis": "y"
-            }
-          }
-        }
-      }
-    ],
+    "decorators": [],
     "dirt_provider": {
       "type": "minecraft:simple_state_provider",
       "state": {
@@ -44,8 +29,8 @@
         }
       }
     },
-    "force_dirt": true,
-    "ignore_vines": true,
+    "force_dirt": false,
+    "ignore_vines": false,
     "minimum_size": {
       "type": "minecraft:two_layers_feature_size",
       "limit": 1,

@@ -9,13 +9,7 @@
       "item": "twilightforest:tanned_leather"
     },
     "x": {
-      "type": "neoforge:difference",
-      "base": {
-        "tag": "c:chests/wooden"
-      },
-      "subtracted": {
-        "tag": "c:chests/trapped"
-      }
+      "tag": "c:chests/wooden"
     }
   },
   "pattern": [

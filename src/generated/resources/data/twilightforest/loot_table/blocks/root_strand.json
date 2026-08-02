@@ -11,8 +11,10 @@
               "type": "minecraft:item",
               "conditions": [
                 {
-                  "ability": "shears_dig",
-                  "condition": "neoforge:can_item_perform_ability"
+                  "condition": "minecraft:match_tool",
+                  "predicate": {
+                    "items": "minecraft:shears"
+                  }
                 }
               ],
               "name": "twilightforest:root_strand"

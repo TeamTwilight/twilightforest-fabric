@@ -1,7 +1,7 @@
 {
   "parent": "twilightforest:item/template_trophy",
   "display": {
-    "twilightforest:jarred": {
+    "fixed": {
       "rotation": [
         0,
         180,

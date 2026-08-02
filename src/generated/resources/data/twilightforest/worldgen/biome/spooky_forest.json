@@ -7,7 +7,6 @@
     "fog_color": 8549265,
     "foliage_color": 16745729,
     "grass_color": 12865827,
-    "grass_color_modifier": "twilightforest:spooky_forest",
     "mood_sound": {
       "block_search_extent": 8,
       "offset": 2.0,

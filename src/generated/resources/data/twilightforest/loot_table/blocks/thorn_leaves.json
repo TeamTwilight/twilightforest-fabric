@@ -14,8 +14,10 @@
                   "condition": "minecraft:any_of",
                   "terms": [
                     {
-                      "ability": "shears_dig",
-                      "condition": "neoforge:can_item_perform_ability"
+                      "condition": "minecraft:match_tool",
+                      "predicate": {
+                        "items": "minecraft:shears"
+                      }
                     },
                     {
                       "condition": "minecraft:match_tool",
@@ -71,8 +73,10 @@
             "condition": "minecraft:any_of",
             "terms": [
               {
-                "ability": "shears_dig",
-                "condition": "neoforge:can_item_perform_ability"
+                "condition": "minecraft:match_tool",
+                "predicate": {
+                  "items": "minecraft:shears"
+                }
               },
               {
                 "condition": "minecraft:match_tool",
