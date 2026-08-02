@@ -10,55 +10,50 @@ import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
-import tamaized.beanification.Autowired;
+import twilightforest.util.TFBeanRegistry;
 
-@tamaized.beanification.Component
 public class TFCommand {
 
-	@Autowired
+	public static final TFCommand INSTANCE = new TFCommand();
+
+	static {
+		TFBeanRegistry.register(TFCommand.class, INSTANCE);
+		TFBeanRegistry.addPostInit(INSTANCE::init);
+	}
+
 	private CenterCommand centerCommand;
-
-	@Autowired
 	private ConquerCommand conquerCommand;
-
-	@Autowired
 	private GenerateBookCommand generateBookCommand;
-
-	@Autowired
 	private InfoCommand infoCommand;
-
-	@Autowired
 	private MapBiomesCommand mapBiomesCommand;
-
-	@Autowired
 	private MapLocatorCommand mapLocatorCommand;
-
-	@Autowired
 	private ShieldCommand shieldCommand;
-
-	@Autowired
 	private SinisterSpawnerCommand spawnerCommand;
-
-	@Autowired
 	private DisplayPiecesCommand displayPiecesCommand;
-
-	@Autowired
 	private CountLootCommand countLootCommand;
-
-	@Autowired
 	private CountTemplateCommand countTemplateCommand;
-
-	@Autowired
 	private StructureDistanceCommand structureDistanceCommand;
-
-	@Autowired
 	private ClearDisplayCommand clearDisplayCommand;
-
-	@Autowired
 	private TravellersGearCommand travellersGearCommand;
-
-	@Autowired
 	private TFTeleportCommand tfTeleportCommand;
+
+	private void init() {
+		this.centerCommand = TFBeanRegistry.get(CenterCommand.class);
+		this.conquerCommand = TFBeanRegistry.get(ConquerCommand.class);
+		this.generateBookCommand = TFBeanRegistry.get(GenerateBookCommand.class);
+		this.infoCommand = TFBeanRegistry.get(InfoCommand.class);
+		this.mapBiomesCommand = TFBeanRegistry.get(MapBiomesCommand.class);
+		this.mapLocatorCommand = TFBeanRegistry.get(MapLocatorCommand.class);
+		this.shieldCommand = TFBeanRegistry.get(ShieldCommand.class);
+		this.spawnerCommand = TFBeanRegistry.get(SinisterSpawnerCommand.class);
+		this.displayPiecesCommand = TFBeanRegistry.get(DisplayPiecesCommand.class);
+		this.countLootCommand = TFBeanRegistry.get(CountLootCommand.class);
+		this.countTemplateCommand = TFBeanRegistry.get(CountTemplateCommand.class);
+		this.structureDistanceCommand = TFBeanRegistry.get(StructureDistanceCommand.class);
+		this.clearDisplayCommand = TFBeanRegistry.get(ClearDisplayCommand.class);
+		this.travellersGearCommand = TFBeanRegistry.get(TravellersGearCommand.class);
+		this.tfTeleportCommand = TFBeanRegistry.get(TFTeleportCommand.class);
+	}
 
 	public void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext buildContext) {
 		LiteralArgumentBuilder<CommandSourceStack> structureBranch = Commands.literal("structure_util")
@@ -79,9 +74,9 @@ public class TFCommand {
 			.then(mapBiomesCommand.register())
 			.then(shieldCommand.register())
 			.then(spawnerCommand.register(buildContext))
-			.then(travellersGearCommand.register())
-			.then(structureBranch);
-		LiteralCommandNode<CommandSourceStack> node = dispatcher.register(builder);
+		.then(travellersGearCommand.register())
+		.then(structureBranch);
+	LiteralCommandNode<CommandSourceStack> node = dispatcher.register(builder);
 		dispatcher.register(Commands.literal("tf").executes(this::run).redirect(node));
 		dispatcher.register(Commands.literal("tffeature").executes(this::run).redirect(node));
 	}

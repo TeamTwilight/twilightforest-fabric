@@ -5,17 +5,25 @@ import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.server.MinecraftServer;
-import tamaized.beanification.Autowired;
-import tamaized.beanification.Component;
+import twilightforest.util.TFBeanRegistry;
 import twilightforest.util.DisplayUtil;
 
 import java.util.List;
 
-@Component
 public class ClearDisplayCommand {
 
-	@Autowired
+	public static final ClearDisplayCommand INSTANCE = new ClearDisplayCommand();
+
+	static {
+		TFBeanRegistry.register(ClearDisplayCommand.class, INSTANCE);
+		TFBeanRegistry.addPostInit(INSTANCE::init);
+	}
+
 	private DisplayUtil displayUtil;
+
+	private void init() {
+		this.displayUtil = TFBeanRegistry.get(DisplayUtil.class);
+	}
 
 	public LiteralArgumentBuilder<CommandSourceStack> register() {
 		return Commands.literal("clear_display").executes(this::clearDisplayPieces);

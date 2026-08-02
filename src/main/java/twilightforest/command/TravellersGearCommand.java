@@ -12,17 +12,23 @@ import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.common.util.FakePlayer;
+import twilightforest.util.TFFakePlayer;
 import twilightforest.TFRegistries;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.modifiers.InsertableTravellersModifier;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifiable;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
+import twilightforest.util.TFBeanRegistry;
 
 import java.util.function.Function;
 
-@tamaized.beanification.Component
 public class TravellersGearCommand {
+
+	public static final TravellersGearCommand INSTANCE = new TravellersGearCommand();
+
+	static {
+		TFBeanRegistry.register(TravellersGearCommand.class, INSTANCE);
+	}
 
 	private static final DynamicCommandExceptionType ERROR_INVALID_MODIFIER = new DynamicCommandExceptionType(p_304101_ -> Component.translatableEscape("commands.tffeature.invalid_modifier", p_304101_));
 	private final SimpleCommandExceptionType ERROR_NOT_RUN_BY_PLAYER = new SimpleCommandExceptionType(Component.translatable("commands.tffeature.not_player"));
@@ -64,7 +70,7 @@ public class TravellersGearCommand {
 	}
 
 	private Context validate(CommandSourceStack source, Holder.Reference<TravellersModifier> modifier) throws CommandSyntaxException {
-		if (!(source.getEntity() instanceof Player player) || player instanceof FakePlayer) throw ERROR_NOT_RUN_BY_PLAYER.create();
+		if (!(source.getEntity() instanceof Player player)) throw ERROR_NOT_RUN_BY_PLAYER.create();
 		if (!(player.getMainHandItem().getItem() instanceof TravellersModifiable armor)) throw ERROR_NOT_HOLDING_GEAR.create();
 		if (modifier.value().isAbility()) throw ERROR_ABILITY.create();
 		Component modKey = TravellersModifiersManager.getModifierTooltipComponent(modifier);

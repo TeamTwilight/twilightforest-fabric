@@ -29,9 +29,15 @@ import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 
 import java.util.Collection;
 import java.util.Collections;
+import twilightforest.util.TFBeanRegistry;
 
-@tamaized.beanification.Component
 public class MapLocatorCommand {
+
+	public static final MapLocatorCommand INSTANCE = new MapLocatorCommand();
+
+	static {
+		TFBeanRegistry.register(MapLocatorCommand.class, INSTANCE);
+	}
 
 	// [vanillacopy] LocateCommand.java
 	private final DynamicCommandExceptionType ERROR_STRUCTURE_INVALID = new DynamicCommandExceptionType(
@@ -42,7 +48,6 @@ public class MapLocatorCommand {
 	);
 
 	public LiteralArgumentBuilder<CommandSourceStack> register() {
-		// TODO A magic map variation might be cool
 		return Commands.literal("map_locator").requires(cs -> cs.hasPermission(2)).then(
 			Commands.argument("structure", ResourceOrTagKeyArgument.resourceOrTagKey(Registries.STRUCTURE)).executes(context -> run(context, Collections.singleton(context.getSource().getPlayerOrException()), false)).then(
 				Commands.argument("player", EntityArgument.players()).executes(context -> run(context, EntityArgument.getPlayers(context, "player"), false)).then(

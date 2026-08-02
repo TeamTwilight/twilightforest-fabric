@@ -32,9 +32,15 @@ import net.minecraft.world.level.levelgen.structure.StructureStart;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import twilightforest.util.TFBeanRegistry;
 
-@tamaized.beanification.Component
 public class CountLootCommand {
+
+	public static final CountLootCommand INSTANCE = new CountLootCommand();
+
+	static {
+		TFBeanRegistry.register(CountLootCommand.class, INSTANCE);
+	}
 	public LiteralArgumentBuilder<CommandSourceStack> register() {
 		return Commands.literal("count_loot").requires(cs -> cs.hasPermission(Commands.LEVEL_GAMEMASTERS))
 			.then(Commands.argument("filter_structure", ResourceKeyArgument.key(Registries.STRUCTURE)).executes(this::countLoot)
@@ -89,7 +95,7 @@ public class CountLootCommand {
 
 			Item lootItem = countedItem.getKey();
 
-			var rarityColor = new ItemStack(lootItem).getRarity().getStyleModifier();
+			var rarityColor = new ItemStack(lootItem).getRarity().color();
 
 			context.getSource().sendSystemMessage(lootItem.getDescription().copy().withStyle(rarityColor).append(suffixCount));
 		}

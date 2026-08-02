@@ -22,16 +22,27 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-import tamaized.beanification.Autowired;
 import twilightforest.util.DisplayUtil;
+import twilightforest.util.TFBeanRegistry;
 import twilightforest.world.components.structures.util.ProgressionPiece;
 
 import java.util.List;
 
-@tamaized.beanification.Component
 public class DisplayPiecesCommand {
-	@Autowired
+	public static final DisplayPiecesCommand INSTANCE = new DisplayPiecesCommand();
+
 	private DisplayUtil displayUtil;
+
+	private DisplayUtil getDisplayUtil() {
+		if (displayUtil == null) {
+			displayUtil = TFBeanRegistry.get(DisplayUtil.class);
+		}
+		return displayUtil;
+	}
+
+	public DisplayPiecesCommand() {
+		TFBeanRegistry.register(DisplayPiecesCommand.class, this);
+	}
 
 	public LiteralArgumentBuilder<CommandSourceStack> register() {
 		return Commands.literal("display_pieces").requires(cs -> cs.hasPermission(Commands.LEVEL_GAMEMASTERS))
@@ -50,7 +61,7 @@ public class DisplayPiecesCommand {
 		StructureStart structureAt = level.structureManager().getStructureAt(commandPos, structure.value());
 
 		BoundingBox structureBox = structureAt.getBoundingBox();
-		int successes = this.displayUtil.spawnBlockDisplay(level, structureBox, Blocks.RED_STAINED_GLASS.defaultBlockState(), 0.01f) ? 1 : 0;
+		int successes = this.getDisplayUtil().spawnBlockDisplay(level, structureBox, Blocks.RED_STAINED_GLASS.defaultBlockState(), 0.01f) ? 1 : 0;
 
 		List<StructurePiece> structurePieces = structureAt.getPieces();
 		int maxPieces = structurePieces.size();
@@ -59,11 +70,11 @@ public class DisplayPiecesCommand {
 			ResourceLocation key = BuiltInRegistries.STRUCTURE_PIECE.getKey(piece.getType());
 			float padding = Mth.lerp((float) successes / maxPieces, 0.003f, 0.025f);
 			BoundingBox boundingBox = piece.getBoundingBox();
-			if (this.displayUtil.spawnBlockDisplay(level, boundingBox, displayState, padding)) {
+			if (this.getDisplayUtil().spawnBlockDisplay(level, boundingBox, displayState, padding)) {
 				MutableComponent nameLabel = key == null
 					? Component.translatable("commands.tffeature.display_pieces.missing_key")
 					: Component.literal(key.toString());
-				this.displayUtil.setTextEntity(level, (boundingBox.minX() + boundingBox.maxX() + 1) * 0.5, boundingBox.minY() - padding, boundingBox.maxZ() + padding + 1, Display.BillboardConstraints.FIXED, nameLabel);
+				this.getDisplayUtil().setTextEntity(level, (boundingBox.minX() + boundingBox.maxX() + 1) * 0.5, boundingBox.minY() - padding, boundingBox.maxZ() + padding + 1, Display.BillboardConstraints.FIXED, nameLabel);
 
 				successes++;
 			}
