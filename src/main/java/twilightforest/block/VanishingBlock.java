@@ -110,15 +110,22 @@ public class VanishingBlock extends Block {
 		return InteractionResult.PASS;
 	}
 
+	// NOTE: getExplosionResistance with Explosion parameter is NeoForge-specific. Vanilla 1.21.1
+	// uses getExplosionResistance() without the Explosion parameter. Can't override this.
+	/*
 	@Override
 	public float getExplosionResistance(BlockState state, BlockGetter getter, BlockPos pos, Explosion explosion) {
 		return !state.getValue(ACTIVE) ? 6000F : super.getExplosionResistance(state, getter, pos, explosion);
 	}
+	*/
 
+	// NOTE: canEntityDestroy is NeoForge-specific. No equivalent in vanilla/Fabric 1.21.1.
+	/*
 	@Override
 	public boolean canEntityDestroy(BlockState state, BlockGetter getter, BlockPos pos, Entity entity) {
 		return !state.getValue(ACTIVE) ? !areBlocksLocked(getter, pos) : super.canEntityDestroy(state, getter, pos, entity);
 	}
+	*/
 
 	@Override
 	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {

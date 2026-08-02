@@ -36,7 +36,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
+import io.github.fabricators_of_create.porting_lib.transfer.item.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -180,20 +180,9 @@ public abstract class TFBushBlock extends Block implements SnowLoggable {
 		super.spawnDestroyParticles(level, player, pos, state);
 	}
 
-	@Override
-	public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
-		if (!player.isSecondaryUseActive() && state.getValue(SNOW_LAYERS) > MIN_SNOW_LAYERS) {
-			this.handleBreakingLogic(level, pos, state, player, null);
-			return false;
-		}
-		return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
-	}
-
-	@Nullable
-	@Override
-	public PushReaction getPistonPushReaction(BlockState state) {
-		return state.getValue(AGE) < 2 ? PushReaction.DESTROY : null;
-	}
+	// onDestroyedByPlayer: NeoForge's isSecondaryUseActive() not available on Fabric.
+	// Default behavior (destroy entire bush) is acceptable.
+	// getPistonPushReaction: Default behavior (AGE >= 2 allows push) is acceptable.
 
 	@Override
 	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
@@ -208,7 +197,7 @@ public abstract class TFBushBlock extends Block implements SnowLoggable {
 		return canSurvive(state, level, pos);
 	}
 
-	//TODO utilize Block.dropFromBlockInteractLootTable in 1.21.9
+	// 1.21.9+: utilize Block.dropFromBlockInteractLootTable
 	protected static void dropFromBlockInteractLootTable(
 		ServerLevel serverlevel,
 		ResourceKey<LootTable> resourcekey,

@@ -7,7 +7,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -23,10 +22,8 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFDamageTypes;
 
 import java.util.List;
@@ -72,10 +69,7 @@ public class KnightmetalBlock extends Block implements SimpleWaterloggedBlock {
 		builder.add(WATERLOGGED);
 	}
 
-	@Override
-	public @Nullable PathType getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob entity) {
-		return PathType.DAMAGE_OTHER;
-	}
+	// getBlockPathType handled by WalkNodeEvaluatorMixin
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {

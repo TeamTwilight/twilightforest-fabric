@@ -167,8 +167,12 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 		return 0;
 	}
 
+	// NOTE: getPistonPushReaction(BlockState) is NeoForge-specific. Vanilla 1.21.1 uses
+	// getPistonPushReaction() on BlockStateBase instead. No equivalent on Block class.
+	/*
 	@Override
 	public PushReaction getPistonPushReaction(BlockState state) {
 		return state.getValue(ACTIVE) ? PushReaction.NORMAL : PushReaction.BLOCK;
 	}
+	*/
 }

@@ -1,6 +1,5 @@
 package twilightforest.block.entity.spawner;
 
-import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import net.minecraft.core.BlockPos;
@@ -17,7 +16,6 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.level.BaseSpawner;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.SpawnData;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -28,7 +26,7 @@ import twilightforest.util.BoundingBoxUtils;
 
 import java.util.*;
 
-public abstract class SinisterSpawnerLogic extends BaseSpawner {
+public class SinisterSpawnerLogic extends BaseSpawner {
 	private static final Codec<List<ParticleOptions>> PARTICLES_CODEC = ParticleTypes.CODEC.listOf();
 
 	private @Nullable BlockPos.MutableBlockPos checkPos = null;
@@ -37,16 +35,16 @@ public abstract class SinisterSpawnerLogic extends BaseSpawner {
 	public int entityScanRange = 4;
 
 	private Set<ParticleOptions> particleOptions = new HashSet<>();
+	@Nullable
+	private Runnable onChanged;
+
+	public void setOnChanged(@Nullable Runnable onChanged) {
+		this.onChanged = onChanged;
+	}
 
 	public void setChanged() {
-		Either<BlockEntity, Entity> owner = this.getOwner();
-		if (owner != null) {
-			owner.ifLeft(blockEntity -> {
-				blockEntity.setChanged();
-				if (blockEntity instanceof SinisterSpawnerBlockEntity sinisterSpawnerBlockEntity) {
-					sinisterSpawnerBlockEntity.sendChanges();
-				}
-			});
+		if (this.onChanged != null) {
+			this.onChanged.run();
 		}
 	}
 
@@ -168,14 +166,12 @@ public abstract class SinisterSpawnerLogic extends BaseSpawner {
 
 						entity.moveTo(entity.getX(), entity.getY(), entity.getZ(), randomsource.nextFloat() * 360.0F, 0.0F);
 						if (entity instanceof Mob mob) {
-							if (!net.neoforged.neoforge.event.EventHooks.checkSpawnPositionSpawner(mob, serverLevel, MobSpawnType.SPAWNER, spawndata, this)) {
+							if (!twilightforest.util.TFEventHooks.checkSpawnPositionSpawner(mob, serverLevel, MobSpawnType.SPAWNER, null, this)) {
 								continue;
 							}
 
 							boolean flag1 = spawndata.getEntityToSpawn().size() == 1 && spawndata.getEntityToSpawn().contains("id", 8);
-							// Neo: Patch in FinalizeSpawn for spawners so it may be fired unconditionally, instead of only when vanilla would normally call it.
-							// The local flag1 is the conditions under which the spawner will normally call Mob#finalizeSpawn.
-							net.neoforged.neoforge.event.EventHooks.finalizeMobSpawnSpawner(mob, serverLevel, serverLevel.getCurrentDifficultyAt(entity.blockPosition()), MobSpawnType.SPAWNER, null, this, flag1);
+							twilightforest.util.TFEventHooks.finalizeMobSpawnSpawner(mob, serverLevel, serverLevel.getCurrentDifficultyAt(entity.blockPosition()), MobSpawnType.SPAWNER, null, this, flag1);
 
 							spawndata.getEquipment().ifPresent(mob::equip);
 

@@ -31,7 +31,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.util.ConcatenatedListView;
+import io.github.fabricators_of_create.porting_lib.models.ConcatenatedListView;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.spawner.SinisterSpawnerBlockEntity;
 import twilightforest.block.entity.spawner.SinisterSpawnerLogic;
@@ -72,10 +72,13 @@ public class SinisterSpawnerBlock extends BaseEntityBlock {
 		return createTickerHelper(blockEntityType, TFBlockEntities.SINISTER_SPAWNER.value(), level.isClientSide ? SinisterSpawnerBlockEntity::clientTick : SinisterSpawnerBlockEntity::serverTick);
 	}
 
+	// getExpDrop is NeoForge-only; not available in vanilla 1.21.1
+	/*
 	@Override
 	public int getExpDrop(BlockState state, LevelAccessor level, BlockPos pos, @Nullable BlockEntity blockEntity, @Nullable Entity breaker, ItemStack tool) {
 		return 15 + level.getRandom().nextInt(15) + level.getRandom().nextInt(15);
 	}
+	*/
 
 	@Override
 	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {

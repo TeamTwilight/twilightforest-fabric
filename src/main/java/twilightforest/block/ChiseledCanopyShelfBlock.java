@@ -27,7 +27,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.network.PacketDistributor;
+import twilightforest.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.bookshelf.ChiseledCanopyShelfBlockEntity;
 import twilightforest.init.TFBlockEntities;
@@ -53,19 +53,7 @@ public class ChiseledCanopyShelfBlock extends ChiseledBookShelfBlock {
 		super.createBlockStateDefinition(builder.add(SPAWNER));
 	}
 
-	@Override
-	public void onCaughtFire(BlockState state, Level level, BlockPos pos, @Nullable Direction face, @Nullable LivingEntity igniter) {
-		if (level.getBlockState(pos).getValue(SPAWNER) && level instanceof ServerLevel serverLevel && level.getBlockEntity(pos) instanceof ChiseledCanopyShelfBlockEntity shelf) {
-			for (int i = 0; i < ChiseledCanopyShelfBlock.SLOT_OCCUPIED_PROPERTIES.size(); i++) {
-				BooleanProperty property = ChiseledCanopyShelfBlock.SLOT_OCCUPIED_PROPERTIES.get(i);
-				if (state.hasProperty(property) && state.getValue(property)) {
-					shelf.getSpawner().attemptSpawnTome(i, serverLevel, pos, true, igniter, 5);
-				}
-			}
-			level.destroyBlock(pos, false);
-		}
-		super.onCaughtFire(state, level, pos, face, igniter);
-	}
+	// onCaughtFire is implemented via FireBlockMixin (NeoForge-specific method)
 
 	@Override
 	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {

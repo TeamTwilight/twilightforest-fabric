@@ -18,7 +18,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.network.PacketDistributor;
+import twilightforest.network.PacketDistributor;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
 import twilightforest.network.ParticlePacket;
@@ -37,7 +37,7 @@ public class CastleDoorBlock extends Block {
 
 	private static boolean isBlockLocked(Level level, BlockPos pos) {
 		// check if we are in a structure, and if that structure says that we are locked
-		// TODO is this method even needed any more? Might be needed in the future when the structure comes with internal gating progression - don't delete this method quite yet
+		// Keep this method - may be needed in the future when the structure comes with internal gating progression
 		return false;
 	}
 

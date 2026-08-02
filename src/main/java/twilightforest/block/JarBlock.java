@@ -49,7 +49,7 @@ public class JarBlock extends BaseEntityBlock implements SimpleWaterloggedBlock 
 	private static final VoxelShape AABB = Shapes.or(JAR, LID);
 	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-	public JarBlock(BlockBehaviour.Properties properties) {
+	public JarBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false));
 	}
@@ -90,12 +90,15 @@ public class JarBlock extends BaseEntityBlock implements SimpleWaterloggedBlock 
 		return TFBlocks.TWILIGHT_OAK_LOG.asItem();
 	}
 
+	// getCloneItemStack is NeoForge-only; not available in vanilla 1.21.1
+	/*
 	@Override
 	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
 		return level.getBlockEntity(pos) instanceof JarBlockEntity jarBlockEntity
 			? jarBlockEntity.getJarAsItem()
 			: super.getCloneItemStack(state, target, level, pos, player);
 	}
+	*/
 
 	@Override
 	protected List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {

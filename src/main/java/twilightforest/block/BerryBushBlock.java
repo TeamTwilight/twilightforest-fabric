@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.neoforged.neoforge.common.ItemAbilities;
+import io.github.fabricators_of_create.porting_lib.tool.ItemAbilities;
 import twilightforest.data.tags.BlockTagGenerator;
 
 import java.util.stream.IntStream;

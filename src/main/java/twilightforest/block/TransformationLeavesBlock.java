@@ -14,7 +14,7 @@ import twilightforest.init.TFParticleType;
 
 public class TransformationLeavesBlock extends LeavesBlock {
 
-	public TransformationLeavesBlock(BlockBehaviour.Properties properties) {
+	public TransformationLeavesBlock(Properties properties) {
 		super(properties);
 	}
 

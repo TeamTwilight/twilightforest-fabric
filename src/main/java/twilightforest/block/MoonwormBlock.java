@@ -29,7 +29,7 @@ public class MoonwormBlock extends CritterBlock implements SimpleWaterloggedBloc
 
 	public static final MapCodec<MoonwormBlock> CODEC = simpleCodec(MoonwormBlock::new);
 
-	public MoonwormBlock(BlockBehaviour.Properties properties) {
+	public MoonwormBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false));
 	}

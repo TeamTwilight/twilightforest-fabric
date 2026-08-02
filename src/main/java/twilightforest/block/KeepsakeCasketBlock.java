@@ -92,12 +92,12 @@ public class KeepsakeCasketBlock extends SkullChestBlock {
 	@Override
 	protected void modifyDrop(BlockState state, ItemStack stack) {
 		if (state.getValue(BREAKAGE) > 0)
-			stack.set(TFDataComponents.CASKET_DAMAGE, state.getValue(BREAKAGE));
+			stack.set(TFDataComponents.CASKET_DAMAGE.get(), state.getValue(BREAKAGE));
 	}
 
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-		level.setBlock(pos, state.setValue(BREAKAGE, stack.getOrDefault(TFDataComponents.CASKET_DAMAGE, 0)), Block.UPDATE_CLIENTS);
+		level.setBlock(pos, state.setValue(BREAKAGE, stack.getOrDefault(TFDataComponents.CASKET_DAMAGE.get(), 0)), Block.UPDATE_CLIENTS);
 
 		super.setPlacedBy(level, pos, state, placer, stack);
 	}
@@ -108,6 +108,8 @@ public class KeepsakeCasketBlock extends SkullChestBlock {
 		builder.add(BREAKAGE);
 	}
 
+	// getCloneItemStack is NeoForge-only; not available in vanilla 1.21.1
+	/*
 	@Override
 	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
 		if (state.getValue(BREAKAGE) > 0) {
@@ -117,4 +119,5 @@ public class KeepsakeCasketBlock extends SkullChestBlock {
 		}
 		return super.getCloneItemStack(state, target, level, pos, player);
 	}
+	*/
 }

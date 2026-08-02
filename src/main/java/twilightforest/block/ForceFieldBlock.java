@@ -3,7 +3,6 @@ package twilightforest.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -49,7 +48,7 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock {
 	protected static final VoxelShape SOUTH_EAST_SHAPE = Block.box(9.0D, 7.0D, 9.0D, 16.0D, 9.0D, 16.0D);
 	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-	public ForceFieldBlock(BlockBehaviour.Properties properties) {
+	public ForceFieldBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(WATERLOGGED, false)
 			.setValue(DOWN, false).setValue(UP, false)
@@ -69,11 +68,6 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock {
 		BlockState state = getter.getBlockState(pos);
 		return state.isFaceSturdy(getter, pos, relative.getOpposite()) ||
 			(state.getBlock() instanceof ForceFieldBlock && state.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(similar)));
-	}
-
-	@Override
-	public boolean canEntityDestroy(BlockState state, BlockGetter getter, BlockPos pos, Entity entity) {
-		return false;
 	}
 
 	@Override

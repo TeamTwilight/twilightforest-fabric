@@ -97,10 +97,13 @@ public class SkullChestBlock extends BaseEntityBlock implements BlockLoggingEnum
 		}
 	}
 
+	// getExplosionResistance is NeoForge-only; handled via wither_immune/dragon_immune tags
+	/*
 	@Override
 	public float getExplosionResistance(BlockState state, BlockGetter getter, BlockPos pos, Explosion explosion) {
 		return Float.MAX_VALUE;
 	}
+	*/
 
 	@Override
 	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
@@ -216,10 +219,7 @@ public class SkullChestBlock extends BaseEntityBlock implements BlockLoggingEnum
 		return state.getValue(BlockLoggingEnum.MULTILOGGED).getFluid().defaultFluidState();
 	}
 
-	@Override
-	public boolean canEntityDestroy(BlockState state, BlockGetter getter, BlockPos pos, Entity entity) {
-		return false;
-	}
+	// canEntityDestroy handled via block tags (wither_immune, dragon_immune)
 
 	@Override
 	protected BlockState rotate(BlockState state, Rotation rotation) {

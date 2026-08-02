@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
-import net.neoforged.neoforge.event.EventHooks;
+import twilightforest.util.TFEventHooks;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFDataMaps;
@@ -36,7 +36,7 @@ public class OminousFireBlock extends BaseFireBlock {
 		return CODEC;
 	}
 
-	public OminousFireBlock(BlockBehaviour.Properties properties) {
+	public OminousFireBlock(Properties properties) {
 		super(properties, 1.0F);
 	}
 
@@ -55,10 +55,13 @@ public class OminousFireBlock extends BaseFireBlock {
 		return true;
 	}
 
+	// getCloneItemStack is NeoForge-only; not available in vanilla 1.21.1
+	/*
 	@Override
 	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
 		return new ItemStack(TFItems.EXANIMATE_ESSENCE.value());
 	}
+	*/
 
 	@Override
 	protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {

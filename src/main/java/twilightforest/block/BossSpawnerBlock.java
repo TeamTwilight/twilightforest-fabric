@@ -3,8 +3,6 @@ package twilightforest.block;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.RenderShape;
@@ -25,7 +23,7 @@ public class BossSpawnerBlock extends BaseEntityBlock {
 	);
 	private final BossVariant boss;
 
-	public BossSpawnerBlock(BossVariant variant, BlockBehaviour.Properties properties) {
+	public BossSpawnerBlock(BossVariant variant, Properties properties) {
 		super(properties);
 		this.boss = variant;
 	}
@@ -51,8 +49,4 @@ public class BossSpawnerBlock extends BaseEntityBlock {
 		return createTickerHelper(type, this.boss.getType(), BossSpawnerBlockEntity::tick);
 	}
 
-	@Override
-	public boolean canEntityDestroy(BlockState state, BlockGetter getter, BlockPos pos, Entity entity) {
-		return false;
-	}
 }

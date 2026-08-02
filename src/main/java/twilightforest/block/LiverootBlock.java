@@ -15,7 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.common.ItemAbilities;
+import io.github.fabricators_of_create.porting_lib.tool.ItemAbilities;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 
@@ -27,12 +27,12 @@ public class LiverootBlock extends Block {
 
 	@Override
 	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-		if (stack.getItem().canPerformAction(stack, ItemAbilities.AXE_STRIP)) {
+		if (stack.canPerformAction(ItemAbilities.AXE_STRIP)) {
 			level.setBlockAndUpdate(pos, TFBlocks.ROOT_BLOCK.get().defaultBlockState());
 			int amountOfRoots = 1;
 			//fortune formula copied from ApplyBonusCount.OreDrops.calculateNewCount so it acts exactly like the loot table
-			if (stack.getEnchantmentLevel(level.registryAccess().registryOrThrow(Registries.ENCHANTMENT).getHolderOrThrow(Enchantments.FORTUNE)) > 0) {
-				int i = level.getRandom().nextInt(stack.getEnchantmentLevel(level.registryAccess().registryOrThrow(Registries.ENCHANTMENT).getHolderOrThrow(Enchantments.FORTUNE)) + 2) - 1;
+			if (stack.getEnchantments().getLevel(level.registryAccess().registryOrThrow(Registries.ENCHANTMENT).getHolderOrThrow(Enchantments.FORTUNE)) > 0) {
+				int i = level.getRandom().nextInt(stack.getEnchantments().getLevel(level.registryAccess().registryOrThrow(Registries.ENCHANTMENT).getHolderOrThrow(Enchantments.FORTUNE)) + 2) - 1;
 				if (i < 0) {
 					i = 0;
 				}

@@ -23,7 +23,7 @@ import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.common.Tags;
+import io.github.fabricators_of_create.porting_lib.tags.Tags;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.CinderFurnaceBlock;
 import twilightforest.init.TFBlockEntities;
@@ -67,8 +67,8 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 							itemstack.shrink(1);
 
 							if (itemstack.isEmpty()) {
-								ItemStack item1 = item.getCraftingRemainingItem(itemstack);
-								te.items.set(1, item1);
+								Item item1 = item.getCraftingRemainingItem();
+								te.items.set(1, item1 == null ? ItemStack.EMPTY : new ItemStack(item1));
 							}
 						}
 					}
@@ -191,7 +191,7 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 				if (itemstack1.isEmpty()) return true;
 				if (!itemstack1.is(itemstack.getItem())) return false;
 				int result = itemstack1.getCount() + getMaxOutputStacks(level, this.items.getFirst(), itemstack); // TF - account for multiplying
-				return result <= this.getMaxStackSize() && result <= itemstack1.getMaxStackSize(); // Forge fix: make furnace respect stack sizes in furnace recipes
+				return result <= this.getMaxStackSize() && result <= itemstack1.getMaxStackSize();
 			}
 		}
 	}

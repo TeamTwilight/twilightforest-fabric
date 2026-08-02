@@ -24,7 +24,6 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -48,9 +47,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.ItemAbilities;
-import net.neoforged.neoforge.common.ItemAbility;
-import net.neoforged.neoforge.common.Tags;
+import io.github.fabricators_of_create.porting_lib.tool.ItemAbilities;
+import io.github.fabricators_of_create.porting_lib.tags.Tags;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.CandelabraBlockEntity;
 import twilightforest.components.item.CandelabraData;
@@ -112,16 +110,6 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 	}
 
 	@Override
-	public int getLightEmission(BlockState state, BlockGetter getter, BlockPos pos) {
-		int candleCount = getCandleCount(state);
-		return switch (state.getValue(LIGHTING)) {
-			case DIM, OMINOUS -> 2 * candleCount;
-			case NORMAL -> 5 * candleCount;
-			default -> 0;
-		};
-	}
-
-	@Override
 	public Iterable<Vec3> getParticleOffsets(BlockState state, LevelAccessor accessor, BlockPos pos) {
 		if (state.getValue(ON_WALL)) {
 			return switch (state.getValue(FACING)) {
@@ -147,16 +135,6 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 		} else {
 			return state.getValue(FACING).getAxis() == Direction.Axis.X ? CANDLES_X : CANDLES_Z;
 		}
-	}
-
-	@Override
-	public BlockState getToolModifiedState(BlockState state, UseOnContext context, ItemAbility itemAbility, boolean simulate) {
-		if (ItemAbilities.FIRESTARTER_LIGHT == itemAbility) {
-			if (this.canBeLit(state)) {
-				return state.setValue(LIGHTING, Lighting.NORMAL);
-			}
-		}
-		return super.getToolModifiedState(state, context, itemAbility, simulate);
 	}
 
 	@Override
@@ -372,7 +350,7 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 			BlockEntity blockEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
 			if (blockEntity instanceof CandelabraBlockEntity candelabra) {
 				RegistryAccess access = blockEntity.getLevel().registryAccess();
-				if (!builder.getParameter(LootContextParams.TOOL).isEmpty() && builder.getParameter(LootContextParams.TOOL).getEnchantmentLevel(access.registryOrThrow(Registries.ENCHANTMENT).getHolderOrThrow(Enchantments.SILK_TOUCH)) > 0) {
+				if (!builder.getParameter(LootContextParams.TOOL).isEmpty() && builder.getParameter(LootContextParams.TOOL).getEnchantments().getLevel(access.registryOrThrow(Registries.ENCHANTMENT).getHolderOrThrow(Enchantments.SILK_TOUCH)) > 0) {
 					ItemStack newStack = new ItemStack(this);
 					newStack.applyComponents(candelabra.collectComponents());
 					drops.remove(base.get());
@@ -384,11 +362,6 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 		}
 
 		return drops;
-	}
-
-	@Override
-	public boolean canConnectRedstone(BlockState state, BlockGetter level, BlockPos pos, @Nullable Direction direction) {
-		return state.getValue(LIGHTING) == Lighting.DIM && state.getValue(ON_WALL) && state.getValue(FACING).getOpposite() == direction;
 	}
 
 	@Override
@@ -441,6 +414,9 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 		super.onRemove(state, level, pos, newState, moving);
 	}
 
+	// NOTE: getCloneItemStack is NeoForge-only. In vanilla 1.21.1, pick-block uses the block's asItem().
+	// For custom pick-block behavior, use Fabric API BlockPickInteractionAware or a Mixin.
+	/*
 	@Override
 	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
 		if (level.getBlockEntity(pos) instanceof CandelabraBlockEntity candelabra && candelabra.getCandles() != CandelabraData.EMPTY) {
@@ -450,4 +426,5 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 		}
 		return super.getCloneItemStack(state, target, level, pos, player);
 	}
+	*/
 }

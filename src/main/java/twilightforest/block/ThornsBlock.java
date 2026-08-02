@@ -74,10 +74,13 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 		return shape;
 	}
 
+	// NOTE: getBlockPathType is NeoForge-specific. No equivalent in vanilla/Fabric 1.21.1.
+	/*
 	@Override
 	public @Nullable PathType getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob entity) {
 		return PathType.DAMAGE_OTHER;
 	}
+	*/
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
@@ -96,6 +99,8 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 		super.stepOn(level, pos, state, entity);
 	}
 
+	// NOTE: onDestroyedByPlayer is NeoForge-specific. No equivalent in vanilla/Fabric 1.21.1.
+	/*
 	@Override
 	public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
 		if (!player.getAbilities().instabuild) {
@@ -108,6 +113,7 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 			return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
 		}
 	}
+	*/
 
 	/**
 	 * Grow thorns out of both the ends, then maybe in another direction too

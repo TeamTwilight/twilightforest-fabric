@@ -22,8 +22,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.items.IItemHandlerModifiable;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import io.github.fabricators_of_create.porting_lib.core.util.ServerLifecycleHooks;
 import twilightforest.block.DryingRackBlock;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFRecipes;
@@ -140,6 +139,11 @@ public class DryingRackBlockEntity extends BlockEntity {
 		return this.drying;
 	}
 
+	public void saveDryingData(CompoundTag tag) {
+		tag.putInt("dry_time", this.dryTime);
+		tag.putInt("total_dry_time", this.totalDryTime);
+	}
+
 	@Override
 	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
 		super.saveAdditional(tag, registries);
@@ -183,6 +187,8 @@ public class DryingRackBlockEntity extends BlockEntity {
 		return tag;
 	}
 
+	// IItemHandlerModifiable is NeoForge capability API. Fabric uses Transfer API.
+/*
 	public record DryingRackHandler(DryingRackBlockEntity inventory) implements IItemHandlerModifiable {
 		@Override
 		public int getSlots() {
@@ -233,4 +239,5 @@ public class DryingRackBlockEntity extends BlockEntity {
 			this.inventory.setTheItem(stack);
 		}
 	}
+*/
 }

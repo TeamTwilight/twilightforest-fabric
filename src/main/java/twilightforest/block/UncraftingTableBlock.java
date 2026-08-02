@@ -32,7 +32,7 @@ public class UncraftingTableBlock extends Block {
 
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-	public UncraftingTableBlock(BlockBehaviour.Properties properties) {
+	public UncraftingTableBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(POWERED, false));
 	}

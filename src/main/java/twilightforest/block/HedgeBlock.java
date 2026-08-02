@@ -4,7 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.player.Player;
@@ -15,7 +14,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -33,7 +31,7 @@ public class HedgeBlock extends Block {
 
 	private static final int DAMAGE = 3;
 
-	public HedgeBlock(BlockBehaviour.Properties properties) {
+	public HedgeBlock(Properties properties) {
 		super(properties);
 	}
 
@@ -42,10 +40,7 @@ public class HedgeBlock extends Block {
 		return HEDGE_BB;
 	}
 
-	@Override
-	public @Nullable PathType getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob mob) {
-		return mob != null && this.shouldDamage(mob) ? PathType.DANGER_OTHER : null;
-	}
+	// getBlockPathType handled by WalkNodeEvaluatorMixin
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {

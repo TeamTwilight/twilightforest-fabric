@@ -4,7 +4,6 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -17,8 +16,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.pathfinder.PathType;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.block.entity.FireJetBlockEntity;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.data.tags.FluidTagGenerator;
@@ -51,10 +48,7 @@ public class FireJetBlock extends BaseEntityBlock {
 		builder.add(STATE);
 	}
 
-	@Override
-	public @Nullable  PathType getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob mob) {
-		return state.getValue(STATE) == FireJetVariant.IDLE ? null : PathType.DAMAGE_FIRE;
-	}
+	// getBlockPathType handled by WalkNodeEvaluatorMixin
 
 	@Override
 	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {

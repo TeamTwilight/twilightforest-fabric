@@ -32,7 +32,7 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock {
 	protected static final VoxelShape Z_SHAPE = Block.box(6.5, 6.5, 0.0, 9.5, 9.5, 16.0);
 	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-	public RopeBlock(BlockBehaviour.Properties properties) {
+	public RopeBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any()
 			.setValue(WATERLOGGED, false)
@@ -88,10 +88,13 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock {
 		return shape;
 	}
 
+	// isScaffolding is NeoForge-only; not available in vanilla 1.21.1
+	/*
 	@Override
 	public boolean isScaffolding(BlockState state, LevelReader level, BlockPos pos, LivingEntity entity) {
 		return true;
 	}
+	*/
 
 	@Override
 	public boolean canBeReplaced(BlockState state, BlockPlaceContext context) {

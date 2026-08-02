@@ -30,8 +30,8 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.fluids.FluidUtil;
-import net.neoforged.neoforge.fluids.capability.templates.VoidFluidHandler;
+import io.github.fabricators_of_create.porting_lib.fluids.FluidUtil;
+
 import twilightforest.block.entity.BrazierBlockEntity;
 import twilightforest.enums.BrazierLight;
 import twilightforest.init.TFBlockEntities;
@@ -96,7 +96,7 @@ public class BrazierBlock extends BaseEntityBlock {
 
 	@Override
 	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
-		if (!level.isClientSide && (player.isCreative() || !player.hasCorrectToolForDrops(state, level, pos))) {
+		if (!level.isClientSide && (player.isCreative() || !player.hasCorrectToolForDrops(state))) {
 			DoubleBlockHalf half = state.getValue(HALF);
 			if (half == DoubleBlockHalf.UPPER) {
 				BlockPos below = pos.below();
@@ -153,16 +153,16 @@ public class BrazierBlock extends BaseEntityBlock {
 			}
 
 			if (state.getValue(LIGHT).isLit()) {
-				if (FluidUtil.getFluidContained(stack).isPresent() && FluidUtil.getFluidContained(stack).get().is(Fluids.WATER)) {
-					if (FluidUtil.tryEmptyContainer(stack, new VoidFluidHandler(), 1000, player, true).isSuccess()) {
-						level.setBlock(pos, state.setValue(LIGHT, BrazierLight.OFF), 11);
-						level.getBlockState(pos.below()).setValue(LIGHT, BrazierLight.OFF);
-						level.playSound(null, pos, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS);
-						player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
-						return ItemInteractionResult.sidedSuccess(level.isClientSide());
-					} else {
-						return ItemInteractionResult.FAIL;
+				// Use vanilla water bucket check instead of NeoForge FluidUtil
+				if (stack.is(Items.WATER_BUCKET)) {
+					if (!player.isCreative()) {
+						stack.shrink(1);
+						player.addItem(new ItemStack(Items.BUCKET));
 					}
+					level.setBlock(pos, state.setValue(LIGHT, BrazierLight.OFF), 11);
+					level.playSound(null, pos, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS);
+					player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
+					return ItemInteractionResult.sidedSuccess(level.isClientSide());
 				}
 			}
 		}

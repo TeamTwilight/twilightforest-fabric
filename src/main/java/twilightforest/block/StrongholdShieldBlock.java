@@ -20,7 +20,7 @@ public class StrongholdShieldBlock extends DirectionalBlock {
 
 	public static final MapCodec<StrongholdShieldBlock> CODEC = simpleCodec(StrongholdShieldBlock::new);
 
-	public StrongholdShieldBlock(BlockBehaviour.Properties properties) {
+	public StrongholdShieldBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.DOWN));
 	}
@@ -61,8 +61,5 @@ public class StrongholdShieldBlock extends DirectionalBlock {
 		}
 	}
 
-	@Override
-	public boolean canEntityDestroy(BlockState state, BlockGetter getter, BlockPos pos, Entity entity) {
-		return false;
-	}
+	// canEntityDestroy handled via block tags (wither_immune, dragon_immune)
 }

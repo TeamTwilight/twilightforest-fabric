@@ -32,7 +32,7 @@ public class CinderFurnaceBlock extends AbstractFurnaceBlock {
 
 	public static final MapCodec<CinderFurnaceBlock> CODEC = simpleCodec(CinderFurnaceBlock::new);
 
-	public CinderFurnaceBlock(BlockBehaviour.Properties properties) {
+	public CinderFurnaceBlock(Properties properties) {
 		super(properties);
 	}
 

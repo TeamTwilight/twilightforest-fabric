@@ -21,10 +21,10 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.world.AuxiliaryLightManager;
-import net.neoforged.neoforge.items.ItemStackHandler;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import twilightforest.util.TFAuxiliaryLightManager;
+import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
+import twilightforest.network.PacketDistributor;
+import io.github.fabricators_of_create.porting_lib.core.util.ServerLifecycleHooks;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.network.SetMasonJarItemPacket;
 
@@ -104,7 +104,7 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 	}
 
 	@Override
-	protected void applyImplicitComponents(BlockEntity.DataComponentInput input) {
+	protected void applyImplicitComponents(DataComponentInput input) {
 		super.applyImplicitComponents(input);
 		this.item.setItem(input.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).copyOne());
 	}
@@ -121,10 +121,7 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 		super.setChanged();
 		if (this.level != null) {
 			BlockPos pos = this.getBlockPos();
-			AuxiliaryLightManager lightManager = this.level.getAuxLightManager(pos);
-			if (lightManager != null) {
-				lightManager.setLightAt(pos, this.item.getItem().getItem() instanceof BlockItem blockItem ? blockItem.getBlock().defaultBlockState().getLightEmission() : 0);
-			}
+			// getAuxLightManager is NeoForge-only. Vanilla light engine handles block light via getLightEngine().checkBlock()
 			this.level.getLightEngine().checkBlock(pos);
 		}
 		if (this.level instanceof ServerLevel serverLevel) {
@@ -150,49 +147,65 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 
 		// Used for simple checks of what the one item is, without going through all the hoops. Used by the renderer and when saving contents to item
 		public ItemStack getItem() {
-			return this.stacks.getFirst().copy();
+			return this.getStackInSlot(0).copy();
 		}
 
 		// Peeks at the stored item, without cloning it
 		private ItemStack peekItem() {
-			return this.stacks.getFirst();
+			return this.getStackInSlot(0);
 		}
 
 		// Used when syncing to client and when placing a jar that already has stored items
 		public void setItem(ItemStack itemStack) {
-			this.stacks.set(0, itemStack);
+			this.setStackInSlot(0, itemStack);
 		}
 
-		@Override
 		public boolean isItemValid(int slot, ItemStack stack) {
-			return stack.canFitInsideContainerItems();
+			return !stack.isEmpty();
 		}
 
-		@Override
 		public ItemStack extractItem(int slot, int amount, boolean simulate) {
-			if (simulate) return super.extractItem(slot, amount, true);
-			ItemStack extractedStack = super.extractItem(slot, amount, false);
-			if (!extractedStack.isEmpty()) {
+			if (amount <= 0) return ItemStack.EMPTY;
+			ItemStack existing = this.getStackInSlot(slot);
+			if (existing.isEmpty()) return ItemStack.EMPTY;
+			int toExtract = Math.min(amount, existing.getCount());
+			if (!simulate) {
+				ItemStack remaining = existing.copyWithCount(existing.getCount() - toExtract);
+				this.setStackInSlot(slot, remaining);
 				this.jarEntity.wobble(WobbleStyle.NEGATIVE);
 				this.jarEntity.setChanged();
 			}
-			return extractedStack;
+			return existing.copyWithCount(toExtract);
 		}
 
-		@Override
 		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-			if (simulate) return super.insertItem(slot, stack, true);
-			ItemStack inserted = stack.copy();
-			ItemStack returned = super.insertItem(slot, stack, false);
-			if (!ItemStack.isSameItemSameComponents(inserted, returned) || inserted.getCount() != returned.getCount()) {
+			if (stack.isEmpty()) return ItemStack.EMPTY;
+			if (!this.isItemValid(slot, stack)) return stack;
+			ItemStack existing = this.getStackInSlot(slot);
+			int limit = stack.getMaxStackSize();
+			if (!existing.isEmpty()) {
+				if (!ItemStack.isSameItemSameComponents(existing, stack)) return stack;
+				limit -= existing.getCount();
+			}
+			if (limit <= 0) return stack;
+			int toInsert = Math.min(limit, stack.getCount());
+			ItemStack inserted = stack.copyWithCount(toInsert);
+			ItemStack remainder = stack.copyWithCount(stack.getCount() - toInsert);
+			if (!simulate) {
+				if (existing.isEmpty()) {
+					this.setStackInSlot(slot, inserted);
+				} else {
+					existing.grow(toInsert);
+					this.setStackInSlot(slot, existing);
+				}
 				this.jarEntity.wobble(WobbleStyle.POSITIVE);
 				this.jarEntity.setChanged();
 			}
-			return returned;
+			return remainder.isEmpty() ? ItemStack.EMPTY : remainder;
 		}
 
 		public boolean isEmpty() {
-			return this.stacks.getFirst().isEmpty();
+			return this.getStackInSlot(0).isEmpty();
 		}
 	}
 }

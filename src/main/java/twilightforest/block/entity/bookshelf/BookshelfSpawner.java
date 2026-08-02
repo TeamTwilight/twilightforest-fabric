@@ -24,8 +24,8 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.common.extensions.IOwnedSpawner;
-import net.neoforged.neoforge.event.EventHooks;
+
+import twilightforest.util.TFEventHooks;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.ChiseledCanopyShelfBlock;
@@ -271,7 +271,7 @@ public abstract class BookshelfSpawner implements IOwnedSpawner {
 			entity.moveTo(entity.getX(), entity.getY(), entity.getZ(), random.nextFloat() * 360.0F, 0.0F);
 			if (entity instanceof Mob mob) {
 				boolean flag1 = data.getEntityToSpawn().size() == 1 && data.getEntityToSpawn().contains("id", 8);
-				EventHooks.finalizeMobSpawnSpawner(mob, level, level.getCurrentDifficultyAt(entity.blockPosition()), MobSpawnType.SPAWNER, null, this, flag1);
+				TFEventHooks.finalizeMobSpawnSpawner(mob, level, level.getCurrentDifficultyAt(entity.blockPosition()), MobSpawnType.SPAWNER, null, null, flag1);
 
 				data.getEquipment().ifPresent(mob::equip);
 			}

@@ -33,7 +33,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.ItemAbilities;
+import io.github.fabricators_of_create.porting_lib.tool.ItemAbilities;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.enums.BanisterShape;
@@ -198,10 +198,14 @@ public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleW
 		tooltip.add(Component.translatable("block.twilightforest.banister.cycle").withStyle(ChatFormatting.GRAY));
 	}
 
+	// NOTE: getBlockPathType is NeoForge-specific. No equivalent in vanilla/Fabric 1.21.1.
+	// The PathType is handled via Fabric API's path node evaluators or mixins instead.
+	/*
 	@Override
 	public @Nullable PathType getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob) {
 		return PathType.FENCE;
 	}
+	*/
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> blockStateBuilder) {

@@ -9,20 +9,19 @@ import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.function.Supplier;
-
 public class SpecialFlowerPotBlock extends FlowerPotBlock {
 
-	public SpecialFlowerPotBlock(@Nullable Supplier<FlowerPotBlock> emptyPot, Supplier<? extends Block> flower, Properties properties) {
-		super(emptyPot, flower, properties);
+	private final Block emptyPot;
+
+	public SpecialFlowerPotBlock(Block emptyPot, Block flower, Properties properties) {
+		super(flower, properties);
+		this.emptyPot = emptyPot;
 	}
 
 	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult result) {
 		if (!this.isEmpty()) {
-			level.setBlock(pos, getEmptyPot().defaultBlockState(), Block.UPDATE_ALL);
+			level.setBlock(pos, this.emptyPot.defaultBlockState(), Block.UPDATE_ALL);
 			level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
 			return InteractionResult.sidedSuccess(level.isClientSide());
 		} else {

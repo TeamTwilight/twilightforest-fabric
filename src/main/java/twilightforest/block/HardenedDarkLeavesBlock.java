@@ -15,8 +15,11 @@ public class HardenedDarkLeavesBlock extends Block {
 		super(properties);
 	}
 
+	// NOTE: getCloneItemStack is NeoForge-only. In vanilla 1.21.1, pick-block uses the block's asItem().
+	/*
 	@Override
-	public ItemStack getCloneItemStack(BlockState state, HitResult result, LevelReader reader, BlockPos pos, Player player) {
+	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader reader, BlockPos pos, Player player) {
 		return new ItemStack(TFBlocks.DARK_LEAVES.get());
 	}
+	*/
 }

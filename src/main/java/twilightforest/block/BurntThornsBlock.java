@@ -20,10 +20,14 @@ public class BurntThornsBlock extends ThornsBlock {
 		super(properties);
 	}
 
+	// NOTE: getBlockPathType is NeoForge-specific. No equivalent in vanilla/Fabric 1.21.1.
+	// PathType is handled differently in Fabric (via path node evaluators or mixins).
+	/*
 	@Override
 	public @Nullable PathType getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob entity) {
 		return null;
 	}
+	*/
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
@@ -33,9 +37,12 @@ public class BurntThornsBlock extends ThornsBlock {
 		}
 	}
 
+	// NOTE: onDestroyedByPlayer is NeoForge-specific. No equivalent in vanilla/Fabric 1.21.1.
+	/*
 	@Override
 	public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
 		state.getBlock().playerWillDestroy(level, pos, state, player);
 		return level.setBlock(pos, fluid.createLegacyBlock(), level.isClientSide() ? Block.UPDATE_ALL_IMMEDIATE : Block.UPDATE_ALL);
 	}
+	*/
 }

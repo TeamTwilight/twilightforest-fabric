@@ -33,7 +33,7 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.ItemAbilities;
+import io.github.fabricators_of_create.porting_lib.tool.ItemAbilities;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.AxisUtil;
@@ -195,12 +195,12 @@ public class HorizontalHollowLogBlock extends Block implements WaterloggedBlock 
 	}
 
 	public static void playPlaceSound(BlockState state, Level level, BlockPos pos, Player player) {
-		SoundType soundtype = state.getSoundType(level, pos, player);
+		SoundType soundtype = state.getSoundType();
 		level.playSound(null, pos, soundtype.getPlaceSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 	}
 
 	public static void playBreakSound(BlockState state, Level level, BlockPos pos, Player player) {
-		SoundType soundtype = state.getSoundType(level, pos, player);
+		SoundType soundtype = state.getSoundType();
 		level.playSound(null, pos, soundtype.getBreakSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 	}
 

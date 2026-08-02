@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.fml.ModList;
+import net.fabricmc.loader.api.FabricLoader;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFItems;
 
@@ -26,9 +26,10 @@ public class FieryBlock extends Block {
 		return 1.0F;
 	}
 
+	// skipRendering only when CTM mod is loaded (the mod handles connected textures for Fiery blocks)
 	@Override
 	public boolean skipRendering(BlockState state, BlockState otherState, Direction direction) {
-		return ModList.get().isLoaded("ctm") && otherState.getBlock() instanceof FieryBlock;
+		return FabricLoader.getInstance().isModLoaded("ctm") && otherState.getBlock() instanceof FieryBlock;
 	}
 
 	@Override
@@ -47,8 +48,5 @@ public class FieryBlock extends Block {
 		super.stepOn(level, pos, state, entity);
 	}
 
-	@Override
-	public boolean isFireSource(BlockState state, LevelReader level, BlockPos pos, Direction direction) {
-		return true;
-	}
+	// isFireSource handled via data tag: #minecraft:fire_source_blocks
 }

@@ -19,7 +19,7 @@ public class FireflyBlock extends CritterBlock {
 
 	public static final MapCodec<FireflyBlock> CODEC = simpleCodec(FireflyBlock::new);
 
-	public FireflyBlock(BlockBehaviour.Properties properties) {
+	public FireflyBlock(Properties properties) {
 		super(properties);
 	}
 

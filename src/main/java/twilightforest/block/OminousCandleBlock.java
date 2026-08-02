@@ -37,7 +37,7 @@ import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.registries.DeferredBlock;
+import io.github.fabricators_of_create.porting_lib.registry.DeferredBlock;
 import twilightforest.block.entity.OminousCandleBlockEntity;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFParticleType;
@@ -169,15 +169,7 @@ public class OminousCandleBlock extends BaseEntityBlock {
 
 				BlockState newState = level.getBlockState(pos);
 
-				SoundType soundtype = newState.getSoundType(level, pos, player);
-				level.playSound(
-					player,
-					pos,
-					soundtype.getPlaceSound(),
-					SoundSource.BLOCKS,
-					(soundtype.getVolume() + 1.0F) / 2.0F,
-					soundtype.getPitch() * 0.8F
-				);
+				level.playSound(player, pos, newState.getSoundType().getPlaceSound(), SoundSource.BLOCKS, (newState.getSoundType().getVolume() + 1.0F) / 2.0F, newState.getSoundType().getPitch() * 0.8F);
 				level.gameEvent(GameEvent.BLOCK_PLACE, pos, GameEvent.Context.of(player, newState));
 				stack.consume(1, player);
 
@@ -201,10 +193,13 @@ public class OminousCandleBlock extends BaseEntityBlock {
 		builder.add(CANDLES);
 	}
 
+	// NOTE: getCloneItemStack is NeoForge-only. In vanilla 1.21.1, pick-block uses the block's asItem().
+	/*
 	@Override
 	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
 		return new ItemStack(this.candle);
 	}
+	*/
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {

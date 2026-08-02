@@ -24,7 +24,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.network.PacketDistributor;
+import twilightforest.network.PacketDistributor;
 import twilightforest.block.entity.TrophyBlockEntity;
 import twilightforest.enums.BossVariant;
 import twilightforest.init.TFBlockEntities;
@@ -40,7 +40,7 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock implements Equ
 	private final BossVariant variant;
 	private final int comparatorValue;
 
-	protected AbstractTrophyBlock(BossVariant variant, int value, BlockBehaviour.Properties builder) {
+	protected AbstractTrophyBlock(BossVariant variant, int value, Properties builder) {
 		super(builder);
 		this.variant = variant;
 		this.comparatorValue = value;

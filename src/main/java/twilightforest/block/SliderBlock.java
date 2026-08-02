@@ -42,7 +42,7 @@ public class SliderBlock extends RotatedPillarBlock implements SimpleWaterlogged
 	private static final VoxelShape Z_BB = Shapes.create(new AABB(0.3125, 0.3125, 0, 0.6875, 0.6875, 1F));
 	private static final VoxelShape X_BB = Shapes.create(new AABB(0, 0.3125, 0.3125, 1F, 0.6875, 0.6875));
 
-	public SliderBlock(BlockBehaviour.Properties properties) {
+	public SliderBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(AXIS, Direction.Axis.Y).setValue(DELAY, 0).setValue(WATERLOGGED, false));
 	}
@@ -85,7 +85,7 @@ public class SliderBlock extends RotatedPillarBlock implements SimpleWaterlogged
 	@Override
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		if (!level.isClientSide() && this.isConnectedInRange(level, pos)) {
-			//TODO calls for a creakstart sound effect, but it doesnt exist in the game files
+			// calls for a creakstart sound effect, but it doesnt exist in the game files
 			//world.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, TFSounds.SLIDER, SoundCategory.BLOCKS, 0.75F, 1.5F);
 
 			SlideBlock slideBlock = new SlideBlock(TFEntities.SLIDER.get(), level, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, state);

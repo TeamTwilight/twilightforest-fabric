@@ -25,7 +25,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.common.world.AuxiliaryLightManager;
+import twilightforest.util.TFAuxiliaryLightManager;
 import twilightforest.block.entity.MasonJarBlockEntity;
 import twilightforest.init.TFSounds;
 
@@ -36,7 +36,7 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 	private static final int SLOT = 0;
 	private static final int ALL  = Integer.MAX_VALUE;
 
-	public MasonJarBlock(BlockBehaviour.Properties properties) {
+	public MasonJarBlock(Properties properties) {
 		super(properties);
 	}
 
@@ -120,6 +120,8 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 		return true;
 	}
 
+	// Fabric dynamic lighting: needs fabric-rendering-v1 DynamicLightHandler or Mixin to LevelRenderer
+	/*
 	@Override
 	public boolean hasDynamicLightEmission(BlockState state) {
 		return true;
@@ -131,6 +133,7 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 		if (lightManager != null) return lightManager.getLightAt(pos);
 		return super.getLightEmission(state, level, pos);
 	}
+	*/
 
 	@Override
 	@SuppressWarnings("deprecation")

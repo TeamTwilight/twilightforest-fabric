@@ -36,7 +36,7 @@ public class TrophyBlock extends AbstractTrophyBlock {
 	protected static final VoxelShape YETI_Z_SHAPE = Block.box(4.5D, 0.0D, 3.25D, 11.5D, 10.0D, 12.75D);
 	protected static final VoxelShape YETI_CORNER_SHAPE = Block.box(4.5D, 0.0D, 4.5D, 11.5D, 10.0D, 11.5D);
 
-	public TrophyBlock(BossVariant variant, int value, BlockBehaviour.Properties properties) {
+	public TrophyBlock(BossVariant variant, int value, Properties properties) {
 		super(variant, value, properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(TrophyBlock.ROTATION, 0));
 	}

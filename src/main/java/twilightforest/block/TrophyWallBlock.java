@@ -32,7 +32,7 @@ public class TrophyWallBlock extends AbstractTrophyBlock {
 	private static final Map<Direction, VoxelShape> YETI_SHAPES = Maps
 		.newEnumMap(ImmutableMap.of(Direction.NORTH, Block.box(3.25D, 4.0D, 8.5D, 12.75D, 14.5D, 16.0D), Direction.SOUTH, Block.box(3.25D, 4.0D, 0.0D, 12.75D, 14.5D, 7.5D), Direction.EAST, Block.box(0.0D, 4.0D, 3.25D, 7.5D, 14.5D, 12.75D), Direction.WEST, Block.box(8.5D, 4.0D, 3.25D, 16.0D, 14.5D, 12.75D)));
 
-	public TrophyWallBlock(BossVariant variant, BlockBehaviour.Properties properties) {
+	public TrophyWallBlock(BossVariant variant, Properties properties) {
 		super(variant, 0, properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH));
 	}

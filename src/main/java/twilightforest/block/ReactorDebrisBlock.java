@@ -72,8 +72,11 @@ public class ReactorDebrisBlock extends BaseEntityBlock {
 		return new ReactorDebrisBlockEntity(blockPos, blockState);
 	}
 
+	// addLandingEffects is NeoForge-only; not available in vanilla 1.21.1
+	/*
 	@Override
 	public boolean addLandingEffects(BlockState state1, ServerLevel level, BlockPos pos, BlockState state2, LivingEntity entity, int numberOfParticles) {
 		return true;  // Actually disables landing particle effects after fall.
 	}
+	*/
 }

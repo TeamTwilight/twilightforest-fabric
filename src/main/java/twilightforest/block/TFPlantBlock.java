@@ -8,7 +8,7 @@ import twilightforest.data.tags.BlockTagGenerator;
 
 public abstract class TFPlantBlock extends BushBlock {
 
-	protected TFPlantBlock(BlockBehaviour.Properties properties) {
+	protected TFPlantBlock(Properties properties) {
 		super(properties);
 	}
 

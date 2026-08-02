@@ -1,6 +1,5 @@
 package twilightforest.block.entity.bookshelf;
 
-import com.mojang.datafixers.util.Either;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -40,10 +39,7 @@ public class ChiseledCanopyShelfBlockEntity extends ChiseledBookShelfBlockEntity
 			}
 		}
 
-		@Override
-		public Either<BlockEntity, Entity> getOwner() {
-			return Either.left(ChiseledCanopyShelfBlockEntity.this);
-		}
+		// getOwner() is NeoForge-specific; BookshelfSpawner is standalone, no BaseSpawner dependency
 	};
 
 	public ChiseledCanopyShelfBlockEntity(BlockPos pos, BlockState state) {

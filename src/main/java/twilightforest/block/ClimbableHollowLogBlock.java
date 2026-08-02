@@ -32,7 +32,7 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.ItemAbilities;
+import io.github.fabricators_of_create.porting_lib.tool.ItemAbilities;
 import twilightforest.enums.HollowLogVariants;
 
 public class ClimbableHollowLogBlock extends HorizontalDirectionalBlock implements WaterloggedBlock {

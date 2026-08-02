@@ -6,6 +6,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
@@ -15,7 +16,7 @@ import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
+import twilightforest.network.PacketDistributor;
 import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFParticleType;
@@ -46,9 +47,9 @@ public class CloudBlock extends Block {
 		BlockPos blockpos1 = entity.blockPosition();
 		double jumpMultiplier = jumping ? 2.0D : 1.0D;
 
-		double x = entity.getX() + (level.getRandom().nextDouble() - 0.5D) * (double) entity.dimensions.width() * jumpMultiplier;
+		double x = entity.getX() + (level.getRandom().nextDouble() - 0.5D) * (double) entity.getBbWidth() * jumpMultiplier;
 		double y = entity.getY() + 0.1D;
-		double z = entity.getZ() + (level.getRandom().nextDouble() - 0.5D) * (double) entity.dimensions.width() * jumpMultiplier;
+		double z = entity.getZ() + (level.getRandom().nextDouble() - 0.5D) * (double) entity.getBbWidth() * jumpMultiplier;
 
 		if (blockpos1.getX() != pos.getX()) x = Mth.clamp(x, pos.getX(), (double) pos.getX() + 1.0D);
 		if (blockpos1.getZ() != pos.getZ()) z = Mth.clamp(z, pos.getZ(), (double) pos.getZ() + 1.0D);
@@ -59,6 +60,31 @@ public class CloudBlock extends Block {
 	@Override
 	public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
 		entity.causeFallDamage(fallDistance, 0.1F, level.damageSources().fall());
+
+		// addLandingEffects implementation - spawn cloud puff particles on landing
+		if (entity instanceof LivingEntity living && fallDistance > 0.0F && level instanceof ServerLevel serverLevel) {
+			ParticlePacket particlePacket = new ParticlePacket();
+			int maxI = Mth.clamp((int) fallDistance * 2, 8, 40);
+
+			double bbWidth = living.getBbWidth();
+			double y = living.getY() + 0.1D;
+			double ySpeed = 0.0005D * maxI;
+
+			for (int i = 0; i < maxI; i++) {
+				double xSpd = (living.getRandom().nextDouble() - 0.5D) * bbWidth * 2.5D;
+				double zSpd = (living.getRandom().nextDouble() - 0.5D) * bbWidth * 2.5D;
+
+				double x = living.getX() + xSpd;
+				double z = living.getZ() + zSpd;
+
+				double xSpeed = xSpd * 0.0035D * maxI;
+				double zSpeed = zSpd * 0.0035D * maxI;
+
+				particlePacket.queueParticle(TFParticleType.CLOUD_PUFF.get(), false, x, y, z, xSpeed, ySpeed, zSpeed);
+			}
+
+			PacketDistributor.sendToPlayersTrackingChunk(serverLevel, new ChunkPos(pos), particlePacket);
+		}
 	}
 
 	@Override
@@ -131,33 +157,7 @@ public class CloudBlock extends Block {
 		}
 	}
 
-	@Override
-	public boolean addLandingEffects(BlockState state1, ServerLevel level, BlockPos pos, BlockState state2, LivingEntity living, int numberOfParticles) { // ServerSide
-		ParticlePacket particlePacket = new ParticlePacket();
-		int maxI = Mth.clamp((int) living.fallDistance * 2, 8, 40);
-
-		double bbWidth = living.getBbWidth();
-
-		double y = living.getY() + 0.1D;
-		double ySpeed = 0.0005D * maxI;
-
-		for (int i = 0; i < maxI; i++) {
-			double xSpd = (living.getRandom().nextDouble() - 0.5D) * bbWidth * 2.5D;
-			double zSpd = (living.getRandom().nextDouble() - 0.5D) * bbWidth * 2.5D;
-
-			double x = living.getX() + xSpd;
-			double z = living.getZ() + zSpd;
-
-			double xSpeed = xSpd * 0.0035D * maxI;
-			double zSpeed = zSpd * 0.0035D * maxI;
-
-			particlePacket.queueParticle(TFParticleType.CLOUD_PUFF.get(), false, x, y, z, xSpeed, ySpeed, zSpeed);
-		}
-
-		PacketDistributor.sendToPlayersTrackingChunk(level, new ChunkPos(pos), particlePacket);
-
-		return true;
-	}
+	// addRunningEffects is handled by stepOn() which calls addEntityMovementParticles()
 
 	@Override
 	public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
@@ -170,13 +170,5 @@ public class CloudBlock extends Block {
 		if (entity.getDeltaMovement().x() == 0.0D && entity.getDeltaMovement().z() == 0.0D && random.nextInt(20) != 0)
 			return false;
 		return entity.tickCount % 2 == 0 && !entity.isSpectator();
-	}
-
-	@Override
-	public boolean addRunningEffects(BlockState state, Level level, BlockPos pos, Entity entity) { // Client & Server Side
-		if (level.isClientSide() && state.getRenderShape() != RenderShape.INVISIBLE) {
-			addEntityMovementParticles(level, pos, entity, false);
-		}
-		return true;
 	}
 }
