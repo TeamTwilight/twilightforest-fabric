@@ -1,3 +1,0 @@
-Note: Dummy Manifest file only for in-dev runtime
-FMLModType: LIBRARY
-
