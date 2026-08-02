@@ -52,7 +52,7 @@ public class GiantPickItem extends PickaxeItem {
 	public boolean canAttackBlock(BlockState state, Level level, BlockPos pos, Player player) {
 		ItemStack stack = player.getMainHandItem();
 		if (stack.is(this)) {
-			var attachment = player.getData(TFDataAttachments.GIANT_PICKAXE_MINING);
+			var attachment = player.getAttachedOrCreate(TFDataAttachments.GIANT_PICKAXE_MINING);
 			if (attachment.getMining() != level.getGameTime()) {
 				attachment.setMining(level.getGameTime());
 				attachment.setBreaking(false);

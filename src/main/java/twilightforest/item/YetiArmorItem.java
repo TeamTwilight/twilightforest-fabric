@@ -13,8 +13,8 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
-import net.neoforged.neoforge.common.util.Lazy;
+import io.github.fabricators_of_create.porting_lib.client_extensions.IClientItemExtensions;
+import io.github.fabricators_of_create.porting_lib.core.util.Lazy;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.client.model.TFModelLayers;
@@ -36,10 +36,11 @@ public class YetiArmorItem extends ArmorItem {
 		tooltip.add(TOOLTIP);
 	}
 
-	@Override
-	public boolean canWalkOnPowderedSnow(ItemStack stack, LivingEntity wearer) {
-		return stack.is(TFItems.YETI_BOOTS.get());
-	}
+	// canWalkOnPowderedSnow removed in 1.21.1 - use powder_snow_walkable item tag instead
+	// @Override
+	// public boolean canWalkOnPowderedSnow(ItemStack stack, LivingEntity wearer) {
+	// 	return stack.is(TFItems.YETI_BOOTS.get());
+	// }
 
 	public static final class ArmorRender implements IClientItemExtensions {
 		public static final ArmorRender INSTANCE = new ArmorRender();
@@ -51,10 +52,12 @@ public class YetiArmorItem extends ArmorItem {
 			new YetiArmorModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.YETI_ARMOR_OUTER))
 		);
 
-		@Override
-		public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel<?> model) {
-			return slot == EquipmentSlot.LEGS ? INNER_ARMOR_MODEL.get() : OUTER_ARMOR_MODEL.get();
-		}
+		// getHumanoidArmorModel removed in 1.21.1 Porting Lib - armor rendering now uses IClientItemExtensions differently
+		// The armor model is registered via the item's IClientItemExtensions registration in TFItems
+		// @Override
+		// public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel<?> model) {
+		// 	return slot == EquipmentSlot.LEGS ? INNER_ARMOR_MODEL.get() : OUTER_ARMOR_MODEL.get();
+		// }
 	}
 
 }

@@ -7,6 +7,7 @@ import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -27,8 +28,8 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.network.PacketDistributor;
+import io.github.fabricators_of_create.porting_lib.tags.Tags;
+import twilightforest.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.data.tags.EntityTagGenerator;
 import twilightforest.enchantment.RechargeScepterEffect;
@@ -68,7 +69,7 @@ public class LifedrainScepterItem extends Item {
 	@Override
 	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
 		if (entity.tickCount % 20 == 0 && level instanceof ServerLevel serverLevel && stack.has(DataComponents.ENCHANTMENTS) && !isSelected) {
-			int renewal = stack.get(DataComponents.ENCHANTMENTS).getLevel(level.holderOrThrow(TFEnchantments.RENEWAL));
+			int renewal = stack.get(DataComponents.ENCHANTMENTS).getLevel(level.registryAccess().registryOrThrow(Registries.ENCHANTMENT).getHolderOrThrow(TFEnchantments.RENEWAL));
 			if (renewal > 0) {
 				RechargeScepterEffect.applyRecharge(serverLevel, stack, entity);
 			}
@@ -87,7 +88,7 @@ public class LifedrainScepterItem extends Item {
 		ParticlePacket particlePacket = new ParticlePacket();
 		double gaussFactor = 5.0D;
 
-		for (int i = 0; i < 50 + ((int) target.dimensions.width() * (big ? 75 : 25)); ++i) {
+		for (int i = 0; i < 50 + ((int) target.getBbWidth() * (big ? 75 : 25)); ++i) {
 			double gaussX = level.getRandom().nextGaussian() * 0.01D;
 			double gaussY = level.getRandom().nextGaussian() * 0.01D;
 			double gaussZ = level.getRandom().nextGaussian() * 0.01D;
@@ -143,7 +144,7 @@ public class LifedrainScepterItem extends Item {
 
 	@Override
 	public void onUseTick(Level level, LivingEntity living, ItemStack stack, int count) {
-		if (stack.getDamageValue() == this.getMaxDamage(stack)) {
+		if (stack.getDamageValue() == stack.getMaxDamage()) {
 			// do not use
 			living.stopUsingItem();
 			return;
@@ -273,15 +274,17 @@ public class LifedrainScepterItem extends Item {
 		return UseAnim.BOW;
 	}
 
-	@Override
-	public boolean canContinueUsing(ItemStack oldStack, ItemStack newStack) {
-		return oldStack.getItem() == newStack.getItem();
-	}
+	// canContinueUsing removed in 1.21.1
+	// @Override
+	// public boolean canContinueUsing(ItemStack oldStack, ItemStack newStack) {
+	// 	return oldStack.getItem() == newStack.getItem();
+	// }
 
-	@Override
-	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-		return slotChanged || newStack.getItem() != oldStack.getItem();
-	}
+	// shouldCauseReequipAnimation removed in 1.21.1
+	// @Override
+	// public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+	// 	return slotChanged || newStack.getItem() != oldStack.getItem();
+	// }
 
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flags) {

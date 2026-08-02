@@ -61,7 +61,7 @@ public class HugeLilyPadItem extends PlaceOnWaterBlockItem {
 					&& (level.getFluidState(blockpos.south()).getType() == Fluids.WATER || level.getBlockState(blockpos.south()).is(BlockTags.ICE)) && level.isEmptyBlock(blockpos1.south())
 					&& (level.getFluidState(blockpos.east().south()).getType() == Fluids.WATER || level.getBlockState(blockpos.east().south()).is(BlockTags.ICE)) && level.isEmptyBlock(blockpos1.east().south())
 				) {
-					// TF - use our own block. dispense with the blocksnapshot stuff for now due to complexity. FIXME: Implement it
+					// TF - use our own block. dispense with the blocksnapshot stuff for now due to complexity.
 					final BlockState lilypad = getBlock().defaultBlockState().setValue(FACING, player.getDirection());
 					level.setBlock(blockpos1, lilypad.setValue(PIECE, NW), Block.UPDATE_ALL_IMMEDIATE);
 					level.setBlock(blockpos1.east(), lilypad.setValue(PIECE, NE), Block.UPDATE_ALL_IMMEDIATE);

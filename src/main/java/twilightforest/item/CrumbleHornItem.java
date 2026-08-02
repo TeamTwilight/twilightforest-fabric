@@ -1,5 +1,7 @@
 package twilightforest.item;
 
+import io.github.fabricators_of_create.porting_lib.item.extensions.ContinueUsingItem;
+import io.github.fabricators_of_create.porting_lib.item.extensions.ReequipAnimationItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,15 +20,15 @@ import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.EventHooks;
-import net.neoforged.neoforge.event.level.BlockEvent;
+
+import twilightforest.util.TFEventHooks;
+
 import twilightforest.init.TFDataMaps;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
 import twilightforest.util.WorldUtil;
 
-public class CrumbleHornItem extends Item {
+public class CrumbleHornItem extends Item implements ContinueUsingItem, ReequipAnimationItem {
 
 	public CrumbleHornItem(Properties properties) {
 		super(properties);
@@ -100,14 +102,15 @@ public class CrumbleHornItem extends Item {
 		if (state.isAir() || crumbleMap == null) return false;
 
 		if (living instanceof Player) {
-			if (NeoForge.EVENT_BUS.post(new BlockEvent.BreakEvent(serverLevel, pos, state, (Player) living)).isCanceled())
+			if (net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents.BEFORE.invoker().beforeBlockBreak(serverLevel, (Player) living, pos, state, null)) {
 				return false;
+			}
 		}
 
 		if (crumbleMap.result() == Blocks.AIR) {
 			if (serverLevel.getRandom().nextFloat() < crumbleMap.chanceToCrumble()) {
 				if (living instanceof Player player) {
-					if (block.canHarvestBlock(state, serverLevel, pos, (Player) living)) {
+					if (player.getMainHandItem().isCorrectToolForDrops(state)) {
 						serverLevel.removeBlock(pos, false);
 						block.playerDestroy(serverLevel, (Player) living, pos, state, serverLevel.getBlockEntity(pos), ItemStack.EMPTY);
 						serverLevel.levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, pos, Block.getId(state));
@@ -116,7 +119,7 @@ public class CrumbleHornItem extends Item {
 						}
 						return true;
 					}
-				} else if (EventHooks.canEntityGrief(serverLevel, living)) {
+				} else if (TFEventHooks.canEntityGrief(serverLevel, living)) {
 					serverLevel.destroyBlock(pos, true);
 					return true;
 				}

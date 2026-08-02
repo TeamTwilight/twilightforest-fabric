@@ -54,7 +54,7 @@ public abstract class TooltipStringInterpolator {
 			.findFirst();
 		if (mapping.isEmpty())
 			return "Nonexistent key";
-		InputConstants.Key key = mapping.get().getKey();
-		return mapping.get().getKeyModifier().getCombinedName(key, key::getDisplayName).getString();
+		// KeyMapping.getKeyModifier() API changed in 1.21.1; using getTranslatedKeyMessage() instead
+		return mapping.get().getTranslatedKeyMessage().getString();
 	}
 }

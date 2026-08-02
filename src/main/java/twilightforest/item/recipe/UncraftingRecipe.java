@@ -75,7 +75,7 @@ public class UncraftingRecipe extends ShapedRecipe {
 				ShapedRecipePattern.MAP_CODEC.forGetter(o -> o.pattern)
 			).apply(instance, UncraftingRecipe::new)
 		);
-		public static final StreamCodec<RegistryFriendlyByteBuf, UncraftingRecipe> STREAM_CODEC = StreamCodec.of(UncraftingRecipe.Serializer::toNetwork, UncraftingRecipe.Serializer::fromNetwork);
+		public static final StreamCodec<RegistryFriendlyByteBuf, UncraftingRecipe> STREAM_CODEC = StreamCodec.of(Serializer::toNetwork, Serializer::fromNetwork);
 
 		@Override
 		public MapCodec<UncraftingRecipe> codec() {

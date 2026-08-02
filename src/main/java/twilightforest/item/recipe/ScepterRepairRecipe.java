@@ -108,7 +108,7 @@ public class ScepterRepairRecipe extends CustomRecipe {
 
 	@Override
 	public NonNullList<Ingredient> getIngredients() {
-		return NonNullList.copyOf(this.repairItems);
+		return NonNullList.of(Ingredient.EMPTY, this.repairItems.toArray(new Ingredient[0]));
 	}
 
 	@Override

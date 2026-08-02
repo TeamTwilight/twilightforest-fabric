@@ -10,14 +10,20 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.maps.MapId;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
+import net.minecraft.world.level.storage.DimensionDataStorage;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFStructures;
+import twilightforest.item.MazeMapItem;
 import twilightforest.network.MazeMapPacket;
+import twilightforest.network.PacketDistributor;
 import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,8 +80,25 @@ public class TFMazeMapData extends MapItemSavedData {
 	// [VanillaCopy] Adapted from World.getMapData
 	@Nullable
 	public static TFMazeMapData getMazeMapData(Level level, String name) {
-		if (level.isClientSide()) return CLIENT_DATA.get(name);
-		else return (TFMazeMapData) ((ServerLevel) level).getServer().overworld().getDataStorage().get(TFMazeMapData.factory(), name);
+		if (level instanceof ServerLevel serverLevel) {
+			DimensionDataStorage storage = serverLevel.getServer().overworld().getDataStorage();
+			TFMazeMapData data = (TFMazeMapData) storage.get(TFMazeMapData.factory(), name);
+			if (data == null) {
+				// Fall back to the vanilla key ("map_<id>") written by level.setMapData().
+				// Both keys point at the same SavedData instance, and SavedData.save() only
+				// writes when isDirty(), so only one of the two files survives a save and
+				// the TF key can be missing after a restart.
+				int id = Integer.parseInt(name.substring(MazeMapItem.STR_ID.length() + 1));
+				MapItemSavedData vanilla = storage.get(TFMazeMapData.factory(), "map_" + id);
+				if (vanilla instanceof TFMazeMapData maze) {
+					data = maze;
+					storage.set(name, data); // migrate to the TF key so future reads hit directly
+					data.setDirty();
+				}
+			}
+			return data;
+		}
+		return CLIENT_DATA.get(name);
 	}
 
 	// Like the method above, but if we know we're on client
@@ -84,8 +107,8 @@ public class TFMazeMapData extends MapItemSavedData {
 		return CLIENT_DATA.get(name);
 	}
 
-	public static SavedData.Factory<MapItemSavedData> factory() {
-		return new SavedData.Factory<>(() -> {
+	public static Factory<MapItemSavedData> factory() {
+		return new Factory<>(() -> {
 			throw new IllegalStateException("Should never create an empty map saved data");
 		}, TFMazeMapData::load, DataFixTypes.SAVED_DATA_MAP_DATA);
 	}
@@ -96,10 +119,31 @@ public class TFMazeMapData extends MapItemSavedData {
 		else ((ServerLevel) level).getServer().overworld().getDataStorage().set(id, data);
 	}
 
+	private byte[] lastSyncedColors;
+	private long lastFullSyncTick = Long.MIN_VALUE;
+
 	@Nullable
 	@Override
 	public Packet<?> getUpdatePacket(MapId mapId, Player player) {
-		Packet<?> packet = super.getUpdatePacket(mapId, player);
-		return packet instanceof ClientboundMapItemDataPacket mapItemDataPacket ? new MazeMapPacket(mapItemDataPacket, this.ore, this.yCenter).toVanillaClientbound() : packet;
+		// Always send a full map snapshot. The vanilla HoldingPlayer dirty flags are
+		// runtime-only (not persisted), so a freshly re-joined client never receives
+		// color patches and ends up with a blank, unusable map.
+		if (player instanceof ServerPlayer serverPlayer && player.level() instanceof ServerLevel serverLevel) {
+			long tick = serverLevel.getGameTime();
+			boolean colorsChanged = !Arrays.equals(this.lastSyncedColors, this.colors);
+			if (!colorsChanged && tick - this.lastFullSyncTick < 20) {
+				return null; // throttle fallback resyncs to once per second
+			}
+			this.lastFullSyncTick = tick;
+			if (colorsChanged) {
+				this.lastSyncedColors = Arrays.copyOf(this.colors, this.colors.length);
+			}
+
+			MapPatch fullPatch = new MapPatch(0, 0, 128, 128, this.colors);
+			ClientboundMapItemDataPacket packet = new ClientboundMapItemDataPacket(mapId, this.scale, this.locked, new ArrayList<>(this.decorations.values()), fullPatch);
+			PacketDistributor.sendToPlayer(serverPlayer, new MazeMapPacket(packet, this.ore, this.yCenter, this.centerX, this.centerZ));
+		}
+		// Return null to prevent the vanilla packet from overwriting our custom map data
+		return null;
 	}
 }

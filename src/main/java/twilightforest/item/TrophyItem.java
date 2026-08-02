@@ -3,7 +3,7 @@ package twilightforest.item;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import io.github.fabricators_of_create.porting_lib.client_extensions.IClientItemExtensions;
 import twilightforest.client.ISTER;
 
 import java.util.function.Consumer;

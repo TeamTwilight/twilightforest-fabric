@@ -32,19 +32,21 @@ public class ArcticArmorItem extends ArmorItem {
 		tooltip.add(TOOLTIP);
 	}
 
-	@Override
-	public boolean canWalkOnPowderedSnow(ItemStack stack, LivingEntity wearer) {
-		return stack.is(TFItems.ARCTIC_BOOTS.get());
-	}
+	// canWalkOnPowderedSnow removed in 1.21.1 - use powder_snow_walkable item tag instead
+	// @Override
+	// public boolean canWalkOnPowderedSnow(ItemStack stack, LivingEntity wearer) {
+	// 	return stack.is(TFItems.ARCTIC_BOOTS.get());
+	// }
 
 	public static final class ArmorRender extends TFSimpleArmorRenderer {
 		public ArmorRender() {
 			super(TFArmorModel::new, TFModelLayers.ARCTIC_ARMOR_INNER, TFModelLayers.ARCTIC_ARMOR_OUTER);
 		}
 
-		@Override
-		public int getDefaultDyeColor(ItemStack stack) {
-			return FastColor.ARGB32.opaque(DyedItemColor.getOrDefault(stack, DEFAULT_COLOR));
-		}
+		// getDefaultDyeColor removed in 1.21.1 - dye color handled via DyedItemColor component
+		// @Override
+		// public int getDefaultDyeColor(ItemStack stack) {
+		// 	return FastColor.ARGB32.opaque(DyedItemColor.getOrDefault(stack, DEFAULT_COLOR));
+		// }
 	}
 }

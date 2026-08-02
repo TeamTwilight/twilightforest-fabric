@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import io.github.fabricators_of_create.porting_lib.item.extensions.CustomArrowItem;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.BowItem;
@@ -7,7 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import twilightforest.entity.projectile.IceArrow;
 import twilightforest.util.TFToolMaterials;
 
-public class IceBowItem extends BowItem {
+public class IceBowItem extends BowItem implements CustomArrowItem {
 
 	public IceBowItem(Properties properties) {
 		super(properties);

@@ -25,7 +25,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.neoforged.neoforge.common.util.ConcatenatedListView;
+import io.github.fabricators_of_create.porting_lib.models.ConcatenatedListView;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
@@ -48,8 +48,8 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 	@Nullable
 	private ItemAttributeModifiers attributeModifiers;
 
-	public TravellersArmorItem(ArmorItem.Type equipmentType, Properties properties, int insertableModifierSlots) {
-		super(TFArmorMaterials.TRAVELLERS, equipmentType, properties.component(TFDataComponents.IS_TRAVELLERS_GEAR, Unit.INSTANCE));
+	public TravellersArmorItem(Type equipmentType, Properties properties, int insertableModifierSlots) {
+		super(TFArmorMaterials.TRAVELLERS, equipmentType, properties.component(TFDataComponents.IS_TRAVELLERS_GEAR.get(), Unit.INSTANCE));
 		this.insertableModifierSlots = insertableModifierSlots;
 		this.attributeModifiers = this.components().get(DataComponents.ATTRIBUTE_MODIFIERS);
 		if (this.attributeModifiers == null)
@@ -60,7 +60,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 		}
 	}
 
-	public TravellersArmorItem(ArmorItem.Type equipmentType, Properties properties, int insertableModifierSlots, int durability) {
+	public TravellersArmorItem(Type equipmentType, Properties properties, int insertableModifierSlots, int durability) {
 		this(equipmentType, properties.durability(equipmentType.getDurability(durability)), insertableModifierSlots);
 	}
 
@@ -77,23 +77,24 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 		return this.attributeModifiers == null ? super.getDefaultAttributeModifiers() : this.attributeModifiers;
 	}
 
-	@Override
-	public @Nullable ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
-		return !innerModel && entity.getData(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER) ?
-			TwilightForestMod.prefix("textures/models/armor/travellers_layer_1_down.png") :
-			super.getArmorTexture(stack, entity, slot, layer, innerModel);
-	}
+	// getArmorTexture is NeoForge-only; handle via armor renderer Mixin
+	// @Override
+	// public @Nullable ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
+	// 	return !innerModel && entity.getAttachedOrCreate(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER) ?
+	// 		TwilightForestMod.prefix("textures/models/armor/travellers_layer_1_down.png") :
+	// 		super.getArmorTexture(stack, entity, slot, layer, innerModel);
+	// }
 
 	public static Properties gogglesProperties(Properties properties) {
 		return properties
 			.attributes(defaultArmorProperties(Type.HELMET).build())
-			.component(TFDataComponents.ZOOM_ABILITY_MODIFIER, 0.3F);
+			.component(TFDataComponents.ZOOM_ABILITY_MODIFIER.get(), 0.3F);
 	}
 
 	public static Properties chestProperties(Properties properties) {
 		return properties
-			.component(TFDataComponents.TRAVELLERS_HAS_CHESTPLATE, Unit.INSTANCE)
-			.component(TFDataComponents.SWIFT_SWIM, Unit.INSTANCE)
+			.component(TFDataComponents.TRAVELLERS_HAS_CHESTPLATE.get(), Unit.INSTANCE)
+			.component(TFDataComponents.SWIFT_SWIM.get(), Unit.INSTANCE)
 			.attributes(defaultArmorProperties(Type.CHESTPLATE)
 				.add(Attributes.WATER_MOVEMENT_EFFICIENCY, TFAttributeModifiers.TRAVELLERS_SWIFT_SWIM, EquipmentSlotGroup.CHEST)
 				.build());
@@ -101,20 +102,20 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 
 	public static Properties glovesProperties(Properties properties) {
 		return properties
-			.component(TFDataComponents.TRAVELLERS_HAS_GLOVES, Unit.INSTANCE);
+			.component(TFDataComponents.TRAVELLERS_HAS_GLOVES.get(), Unit.INSTANCE);
 	}
 
 	public static Properties wingsProperties(Properties properties) {
 		return properties
 			.attributes(defaultArmorProperties(Type.LEGGINGS).build())
-			.component(TFDataComponents.TRAVELLERS_HAS_WINGS, Unit.INSTANCE)
-			.component(TFDataComponents.HIGH_JUMP_AMPLIFIER, 1);
+			.component(TFDataComponents.TRAVELLERS_HAS_WINGS.get(), Unit.INSTANCE)
+			.component(TFDataComponents.HIGH_JUMP_AMPLIFIER.get(), 1);
 	}
 
 	public static Properties bootsProperties(Properties properties) {
 		return properties
-			.component(TFDataComponents.TRAVELLERS_HAS_BOOTS, Unit.INSTANCE)
-			.component(TFDataComponents.HIGH_STEP, Unit.INSTANCE)
+			.component(TFDataComponents.TRAVELLERS_HAS_BOOTS.get(), Unit.INSTANCE)
+			.component(TFDataComponents.HIGH_STEP.get(), Unit.INSTANCE)
 			.attributes(defaultArmorProperties(Type.BOOTS)
 				.add(Attributes.STEP_HEIGHT, TFAttributeModifiers.TRAVELLERS_HIGH_STEP, EquipmentSlotGroup.FEET)
 				.build());
@@ -135,9 +136,9 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 		List<Holder.Reference<TravellersModifier>> insertableModifiers = TravellersModifiersManager.findAllInsertableModifiers(registries, stack);
 		for (Holder.Reference<TravellersModifier> modifier : insertableModifiers) {
 			tooltip.add(Component.literal("- ").append(TravellersModifiersManager.getModifierTooltipComponent(modifier).withStyle(ChatFormatting.GRAY)));
-			if (flags.hasShiftDown()) {
+			if (flags.isAdvanced()) {
 				for (Component description : modifier.value().getDescription()) {
-					// FIXME There has to be a better way to bold only the indent and arrow and not the information component
+					// There has to be a better way to bold only the indent and arrow and not the information component
 					tooltip.add(Component.literal("").append(Component.translatable("travellers_gear.info_indent").withStyle(ChatFormatting.BOLD)).append(description));
 				}
 			}
@@ -151,7 +152,8 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 			tooltip.add(GLOVES_TOOLTIP);
 		}
 
-		if (!flags.hasShiftDown()) {
+		// TooltipFlag.hasShiftDown() removed in 1.21.1, using isAdvanced() instead
+		if (!flags.isAdvanced()) {
 			ConcatenatedListView<Holder.Reference<TravellersModifier>> modifiers = ConcatenatedListView.of(abilityModifiers, insertableModifiers);
 			boolean hasHiddenDescriptions = modifiers.stream().map(Holder::value).map(TravellersModifier::getDescription).anyMatch(Predicate.not(List::isEmpty));
 			if (hasHiddenDescriptions) {
@@ -165,33 +167,17 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 		return false;
 	}
 
-	@Override
-	public boolean isBookEnchantable(@NotNull ItemStack stack, @NotNull ItemStack book) {
-		return true;
-	}
+	// isBookEnchantable, isPrimaryItemFor, supportsEnchantment, isRepairable: NeoForge-only methods.
+	// Not needed on Fabric - isEnchantable() returns false, default behaviors suffice.
 
-	@Override
-	public boolean isPrimaryItemFor(@NotNull ItemStack stack, @NotNull Holder<Enchantment> enchantment) {
-		return false;
-	}
-
-	@Override
-	public boolean supportsEnchantment(@NotNull ItemStack stack, @NotNull Holder<Enchantment> enchantment) {
-		return false;
-	}
-
-	@Override
-	public boolean isRepairable(@NotNull ItemStack stack) {
-		return false;
-	}
-
-	@Override
-	public boolean canWalkOnPowderedSnow(ItemStack stack, @NotNull LivingEntity wearer) {
-		return stack.is(TFItems.TRAVELLERS_BOOTS);
-	}
+	// canWalkOnPowderedSnow handled via LivingEntityMixin.canWalkOnPowderedSnow
+	// @Override
+	// public boolean canWalkOnPowderedSnow(ItemStack stack, @NotNull LivingEntity wearer) {
+	// 	return stack.is(TFItems.TRAVELLERS_BOOTS);
+	// }
 
 	public static boolean isTravellersArmorAndBroken(ItemStack stack) {
-		return stack.has(TFDataComponents.IS_TRAVELLERS_GEAR) && stack.isDamageableItem() && stack.getMaxDamage() - 1 <= stack.getDamageValue();
+		return stack.has(TFDataComponents.IS_TRAVELLERS_GEAR.get()) && stack.isDamageableItem() && stack.getMaxDamage() - 1 <= stack.getDamageValue();
 	}
 
 	// [VanillaCopy] modified ArmorItem constructor to just return default attribute modifiers
@@ -229,14 +215,14 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 		}
 
 		@Override
-		public @NotNull HumanoidModel<?> getHumanoidArmorModel(@NotNull LivingEntity living, @NotNull ItemStack stack, EquipmentSlot slot, @NotNull HumanoidModel<?> model) {
+		public @NotNull HumanoidModel<?> getArmorModel(@NotNull LivingEntity living, @NotNull ItemStack stack, @NotNull EquipmentSlot slot, @NotNull HumanoidModel<?> model) {
 			ModelPart root = switch (slot) {
 				case HEAD -> this.getModelPart(TFModelLayers.TRAVELLERS_ARMOR_HELMET);
 				case CHEST -> {
 					ModelPart chestLayer = this.getModelPart(this.isModelSlim(living) ? TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES_SLIM : TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES);
 					chestLayer.getAllParts().forEach(part -> part.skipDraw = true);
-					boolean hasChestplate = stack.has(TFDataComponents.TRAVELLERS_HAS_CHESTPLATE);
-					boolean hasGloves = stack.has(TFDataComponents.TRAVELLERS_HAS_GLOVES);
+					boolean hasChestplate = stack.has(TFDataComponents.TRAVELLERS_HAS_CHESTPLATE.get());
+					boolean hasGloves = stack.has(TFDataComponents.TRAVELLERS_HAS_GLOVES.get());
 					chestLayer.getChild("body").skipDraw = !hasChestplate;
 					chestLayer.getChild("left_arm").skipDraw = !hasGloves;
 					chestLayer.getChild("right_arm").skipDraw = !hasGloves;
@@ -246,8 +232,8 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 				case LEGS -> {
 					ModelPart leggingsLayer = this.getModelPart(TFModelLayers.TRAVELLERS_ARMOR_LEGGINGS);
 					leggingsLayer.getAllParts().forEach(part -> part.skipDraw = true);
-					boolean hasWings = stack.has(TFDataComponents.TRAVELLERS_HAS_WINGS);
-					boolean hasBelt = stack.has(TFDataComponents.TRAVELLERS_HAS_BELT) || TravellersModifiersManager.hasTravellersModifier(living.registryAccess(), stack, TravellersModifiersManager.SWAP_HOTBAR_MODIFIER);
+					boolean hasWings = stack.has(TFDataComponents.TRAVELLERS_HAS_WINGS.get());
+					boolean hasBelt = stack.has(TFDataComponents.TRAVELLERS_HAS_BELT.get()) || TravellersModifiersManager.hasTravellersModifier(living.registryAccess(), stack, TravellersModifiersManager.SWAP_HOTBAR_MODIFIER);
 
 					TravellersWingsModel.skipBelt(leggingsLayer, !hasBelt);
 					TravellersWingsModel.skipWings(leggingsLayer, !hasWings);
@@ -261,21 +247,15 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 			if (slot == EquipmentSlot.LEGS)
 				return new TravellersWingsModel(root);
 			return new TFArmorModel(root);
-		}
+	}
 
-		@Override
-		public void setupModelAnimations(@NotNull LivingEntity livingEntity, @NotNull ItemStack itemStack, @NotNull EquipmentSlot equipmentSlot, @NotNull Model model, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
-			if (model instanceof TravellersWingsModel wingsModel)
-				wingsModel.setupModelAnimations(livingEntity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-		}
-
-		private boolean isModelSlim(LivingEntity entity) {
+	private boolean isModelSlim(LivingEntity entity) {
 			if (entity instanceof AbstractClientPlayer player) return player.getSkin().model().equals(PlayerSkin.Model.SLIM);
 			return false;
 		}
 	}
 
 	public boolean makesPiglinsNeutral(@NotNull ItemStack stack, @NotNull LivingEntity wearer) {
-		return this == TFItems.TRAVELLERS_GOGGLES.get() || stack.has(TFDataComponents.TRAVELLERS_HAS_WINGS);
+		return this == TFItems.TRAVELLERS_GOGGLES.get() || stack.has(TFDataComponents.TRAVELLERS_HAS_WINGS.get());
 	}
 }

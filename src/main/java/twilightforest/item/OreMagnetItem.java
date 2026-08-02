@@ -1,7 +1,9 @@
 package twilightforest.item;
 
+import io.github.fabricators_of_create.porting_lib.enchant.CustomEnchantingBehaviorItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -13,13 +15,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
+import twilightforest.network.PacketDistributor;
 import twilightforest.data.tags.BlockTagGenerator;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
@@ -31,9 +34,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
 
-public class OreMagnetItem extends Item {
+public class OreMagnetItem extends Item implements CustomEnchantingBehaviorItem {
 
 	// Switch over to ConcurrentHashMap if we run into any concurrency problems
 	public static final HashMap<Block, Block> MAGNET_ORE_TO_BLOCK_REPLACEMENTS = new HashMap<>();
@@ -51,14 +53,12 @@ public class OreMagnetItem extends Item {
 
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		AtomicBoolean badEnchant = new AtomicBoolean();
-		book.getEnchantments().entrySet().forEach(enchantment -> {
-			if (!Objects.equals(Enchantments.UNBREAKING, enchantment)) {
-				badEnchant.set(true);
+		for (Holder<Enchantment> enchantment : book.getEnchantments().keySet()) {
+			if (!enchantment.is(Enchantments.UNBREAKING)) {
+				return false;
 			}
-		});
-
-		return !badEnchant.get() && super.isBookEnchantable(stack, book);
+		}
+		return true;
 	}
 
 	@Nonnull

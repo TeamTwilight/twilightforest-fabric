@@ -35,10 +35,11 @@ public class LampOfCindersItem extends Item {
 		return false;
 	}
 
-	@Override
-	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		return false;
-	}
+	// isBookEnchantable removed in 1.21.1 - enchantability now handled via data components
+	// @Override
+	// public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+	// 	return false;
+	// }
 
 	@Nonnull
 	@Override
@@ -84,7 +85,7 @@ public class LampOfCindersItem extends Item {
 	public void releaseUsing(ItemStack stack, Level level, LivingEntity living, int useRemaining) {
 		int useTime = this.getUseDuration(stack, living) - useRemaining;
 
-		if (useTime > FIRING_TIME && (stack.getDamageValue() + 1) < this.getMaxDamage(stack)) {
+		if (useTime > FIRING_TIME && (stack.getDamageValue() + 1) < stack.getMaxDamage()) {
 			this.doBurnEffect(level, living);
 		}
 	}

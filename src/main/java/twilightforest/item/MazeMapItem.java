@@ -26,7 +26,7 @@ import net.minecraft.world.level.saveddata.maps.MapDecoration;
 import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
 import net.minecraft.world.level.saveddata.maps.MapId;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import net.neoforged.neoforge.common.Tags;
+import io.github.fabricators_of_create.porting_lib.tags.Tags;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFDataMaps;
 import twilightforest.init.TFItems;
@@ -62,18 +62,6 @@ public class MazeMapItem extends MapItem {
 		return id == null ? null : TFMazeMapData.getMazeMapData(level, getMapName(id.id()));
 	}
 
-	@Nullable
-	@Override
-	protected TFMazeMapData getCustomMapData(ItemStack stack, Level level) {
-		TFMazeMapData mapdata = getData(stack, level);
-		if (mapdata == null && !level.isClientSide()) {
-			BlockPos pos = level.getSharedSpawnPos();
-			mapdata = MazeMapItem.createMapData(stack, level, pos.getX(), pos.getZ(), 0, false, false, level.dimension(), pos.getY(), mapOres);
-		}
-
-		return mapdata;
-	}
-
 	private static TFMazeMapData createMapData(ItemStack stack, Level level, int x, int z, int scale, boolean trackingPosition, boolean unlimitedTracking, ResourceKey<Level> dimension, int y, boolean ore) {
 		MapId i = level.getFreeMapId();
 
@@ -87,6 +75,7 @@ public class MazeMapItem extends MapItem {
 		mapdata.calculateMapCenter(level, x, y, z); // call our own map center calculation
 		mapdata.ore = ore;
 		TFMazeMapData.registerMazeMapData(level, mapdata, getMapName(i.id())); // call our own register method
+		level.setMapData(i, mapdata); // also store in vanilla map data so sync logic finds it
 		stack.set(DataComponents.MAP_ID, i);
 		return mapdata;
 	}
@@ -204,7 +193,7 @@ public class MazeMapItem extends MapItem {
 	@Override
 	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean isSelected) {
 		if (!level.isClientSide()) {
-			TFMazeMapData mapdata = this.getCustomMapData(stack, level);
+			TFMazeMapData mapdata = getData(stack, level);
 
 			if (mapdata != null) {
 				if (entity instanceof Player entityplayer) {
@@ -236,7 +225,7 @@ public class MazeMapItem extends MapItem {
 	@Nullable
 	public Packet<?> getUpdatePacket(ItemStack stack, Level level, Player player) {
 		MapId mapId = stack.get(DataComponents.MAP_ID);
-		TFMazeMapData mapdata = this.getCustomMapData(stack, level);
+		TFMazeMapData mapdata = getData(stack, level);
 		return mapId == null || mapdata == null ? null : mapdata.getUpdatePacket(mapId, player);
 	}
 

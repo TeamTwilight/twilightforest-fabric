@@ -23,7 +23,7 @@ public class RopeItem extends BlockItem {
 	public static final int EXTEND_RANGE = 7;
 
 
-	public RopeItem(Block block, Item.Properties properties) {
+	public RopeItem(Block block, Properties properties) {
 		super(block, properties);
 	}
 

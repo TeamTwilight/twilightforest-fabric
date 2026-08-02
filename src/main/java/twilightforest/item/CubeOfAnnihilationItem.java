@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import io.github.fabricators_of_create.porting_lib.item.extensions.ShieldBlockItem;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -18,7 +19,7 @@ import twilightforest.init.TFEntities;
 
 import java.util.UUID;
 
-public class CubeOfAnnihilationItem extends Item {
+public class CubeOfAnnihilationItem extends Item implements ShieldBlockItem {
 
 	public CubeOfAnnihilationItem(Properties properties) {
 		super(properties);
@@ -26,8 +27,8 @@ public class CubeOfAnnihilationItem extends Item {
 
 	@Override
 	public void inventoryTick(ItemStack stack, Level level, Entity holder, int slot, boolean isSelected) {
-		if (!level.isClientSide() && stack.get(TFDataComponents.THROWN_PROJECTILE) != null && getThrownEntity(level, stack) == null) {
-			stack.remove(TFDataComponents.THROWN_PROJECTILE);
+		if (!level.isClientSide() && stack.get(TFDataComponents.THROWN_PROJECTILE.get()) != null && getThrownEntity(level, stack) == null) {
+			stack.remove(TFDataComponents.THROWN_PROJECTILE.get());
 		}
 	}
 
@@ -35,13 +36,13 @@ public class CubeOfAnnihilationItem extends Item {
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		if (stack.get(TFDataComponents.THROWN_PROJECTILE) != null)
+		if (stack.get(TFDataComponents.THROWN_PROJECTILE.get()) != null)
 			return new InteractionResultHolder<>(InteractionResult.PASS, stack);
 
 		if (!level.isClientSide()) {
 			CubeOfAnnihilation launchedCube = new CubeOfAnnihilation(TFEntities.CUBE_OF_ANNIHILATION.get(), level, player, stack);
 			level.addFreshEntity(launchedCube);
-			stack.set(TFDataComponents.THROWN_PROJECTILE, launchedCube.getUUID());
+			stack.set(TFDataComponents.THROWN_PROJECTILE.get(), launchedCube.getUUID());
 		}
 
 		player.startUsingItem(hand);
@@ -51,7 +52,7 @@ public class CubeOfAnnihilationItem extends Item {
 	@Nullable
 	private static CubeOfAnnihilation getThrownEntity(Level level, ItemStack stack) {
 		if (level instanceof ServerLevel server) {
-			UUID id = stack.get(TFDataComponents.THROWN_PROJECTILE);
+			UUID id = stack.get(TFDataComponents.THROWN_PROJECTILE.get());
 			if (id != null) {
 				Entity e = server.getEntity(id);
 				if (e instanceof CubeOfAnnihilation) {

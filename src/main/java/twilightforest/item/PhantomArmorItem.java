@@ -13,8 +13,8 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
-import net.neoforged.neoforge.common.util.Lazy;
+import io.github.fabricators_of_create.porting_lib.client_extensions.IClientItemExtensions;
+import io.github.fabricators_of_create.porting_lib.core.util.Lazy;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
@@ -42,10 +42,12 @@ public class PhantomArmorItem extends ArmorItem {
 			new TFArmorModel(Minecraft.getInstance().getEntityModels().bakeLayer(TFModelLayers.PHANTOM_ARMOR_OUTER))
 		);
 
-		@Override
-		public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel<?> model) {
-			return slot == EquipmentSlot.LEGS ? INNER_ARMOR_MODEL.get() : OUTER_ARMOR_MODEL.get();
-		}
+		// getHumanoidArmorModel removed in 1.21.1 Porting Lib - armor rendering now uses IClientItemExtensions differently
+		// The armor model is registered via the item's IClientItemExtensions registration in TFItems
+		// @Override
+		// public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel<?> model) {
+		// 	return slot == EquipmentSlot.LEGS ? INNER_ARMOR_MODEL.get() : OUTER_ARMOR_MODEL.get();
+		// }
 	}
 
 }

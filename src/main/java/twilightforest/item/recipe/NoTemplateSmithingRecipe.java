@@ -107,7 +107,7 @@ public class NoTemplateSmithingRecipe implements SmithingRecipe {
 
 	@Override
 	public boolean isIncomplete() {
-		return Stream.of(this.base, this.addition).anyMatch(Ingredient::hasNoItems);
+		return Stream.of(this.base, this.addition).anyMatch(ingredient -> ingredient.getItems().length == 0);
 	}
 
 	private static final Codec<List<TypedDataComponent<?>>> DATA_COMPONENT_CODEC = DataComponentMap.CODEC.xmap(typedDataComponents -> typedDataComponents.stream().toList(), typedDataComponents -> {

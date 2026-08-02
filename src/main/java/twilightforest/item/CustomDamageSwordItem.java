@@ -6,7 +6,6 @@ import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.component.Tool;
 
 public class CustomDamageSwordItem extends SwordItem implements CustomDamageProvider {
 
@@ -14,11 +13,6 @@ public class CustomDamageSwordItem extends SwordItem implements CustomDamageProv
 
 	public CustomDamageSwordItem(ResourceKey<DamageType> damageType, Tier tier, Properties properties) {
 		super(tier, properties);
-		this.damageType = damageType;
-	}
-
-	public CustomDamageSwordItem(ResourceKey<DamageType> damageType, Tier tier, Properties properties, Tool toolComponentData) {
-		super(tier, properties, toolComponentData);
 		this.damageType = damageType;
 	}
 

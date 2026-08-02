@@ -64,18 +64,6 @@ public class MagicMapItem extends MapItem {
 		return mapid != null && context.mapData(mapid) instanceof TFMagicMapData mapData ? mapData : null;
 	}
 
-	@Nullable
-	@Override
-	protected TFMagicMapData getCustomMapData(ItemStack stack, Level level) {
-		TFMagicMapData mapdata = getData(stack, level);
-		if (mapdata == null && !level.isClientSide()) {
-			BlockPos sharedSpawnPos = level.getSharedSpawnPos();
-			mapdata = MagicMapItem.createMapData(stack, level, sharedSpawnPos.getX(), sharedSpawnPos.getZ(), 3, false, false, level.dimension());
-		}
-
-		return mapdata;
-	}
-
 	public static ColumnPos getMagicMapCenter(int x, int z) {
 		// magic maps are aligned to the key biome grid so that 0,0 -> 2048,2048 is the covered area
 		int mapSize = 2048;
@@ -92,6 +80,7 @@ public class MagicMapItem extends MapItem {
 
 		TFMagicMapData mapdata = new TFMagicMapData(pos.x(), pos.z(), (byte) scale, trackingPosition, unlimitedTracking, false, dimension);
 		TFMagicMapData.registerMagicMapData(level, mapdata, getMapName(freeMapId.id())); // call our own register method
+		level.setMapData(freeMapId, mapdata); // also store in vanilla map data so sync logic finds it
 		stack.set(DataComponents.MAP_ID, freeMapId);
 		return mapdata;
 	}
@@ -127,6 +116,7 @@ public class MagicMapItem extends MapItem {
 			});
 
 			Registry<Structure> structureRegistry = level.registryAccess().registryOrThrow(Registries.STRUCTURE);
+			Registry<Biome> biomeRegistry = level.registryAccess().registryOrThrow(Registries.BIOME);
 
 			for (int xPixel = viewerX - viewRadiusPixels + 1; xPixel < viewerX + viewRadiusPixels; ++xPixel) {
 				for (int zPixel = viewerZ - viewRadiusPixels - 1; zPixel < viewerZ + viewRadiusPixels; ++zPixel) {
@@ -142,7 +132,7 @@ public class MagicMapItem extends MapItem {
 						Holder<Biome> downBiome = biomes[xPixel * biomesPerPixel + (zPixel * biomesPerPixel + 1) * 128 * biomesPerPixel];
 						biome = overBiome != null && overBiome.is(TFBiomes.STREAM) ? overBiome : downBiome != null && downBiome.is(TFBiomes.STREAM) ? downBiome : biome;
 
-						MagicMapBiomeColor colorBrightness = this.getMapColorPerBiome(biome);
+						MagicMapBiomeColor colorBrightness = this.getMapColorPerBiome(biome, biomeRegistry);
 
 						MapColor mapcolor = colorBrightness.color();
 						int brightness = colorBrightness.brightness();
@@ -163,8 +153,7 @@ public class MagicMapItem extends MapItem {
 								ResourceKey<Structure> structureKey = LegacyLandmarkPlacements.pickLandmarkAtBlock(worldX, worldZ, level);
 								// Filters by structures we want to give icons for
 								if (structureRegistry.getHolder(structureKey).map(structureRef -> structureRef.is(StructureTagGenerator.LANDMARK)).orElse(false)) {
-									TFMagicMapData tfData = (TFMagicMapData) data;
-									if (structureRegistry.getOrThrow(structureKey) instanceof LandmarkStructure landmark) {
+									if (data instanceof TFMagicMapData tfData && structureRegistry.getOrThrow(structureKey) instanceof LandmarkStructure landmark) {
 										landmark.getMapIcon().ifPresent(icon -> tfData.addTFDecoration(icon, level, makeName(icon, worldX, worldZ), worldX, worldZ, 180.0F, LandmarkUtil.isConquered(level, worldX, worldZ)));
 										//TwilightForestMod.LOGGER.info("Found feature at {}, {}. Placing it on the map at {}, {}", worldX, worldZ, mapX, mapZ);
 									}
@@ -181,7 +170,7 @@ public class MagicMapItem extends MapItem {
 		return type.value().assetId() + "_" + x + "_" + z;
 	}
 
-	private MagicMapBiomeColor getMapColorPerBiome(Holder<Biome> biome) {
+	private MagicMapBiomeColor getMapColorPerBiome(Holder<Biome> biome, Registry<Biome> biomeRegistry) {
 		MagicMapBiomeColor color = biome.getData(TFDataMaps.MAGIC_MAP_BIOME_COLOR);
 		return color != null ? color : new MagicMapBiomeColor(MapColor.COLOR_MAGENTA);
 	}
@@ -195,7 +184,7 @@ public class MagicMapItem extends MapItem {
 	@Nullable
 	public Packet<?> getUpdatePacket(ItemStack stack, Level world, Player player) {
 		MapId mapId = stack.get(DataComponents.MAP_ID);
-		TFMagicMapData mapdata = getCustomMapData(stack, world);
+		TFMagicMapData mapdata = getData(stack, world);
 		return mapId == null || mapdata == null ? null : mapdata.getUpdatePacket(mapId, player);
 	}
 

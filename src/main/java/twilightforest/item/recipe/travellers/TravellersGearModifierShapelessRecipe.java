@@ -1,5 +1,6 @@
 package twilightforest.item.recipe.travellers;
 
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceKey;
@@ -15,6 +16,7 @@ import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 public class TravellersGearModifierShapelessRecipe extends TravellersGearModifierRecipe {
 	protected final NonNullList<Ingredient> ingredients;
@@ -35,7 +37,30 @@ public class TravellersGearModifierShapelessRecipe extends TravellersGearModifie
 			if (!item.isEmpty())
 				nonEmptyItems.add(item);
 		}
-		return net.neoforged.neoforge.common.util.RecipeMatcher.findMatches(nonEmptyItems, this.ingredients) != null;
+		return findMatches(nonEmptyItems, this.ingredients);
+	}
+
+	/**
+	 * Simple shapeless recipe matching - checks if each ingredient can be matched
+	 * to a unique input item stack. Replaces NeoForge's RecipeMatcher.findMatches.
+	 */
+	private static boolean findMatches(List<ItemStack> inputs, NonNullList<Ingredient> ingredients) {
+		if (inputs.size() != ingredients.size())
+			return false;
+		boolean[] used = new boolean[inputs.size()];
+		for (Ingredient ingredient : ingredients) {
+			boolean found = false;
+			for (int i = 0; i < inputs.size(); i++) {
+				if (!used[i] && ingredient.test(inputs.get(i))) {
+					used[i] = true;
+					found = true;
+					break;
+				}
+			}
+			if (!found)
+				return false;
+		}
+		return true;
 	}
 
 	@Override
@@ -71,13 +96,13 @@ public class TravellersGearModifierShapelessRecipe extends TravellersGearModifie
 	public static class Serializer extends AbstractModifierRecipeSerializer<TravellersGearModifierShapelessRecipe> {
 		public Serializer() {
 			super(RecordCodecBuilder.mapCodec(instance -> instance.group(
-				NonNullList.codecOf(Ingredient.CODEC_NONEMPTY)
+				Ingredient.CODEC.listOf().xmap(list -> { NonNullList<Ingredient> result = NonNullList.create(); result.addAll(list); return result; }, Function.identity())
 					.fieldOf("ingredients")
 					.forGetter(recipe -> recipe.ingredients),
 				ResourceKey.codec(TFRegistries.Keys.TRAVELLERS_MODIFIERS)
 					.fieldOf("modifier_key")
-					.forGetter(recipe -> recipe.travellersModifierKey)
-			).apply(instance, TravellersGearModifierShapelessRecipe::new)));
+					.forGetter(TravellersGearModifierRecipe::getTravellersModifierKey)
+			).apply(instance, (ingredients, key) -> new TravellersGearModifierShapelessRecipe(ingredients, key))));
 		}
 	}
 }

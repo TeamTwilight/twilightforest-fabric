@@ -17,24 +17,25 @@ import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFSounds;
 import twilightforest.init.custom.TravellersModifiersManager;
 
+import java.util.List;
 import java.util.Optional;
 
 public class TravellersArmorBeltItem extends TravellersArmorItem {
 	public static final ItemContainerContents DEFAULT_EMPTY_BELT_CONTAINER = ItemContainerContents.fromItems(NonNullList.withSize(9, ItemStack.EMPTY));
 
-	public TravellersArmorBeltItem(ArmorItem.Type equipmentType, Properties properties, int insertableModifierSlots, int durability) {
+	public TravellersArmorBeltItem(Type equipmentType, Properties properties, int insertableModifierSlots, int durability) {
 		super(equipmentType, properties, insertableModifierSlots, durability);
 	}
 
-	public TravellersArmorBeltItem(ArmorItem.Type equipmentType, Properties properties, int insertableModifierSlots) {
+	public TravellersArmorBeltItem(Type equipmentType, Properties properties, int insertableModifierSlots) {
 		super(equipmentType, properties, insertableModifierSlots);
 	}
 
 	public static Properties beltProperties(Properties properties) {
 		return properties
-			.component(TFDataComponents.SWAP_HOTBAR_ABILITY, Unit.INSTANCE)
+			.component(TFDataComponents.SWAP_HOTBAR_ABILITY.get(), Unit.INSTANCE)
 			.component(DataComponents.CONTAINER, DEFAULT_EMPTY_BELT_CONTAINER)
-			.component(TFDataComponents.TRAVELLERS_HAS_BELT, Unit.INSTANCE);
+			.component(TFDataComponents.TRAVELLERS_HAS_BELT.get(), Unit.INSTANCE);
 	}
 
 	@Override
@@ -42,16 +43,6 @@ public class TravellersArmorBeltItem extends TravellersArmorItem {
 		return !stack.has(DataComponents.HIDE_TOOLTIP) && !stack.has(DataComponents.HIDE_ADDITIONAL_TOOLTIP)
 			? Optional.ofNullable(stack.get(DataComponents.CONTAINER)).map(Tooltip::new)
 			: Optional.empty();
-	}
-
-	@Override
-	public boolean canFitInsideContainerItems() {
-		return false;
-	}
-
-	@Override
-	public boolean canFitInsideContainerItems(ItemStack stack) {
-		return !stack.has(DataComponents.CONTAINER);
 	}
 
 	public static void travellersTrySwapHotbar(Player player) {
@@ -66,8 +57,9 @@ public class TravellersArmorBeltItem extends TravellersArmorItem {
 		boolean hasChanged = false;
 		for (int slotIndex = 0; slotIndex < 9; slotIndex++) {
 			ItemStack inventoryStack = inventory.getItem(slotIndex);
-			ItemStack beltStack = containerContents.getSlots() <= slotIndex ? ItemStack.EMPTY : containerContents.getStackInSlot(slotIndex);
-			if (inventoryStack.canFitInsideContainerItems() && !inventoryStack.is(ItemTagGenerator.TRAVELLERS_BELT_BLACKLISTED) && (isSwapHotbarActive || inventoryStack.isEmpty())) {
+			List<ItemStack> beltStacks = containerContents.stream().toList();
+			ItemStack beltStack = slotIndex >= beltStacks.size() ? ItemStack.EMPTY : beltStacks.get(slotIndex);
+			if (!inventoryStack.has(DataComponents.CONTAINER) && !inventoryStack.is(ItemTagGenerator.TRAVELLERS_BELT_BLACKLISTED) && (isSwapHotbarActive || inventoryStack.isEmpty())) {
 				hotbarStacks.set(slotIndex, inventoryStack);
 				inventory.setItem(slotIndex, beltStack);
 				if (!beltStack.equals(inventoryStack))
