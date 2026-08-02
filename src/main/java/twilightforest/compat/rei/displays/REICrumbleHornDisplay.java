@@ -40,7 +40,7 @@ public class REICrumbleHornDisplay extends BasicDisplay {
 		return REICrumbleHornCategory.CRUMBLE_HORN;
 	}
 
-	public static BasicDisplay.Serializer<REICrumbleHornDisplay> serializer() {
-		return BasicDisplay.Serializer.ofRecipeLess(REICrumbleHornDisplay::new, (display, tag) -> tag.putBoolean("isResultAir", display.isResultAir));
+	public static Serializer<REICrumbleHornDisplay> serializer() {
+		return Serializer.ofRecipeLess(REICrumbleHornDisplay::new, (display, tag) -> tag.putBoolean("isResultAir", display.isResultAir));
 	}
 }

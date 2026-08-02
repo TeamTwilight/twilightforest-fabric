@@ -25,7 +25,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.DeferredSpawnEggItem;
+import io.github.fabricators_of_create.porting_lib.util.DeferredSpawnEggItem;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.util.entities.EntityRenderingUtil;

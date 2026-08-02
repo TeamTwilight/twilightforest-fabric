@@ -27,7 +27,7 @@ public class TravellersGearModifierExtension implements ICraftingCategoryExtensi
 		List<ItemStack> outputs = new ArrayList<>();
 		for (Ingredient ingredient : recipe.getIngredients()) {
 			for (ItemStack stack : ingredient.getItems()) {
-				if (stack.has(TFDataComponents.IS_TRAVELLERS_GEAR) && !stack.is(TFItems.TRAVELLERS_BELT)) {
+				if (stack.has(TFDataComponents.IS_TRAVELLERS_GEAR.get()) && !stack.is(TFItems.TRAVELLERS_BELT)) {
 					outputs.add(recipe.applyModifier(Minecraft.getInstance().level.registryAccess(), stack.copy(), recipe.getIngredients()));
 				}
 			}

@@ -11,7 +11,6 @@ import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.network.chat.Component;
 import twilightforest.TwilightForestMod;
-import twilightforest.compat.RecipeViewerConstants;
 import twilightforest.compat.rei.displays.REICrumbleHornDisplay;
 import twilightforest.init.TFItems;
 
@@ -22,12 +21,15 @@ public class REICrumbleHornCategory implements DisplayCategory<REICrumbleHornDis
 
 	public static final CategoryIdentifier<REICrumbleHornDisplay> CRUMBLE_HORN = CategoryIdentifier.of(TwilightForestMod.ID, "crumble_horn");
 
+	public static final int WIDTH = 116;
+	public static final int HEIGHT = 54;
+
 	private final Renderer icon;
 	private final Component localizedName;
 
 	public REICrumbleHornCategory() {
 		this.icon = EntryStacks.of(TFItems.CRUMBLE_HORN);
-		this.localizedName = Component.translatable("gui.twilightforest.crumble_horn_jei");
+		this.localizedName = Component.translatable("gui.crumble_horn_jei");
 	}
 
 	@Override
@@ -47,12 +49,12 @@ public class REICrumbleHornCategory implements DisplayCategory<REICrumbleHornDis
 
 	@Override
 	public int getDisplayWidth(REICrumbleHornDisplay display) {
-		return RecipeViewerConstants.GENERIC_RECIPE_WIDTH + 8;
+		return WIDTH + 8;
 	}
 
 	@Override
 	public int getDisplayHeight() {
-		return RecipeViewerConstants.GENERIC_RECIPE_HEIGHT + 8;
+		return HEIGHT + 8;
 	}
 
 	@Override
@@ -62,32 +64,34 @@ public class REICrumbleHornCategory implements DisplayCategory<REICrumbleHornDis
 		Rectangle bounds = origin.getBounds();
 		bounds.translate(4, 4);
 
-		widgets.add(Widgets.createArrow(new Point(bounds.getX() + 46, bounds.getY() + 19)));
+		widgets.add(Widgets.createTexturedWidget(TwilightForestMod.getGuiTexture("crumble_horn_jei.png"), new Rectangle(bounds.getX(), bounds.getY(), WIDTH, HEIGHT)));
 
-		//input
-		widgets.add(Widgets.createSlot(new Point(bounds.getX() + 19, bounds.getY() + 19))
-			.markInput()
-			.entries(display.getInputEntries().getFirst())
-		);
-
-		//output
 		if (!display.isResultAir) {
-			widgets.add(Widgets.createResultSlotBackground(new Point(bounds.getX() + 81, bounds.getY() + 19)));
-
-			widgets.add(Widgets.createSlot(new Point(bounds.getX() + 81, bounds.getY() + 19))
-				.markOutput()
-				.disableBackground()
-				.entries(display.getOutputEntries().getFirst())
-			);
-		} else {
-			widgets.add(Widgets.createSlot(new Rectangle(new Point(bounds.getX() + 75, bounds.getY() + 12), new Dimension(32, 32)))
-				.markOutput()
-				.disableHighlight()
-				.disableBackground()
-				.entries(display.getOutputEntries().getFirst())
-			);
+			widgets.add(Widgets.createTexturedWidget(TwilightForestMod.getGuiTexture("crumble_horn_jei.png"), bounds.getX() + 76, bounds.getY() + 14, 116, 0, 26, 26));
 		}
 
+		widgets.add(
+			Widgets.createSlot(offsetPoint(bounds, 19, 19))
+				.markInput()
+				.disableBackground()
+				.entries(display.getInputEntries().get(0))
+		);
+
+		int size = !display.isResultAir ? 16 : 32;
+		int x = !display.isResultAir ? 81 : 75;
+		int y = !display.isResultAir ? 19 : 12;
+
+		widgets.add(
+			Widgets.createSlot(new Rectangle(offsetPoint(bounds, x, y), new Dimension(size, size)))
+				.markOutput()
+				.disableBackground()
+				.entries(display.getOutputEntries().get(0))
+		);
+
 		return widgets;
+	}
+
+	public static Point offsetPoint(Rectangle bounds, int x, int y) {
+		return new Point(bounds.getX() + x, bounds.getY() + y);
 	}
 }

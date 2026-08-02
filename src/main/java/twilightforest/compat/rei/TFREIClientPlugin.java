@@ -14,7 +14,6 @@ import me.shedaniel.rei.api.common.entry.type.EntryTypeRegistry;
 import me.shedaniel.rei.api.common.entry.type.VanillaEntryTypes;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
-import me.shedaniel.rei.forge.REIPluginClient;
 import me.shedaniel.rei.plugin.common.BuiltinPlugin;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.RegistryAccess;
@@ -29,7 +28,7 @@ import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.common.DeferredSpawnEggItem;
+import io.github.fabricators_of_create.porting_lib.util.DeferredSpawnEggItem;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.UncraftingScreen;
@@ -57,7 +56,6 @@ import java.util.WeakHashMap;
 import java.util.stream.Stream;
 
 @SuppressWarnings("UnstableApiUsage")
-@REIPluginClient
 public class TFREIClientPlugin implements REIClientPlugin {
 
 	public static final EntityEntryDefinition ENTITY_DEFINITION = new EntityEntryDefinition();
@@ -71,12 +69,12 @@ public class TFREIClientPlugin implements REIClientPlugin {
 	@Override
 	public void registerCategories(CategoryRegistry registry) {
 		if (!TFConfig.disableEntireTable) {
-			registry.addWorkstations(BuiltinPlugin.CRAFTING, EntryStacks.of(TFBlocks.UNCRAFTING_TABLE));
-			registry.addWorkstations(TFREIServerPlugin.UNCRAFTING, EntryStacks.of(TFBlocks.UNCRAFTING_TABLE));
+			registry.addWorkstations(BuiltinPlugin.CRAFTING, EntryStacks.of(TFBlocks.UNCRAFTING_TABLE.get()));
+			registry.addWorkstations(TFREIServerPlugin.UNCRAFTING, EntryStacks.of(TFBlocks.UNCRAFTING_TABLE.get()));
 		}
-		registry.addWorkstations(REICrumbleHornCategory.CRUMBLE_HORN, EntryStacks.of(TFItems.CRUMBLE_HORN));
-		registry.addWorkstations(REITransformationPowderCategory.TRANSFORMATION, EntryStacks.of(TFItems.TRANSFORMATION_POWDER));
-		registry.addWorkstations(REIOminousFireCategory.OMINOUS_FIRE, EntryStacks.of(TFItems.EXANIMATE_ESSENCE));
+		registry.addWorkstations(REICrumbleHornCategory.CRUMBLE_HORN, EntryStacks.of(TFItems.CRUMBLE_HORN.get()));
+		registry.addWorkstations(REITransformationPowderCategory.TRANSFORMATION, EntryStacks.of(TFItems.TRANSFORMATION_POWDER.get()));
+		registry.addWorkstations(REIOminousFireCategory.OMINOUS_FIRE, EntryStacks.of(TFItems.EXANIMATE_ESSENCE.get()));
 		registry.addWorkstations(REIDryingCategory.DRYING, EntryIngredients.ofItemTag(ItemTagGenerator.DRYING_RACKS));
 
 		if (!TFConfig.disableEntireTable) {
@@ -117,7 +115,7 @@ public class TFREIClientPlugin implements REIClientPlugin {
 
 		registry.registerRecipesFiller(NoTemplateSmithingRecipe.class, RecipeType.SMITHING, REINoTemplateDisplay::noTemplate);
 		registry.registerRecipeFiller(DryingRecipe.class, TFRecipes.DRYING_RECIPE.get(), holder -> {
-			if (!holder.value().getResult().is(TFItems.STALE_BREAD)) {
+			if (!holder.value().getResult().is(TFItems.STALE_BREAD.get())) {
 				return REIDryingDisplay.of(holder.value());
 			}
 			return null;

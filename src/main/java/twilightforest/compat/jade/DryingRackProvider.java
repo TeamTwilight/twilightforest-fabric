@@ -31,7 +31,8 @@ public enum DryingRackProvider implements IBlockComponentProvider, IServerDataPr
 	public void appendServerData(CompoundTag data, BlockAccessor accessor) {
 		BlockEntity entity = accessor.getBlockEntity();
 		if (entity instanceof DryingRackBlockEntity rack && rack.isDrying()) {
-			CompoundTag tag = rack.saveWithoutMetadata(accessor.getLevel().registryAccess());
+			CompoundTag tag = new CompoundTag();
+			rack.saveDryingData(tag);
 			data.putInt("progress", tag.getInt("dry_time"));
 			data.putInt("total", tag.getInt("total_dry_time"));
 		}

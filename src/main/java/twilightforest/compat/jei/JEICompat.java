@@ -14,7 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
-import net.neoforged.fml.ModList;
+import net.fabricmc.loader.api.FabricLoader;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.UncraftingScreen;
 import twilightforest.compat.RecipeViewerConstants;
@@ -54,7 +54,7 @@ public class JEICompat implements IModPlugin {
 
 	public static boolean isEmiInstalled() {
 		//Skip handling if both EMI and JEI are loaded as otherwise some things behave strangely
-		return ModList.get().isLoaded("emi");
+		return FabricLoader.getInstance().isModLoaded("emi");
 	}
 
 	@Override

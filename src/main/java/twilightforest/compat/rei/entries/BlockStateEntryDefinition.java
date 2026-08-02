@@ -61,7 +61,7 @@ public class BlockStateEntryDefinition implements EntryDefinition<BlockState>, E
 
 	@Override
 	public boolean isEmpty(EntryStack<BlockState> entry, BlockState value) {
-		return value.isEmpty();
+		return value.isAir();
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class BlockStateEntryDefinition implements EntryDefinition<BlockState>, E
 
 	@Nullable
 	@Override
-	//TODO...?
+	// 待完善
 	public BlockState add(BlockState o1, BlockState o2) {
 		return o1;
 	}

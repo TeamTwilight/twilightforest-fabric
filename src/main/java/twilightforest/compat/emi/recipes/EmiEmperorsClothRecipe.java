@@ -54,7 +54,7 @@ public class EmiEmperorsClothRecipe extends EmiPatternCraftingRecipe {
 	private EmiStack getArmor(Random random, boolean addTag) {
 		ItemStack stack = ARMORS.get(random.nextInt(ARMORS.size())).getItemStack().copy();
 		if (addTag) {
-			stack.set(TFDataComponents.EMPERORS_CLOTH, Unit.INSTANCE);
+			stack.set(TFDataComponents.EMPERORS_CLOTH.get(), Unit.INSTANCE);
 		}
 		return EmiStack.of(stack);
 	}

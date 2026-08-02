@@ -61,7 +61,7 @@ public class REIOminousFireCategory implements DisplayCategory<REIOminousFireDis
 		bounds.translate(4, 4);
 
 		//arrow
-        widgets.add(Widgets.createArrow(new Point(bounds.getX() + 46, bounds.getY() + 19)));
+		widgets.add(Widgets.createArrow(new Point(bounds.getX() + 46, bounds.getY() + 19)));
 		widgets.add(Widgets.createSlot(new Point(bounds.getX() + 48, bounds.getY() + 45))
 			.disableBackground()
 			.disableHighlight()

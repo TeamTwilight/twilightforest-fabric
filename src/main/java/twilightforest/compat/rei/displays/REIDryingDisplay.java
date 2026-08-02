@@ -36,7 +36,7 @@ public class REIDryingDisplay extends BasicDisplay {
 		return REIDryingCategory.DRYING;
 	}
 
-	public static BasicDisplay.Serializer<REIDryingDisplay> serializer() {
-		return BasicDisplay.Serializer.of((input, output, location1, tag) -> new REIDryingDisplay(input, output, tag.getInt("drying_time")), (display, tag) -> tag.putInt("drying_time", display.getDryingTime()));
+	public static Serializer<REIDryingDisplay> serializer() {
+		return Serializer.of((input, output, location1, tag) -> new REIDryingDisplay(input, output, tag.getInt("drying_time")), (display, tag) -> tag.putInt("drying_time", display.getDryingTime()));
 	}
 }
