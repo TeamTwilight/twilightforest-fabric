@@ -21,7 +21,7 @@ import twilightforest.asmhooks.ArmorHooks;
  */
 @Environment(EnvType.CLIENT)
 @Mixin(HumanoidArmorLayer.class)
-public class ArmorRenderLayerMixin {
+public class HumanoidArmorLayerMixin {
 
 	@Inject(method = "renderArmorPiece", at = @At("HEAD"), cancellable = true)
 	private void twilightforest$cancelArmorRendering(PoseStack poseStack, MultiBufferSource buffer, LivingEntity livingEntity, EquipmentSlot slot, int i, HumanoidModel<?> model, CallbackInfo ci) {

@@ -24,6 +24,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructures;
+import twilightforest.mixin.ChunkStatusTasksMixin;
 import twilightforest.world.components.chunkblanketing.CanopyBlanketProcessor;
 import twilightforest.world.components.chunkblanketing.ChunkBlanketProcessor;
 import twilightforest.world.components.chunkblanketing.ChunkBlanketType;
@@ -82,7 +83,7 @@ public final class ChunkBlanketProcessors {
 
 	/**
 	 * Chunk blanketing variant that works with ServerLevel during surface generation.
-	 * Used by {@link twilightforest.mixin.ChunkStatusMixin} when WorldGenRegion is not available.
+	 * Used by {@link ChunkStatusTasksMixin} when WorldGenRegion is not available.
 	 */
 	public static void chunkBlanketing(ChunkAccess chunkAccess, ServerLevel serverLevel) {
 		ChunkPos chunkPos = chunkAccess.getPos();

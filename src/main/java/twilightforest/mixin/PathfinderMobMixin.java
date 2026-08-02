@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import twilightforest.asmhooks.EntityHooks;
 
 @Mixin(PathfinderMob.class)
-public class PathFinderMixin {
+public class PathfinderMobMixin {
 
 	@Inject(method = "shouldStayCloseToLeashHolder", at = @At("RETURN"), cancellable = true)
 	private void twilightforest$overrideStayCloseToHolder(CallbackInfoReturnable<Boolean> cir) {

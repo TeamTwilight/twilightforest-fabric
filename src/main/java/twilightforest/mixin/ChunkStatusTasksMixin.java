@@ -18,7 +18,7 @@ import twilightforest.asmhooks.WorldgenHooks;
  * so we use the ServerLevel overload of chunkBlanketing.
  */
 @Mixin(ChunkStatusTasks.class)
-public class ChunkStatusMixin {
+public class ChunkStatusTasksMixin {
 
 	@Inject(method = "generateSurface", at = @At("TAIL"))
 	private static void twilightforest$chunkBlanketing(WorldGenContext context, ChunkStep step, StaticCache2D<?> cache, ChunkAccess chunk, CallbackInfoReturnable<?> cir) {

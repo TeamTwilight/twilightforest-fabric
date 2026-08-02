@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import twilightforest.asmhooks.BlockHooks;
 
 @Mixin(SnowyDirtBlock.class)
-public class SnowLayerBlockMixin {
+public class SnowyDirtBlockMixin {
 
 	@Inject(method = "isSnowySetting", at = @At("RETURN"), cancellable = true)
 	private static void twilightforest$keepSnowyStateForSnowloggableBlocks(BlockState state, CallbackInfoReturnable<Boolean> cir) {
