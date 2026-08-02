@@ -12,8 +12,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.util.TriState;
-import tamaized.beanification.Autowired;
+import twilightforest.util.TFTriState;
+import twilightforest.util.TFBeanRegistry;
 import twilightforest.block.CloudBlock;
 import twilightforest.block.SnowLoggable;
 import twilightforest.block.WroughtIronFenceBlock;
@@ -25,8 +25,14 @@ import twilightforest.init.custom.TravellersModifiersManager;
 @SuppressWarnings({"JavadocReference", "unused"})
 public class BlockHooks {
 
-	@Autowired
 	private static FoliageColorHandler foliageColorHandler;
+
+	public static FoliageColorHandler getFoliageColorHandler() {
+		if (foliageColorHandler == null) {
+			foliageColorHandler = TFBeanRegistry.get(FoliageColorHandler.class);
+		}
+		return foliageColorHandler;
+	}
 
 	/**
 	 * {@link twilightforest.asm.transformers.cloud.IsRainingAtTransformer}<p/>
@@ -83,7 +89,7 @@ public class BlockHooks {
 	 * {@link net.minecraft.world.level.block.MushroomBlock#canSurvive(BlockState, LevelReader, BlockPos)}<br/>
 	 * Targets: {@link BlockState#canSustainPlant(BlockGetter, BlockPos, Direction, BlockState)}
 	 */
-	public static TriState modifySoilDecisionForMushroomBlockSurvivability(TriState o, LevelReader level, BlockPos pos) {
+	public static TFTriState modifySoilDecisionForMushroomBlockSurvivability(TFTriState o, LevelReader level, BlockPos pos) {
 		if (!o.isDefault())
 			return o; // Short-circuit - We should not override non-default soil behaviour otherwise this would allow Mushrooms to survive on ALL blocks
 		for (int x = -1; x <= 1; x++) {
@@ -91,7 +97,7 @@ public class BlockHooks {
 				if (x == 0 && z == 0)
 					continue;
 				if (level.getBlockState(pos.offset(x, -1, z)).is(TFBlocks.TWILIGHT_PORTAL))
-					return TriState.TRUE;
+					return TFTriState.TRUE;
 			}
 		}
 		return o;
@@ -104,14 +110,14 @@ public class BlockHooks {
 	 * {@link net.minecraft.client.renderer.BiomeColors#FOLIAGE_COLOR_RESOLVER}
 	 */
 	public static int resolveFoliageColor(int o, Biome biome, double x, double z) {
-		return foliageColorHandler.get(o, biome, x, z);
+		return getFoliageColorHandler().get(o, biome, x, z);
 	}
 
 	/**
 	 * {@link twilightforest.asm.transformers.block.UnrestrainedFrictionTransformer}<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.neoforged.neoforge.common.extensions.IBlockExtension#getFriction(BlockState, LevelReader, BlockPos, Entity)}
+	 * {@link twilightforest.mixin.UnrestrainedFrictionMixin}
 	 * Targets: FRETURN
 	 */
 	public static float resetBlockFrictionWithUnrestrained(float o, Entity entity) {

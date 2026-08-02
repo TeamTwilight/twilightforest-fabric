@@ -3,6 +3,7 @@ package twilightforest.asmhooks;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectListIterator;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.StaticCache2D;
 import net.minecraft.world.level.ChunkPos;
@@ -10,6 +11,7 @@ import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.status.ChunkStep;
 import net.minecraft.world.level.chunk.status.WorldGenContext;
+import net.minecraft.world.level.levelgen.Beardifier;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.blending.Blender;
@@ -24,6 +26,26 @@ import twilightforest.world.components.structures.util.CustomStructureData;
 
 @SuppressWarnings({"JavadocReference", "unused"})
 public class WorldgenHooks {
+
+	/**
+	 * Duck-typing interface implemented by {@link BeardifierMixin} to store custom density
+	 * functions directly on the Beardifier instance. This avoids the thread-safety and
+	 * memory-leak issues of a static IdentityHashMap, since chunk generation is
+	 * multi-threaded in 1.21.1.
+	 */
+	public interface CustomBeardifier {
+		void tf$setCustomDensities(ObjectListIterator<DensityFunction> densities);
+		ObjectListIterator<DensityFunction> tf$getCustomDensities();
+	}
+
+	public static void setBeardifierCustomDensities(Beardifier beardifier, ObjectListIterator<DensityFunction> customDensities) {
+		((CustomBeardifier) beardifier).tf$setCustomDensities(customDensities);
+	}
+
+	@Nullable
+	public static ObjectListIterator<DensityFunction> getBeardifierCustomDensities(Beardifier beardifier) {
+		return ((CustomBeardifier) beardifier).tf$getCustomDensities();
+	}
 
 	/**
 	 * {@link twilightforest.asm.transformers.beardifier.InitializeCustomBeardifierFieldsDuringCreateNoiseChunkTransformer}<p/>
@@ -54,7 +76,8 @@ public class WorldgenHooks {
 		double newDensity = 0;
 
 		while (customDensities.hasNext()) {
-			newDensity += customDensities.next().compute(context);
+			double density = customDensities.next().compute(context);
+			newDensity += density;
 		}
 		customDensities.back(Integer.MAX_VALUE);
 
@@ -69,6 +92,14 @@ public class WorldgenHooks {
 	 */
 	public static void chunkBlanketing(ChunkAccess access, WorldGenRegion region) {
 		ChunkBlanketProcessors.chunkBlanketing(access, region);
+	}
+
+	/**
+	 * Chunk blanketing variant for ServerLevel (1.21.1 Fabric).
+	 * In 1.21.1, ChunkStatusTasks.generateSurface uses ServerLevel instead of WorldGenRegion.
+	 */
+	public static void chunkBlanketing(ChunkAccess access, ServerLevel serverLevel) {
+		ChunkBlanketProcessors.chunkBlanketing(access, serverLevel);
 	}
 
 	/**

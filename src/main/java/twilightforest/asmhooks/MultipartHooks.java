@@ -8,8 +8,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
-import tamaized.beanification.Autowired;
-import twilightforest.asm.transformers.multipart.SendDirtyEntityDataTransformer;
+import twilightforest.util.TFBeanRegistry;
 import twilightforest.util.multiparts.MultipartEntityUtil;
 
 import java.util.Iterator;
@@ -17,8 +16,14 @@ import java.util.Iterator;
 @SuppressWarnings({"JavadocReference", "unused"})
 public class MultipartHooks {
 
-	@Autowired
 	private static MultipartEntityUtil multipartEntityUtil;
+
+	public static MultipartEntityUtil getMultipartEntityUtil() {
+		if (multipartEntityUtil == null) {
+			multipartEntityUtil = TFBeanRegistry.get(MultipartEntityUtil.class);
+		}
+		return multipartEntityUtil;
+	}
 
 	/**
 	 * {@link twilightforest.asm.transformers.multipart.ResolveEntitiesForRendereringTransformer}<p/>
@@ -28,7 +33,7 @@ public class MultipartHooks {
 	 * [Targets: {@link net.minecraft.client.multiplayer.ClientLevel#entitiesForRendering}]
 	 */
 	public static Iterator<Entity> resolveEntitiesForRendering(Iterator<Entity> iter) {
-		return multipartEntityUtil.injectTFPartEntities(iter);
+		return getMultipartEntityUtil().injectTFPartEntities(iter);
 	}
 
 	/**
@@ -40,7 +45,7 @@ public class MultipartHooks {
 	 */
 	@Nullable
 	public static EntityRenderer<?> resolveEntityRenderer(@Nullable EntityRenderer<?> renderer, Entity entity) {
-		return multipartEntityUtil.tryLookupTFPartRenderer(renderer, entity);
+		return getMultipartEntityUtil().tryLookupTFPartRenderer(renderer, entity);
 	}
 
 	/**
@@ -50,7 +55,7 @@ public class MultipartHooks {
 	 * {@link net.minecraft.server.level.ServerEntity#sendDirtyEntityData}
 	 */
 	public static Entity sendDirtyEntityData(Entity entity) {
-		return multipartEntityUtil.sendDirtyMultipartEntityData(entity);
+		return getMultipartEntityUtil().sendDirtyMultipartEntityData(entity);
 	}
 
 }

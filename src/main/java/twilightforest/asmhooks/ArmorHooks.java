@@ -8,15 +8,21 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import tamaized.beanification.Autowired;
+import twilightforest.util.TFBeanRegistry;
 import twilightforest.init.TFDataComponents;
 import twilightforest.util.ArmorUtil;
 
 @SuppressWarnings({"JavadocReference", "unused"})
 public class ArmorHooks {
 
-	@Autowired
 	private static ArmorUtil armorUtil;
+
+	public static ArmorUtil getArmorUtil() {
+		if (armorUtil == null) {
+			armorUtil = TFBeanRegistry.get(ArmorUtil.class);
+		}
+		return armorUtil;
+	}
 
 	/**
 	 * {@link twilightforest.asm.transformers.armor.ArmorVisibilityRenderingTransformer}<p/>
@@ -25,8 +31,8 @@ public class ArmorHooks {
 	 * {@link net.minecraft.world.entity.LivingEntity#getVisibilityPercent(Entity)}
 	 * Targets: {@link net.minecraft.world.entity.LivingEntity.getArmorCoverPercentage()}
 	 */
-	public static float modifyArmorVisibility(float o, LivingEntity entity) {
-		return o - armorUtil.getShroudedArmorPercentage(entity);
+	public static double modifyArmorVisibility(double o, LivingEntity entity) {
+		return o - getArmorUtil().getShroudedArmorPercentage(entity);
 	}
 
 	/**
@@ -38,7 +44,7 @@ public class ArmorHooks {
 	 * {@link net.minecraft.client.renderer.entity.layers.ElytraLayer#shouldRender(ItemStack, LivingEntity)}
 	 */
 	public static boolean cancelArmorRendering(boolean o, ItemStack stack) {
-		if (o && stack.has(TFDataComponents.EMPERORS_CLOTH)) {
+		if (o && stack.has(TFDataComponents.EMPERORS_CLOTH.get())) {
 			return false;
 		}
 		return o;
@@ -51,6 +57,6 @@ public class ArmorHooks {
 	 * {@link net.minecraft.client.renderer.entity.layers.CapeLayer#render(PoseStack, MultiBufferSource, int, AbstractClientPlayer, float, float, float, float, float, float)}
 	 */
 	public static boolean fixCapeRendering(boolean o, ItemStack stack) {
-		return o && !stack.has(TFDataComponents.EMPERORS_CLOTH);
+		return o && !stack.has(TFDataComponents.EMPERORS_CLOTH.get());
 	}
 }
