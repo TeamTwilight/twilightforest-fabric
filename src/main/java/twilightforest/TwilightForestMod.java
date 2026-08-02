@@ -1,31 +1,30 @@
 package twilightforest;
 
 import com.google.common.reflect.Reflection;
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.registry.FuelRegistry;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.ModList;
-import net.neoforged.fml.ModLoadingContext;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.client.gui.ConfigurationScreen;
-import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
-import net.neoforged.neoforge.common.NeoForge;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.Parrot;
+import net.minecraft.world.level.block.ComposterBlock;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import tamaized.beanification.BeanContext;
-import tamaized.beanification.Configurable;
-import twilightforest.compat.CosmeticArmorCompat;
-import twilightforest.compat.curios.CuriosCompat;
 import twilightforest.config.ConfigSetup;
 import twilightforest.init.*;
 import twilightforest.init.custom.*;
+import io.github.fabricators_of_create.porting_lib.util.DeferredSpawnEggItem;
+import twilightforest.util.TFBoatTypes;
+import twilightforest.util.TFBeanRegistry;
 import twilightforest.util.TFRemapper;
 
+import java.lang.reflect.Field;
 import java.util.Locale;
+import java.util.Map;
 
-@Configurable
-@Mod(TwilightForestMod.ID)
-public final class TwilightForestMod {
+public final class TwilightForestMod implements ModInitializer {
 
 	public static final String ID = "twilightforest";
 
@@ -36,72 +35,170 @@ public final class TwilightForestMod {
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
 	static {
-		BeanContext.init(ID);
+		// Initialize all DI components (replaces Beanification)
+		initComponents();
 	}
 
+	@SuppressWarnings("unused")
+	private static void initComponents() {
+		// Trigger class loading for all @Component classes to register themselves
+		// Order matters: classes without dependencies first, then dependent classes
+		try {
+			// Simple classes (no dependencies)
+			Class.forName("twilightforest.util.ArmorUtil");
+			Class.forName("twilightforest.util.DisplayUtil");
+			Class.forName("twilightforest.util.DirectionUtil");
+			Class.forName("twilightforest.util.HolderMatcher");
+			Class.forName("twilightforest.util.ModidPrefixUtil");
+			Class.forName("twilightforest.util.HolidayEvent");
+			Class.forName("twilightforest.util.multiparts.MultipartEntityUtil");
+			Class.forName("twilightforest.world.components.BiomeColorAlgorithms");
+			Class.forName("twilightforest.world.components.structures.util.StructureTemplateDefinitions");
+			Class.forName("twilightforest.world.components.structures.lichtowerrevamp.LichTowerUtil");
+			Class.forName("twilightforest.world.components.structures.lichtowerrevamp.LichTowerPieces");
+			Class.forName("twilightforest.world.components.structures.camp.CampPieces");
+			Class.forName("twilightforest.world.components.structures.selectors.CastleRandomBlockSelectorFactory");
+			Class.forName("twilightforest.world.components.structures.selectors.IceTowerRandomBlockSelectorFactory");
+			Class.forName("twilightforest.world.components.structures.selectors.KnightStonesRandomBlockSelectorFactory");
+			Class.forName("twilightforest.world.components.structures.selectors.MazestoneRandomBlockSelectoryFactory");
+			Class.forName("twilightforest.world.components.structures.selectors.StrongholdStonesRandomBlockSelectorFactory");
+			Class.forName("twilightforest.world.components.structures.selectors.TowerwoodRandomBlockSelectorFactory");
+			Class.forName("twilightforest.entity.passive.quest.ram.QuestingRamCurrentContext");
+			Class.forName("twilightforest.data.helpers.AdvancementDataMultiRequirements");
+			Class.forName("twilightforest.client.FoliageColorHandler");
+			Class.forName("twilightforest.client.event.TravellersClientEvents");
+			// Command classes (depends on above)
+			Class.forName("twilightforest.command.ShieldCommand");
+			Class.forName("twilightforest.command.ClearDisplayCommand");
+			Class.forName("twilightforest.command.CenterCommand");
+			Class.forName("twilightforest.command.ConquerCommand");
+			Class.forName("twilightforest.command.CountLootCommand");
+			Class.forName("twilightforest.command.CountTemplateCommand");
+			Class.forName("twilightforest.command.GenerateBookCommand");
+			Class.forName("twilightforest.command.InfoCommand");
+			Class.forName("twilightforest.command.MapBiomesCommand");
+			Class.forName("twilightforest.command.MapLocatorCommand");
+			Class.forName("twilightforest.command.SinisterSpawnerCommand");
+			Class.forName("twilightforest.command.TravellersGearCommand");
+			Class.forName("twilightforest.command.TFTeleportCommand");
+			Class.forName("twilightforest.command.DisplayPiecesCommand");
+			Class.forName("twilightforest.command.StructureDistanceCommand");
+			Class.forName("twilightforest.command.TFCommand");
+			// Event classes (depends on commands)
+			Class.forName("twilightforest.events.RegistrationEvents");
+			Class.forName("twilightforest.events.EntityEvents");
+			Class.forName("twilightforest.events.MiscEvents");
+			Class.forName("twilightforest.events.ToolEvents");
+			Class.forName("twilightforest.events.ProgressionEvents");
+			Class.forName("twilightforest.events.HostileMountEvents");
+			Class.forName("twilightforest.events.CapabilityEvents");
+			Class.forName("twilightforest.events.CharmEvents");
+			Class.forName("twilightforest.events.TravellersGearEvents");
+		} catch (ClassNotFoundException e) {
+			LOGGER.error("Failed to initialize component: {}", e.getMessage());
+		}
+		// Run all @PostConstruct equivalents
+		TFBeanRegistry.runPostInit();
+	}
 
-	public TwilightForestMod(IEventBus bus, Dist dist) {
+	@Override
+	public void onInitialize() {
 		Reflection.initialize(ConfigSetup.class);
-		ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> ConfigurationScreen::new);
+
 		TFGameRules.register();
 
-		TFItems.ITEMS.register(bus);
-		TFStats.STATS.register(bus);
-		TFLoot.NUMBERS.register(bus);
-		TFBlocks.BLOCKS.register(bus);
-		TFPOITypes.POIS.register(bus);
-		TFSounds.SOUNDS.register(bus);
-		TFLoot.FUNCTIONS.register(bus);
-		TFLoot.CONDITIONS.register(bus);
-		TFEntities.ENTITIES.register(bus);
-		TFFeatures.FEATURES.register(bus);
-		TFCreativeTabs.TABS.register(bus);
-		TFLoot.CONDITIONALS.register(bus);
-		TFEntities.SPAWN_EGGS.register(bus);
-		ItemDisplays.DISPLAYS.register(bus);
-		TFMenuTypes.CONTAINERS.register(bus);
-		TFRecipes.RECIPE_TYPES.register(bus);
-		TFAttributes.ATTRIBUTES.register(bus);
-		TFAdvancements.TRIGGERS.register(bus);
-		TFMobEffects.MOB_EFFECTS.register(bus);
-		TFItemSubPredicates.TYPES.register(bus);
-		Enforcements.ENFORCEMENTS.register(bus);
-		TFCaveCarvers.CARVER_TYPES.register(bus);
-		TFDataComponents.COMPONENTS.register(bus);
-		TFRecipes.RECIPE_SERIALIZERS.register(bus);
-		TFMapDecorations.DECORATIONS.register(bus);
-		TFParticleType.PARTICLE_TYPES.register(bus);
-		TravellersModifierTypes.TYPES.register(bus);
-		TFBlockEntities.BLOCK_ENTITIES.register(bus);
-		TFLootModifiers.LOOT_MODIFIERS.register(bus);
-		TFArmorMaterials.ARMOR_MATERIALS.register(bus);
-		TFStructureTypes.STRUCTURE_TYPES.register(bus);
-		TFFeatureModifiers.TRUNK_PLACERS.register(bus);
-		BiomeLayerTypes.BIOME_LAYER_TYPES.register(bus);
-		TFDataAttachments.ATTACHMENT_TYPES.register(bus);
-		TFDataSerializers.DATA_SERIALIZERS.register(bus);
-		TFFeatureModifiers.FOLIAGE_PLACERS.register(bus);
-		TFFeatureModifiers.TREE_DECORATORS.register(bus);
-		TFEnchantmentEffects.ENTITY_EFFECTS.register(bus);
-		TFFeatureModifiers.PLACEMENT_MODIFIERS.register(bus);
-		TFDensityFunctions.DENSITY_FUNCTION_TYPES.register(bus);
-		TFStructureProcessors.STRUCTURE_PROCESSORS.register(bus);
-		TFStructurePieceTypes.STRUCTURE_PIECE_TYPES.register(bus);
-		ChunkBlanketProcessors.CHUNK_BLANKETING_TYPES.register(bus);
-		TFStructurePlacementTypes.STRUCTURE_PLACEMENT_TYPES.register(bus);
-		TemplateMarkerHandlers.TEMPLATE_MARKER_HANDLER_TYPES.register(bus);
-
+		// Add registry aliases BEFORE any DeferredRegister.register() calls
 		TFRemapper.addRegistryAliases();
 
-		if (ModList.get().isLoaded("curios")) loadCuriosCompat(bus);
-		if (ModList.get().isLoaded("cosmeticarmorreworked")) NeoForge.EVENT_BUS.addListener(CosmeticArmorCompat::keepCosmeticArmor);
-	}
+		TFArmorMaterials.ARMOR_MATERIALS.register();
+		TFDataComponents.COMPONENTS.register();
+		TFBlocks.BLOCKS.register();
 
-	private static void loadCuriosCompat(IEventBus bus) {
-		NeoForge.EVENT_BUS.addListener(CuriosCompat::keepCurios);
-		bus.addListener(CuriosCompat::registerCuriosCapabilities);
-		bus.addListener(CuriosCompat::registerCurioRenderers);
-		bus.addListener(CuriosCompat::registerCurioLayers);
+		// Register custom boat types BEFORE boat items are registered
+		// so that boat items get the correct custom Boat.Type instead of falling back to OAK
+		try {
+			TFBoatTypes.registerCustomTypes();
+		} catch (Throwable e) {
+			LOGGER.error("Failed to register custom Twilight Forest boat types. Boats will not be available.", e);
+		}
+
+		TFItems.ITEMS.register();
+		TFStats.STATS.register();
+		TFLoot.NUMBERS.register();
+		TFPOITypes.POIS.register();
+		TFSounds.SOUNDS.register();
+		TFLoot.FUNCTIONS.register();
+		TFLoot.CONDITIONS.register();
+		TFEntities.ENTITIES.register();
+		TFFeatures.FEATURES.register();
+		TFCreativeTabs.TABS.register();
+		TFLoot.CONDITIONALS.register();
+		TFEntities.SPAWN_EGGS.register();
+		ItemDisplays.DISPLAYS.register();
+		TFMenuTypes.CONTAINERS.register();
+		TFRecipes.RECIPE_TYPES.register();
+		TFAttributes.ATTRIBUTES.register();
+		TFAdvancements.TRIGGERS.register();
+		TFMobEffects.MOB_EFFECTS.register();
+		TFItemSubPredicates.TYPES.register();
+		Enforcements.ENFORCEMENTS.register();
+		TFCaveCarvers.CARVER_TYPES.register();
+		TFRecipes.RECIPE_SERIALIZERS.register();
+		TFMapDecorations.DECORATIONS.register();
+		TFParticleType.PARTICLE_TYPES.register();
+		TravellersModifierTypes.TYPES.register();
+		TFBlockEntities.BLOCK_ENTITIES.register();
+		TFLootModifiers.LOOT_MODIFIERS.register();
+		TFStructureTypes.STRUCTURE_TYPES.register();
+		TFFeatureModifiers.TRUNK_PLACERS.register();
+		BiomeLayerTypes.BIOME_LAYER_TYPES.register();
+		TFDataAttachments.register();
+		TFDataSerializers.init();
+		TFFeatureModifiers.FOLIAGE_PLACERS.register();
+		TFFeatureModifiers.TREE_DECORATORS.register();
+		TFEnchantmentEffects.ENTITY_EFFECTS.register();
+		TFFeatureModifiers.PLACEMENT_MODIFIERS.register();
+		TFDensityFunctions.DENSITY_FUNCTION_TYPES.register();
+		TFStructureProcessors.STRUCTURE_PROCESSORS.register();
+		TFStructurePieceTypes.STRUCTURE_PIECE_TYPES.register();
+		ChunkBlanketProcessors.CHUNK_BLANKETING_TYPES.register();
+		TFStructurePlacementTypes.STRUCTURE_PLACEMENT_TYPES.register();
+		TemplateMarkerHandlers.TEMPLATE_MARKER_HANDLER_TYPES.register();
+
+		// Initialize deferred spawn eggs (dispenser behaviors and type mapping)
+		DeferredSpawnEggItem.init();
+
+		// Registration events migrated to Fabric (Phase 2.5)
+		twilightforest.events.RegistrationEvents.registerPackets();
+		twilightforest.events.RegistrationEvents.registerServerPacketHandlers();
+		twilightforest.events.RegistrationEvents.addEntityAttributes();
+		twilightforest.events.RegistrationEvents.registerSpawnPlacements();
+		twilightforest.events.RegistrationEvents.commonInit();
+		twilightforest.events.RegistrationEvents.registerExtraStuff();
+		twilightforest.events.RegistrationEvents.createDataMaps();
+		twilightforest.events.RegistrationEvents.setRegistriesForDatapack();
+
+		// Register grass color modifiers for client-side rendering (must be called at mod init, not just datapack bootstrap)
+		TFBiomes.registerGrassColorModifiers();
+
+		// Compat mods - will be handled via Fabric's mod loading
+		if (FabricLoader.getInstance().isModLoaded("curios")) {
+			// Curios compat will be registered via fabric.mod.json entrypoints
+			LOGGER.info("Curios detected, loading compat");
+		}
+
+		// Register compostables (migrated from NeoForge DataMaps)
+		registerCompostables();
+
+		// Register furnace fuels (migrated from NeoForge DataMaps)
+		registerFurnaceFuels();
+
+		// Register parrot imitations (migrated from NeoForge DataMaps)
+		try {
+			registerParrotImitations();
+		} catch (Exception e) {
+			LOGGER.warn("Failed to register parrot imitations: {}", e.getMessage());
+		}
 	}
 
 	public static ResourceLocation prefix(String name) {
@@ -118,5 +215,148 @@ public final class TwilightForestMod {
 
 	public static ResourceLocation getEnvTexture(String name) {
 		return ResourceLocation.fromNamespaceAndPath(ID, ENVIRO_DIR + name);
+	}
+
+	private void registerCompostables() {
+		// Leaves - 0.3
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.FALLEN_LEAVES.asItem(), 0.1F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.CANOPY_LEAVES.asItem(), 0.3F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.CLOVER_PATCH.asItem(), 0.3F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.DARK_LEAVES.asItem(), 0.3F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.FIDDLEHEAD.asItem(), 0.3F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.HEDGE.asItem(), 0.3F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.MANGROVE_LEAVES.asItem(), 0.3F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.MAYAPPLE.asItem(), 0.3F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.MINING_LEAVES.asItem(), 0.3F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.TWILIGHT_OAK_LEAVES.asItem(), 0.3F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.RAINBOW_OAK_LEAVES.asItem(), 0.3F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.ROOT_STRAND.asItem(), 0.3F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.SORTING_LEAVES.asItem(), 0.3F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.THORN_LEAVES.asItem(), 0.3F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.TIME_LEAVES.asItem(), 0.3F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.TRANSFORMATION_LEAVES.asItem(), 0.3F);
+		// Saplings - 0.3
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.TWILIGHT_OAK_SAPLING.asItem(), 0.3F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.CANOPY_SAPLING.asItem(), 0.3F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.MANGROVE_SAPLING.asItem(), 0.3F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.DARKWOOD_SAPLING.asItem(), 0.3F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.RAINBOW_OAK_SAPLING.asItem(), 0.3F);
+		ComposterBlock.COMPOSTABLES.put(TFItems.TORCHBERRIES.get(), 0.3F);
+		// Berries - 0.3
+		ComposterBlock.COMPOSTABLES.put(TFItems.RASPBERRY.get(), 0.3F);
+		ComposterBlock.COMPOSTABLES.put(TFItems.BLUEBERRY.get(), 0.3F);
+		ComposterBlock.COMPOSTABLES.put(TFItems.BLACKBERRY.get(), 0.3F);
+		ComposterBlock.COMPOSTABLES.put(TFItems.MALOBERRY.get(), 0.3F);
+		ComposterBlock.COMPOSTABLES.put(TFItems.BLIGHTBERRY.get(), 0.3F);
+		ComposterBlock.COMPOSTABLES.put(TFItems.DUSKBERRY.get(), 0.3F);
+		ComposterBlock.COMPOSTABLES.put(TFItems.SKYBERRY.get(), 0.3F);
+		ComposterBlock.COMPOSTABLES.put(TFItems.STINGBERRY.get(), 0.3F);
+		// 0.5
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.BEANSTALK_LEAVES.asItem(), 0.5F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.MOSS_PATCH.asItem(), 0.5F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.ROOT_BLOCK.asItem(), 0.5F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.THORN_ROSE.asItem(), 0.5F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.TROLLVIDR.asItem(), 0.5F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.HOLLOW_OAK_SAPLING.asItem(), 0.5F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.TIME_SAPLING.asItem(), 0.5F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.TRANSFORMATION_SAPLING.asItem(), 0.5F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.MINING_SAPLING.asItem(), 0.5F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.SORTING_SAPLING.asItem(), 0.5F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.TORCHBERRY_PLANT.asItem(), 0.5F);
+		ComposterBlock.COMPOSTABLES.put(TFItems.LIVEROOT.get(), 0.5F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.RASPBERRY_BUSH.asItem(), 0.5F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.BLUEBERRY_BUSH.asItem(), 0.5F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.BLACKBERRY_BUSH.asItem(), 0.5F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.MALOBERRY_BUSH.asItem(), 0.5F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.BLIGHTBERRY_BUSH.asItem(), 0.5F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.DUSKBERRY_BUSH.asItem(), 0.5F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.SKYBERRY_BUSH.asItem(), 0.5F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.STINGBERRY_BUSH.asItem(), 0.5F);
+		// 0.65
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.HUGE_MUSHGLOOM_STEM.asItem(), 0.65F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.HUGE_WATER_LILY.asItem(), 0.65F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.LIVEROOT_BLOCK.asItem(), 0.65F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.MUSHGLOOM.asItem(), 0.65F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.UBEROUS_SOIL.asItem(), 0.65F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.HUGE_STALK.asItem(), 0.65F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.UNRIPE_TROLLBER.asItem(), 0.65F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.TROLLBER.asItem(), 0.65F);
+		ComposterBlock.COMPOSTABLES.put(TFItems.MAZE_WAFER.get(), 0.65F);
+		// 0.85
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.HUGE_LILY_PAD.asItem(), 0.85F);
+		ComposterBlock.COMPOSTABLES.put(TFBlocks.HUGE_MUSHGLOOM.asItem(), 0.85F);
+		ComposterBlock.COMPOSTABLES.put(TFItems.EXPERIMENT_115.get(), 0.85F);
+		ComposterBlock.COMPOSTABLES.put(TFItems.MAGIC_BEANS.get(), 0.85F);
+	}
+
+	private void registerFurnaceFuels() {
+		// Banisters burn for 300 ticks (same as wooden tools)
+		FuelRegistry.INSTANCE.add(TFBlocks.OAK_BANISTER.asItem(), 300);
+		FuelRegistry.INSTANCE.add(TFBlocks.SPRUCE_BANISTER.asItem(), 300);
+		FuelRegistry.INSTANCE.add(TFBlocks.BIRCH_BANISTER.asItem(), 300);
+		FuelRegistry.INSTANCE.add(TFBlocks.JUNGLE_BANISTER.asItem(), 300);
+		FuelRegistry.INSTANCE.add(TFBlocks.ACACIA_BANISTER.asItem(), 300);
+		FuelRegistry.INSTANCE.add(TFBlocks.DARK_OAK_BANISTER.asItem(), 300);
+		FuelRegistry.INSTANCE.add(TFBlocks.CRIMSON_BANISTER.asItem(), 300);
+		FuelRegistry.INSTANCE.add(TFBlocks.WARPED_BANISTER.asItem(), 300);
+		FuelRegistry.INSTANCE.add(TFBlocks.VANGROVE_BANISTER.asItem(), 300);
+		FuelRegistry.INSTANCE.add(TFBlocks.BAMBOO_BANISTER.asItem(), 300);
+		FuelRegistry.INSTANCE.add(TFBlocks.CHERRY_BANISTER.asItem(), 300);
+		FuelRegistry.INSTANCE.add(TFBlocks.TWILIGHT_OAK_BANISTER.asItem(), 300);
+		FuelRegistry.INSTANCE.add(TFBlocks.CANOPY_BANISTER.asItem(), 300);
+		FuelRegistry.INSTANCE.add(TFBlocks.MANGROVE_BANISTER.asItem(), 300);
+		FuelRegistry.INSTANCE.add(TFBlocks.DARK_BANISTER.asItem(), 300);
+		FuelRegistry.INSTANCE.add(TFBlocks.TIME_BANISTER.asItem(), 300);
+		FuelRegistry.INSTANCE.add(TFBlocks.TRANSFORMATION_BANISTER.asItem(), 300);
+		FuelRegistry.INSTANCE.add(TFBlocks.MINING_BANISTER.asItem(), 300);
+		FuelRegistry.INSTANCE.add(TFBlocks.SORTING_BANISTER.asItem(), 300);
+	}
+
+	@SuppressWarnings("unchecked")
+	private void registerParrotImitations() {
+		try {
+			Field field = Parrot.class.getDeclaredField("MOB_SOUND_MAP");
+			field.setAccessible(true);
+			Map<EntityType<?>, SoundEvent> map = (Map<EntityType<?>, SoundEvent>) field.get(null);
+			map.put(TFEntities.ALPHA_YETI.get(), TFSounds.ALPHA_YETI_PARROT.get());
+			map.put(TFEntities.BLOCKCHAIN_GOBLIN.get(), TFSounds.REDCAP_PARROT.get());
+			map.put(TFEntities.CARMINITE_BROODLING.get(), SoundEvents.PARROT_IMITATE_SPIDER);
+			map.put(TFEntities.CARMINITE_GOLEM.get(), TFSounds.CARMINITE_GOLEM_PARROT.get());
+			map.put(TFEntities.FIRE_BEETLE.get(), SoundEvents.PARROT_IMITATE_SPIDER);
+			map.put(TFEntities.CARMINITE_GHASTLING.get(), SoundEvents.PARROT_IMITATE_GHAST);
+			map.put(TFEntities.CARMINITE_GHASTGUARD.get(), SoundEvents.PARROT_IMITATE_GHAST);
+			map.put(TFEntities.HEDGE_SPIDER.get(), SoundEvents.PARROT_IMITATE_SPIDER);
+			map.put(TFEntities.HELMET_CRAB.get(), SoundEvents.PARROT_IMITATE_SPIDER);
+			map.put(TFEntities.HOSTILE_WOLF.get(), TFSounds.HOSTILE_WOLF_PARROT.get());
+			map.put(TFEntities.HYDRA.get(), TFSounds.HYDRA_PARROT.get());
+			map.put(TFEntities.STABLE_ICE_CORE.get(), TFSounds.ICE_CORE_PARROT.get());
+			map.put(TFEntities.KING_SPIDER.get(), SoundEvents.PARROT_IMITATE_SPIDER);
+			map.put(TFEntities.KOBOLD.get(), TFSounds.KOBOLD_PARROT.get());
+			map.put(TFEntities.LICH.get(), SoundEvents.PARROT_IMITATE_BLAZE);
+			map.put(TFEntities.MAZE_SLIME.get(), SoundEvents.PARROT_IMITATE_SLIME);
+			map.put(TFEntities.LICH_MINION.get(), SoundEvents.PARROT_IMITATE_ZOMBIE);
+			map.put(TFEntities.MINOSHROOM.get(), TFSounds.MINOTAUR_PARROT.get());
+			map.put(TFEntities.MINOTAUR.get(), TFSounds.MINOTAUR_PARROT.get());
+			map.put(TFEntities.MIST_WOLF.get(), TFSounds.HOSTILE_WOLF_PARROT.get());
+			map.put(TFEntities.MOSQUITO_SWARM.get(), TFSounds.MOSQUITO_PARROT.get());
+			map.put(TFEntities.NAGA.get(), TFSounds.NAGA_PARROT.get());
+			map.put(TFEntities.KNIGHT_PHANTOM.get(), TFSounds.WRAITH_PARROT.get());
+			map.put(TFEntities.PINCH_BEETLE.get(), SoundEvents.PARROT_IMITATE_SPIDER);
+			map.put(TFEntities.REDCAP.get(), TFSounds.REDCAP_PARROT.get());
+			map.put(TFEntities.REDCAP_SAPPER.get(), TFSounds.REDCAP_PARROT.get());
+			map.put(TFEntities.SKELETON_DRUID.get(), SoundEvents.PARROT_IMITATE_SKELETON);
+			map.put(TFEntities.SLIME_BEETLE.get(), SoundEvents.PARROT_IMITATE_SLIME);
+			map.put(TFEntities.SNOW_GUARDIAN.get(), TFSounds.ICE_CORE_PARROT.get());
+			map.put(TFEntities.SNOW_QUEEN.get(), TFSounds.ICE_CORE_PARROT.get());
+			map.put(TFEntities.SWARM_SPIDER.get(), SoundEvents.PARROT_IMITATE_SPIDER);
+			map.put(TFEntities.TOWERWOOD_BORER.get(), SoundEvents.PARROT_IMITATE_SILVERFISH);
+			map.put(TFEntities.DEATH_TOME.get(), TFSounds.DEATH_TOME_PARROT.get());
+			map.put(TFEntities.UR_GHAST.get(), SoundEvents.PARROT_IMITATE_GHAST);
+			map.put(TFEntities.WINTER_WOLF.get(), TFSounds.HOSTILE_WOLF_PARROT.get());
+			map.put(TFEntities.WRAITH.get(), TFSounds.WRAITH_PARROT.get());
+			map.put(TFEntities.YETI.get(), TFSounds.ALPHA_YETI_PARROT.get());
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			LOGGER.error("Failed to register parrot imitations", e);
+		}
 	}
 }
