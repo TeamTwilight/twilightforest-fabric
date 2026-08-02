@@ -48,7 +48,7 @@ public abstract class NagaCourtyardHedgeAbstractComponent extends TFStructureCom
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource random, BoundingBox structureBoundingBox, ChunkPos chunkPosIn, BlockPos blockPos) {
 		placeSettings.setBoundingBox(structureBoundingBox).clearProcessors();
-		if (TEMPLATE == null) // FIXME: this should never be null in the first place
+		if (TEMPLATE == null)
 			LAZY_TEMPLATE_LOADER.run();
 		TEMPLATE.placeInWorld(world, rotatedPosition, rotatedPosition, placeSettings.clearProcessors().addProcessor(NagastoneVariants.INSTANCE), random, 18);
 		templateBig.placeInWorld(world, rotatedPosition, rotatedPosition, placeSettings.addProcessor(BlockIgnoreProcessor.AIR).addProcessor(new BlockRotProcessor(CourtyardMain.HEDGE_FLOOF)), random, 18);

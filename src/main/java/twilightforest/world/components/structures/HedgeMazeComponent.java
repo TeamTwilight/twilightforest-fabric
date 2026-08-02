@@ -231,8 +231,4 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 		BoundingBoxUtils.boundingBoxToExistingNBT(this.boundingBox, tagCompound);
 	}
 
-	@Override
-	public TerrainAdjustment getTerrainAdjustment() {
-		return TerrainAdjustment.BEARD_BOX;
 	}
-}

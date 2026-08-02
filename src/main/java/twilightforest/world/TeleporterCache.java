@@ -32,7 +32,7 @@ public class TeleporterCache extends SavedData {
 	}
 
 	public static Factory<TeleporterCache> factory() {
-		return new SavedData.Factory<>(TeleporterCache::new, TeleporterCache::load, null);
+		return new Factory<>(TeleporterCache::new, TeleporterCache::load, null);
 	}
 
 	public void addBlockToCache(ResourceLocation dimension, ColumnPos columnPos, TFTeleporter.PortalPosition position) {

@@ -16,33 +16,38 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
-import tamaized.beanification.Autowired;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.util.TFBeanRegistry;
 import twilightforest.util.TFStructureHelper;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 import twilightforest.world.components.structures.util.SortablePiece;
 
-public class LichTowerRoomDecor extends TwilightJigsawPiece implements PieceBeardifierModifier, SortablePiece {
-	@Autowired
+public class LichTowerRoomDecor extends TwilightJigsawPiece implements SortablePiece {
 	private static LichTowerUtil lichTowerUtil;
+
+	private static LichTowerUtil getLichTowerUtil() {
+		if (lichTowerUtil == null) {
+			lichTowerUtil = TFBeanRegistry.get(LichTowerUtil.class);
+		}
+		return lichTowerUtil;
+	}
 
 	public LichTowerRoomDecor(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		super(TFStructurePieceTypes.LICH_TOWER_DECOR.value(), compoundTag, ctx, readSettings(compoundTag));
 
-		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(lichTowerUtil.getRoomSpawnerProcessor()));
+		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(getLichTowerUtil().getRoomSpawnerProcessor()));
 	}
 
 	public LichTowerRoomDecor(int genDepth, StructureTemplateManager structureManager, ResourceLocation templateLocation, JigsawPlaceContext jigsawContext) {
 		super(TFStructurePieceTypes.LICH_TOWER_DECOR.value(), genDepth, structureManager, templateLocation, jigsawContext);
 
-		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(lichTowerUtil.getRoomSpawnerProcessor()));
+		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(getLichTowerUtil().getRoomSpawnerProcessor()));
 	}
 
 	public static void addDecor(TwilightJigsawPiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int newDepth, StructureTemplateManager structureManager) {
-		ResourceLocation decorId = lichTowerUtil.rollRandomDecor(context.random(), false);
+		ResourceLocation decorId = getLichTowerUtil().rollRandomDecor(context.random(), false);
 		JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(parent.templatePosition(), connection.pos(), connection.orientation(), structureManager, decorId, "twilightforest:lich_tower/decor", context.random());
 
 		if (placeableJunction != null) {
@@ -77,21 +82,6 @@ public class LichTowerRoomDecor extends TwilightJigsawPiece implements PieceBear
 
 	@Override
 	protected void processJigsaw(TwilightJigsawPiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
-	}
-
-	@Override
-	public BoundingBox getBeardifierBox() {
-		return this.boundingBox;
-	}
-
-	@Override
-	public TerrainAdjustment getTerrainAdjustment() {
-		return TerrainAdjustment.NONE;
-	}
-
-	@Override
-	public int getGroundLevelDelta() {
-		return 0;
 	}
 
 	@Override

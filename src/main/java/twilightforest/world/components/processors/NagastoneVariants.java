@@ -10,7 +10,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructureProcessors;
 import twilightforest.util.features.FeaturePlacers;
@@ -23,7 +22,7 @@ public final class NagastoneVariants extends StructureProcessor {
 	}
 
 	@Override
-	public StructureTemplate.StructureBlockInfo process(LevelReader worldIn, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo oldInfo, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
+	public StructureTemplate.StructureBlockInfo processBlock(LevelReader worldIn, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo oldInfo, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings) {
 		RandomSource random = settings.getRandom(modifiedBlockInfo.pos());
 
 		// We use nextBoolean in other processors so this lets us re-seed deterministically

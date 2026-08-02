@@ -20,16 +20,17 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.*;
-import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import tamaized.beanification.Autowired;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.util.TFBeanRegistry;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.structures.markerhandler.TemplateMarkerHandler;
 import twilightforest.world.components.structures.util.*;
+
+import io.github.fabricators_of_create.porting_lib.world.PieceBeardifierModifier;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -38,8 +39,14 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 
 	private static final Logger LOGGER = LogManager.getLogger(TwilightForestMod.ID + "/TwilightJigsawPiece");
 
-	@Autowired
 	private static StructureTemplateDefinitions structureTemplateDefinitions;
+
+	private static StructureTemplateDefinitions getStructureTemplateDefinitions() {
+		if (structureTemplateDefinitions == null) {
+			structureTemplateDefinitions = TFBeanRegistry.get(StructureTemplateDefinitions.class);
+		}
+		return structureTemplateDefinitions;
+	}
 
 	private static final String NBT_JIGSAW_SOURCE = "source";
 	private static final String NBT_JIGSAW_CONNECTIONS = "connections";
@@ -211,7 +218,7 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 	protected void processJigsaw(TwilightJigsawPiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
 		ResourceLocation templatePool = ResourceLocation.parse(this.poolAliases.getOrDefault(connection.pool(), connection.pool()));
 		BlockPos parentJunctionPos = this.templatePosition.offset(connection.pos());
-		TwilightJigsawPiece jigsawPiece = structureTemplateDefinitions.initializeTemplateFromPool(templatePool, parentJunctionPos, connection.orientation(), connection.target(), context, this.genDepth + 1, parent.projection == StructureTemplatePool.Projection.TERRAIN_MATCHING);
+		TwilightJigsawPiece jigsawPiece = getStructureTemplateDefinitions().initializeTemplateFromPool(templatePool, parentJunctionPos, connection.orientation(), connection.target(), context, this.genDepth + 1, parent.projection == StructureTemplatePool.Projection.TERRAIN_MATCHING);
 
 		if (jigsawPiece == null)
 			return;

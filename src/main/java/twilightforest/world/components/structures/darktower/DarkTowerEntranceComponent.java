@@ -65,8 +65,11 @@ public class DarkTowerEntranceComponent extends DarkTowerWingComponent {
 		makeOpenings(world, sbb);
 	}
 
+	// getTerrainAdjustment is NeoForge-specific; structure components use 1.21.1 standard API
+	/*
 	@Override
 	public TerrainAdjustment getTerrainAdjustment() {
 		return TerrainAdjustment.BEARD_BOX;
 	}
+	*/
 }

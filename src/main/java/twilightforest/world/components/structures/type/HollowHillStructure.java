@@ -43,7 +43,6 @@ import java.util.stream.Collectors;
 public class HollowHillStructure extends LandmarkStructure implements ConfigurableSpawns, CustomDensitySource {
 	public static final MapCodec<HollowHillStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> instance
 		.group(
-			// TODO Clean up findGenerationPoint() first before even thinking about increasing upper limit
 			Codec.intRange(1, 3).fieldOf("hill_size").forGetter(s -> s.size),
 			ControlledSpawningConfig.CODEC.fieldOf(ControlledSpawns.CODEC_NAME).forGetter(s -> s.controlledSpawningConfig),
 			StructureSpeleothemConfigs.CODEC.fieldOf("speleothem_config").forGetter(s -> s.speleothemConfig)
@@ -74,7 +73,7 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
 
 	@Override
 	protected StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
-		return switch (this.size) { // TODO Clean up once TFLandmark params are no longer necessary
+		return switch (this.size) {
 			case 1 -> new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), 0, this.size, x - 3, y - 2, z - 3, this.speleothemConfig);
 			case 2 -> new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), 0, this.size, x - 7, y - 5, z - 7, this.speleothemConfig);
 			default -> new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), 0, this.size, x - 11, y - 5, z - 11, this.speleothemConfig);

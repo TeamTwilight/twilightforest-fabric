@@ -6,7 +6,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
@@ -15,7 +14,7 @@ import twilightforest.world.components.processors.SoftReplaceProcessor;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 import twilightforest.world.components.structures.util.SortablePiece;
 
-public class LichTowerWingBeard extends TwilightJigsawPiece implements PieceBeardifierModifier, SortablePiece {
+public class LichTowerWingBeard extends TwilightJigsawPiece implements SortablePiece {
 	private final boolean generateGround;
 
 	public LichTowerWingBeard(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
@@ -42,21 +41,6 @@ public class LichTowerWingBeard extends TwilightJigsawPiece implements PieceBear
 	}
 
 	@Override
-	public BoundingBox getBeardifierBox() {
-		return this.boundingBox;
-	}
-
-	@Override
-	public TerrainAdjustment getTerrainAdjustment() {
-		return this.generateGround ? TerrainAdjustment.BEARD_BOX : TerrainAdjustment.NONE;
-	}
-
-	@Override
-	public int getGroundLevelDelta() {
-		return 4;
-	}
-
-	@Override
 	protected void processJigsaw(TwilightJigsawPiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
 	}
 
@@ -76,5 +60,9 @@ public class LichTowerWingBeard extends TwilightJigsawPiece implements PieceBear
 	// Is this beard a trim piece, on the ground? Used for generating fence
 	public boolean isTrim() {
 		return this.generateGround;
+	}
+
+	public TerrainAdjustment getTerrainAdjustment() {
+		return this.generateGround ? TerrainAdjustment.BEARD_BOX : TerrainAdjustment.NONE;
 	}
 }

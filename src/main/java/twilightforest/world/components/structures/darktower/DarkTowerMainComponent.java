@@ -377,7 +377,6 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 	@SuppressWarnings("fallthrough")
 	private void decorateFloor(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource decoRNG, BoundingBox sbb, Rotation rotation, int y, boolean isBottom, boolean isTop) {
 		// pick an appropriate decoration and use it
-		// FIXME: if minY <= 64, some cases gets double weight
 
 		if (isTop) {
 			// there are a limited amount that can go at the top
@@ -399,8 +398,8 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 				case 2:
 					if (y + this.boundingBox.minY() > 64) {
 						decorateNetherwart(world, decoRNG, sbb, rotation, y, isTop);
-						break;
 					}
+					break;
 				case 3:
 					decorateForge(world, decoRNG, sbb, rotation, y);
 					break;

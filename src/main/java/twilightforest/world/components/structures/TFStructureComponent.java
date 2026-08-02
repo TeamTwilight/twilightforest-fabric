@@ -21,7 +21,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.util.Lazy;
+import io.github.fabricators_of_create.porting_lib.core.util.Lazy;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.ColorUtil;
@@ -90,7 +90,7 @@ public abstract class TFStructureComponent extends StructurePiece implements Spa
 		this.rotation = Rotation.NONE;
 	}
 
-	@Deprecated // FIXME Boundingbox
+	@Deprecated
 	public TFStructureComponent(StructurePieceType type, int i, int x, int y, int z) {
 		this(type, i, new BoundingBox(x, y, z, x, y, z));
 	}

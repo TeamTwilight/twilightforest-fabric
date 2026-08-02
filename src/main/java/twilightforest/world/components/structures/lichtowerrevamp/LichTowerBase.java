@@ -16,22 +16,27 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.*;
-import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import tamaized.beanification.Autowired;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
+import twilightforest.util.TFBeanRegistry;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.structures.SpawnIndexProvider;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 import twilightforest.world.components.structures.util.SortablePiece;
 
-public final class LichTowerBase extends TwilightJigsawPiece implements PieceBeardifierModifier, SpawnIndexProvider, SortablePiece {
-	@Autowired
+public final class LichTowerBase extends TwilightJigsawPiece implements SpawnIndexProvider, SortablePiece {
 	private static LichTowerUtil lichTowerUtil;
+
+	private static LichTowerUtil getLichTowerUtil() {
+		if (lichTowerUtil == null) {
+			lichTowerUtil = TFBeanRegistry.get(LichTowerUtil.class);
+		}
+		return lichTowerUtil;
+	}
 
 	private final int casketWingIndex;
 
@@ -66,7 +71,7 @@ public final class LichTowerBase extends TwilightJigsawPiece implements PieceBea
 			case "twilightforest:lich_tower/bridge" -> {
 				ResourceLocation room;
 				if (jigsawIndex == this.casketWingIndex) {
-					room = lichTowerUtil.getKeepsakeCasketRoom(context.random());
+					room = getLichTowerUtil().getKeepsakeCasketRoom(context.random());
 				} else {
 					room = null;
 				}
@@ -75,7 +80,7 @@ public final class LichTowerBase extends TwilightJigsawPiece implements PieceBea
 				}
 			}
 			case "twilightforest:lich_tower/decor" -> {
-				ResourceLocation decorId = lichTowerUtil.rollRandomDecor(context.random(), true);
+				ResourceLocation decorId = getLichTowerUtil().rollRandomDecor(context.random(), true);
 				JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), connection.orientation(), this.structureManager, decorId, "twilightforest:lich_tower/decor", context.random());
 
 				if (placeableJunction != null) {
@@ -117,23 +122,12 @@ public final class LichTowerBase extends TwilightJigsawPiece implements PieceBea
 	}
 
 	@Override
-	public BoundingBox getBeardifierBox() {
-		return this.boundingBox;
-	}
-
-	@Override
-	public TerrainAdjustment getTerrainAdjustment() {
-		return TerrainAdjustment.BEARD_BOX;
-	}
-
-	@Override
-	public int getGroundLevelDelta() {
-		return 1;
-	}
-
-	@Override
 	public int getSpawnIndex() {
 		return LichTowerPieces.INTERIOR_SPAWNS;
+	}
+
+	public TerrainAdjustment getTerrainAdjustment() {
+		return TerrainAdjustment.BEARD_BOX;
 	}
 
 	@Override
@@ -146,13 +140,13 @@ public final class LichTowerBase extends TwilightJigsawPiece implements PieceBea
 
 		@Nullable
 		@Override
-		public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos origin, BlockPos centerBottom, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
+		public StructureTemplate.StructureBlockInfo processBlock(LevelReader level, BlockPos origin, BlockPos centerBottom, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings) {
 			if (modifiedBlockInfo.state().is(Blocks.POLISHED_ANDESITE_STAIRS) && level.getBlockState(modifiedBlockInfo.pos()).is(BlockTags.STONE_BRICKS)) {
 				// Don't replace trim blocks placed by tower wings
 				return null;
 			}
 
-			return super.process(level, origin, centerBottom, originalBlockInfo, modifiedBlockInfo, settings, template);
+			return super.processBlock(level, origin, centerBottom, originalBlockInfo, modifiedBlockInfo, settings);
 		}
 
 		@Override

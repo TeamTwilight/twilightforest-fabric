@@ -15,7 +15,6 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.CandelabraBlock;
 import twilightforest.block.LightableBlock;
@@ -31,7 +30,7 @@ import twilightforest.world.components.structures.TwilightJigsawPiece;
 
 import java.util.List;
 
-public class LichTowerFoyerDecor extends TwilightJigsawPiece implements PieceBeardifierModifier {
+public class LichTowerFoyerDecor extends TwilightJigsawPiece {
 	public LichTowerFoyerDecor(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		super(TFStructurePieceTypes.LICH_FOYER_DECORATION.get(), compoundTag, ctx, readSettings(compoundTag));
 
@@ -42,21 +41,6 @@ public class LichTowerFoyerDecor extends TwilightJigsawPiece implements PieceBea
 		super(TFStructurePieceTypes.LICH_FOYER_DECORATION.get(), genDepth, structureManager, TwilightForestMod.prefix("lich_tower/foyer_decor"), jigsawContext);
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings);
-	}
-
-	@Override
-	public BoundingBox getBeardifierBox() {
-		return this.boundingBox;
-	}
-
-	@Override
-	public TerrainAdjustment getTerrainAdjustment() {
-		return TerrainAdjustment.NONE;
-	}
-
-	@Override
-	public int getGroundLevelDelta() {
-		return 0;
 	}
 
 	@Override

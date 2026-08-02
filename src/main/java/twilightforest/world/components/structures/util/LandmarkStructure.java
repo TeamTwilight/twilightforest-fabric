@@ -51,7 +51,7 @@ public abstract class LandmarkStructure extends Structure implements DecorationC
 		this.structureIcon = structureIcon;
 	}
 
-	protected Structure.GenerationStub getStructurePieceGenerationStubFunction(StructurePiece startingPiece, GenerationContext context, int x, int y, int z) {
+	protected GenerationStub getStructurePieceGenerationStubFunction(StructurePiece startingPiece, GenerationContext context, int x, int y, int z) {
 		return new GenerationStub(new BlockPos(x, y, z), structurePiecesBuilder -> {
 			this.generateFromStartingPiece(startingPiece, context, structurePiecesBuilder);
 
@@ -69,7 +69,7 @@ public abstract class LandmarkStructure extends Structure implements DecorationC
 		startingPiece.addChildren(startingPiece, structurePiecesBuilder, context.random());
 	}
 
-	// TODO Refactor findGenerationPoint to merge usecases for getFirstPiece and getStructurePieceGenerationStubFunction
+	// 重构 findGenerationPoint 合并 findFirstPiece 和 getStructurePieceGenerationStubFunction
 	@Override
 	public Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
 		ChunkPos chunkPos = context.chunkPos();

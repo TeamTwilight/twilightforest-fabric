@@ -70,7 +70,6 @@ public class MazeUpperEntranceComponent extends TFStructureComponentOld {
 		this.generateBox(world, sbb, 5, 1, 5, 10, 1, 10, TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState(), AIR, false);
 		this.generateBox(world, sbb, 5, 4, 5, 10, 4, 10, TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState(), AIR, false);
 		this.generateMaybeBox(world, sbb, rand, 0.7F, 5, 2, 5, 10, 3, 10, Blocks.IRON_BARS.defaultBlockState(), AIR, false, false);
-//		this.fillWithBlocks(world, sbb, 5, 2, 5, 10, 3, 10, Blocks.IRON_BARS, 0, AIR, false);
 
 		this.generateAirBox(world, sbb, 6, 0, 6, 9, 4, 9);
 	}

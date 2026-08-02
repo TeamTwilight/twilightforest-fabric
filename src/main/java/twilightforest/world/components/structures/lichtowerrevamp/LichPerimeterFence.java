@@ -29,7 +29,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnorePr
 import net.minecraft.world.level.levelgen.structure.templatesystem.JigsawReplacementProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.WroughtIronFenceBlock;
@@ -50,7 +49,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBeardifierModifier, SortablePiece, SpawnIndexProvider.Deny {
+public class LichPerimeterFence extends TwilightJigsawPiece implements SortablePiece, SpawnIndexProvider.Deny {
 	private final @Nullable BlockPos leashPos;
 
 	public LichPerimeterFence(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
@@ -97,21 +96,6 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 			pieceAccessor.addPiece(treeClearance);
 			treeClearance.addChildren(this, pieceAccessor, context.random());
 		}
-	}
-
-	@Override
-	public BoundingBox getBeardifierBox() {
-		return this.boundingBox;
-	}
-
-	@Override
-	public TerrainAdjustment getTerrainAdjustment() {
-		return TerrainAdjustment.BEARD_BOX;
-	}
-
-	@Override
-	public int getGroundLevelDelta() {
-		return 2;
 	}
 
 	@Override
@@ -321,6 +305,10 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 		return this.boundingBox.maxY();
 	}
 
+	public TerrainAdjustment getTerrainAdjustment() {
+		return TerrainAdjustment.BEARD_BOX;
+	}
+
 	public Stream<BlockPos> fencePostPositions() {
 		return Streams.concat(this.getLeftJunctions().stream(), this.getRightJunctions().stream()).map(r -> this.templatePosition.offset(r.pos()));
 	}
@@ -352,7 +340,7 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 		boundedEntity.setPersistenceRequired();
 		boundedEntity.setLeashedTo(knot, false);
 		boundedEntity.moveTo(zombiePos.getX() + 0.5, zombiePos.getY() - 1, zombiePos.getZ() + 0.5);
-		boundedEntity.setData(TFDataAttachments.LEASH_PATHFINDER_OVERRIDE, Unit.INSTANCE);
+		boundedEntity.setAttached(TFDataAttachments.LEASH_PATHFINDER_OVERRIDE, Unit.INSTANCE);	
 		level.addFreshEntity(boundedEntity);
 	}
 

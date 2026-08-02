@@ -33,7 +33,7 @@ public class VerticalDecayProcessor extends StructureProcessor {
 
 	@Nullable
 	@Override
-	public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos offset, BlockPos piecePos, StructureTemplate.StructureBlockInfo originalInfo, StructureTemplate.StructureBlockInfo modifiedInfo, StructurePlaceSettings placeSettings, @Nullable StructureTemplate template) {
+	public StructureTemplate.StructureBlockInfo processBlock(LevelReader level, BlockPos offset, BlockPos piecePos, StructureTemplate.StructureBlockInfo originalInfo, StructureTemplate.StructureBlockInfo modifiedInfo, StructurePlaceSettings placeSettings) {
 		Block block = modifiedInfo.state().getBlock();
 		if (this.decayBlocks.contains(block)) {
 			// Banister Blocks should use RNG from below block pos, to match the absence of block below itself

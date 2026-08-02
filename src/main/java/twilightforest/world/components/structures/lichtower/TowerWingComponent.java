@@ -764,8 +764,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 			}
 		}
 
-		//TODO: maybe seed a few ores in there.
-	}
+		}
 
 	/**
 	 * Decorate this floor with an orderly library
@@ -800,7 +799,6 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	 */
 	@SuppressWarnings("fallthrough")
 	protected void decorateLibraryTreasure(WorldGenLevel world, RandomSource rand, int top, Rotation ladderUpDir, Rotation ladderDownDir, BoundingBox sbb) {
-		// FIXME: case 3 gets slightly higher chance than others
 		switch (rand.nextInt(4)) {
 			case 0:
 			default:
@@ -918,7 +916,6 @@ public class TowerWingComponent extends TFStructureComponentOld {
 
 	/**
 	 * Checks if putting a block at the specified x, y, and z would block an opening.
-	 * TODO: this could be much smarter.  Although since there's usually only one opening, I guess it's not bad.
 	 */
 	protected boolean isOpeningPos(int x, int y, int z) {
 		for (BlockPos door : openings) {
@@ -1007,7 +1004,6 @@ public class TowerWingComponent extends TFStructureComponentOld {
 			Rotation downLadderDir;
 
 			// place a ladder going up
-			//TODO: make this ladder connect better to the stairs
 			int dx = getLadderX(ladderDir);
 			int dz = getLadderZ(ladderDir);
 			final BlockState defaultState = Blocks.LADDER.defaultBlockState().setValue(LadderBlock.FACING, ladderDir.rotate(Direction.EAST));
@@ -1604,7 +1600,6 @@ public class TowerWingComponent extends TFStructureComponentOld {
 	 * Function called by makeStairs7 to place stair blocks
 	 */
 	protected void makeStairs9flight(WorldGenLevel world, BoundingBox sbb, int height, Rotation rotation, boolean useBirchWood) {
-		//TODO: Can we just... not do this?
 		Direction temp = this.getOrientation();
 		this.setOrientation(rotation.rotate(temp));
 
@@ -1878,8 +1873,4 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		}
 	}
 
-	@Override
-	public int getGroundLevelDelta() {
-		return 1;
 	}
-}

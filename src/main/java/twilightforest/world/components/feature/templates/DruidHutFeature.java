@@ -32,7 +32,7 @@ public class DruidHutFeature extends TemplateFeature<SwizzleConfig> {
 
 	@Override
 	protected StructureTemplate getTemplate(StructureTemplateManager templateManager, RandomSource random) {
-		return templateManager.getOrCreate(Util.getRandom(DruidHutFeature.HutType.values(), random).resourceLocation);
+		return templateManager.getOrCreate(Util.getRandom(HutType.values(), random).resourceLocation);
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class DruidHutFeature extends TemplateFeature<SwizzleConfig> {
 	@Override
 	protected void postPlacement(WorldGenLevel world, RandomSource random, StructureTemplateManager templateManager, Rotation rotation, Mirror mirror, StructurePlaceSettings placementSettings, BlockPos placementPos, SwizzleConfig config) {
 		if (random.nextBoolean()) {
-			StructureTemplate template = templateManager.getOrCreate(DruidHutFeature.BasementType.values()[random.nextInt(DruidHutFeature.BasementType.size)].getBasement(random.nextBoolean()));
+			StructureTemplate template = templateManager.getOrCreate(BasementType.values()[random.nextInt(BasementType.size)].getBasement(random.nextBoolean()));
 
 			if (template == null) return;
 

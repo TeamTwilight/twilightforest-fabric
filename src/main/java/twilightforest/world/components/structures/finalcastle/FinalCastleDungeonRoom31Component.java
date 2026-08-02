@@ -117,8 +117,6 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 
 	protected boolean addDungeonExit(StructurePieceAccessor list, RandomSource rand, Rotation rotation) {
 
-		//TODO: check if we are sufficiently near the castle center
-
 		rotation = rotation.getRotated(this.rotation);
 		BlockPos rc = this.getNewRoomCoords(rand, rotation);
 		FinalCastleDungeonExitComponent dRoom = new FinalCastleDungeonExitComponent(this.genDepth + 1, rc.getX(), rc.getY(), rc.getZ(), rotation.rotate(Direction.SOUTH), this.level);
@@ -160,7 +158,6 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 
 		RandomSource decoRNG = RandomSource.create(world.getSeed() + (this.boundingBox.minX() * 321534781L) ^ (this.boundingBox.minZ() * 756839L));
 
-		//TODO add a deadrock tag, or a tag for castle replaceables
 		Predicate<BlockState> replacing = state -> state.isAir() || state.is(TFBlocks.DEADROCK) || state.is(TFBlocks.CRACKED_DEADROCK) || state.is(TFBlocks.WEATHERED_DEADROCK);
 
 
@@ -204,13 +201,4 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 			return TFBlocks.BLUE_FORCE_FIELD.get().defaultBlockState();
 	}
 
-	@Override
-	public TerrainAdjustment getTerrainAdjustment() {
-		return TerrainAdjustment.BURY;
 	}
-
-	@Override
-	public int getGroundLevelDelta() {
-		return 0;
-	}
-}

@@ -13,7 +13,6 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
@@ -28,7 +27,7 @@ import twilightforest.world.components.structures.TwilightJigsawPiece;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class LichTowerFoyer extends TwilightJigsawPiece implements PieceBeardifierModifier, SpawnIndexProvider {
+public final class LichTowerFoyer extends TwilightJigsawPiece implements SpawnIndexProvider {
 	private final boolean putChest;
 	private final boolean chestSide;
 
@@ -121,17 +120,10 @@ public final class LichTowerFoyer extends TwilightJigsawPiece implements PieceBe
 		}
 	}
 
-	@Override
-	public BoundingBox getBeardifierBox() {
-		return this.boundingBox;
-	}
-
-	@Override
 	public TerrainAdjustment getTerrainAdjustment() {
 		return TerrainAdjustment.BEARD_BOX;
 	}
 
-	@Override
 	public int getGroundLevelDelta() {
 		return 1;
 	}

@@ -161,9 +161,6 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 			BlockPos directionalRelative = pos.relative(facing);
 			if (!isInsideChunk(directionalRelative, chunkOrigin)) continue;
 
-			// FIXME Half-way configurable, would prefer to eliminate the isHighlands check entirely
-			//  The rand.nextInt rolls should have some way of being set into a custom config as well
-
 			if (this.isHighlands) {
 				if (rand.nextInt(4) == 0 && this.canReplaceBlock(config, access.getBlockState(directionalRelative))) {
 					access.setBlockState(directionalRelative, this.wallBlocks.getState(rand, directionalRelative), false);
@@ -275,11 +272,5 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 		} else {
 			return posX * posX + posY * posY + posZ * posZ >= 1.0D;
 		}
-	}
-
-	@Nullable
-	@Override
-	public BlockState getCarveState(CarvingContext context, CaveCarverConfiguration config, BlockPos pos, Aquifer aquifer) {
-		return Blocks.CAVE_AIR.defaultBlockState();
 	}
 }

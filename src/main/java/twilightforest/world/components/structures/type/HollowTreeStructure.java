@@ -133,8 +133,6 @@ public class HollowTreeStructure extends Structure implements DecorationClearanc
 
 		if (height < 16 || (!this.allowInWater && seaFloorY < worldY))
 			return Optional.empty();
-		if (!this.getModifiedStructureSettings().biomes().contains(context.chunkGenerator().getBiomeSource().getNoiseBiome(x >> 2, worldY >> 2, z >> 2, context.randomState().sampler())))
-			return Optional.empty();
 
 		int radius = this.radius.sample(random);
 
@@ -222,13 +220,13 @@ public class HollowTreeStructure extends Structure implements DecorationClearanc
 
 	public static HollowTreeStructure buildStructureConfig(boolean allowInWater, HolderSet<Biome> biomes) {
 		return new HollowTreeStructure(
-			new Structure.StructureSettings(
+			new StructureSettings(
 				biomes,
 				Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning
 				GenerationStep.Decoration.SURFACE_STRUCTURES,
 				TerrainAdjustment.NONE
 			),
-			new DecorationClearance.DecorationConfig(0.5f, false, true, true),
+			new DecorationConfig(0.5f, false, true, true),
 			HollowTreePiece.DEFAULT_HEIGHT,
 			HollowTreePiece.DEFAULT_RADIUS,
 			HollowTreePiece.DEFAULT_LOG,

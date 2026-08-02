@@ -71,7 +71,7 @@ public class EnchantedForestVinesFeature extends Feature<NoneFeatureConfiguratio
 	}
 
 	private void setVine(WorldGenLevel world, RandomSource random, BlockPos pos) {
-		if (random.nextInt(rarity) > 0 || !world.getBlockState(pos).isEmpty() || !isSuitableBiome(world, pos))
+		if (random.nextInt(rarity) > 0 || !world.getBlockState(pos).isAir() || !isSuitableBiome(world, pos))
 			return;
 
 		BlockState state = Blocks.VINE.defaultBlockState();
@@ -97,7 +97,7 @@ public class EnchantedForestVinesFeature extends Feature<NoneFeatureConfiguratio
 	}
 
 	private boolean isSuitableBiome(WorldGenLevel world, BlockPos pos) {
-		return Objects.requireNonNull(world.getBiome(pos).getKey()).location().getPath().equals("enchanted_forest");
+		return Objects.requireNonNull(world.getBiome(pos).unwrapKey().orElseThrow()).location().getPath().equals("enchanted_forest");
 	}
 
 	private boolean isTree(BlockState state) {

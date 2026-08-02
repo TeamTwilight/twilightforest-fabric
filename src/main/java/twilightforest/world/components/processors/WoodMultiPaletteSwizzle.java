@@ -30,7 +30,7 @@ public final class WoodMultiPaletteSwizzle extends StructureProcessor {
 	}
 
 	@Override
-	public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos offset, BlockPos piecePos, StructureTemplate.StructureBlockInfo originalInfo, StructureTemplate.StructureBlockInfo modifiedInfo, StructurePlaceSettings placeSettings, @Nullable StructureTemplate template) {
+	public StructureTemplate.StructureBlockInfo processBlock(LevelReader level, BlockPos offset, BlockPos piecePos, StructureTemplate.StructureBlockInfo originalInfo, StructureTemplate.StructureBlockInfo modifiedInfo, StructurePlaceSettings placeSettings) {
 		for (Pair<Holder<WoodPalette>, Holder<WoodPalette>> palettePair : this.palettes) {
 			StructureTemplate.StructureBlockInfo newInfo = palettePair.getSecond().value().modifyBlockWithType(palettePair.getFirst().value(), modifiedInfo);
 

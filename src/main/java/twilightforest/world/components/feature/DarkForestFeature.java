@@ -25,17 +25,19 @@ public class DarkForestFeature extends Feature<RandomPatchConfiguration> {
 
 		boolean foundDirt = false;
 
-		if (pos.getY() <= 40) {
-			int seaLevel = ctx.chunkGenerator().getSeaLevel();
-			for (int dy = pos.getY(); dy >= seaLevel; dy--) {
-				BlockState state = reader.getBlockState(new BlockPos(pos.getX(), dy - 1, pos.getZ()));
-				if (state.is(BlockTags.DIRT) && reader.getBlockState(pos).canBeReplaced()) {
-					foundDirt = true;
-					pos = new BlockPos(pos.getX(), dy, pos.getZ());
-					break;
-				} else if (state.is(BlockTags.BASE_STONE_OVERWORLD) || state.is(BlockTags.SAND)) {
-					break;
-				}
+		// Search downward from the placement position to find actual dirt/ground,
+		// accounting for the dark forest canopy blanket (hardened dark leaves) above the terrain.
+		// The canopy blanket is tagged as LEAVES, so OCEAN_FLOOR heightmap ignores it,
+		// but WORLD_SURFACE heightmap includes it. We always search downward to find the real ground.
+		int seaLevel = ctx.chunkGenerator().getSeaLevel();
+		for (int dy = pos.getY(); dy >= seaLevel; dy--) {
+			BlockState state = reader.getBlockState(new BlockPos(pos.getX(), dy - 1, pos.getZ()));
+			if (state.is(BlockTags.DIRT) && reader.getBlockState(new BlockPos(pos.getX(), dy, pos.getZ())).canBeReplaced()) {
+				foundDirt = true;
+				pos = new BlockPos(pos.getX(), dy, pos.getZ());
+				break;
+			} else if (state.is(BlockTags.BASE_STONE_OVERWORLD) || state.is(BlockTags.SAND)) {
+				break;
 			}
 		}
 

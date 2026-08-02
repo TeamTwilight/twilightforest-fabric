@@ -16,11 +16,11 @@ import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
-import tamaized.beanification.Autowired;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.util.WorldUtil;
+import twilightforest.util.TFBeanRegistry;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 import twilightforest.world.components.structures.util.DecorationClearance;
 import twilightforest.world.components.structures.util.StructureTemplateDefinitions;
@@ -34,8 +34,14 @@ public class CampStructure extends Structure implements DecorationClearance {
 		Structure.settingsCodec(instance)
 	).apply(instance, CampStructure::new));
 
-	@Autowired
 	private static StructureTemplateDefinitions structureTemplateDefinitions;
+
+	private static StructureTemplateDefinitions getStructureTemplateDefinitions() {
+		if (structureTemplateDefinitions == null) {
+			structureTemplateDefinitions = TFBeanRegistry.get(StructureTemplateDefinitions.class);
+		}
+		return structureTemplateDefinitions;
+	}
 
 	protected CampStructure(StructureSettings settings) {
 		super(settings);
@@ -56,8 +62,7 @@ public class CampStructure extends Structure implements DecorationClearance {
 
 		return Optional.of(new GenerationStub(freePosition, structurePiecesBuilder -> {
 			ResourceLocation templatePool = TwilightForestMod.prefix("camp/structure_start");
-			// TODO Instead use StructureTemplateDefinitions.initializeStubFromPool
-			TwilightJigsawPiece twilightJigsawPiece = structureTemplateDefinitions.initializeTemplateFromPool(templatePool, freePosition, oriented, templatePool.toString(), context, 0, false);
+			TwilightJigsawPiece twilightJigsawPiece = getStructureTemplateDefinitions().initializeTemplateFromPool(templatePool, freePosition, oriented, templatePool.toString(), context, 0, false);
 
 			if (twilightJigsawPiece == null) return;
 

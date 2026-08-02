@@ -464,8 +464,4 @@ public class TowerMainComponent extends TowerWingComponent {
 		}
 	}
 
-	@Override
-	public TerrainAdjustment getTerrainAdjustment() {
-		return TerrainAdjustment.BEARD_BOX;
 	}
-}

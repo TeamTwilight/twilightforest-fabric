@@ -4,7 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
@@ -13,7 +12,6 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.entity.monster.ArmoredGiant;
 import twilightforest.entity.monster.GiantMiner;
 import twilightforest.init.TFBlocks;
@@ -100,7 +98,6 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 			GiantMiner miner = TFEntities.GIANT_MINER.get().create(world.getLevel());
 			miner.setPos(bx, by, bz);
 			miner.setPersistenceRequired();
-			EventHooks.finalizeMobSpawn(miner, world, world.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null);
 
 			world.addFreshEntity(miner);
 		}
@@ -117,7 +114,6 @@ public class CloudCastleComponent extends TFStructureComponentOld {
 			ArmoredGiant warrior = TFEntities.ARMORED_GIANT.get().create(world.getLevel());
 			warrior.setPos(bx, by, bz);
 			warrior.setPersistenceRequired();
-			EventHooks.finalizeMobSpawn(warrior, world, world.getCurrentDifficultyAt(pos), MobSpawnType.STRUCTURE, null);
 
 			world.addFreshEntity(warrior);
 		}

@@ -23,17 +23,17 @@ import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
+import io.github.fabricators_of_create.porting_lib.world.PieceBeardifierModifier;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import tamaized.beanification.Autowired;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.BoundingBoxUtils;
+import twilightforest.util.TFBeanRegistry;
 import twilightforest.world.components.structures.selectors.StrongholdStonesRandomBlockSelectorFactory;
 
 import java.util.Iterator;
@@ -45,8 +45,14 @@ import java.util.function.Predicate;
 public abstract class TFStructureComponentOld extends TFStructureComponent implements PieceBeardifierModifier {
 
 	protected static final BlockState AIR = Blocks.AIR.defaultBlockState();
-	@Autowired
 	private static StrongholdStonesRandomBlockSelectorFactory strongholdStones;
+
+	private static StrongholdStonesRandomBlockSelectorFactory getStrongholdStonesFactory() {
+		if (strongholdStones == null) {
+			strongholdStones = TFBeanRegistry.get(StrongholdStonesRandomBlockSelectorFactory.class);
+		}
+		return strongholdStones;
+	}
 
 	public TFStructureComponentOld(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
@@ -266,7 +272,8 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 			world.setBlock(pos, Blocks.OAK_SIGN.defaultBlockState().setValue(StandingSignBlock.ROTATION, this.getOrientation().get2DDataValue() * 4), Block.UPDATE_CLIENTS);
 
 			if (world.getBlockEntity(pos) instanceof SignBlockEntity sign) {
-				sign.frontText = sign.frontText.setMessage(1, Component.literal(string0)).setMessage(2, Component.literal(string1));
+				sign.setLevel(world.getLevel());
+				sign.setText(sign.getFrontText().setMessage(1, Component.literal(string0)).setMessage(2, Component.literal(string1)), true);
 			}
 		}
 	}
@@ -467,8 +474,8 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 		}
 	}
 
-	protected static StructurePiece.BlockSelector getStrongholdStones() {
-		return strongholdStones.make();
+	protected static BlockSelector getStrongholdStones() {
+		return getStrongholdStonesFactory().make();
 	}
 
 	protected Direction getStructureRelativeRotation(Rotation rotationsCW) {

@@ -22,7 +22,6 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -38,7 +37,7 @@ import twilightforest.world.components.structures.TwilightJigsawPiece;
 
 import java.util.List;
 
-public final class LichBossRoom extends TwilightJigsawPiece implements PieceBeardifierModifier, SpawnIndexProvider.Deny {
+public final class LichBossRoom extends TwilightJigsawPiece implements SpawnIndexProvider.Deny {
 	public LichBossRoom(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		super(TFStructurePieceTypes.LICH_BOSS_ROOM.get(), compoundTag, ctx, readSettings(compoundTag));
 
@@ -132,20 +131,5 @@ public final class LichBossRoom extends TwilightJigsawPiece implements PieceBear
 
 		pieceAccessor.addPiece(lichBossRoof);
 		lichBossRoof.addJigsaws(this, pieceAccessor, context);
-	}
-
-	@Override
-	public BoundingBox getBeardifierBox() {
-		return this.boundingBox;
-	}
-
-	@Override
-	public TerrainAdjustment getTerrainAdjustment() {
-		return TerrainAdjustment.NONE;
-	}
-
-	@Override
-	public int getGroundLevelDelta() {
-		return 0;
 	}
 }

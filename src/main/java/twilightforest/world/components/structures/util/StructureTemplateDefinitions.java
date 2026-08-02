@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.mojang.serialization.DynamicOps;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.FrontAndTop;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
@@ -15,17 +16,21 @@ import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import io.github.fabricators_of_create.porting_lib.resources.events.AddReloadListenersEvent;
 import org.jetbrains.annotations.Nullable;
-import tamaized.beanification.Component;
+import twilightforest.util.TFBeanRegistry;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Component
 public final class StructureTemplateDefinitions extends CodecResourceReloadListener<StructureTemplateDefinition> {
+	public static final StructureTemplateDefinitions INSTANCE = new StructureTemplateDefinitions();
+
+	static {
+		TFBeanRegistry.register(StructureTemplateDefinitions.class, INSTANCE);
+	}
 
 	private final Map<ResourceLocation, Map<ResourceLocation, TemplatePoolInstance>> rawTemplatePools = new HashMap<>();
 	private final Map<ResourceLocation, WeightedRandomList<TemplatePoolEntry>> templatePools = new HashMap<>();
@@ -75,7 +80,7 @@ public final class StructureTemplateDefinitions extends CodecResourceReloadListe
 	}
 
 	@Override
-	public void registerListener(AddReloadListenerEvent event) {
+	public void registerListener(AddReloadListenersEvent event) {
 		this.registryAccess = event.getRegistryAccess();
 
 		super.registerListener(event);
@@ -83,7 +88,10 @@ public final class StructureTemplateDefinitions extends CodecResourceReloadListe
 
 	@Override
 	protected DynamicOps<JsonElement> initDynamicOps() {
-		return RegistryOps.create(super.initDynamicOps(), this.registryAccess);
+		if (this.registryAccess == null) {
+			return super.initDynamicOps();
+		}
+		return RegistryOps.create(super.initDynamicOps(), (HolderLookup.Provider) this.registryAccess);
 	}
 
 	private Optional<TemplatePoolEntry> getRandomEntry(RandomSource random, ResourceLocation templatePoolId) {
@@ -111,8 +119,6 @@ public final class StructureTemplateDefinitions extends CodecResourceReloadListe
 
 		return reservoirSampled.entrySet().stream().sorted(Map.Entry.comparingByValue()).map(Map.Entry::getKey).collect(Collectors.toList());
 	}
-
-	// TODO initializeStubFromPool to return GenerationStub
 
 	@Deprecated
 	@Nullable

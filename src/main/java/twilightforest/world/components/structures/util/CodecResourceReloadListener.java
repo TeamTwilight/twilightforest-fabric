@@ -10,7 +10,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
+import io.github.fabricators_of_create.porting_lib.resources.events.AddReloadListenersEvent;
 import twilightforest.TwilightForestMod;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceReloadListener {
+public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceReloadListener implements IdentifiableResourceReloadListener {
 	protected final Gson gson;
 	private final Codec<T> codec;
 
@@ -77,10 +78,15 @@ public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceR
 
 	protected abstract void forLocation(ResourceManager manager, ResourceLocation location, T element);
 
+	@Override
+	public ResourceLocation getFabricId() {
+		return TwilightForestMod.prefix(this.getName());
+	}
+
 	/**
 	 * Intentionally not subscribed, it is on the subclasses to opt into subscription
 	 */
-	public void registerListener(AddReloadListenerEvent event) {
+	public void registerListener(AddReloadListenersEvent event) {
 		event.addListener(this);
 	}
 }

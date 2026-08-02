@@ -9,7 +9,6 @@ import twilightforest.world.components.layer.vanillalegacy.traits.DimensionOffse
 
 /**
  * Works like ICastleTransformer, but has extra parameters for diagonal checks
- * TODO: Verify the logic
  */
 public interface IThornsTransformer extends AreaTransformer1, DimensionOffset1Transformer {
 	ResourceKey<Biome> apply(RandomContext randomContext, ResourceKey<Biome> north, ResourceKey<Biome> west, ResourceKey<Biome> south, ResourceKey<Biome> east, ResourceKey<Biome> middle, ResourceKey<Biome> nw, ResourceKey<Biome> sw, ResourceKey<Biome> se, ResourceKey<Biome> ne);

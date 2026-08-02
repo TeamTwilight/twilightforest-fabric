@@ -23,11 +23,11 @@ import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
+import io.github.fabricators_of_create.porting_lib.world.PieceBeardifierModifier;
 import org.joml.SimplexNoise;
-import tamaized.beanification.Autowired;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
+import twilightforest.util.TFBeanRegistry;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.structures.SpawnIndexProvider;
@@ -41,8 +41,14 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class LichYardBox extends StructurePiece implements PieceBeardifierModifier, SortablePiece, SpawnIndexProvider {
-	@Autowired
 	private static LichTowerUtil lichTowerUtil;
+
+	private static LichTowerUtil getLichTowerUtil() {
+		if (lichTowerUtil == null) {
+			lichTowerUtil = TFBeanRegistry.get(LichTowerUtil.class);
+		}
+		return lichTowerUtil;
+	}
 
 	private final float edgeFeatheringRange;
 	private final Direction direction;
@@ -174,6 +180,11 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 		return 0;
 	}
 
+	@Override
+	public int getSortKey() {
+		return this.doDirtMotley ? Integer.MIN_VALUE : Integer.MIN_VALUE + 255;
+	}
+
 	public static void beginYard(LichTowerFoyer foyerPiece, Structure.GenerationContext context, StructurePiecesBuilder pieces) {
 		WorldgenRandom random = context.random();
 		StructureTemplateManager structureManager = context.structureTemplateManager();
@@ -274,7 +285,7 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 			FrontAndTop orientation = FrontAndTop.fromFrontAndTop(side, Direction.UP);
 			// int baseY = context.chunkGenerator().getBaseHeight(randomPos.getX(), randomPos.getZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState());
 
-			ResourceLocation templateId = lichTowerUtil.rollGrave(random);
+			ResourceLocation templateId = getLichTowerUtil().rollGrave(random);
 			JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(randomPos.atY(baseY - 1), BlockPos.ZERO, orientation, context.structureTemplateManager(), templateId, "twilightforest:lich_tower/grave", random);
 
 			if (placeableJunction == null) continue;
@@ -285,11 +296,6 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 				grave.addJigsaws(parent, pieces, context);
 			}
 		}
-	}
-
-	@Override
-	public int getSortKey() {
-		return this.doDirtMotley ? Integer.MIN_VALUE : Integer.MIN_VALUE + 255;
 	}
 
 	@Override

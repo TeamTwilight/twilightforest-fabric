@@ -14,11 +14,10 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import twilightforest.TwilightForestMod;
-import tamaized.beanification.Autowired;
 import twilightforest.data.tags.CustomTagGenerator;
 import twilightforest.init.TFStructurePieceTypes;
+import twilightforest.util.TFBeanRegistry;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.structures.SpawnIndexProvider;
@@ -26,9 +25,15 @@ import twilightforest.world.components.structures.TwilightJigsawPiece;
 
 import java.util.ArrayList;
 
-public final class LichTowerSegment extends TwilightJigsawPiece implements PieceBeardifierModifier, SpawnIndexProvider {
-	@Autowired
+public final class LichTowerSegment extends TwilightJigsawPiece implements SpawnIndexProvider {
 	private static LichTowerUtil lichTowerUtil;
+
+	private static LichTowerUtil getLichTowerUtil() {
+		if (lichTowerUtil == null) {
+			lichTowerUtil = TFBeanRegistry.get(LichTowerUtil.class);
+		}
+		return lichTowerUtil;
+	}
 
 	private final boolean putMobBridge;
 	private final boolean putWings;
@@ -60,7 +65,7 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 		int decayLevel = Mth.ceil((depth - 3) * 0.5);
 
 		if (decayLevel >= 0) {
-			StructureProcessor[] stairDecayProcessors = lichTowerUtil.getStairDecayProcessors();
+			StructureProcessor[] stairDecayProcessors = getLichTowerUtil().getStairDecayProcessors();
 			decayLevel = Math.min(decayLevel, stairDecayProcessors.length);
 			settings.addProcessor(stairDecayProcessors[decayLevel]);
 		}
@@ -142,7 +147,7 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 				//  and thus generate taller without colliding into the boss room
 				if (this.putGallery) {
 					if (jigsawIndex == 2 && context.random().nextInt(10) == 0) {
-						LichTowerMagicGallery.tryPlaceGallery(context, pieceAccessor, lichTowerUtil.rollTowerGallery(context.random()), connection, this, this.genDepth + 1, this.structureManager, "twilightforest:lich_tower/bridge_center");
+						LichTowerMagicGallery.tryPlaceGallery(context, pieceAccessor, getLichTowerUtil().rollTowerGallery(context.random()), connection, this, this.genDepth + 1, this.structureManager, "twilightforest:lich_tower/bridge_center");
 					}
 				} else {
 					LichTowerWingBridge.tryRoomAndBridge(this, pieceAccessor, context, connection, this.structureManager, true, 4, false, this.genDepth + 1, null);
@@ -154,7 +159,7 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 					// Either keep match jigsaw rotation or spin it 180. This will "flip" a few bridges
 					FrontAndTop forPlacement = context.random().nextBoolean() ? orientation : FrontAndTop.fromFrontAndTop(orientation.front(), orientation.top().getOpposite());
 
-					ResourceLocation mobBridgeLocation = lichTowerUtil.rollRandomMobBridge(context.random());
+					ResourceLocation mobBridgeLocation = getLichTowerUtil().rollRandomMobBridge(context.random());
 					JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), forPlacement, this.structureManager, mobBridgeLocation, "twilightforest:mob_bridge", context.random());
 
 					if (placeableJunction != null) {
@@ -170,21 +175,6 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 	@Override
 	protected void handleDataMarker(String label, BlockPos pos, WorldGenLevel level, RandomSource random, BoundingBox chunkBounds, ChunkGenerator chunkGen, Rotation rotation) {
 		LichBossRoom.placePainting(label, pos, level, random, chunkBounds, this.placeSettings.getRotation(), 2, 10, CustomTagGenerator.PaintingVariantTagGenerator.LICH_TOWER_PAINTINGS);
-	}
-
-	@Override
-	public BoundingBox getBeardifierBox() {
-		return this.boundingBox;
-	}
-
-	@Override
-	public TerrainAdjustment getTerrainAdjustment() {
-		return TerrainAdjustment.NONE;
-	}
-
-	@Override
-	public int getGroundLevelDelta() {
-		return 0;
 	}
 
 	@Override

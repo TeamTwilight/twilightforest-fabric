@@ -184,7 +184,6 @@ public class TFTeleporter {
 
 	private static int getScanHeight(ServerLevel world, int x, int z) {
 		int worldHeight = world.getMaxBuildHeight() - 1;
-		//FIXME find an alternative to getHighestSectionPosition, its marked for removal
 		@SuppressWarnings("removal")
 		int chunkHeight = world.getChunk(x >> 4, z >> 4).getHighestSectionPosition() + 15;
 		return Math.min(worldHeight, chunkHeight);
@@ -464,10 +463,10 @@ public class TFTeleporter {
 		if (exitPos == null)
 			return;
 		LOGGER.debug("Caching Dest Portal Blocks to {}", exitPos);
-		cache.addBlockToCache(srcDim.dimension().location(), new ColumnPos(pos.getX(), pos.getZ()), new TFTeleporter.PortalPosition(exitPos, srcDim.getGameTime()));
-		cache.addBlockToCache(srcDim.dimension().location(), new ColumnPos(pos.south().getX(), pos.south().getZ()), new TFTeleporter.PortalPosition(exitPos, srcDim.getGameTime()));
-		cache.addBlockToCache(srcDim.dimension().location(), new ColumnPos(pos.east().getX(), pos.east().getZ()), new TFTeleporter.PortalPosition(exitPos, srcDim.getGameTime()));
-		cache.addBlockToCache(srcDim.dimension().location(), new ColumnPos(pos.south().east().getX(), pos.south().east().getZ()), new TFTeleporter.PortalPosition(exitPos, srcDim.getGameTime()));
+		cache.addBlockToCache(srcDim.dimension().location(), new ColumnPos(pos.getX(), pos.getZ()), new PortalPosition(exitPos, srcDim.getGameTime()));
+		cache.addBlockToCache(srcDim.dimension().location(), new ColumnPos(pos.south().getX(), pos.south().getZ()), new PortalPosition(exitPos, srcDim.getGameTime()));
+		cache.addBlockToCache(srcDim.dimension().location(), new ColumnPos(pos.east().getX(), pos.east().getZ()), new PortalPosition(exitPos, srcDim.getGameTime()));
+		cache.addBlockToCache(srcDim.dimension().location(), new ColumnPos(pos.south().east().getX(), pos.south().east().getZ()), new PortalPosition(exitPos, srcDim.getGameTime()));
 	}
 
 	protected static boolean isIdealForPortal(ServerLevel world, BlockPos pos) {
@@ -605,7 +604,7 @@ public class TFTeleporter {
 	}
 
 	protected static Vec3 safePosInColumn(ServerLevel level, Entity entity, Vec3 pos) {
-		AABB aabb = entity.dimensions.makeBoundingBox(pos);
+		AABB aabb = entity.getDimensions(entity.getPose()).makeBoundingBox(pos);
 
 		if (level.noCollision(aabb)) {
 			return pos;

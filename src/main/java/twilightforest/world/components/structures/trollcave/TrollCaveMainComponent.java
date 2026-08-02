@@ -255,8 +255,4 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		this.placeTreasureAtCurrentPosition(world, mid, 1, mid, TFLootTables.TROLL_GARDEN, false, sbb);
 	}
 
-	@Override
-	public TerrainAdjustment getTerrainAdjustment() {
-		return TerrainAdjustment.BURY;
 	}
-}

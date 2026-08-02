@@ -22,16 +22,16 @@ import java.util.Optional;
 public class TFSmallLakeFeature extends Feature<TFSmallLakeFeature.Configuration> {
 	private static final BlockState AIR = Blocks.CAVE_AIR.defaultBlockState();
 
-	public TFSmallLakeFeature(Codec<TFSmallLakeFeature.Configuration> codec) {
+	public TFSmallLakeFeature(Codec<Configuration> codec) {
 		super(codec);
 	}
 
 	@Override
-	public boolean place(FeaturePlaceContext<TFSmallLakeFeature.Configuration> context) {
+	public boolean place(FeaturePlaceContext<Configuration> context) {
 		BlockPos blockpos = context.origin();
 		WorldGenLevel worldgenlevel = context.level();
 		RandomSource randomsource = context.random();
-		TFSmallLakeFeature.Configuration config = context.config();
+		Configuration config = context.config();
 
 		if (blockpos.getY() <= worldgenlevel.getMinBuildHeight() + 4) {
 			return false;
@@ -153,13 +153,13 @@ public class TFSmallLakeFeature extends Feature<TFSmallLakeFeature.Configuration
 	}
 
 	public record Configuration(BlockStateProvider fluid, @Nullable BlockStateProvider barrier, @Nullable BlockStateProvider ice) implements FeatureConfiguration {
-		public static final Codec<TFSmallLakeFeature.Configuration> CODEC = RecordCodecBuilder.create(
+		public static final Codec<Configuration> CODEC = RecordCodecBuilder.create(
 			instance -> instance.group(
 					BlockStateProvider.CODEC.fieldOf("fluid").forGetter(Configuration::fluid),
 					BlockStateProvider.CODEC.optionalFieldOf("barrier").forGetter(configuration -> Optional.ofNullable(configuration.barrier())),
 					BlockStateProvider.CODEC.optionalFieldOf("ice").forGetter(configuration -> Optional.ofNullable(configuration.ice()))
 				)
-				.apply(instance, TFSmallLakeFeature.Configuration::new)
+				.apply(instance, Configuration::new)
 		);
 
 		@SuppressWarnings("OptionalUsedAsFieldOrParameterType") // Vanilla does this shit too

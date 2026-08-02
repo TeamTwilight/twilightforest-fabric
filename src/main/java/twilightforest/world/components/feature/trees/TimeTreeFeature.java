@@ -37,7 +37,8 @@ public class TimeTreeFeature extends HollowTreeFeature {
  		}
 
 		// check if we're on dirt or grass
-		if (world.getBlockState(pos.below()).canSustainPlant(world, pos.below(), Direction.UP, TFBlocks.TIME_SAPLING.get().defaultBlockState()).isFalse()) {
+		// canSustainPlant check removed - NeoForge-only API, not available in Fabric 1.21.1
+		if (false) {
 			return false;
 		}
 

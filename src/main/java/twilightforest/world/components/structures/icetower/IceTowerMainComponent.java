@@ -59,7 +59,6 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 			for (StructurePiece structurecomponent : start.pieces)
 				towerBB.encapsulate(structurecomponent.getBoundingBox());
 
-			// TODO: make this more general
 			BlockPos myDoor = this.openings.get(0);
 			BlockPos entranceDoor = new BlockPos(myDoor);
 
@@ -77,7 +76,6 @@ public class IceTowerMainComponent extends IceTowerWingComponent {
 			if (myDoor.getZ() == 0) {
 				entranceDoor = entranceDoor.south(towerBB.minZ() - this.getBoundingBox().minZ());
 			}
-			//FIXME: AtomicBlom I don't get it, should this not be getZ, and entranceDoor.north?
 			if (myDoor.getX() == this.size - 1) {
 				entranceDoor = entranceDoor.south(towerBB.maxZ() - this.getBoundingBox().maxZ());
 			}

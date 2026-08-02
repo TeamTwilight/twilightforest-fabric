@@ -245,8 +245,6 @@ public class TreeConfigurations {
 		new LeafSpheroidFoliagePlacer(4.5f, 1.5f, ConstantInt.of(0), 1, 0, -0.25f, 0),
 		new TwoLayersFeatureSize(4, 1, canopyDistancing)
 	)
-		.ignoreVines()
-		.decorators(ImmutableList.of(new TreeCorePlacer(3, BlockStateProvider.simple(TFBlocks.TRANSFORMATION_LOG_CORE.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y)))))
 		.build();
 
 	public static final TFTreeFeatureConfig MINING_TREE = new TFTreeFeatureConfig.Builder(
@@ -264,9 +262,6 @@ public class TreeConfigurations {
 		new LeafSpheroidFoliagePlacer(1.5f, 2.25f, ConstantInt.of(0), 1, 0, 0.5f, 0),
 		new TwoLayersFeatureSize(1, 1, 1)
 	)
-		.ignoreVines()
-		.forceDirt()
-		.decorators(ImmutableList.of(new TreeCorePlacer(2, BlockStateProvider.simple(TFBlocks.SORTING_LOG_CORE.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y)))))
 		.build();
 
 	public static final TFTreeFeatureConfig LARGE_WINTER = new TFTreeFeatureConfig.Builder(

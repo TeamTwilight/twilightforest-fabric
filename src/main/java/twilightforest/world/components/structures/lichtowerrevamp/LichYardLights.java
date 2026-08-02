@@ -14,12 +14,11 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
 
-public class LichYardLights extends StructurePiece implements PieceBeardifierModifier {
+public class LichYardLights extends StructurePiece {
 	private final Direction.Axis placeAxis;
 
 	public LichYardLights(BoundingBox boundingBox, Direction.Axis placeAxis) {
@@ -59,20 +58,5 @@ public class LichYardLights extends StructurePiece implements PieceBeardifierMod
 				}
 			}
 		}
-	}
-
-	@Override
-	public BoundingBox getBeardifierBox() {
-		return this.boundingBox;
-	}
-
-	@Override
-	public TerrainAdjustment getTerrainAdjustment() {
-		return TerrainAdjustment.NONE;
-	}
-
-	@Override
-	public int getGroundLevelDelta() {
-		return 0;
 	}
 }

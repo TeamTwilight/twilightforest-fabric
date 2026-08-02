@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 public class TrollCaveStructure extends ProgressionStructure implements ConfigurableSpawns {
 	public static final MapCodec<TrollCaveStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> instance
 		.group(
-			ControlledSpawns.ControlledSpawningConfig.CODEC.fieldOf(ControlledSpawns.CODEC_NAME).forGetter(ConfigurableSpawns::getConfig),
+			ControlledSpawningConfig.CODEC.fieldOf(ControlledSpawns.CODEC_NAME).forGetter(ConfigurableSpawns::getConfig),
 			StructureSpeleothemConfigs.CODEC.fieldOf("speleothem_config").forGetter(s -> s.speleothemConfig)
 		)
 		.and(progressionCodec(instance))

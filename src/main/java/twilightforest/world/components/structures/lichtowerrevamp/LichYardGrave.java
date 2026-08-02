@@ -17,14 +17,13 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.JigsawReplacementProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 
-public class LichYardGrave extends TwilightJigsawPiece implements PieceBeardifierModifier {
+public class LichYardGrave extends TwilightJigsawPiece {
 	private final BoundingBox fillUnder;
 
 	public LichYardGrave(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
@@ -73,21 +72,10 @@ public class LichYardGrave extends TwilightJigsawPiece implements PieceBeardifie
 	}
 
 	@Override
-	public BoundingBox getBeardifierBox() {
-		return this.boundingBox;
+	protected void processJigsaw(TwilightJigsawPiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
 	}
 
-	@Override
 	public TerrainAdjustment getTerrainAdjustment() {
 		return TerrainAdjustment.BEARD_BOX;
-	}
-
-	@Override
-	public int getGroundLevelDelta() {
-		return 1;
-	}
-
-	@Override
-	protected void processJigsaw(TwilightJigsawPiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
 	}
 }
