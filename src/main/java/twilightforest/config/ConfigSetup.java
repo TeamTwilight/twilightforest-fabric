@@ -2,14 +2,15 @@ package twilightforest.config;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
-import net.neoforged.fml.ModLoadingContext;
-import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.event.config.ModConfigEvent;
-import net.neoforged.neoforge.common.ModConfigSpec;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import io.github.fabricators_of_create.porting_lib.config.ConfigRegistry;
+import io.github.fabricators_of_create.porting_lib.config.ModConfig;
+import io.github.fabricators_of_create.porting_lib.config.ModConfigEvent;
+import io.github.fabricators_of_create.porting_lib.config.ModConfigSpec;
+import io.github.fabricators_of_create.porting_lib.entity.events.player.PlayerEvents;
+import twilightforest.network.PacketDistributor;
+import io.github.fabricators_of_create.porting_lib.core.util.ServerLifecycleHooks;
 import org.apache.commons.lang3.tuple.Pair;
+import twilightforest.TwilightForestMod;
 import twilightforest.network.SyncUncraftingTableConfigPacket;
 
 public final class ConfigSetup {
@@ -22,12 +23,12 @@ public final class ConfigSetup {
 	static {
 		{
 			final Pair<TFCommonConfig, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(TFCommonConfig::new);
-			ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.COMMON, COMMON_SPEC = specPair.getRight());
+			ConfigRegistry.registerConfig(TwilightForestMod.ID, ModConfig.Type.COMMON, COMMON_SPEC = specPair.getRight());
 			COMMON_CONFIG = specPair.getLeft();
 		}
 		{
 			final Pair<TFClientConfig, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(TFClientConfig::new);
-			ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.CLIENT, CLIENT_SPEC = specPair.getRight());
+			ConfigRegistry.registerConfig(TwilightForestMod.ID, ModConfig.Type.CLIENT, CLIENT_SPEC = specPair.getRight());
 			CLIENT_CONFIG = specPair.getLeft();
 		}
 	}
@@ -49,7 +50,7 @@ public final class ConfigSetup {
 	}
 
 	//sends uncrafting settings to a player on a server when they log in. This prevents desyncs when the configs dont match up between the player and the server.
-	public static void syncUncraftingConfig(PlayerEvent.PlayerLoggedInEvent event) {
+	public static void syncUncraftingConfig(PlayerEvents.PlayerLoggedInEvent event) {
 		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
 		if (server != null && server.isDedicatedServer() && event.getEntity() instanceof ServerPlayer player) {
 			PacketDistributor.sendToPlayer(player, new SyncUncraftingTableConfigPacket(
