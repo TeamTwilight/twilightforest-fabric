@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "twilightforest:block/encased_castle_brick_pillar_end"
-  }
-}

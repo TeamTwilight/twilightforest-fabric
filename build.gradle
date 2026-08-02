@@ -143,16 +143,13 @@ loom {
 	runs {
 		data {
 			client()
-
-			name "Data Generation"
-			vmArg "-Dfabric-api.datagen"
-			vmArg "-Dfabric-api.datagen.output-dir=${file("src/main/generated")}"
-			vmArg "-Dfabric-api.datagen.modid=twilightforest"
-			vmArg "-Dmixin.debug.export=true"
-			vmArg "-Dporting_lib.datagen.existing_resources=${file('src/main/resources/').getAbsolutePath()}"
+			configName = "Data Generation"
+			runDir = "run/data"
+			vmArg("-Dfabric-api.datagen")
+			vmArg("-Dfabric-api.datagen.output-dir=${file("src/generated/resources")}")
+			vmArg("-Dfabric-api.datagen.modid=${mod_id}")
 		}
 	}
-
 }
 
 processResources {
