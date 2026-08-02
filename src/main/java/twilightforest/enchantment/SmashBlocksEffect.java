@@ -18,8 +18,9 @@ import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.level.BlockEvent;
+
+
+import io.github.fabricators_of_create.porting_lib.level.events.BlockEvent;
 import twilightforest.entity.projectile.ChainBlock;
 import twilightforest.init.TFDataAttachments;
 
@@ -38,7 +39,7 @@ public record SmashBlocksEffect(LevelBasedValue maxSmash, LevelBasedValue radius
 	@Override
 	public void apply(ServerLevel level, int enchantmentLevel, EnchantedItemInUse item, Entity entity, Vec3 position) {
 		if (item.owner() instanceof ServerPlayer player) {
-			int blocksSmashed = entity.getData(TFDataAttachments.SMASH_BLOCKS).getBlocksSmashed();
+			int blocksSmashed = entity.getAttachedOrCreate(TFDataAttachments.SMASH_BLOCKS).getBlocksSmashed();
 			int maxSmash = Math.round(this.maxSmash.calculate(enchantmentLevel));
 			if (blocksSmashed >= maxSmash) return;
 			BlockPos start = BlockPos.containing(position);
@@ -49,20 +50,18 @@ public record SmashBlocksEffect(LevelBasedValue maxSmash, LevelBasedValue radius
 				BlockState state = level.getBlockState(pos);
 				if (!state.isAir()) {
 					if (this.immuneBlocks().isPresent() && this.immuneBlocks().get().contains(state.getBlockHolder())) continue;
-					if (ChainBlock.canBreakBlockAt(level, pos, state, item.itemStack(), player.gameMode.getGameModeForPlayer().isBlockPlacingRestricted()) && state.canEntityDestroy(level, pos, player)) {
-						if (!NeoForge.EVENT_BUS.post(new BlockEvent.BreakEvent(level, pos, state, player)).isCanceled()) {
-							level.destroyBlock(pos, false);
-							if (!player.isCreative()) state.getBlock().playerDestroy(level, player, pos, state, level.getBlockEntity(pos), item.itemStack());
-							if (this.smashSound().isPresent()) {
-								level.playSound(null, pos, this.smashSound().get().value(), SoundSource.BLOCKS, 1.0F, 1.0F);
-							}
-							blocksSmashed++;
+					if (ChainBlock.canBreakBlockAt(level, pos, state, item.itemStack(), player.gameMode.getGameModeForPlayer().isBlockPlacingRestricted())) {
+						level.destroyBlock(pos, false);
+						if (!player.isCreative()) state.getBlock().playerDestroy(level, player, pos, state, level.getBlockEntity(pos), item.itemStack());
+						if (this.smashSound().isPresent()) {
+							level.playSound(null, pos, this.smashSound().get().value(), SoundSource.BLOCKS, 1.0F, 1.0F);
 						}
+						blocksSmashed++;
 					}
 				}
 			}
 
-			entity.getData(TFDataAttachments.SMASH_BLOCKS).setBlocksSmashed(blocksSmashed);
+			entity.getAttachedOrCreate(TFDataAttachments.SMASH_BLOCKS).setBlocksSmashed(blocksSmashed);
 		}
 	}
 
