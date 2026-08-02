@@ -1,5 +1,6 @@
 package twilightforest.events;
 
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -22,6 +23,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.fabricmc.loader.api.FabricLoader;
 
 import io.github.fabricators_of_create.porting_lib.entity.events.living.LivingDeathEvent;
+import twilightforest.init.*;
 import twilightforest.network.PacketDistributor;
 import io.github.fabricators_of_create.porting_lib.registry.DeferredItem;
 import twilightforest.TwilightForestMod;
@@ -31,10 +33,6 @@ import twilightforest.compat.trinkets.TrinketsCompat;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.enums.BlockLoggingEnum;
-import twilightforest.init.TFBlocks;
-import twilightforest.init.TFItems;
-import twilightforest.init.TFSounds;
-import twilightforest.init.TFStats;
 import twilightforest.network.SpawnCharmPacket;
 import twilightforest.util.TFItemStackUtils;
 
@@ -50,13 +48,23 @@ public class CharmEvents {
 	public static final String CONSUMED_CHARM_TAG = "CharmStack";
 
 	public static void init() {
-		// LivingDeathEvent is available in Porting-Lib
-		/*
 		LivingDeathEvent.EVENT.register(INSTANCE::applyCharmOfLife);
 		LivingDeathEvent.EVENT.register(INSTANCE::applyKeepingAndCasket);
-		*/
-		// PlayerRespawnEvent needs migration to Fabric API ServerPlayerEvents.AFTER_RESPAWN
-		// NeoForge.EVENT_BUS.addListener(INSTANCE::returnItemsOnRespawn);
+		ServerPlayerEvents.COPY_FROM.register((oldPlayer, newPlayer, alive) -> {
+			if (!alive) {
+				CompoundTag oldData = oldPlayer.getAttached(TFDataAttachments.FABRIC_CHARM_DATA);
+
+				// For safety reasons...
+				if (oldData != null) {
+					newPlayer.setAttached(
+						TFDataAttachments.FABRIC_CHARM_DATA,
+						oldData.copy()
+					);
+				}
+
+				returnStoredItems(newPlayer);
+			}
+		});
 	}
 
 	// Check for charm of life first to stop a player from dying
@@ -84,16 +92,6 @@ public class CharmEvents {
 			stockKeepsakeCasket(player);
 		}
 	}
-
-	// PlayerEvents.CloneEvent needs migration to Fabric API
-	/*
-	private void returnItemsOnRespawn(PlayerEvents.CloneEvent event) {
-		if (!(event.getEntity() instanceof ServerPlayer serverPlayer)) return;
-		if (!event.isEndConquered()) {
-			returnStoredItems(serverPlayer);
-		}
-	}
-	*/
 
 	private static boolean handleCharmOfLife(Player player) {
 		boolean charm2 = TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_LIFE_2.get(), getPlayerData(player), false) || hasCharmTrinket(TFItems.CHARM_OF_LIFE_2.get(), player);
@@ -313,16 +311,15 @@ public class CharmEvents {
 	}
 
 	public static CompoundTag getPlayerData(Player player) {
-		// getPersistentData() 和 Player.PERSISTED_NBT_TAG 在 1.21.1 中不再可用，使用 DataAttachment 替代
-		// Use a Fabric-compatible persistent data storage instead
-		CompoundTag fakeData = new CompoundTag();
-		/*
-		if (!player.getPersistentData().contains(Player.PERSISTED_NBT_TAG)) {
-			player.getPersistentData().put(Player.PERSISTED_NBT_TAG, new CompoundTag());
+		CompoundTag tag = player.getAttached(TFDataAttachments.FABRIC_CHARM_DATA);
+
+		// For safety reasons...
+		if (tag == null) {
+			tag = new CompoundTag();
+			player.setAttached(TFDataAttachments.FABRIC_CHARM_DATA, tag);
 		}
-		return player.getPersistentData().getCompound(Player.PERSISTED_NBT_TAG);
-		*/
-		return fakeData;
+
+		return tag;
 	}
 
 	//transfers a list of items to another

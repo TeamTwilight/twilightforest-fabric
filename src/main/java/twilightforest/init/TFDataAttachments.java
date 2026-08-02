@@ -3,6 +3,7 @@ package twilightforest.init;
 import com.mojang.authlib.GameProfile;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.UUIDUtil;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Unit;
@@ -130,6 +131,10 @@ public class TFDataAttachments {
 	public static final AttachmentType<SlimySolesAttachment> SLIMY_SOLES_BOUNCE_INFO = AttachmentRegistry.create(
 		id("slimy_soles_bounce_info"),
 		b -> b.initializer(SlimySolesAttachment::new).persistent(SlimySolesAttachment.CODEC)
+	);
+	public static final AttachmentType<CompoundTag> FABRIC_CHARM_DATA = AttachmentRegistry.create(
+		id("charm_data"),
+		b -> b.initializer(CompoundTag::new).persistent(CompoundTag.CODEC)
 	);
 
 	private static ResourceLocation id(String name) {
