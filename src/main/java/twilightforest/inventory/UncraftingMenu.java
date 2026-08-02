@@ -20,8 +20,8 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
-import net.neoforged.fml.loading.FMLLoader;
-import net.neoforged.neoforge.common.Tags;
+import net.fabricmc.loader.api.FabricLoader;
+import io.github.fabricators_of_create.porting_lib.tags.Tags;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
@@ -108,7 +108,7 @@ public class UncraftingMenu extends RecipeBookMenu<RecipeInput, Recipe<RecipeInp
 
 		this.slotsChanged(this.assemblyMatrix);
 
-		if (!FMLLoader.isProduction()) {
+		if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
 			// Debug slot listing
 			NonNullList<Slot> slots = this.slots;
 
@@ -244,7 +244,8 @@ public class UncraftingMenu extends RecipeBookMenu<RecipeInput, Recipe<RecipeInp
 						Objects.requireNonNull(result.get(DataComponents.ENCHANTMENTS)).entrySet().forEach(enchantment -> enchants.set(enchantment.getKey(), enchantment.getIntValue()));
 					}
 					//remove any incompatible enchants
-					enchants.removeIf(holder -> !result.supportsEnchantment(holder));
+					// Remove enchants that are incompatible with the output item
+					enchants.removeIf(holder -> !result.isEnchantable());
 
 					//remove enchantments and replace with filtered list
 					result.remove(DataComponents.ENCHANTMENTS);
@@ -273,7 +274,7 @@ public class UncraftingMenu extends RecipeBookMenu<RecipeInput, Recipe<RecipeInp
 	}
 
 	public static boolean isIngredientProblematic(ItemStack ingredient) {
-		return (!ingredient.isEmpty() && ingredient.getItem().hasCraftingRemainingItem(ingredient)) || ingredient.is(Items.BARRIER);
+		return (!ingredient.isEmpty() && ingredient.getItem().hasCraftingRemainingItem()) || ingredient.is(Items.BARRIER);
 	}
 
 	private static ItemStack normalizeIngredient(ItemStack ingredient) {
