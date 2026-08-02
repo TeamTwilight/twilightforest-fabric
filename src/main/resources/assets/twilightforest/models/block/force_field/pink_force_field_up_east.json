@@ -1,0 +1,7 @@
+{
+  "parent": "twilightforest:block/force_field/force_field_up_east",
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "pane": "twilightforest:block/pink_force_field"
+  }
+}

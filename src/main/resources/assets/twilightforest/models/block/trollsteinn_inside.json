@@ -1,0 +1,16 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "particle": "twilightforest:block/trollsteinn",
+    "texture": "twilightforest:block/trollsteinn"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 0.01],
+      "faces": {
+        "north": {"uv": [0, 0, 16, 16], "texture": "#texture"}
+      }
+    }
+  ]
+}

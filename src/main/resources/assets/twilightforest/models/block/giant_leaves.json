@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/block",
+  "loader": "twilightforest:giant_block",
+  "parent_block": "minecraft:block/oak_leaves",
+  "textures": {
+    "all": "minecraft:block/oak_leaves",
+    "particle": "minecraft:block/oak_leaves"
+  }
+}

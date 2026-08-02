@@ -1,0 +1,8 @@
+{
+  "parent": "twilightforest:block/huge_lily_pad",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "particle": "#texture",
+    "texture": "twilightforest:block/huge_lily_pad_1"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "parent": "twilightforest:block/vertical_hollow_log_ladder",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "inner": "twilightforest:block/stripped_canopy_log",
+    "side": "twilightforest:block/canopy_log",
+    "top": "twilightforest:block/canopy_log_top"
+  }
+}

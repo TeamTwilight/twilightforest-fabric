@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "loader": "twilightforest:force_field_item",
+  "textures": {
+    "layer0": "twilightforest:block/forcefield_white"
+  }
+}
