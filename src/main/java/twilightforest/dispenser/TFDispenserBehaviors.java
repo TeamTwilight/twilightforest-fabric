@@ -1,19 +1,25 @@
 package twilightforest.dispenser;
 
+import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
+import net.minecraft.world.level.gameevent.GameEvent;
 import twilightforest.entity.projectile.MoonwormShot;
 import twilightforest.entity.projectile.TwilightWandBolt;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFEntities;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
 
@@ -108,5 +114,24 @@ public class TFDispenserBehaviors {
 		DispenserBlock.registerBehavior(Items.MAGENTA_CANDLE, new CandleDispenseBehavior());
 		DispenserBlock.registerBehavior(Items.PINK_CANDLE, new CandleDispenseBehavior());
 		DispenserBlock.registerBehavior(Items.BROWN_CANDLE, new CandleDispenseBehavior());
+
+		// Register dispenser behaviors for all spawn eggs
+		DispenseItemBehavior spawnEggBehavior = (source, stack) -> {
+			Direction face = source.state().getValue(DispenserBlock.FACING);
+			EntityType<?> type = ((SpawnEggItem) stack.getItem()).getType(stack);
+			try {
+				type.spawn(source.level(), stack, null, source.pos().relative(face), MobSpawnType.DISPENSER, face != Direction.UP, false);
+			} catch (Exception exception) {
+				DispenseItemBehavior.LOGGER.error("Error while dispensing spawn egg from dispenser at {}", source.pos(), exception);
+				return ItemStack.EMPTY;
+			}
+			stack.shrink(1);
+			source.level().gameEvent(GameEvent.ENTITY_PLACE, source.pos(), GameEvent.Context.of(source.state()));
+			return stack;
+		};
+
+		for (var holder : TFEntities.SPAWN_EGGS.getEntries()) {
+			DispenserBlock.registerBehavior(holder.get(), spawnEggBehavior);
+		}
 	}
 }
