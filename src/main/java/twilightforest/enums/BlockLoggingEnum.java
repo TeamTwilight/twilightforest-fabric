@@ -106,10 +106,13 @@ public enum BlockLoggingEnum implements StringRepresentable {
 			return Optional.empty();
 		}
 
+		// BlockLogging needs porting to Fabric
+		/*
 		@Override
 		default Optional<SoundEvent> getPickupSound(BlockState state) {
 			return state.getValue(MULTILOGGED).fluid.getPickupSound();
 		}
+		*/
 	}
 
 	private static class Ref {

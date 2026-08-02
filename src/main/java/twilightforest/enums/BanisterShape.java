@@ -8,7 +8,7 @@ public enum BanisterShape implements StringRepresentable {
 	SHORT,
 	TALL,
 	CONNECTED;
-	// TODO Re-add these -- Their model issues have been resolved; now they just need voxel shapes and integration into cycling via axe.
+	// 待重新添加：模型问题已解决，需要 voxel shapes 和 axe 循环集成
 	// TILT_RIGHT,
 	// TILT_LEFT;
 
