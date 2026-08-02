@@ -298,3 +298,6 @@ accessible field net/minecraft/client/resources/model/WeightedBakedModel totalWe
 accessible method net/minecraft/world/level/GameRules register (Ljava/lang/String;Lnet/minecraft/world/level/GameRules$Category;Lnet/minecraft/world/level/GameRules$Type;)Lnet/minecraft/world/level/GameRules$Key;
 accessible method net/minecraft/world/level/GameRules$BooleanValue create (ZLjava/util/function/BiConsumer;)Lnet/minecraft/world/level/GameRules$Type;
 accessible method net/minecraft/world/level/GameRules$IntegerValue create (I)Lnet/minecraft/world/level/GameRules$Type;
+
+# EntityEntryDefinition (For REI compat)
+accessible method net/minecraft/world/entity/Entity getEncodeId ()Ljava/lang/String;

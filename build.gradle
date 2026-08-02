@@ -52,13 +52,6 @@ repositories {
 		}
 	}
 	maven {
-		name = "Modrinth"
-		url = "https://api.modrinth.com/maven"
-		content {
-			includeGroup("maven.modrinth")
-		}
-	}
-	maven {
 		name = "Sleeping Town"
 		url = "https://repo.sleeping.town/"
 	}
@@ -93,50 +86,53 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
 
 	// Porting-Lib modules (from Devos Maven) - bundled via jar-in-jar so players don't need it as a separate dependency
-	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:core:3.1.0-beta.87+1.21.1")
-	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:common:3.1.0-beta.87+1.21.1")
-	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:base:3.1.0-beta.87+1.21.1")
-	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:attributes:3.1.0-beta.87+1.21.1")
-	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:blocks:3.1.0-beta.87+1.21.1")
-	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:client_events:3.1.0-beta.87+1.21.1")
-	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:client_extensions:3.1.0-beta.87+1.21.1")
-	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:config:3.1.0-beta.87+1.21.1")
-	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:data:3.1.0-beta.87+1.21.1")
-	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:entity:3.1.0-beta.87+1.21.1")
-	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:entity_data_serializers:3.1.0-beta.87+1.21.1")
-	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:fluids:3.1.0-beta.87+1.21.1")
-	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:gui_utils:3.1.0-beta.87+1.21.1")
-	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:item_abilities:3.1.0-beta.87+1.21.1")
-	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:items:3.1.0-beta.87+1.21.1")
-	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:level_events:3.1.0-beta.87+1.21.1")
-	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:loot:3.1.0-beta.87+1.21.1")
-	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:mixin_extensions:3.1.0-beta.87+1.21.1")
-	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:model_data:3.1.0-beta.87+1.21.1")
-	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:model_loader:3.1.0-beta.87+1.21.1")
-	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:models:3.1.0-beta.87+1.21.1")
-	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:registry:3.1.0-beta.87+1.21.1")
-	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:render_types:3.1.0-beta.87+1.21.1")
-	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:resources:3.1.0-beta.87+1.21.1")
-	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:tags:3.1.0-beta.87+1.21.1")
-	include(modImplementation "io.github.fabricators_of_create.Porting-Lib:transfer:3.1.0-beta.87+1.21.1")
+	def portingLibModules = [
+		"core",
+		"common",
+		"base",
+		"attributes",
+		"blocks",
+		"client_events",
+		"client_extensions",
+		"config",
+		"data",
+		"entity",
+		"entity_data_serializers",
+		"fluids",
+		"gui_utils",
+		"item_abilities",
+		"items",
+		"level_events",
+		"loot",
+		"mixin_extensions",
+		"model_data",
+		"model_loader",
+		"models",
+		"registry",
+		"render_types",
+		"resources",
+		"tags",
+		"transfer"
+	]
 
-	// Mixin Extras
-	include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:${mixin_extras_version}")))
+	dependencies {
+		portingLibModules.each { module ->
+			include(modImplementation "io.github.fabricators_of_create.Porting-Lib:${module}:${porting_lib_version}+${minecraft_version}")
+		}
+	}
 
 	// Javax annotations (used by many TF classes)
 	implementation "javax.annotation:javax.annotation-api:1.3.2"
 	implementation "com.google.code.findbugs:jsr305:3.0.2"
 
 	// Compat mods (compileOnly for optional mods)
-	modCompileOnly("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}") {
-		exclude group: "mezz.jei", module: "jei-${minecraft_version}-common-api"
-	}
+	modCompileOnly("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}")
 	modCompileOnly "dev.emi:trinkets:${trinkets_version}"
 	modCompileOnly "me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}"
-	modCompileOnly "maven.modrinth:fRiHVvU7:mYQ3bJs5" // EMI
+	modCompileOnly "dev.emi:emi-fabric:${emi_version}+${minecraft_version}"
 
 	// ModMenu for config screen
-	modImplementation "com.terraformersmc:modmenu:11.0.3"
+	modImplementation "com.terraformersmc:modmenu:${modmenu_version}"
 
 	// Jade (compileOnly + localRuntime for dev environment; not a mandatory dependency)
 	modCompileOnly "maven.modrinth:jade:${jade_version}"
