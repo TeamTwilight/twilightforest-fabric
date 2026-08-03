@@ -15,6 +15,7 @@
     "DamageSourcesMixin",
     "EntityMixin",
     "FireBlockMixin",
+    "ItemStackMixin",
     "LeashFenceKnotEntityMixin",
     "LivingEntityMixin",
     "MapItemMixin",
@@ -32,13 +33,13 @@
     "WrittenBookItemMixin"
   ],
   "client": [
-    "HumanoidArmorLayerMixin",
     "BoatRendererMixin",
     "BossHealthOverlayMixin",
     "CapeLayerMixin",
     "ElytraLayerMixin",
     "EntityRenderDispatcherMixin",
     "GuiMixin",
+    "HumanoidArmorLayerMixin",
     "ItemInHandRendererMixin",
     "ItemRendererMixin",
     "LevelRendererAccessor",

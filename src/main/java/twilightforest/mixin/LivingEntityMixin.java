@@ -1,9 +1,11 @@
 package twilightforest.mixin;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.FluidState;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,6 +17,7 @@ import twilightforest.asmhooks.ArmorHooks;
 import twilightforest.asmhooks.EntityHooks;
 import twilightforest.compat.trinkets.TrinketsCompat;
 import twilightforest.init.TFBlocks;
+import twilightforest.init.TFDataAttachments;
 import twilightforest.network.CreateMovingCicadaSoundPacket;
 import twilightforest.network.PacketDistributor;
 
@@ -54,5 +57,26 @@ public class LivingEntityMixin {
 		}
 
 		PacketDistributor.sendToPlayersTrackingEntityAndSelf(self, new CreateMovingCicadaSoundPacket(self.getId()));
+	}
+
+	@Inject(
+		method = "doHurtEquipment(Lnet/minecraft/world/damagesource/DamageSource;F[Lnet/minecraft/world/entity/EquipmentSlot;)V",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/world/item/ItemStack;hurtAndBreak(ILnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;)V"
+		)
+	)
+	private void twilightforest$setLastDamageArmorTime(
+		DamageSource damageSource,
+		float damageAmount,
+		EquipmentSlot[] slots,
+		CallbackInfo ci
+	) {
+		LivingEntity self = (LivingEntity) (Object) this;
+
+		self.setAttached(
+			TFDataAttachments.LAST_DAMAGE_ARMOR_TIME,
+			self.level().getGameTime()
+		);
 	}
 }
