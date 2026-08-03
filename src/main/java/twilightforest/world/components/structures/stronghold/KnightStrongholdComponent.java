@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
@@ -133,7 +134,7 @@ public abstract class KnightStrongholdComponent extends TFStructureComponentOld 
 		}
 	}
 
-   	// Check the list for components we can break in to at the specified point
+	// Check the list for components we can break in to at the specified point
 	protected StructurePiece findBreakInComponent(StructurePieceAccessor list, int x, int y, int z) {
 		BlockPos pos = new BlockPos(x, y, z);
 		if (list instanceof StructurePiecesBuilder start) {
@@ -509,8 +510,15 @@ public abstract class KnightStrongholdComponent extends TFStructureComponentOld 
 		}
 	}
 
+	// Stronghold components use NONE to match pre-1.21.1-port behavior:
+	// terrain is preserved at the piece level, structure-level BURY handles burial
+	@Override
+	public TerrainAdjustment getTerrainAdjustment() {
+		return TerrainAdjustment.NONE;
+	}
+
 	public interface Factory<T extends KnightStrongholdComponent> {
 		T newInstance(int i, Direction facing, int x, int y, int z);
 	}
 
-	}
+}

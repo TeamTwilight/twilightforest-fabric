@@ -529,7 +529,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 		int maxX = this.boundingBox.maxX() + 1;
 		int maxZ = this.boundingBox.maxZ() + 1;
 
-        for (int x = minX; x <= maxX; x++) {
+		for (int x = minX; x <= maxX; x++) {
 			for (int z = minZ; z <= maxZ; z++) {
 				if (!predicate.test(world.getUncachedNoiseBiome(  // getUncachedNoiseBiome() requires quart pos instead of blockPos, unlike getBiome()
 					QuartPos.fromBlock(x),
@@ -588,7 +588,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 
 	@Override
 	public TerrainAdjustment getTerrainAdjustment() {
-		return TerrainAdjustment.NONE;
+		return TerrainAdjustment.BEARD_THIN;
 	}
 
 	@Override

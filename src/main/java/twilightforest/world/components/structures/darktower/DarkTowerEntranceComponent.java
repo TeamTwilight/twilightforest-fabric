@@ -14,9 +14,10 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import io.github.fabricators_of_create.porting_lib.world.PieceBeardifierModifier;
 import twilightforest.init.TFStructurePieceTypes;
 
-public class DarkTowerEntranceComponent extends DarkTowerWingComponent {
+public class DarkTowerEntranceComponent extends DarkTowerWingComponent implements PieceBeardifierModifier {
 
 	public DarkTowerEntranceComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
 		super(TFStructurePieceTypes.TFDTEnt.get(), nbt);
@@ -65,11 +66,13 @@ public class DarkTowerEntranceComponent extends DarkTowerWingComponent {
 		makeOpenings(world, sbb);
 	}
 
-	// getTerrainAdjustment is NeoForge-specific; structure components use 1.21.1 standard API
-	/*
 	@Override
 	public TerrainAdjustment getTerrainAdjustment() {
 		return TerrainAdjustment.BEARD_BOX;
 	}
-	*/
+
+	@Override
+	public int getGroundLevelDelta() {
+		return 1;
+	}
 }

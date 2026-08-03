@@ -51,7 +51,7 @@ public class DarkTowerStructure extends ControlledSpawningStructure implements C
 
 	@Override
 	public DensityFunction getStructureTerraformer(ChunkPos chunkPosAt, StructureStart structurePieceSource) {
-		return CustomDensitySource.getInvertedPyramidTerraformer(structurePieceSource, 0, 5);
+		return CustomDensitySource.getInvertedPyramidTerraformer(structurePieceSource, 1, 5);
 	}
 
 	public static DarkTowerStructure buildDarkTowerConfig(BootstrapContext<Structure> context) {
