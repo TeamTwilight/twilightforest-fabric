@@ -588,7 +588,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 
 	@Override
 	public TerrainAdjustment getTerrainAdjustment() {
-		return TerrainAdjustment.BEARD_THIN;
+		return TerrainAdjustment.NONE;
 	}
 
 	@Override
