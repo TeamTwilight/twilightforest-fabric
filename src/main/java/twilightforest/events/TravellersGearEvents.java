@@ -24,15 +24,10 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 
-
-
-
 import io.github.fabricators_of_create.porting_lib.entity.events.ProjectileImpactEvent;
-
 import io.github.fabricators_of_create.porting_lib.entity.events.living.LivingEvents;
 import io.github.fabricators_of_create.porting_lib.entity.events.living.LivingFallEvent;
 import io.github.fabricators_of_create.porting_lib.entity.events.player.PlayerEvents;
-
 import io.github.fabricators_of_create.porting_lib.entity.events.tick.EntityTickEvent;
 import io.github.fabricators_of_create.porting_lib.entity.events.tick.PlayerTickEvent;
 import io.github.fabricators_of_create.porting_lib.event.common.ItemAttributeModifierEvent;
@@ -70,10 +65,6 @@ public class TravellersGearEvents {
 		EntityTickEvent.Post.EVENT.register(INSTANCE::updateOtherModifiers);
 		LivingEvents.LivingJumpEvent.EVENT.register(INSTANCE::cancelSlimySolesJump);
 		ItemAttributeModifierEvent.EVENT.register(INSTANCE::activateAndDeactivateTravellersModifiers);
-		// AnvilUpdateEvent needs migration to Fabric API
-		// NeoForge.EVENT_BUS.addListener(INSTANCE::cancelCombiningTravellersGear);
-		// PlayerSpawnPhantomsEvent needs migration to Fabric API
-		// NeoForge.EVENT_BUS.addListener(INSTANCE::cancelPhantomSpawns);
 		PlayerEvents.ItemCraftedEvent.EVENT.register(INSTANCE::fireCraftingModifierTrigger);
 		// GrindstoneEvent.OnTakeItem lacks getPlayer(), needs custom mixin
 		// GrindstoneEvent.OnTakeItem.EVENT.register(INSTANCE::extractItemsFromSwapHotbarModifier);
@@ -261,15 +252,6 @@ public class TravellersGearEvents {
 		}
 	}
 
-	// AnvilUpdateEvent needs migration to Fabric API
-	/*
-	private void cancelCombiningTravellersGear(AnvilUpdateEvent event) {
-		if (event.getLeft().has(TFDataComponents.IS_TRAVELLERS_GEAR.get()) && event.getRight().has(TFDataComponents.IS_TRAVELLERS_GEAR.get())) {
-			event.setCanceled(true);
-		}
-	}
-	*/
-
 	private void removeModifiersFromTravellersGear(GrindstoneEvent.OnPlaceItem event) {
 		if (ServerLifecycleHooks.getCurrentServer() == null)
 			return;
@@ -331,15 +313,6 @@ public class TravellersGearEvents {
 			.filter(predicate)
 			.toList();
 		return travellersItemStacks.size() == 1 ? Optional.of(travellersItemStacks.getFirst()) : Optional.empty();
-	}
-	*/
-
-	// PlayerSpawnPhantomsEvent needs migration to Fabric API
-	/*
-	private void cancelPhantomSpawns(PlayerSpawnPhantomsEvent event) {
-		if (TravellersModifiersManager.isModifierActive(event.getEntity(), TravellersModifiersManager.ALL_NIGHT_GOGGLES_MODIFIER)) {
-			event.setResult(PlayerSpawnPhantomsEvent.Result.DENY);
-		}
 	}
 	*/
 

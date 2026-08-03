@@ -4,6 +4,7 @@
   "package": "twilightforest.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "AnvilMenuMixin",
     "AxeItemMixin",
     "BeardifierMixin",
     "BiomeMixin",
@@ -16,6 +17,7 @@
     "DamageSourcesMixin",
     "EntityMixin",
     "FireBlockMixin",
+    "ItemCombinerMenuAccessor",
     "ItemStackMixin",
     "LeashFenceKnotEntityMixin",
     "LivingEntityMixin",
@@ -26,6 +28,7 @@
     "MushroomBlockMixin",
     "NoiseBasedChunkGeneratorMixin",
     "PathfinderMobMixin",
+    "PhantomSpawnerMixin",
     "PlayerMixin",
     "ServerEntityMixin",
     "ServerLevelMixin",
