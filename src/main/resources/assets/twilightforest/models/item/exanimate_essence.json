@@ -1,4 +1,4 @@
-﻿{
+{
   "parent": "minecraft:item/generated",
   "loader": "porting_lib:item_layers",
   "porting_lib_data": {

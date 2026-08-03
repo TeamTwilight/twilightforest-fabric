@@ -80,45 +80,45 @@
             }
         }, {
             "from": [ 4, 8, 1 ],
-            "to": [ 8, 8, 5 ],
+            "to": [ 8, 8.02, 5 ],
             "faces": {
-                "up":    { "texture": "#top_2", "neoforge_data": { "block_light": 15, "sky_light": 15 } }
+                "up":    { "porting_lib_data": { "block_light": 15, "sky_light": 15 }, "texture": "#top_2" }
             }
         }, {
             "from": [ 2, 8, 1 ],
-            "to": [ 4, 8, 3 ],
+            "to": [ 4, 8.02, 3 ],
             "faces": {
-                "up":    { "texture": "#top_2", "neoforge_data": { "block_light": 15, "sky_light": 15 } }
+                "up":    { "porting_lib_data": { "block_light": 15, "sky_light": 15 }, "texture": "#top_2" }
             }
         },
         {   "from": [ 6, 8, 5 ],
-            "to": [ 8, 8, 7 ],
+            "to": [ 8, 8.02, 7 ],
             "faces": {
-                "up":    { "texture": "#top_2", "neoforge_data": { "block_light": 15, "sky_light": 15 } }
+                "up":    { "porting_lib_data": { "block_light": 15, "sky_light": 15 }, "texture": "#top_2" }
             }
         },
         {   "from": [ 1, 8, 1 ],
-            "to": [ 2, 8, 2 ],
+            "to": [ 2, 8.02, 2 ],
             "faces": {
-                "up":    { "texture": "#top_2", "neoforge_data": { "block_light": 15, "sky_light": 15 } }
+                "up":    { "porting_lib_data": { "block_light": 15, "sky_light": 15 }, "texture": "#top_2" }
             }
         },
         {   "from": [ 3, 8, 3 ],
-            "to": [ 4, 8, 4 ],
+            "to": [ 4, 8.02, 4 ],
             "faces": {
-                "up":    { "texture": "#top_2", "neoforge_data": { "block_light": 15, "sky_light": 15 } }
+                "up":    { "porting_lib_data": { "block_light": 15, "sky_light": 15 }, "texture": "#top_2" }
             }
         },
         {   "from": [ 5, 8, 5 ],
-            "to": [ 6, 8, 6 ],
+            "to": [ 6, 8.02, 6 ],
             "faces": {
-                "up":    { "texture": "#top_2", "neoforge_data": { "block_light": 15, "sky_light": 15 } }
+                "up":    { "porting_lib_data": { "block_light": 15, "sky_light": 15 }, "texture": "#top_2" }
             }
         },
         {   "from": [ 7, 8, 7 ],
-            "to": [ 8, 8, 8 ],
+            "to": [ 8, 8.02, 8 ],
             "faces": {
-                "up":    { "texture": "#top_2", "neoforge_data": { "block_light": 15, "sky_light": 15 } }
+                "up":    { "porting_lib_data": { "block_light": 15, "sky_light": 15 }, "texture": "#top_2" }
             }
         }
     ]

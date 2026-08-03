@@ -1,4 +1,4 @@
-{
+﻿{
   "parent": "minecraft:block/cube_all",
   "elements": [
     {
@@ -27,7 +27,7 @@
         2.008,
         2
       ],
-      "neoforge_data": {
+      "porting_lib_data": {
         "block_light": 3,
         "sky_light": 3
       },

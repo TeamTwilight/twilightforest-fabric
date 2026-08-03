@@ -23,9 +23,9 @@
             }
         }, {
             "from": [ 1, 8, 1 ],
-            "to": [ 8, 8, 8 ],
+            "to": [ 8, 8.02, 8 ],
             "faces": {
-                "up":    { "texture": "#top_2", "neoforge_data": { "block_light": 15, "sky_light": 15 } }
+                "up":    { "porting_lib_data": { "block_light": 15, "sky_light": 15 }, "texture": "#top_2" }
             }
         }
     ]

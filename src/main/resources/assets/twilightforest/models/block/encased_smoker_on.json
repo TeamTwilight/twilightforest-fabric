@@ -1,4 +1,4 @@
-{
+﻿{
   "parent": "minecraft:block/block",
   "elements": [
     {
@@ -43,14 +43,14 @@
       "faces": {
         "east": {
           "cullface": "east",
-          "neoforge_data": {
+          "porting_lib_data": {
             "block_light": 15
           },
           "texture": "#side2"
         },
         "north": {
           "cullface": "north",
-          "neoforge_data": {
+          "porting_lib_data": {
             "block_light": 15,
             "sky_light": 15
           },
@@ -58,21 +58,21 @@
         },
         "south": {
           "cullface": "south",
-          "neoforge_data": {
+          "porting_lib_data": {
             "block_light": 15
           },
           "texture": "#side2"
         },
         "up": {
           "cullface": "up",
-          "neoforge_data": {
+          "porting_lib_data": {
             "block_light": 10
           },
           "texture": "#top2"
         },
         "west": {
           "cullface": "west",
-          "neoforge_data": {
+          "porting_lib_data": {
             "block_light": 15
           },
           "texture": "#side2"
@@ -93,7 +93,7 @@
       "faces": {
         "east": {
           "cullface": "east",
-          "neoforge_data": {
+          "porting_lib_data": {
             "block_light": 10,
             "sky_light": 10
           },
@@ -101,14 +101,14 @@
         },
         "north": {
           "cullface": "north",
-          "neoforge_data": {
+          "porting_lib_data": {
             "block_light": 10
           },
           "texture": "#side3"
         },
         "south": {
           "cullface": "south",
-          "neoforge_data": {
+          "porting_lib_data": {
             "block_light": 10,
             "sky_light": 10
           },
@@ -116,7 +116,7 @@
         },
         "up": {
           "cullface": "up",
-          "neoforge_data": {
+          "porting_lib_data": {
             "block_light": 7,
             "sky_light": 7
           },
@@ -124,7 +124,7 @@
         },
         "west": {
           "cullface": "west",
-          "neoforge_data": {
+          "porting_lib_data": {
             "block_light": 10,
             "sky_light": 10
           },
