@@ -32,7 +32,6 @@ import twilightforest.util.iterators.VoxelBresenhamIterator;
 import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 public class OreMagnetItem extends Item implements CustomEnchantingBehaviorItem {

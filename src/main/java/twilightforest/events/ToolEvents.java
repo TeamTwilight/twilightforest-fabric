@@ -1,5 +1,6 @@
 package twilightforest.events;
 
+import io.github.fabricators_of_create.porting_lib.resources.events.TagsUpdatedEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -61,7 +62,7 @@ public class ToolEvents {
 		BlockEvent.BreakEvent.EVENT.register(INSTANCE::damageNonMazebreakerToolsMore);
 		MobEffectEvent.Applicable.EVENT.register(INSTANCE::preventFatigueWithPocketWatch);
 		BlockEvent.BreakEvent.EVENT.register(INSTANCE::handleGiantPickaxeMining);
-		// TagsUpdatedEvent needs migration to Fabric API
+		TagsUpdatedEvent.EVENT.register(INSTANCE::refreshOreMagnetCache);
 	}
 
 	private void onEnderBowHit(ProjectileImpactEvent evt) {
@@ -217,8 +218,6 @@ public class ToolEvents {
 		return attachment.getMining() == player.level().getGameTime() && !attachment.getBreaking();
 	}
 
-	// TagsUpdatedEvent needs migration to Fabric API
-	/*
 	private void refreshOreMagnetCache(TagsUpdatedEvent event) {
 		OreMagnetItem.MAGNET_ORE_TO_BLOCK_REPLACEMENTS.clear();
 		OreMagnetItem.TREE_ORE_TO_BLOCK_REPLACEMENTS.clear();
@@ -256,5 +255,4 @@ public class ToolEvents {
 			OreMagnetItem.TREE_ORE_TO_BLOCK_REPLACEMENTS.put(Blocks.ANCIENT_DEBRIS, Blocks.NETHERRACK);
 		}
 	}
-	*/
 }
