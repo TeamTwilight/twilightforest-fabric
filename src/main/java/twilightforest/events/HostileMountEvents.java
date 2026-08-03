@@ -22,8 +22,12 @@ public class HostileMountEvents {
 
 	public static void init() {
 		LivingHurtEvent.EVENT.register(INSTANCE::handleMountDamage);
-		// EntityTeleportEvent is available in Porting-Lib
-		// EntityTeleportEvent.EVENT.register(INSTANCE::preventTeleportingOffHostileMounts);
+		// Why did they make this five events? Who knows...
+		EntityTeleportEvent.ChorusFruit.EVENT.register(INSTANCE::preventTeleportingOffHostileMounts);
+		EntityTeleportEvent.EnderEntity.EVENT.register(INSTANCE::preventTeleportingOffHostileMounts);
+		EntityTeleportEvent.EnderPearl.EVENT.register(INSTANCE::preventTeleportingOffHostileMounts);
+		EntityTeleportEvent.SpreadPlayersCommand.EVENT.register(INSTANCE::preventTeleportingOffHostileMounts);
+		EntityTeleportEvent.TeleportCommand.EVENT.register(INSTANCE::preventTeleportingOffHostileMounts);
 		EntityMountEvent.EVENT.register(INSTANCE::preventMountDismount);
 		EntityTickEvent.Post.EVENT.register(INSTANCE::preventHostilMountCrouching);
 	}
