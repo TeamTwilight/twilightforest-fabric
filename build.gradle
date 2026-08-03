@@ -119,10 +119,10 @@ dependencies {
 	}
 
 	// ModMenu for config screen
-	modImplementation "com.terraformersmc:modmenu:${modmenu_version}"
+	modCompileOnly "com.terraformersmc:modmenu:${modmenu_version}"
 
 	// Compat mods (compileOnly for optional mods)
-	modCompileOnly("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}")
+	modCompileOnly "mezz.jei:jei-${minecraft_version}-fabric:${jei_version}"
 	modCompileOnly "dev.emi:trinkets:${trinkets_version}"
 	modCompileOnly "me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}"
 	modCompileOnly "dev.emi:emi-fabric:${emi_version}+${minecraft_version}"
@@ -145,6 +145,11 @@ loom {
 			vmArg("-Dfabric-api.datagen.modid=${mod_id}")
 		}
 	}
+}
+
+sourceSets.main.resources {
+	srcDir 'src/generated/resources'
+	exclude '.cache'
 }
 
 processResources {
