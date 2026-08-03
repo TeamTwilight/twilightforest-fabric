@@ -118,8 +118,14 @@ public final class LichTowerBase extends TwilightJigsawPiece implements SpawnInd
 		return LichTowerPieces.INTERIOR_SPAWNS;
 	}
 
+	@Override
 	public TerrainAdjustment getTerrainAdjustment() {
 		return TerrainAdjustment.BEARD_BOX;
+	}
+
+	@Override
+	public int getGroundLevelDelta() {
+		return 1;
 	}
 
 	@Override

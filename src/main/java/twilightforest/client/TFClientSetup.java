@@ -13,6 +13,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.*;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.server.packs.PackType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
@@ -810,8 +811,24 @@ public class TFClientSetup implements ClientModInitializer {
 	}
 
 	private void registerRenderLayers() {
+		// Register cutout render layer for berry bushes and oreberries so textures render with transparency
+		RenderType cutout = RenderType.cutout();
+		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.RASPBERRY_BUSH.get(), cutout);
+		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.BLUEBERRY_BUSH.get(), cutout);
+		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.BLACKBERRY_BUSH.get(), cutout);
+		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.MALOBERRY_BUSH.get(), cutout);
+		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.BLIGHTBERRY_BUSH.get(), cutout);
+		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.DUSKBERRY_BUSH.get(), cutout);
+		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.SKYBERRY_BUSH.get(), cutout);
+		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.STINGBERRY_BUSH.get(), cutout);
+		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.IRON_OREBERRY.get(), cutout);
+		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.GOLD_OREBERRY.get(), cutout);
+		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.COPPER_OREBERRY.get(), cutout);
+		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.ESSENCE_OREBERRY.get(), cutout);
+		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.TORCHBERRY_PLANT.get(), cutout);
+
 		// Register translucent render layer for force field blocks so their BlockItems render with alpha blending
-		var translucent = net.minecraft.client.renderer.RenderType.translucent();
+		RenderType translucent = RenderType.translucent();
 		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.PINK_FORCE_FIELD.get(), translucent);
 		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.BLUE_FORCE_FIELD.get(), translucent);
 		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.GREEN_FORCE_FIELD.get(), translucent);

@@ -305,8 +305,14 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements SortableP
 		return this.boundingBox.maxY();
 	}
 
+	@Override
 	public TerrainAdjustment getTerrainAdjustment() {
 		return TerrainAdjustment.BEARD_BOX;
+	}
+
+	@Override
+	public int getGroundLevelDelta() {
+		return 2;
 	}
 
 	public Stream<BlockPos> fencePostPositions() {
@@ -340,7 +346,7 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements SortableP
 		boundedEntity.setPersistenceRequired();
 		boundedEntity.setLeashedTo(knot, false);
 		boundedEntity.moveTo(zombiePos.getX() + 0.5, zombiePos.getY() - 1, zombiePos.getZ() + 0.5);
-		boundedEntity.setAttached(TFDataAttachments.LEASH_PATHFINDER_OVERRIDE, Unit.INSTANCE);	
+		boundedEntity.setAttached(TFDataAttachments.LEASH_PATHFINDER_OVERRIDE, Unit.INSTANCE);
 		level.addFreshEntity(boundedEntity);
 	}
 

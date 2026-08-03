@@ -1,0 +1,77 @@
+package twilightforest.mixin;
+
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.mojang.brigadier.builder.RequiredArgumentBuilder;
+import com.mojang.brigadier.suggestion.SuggestionProvider;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.commands.LocateCommand;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.levelgen.structure.Structure;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+
+import java.lang.reflect.Field;
+import java.util.Locale;
+
+/**
+ * Improves /locate structure tab-completion for Twilight Forest structures.
+ * <p>
+ * Vanilla's {@link SharedSuggestionProvider#filterResources} only suggests elements whose
+ * <b>namespace</b> matches the typed prefix, or {@code minecraft:} elements by path. This
+ * hides {@code twilightforest:} structures unless the player types the full namespace.
+ * This mixin swaps the {@code /locate structure} argument suggestions for a substring
+ * match over the whole structure id (and its tags), so typing "lich" will suggest
+ * {@code twilightforest:lich_tower}.
+ */
+@Mixin(LocateCommand.class)
+public class LocateCommandMixin {
+
+	@ModifyExpressionValue(
+		method = "register",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/commands/Commands;argument(Ljava/lang/String;Lcom/mojang/brigadier/arguments/ArgumentType;)Lcom/mojang/brigadier/builder/RequiredArgumentBuilder;"
+		)
+	)
+	private static RequiredArgumentBuilder<CommandSourceStack, ?> twilightforest$enableCrossNamespaceStructureSuggestions(RequiredArgumentBuilder<CommandSourceStack, ?> original) {
+		if (!"structure".equals(getArgumentName(original))) {
+			return original;
+		}
+		return original.suggests(SUGGEST_STRUCTURES);
+	}
+
+	private static String getArgumentName(RequiredArgumentBuilder<?, ?> builder) {
+		try {
+			Field nameField = RequiredArgumentBuilder.class.getDeclaredField("name");
+			nameField.setAccessible(true);
+			return (String) nameField.get(builder);
+		} catch (ReflectiveOperationException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private static final SuggestionProvider<CommandSourceStack> SUGGEST_STRUCTURES = (context, builder) -> {
+		Registry<Structure> registry = context.getSource().registryAccess().registryOrThrow(Registries.STRUCTURE);
+		String remaining = builder.getRemaining().toLowerCase(Locale.ROOT);
+		boolean hasColon = remaining.indexOf(':') != -1;
+
+		for (ResourceLocation id : registry.keySet()) {
+			// With a colon: substring-match the whole id. Without: substring-match the path
+			// (across all namespaces) or prefix-match the namespace, so "li" finds
+			// twilightforest:lich_tower without flooding every twilightforest structure.
+			if (hasColon ? id.toString().contains(remaining) : id.getPath().contains(remaining) || id.getNamespace().startsWith(remaining)) {
+				builder.suggest(id.toString());
+			}
+		}
+		for (TagKey<Structure> tag : registry.getTagNames().toList()) {
+			if (hasColon ? tag.location().toString().contains(remaining) : tag.location().getPath().contains(remaining) || tag.location().getNamespace().startsWith(remaining)) {
+				builder.suggest("#" + tag.location());
+			}
+		}
+		return builder.buildFuture();
+	};
+}

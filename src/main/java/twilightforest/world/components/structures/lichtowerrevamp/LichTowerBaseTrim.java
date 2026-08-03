@@ -28,8 +28,14 @@ public final class LichTowerBaseTrim extends TwilightJigsawPiece implements Sort
 	protected void processJigsaw(TwilightJigsawPiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
 	}
 
+	@Override
 	public TerrainAdjustment getTerrainAdjustment() {
 		return TerrainAdjustment.BEARD_BOX;
+	}
+
+	@Override
+	public int getGroundLevelDelta() {
+		return 1;
 	}
 
 	@Override

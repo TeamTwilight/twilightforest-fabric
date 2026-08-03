@@ -62,7 +62,13 @@ public class LichTowerWingBeard extends TwilightJigsawPiece implements SortableP
 		return this.generateGround;
 	}
 
+	@Override
 	public TerrainAdjustment getTerrainAdjustment() {
 		return this.generateGround ? TerrainAdjustment.BEARD_BOX : TerrainAdjustment.NONE;
+	}
+
+	@Override
+	public int getGroundLevelDelta() {
+		return 4;
 	}
 }
