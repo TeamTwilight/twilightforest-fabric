@@ -135,11 +135,10 @@ public class OreMeterItem extends Item {
 		return super.useOn(context);
 	}
 
-	// shouldCauseReequipAnimation removed in 1.21.1
-	// @Override
-	// public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-	// 	return slotChanged || newStack.getItem() != oldStack.getItem();
-	// }
+	// Vanilla 1.21.1 no longer has Item#shouldCauseReequipAnimation; the NeoForge port
+	// uses it to stop the held item from re-equipping when our data components change
+	// every tick while scanning. On Fabric this is handled client-side in
+	// ItemInHandRendererMixin#twilightforest$preventOreMeterReequipAnimation.
 
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
