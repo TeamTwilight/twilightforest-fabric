@@ -36,12 +36,9 @@ public class MiscEvents {
 	public static final MiscEvents INSTANCE = new MiscEvents();
 
 	public static void init() {
-		// EntityJoinLevelEvent and PlayerInteractEvent are available in Porting-Lib
-		/*
 		EntityJoinLevelEvent.EVENT.register(INSTANCE::addPrey);
 		PlayerInteractEvent.RightClickBlock.EVENT.register(INSTANCE::addTomesToLecterns);
 		PlayerInteractEvent.RightClickBlock.EVENT.register(INSTANCE::washOffCloth);
-		*/
 	}
 
 	private void addPrey(EntityJoinLevelEvent event) {
@@ -65,27 +62,6 @@ public class MiscEvents {
 			}
 		}
 	}
-
-	// LivingEquipmentChangeEvent needs migration to Fabric API
-	/*
-	private void updateCicadaSoundsOnHead(LivingEquipmentChangeEvent event) {
-		LivingEntity living = event.getEntity();
-
-		// Vanilla doesn't have a hook for this in the item class, so we handle it here.
-		// We only need to check equipping; unequipping is handled by the sound instance.
-
-		// Skip if cicada is in a trinkets slot
-		 if (FabricLoader.getInstance().isModLoaded("trinkets")) {
-		 	try {
-		 		if (TrinketsCompat.isTrinketEquipped(living, stack -> stack.is(TFBlocks.CICADA.asItem()))) return;
-		 	} catch (NoClassDefFoundError ignored) {}
-		 }
-
-		if (!living.level().isClientSide() && event.getSlot() == EquipmentSlot.HEAD && event.getTo().is(TFBlocks.CICADA.asItem())) {
-			PacketDistributor.sendToPlayersTrackingEntityAndSelf(living, new CreateMovingCicadaSoundPacket(living.getId()));
-		}
-	}
-	*/
 
 	private void addTomesToLecterns(PlayerInteractEvent.RightClickBlock event) {
 		Player player = event.getEntity();
