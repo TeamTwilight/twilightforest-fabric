@@ -1,4 +1,4 @@
-﻿{
+{
   "parent": "minecraft:item/handheld",
   "display": {
     "thirdperson_lefthand": {

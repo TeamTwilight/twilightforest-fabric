@@ -1,0 +1,31 @@
+{
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
+  "elements": [
+    {
+      "faces": {
+        "up": {
+          "porting_lib_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
+          "texture": "#pane"
+        }
+      },
+      "from": [
+        0,
+        7,
+        7
+      ],
+      "shade": false,
+      "to": [
+        7,
+        9,
+        9
+      ]
+    }
+  ],
+  "textures": {
+    "particle": "#pane"
+  }
+}

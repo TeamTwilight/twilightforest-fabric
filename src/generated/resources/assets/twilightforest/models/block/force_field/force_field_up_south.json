@@ -1,0 +1,72 @@
+{
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
+  "elements": [
+    {
+      "faces": {
+        "east": {
+          "porting_lib_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
+          "texture": "#pane",
+          "uv": [
+            0.0,
+            9.0,
+            7.0,
+            16.0
+          ]
+        },
+        "south": {
+          "cullface": "south",
+          "porting_lib_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
+          "texture": "#pane",
+          "uv": [
+            7.0,
+            9.0,
+            9.0,
+            16.0
+          ]
+        },
+        "up": {
+          "cullface": "up",
+          "porting_lib_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
+          "texture": "#pane"
+        },
+        "west": {
+          "porting_lib_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
+          "texture": "#pane",
+          "uv": [
+            9.0,
+            9.0,
+            16.0,
+            16.0
+          ]
+        }
+      },
+      "from": [
+        7,
+        9,
+        9
+      ],
+      "shade": false,
+      "to": [
+        9,
+        16,
+        16
+      ]
+    }
+  ],
+  "textures": {
+    "particle": "#pane"
+  }
+}

@@ -1,4 +1,4 @@
-﻿{
+{
   "parent": "minecraft:item/handheld",
   "display": {
     "thirdperson_lefthand": {
@@ -37,14 +37,6 @@
     }
   },
   "loader": "porting_lib:item_layers",
-  "porting_lib_data": {
-    "layers": {
-      "0": {
-        "block_light": 15,
-        "sky_light": 15
-      }
-    }
-  },
   "overrides": [
     {
       "model": "twilightforest:item/moonworm_queen_alt",
@@ -53,6 +45,14 @@
       }
     }
   ],
+  "porting_lib_data": {
+    "layers": {
+      "0": {
+        "block_light": 15,
+        "sky_light": 15
+      }
+    }
+  },
   "render_types": {
     "minecraft:translucent": [
       0

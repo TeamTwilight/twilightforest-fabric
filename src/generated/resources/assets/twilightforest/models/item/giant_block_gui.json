@@ -20,7 +20,6 @@
         "down": {
           "cullface": "down",
           "texture": "#top",
-          "tintindex": 0,
           "uv": [
             0.0,
             0.0,
@@ -31,7 +30,6 @@
         "east": {
           "cullface": "east",
           "texture": "#all",
-          "tintindex": 0,
           "uv": [
             0.0,
             0.0,
@@ -42,7 +40,6 @@
         "north": {
           "cullface": "north",
           "texture": "#all",
-          "tintindex": 0,
           "uv": [
             0.0,
             0.0,
@@ -53,7 +50,6 @@
         "south": {
           "cullface": "south",
           "texture": "#all",
-          "tintindex": 0,
           "uv": [
             0.0,
             0.0,
@@ -64,7 +60,6 @@
         "up": {
           "cullface": "up",
           "texture": "#top",
-          "tintindex": 0,
           "uv": [
             0.0,
             0.0,
@@ -75,7 +70,6 @@
         "west": {
           "cullface": "west",
           "texture": "#all",
-          "tintindex": 0,
           "uv": [
             0.0,
             0.0,
