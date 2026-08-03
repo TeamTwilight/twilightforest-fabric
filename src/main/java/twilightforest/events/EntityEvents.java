@@ -115,7 +115,6 @@ public class EntityEvents {
 		LivingEvents.LivingJumpEvent.EVENT.register(INSTANCE::addCloudJumpParticles);
 		LevelEvent.PotentialSpawns.EVENT.register(INSTANCE::structureSpecialSpawns);
 		AttackEntityEvent.EVENT.register(INSTANCE::removeCastleTextIfAttacked);
-		// FinalizeSpawnEvent needs migration to Fabric API EntitySpawnCallback
 		LivingDamageEvent.DAMAGE.register(INSTANCE::addQualifiedGroupPlayerIfNeeded);
 		LivingDeathEvent.EVENT.register(INSTANCE::grantGroupAdvancementIfNeeded);
 		ExplosionEvents.DETONATE.register(INSTANCE::lichBombsDontBlowUpItems);
@@ -414,29 +413,6 @@ public class EntityEvents {
 			level.getEntities(interaction, bounds, e -> e instanceof Display).forEach(Entity::discard);
 			interaction.discard();
 		}
-	}
-
-	// FinalizeSpawnEvent needs migration to Fabric API
-	/*
-	private void adjustEntityHealthInMultiplayerFights(FinalizeSpawnEvent event) {
-		if (event.getEntity().getType().is(EntityTagGenerator.MULTIPLAYER_INCLUSIVE_ENTITIES)) {
-			if (TFConfig.multiplayerFightAdjuster.adjustsHealth()) {
-				List<ServerPlayer> nearbyPlayers = event.getLevel().getEntitiesOfClass(ServerPlayer.class, event.getEntity().getBoundingBox().inflate(32, 10, 32), player -> EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.ENTITY_STILL_ALIVE).test(player));
-				if (nearbyPlayers.size() > 1 && event.getEntity().getAttribute(Attributes.MAX_HEALTH) != null) {
-					event.getEntity().getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(TwilightForestMod.prefix("group_health_boost"), getHealthBasedOnDifficulty(event.getDifficulty().getDifficulty()) * (nearbyPlayers.size() - 1), AttributeModifier.Operation.ADD_VALUE));
-				}
-			}
-		}
-	}
-	*/
-
-	private static double getHealthBasedOnDifficulty(Difficulty difficulty) {
-		return switch (difficulty) {
-			case EASY -> 20.0D;
-			case NORMAL -> 40.0D;
-			case HARD -> 60.0D;
-			default -> 0.0D;
-		};
 	}
 
 	private void addQualifiedGroupPlayerIfNeeded(LivingDamageEvent event) {
