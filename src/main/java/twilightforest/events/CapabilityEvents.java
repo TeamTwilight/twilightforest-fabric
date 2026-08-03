@@ -1,5 +1,6 @@
 package twilightforest.events;
 
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -29,8 +30,12 @@ public class CapabilityEvents {
 		EntityTickEvent.Post.EVENT.register(INSTANCE::updateShields);
 		PlayerTickEvent.Post.EVENT.register(INSTANCE::updatePlayerCaps);
 		LivingHurtEvent.EVENT.register(INSTANCE::absorbShieldHits);
-		// PlayerRespawnEvent needs migration to Fabric API ServerPlayerEvents.AFTER_RESPAWN
 		PlayerEvents.PlayerLoggedInEvent.EVENT.register(INSTANCE::playerLogsIn);
+		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {
+			if (newPlayer.getRespawnPosition() == null) {
+				newSpawnInTwilightForest(newPlayer);
+			}
+		});
 	}
 
 		private void updateShields(EntityTickEvent.Post event) {
@@ -68,16 +73,6 @@ public class CapabilityEvents {
 			}
 		}
 	}
-	// PlayerEvents.CloneEvent needs migration to Fabric API
-	/*
-	private void spawnInTFIfNecessary(PlayerEvents.CloneEvent event) {
-		if (!(event.getEntity() instanceof ServerPlayer serverPlayer)) return;
-
-		if (serverPlayer.getRespawnPosition() == null) {
-			newSpawnInTwilightForest(serverPlayer);
-		}
-	}
-	*/
 
 	/**
 	 * When player logs in, report conflict status, set progression status
