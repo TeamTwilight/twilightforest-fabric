@@ -13,7 +13,6 @@ import net.fabricmc.fabric.api.client.rendering.v1.*;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.server.packs.PackType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
@@ -61,6 +60,7 @@ import twilightforest.client.model.armor.*;
 import twilightforest.client.model.block.BrazierModel;
 import twilightforest.client.model.block.ConditionalMippedModel;
 import twilightforest.client.model.block.Experiment115Model;
+import twilightforest.client.model.block.PortingLibEmissiveModel;
 import twilightforest.client.model.block.ReactorDebrisModel;
 import twilightforest.client.model.block.TorchberryPlantModel;
 import twilightforest.client.model.block.aurorablock.NoiseVaryingModelLoader;
@@ -253,6 +253,19 @@ public class TFClientSetup implements ClientModInitializer {
 					&& context.resourceId().getPath().endsWith("_regenerating");
 				if (isExperiment115Regenerating) {
 					result = new Experiment115Model(result, TwilightForestMod.prefix("block/experiment115/experiment115_sprinkle"));
+				}
+
+				// Tower device blocks (antibuilder, carminite reactor, vanishing block, etc.)
+				// used Porting Lib's porting_lib_data (block_light/sky_light) to render their
+				// glowing texture overlays at full brightness. Porting Lib's renderer module
+				// was removed in 1.21.1, so wrap these baked models to make quads with
+				// tower_device_level_* textures render emissively via the Fabric Renderer API.
+				if (result == model) {
+					// resourceId can be null for block-state models; fall back to topLevelId().id()
+					var emissiveId = context.resourceId() != null ? context.resourceId() : context.topLevelId().id();
+					if (needsEmissiveWrapper(emissiveId.getPath())) {
+						result = new PortingLibEmissiveModel(result);
+					}
 				}
 
 				return result;
@@ -812,7 +825,7 @@ public class TFClientSetup implements ClientModInitializer {
 
 	private void registerRenderLayers() {
 		// Register cutout render layer for berry bushes and oreberries so textures render with transparency
-		RenderType cutout = RenderType.cutout();
+		var cutout = net.minecraft.client.renderer.RenderType.cutout();
 		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.RASPBERRY_BUSH.get(), cutout);
 		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.BLUEBERRY_BUSH.get(), cutout);
 		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.BLACKBERRY_BUSH.get(), cutout);
@@ -827,8 +840,24 @@ public class TFClientSetup implements ClientModInitializer {
 		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.ESSENCE_OREBERRY.get(), cutout);
 		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.TORCHBERRY_PLANT.get(), cutout);
 
+		// Tower device blocks use cutout rendering because their glowing texture overlays
+		// (tower_device_level_* textures) have transparent gaps that must be alpha-tested.
+		// Without this, they render in the SOLID pass where emissive CUTOUT materials fail.
+		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.ANTIBUILDER.get(), cutout);
+		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.ANTIBUILT_BLOCK.get(), cutout);
+		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.BUILT_BLOCK.get(), cutout);
+		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.CARMINITE_REACTOR.get(), cutout);
+		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.CARMINITE_BUILDER.get(), cutout);
+		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.REAPPEARING_BLOCK.get(), cutout);
+		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.VANISHING_BLOCK.get(), cutout);
+		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.UNBREAKABLE_VANISHING_BLOCK.get(), cutout);
+		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.LOCKED_VANISHING_BLOCK.get(), cutout);
+		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.GHAST_TRAP.get(), cutout);
+		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.ENCASED_FIRE_JET.get(), cutout);
+		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.ENCASED_SMOKER.get(), cutout);
+
 		// Register translucent render layer for force field blocks so their BlockItems render with alpha blending
-		RenderType translucent = RenderType.translucent();
+		var translucent = net.minecraft.client.renderer.RenderType.translucent();
 		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.PINK_FORCE_FIELD.get(), translucent);
 		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.BLUE_FORCE_FIELD.get(), translucent);
 		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.GREEN_FORCE_FIELD.get(), translucent);
@@ -855,5 +884,39 @@ public class TFClientSetup implements ClientModInitializer {
 		} catch (Exception e) {
 			TwilightForestMod.LOGGER.error("Failed to register wood type: {}", woodType.name(), e);
 		}
+	}
+
+	/**
+	 * Checks whether a block model path belongs to a model that uses
+	 * {@code porting_lib_data} with {@code block_light}/{@code sky_light}.
+	 * These models need the {@link PortingLibEmissiveModel} wrapper to render
+	 * their glowing texture overlays at full brightness on Fabric 1.21.1.
+	 * <p>
+	 * The path may or may not have a {@code block/} prefix depending on
+	 * whether it comes from {@code resourceId} or {@code topLevelId}.
+	 */
+	private static boolean needsEmissiveWrapper(String modelPath) {
+		// Strip "block/" prefix if present
+		if (modelPath.startsWith("block/")) {
+			modelPath = modelPath.substring("block/".length());
+		}
+
+		return modelPath.startsWith("antibuilder")
+			|| modelPath.startsWith("antibuilt_block")
+			|| modelPath.startsWith("built_block")
+			|| modelPath.startsWith("carminite_block")
+			|| modelPath.startsWith("carminite_builder")
+			|| modelPath.startsWith("carminite_reactor")
+			|| modelPath.startsWith("castle_rune")
+			|| modelPath.startsWith("encased_fire_jet")
+			|| modelPath.startsWith("encased_smoker")
+			|| modelPath.startsWith("ghast_trap")
+			|| modelPath.startsWith("locked_vanishing_block")
+			|| modelPath.startsWith("reappearing_block")
+			|| modelPath.startsWith("vanishing_block")
+			|| modelPath.startsWith("trophy_pedestal_active")
+			|| modelPath.startsWith("uncrafting_table")
+			|| modelPath.startsWith("mushgloom")
+			|| modelPath.startsWith("trollber");
 	}
 }
