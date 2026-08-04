@@ -1,5 +1,6 @@
 package twilightforest.mixin;
 
+import io.github.fabricators_of_create.porting_lib.transfer.item.ItemHandlerHelper;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceKey;
@@ -82,9 +83,7 @@ public class GrindstoneMenu$4Mixin {
 				itemStreamExtractor.apply(component)
 					.filter(stack -> !stack.isEmpty())
 					.forEach(itemStack ->
-						// ItemHandlerHelper.giveItemToPlayer(player, copy);
-						// Temporary fix until Porting Lib's impl is patched to preserve components
-						player.getInventory().placeItemBackInInventory(itemStack.copy())
+						ItemHandlerHelper.giveItemToPlayer(player, itemStack.copy())
 					)
 			);
 	}
