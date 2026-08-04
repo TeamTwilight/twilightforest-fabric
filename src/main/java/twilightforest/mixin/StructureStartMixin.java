@@ -22,8 +22,22 @@ public class StructureStartMixin {
 			target = "(Lnet/minecraft/world/level/levelgen/structure/Structure;Lnet/minecraft/world/level/ChunkPos;ILnet/minecraft/world/level/levelgen/structure/pieces/PiecesContainer;)Lnet/minecraft/world/level/levelgen/structure/StructureStart;"
 		)
 	)
-	private static StructureStart twilightforest$loadStaticStart(Structure structure, ChunkPos chunkPos, int references, PiecesContainer piecesContainer, Operation<StructureStart> original, StructurePieceSerializationContext context, CompoundTag tag, long seed) {
-		StructureStart start = original.call(structure, chunkPos, references, piecesContainer);
-		return WorldgenHooks.loadStaticStart(start, piecesContainer, tag);
+	private static StructureStart twilightforest$loadStaticStart(
+		Structure structure,
+		ChunkPos chunkPos,
+		int references,
+		PiecesContainer pieceContainer,
+		Operation<StructureStart> original,
+		StructurePieceSerializationContext context,
+		CompoundTag tag,
+		long seed
+	) {
+		StructureStart start = original.call(structure, chunkPos, references, pieceContainer);
+
+		return WorldgenHooks.loadStaticStart(
+			start,
+			pieceContainer,
+			tag
+		);
 	}
 }

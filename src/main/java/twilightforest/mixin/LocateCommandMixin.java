@@ -12,6 +12,7 @@ import net.minecraft.server.commands.LocateCommand;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
 import java.lang.reflect.Field;
@@ -41,9 +42,11 @@ public class LocateCommandMixin {
 		if (!"structure".equals(getArgumentName(original))) {
 			return original;
 		}
+
 		return original.suggests(SUGGEST_STRUCTURES);
 	}
 
+	@Unique
 	private static String getArgumentName(RequiredArgumentBuilder<?, ?> builder) {
 		try {
 			Field nameField = RequiredArgumentBuilder.class.getDeclaredField("name");
@@ -54,6 +57,7 @@ public class LocateCommandMixin {
 		}
 	}
 
+	@Unique
 	private static final SuggestionProvider<CommandSourceStack> SUGGEST_STRUCTURES = (context, builder) -> {
 		Registry<Structure> registry = context.getSource().registryAccess().registryOrThrow(Registries.STRUCTURE);
 		String remaining = builder.getRemaining().toLowerCase(Locale.ROOT);

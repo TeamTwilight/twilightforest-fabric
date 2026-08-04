@@ -24,7 +24,7 @@ public class PhantomSpawnerMixin {
 	private boolean twilightforest$cancelPhantomSpawn(
 		ServerLevel level,
 		Entity entity,
-		@Local ServerPlayer serverPlayer
+		@Local(name = "serverPlayer") ServerPlayer serverPlayer
 	) {
 		return !(entity instanceof Phantom)
 			|| !TravellersModifiersManager.isModifierActive(serverPlayer, TravellersModifiersManager.ALL_NIGHT_GOGGLES_MODIFIER);

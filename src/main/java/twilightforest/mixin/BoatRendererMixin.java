@@ -10,6 +10,7 @@ import net.minecraft.world.entity.vehicle.Boat;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import twilightforest.TwilightForestMod;
 import twilightforest.util.TFBoatTypes;
 
@@ -45,6 +46,7 @@ public class BoatRendererMixin implements CustomBoatModel {
 		);
 	}
 
+	@Unique
 	private static String getTFTextureName(Boat.Type type) {
 		if (type == TFBoatTypes.TWILIGHT_OAK) return "twilight_oak";
 		if (type == TFBoatTypes.CANOPY) return "canopy";

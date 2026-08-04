@@ -27,7 +27,13 @@ public class FireBlockMixin {
 			target = "Lnet/minecraft/world/level/Level;setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z"
 		)
 	)
-	private boolean twilightforest$onCaughtFire(Level level, BlockPos pos, BlockState fireState, int flags, Operation<Boolean> original) {
+	private boolean twilightforest$onCaughtFire(
+		Level level,
+		BlockPos pos,
+		BlockState newState,
+		int flags,
+		Operation<Boolean> original
+	) {
 		BlockState currentState = level.getBlockState(pos);
 		if (currentState.getBlock() instanceof ChiseledCanopyShelfBlock) {
 			if (currentState.getValue(ChiseledCanopyShelfBlock.SPAWNER) && level instanceof ServerLevel serverLevel) {
@@ -43,6 +49,7 @@ public class FireBlockMixin {
 			level.destroyBlock(pos, false);
 			return true;
 		}
-		return original.call(level, pos, fireState, flags);
+
+		return original.call(level, pos, newState, flags);
 	}
 }

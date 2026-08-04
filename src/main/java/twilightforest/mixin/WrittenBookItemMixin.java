@@ -12,8 +12,15 @@ import twilightforest.asmhooks.ItemHooks;
 @Mixin(WrittenBookItem.class)
 public class WrittenBookItemMixin {
 
-	@Inject(method = "getName", at = @At("RETURN"), cancellable = true)
-	private void twilightforest$modifyWrittenBookName(ItemStack stack, CallbackInfoReturnable<Component> cir) {
+	@Inject(
+		method = "getName",
+		at = @At("RETURN"),
+		cancellable = true
+	)
+	private void twilightforest$modifyWrittenBookName(
+		ItemStack stack,
+		CallbackInfoReturnable<Component> cir
+	) {
 		cir.setReturnValue(ItemHooks.modifyWrittenBookName(cir.getReturnValue(), stack));
 	}
 }

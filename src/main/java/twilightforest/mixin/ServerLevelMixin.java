@@ -25,8 +25,14 @@ public class ServerLevelMixin {
 	 * Snow Queen whose parts need to be tracked by the server.
 	 * Note: addEntity returns boolean in 1.21.1, so CallbackInfoReturnable is required.
 	 */
-	@Inject(method = "addEntity", at = @At("HEAD"))
-	private void twilightforest$onAddEntity(Entity entity, CallbackInfoReturnable<Boolean> cir) {
+	@Inject(
+		method = "addEntity",
+		at = @At("HEAD")
+	)
+	private void twilightforest$onAddEntity(
+		Entity entity,
+		CallbackInfoReturnable<Boolean> cir
+	) {
 		if (entity != null) {
 			MultipartHooks.sendDirtyEntityData(entity);
 		}

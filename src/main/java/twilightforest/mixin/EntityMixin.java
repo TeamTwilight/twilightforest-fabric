@@ -13,18 +13,33 @@ import twilightforest.asmhooks.EntityHooks;
 @Mixin(Entity.class)
 public class EntityMixin {
 
-	@Inject(method = "getBlockJumpFactor", at = @At("RETURN"), cancellable = true)
+	@Inject(
+		method = "getBlockJumpFactor",
+		at = @At("RETURN"),
+		cancellable = true
+	)
 	private void twilightforest$resetBlockJumpFactor(CallbackInfoReturnable<Float> cir) {
 		cir.setReturnValue(EntityHooks.resetFactorWithUnrestrained(cir.getReturnValue(), (Entity) (Object) this));
 	}
 
-	@Inject(method = "getBlockSpeedFactor", at = @At("RETURN"), cancellable = true)
+	@Inject(
+		method = "getBlockSpeedFactor",
+		at = @At("RETURN"),
+		cancellable = true
+	)
 	private void twilightforest$resetBlockSpeedFactor(CallbackInfoReturnable<Float> cir) {
 		cir.setReturnValue(EntityHooks.resetFactorWithUnrestrained(cir.getReturnValue(), (Entity) (Object) this));
 	}
 
-	@Inject(method = "move", at = @At("HEAD"))
-	private void twilightforest$resetStuckUnrestrained(MoverType type, Vec3 pos, CallbackInfo ci) {
+	@Inject(
+		method = "move",
+		at = @At("HEAD")
+	)
+	private void twilightforest$resetStuckUnrestrained(
+		MoverType type,
+		Vec3 pos,
+		CallbackInfo ci
+	) {
 		EntityHooks.resetStuckUnrestrained((Entity) (Object) this);
 	}
 }

@@ -4,8 +4,6 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -26,8 +24,10 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.joml.Matrix4f;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -44,16 +44,17 @@ import twilightforest.item.GiantPickItem;
 
 import java.util.Iterator;
 
-@Environment(EnvType.CLIENT)
 @Mixin(LevelRenderer.class)
 public abstract class LevelRendererMixin {
 
+	@Unique
 	private static final VoxelShape GIANT_BLOCK = Shapes.box(0.0D, 0.0D, 0.0D, 4.0D, 4.0D, 4.0D);
 
 	@Shadow
 	private ClientLevel level;
 
 	@Shadow
+	@Final
 	private EntityRenderDispatcher entityRenderDispatcher;
 
 	@WrapOperation(
@@ -63,10 +64,14 @@ public abstract class LevelRendererMixin {
 			target = "Lnet/minecraft/client/multiplayer/ClientLevel;entitiesForRendering()Ljava/lang/Iterable;"
 		)
 	)
-	private Iterable<Entity> twilightforest$resolveEntitiesForRendering(ClientLevel level, Operation<Iterable<Entity>> original) {
+	private Iterable<Entity> twilightforest$resolveEntitiesForRendering(
+		ClientLevel level,
+		Operation<Iterable<Entity>> original
+	) {
 		Iterable<Entity> originalIterable = original.call(level);
 		Iterator<Entity> iterator = originalIterable.iterator();
 		Iterator<Entity> resolvedIterator = MultipartHooks.resolveEntitiesForRendering(iterator);
+
 		return () -> resolvedIterator;
 	}
 
@@ -78,32 +83,66 @@ public abstract class LevelRendererMixin {
 		)
 	)
 	@SuppressWarnings({"rawtypes", "unchecked"})
-	private void twilightforest$redirectRenderEntity(EntityRenderDispatcher dispatcher, Entity entity, double x, double y, double z, float yRot, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+	private void twilightforest$redirectRenderEntity(
+		EntityRenderDispatcher dispatcher,
+		Entity entity,
+		double x,
+		double y,
+		double z,
+		float rotationYaw,
+		float partialTicks,
+		PoseStack poseStack,
+		MultiBufferSource buffer,
+		int packedLight
+	) {
 		if (entity instanceof TFPart<?> part) {
 			EntityRenderer renderer = BakedMultiPartRenderers.lookup(part.renderer());
 			if (renderer != null) {
-				Vec3 offset = renderer.getRenderOffset(entity, partialTick);
+				Vec3 offset = renderer.getRenderOffset(entity, partialTicks);
 				poseStack.pushPose();
 				poseStack.translate(x + offset.x, y + offset.y, z + offset.z);
-				renderer.render(entity, yRot, partialTick, poseStack, bufferSource, packedLight);
+				renderer.render(entity, rotationYaw, partialTicks, poseStack, buffer, packedLight);
 				poseStack.popPose();
 				return;
 			}
 		}
-		this.entityRenderDispatcher.render(entity, x, y, z, yRot, partialTick, poseStack, bufferSource, packedLight);
+		this.entityRenderDispatcher.render(entity, x, y, z, rotationYaw, partialTicks, poseStack, buffer, packedLight);
 	}
 
-	@Inject(method = "renderSky", at = @At("HEAD"), cancellable = true)
-	private void twilightforest$renderSky(Matrix4f frustumMatrix, Matrix4f projectionMatrix, float partialTick, Camera camera, boolean isFoggy, Runnable setupFog, CallbackInfo ci) {
+	@Inject(
+		method = "renderSky",
+		at = @At("HEAD"),
+		cancellable = true
+	)
+	private void twilightforest$renderSky(
+		Matrix4f frustumMatrix,
+		Matrix4f projectionMatrix,
+		float partialTick,
+		Camera camera,
+		boolean isFoggy,
+		Runnable skyFogSetup,
+		CallbackInfo ci
+	) {
 		if (this.level != null && TFDimension.isTwilightPortalDestination(this.level)) {
-			if (TFSkyRenderer.renderSky(this.level, partialTick, frustumMatrix, camera, projectionMatrix, setupFog)) {
+			if (TFSkyRenderer.renderSky(this.level, partialTick, frustumMatrix, camera, projectionMatrix, skyFogSetup)) {
 				ci.cancel();
 			}
 		}
 	}
 
-	@Inject(method = "renderSnowAndRain", at = @At("HEAD"), cancellable = true)
-	private void twilightforest$renderSnowAndRain(LightTexture lightTexture, float partialTick, double camX, double camY, double camZ, CallbackInfo ci) {
+	@Inject(
+		method = "renderSnowAndRain",
+		at = @At("HEAD"),
+		cancellable = true
+	)
+	private void twilightforest$renderSnowAndRain(
+		LightTexture lightTexture,
+		float partialTick,
+		double camX,
+		double camY,
+		double camZ,
+		CallbackInfo ci
+	) {
 		if (this.level != null && TFDimension.isTwilightPortalDestination(this.level)) {
 			if (TFWeatherRenderer.renderSnowAndRain(this.level, (int) this.level.getGameTime(), partialTick, lightTexture, new Vec3(camX, camY, camZ))) {
 				ci.cancel();
@@ -111,7 +150,11 @@ public abstract class LevelRendererMixin {
 		}
 	}
 
-	@Inject(method = "tickRain", at = @At("HEAD"), cancellable = true)
+	@Inject(
+		method = "tickRain",
+		at = @At("HEAD"),
+		cancellable = true
+	)
 	private void twilightforest$tickRain(Camera camera, CallbackInfo ci) {
 		if (this.level != null && TFDimension.isTwilightPortalDestination(this.level)) {
 			if (TFWeatherRenderer.tickRain(this.level, (int) this.level.getGameTime(), camera.getBlockPosition())) {
@@ -125,12 +168,22 @@ public abstract class LevelRendererMixin {
 		at = @At("HEAD"),
 		cancellable = true
 	)
-	private void twilightforest$renderGiantBlockOutlines(PoseStack poseStack, VertexConsumer consumer, Entity entity, double camX, double camY, double camZ, BlockPos pos, BlockState state, CallbackInfo ci) {
+	private void twilightforest$renderGiantBlockOutlines(
+		PoseStack poseStack,
+		VertexConsumer consumer,
+		Entity entity,
+		double camX,
+		double camY,
+		double camZ,
+		BlockPos pos,
+		BlockState state,
+		CallbackInfo ci
+	) {
 		LocalPlayer player = Minecraft.getInstance().player;
 		if (player == null) return;
 
 		HitResult hitResult = Minecraft.getInstance().hitResult;
-		if (!(hitResult instanceof BlockHitResult blockHit)) return;
+		if (!(hitResult instanceof BlockHitResult)) return;
 
 		ItemStack mainHand = player.getMainHandItem();
 

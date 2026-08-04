@@ -9,7 +9,12 @@ import twilightforest.asmhooks.PlayerHooks;
 @Mixin(Player.class)
 public class PlayerMixin {
 
-	@ModifyVariable(method = "causeFoodExhaustion", at = @At("HEAD"), argsOnly = true)
+	@ModifyVariable(
+		method = "causeFoodExhaustion",
+		at = @At("HEAD"),
+		argsOnly = true,
+		name = "exhaustion"
+	)
 	private float twilightforest$modifyFoodExhaustion(float exhaustion) {
 		return PlayerHooks.getFoodExhaustion(exhaustion, (Player) (Object) this);
 	}

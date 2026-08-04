@@ -37,14 +37,14 @@ public class ChunkGeneratorMixin {
 	)
 	private void twilightforest$resolveNearestNonRandomSpreadMapStructure(
 		ServerLevel level,
-		HolderSet<Structure> targetStructures,
+		HolderSet<Structure> structure,
 		BlockPos pos,
 		int searchRadius,
 		boolean skipKnownStructures,
 		CallbackInfoReturnable<Pair<BlockPos, Holder<Structure>>> cir
 	) {
 		cir.setReturnValue(MapHooks.resolveNearestNonRandomSpreadMapStructure(
-			cir.getReturnValue(), level, targetStructures, pos, searchRadius, skipKnownStructures
+			cir.getReturnValue(), level, structure, pos, searchRadius, skipKnownStructures
 		));
 	}
 }

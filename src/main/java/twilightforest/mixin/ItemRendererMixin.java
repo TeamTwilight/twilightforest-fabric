@@ -1,8 +1,6 @@
 package twilightforest.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.ItemModelShaper;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -19,29 +17,45 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFItems;
 
-@Environment(EnvType.CLIENT)
 @Mixin(ItemRenderer.class)
 public abstract class ItemRendererMixin {
-	@Shadow @Final private ItemModelShaper itemModelShaper;
 
-	/**
-	 * Replace the model for giant tools in GUI context to show the zoomed blade/head texture.
-	 */
-	@ModifyVariable(method = "render", at = @At("HEAD"), argsOnly = true)
-	private BakedModel tf_replaceGiantToolGuiModel(BakedModel model, ItemStack stack, ItemDisplayContext displayContext, boolean leftHand, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
-		if (displayContext != ItemDisplayContext.GUI) {
-			return model;
-		}
+	@Shadow
+	@Final
+	private ItemModelShaper itemModelShaper;
+
+	@ModifyVariable(
+		method = "render",
+		at = @At("HEAD"),
+		argsOnly = true,
+		name = "model"
+	)
+	private BakedModel twilightforest$replaceGiantToolGuiModel(
+		BakedModel model,
+		ItemStack itemStack,
+		ItemDisplayContext displayContext,
+		boolean leftHand,
+		PoseStack poseStack,
+		MultiBufferSource bufferSource,
+		int combinedLight,
+		int combinedOverlay
+	) {
+		if (displayContext != ItemDisplayContext.GUI) return model;
+
 		boolean sword;
-		if (stack.is(TFItems.GIANT_SWORD.get())) {
+		if (itemStack.is(TFItems.GIANT_SWORD.get())) {
 			sword = true;
-		} else if (stack.is(TFItems.GIANT_PICKAXE.get())) {
+		} else if (itemStack.is(TFItems.GIANT_PICKAXE.get())) {
 			sword = false;
 		} else {
 			return model;
 		}
+
 		String path = sword ? "giant_sword_gui" : "giant_pickaxe_gui";
-		ResourceLocation id = ResourceLocation.fromNamespaceAndPath(TwilightForestMod.ID, path);
-		return itemModelShaper.getModelManager().getModel(ModelResourceLocation.inventory(id));
+		ResourceLocation id = TwilightForestMod.prefix(path);
+
+		return itemModelShaper
+			.getModelManager()
+			.getModel(ModelResourceLocation.inventory(id));
 	}
 }

@@ -11,8 +11,15 @@ import twilightforest.asmhooks.BlockHooks;
 @Mixin(SnowyDirtBlock.class)
 public class SnowyDirtBlockMixin {
 
-	@Inject(method = "isSnowySetting", at = @At("RETURN"), cancellable = true)
-	private static void twilightforest$keepSnowyStateForSnowloggableBlocks(BlockState state, CallbackInfoReturnable<Boolean> cir) {
+	@Inject(
+		method = "isSnowySetting",
+		at = @At("RETURN"),
+		cancellable = true
+	)
+	private static void twilightforest$keepSnowyStateForSnowloggableBlocks(
+		BlockState state,
+		CallbackInfoReturnable<Boolean> cir
+	) {
 		cir.setReturnValue(BlockHooks.keepSnowyStateForSnowloggableBlocks(cir.getReturnValue(), state));
 	}
 }

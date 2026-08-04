@@ -17,17 +17,18 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(WeightedBakedModel.class)
 public class WeightedBakedModelMixin implements FabricBakedModel {
 
 	@Shadow
 	@Final
-	private List<WeightedEntry.Wrapper<BakedModel>> list;
+	public List<WeightedEntry.Wrapper<BakedModel>> list;
 
 	@Shadow
 	@Final
-	private int totalWeight;
+	public int totalWeight;
 
 	@Override
 	public boolean isVanillaAdapter() {
@@ -46,6 +47,7 @@ public class WeightedBakedModelMixin implements FabricBakedModel {
 		selected.emitItemQuads(stack, randomSupplier, context);
 	}
 
+	@Unique
 	private BakedModel getRandomModel(RandomSource random) {
 		int i = random.nextInt(this.totalWeight);
 		for (WeightedEntry.Wrapper<BakedModel> wrapper : this.list) {
@@ -54,6 +56,6 @@ public class WeightedBakedModelMixin implements FabricBakedModel {
 				return wrapper.data();
 			}
 		}
-		return this.list.get(0).data();
+		return this.list.getFirst().data();
 	}
 }

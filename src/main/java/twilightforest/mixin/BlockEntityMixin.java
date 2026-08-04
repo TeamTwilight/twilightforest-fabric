@@ -14,7 +14,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * In 1.21.1, ChestBlock.newBlockEntity hardcodes BlockEntityType.CHEST,
  * ignoring the supplier passed to the constructor. This causes
  * IllegalStateException when TF chest blocks are placed.
- *
  * This mixin skips validation for TF chest blocks, but still
  * syncs the blockState to prevent chests from becoming unopenable.
  */
@@ -24,12 +23,19 @@ public class BlockEntityMixin {
 	@Shadow
 	private BlockState blockState;
 
-	@Inject(method = "validateBlockState", at = @At("HEAD"), cancellable = true)
-	private void twilightforest$validateBlockState(BlockState state, CallbackInfo ci) {
-		String blockName = BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString();
+	@Inject(
+		method = "validateBlockState",
+		at = @At("HEAD"),
+		cancellable = true
+	)
+	private void twilightforest$validateBlockState(
+		BlockState blockState,
+		CallbackInfo ci
+	) {
+		String blockName = BuiltInRegistries.BLOCK.getKey(blockState.getBlock()).toString();
 		if (blockName.startsWith("twilightforest:") && (blockName.endsWith("_chest") || blockName.endsWith("_trapped_chest"))) {
 			// Set blockState before cancelling to keep chest BE in sync
-			this.blockState = state;
+			this.blockState = blockState;
 			ci.cancel();
 		}
 	}

@@ -2,6 +2,7 @@ package twilightforest.mixin;
 
 import net.minecraft.server.level.ServerEntity;
 import net.minecraft.world.entity.Entity;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -13,9 +14,13 @@ import twilightforest.asmhooks.MultipartHooks;
 public class ServerEntityMixin {
 
 	@Shadow
+	@Final
 	private Entity entity;
 
-	@Inject(method = "sendDirtyEntityData", at = @At("HEAD"))
+	@Inject(
+		method = "sendDirtyEntityData",
+		at = @At("HEAD")
+	)
 	private void twilightforest$sendDirtyMultipartEntityData(CallbackInfo ci) {
 		MultipartHooks.sendDirtyEntityData(this.entity);
 	}

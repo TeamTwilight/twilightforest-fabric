@@ -30,7 +30,10 @@ public abstract class MapInstanceMixin {
 			target = "Lnet/minecraft/world/level/saveddata/maps/MapItemSavedData;getDecorations()Ljava/lang/Iterable;"
 		)
 	)
-	private Iterable<MapDecoration> twilightforest$reorderDecorations(MapItemSavedData mapData, Operation<Iterable<MapDecoration>> original) {
+	private Iterable<MapDecoration> twilightforest$reorderDecorations(
+		MapItemSavedData mapData,
+		Operation<Iterable<MapDecoration>> original
+	) {
 		Iterable<MapDecoration> decorations = original.call(mapData);
 		if (!(mapData instanceof TFMagicMapData)) return decorations;
 
@@ -44,6 +47,7 @@ public abstract class MapInstanceMixin {
 			}
 		}
 		reordered.addAll(playerIcons);
+
 		return reordered;
 	}
 }

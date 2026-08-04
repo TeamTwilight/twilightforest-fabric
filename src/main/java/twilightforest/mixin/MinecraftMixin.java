@@ -20,8 +20,17 @@ public abstract class MinecraftMixin {
 	@Final
 	private ReloadableResourceManager resourceManager;
 
-	@Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/resources/PaintingTextureManager;<init>(Lnet/minecraft/client/renderer/texture/TextureManager;)V"))
-	private void twilightforest$initMagicPaintingTextureManager(GameConfig gameConfig, CallbackInfo ci) {
+	@Inject(
+		method = "<init>",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/client/resources/PaintingTextureManager;<init>(Lnet/minecraft/client/renderer/texture/TextureManager;)V"
+		)
+	)
+	private void twilightforest$initMagicPaintingTextureManager(
+		GameConfig gameConfig,
+		CallbackInfo ci
+	) {
 		MagicPaintingTextureManager.instance = new MagicPaintingTextureManager(Minecraft.getInstance().getTextureManager());
 		this.resourceManager.registerReloadListener(MagicPaintingTextureManager.instance);
 	}

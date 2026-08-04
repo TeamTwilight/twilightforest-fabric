@@ -10,7 +10,11 @@ import twilightforest.asmhooks.EntityHooks;
 @Mixin(PathfinderMob.class)
 public class PathfinderMobMixin {
 
-	@Inject(method = "shouldStayCloseToLeashHolder", at = @At("RETURN"), cancellable = true)
+	@Inject(
+		method = "shouldStayCloseToLeashHolder",
+		at = @At("RETURN"),
+		cancellable = true
+	)
 	private void twilightforest$overrideStayCloseToHolder(CallbackInfoReturnable<Boolean> cir) {
 		cir.setReturnValue(EntityHooks.overrideStayCloseToHolder(cir.getReturnValue(), (PathfinderMob) (Object) this));
 	}

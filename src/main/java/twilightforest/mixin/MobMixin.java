@@ -23,7 +23,10 @@ import java.util.List;
 @Mixin(Mob.class)
 public class MobMixin {
 
-	@Inject(method = "aiStep", at = @At("HEAD"))
+	@Inject(
+		method = "aiStep",
+		at = @At("HEAD")
+	)
 	private void twilightforest$unrestrainedSprintingInWater(CallbackInfo ci) {
 		Mob self = (Mob) (Object) this;
 		boolean isInWater = self.isInWater();

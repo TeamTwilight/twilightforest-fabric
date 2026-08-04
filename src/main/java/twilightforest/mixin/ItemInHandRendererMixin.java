@@ -12,6 +12,7 @@ import net.minecraft.world.item.MapItem;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -43,7 +44,11 @@ public class ItemInHandRendererMixin {
 			target = "Lnet/minecraft/world/item/ItemStack;is(Lnet/minecraft/world/item/Item;)Z"
 		)
 	)
-	private boolean twilightforest$isMapItem(ItemStack stack, Item item, Operation<Boolean> original) {
+	private boolean twilightforest$isMapItem(
+		ItemStack stack,
+		Item item,
+		Operation<Boolean> original
+	) {
 		if (item == Items.FILLED_MAP) {
 			return original.call(stack, item) || stack.getItem() instanceof MapItem;
 		}
@@ -63,7 +68,10 @@ public class ItemInHandRendererMixin {
 	 * This mirrors the NeoForge port, which overrides shouldCauseReequipAnimation
 	 * to only animate when the slot changes or the item type changes.
 	 */
-	@Inject(method = "tick", at = @At("HEAD"))
+	@Inject(
+		method = "tick",
+		at = @At("HEAD")
+	)
 	private void twilightforest$preventOreMeterReequipAnimation(CallbackInfo ci) {
 		Player player = this.minecraft.player;
 		if (player == null)
@@ -80,6 +88,7 @@ public class ItemInHandRendererMixin {
 		}
 	}
 
+	@Unique
 	private static boolean isOreMeter(ItemStack stack) {
 		return !stack.isEmpty() && stack.getItem() instanceof OreMeterItem;
 	}

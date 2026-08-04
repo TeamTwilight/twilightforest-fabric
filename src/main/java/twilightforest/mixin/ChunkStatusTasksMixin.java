@@ -20,9 +20,18 @@ import twilightforest.asmhooks.WorldgenHooks;
 @Mixin(ChunkStatusTasks.class)
 public class ChunkStatusTasksMixin {
 
-	@Inject(method = "generateSurface", at = @At("TAIL"))
-	private static void twilightforest$chunkBlanketing(WorldGenContext context, ChunkStep step, StaticCache2D<?> cache, ChunkAccess chunk, CallbackInfoReturnable<?> cir) {
-		if (context.level() instanceof ServerLevel serverLevel) {
+	@Inject(
+		method = "generateSurface",
+		at = @At("TAIL")
+	)
+	private static void twilightforest$chunkBlanketing(
+		WorldGenContext worldGenContext,
+		ChunkStep step,
+		StaticCache2D<?> cache,
+		ChunkAccess chunk,
+		CallbackInfoReturnable<?> cir
+	) {
+		if (worldGenContext.level() instanceof ServerLevel serverLevel) {
 			WorldgenHooks.chunkBlanketing(chunk, serverLevel);
 		}
 	}

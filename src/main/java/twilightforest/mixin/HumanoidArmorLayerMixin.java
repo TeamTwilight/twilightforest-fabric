@@ -1,8 +1,6 @@
 package twilightforest.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
@@ -19,12 +17,22 @@ import twilightforest.asmhooks.ArmorHooks;
  * Cancels armor rendering for entities wearing Emperor's Cloth.
  * In 1.21.1, renderArmorPiece no longer takes float parameters.
  */
-@Environment(EnvType.CLIENT)
 @Mixin(HumanoidArmorLayer.class)
 public class HumanoidArmorLayerMixin {
 
-	@Inject(method = "renderArmorPiece", at = @At("HEAD"), cancellable = true)
-	private void twilightforest$cancelArmorRendering(PoseStack poseStack, MultiBufferSource buffer, LivingEntity livingEntity, EquipmentSlot slot, int i, HumanoidModel<?> model, CallbackInfo ci) {
+	@Inject(
+		method = "renderArmorPiece",
+		at = @At("HEAD"),
+		cancellable = true
+	)
+	private void twilightforest$cancelArmorRendering(
+		PoseStack poseStack,
+		MultiBufferSource bufferSource,
+		LivingEntity livingEntity,
+		EquipmentSlot slot,
+		int packedLight,
+		HumanoidModel<?> model, CallbackInfo ci
+	) {
 		ItemStack stack = livingEntity.getItemBySlot(slot);
 		if (!ArmorHooks.cancelArmorRendering(true, stack)) {
 			ci.cancel();

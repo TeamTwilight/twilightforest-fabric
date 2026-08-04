@@ -17,8 +17,17 @@ import twilightforest.init.TFBlocks;
 @Mixin(MushroomBlock.class)
 public class MushroomBlockMixin {
 
-	@Inject(method = "canSurvive", at = @At("RETURN"), cancellable = true)
-	private void twilightforest$modifySoilDecision(BlockState state, LevelReader level, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+	@Inject(
+		method = "canSurvive",
+		at = @At("RETURN"),
+		cancellable = true
+	)
+	private void twilightforest$modifySoilDecision(
+		BlockState state,
+		LevelReader level,
+		BlockPos pos,
+		CallbackInfoReturnable<Boolean> cir
+	) {
 		if (!cir.getReturnValue()) {
 			for (int x = -1; x <= 1; x++) {
 				for (int z = -1; z <= 1; z++) {

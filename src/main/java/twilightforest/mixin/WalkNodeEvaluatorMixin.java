@@ -19,7 +19,11 @@ public class WalkNodeEvaluatorMixin {
 		method = "getPathTypeFromState",
 		at = @At("RETURN")
 	)
-	private static PathType twilightforest$modifyBlockPathType(PathType original, BlockGetter level, BlockPos pos) {
+	private static PathType twilightforest$modifyBlockPathType(
+		PathType original,
+		BlockGetter level,
+		BlockPos pos
+	) {
 		BlockState state = level.getBlockState(pos);
 		Block block = state.getBlock();
 
@@ -29,20 +33,17 @@ public class WalkNodeEvaluatorMixin {
 		}
 
 		// Hedge block - damages like cactus
-		if (block instanceof HedgeBlock) {
-			return PathType.DANGER_OTHER;
-		}
+		return switch (block) {
+			case HedgeBlock hedgeBlock -> PathType.DANGER_OTHER;
 
-		// Fire jet - fire damage when active
-		if (block instanceof FireJetBlock) {
-			return state.getValue(FireJetBlock.STATE) == FireJetVariant.IDLE ? original : PathType.DAMAGE_FIRE;
-		}
 
-		// Banister - treated as a fence
-		if (block instanceof BanisterBlock) {
-			return PathType.FENCE;
-		}
+			// Fire jet - fire damage when active
+			case FireJetBlock fireJetBlock -> state.getValue(FireJetBlock.STATE) == FireJetVariant.IDLE ? original : PathType.DAMAGE_FIRE;
 
-		return original;
+
+			// Banister - treated as a fence
+			case BanisterBlock banisterBlock -> PathType.FENCE;
+			default -> original;
+		};
 	}
 }

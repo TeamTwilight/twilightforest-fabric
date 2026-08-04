@@ -13,13 +13,27 @@ import twilightforest.asmhooks.DamageSourceHooks;
 @Mixin(DamageSources.class)
 public class DamageSourcesMixin {
 
-	@Inject(method = "mobAttack", at = @At("RETURN"), cancellable = true)
-	private void twilightforest$customMobAttackDamage(LivingEntity entity, CallbackInfoReturnable<DamageSource> cir) {
-		cir.setReturnValue(DamageSourceHooks.getCustomDamageSource(cir.getReturnValue(), entity));
+	@Inject(
+		method = "mobAttack",
+		at = @At("RETURN"),
+		cancellable = true
+	)
+	private void twilightforest$customMobAttackDamage(
+		LivingEntity mob,
+		CallbackInfoReturnable<DamageSource> cir
+	) {
+		cir.setReturnValue(DamageSourceHooks.getCustomDamageSource(cir.getReturnValue(), mob));
 	}
 
-	@Inject(method = "playerAttack", at = @At("RETURN"), cancellable = true)
-	private void twilightforest$customPlayerAttackDamage(Player player, CallbackInfoReturnable<DamageSource> cir) {
+	@Inject(
+		method = "playerAttack",
+		at = @At("RETURN"),
+		cancellable = true
+	)
+	private void twilightforest$customPlayerAttackDamage(
+		Player player,
+		CallbackInfoReturnable<DamageSource> cir
+	) {
 		cir.setReturnValue(DamageSourceHooks.getCustomDamageSource(cir.getReturnValue(), player));
 	}
 }

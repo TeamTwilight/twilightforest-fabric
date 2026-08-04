@@ -18,8 +18,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(BlockEntityType.class)
 public class BlockEntityTypeMixin {
 
-	@Inject(method = "isValid", at = @At("RETURN"), cancellable = true)
-	private void twilightforest$isValid(BlockState state, CallbackInfoReturnable<Boolean> cir) {
+	@Inject(
+		method = "isValid",
+		at = @At("RETURN"),
+		cancellable = true
+	)
+	private void twilightforest$isValid(
+		BlockState state,
+		CallbackInfoReturnable<Boolean> cir
+	) {
 		// If already valid, don't interfere
 		if (cir.getReturnValue()) return;
 

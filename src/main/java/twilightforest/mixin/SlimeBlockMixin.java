@@ -23,13 +23,25 @@ public class SlimeBlockMixin {
 			target = "Lnet/minecraft/world/entity/Entity;isSteppingCarefully()Z"
 		)
 	)
-	private boolean twilightforest$resetSlimeMomentumWithUnrestrained(Entity entity, Operation<Boolean> original, Level level, BlockPos pos, BlockState state, Entity entityIn) {
+	private boolean twilightforest$resetSlimeMomentumWithUnrestrained(
+		Entity entity,
+		Operation<Boolean> original,
+		Level level,
+		BlockPos pos,
+		BlockState state
+	) {
 		boolean originalResult = original.call(entity);
-		return BlockHooks.resetSlimeMomentumWithUnrestrained(originalResult, entityIn);
+		return BlockHooks.resetSlimeMomentumWithUnrestrained(originalResult, entity);
 	}
 
-	@Inject(method = "bounceUp", at = @At("HEAD"))
-	private void twilightforest$stopBouncing(Entity entity, CallbackInfo ci) {
+	@Inject(
+		method = "bounceUp",
+		at = @At("HEAD")
+	)
+	private void twilightforest$stopBouncing(
+		Entity entity,
+		CallbackInfo ci
+	) {
 		BlockHooks.stopBouncing(entity);
 	}
 }
