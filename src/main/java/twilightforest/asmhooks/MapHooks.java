@@ -16,29 +16,13 @@ import twilightforest.init.TFDataComponents;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.util.WorldUtil;
 
-import java.util.function.Predicate;
-
-@SuppressWarnings({"JavadocReference", "unused"})
 public class MapHooks {
 
-	/**
-	 * {@link twilightforest.asm.transformers.map.ResolveNearestNonRandomSpreadMapStructureTransformer}<p/>
-	 *
-	 * Injection Point:<br/>
-	 * {@link net.minecraft.world.level.chunk.ChunkGenerator#findNearestMapStructure(ServerLevel, HolderSet, BlockPos, int, boolean)}
-	 */
 	@Nullable
 	public static Pair<BlockPos, Holder<Structure>> resolveNearestNonRandomSpreadMapStructure(@Nullable Pair<BlockPos, Holder<Structure>> o, ServerLevel level, HolderSet<Structure> targetStructures, BlockPos pos, int searchRadius, boolean skipKnownStructures) {
 		return WorldUtil.findNearestMapLandmark(level, targetStructures, pos, searchRadius, skipKnownStructures).orElse(o);
 	}
 
-	/**
-	 * {@link twilightforest.asm.transformers.map.UpdateMapsInGogglesTransformer}
-	 *
-	 * Injection Point:<br/>
-	 * {@link net.minecraft.world.level.saveddata.maps.MapItemSavedData#tickCarriedBy(Player, ItemStack)}<br/>
-	 * Targets: {@link net.minecraft.world.entity.player.Inventory.contains( Predicate )}
-	 */
 	public static boolean updateMapsInGoggles(boolean o, ItemStack stack, Player player) {
 		if (o) return true;
 		ItemStack headStack = player.getItemBySlot(EquipmentSlot.HEAD);

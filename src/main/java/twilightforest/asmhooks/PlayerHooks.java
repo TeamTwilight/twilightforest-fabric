@@ -13,17 +13,7 @@ import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.custom.TravellersModifiersManager;
 
-@SuppressWarnings({"JavadocReference", "unused"})
 public class PlayerHooks {
-
-
-	/**
-	 * {@link ReduceMovementFoodExhaustionTransformer ()}<p/>
-	 *
-	 * Injection Points:<br/>
-	 * {@link net.minecraft.server.level.ServerPlayer#checkMovementStatistics(double dx, double dy, double dz)}
-	 * {@link net.minecraft.world.entity.player.Player#jumpFromGround()}
-	 */
 
 	public static float getFoodExhaustion(float f, Player player) {
 		ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
@@ -33,12 +23,6 @@ public class PlayerHooks {
 		return f * (1 / divisor);
 	}
 
-	/**
-	 * {@link GetFieldOfViewModifierTransformer}<p/>
-	 *
-	 * Injection Point:<br/>
-	 * {@link net.minecraft.client.player.AbstractClientPlayer#getFieldOfViewModifier()}
-	 */
 	public static void straightAheadNullify(AbstractClientPlayer player) {
 		AttributeInstance attributeInstance = player.getAttributes().getInstance(Attributes.MOVEMENT_SPEED);
 		if (attributeInstance == null)
@@ -49,12 +33,6 @@ public class PlayerHooks {
 		attributeInstance.removeModifier(TFAttributeModifiers.STRAIGHT_AHEAD_ATTRIBUTE_MODIFIER_LOCATION);
 	}
 
-	/**
-	 * {@link GetFieldOfViewModifierTransformer}<p/>
-	 *
-	 * Injection Point:<br/>
-	 * {@link net.minecraft.client.player.AbstractClientPlayer#getFieldOfViewModifier()}
-	 */
 	public static void straightAheadRestore(AbstractClientPlayer player) {
 		if (!(player instanceof LocalPlayer))
 			return;

@@ -47,12 +47,6 @@ public class WorldgenHooks {
 		return ((CustomBeardifier) beardifier).tf$getCustomDensities();
 	}
 
-	/**
-	 * {@link twilightforest.asm.transformers.beardifier.InitializeCustomBeardifierFieldsDuringCreateNoiseChunkTransformer}<p/>
-	 *
-	 * Injection point:<br/>
-	 * {@link net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator#createNoiseChunk(ChunkAccess, StructureManager, Blender, RandomState)}
-	 */
 	public static ObjectListIterator<DensityFunction> gatherCustomTerrain(StructureManager structureManager, ChunkPos chunkPos) {
 		ObjectArrayList<DensityFunction> customStructureTerraforms = new ObjectArrayList<>(10);
 
@@ -63,12 +57,6 @@ public class WorldgenHooks {
 		return customStructureTerraforms.iterator();
 	}
 
-	/**
-	 * {@link twilightforest.asm.transformers.beardifier.BeardifierComputeTransformer}<p/>
-	 *
-	 * Injection point:<br/>
-	 * {@link net.minecraft.world.level.levelgen.Beardifier#compute(DensityFunction.FunctionContext)}
-	 */
 	public static double getCustomDensity(double o, DensityFunction.FunctionContext context, @Nullable ObjectListIterator<DensityFunction> customDensities) {
 		if (customDensities == null)
 			return o;
@@ -84,31 +72,14 @@ public class WorldgenHooks {
 		return o + newDensity;
 	}
 
-	/**
-	 * {@link twilightforest.asm.transformers.chunk.ChunkStatusTaskTransformer}<p/>
-	 *
-	 * Injection Point:<br/>
-	 * {@link net.minecraft.world.level.chunk.status.ChunkStatusTasks#generateSurface(WorldGenContext, ChunkStep, StaticCache2D, ChunkAccess)}
-	 */
 	public static void chunkBlanketing(ChunkAccess access, WorldGenRegion region) {
 		ChunkBlanketProcessors.chunkBlanketing(access, region);
 	}
 
-	/**
-	 * Chunk blanketing variant for ServerLevel (1.21.1 Fabric).
-	 * In 1.21.1, ChunkStatusTasks.generateSurface uses ServerLevel instead of WorldGenRegion.
-	 */
 	public static void chunkBlanketing(ChunkAccess access, ServerLevel serverLevel) {
 		ChunkBlanketProcessors.chunkBlanketing(access, serverLevel);
 	}
 
-	/**
-	 * {@link twilightforest.asm.transformers.conquered.StructureStartLoadStaticTransformer}<p/>
-	 *
-	 * Injection Point:<br/>
-	 * {@link net.minecraft.world.level.levelgen.structure.StructureStart#loadStaticStart(StructurePieceSerializationContext, CompoundTag, long)}<br/>
-	 * Targets: {@link net.minecraft.world.level.levelgen.structure.StructureStart#StructureStart(Structure, ChunkPos, int, PiecesContainer)}
-	 */
 	public static StructureStart loadStaticStart(StructureStart start, PiecesContainer piecesContainer, CompoundTag nbt) {
 		if (start.getStructure() instanceof CustomStructureData s)
 			return s.forDeserialization(start.getStructure(), start.getChunkPos(), start.getReferences(), piecesContainer, nbt);
