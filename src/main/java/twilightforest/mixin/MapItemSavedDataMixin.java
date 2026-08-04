@@ -21,11 +21,11 @@ public class MapItemSavedDataMixin {
 	private boolean twilightforest$updateMapsInGoggles(
 		boolean original,
 		Player player,
-		ItemStack stack
+		ItemStack mapStack
 	) {
 		return MapHooks.updateMapsInGoggles(
 			original,
-			stack,
+			mapStack,
 			player
 		);
 	}
