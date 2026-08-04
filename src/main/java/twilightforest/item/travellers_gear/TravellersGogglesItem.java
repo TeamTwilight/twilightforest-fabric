@@ -7,7 +7,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.SlotAccess;
-import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
@@ -53,7 +52,7 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 				slot.safeInsert(removedStack);
 				this.playRemoveOneSound(player);
 			}
-		} else if (!itemstack.has(DataComponents.CONTAINER)) {
+		} else if (itemstack.getItem().canFitInsideContainerItems()) {
 			if (mutableContents.trySwap(SlotAccess.of(slot::getItem, slot::set), player))
 				this.playInsertSound(player);
 		}
@@ -115,10 +114,6 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 			if (packet != null)
 				player.connection.send(packet);
 		}
-	}
-
-	public boolean isEnderMask(@NotNull ItemStack stack, @NotNull Player player, @NotNull EnderMan enderman) {
-		return TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.ALL_NIGHT_GOGGLES_MODIFIER);
 	}
 
 	private void playRemoveOneSound(Entity entity) {
