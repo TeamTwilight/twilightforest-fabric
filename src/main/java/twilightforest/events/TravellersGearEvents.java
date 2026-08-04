@@ -1,7 +1,5 @@
 package twilightforest.events;
 
-import net.minecraft.core.Holder;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerPlayer;
@@ -31,7 +29,6 @@ import io.github.fabricators_of_create.porting_lib.entity.events.player.PlayerEv
 import io.github.fabricators_of_create.porting_lib.entity.events.tick.EntityTickEvent;
 import io.github.fabricators_of_create.porting_lib.entity.events.tick.PlayerTickEvent;
 import io.github.fabricators_of_create.porting_lib.event.common.ItemAttributeModifierEvent;
-import io.github.fabricators_of_create.porting_lib.event.common.GrindstoneEvent;
 import io.github.fabricators_of_create.porting_lib.transfer.item.ItemHandlerHelper;
 import twilightforest.network.PacketDistributor;
 import io.github.fabricators_of_create.porting_lib.core.util.ServerLifecycleHooks;
@@ -39,13 +36,10 @@ import twilightforest.components.entity.SlimySolesAttachment;
 import twilightforest.init.*;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.TravellersGearLogic;
-import twilightforest.item.travellers_gear.modifiers.InsertableTravellersModifier;
-import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 import twilightforest.network.GradualGlidePacket;
 import twilightforest.network.ParticlePacket;
 
 import java.util.*;
-import java.util.stream.Stream;
 
 public class TravellersGearEvents {
 
@@ -66,9 +60,6 @@ public class TravellersGearEvents {
 		LivingEvents.LivingJumpEvent.EVENT.register(INSTANCE::cancelSlimySolesJump);
 		ItemAttributeModifierEvent.EVENT.register(INSTANCE::activateAndDeactivateTravellersModifiers);
 		PlayerEvents.ItemCraftedEvent.EVENT.register(INSTANCE::fireCraftingModifierTrigger);
-		// GrindstoneEvent.OnTakeItem lacks getPlayer(), needs custom mixin
-		// GrindstoneEvent.OnTakeItem.EVENT.register(INSTANCE::extractItemsFromSwapHotbarModifier);
-		GrindstoneEvent.OnPlaceItem.EVENT.register(INSTANCE::removeModifiersFromTravellersGear);
 		PlayerEvents.Clone.EVENT.register(INSTANCE::keepAttachmentsOnDeath);
 	}
 
@@ -251,70 +242,6 @@ public class TravellersGearEvents {
 			}
 		}
 	}
-
-	private void removeModifiersFromTravellersGear(GrindstoneEvent.OnPlaceItem event) {
-		if (ServerLifecycleHooks.getCurrentServer() == null)
-			return;
-		RegistryAccess access = ServerLifecycleHooks.getCurrentServer().registryAccess();
-		List<ItemStack> travellersItemStacks = Stream.of(event.getTopItem(), event.getBottomItem())
-				.filter(stack -> stack.has(TFDataComponents.IS_TRAVELLERS_GEAR.get()))
-				.toList();
-
-		if (travellersItemStacks.isEmpty())
-			return; // Delegate to vanilla logic
-		if (travellersItemStacks.size() > 1) {
-			event.setCanceled(true);
-			return;
-		}
-		ItemStack inputStack = travellersItemStacks.getFirst();
-		List<Holder.Reference<TravellersModifier>> modifiers = TravellersModifiersManager.findAllInsertableModifiers(access, inputStack);
-		if (modifiers.isEmpty()) {
-			event.setCanceled(true);
-			return;
-		}
-
-		ItemStack unmodifiedStack = inputStack.copy();
-		modifiers.forEach(modifier -> ((InsertableTravellersModifier) modifier.value()).removeModifier(unmodifiedStack));
-		event.setOutput(unmodifiedStack.copy());
-	}
-
-	// GrindstoneEvent.OnTakeItem 缺少 getPlayer()，需要自定义 mixin
-	/*
-	private void extractItemsFromSwapHotbarModifier(GrindstoneEvent.OnTakeItem event) {
-		returnModifierItems(event,
-			TravellersModifiersManager.SWAP_HOTBAR_MODIFIER,
-			DataComponents.CONTAINER,
-			ItemContainerContents::nonEmptyStream
-		);
-
-		returnModifierItems(event,
-			TravellersModifiersManager.ITEM_DISPLAY_MODIFIER,
-			TFDataComponents.ITEM_DISPLAY.get(),
-			contents -> contents.items().stream()
-		);
-	}
-
-	private <T> void returnModifierItems(GrindstoneEvent.OnTakeItem event, ResourceKey<TravellersModifier> modifierKey, DataComponentType<T> componentType, Function<T, Stream<ItemStack>> itemStreamExtractor) {
-		if (event.getPlayer() == null)
-			return;
-
-		getUniqueTravellersGear(event.getTopItem(), event.getBottomItem(), stack ->
-			TravellersModifiersManager.hasTravellersModifier(event.getPlayer().registryAccess(), stack, modifierKey)
-		).map(stack -> stack.get(componentType))
-			.ifPresent(component ->
-				itemStreamExtractor.apply(component)
-					.forEach(itemStack -> ItemHandlerHelper.giveItemToPlayer(event.getPlayer(), itemStack))
-			);
-	}
-
-	private Optional<ItemStack> getUniqueTravellersGear(ItemStack top, ItemStack bottom, Predicate<ItemStack> predicate) {
-		List<ItemStack> travellersItemStacks = Stream.of(top, bottom)
-			.filter(stack -> stack.has(TFDataComponents.IS_TRAVELLERS_GEAR.get()))
-			.filter(predicate)
-			.toList();
-		return travellersItemStacks.size() == 1 ? Optional.of(travellersItemStacks.getFirst()) : Optional.empty();
-	}
-	*/
 
 	private void fireCraftingModifierTrigger(PlayerEvents.ItemCraftedEvent event) {
 		if (event.getEntity() instanceof ServerPlayer player && event.getCrafting().has(TFDataComponents.IS_TRAVELLERS_GEAR.get())) {
