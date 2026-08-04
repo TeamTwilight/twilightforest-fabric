@@ -299,69 +299,74 @@ public class EntityUtil {
 	@SuppressWarnings("unchecked")
 	public static boolean convertEntity(LivingEntity oldEntity, EntityType<?> newType) {
 		if (!(oldEntity.level() instanceof ServerLevel level)) return false;
+
 		var newEntity = newType.create(level);
 		if (newEntity == null) return false;
-		// TFEventHooks.canLivingConvert is NeoForge-specific; skipping event check on Fabric
-		if (!(newEntity instanceof LivingEntity living)) {
-			var passengerSave = oldEntity.getPassengers();
-			if (oldEntity instanceof Mob mob && newEntity instanceof Mob newMob) {
-				newEntity = mob.convertTo((EntityType<? extends Mob>) newMob.getType(), true);
-			} else {
-				newEntity.copyPosition(oldEntity);
 
-				if (newEntity instanceof Mob mob) {
-					if (oldEntity instanceof Mob oldMob) {
-						for (EquipmentSlot equipmentslot : EquipmentSlot.values()) {
-							ItemStack itemstack = oldEntity.getItemBySlot(equipmentslot).copyAndClear();
-							if (!itemstack.isEmpty()) {
-								mob.setItemSlot(equipmentslot, itemstack.copyAndClear());
-								mob.setDropChance(equipmentslot, oldMob.getEquipmentDropChance(equipmentslot));
-							}
-						}
-					}
+		var passengerSave = oldEntity.getPassengers();
 
-					TFEventHooks.finalizeMobSpawn(mob, level, level.getCurrentDifficultyAt(oldEntity.blockPosition()), MobSpawnType.CONVERSION, null);
-				}
-
-				oldEntity.level().addFreshEntity(newEntity);
-				oldEntity.discard();
-			}
-			try { // try copying what can be copied
-				UUID uuid = newEntity.getUUID();
-				newEntity.load(oldEntity.saveWithoutId(newEntity.saveWithoutId(new CompoundTag())));
-				newEntity.setUUID(uuid);
-				if (newEntity instanceof LivingEntity living) {
-					living.setHealth(living.getMaxHealth());
-				}
-			} catch (Exception e) {
-				TwilightForestMod.LOGGER.warn("Couldn't transform entity NBT data", e);
-			}
-
-			if (oldEntity instanceof Saddleable saddleable && saddleable.isSaddled() && !(newEntity instanceof Saddleable)) {
-				newEntity.spawnAtLocation(Items.SADDLE);
-			}
+		if (oldEntity instanceof Mob mob && newEntity instanceof Mob newMob) {
+			newEntity = mob.convertTo((EntityType<? extends Mob>) newMob.getType(), true);
+		} else {
+			newEntity.copyPosition(oldEntity);
 
 			if (newEntity instanceof Mob mob) {
-				mob.spawnAnim();
-				mob.spawnAnim();
-
-				for (EquipmentSlot equipmentslot : EquipmentSlot.values()) {
-					ItemStack itemstack = mob.getItemBySlot(equipmentslot).copyAndClear();
-					mob.spawnAtLocation(itemstack);
+				if (oldEntity instanceof Mob oldMob) {
+					for (EquipmentSlot slot : EquipmentSlot.values()) {
+						ItemStack stack = oldEntity.getItemBySlot(slot).copyAndClear();
+						if (!stack.isEmpty()) {
+							mob.setItemSlot(slot, stack.copyAndClear());
+							mob.setDropChance(slot, oldMob.getEquipmentDropChance(slot));
+						}
+					}
 				}
+
+				mob.finalizeSpawn(
+					level,
+					level.getCurrentDifficultyAt(oldEntity.blockPosition()),
+					MobSpawnType.CONVERSION,
+					null
+				);
 			}
 
-			if (!passengerSave.isEmpty()) {
-				for (var entity : passengerSave) {
-					entity.startRiding(newEntity, true);
-				}
-			}
-
-			if (newEntity instanceof LivingEntity living) TFEventHooks.onLivingConvert(oldEntity, living);
-			level.playSound(null, newEntity.blockPosition(), TFSounds.POWDER_USE.get(), newEntity.getSoundSource());
-			return true;
+			oldEntity.level().addFreshEntity(newEntity);
+			oldEntity.discard();
 		}
-		return false;
+
+		try {
+			UUID uuid = newEntity.getUUID();
+			newEntity.load(oldEntity.saveWithoutId(newEntity.saveWithoutId(new CompoundTag())));
+			newEntity.setUUID(uuid);
+
+			if (newEntity instanceof LivingEntity living) {
+				living.setHealth(living.getMaxHealth());
+			}
+		} catch (Exception e) {
+			TwilightForestMod.LOGGER.warn("Couldn't transform entity NBT data", e);
+		}
+
+		if (oldEntity instanceof Saddleable saddleable && saddleable.isSaddled() && !(newEntity instanceof Saddleable)) {
+			newEntity.spawnAtLocation(Items.SADDLE);
+		}
+
+		if (newEntity instanceof Mob mob) {
+			mob.spawnAnim();
+			mob.spawnAnim();
+
+			for (EquipmentSlot slot : EquipmentSlot.values()) {
+				ItemStack stack = mob.getItemBySlot(slot).copyAndClear();
+				mob.spawnAtLocation(stack);
+			}
+		}
+
+		if (!passengerSave.isEmpty()) {
+			for (var entity : passengerSave) {
+				entity.startRiding(newEntity, true);
+			}
+		}
+
+		level.playSound(null, newEntity.blockPosition(), TFSounds.POWDER_USE.get(), newEntity.getSoundSource());
+		return true;
 	}
 
 	@Nullable
