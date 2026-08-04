@@ -13,6 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 
+import twilightforest.client.overlay.ItemDisplayOverlay;
 import twilightforest.client.overlay.PortalOverlay;
 import twilightforest.client.overlay.QuestingRamIndicatorOverlay;
 import twilightforest.client.overlay.ShieldOverlay;
@@ -49,6 +50,9 @@ public class OverlayHandler {
 
 			// Ore meter stats
 			renderOreMeterStats(graphics, minecraft.player);
+
+			// Travellers goggles item display
+			ItemDisplayOverlay.render(graphics, minecraft, minecraft.getWindow(), minecraft.gui, minecraft.player);
 		});
 	}
 
