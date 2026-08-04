@@ -1,7 +1,4 @@
 {
-  "remove": [
-    "#c:tools/shield"
-  ],
   "values": [
     "twilightforest:gelatinous_slime_drop",
     "twilightforest:gelatinous_maze_slime_drop",
@@ -16,7 +13,13 @@
     "minecraft:clock",
     "minecraft:spyglass",
     "minecraft:trident",
-    "#minecraft:banners",
-    "#c:tools"
+    {
+      "id": "#minecraft:banners",
+      "required": false
+    },
+    {
+      "id": "#c:tools",
+      "required": false
+    }
   ]
 }

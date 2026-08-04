@@ -1,5 +1,8 @@
 {
   "values": [
-    "#c:rods/wooden"
+    {
+      "id": "#c:rods/wooden",
+      "required": false
+    }
   ]
 }

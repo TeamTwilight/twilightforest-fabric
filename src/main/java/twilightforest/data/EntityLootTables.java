@@ -1,10 +1,10 @@
 package twilightforest.data;
 
+import io.github.fabricators_of_create.porting_lib.data.ModdedEntityLootSubProvider;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.advancements.critereon.SlimePredicate;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.data.loot.EntityLootSubProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.world.entity.EntityType;
@@ -13,6 +13,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.*;
+import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.functions.*;
@@ -35,7 +36,7 @@ import twilightforest.loot.conditions.IsMinionCondition;
 
 import java.util.stream.Stream;
 
-public class EntityLootTables extends EntityLootSubProvider {
+public class EntityLootTables extends ModdedEntityLootSubProvider {
 
 	protected EntityLootTables(HolderLookup.Provider provider) {
 		super(FeatureFlags.REGISTRY.allFlags(), provider);
@@ -54,17 +55,17 @@ public class EntityLootTables extends EntityLootSubProvider {
 		add(TFEntities.QUEST_RAM.get(), emptyLootTable());
 		add(TFEntities.ROVING_CUBE.get(), emptyLootTable());
 		add(TFEntities.SQUIRREL.get(), emptyLootTable());
-		add(TFEntities.DWARF_RABBIT.get(), fromEntityLootTable(EntityType.RABBIT));
-		add(TFEntities.HEDGE_SPIDER.get(), fromEntityLootTable(EntityType.SPIDER));
-		add(TFEntities.HOSTILE_WOLF.get(), fromEntityLootTable(EntityType.WOLF));
-		add(TFEntities.KING_SPIDER.get(), fromEntityLootTable(EntityType.SPIDER));
-		add(TFEntities.MIST_WOLF.get(), fromEntityLootTable(EntityType.WOLF));
+		add(TFEntities.DWARF_RABBIT.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootItem.lootTableItem(Items.RABBIT_HIDE).apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F))).apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F))))).withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootItem.lootTableItem(Items.RABBIT).apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F))).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F))))).withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootItem.lootTableItem(Items.RABBIT_FOOT)).when(LootItemKilledByPlayerCondition.killedByPlayer()).when(LootItemRandomChanceWithEnchantedBonusCondition.randomChanceAndLootingBoost(this.registries, 0.1F, 0.03F))));
+		add(TFEntities.HEDGE_SPIDER.get(), spiderLootTable());
+		add(TFEntities.HOSTILE_WOLF.get(), LootTable.lootTable());
+		add(TFEntities.KING_SPIDER.get(), spiderLootTable());
+		add(TFEntities.MIST_WOLF.get(), LootTable.lootTable());
 		add(TFEntities.REDCAP_SAPPER.get(), fromEntityLootTable(TFEntities.REDCAP.get()));
-		add(TFEntities.SWARM_SPIDER.get(), fromEntityLootTable(EntityType.SPIDER));
-		add(TFEntities.CARMINITE_BROODLING.get(), fromEntityLootTable(EntityType.SPIDER));
-		add(TFEntities.CARMINITE_GHASTGUARD.get(), fromEntityLootTable(EntityType.GHAST));
-		add(TFEntities.BIGHORN_SHEEP.get(), fromEntityLootTable(EntityType.SHEEP));
-		add(TFEntities.RISING_ZOMBIE.get(), fromEntityLootTable(EntityType.ZOMBIE));
+		add(TFEntities.SWARM_SPIDER.get(), spiderLootTable());
+		add(TFEntities.CARMINITE_BROODLING.get(), spiderLootTable());
+		add(TFEntities.CARMINITE_GHASTGUARD.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootItem.lootTableItem(Items.GHAST_TEAR).apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F))).apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F))))).withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootItem.lootTableItem(Items.GUNPOWDER).apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F))).apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F))))));
+		add(TFEntities.BIGHORN_SHEEP.get(),  LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootItem.lootTableItem(Items.MUTTON).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F))).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F))))));
+		add(TFEntities.RISING_ZOMBIE.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootItem.lootTableItem(Items.ROTTEN_FLESH).apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F))).apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F))))).withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootItem.lootTableItem(Items.IRON_INGOT)).add(LootItem.lootTableItem(Items.CARROT)).add(LootItem.lootTableItem(Items.POTATO).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot()))).when(LootItemKilledByPlayerCondition.killedByPlayer()).when(LootItemRandomChanceWithEnchantedBonusCondition.randomChanceAndLootingBoost(this.registries, 0.025F, 0.01F))));
 		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_BLACK, sheepLootTableBuilderWithDrop(Blocks.BLACK_WOOL));
 		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_BLUE, sheepLootTableBuilderWithDrop(Blocks.BLUE_WOOL));
 		add(TFEntities.BIGHORN_SHEEP.get(), TFLootTables.BIGHORN_SHEEP_BROWN, sheepLootTableBuilderWithDrop(Blocks.BROWN_WOOL));
@@ -120,7 +121,7 @@ public class EntityLootTables extends EntityLootSubProvider {
 			LootTable.lootTable()
 				.withPool(LootPool.lootPool()
 					.setRolls(ConstantValue.exactly(1))
-					.add(NestedLootTable.lootTableReference(EntityType.GHAST.getDefaultLootTable()))
+					.add(NestedLootTable.lootTableReference(TFEntities.CARMINITE_GHASTGUARD.get().getDefaultLootTable()))
 					.when(IsMinionCondition.builder(true))));
 
 		/*registerLootTable(TFEntities.BOGGARD.get(),
@@ -400,7 +401,7 @@ public class EntityLootTables extends EntityLootSubProvider {
 			LootTable.lootTable()
 				.withPool(LootPool.lootPool()
 					.setRolls(ConstantValue.exactly(1))
-					.add(NestedLootTable.lootTableReference(BuiltInLootTables.EMPTY))
+					.add(EmptyLootItem.emptyItem())
 					.add(LootItem.lootTableItem(Items.PAPER))));
 
 		add(TFEntities.DEATH_TOME.get(), TFLootTables.DEATH_TOME_BOOKS,
@@ -632,8 +633,42 @@ public class EntityLootTables extends EntityLootSubProvider {
 				.add(NestedLootTable.lootTableReference(parent.getDefaultLootTable())));
 	}
 
-	private static LootTable.Builder sheepLootTableBuilderWithDrop(ItemLike wool) {
-		return LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(wool))).withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(NestedLootTable.lootTableReference(EntityType.SHEEP.getDefaultLootTable())));
+	private LootTable.Builder sheepLootTableBuilderWithDrop(ItemLike woolItem) {
+		return LootTable.lootTable()
+			.withPool(LootPool.lootPool()
+				.setRolls(ConstantValue.exactly(1.0F))
+				.add(LootItem.lootTableItem(woolItem))
+			)
+			.withPool(LootPool.lootPool()
+				.setRolls(ConstantValue.exactly(1.0F))
+				.add(LootItem.lootTableItem(Items.MUTTON)
+					.apply(SetItemCountFunction.setCount(
+						UniformGenerator.between(1.0F, 2.0F)
+					))
+					.apply(SmeltItemFunction.smelted()
+						.when(this.shouldSmeltLoot()))
+					.apply(EnchantedCountIncreaseFunction.lootingMultiplier(
+						this.registries,
+						UniformGenerator.between(0.0F, 1.0F)
+					))
+				)
+			);
+	}
+
+	private LootTable.Builder spiderLootTable() {
+		return LootTable.lootTable()
+			.withPool(LootPool.lootPool()
+				.setRolls(ConstantValue.exactly(1.0F))
+				.add(LootItem.lootTableItem(Items.STRING)
+					.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
+					.apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))))
+			.withPool(LootPool.lootPool()
+				.setRolls(ConstantValue.exactly(1.0F))
+				.add(LootItem.lootTableItem(Items.SPIDER_EYE)
+					.apply(SetItemCountFunction.setCount(UniformGenerator.between(-1.0F, 1.0F)))
+					.apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F))))
+				.when(LootItemKilledByPlayerCondition.killedByPlayer())
+			);
 	}
 
 	// getKnownEntityTypes() does not override any method in 1.21.1 - kept as a utility method

@@ -5,10 +5,8 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "condition": "minecraft:match_tool",
-          "predicate": {
-            "items": "minecraft:shears"
-          }
+          "ability": "shears_dig",
+          "condition": "porting_lib:can_item_perform_ability"
         }
       ],
       "entries": [

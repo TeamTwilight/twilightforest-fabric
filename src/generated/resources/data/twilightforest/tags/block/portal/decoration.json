@@ -34,9 +34,21 @@
     "twilightforest:giant_leaves",
     "twilightforest:steeleaf_block",
     "twilightforest:hardened_dark_leaves",
-    "#minecraft:flowers",
-    "#minecraft:leaves",
-    "#minecraft:saplings",
-    "#minecraft:crops"
+    {
+      "id": "#minecraft:flowers",
+      "required": false
+    },
+    {
+      "id": "#minecraft:leaves",
+      "required": false
+    },
+    {
+      "id": "#minecraft:saplings",
+      "required": false
+    },
+    {
+      "id": "#minecraft:crops",
+      "required": false
+    }
   ]
 }

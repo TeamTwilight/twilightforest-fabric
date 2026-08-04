@@ -7,7 +7,6 @@ import net.minecraft.data.tags.BiomeTagsProvider;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
-import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBiomes;
 
@@ -37,12 +36,11 @@ public class BiomeTagGenerator extends BiomeTagsProvider {
 	public static final TagKey<Biome> VALID_GIANT_HOUSE_BIOMES = TagKey.create(Registries.BIOME, TwilightForestMod.prefix("valid_giant_house_biomes"));
 	public static final TagKey<Biome> VALID_FINAL_CASTLE_BIOMES = TagKey.create(Registries.BIOME, TwilightForestMod.prefix("valid_final_castle_biomes"));
 
-	public BiomeTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, ExistingFileHelper helper) {
+	public BiomeTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
 		super(output, provider);
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected void addTags(HolderLookup.Provider provider) {
 
 		this.tag(IS_TWILIGHT).add(

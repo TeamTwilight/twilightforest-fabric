@@ -2,7 +2,13 @@
   "values": [
     "minecraft:lever",
     "twilightforest:antibuilder",
-    "#minecraft:buttons",
-    "#c:chests"
+    {
+      "id": "#minecraft:buttons",
+      "required": false
+    },
+    {
+      "id": "#c:chests",
+      "required": false
+    }
   ]
 }

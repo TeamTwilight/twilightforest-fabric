@@ -1,5 +1,8 @@
 {
   "values": [
-    "#minecraft:fishes"
+    {
+      "id": "#minecraft:fishes",
+      "required": false
+    }
   ]
 }

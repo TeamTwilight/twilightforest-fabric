@@ -1,5 +1,8 @@
 {
   "values": [
-    "#minecraft:ice"
+    {
+      "id": "#minecraft:ice",
+      "required": false
+    }
   ]
 }

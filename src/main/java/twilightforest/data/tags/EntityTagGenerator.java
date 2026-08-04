@@ -1,22 +1,20 @@
 package twilightforest.data.tags;
 
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import io.github.fabricators_of_create.porting_lib.tags.Tags;
-import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.tags.compat.ModdedEntityTagGenerator;
 import twilightforest.init.TFEntities;
 
 import java.util.concurrent.CompletableFuture;
 
-public class EntityTagGenerator extends ModdedEntityTagGenerator {
+public class EntityTagGenerator extends FabricTagProvider.EntityTypeTagProvider {
 	public static final TagKey<EntityType<?>> BOSSES = create(TwilightForestMod.prefix("bosses"));
 	public static final TagKey<EntityType<?>> LICH_POPPABLES = create(TwilightForestMod.prefix("lich_poppables"));
 	public static final TagKey<EntityType<?>> LIFEDRAIN_DROPS_NO_FLESH = create(TwilightForestMod.prefix("lifedrain_drops_no_flesh"));
@@ -26,20 +24,19 @@ public class EntityTagGenerator extends ModdedEntityTagGenerator {
 	public static final TagKey<EntityType<?>> MULTIPLAYER_INCLUSIVE_ENTITIES = create(TwilightForestMod.prefix("multiplayer_inclusive_entities"));
 	public static final TagKey<EntityType<?>> LICH_DEFLECTS_PHASE_2 = create(TwilightForestMod.prefix("lich_deflects_phase_2"));
 
-	public EntityTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper helper) {
-		super(output, provider, helper);
+	public EntityTagGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> provider) {
+		super(output, provider);
 	}
 
 	@Override
 	protected void addTags(HolderLookup.Provider provider) {
-		super.addTags(provider);
-		this.tag(EntityTypeTags.SKELETONS).add(TFEntities.SKELETON_DRUID.get(), TFEntities.LICH.get(), TFEntities.KNIGHT_PHANTOM.get());
-		this.tag(EntityTypeTags.ZOMBIES).add(TFEntities.LICH_MINION.get(), TFEntities.LOYAL_ZOMBIE.get(), TFEntities.RISING_ZOMBIE.get());
-		this.tag(EntityTypeTags.ARROWS).add(TFEntities.ICE_ARROW.get(), TFEntities.SEEKER_ARROW.get());
-		this.tag(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES).add(TFEntities.FIRE_BEETLE.get());
-		this.tag(EntityTypeTags.FROG_FOOD).add(TFEntities.MAZE_SLIME.get());
+		getOrCreateTagBuilder(EntityTypeTags.SKELETONS).add(TFEntities.SKELETON_DRUID.get(), TFEntities.LICH.get(), TFEntities.KNIGHT_PHANTOM.get());
+		getOrCreateTagBuilder(EntityTypeTags.ZOMBIES).add(TFEntities.LICH_MINION.get(), TFEntities.LOYAL_ZOMBIE.get(), TFEntities.RISING_ZOMBIE.get());
+		getOrCreateTagBuilder(EntityTypeTags.ARROWS).add(TFEntities.ICE_ARROW.get(), TFEntities.SEEKER_ARROW.get());
+		getOrCreateTagBuilder(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES).add(TFEntities.FIRE_BEETLE.get());
+		getOrCreateTagBuilder(EntityTypeTags.FROG_FOOD).add(TFEntities.MAZE_SLIME.get());
 
-		this.tag(BOSSES).add(
+		getOrCreateTagBuilder(BOSSES).add(
 			TFEntities.NAGA.get(),
 			TFEntities.LICH.get(),
 			TFEntities.MINOSHROOM.get(),
@@ -51,7 +48,7 @@ public class EntityTagGenerator extends ModdedEntityTagGenerator {
 			TFEntities.PLATEAU_BOSS.get()
 		);
 
-		this.tag(EntityTypeTags.IMPACT_PROJECTILES).add(
+		getOrCreateTagBuilder(EntityTypeTags.IMPACT_PROJECTILES).add(
 			TFEntities.NATURE_BOLT.get(),
 			TFEntities.LICH_BOLT.get(),
 			TFEntities.WAND_BOLT.get(),
@@ -65,7 +62,7 @@ public class EntityTagGenerator extends ModdedEntityTagGenerator {
 			TFEntities.CHAIN_BLOCK.get()
 		);
 
-		this.tag(EntityTypeTags.POWDER_SNOW_WALKABLE_MOBS).add(
+		getOrCreateTagBuilder(EntityTypeTags.POWDER_SNOW_WALKABLE_MOBS).add(
 			TFEntities.PENGUIN.get(),
 			TFEntities.STABLE_ICE_CORE.get(),
 			TFEntities.UNSTABLE_ICE_CORE.get(),
@@ -82,7 +79,7 @@ public class EntityTagGenerator extends ModdedEntityTagGenerator {
 			TFEntities.TOWERWOOD_BORER.get()
 		);
 
-		this.tag(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES).add(
+		getOrCreateTagBuilder(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES).add(
 			TFEntities.PENGUIN.get(),
 			TFEntities.STABLE_ICE_CORE.get(),
 			TFEntities.UNSTABLE_ICE_CORE.get(),
@@ -95,7 +92,7 @@ public class EntityTagGenerator extends ModdedEntityTagGenerator {
 			TFEntities.YETI.get()
 		).addTag(BOSSES);
 
-		this.tag(EntityTypeTags.FALL_DAMAGE_IMMUNE).add(
+		getOrCreateTagBuilder(EntityTypeTags.FALL_DAMAGE_IMMUNE).add(
 			TFEntities.NAGA.get(),
 			TFEntities.SQUIRREL.get(),
 			TFEntities.WRAITH.get(),
@@ -115,13 +112,13 @@ public class EntityTagGenerator extends ModdedEntityTagGenerator {
 			TFEntities.CARMINITE_GHASTGUARD.get(),
 			TFEntities.TINY_BIRD.get());
 
-		this.tag(LICH_POPPABLES)
+		getOrCreateTagBuilder(LICH_POPPABLES)
 			.addTag(EntityTypeTags.SKELETONS)
 			.add(EntityType.ZOMBIE, EntityType.ENDERMAN, EntityType.SPIDER, EntityType.CREEPER, TFEntities.SWARM_SPIDER.get());
 			// .remove() 在 vanilla tag builders 中不可用，已注释掉
 			// .remove(Tags.EntityTypes.BOSSES);
 
-		this.tag(LIFEDRAIN_DROPS_NO_FLESH).addTag(EntityTypeTags.SKELETONS).addTag(EntityTypeTags.FROG_FOOD).add(
+		getOrCreateTagBuilder(LIFEDRAIN_DROPS_NO_FLESH).addTag(EntityTypeTags.SKELETONS).addTag(EntityTypeTags.FROG_FOOD).add(
 			EntityType.BLAZE,
 			EntityType.BREEZE,
 			EntityType.IRON_GOLEM,
@@ -143,11 +140,11 @@ public class EntityTagGenerator extends ModdedEntityTagGenerator {
 			TFEntities.WRAITH.get());
 
 		// These entities forcefully take players from the entity they're riding
-		this.tag(RIDES_OBSTRUCT_SNATCHING).add(TFEntities.PINCH_BEETLE.get(), TFEntities.YETI.get(), TFEntities.ALPHA_YETI.get());
+		getOrCreateTagBuilder(RIDES_OBSTRUCT_SNATCHING).add(TFEntities.PINCH_BEETLE.get(), TFEntities.YETI.get(), TFEntities.ALPHA_YETI.get());
 
-		this.tag(DONT_KILL_BUGS).add(TFEntities.MOONWORM_SHOT.get());
+		getOrCreateTagBuilder(DONT_KILL_BUGS).add(TFEntities.MOONWORM_SHOT.get());
 
-		this.tag(SORTABLE_ENTITIES).add(
+		getOrCreateTagBuilder(SORTABLE_ENTITIES).add(
 			EntityType.CHEST_MINECART,
 			EntityType.HOPPER_MINECART,
 			EntityType.LLAMA,
@@ -155,7 +152,7 @@ public class EntityTagGenerator extends ModdedEntityTagGenerator {
 			EntityType.DONKEY,
 			EntityType.MULE);
 
-		this.tag(MULTIPLAYER_INCLUSIVE_ENTITIES).add(
+		getOrCreateTagBuilder(MULTIPLAYER_INCLUSIVE_ENTITIES).add(
 			TFEntities.NAGA.get(),
 			TFEntities.LICH.get(),
 			TFEntities.MINOSHROOM.get(),
@@ -166,8 +163,8 @@ public class EntityTagGenerator extends ModdedEntityTagGenerator {
 			TFEntities.PLATEAU_BOSS.get()
 		);
 
-		this.tag(Tags.EntityTypes.BOSSES).addTag(BOSSES);
-		this.tag(EntityTypeTags.ARTHROPOD).add(
+		getOrCreateTagBuilder(Tags.EntityTypes.BOSSES).addTag(BOSSES);
+		getOrCreateTagBuilder(EntityTypeTags.ARTHROPOD).add(
 			TFEntities.CARMINITE_BROODLING.get(),
 			TFEntities.FIRE_BEETLE.get(),
 			TFEntities.HEDGE_SPIDER.get(),
@@ -177,11 +174,11 @@ public class EntityTagGenerator extends ModdedEntityTagGenerator {
 			TFEntities.SLIME_BEETLE.get(),
 			TFEntities.SWARM_SPIDER.get(),
 			TFEntities.TOWERWOOD_BORER.get());
-		this.tag(EntityTypeTags.UNDEAD).add(TFEntities.WRAITH.get());
-		this.tag(EntityTypeTags.IMMUNE_TO_OOZING).add(TFEntities.MAZE_SLIME.get());
-		this.tag(EntityTypeTags.IMMUNE_TO_INFESTED).add(TFEntities.TOWERWOOD_BORER.get());
-		this.tag(EntityTypeTags.REDIRECTABLE_PROJECTILE).add(TFEntities.HYDRA_MORTAR.get(), TFEntities.LICH_BOLT.get());
-		this.tag(LICH_DEFLECTS_PHASE_2).add(TFEntities.WAND_BOLT.get(), TFEntities.LICH_BOLT.get(), TFEntities.LICH_BOMB.get());
+		getOrCreateTagBuilder(EntityTypeTags.UNDEAD).add(TFEntities.WRAITH.get());
+		getOrCreateTagBuilder(EntityTypeTags.IMMUNE_TO_OOZING).add(TFEntities.MAZE_SLIME.get());
+		getOrCreateTagBuilder(EntityTypeTags.IMMUNE_TO_INFESTED).add(TFEntities.TOWERWOOD_BORER.get());
+		getOrCreateTagBuilder(EntityTypeTags.REDIRECTABLE_PROJECTILE).add(TFEntities.HYDRA_MORTAR.get(), TFEntities.LICH_BOLT.get());
+		getOrCreateTagBuilder(LICH_DEFLECTS_PHASE_2).add(TFEntities.WAND_BOLT.get(), TFEntities.LICH_BOLT.get(), TFEntities.LICH_BOMB.get());
 	}
 
 	private static TagKey<EntityType<?>> create(ResourceLocation rl) {

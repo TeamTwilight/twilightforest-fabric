@@ -14,10 +14,8 @@
                   "condition": "minecraft:any_of",
                   "terms": [
                     {
-                      "condition": "minecraft:match_tool",
-                      "predicate": {
-                        "items": "minecraft:shears"
-                      }
+                      "ability": "shears_dig",
+                      "condition": "porting_lib:can_item_perform_ability"
                     },
                     {
                       "condition": "minecraft:match_tool",
@@ -72,10 +70,8 @@
             "condition": "minecraft:any_of",
             "terms": [
               {
-                "condition": "minecraft:match_tool",
-                "predicate": {
-                  "items": "minecraft:shears"
-                }
+                "ability": "shears_dig",
+                "condition": "porting_lib:can_item_perform_ability"
               },
               {
                 "condition": "minecraft:match_tool",

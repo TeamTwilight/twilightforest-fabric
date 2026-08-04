@@ -150,9 +150,9 @@ public class TFPlacedFeatures {
 	public static final ResourceKey<PlacedFeature> PATCH_GRASS_TAIGA_2 = registerKey("patch_grass_taiga_2");
 	public static final ResourceKey<PlacedFeature> PATCH_GRASS_TAIGA = registerKey("patch_grass_taiga");
 	public static final ResourceKey<PlacedFeature> PATCH_GRASS_JUNGLE = registerKey("patch_grass_jungle");
-	public static final ResourceKey<PlacedFeature> PATCH_TALL_GRASS = PlacementUtils.createKey("patch_tall_grass");
-	public static final ResourceKey<PlacedFeature> PATCH_LARGE_FERN = PlacementUtils.createKey("patch_large_fern");
-	public static final ResourceKey<PlacedFeature> FLOWER_FOREST_FLOWERS = PlacementUtils.createKey("flower_forest_flowers");
+	public static final ResourceKey<PlacedFeature> PATCH_TALL_GRASS = registerKey("patch_tall_grass");
+	public static final ResourceKey<PlacedFeature> PATCH_LARGE_FERN = registerKey("patch_large_fern");
+	public static final ResourceKey<PlacedFeature> FLOWER_FOREST_FLOWERS = registerKey("flower_forest_flowers");
 
 	private static List<PlacementModifier> tfTreeCheckArea(BlockState sapling) {
 		return tfTreeCheckArea(sapling, HolderSet.empty());

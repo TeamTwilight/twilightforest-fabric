@@ -1,5 +1,8 @@
 {
   "values": [
-    "#minecraft:nylium"
+    {
+      "id": "#minecraft:nylium",
+      "required": false
+    }
   ]
 }

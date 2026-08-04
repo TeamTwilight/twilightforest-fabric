@@ -1,10 +1,10 @@
 package twilightforest.data;
 
+import io.github.fabricators_of_create.porting_lib.data.ModdedBlockLootSubProvider;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Items;
@@ -27,7 +27,6 @@ import net.minecraft.world.level.storage.loot.predicates.BonusLevelTableConditio
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import io.github.fabricators_of_create.porting_lib.tool.ItemAbilities;
 import io.github.fabricators_of_create.porting_lib.tool.loot.CanItemPerformAbility;
@@ -45,7 +44,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class BlockLootTables extends BlockLootSubProvider {
+public class BlockLootTables extends ModdedBlockLootSubProvider {
 	// [VanillaCopy] of BlockLoot fields, just changed shears to work with modded ones
 	private static final float[] DEFAULT_SAPLING_DROP_RATES = new float[]{0.05F, 0.0625F, 0.083333336F, 0.1F};
 	private static final float[] RARE_SAPLING_DROP_RATES = new float[]{0.025F, 0.027777778F, 0.03125F, 0.041666668F, 0.1F};
@@ -307,22 +306,22 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.TERRORCOTTA_LINES.value());
 		dropSelf(TFBlocks.CORONATION_CARPET.value());
 
-		//		dropPottedContents(TFBlocks.POTTED_TWILIGHT_OAK_SAPLING.get());
-//		dropPottedContents(TFBlocks.POTTED_CANOPY_SAPLING.get());
-//		dropPottedContents(TFBlocks.POTTED_MANGROVE_SAPLING.get());
-//		dropPottedContents(TFBlocks.POTTED_DARKWOOD_SAPLING.get());
-//		dropPottedContents(TFBlocks.POTTED_HOLLOW_OAK_SAPLING.get());
-//		dropPottedContents(TFBlocks.POTTED_RAINBOW_OAK_SAPLING.get());
-//		dropPottedContents(TFBlocks.POTTED_TIME_SAPLING.get());
-//		dropPottedContents(TFBlocks.POTTED_TRANSFORMATION_SAPLING.get());
-//		dropPottedContents(TFBlocks.POTTED_MINING_SAPLING.get());
-//		dropPottedContents(TFBlocks.POTTED_SORTING_SAPLING.get());
-//		dropPottedContents(TFBlocks.POTTED_MAYAPPLE.get());
-//		dropPottedContents(TFBlocks.POTTED_FIDDLEHEAD.get());
-//		dropPottedContents(TFBlocks.POTTED_MUSHGLOOM.get());
-//		add(TFBlocks.POTTED_THORN.get(), createSingleItemTable(Items.FLOWER_POT));
-//		add(TFBlocks.POTTED_GREEN_THORN.get(), createSingleItemTable(Items.FLOWER_POT));
-//		add(TFBlocks.POTTED_DEAD_THORN.get(), createSingleItemTable(Items.FLOWER_POT));
+		dropPottedContents(TFBlocks.POTTED_TWILIGHT_OAK_SAPLING.get());
+		dropPottedContents(TFBlocks.POTTED_CANOPY_SAPLING.get());
+		dropPottedContents(TFBlocks.POTTED_MANGROVE_SAPLING.get());
+		dropPottedContents(TFBlocks.POTTED_DARKWOOD_SAPLING.get());
+		dropPottedContents(TFBlocks.POTTED_HOLLOW_OAK_SAPLING.get());
+		dropPottedContents(TFBlocks.POTTED_RAINBOW_OAK_SAPLING.get());
+		dropPottedContents(TFBlocks.POTTED_TIME_SAPLING.get());
+		dropPottedContents(TFBlocks.POTTED_TRANSFORMATION_SAPLING.get());
+		dropPottedContents(TFBlocks.POTTED_MINING_SAPLING.get());
+		dropPottedContents(TFBlocks.POTTED_SORTING_SAPLING.get());
+		dropPottedContents(TFBlocks.POTTED_MAYAPPLE.get());
+		dropPottedContents(TFBlocks.POTTED_FIDDLEHEAD.get());
+		dropPottedContents(TFBlocks.POTTED_MUSHGLOOM.get());
+		add(TFBlocks.POTTED_THORN.get(), createSingleItemTable(Items.FLOWER_POT));
+		add(TFBlocks.POTTED_GREEN_THORN.get(), createSingleItemTable(Items.FLOWER_POT));
+		add(TFBlocks.POTTED_DEAD_THORN.get(), createSingleItemTable(Items.FLOWER_POT));
 
 		dropSelf(TFBlocks.OAK_BANISTER.get());
 		dropSelf(TFBlocks.SPRUCE_BANISTER.get());

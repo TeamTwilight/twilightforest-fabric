@@ -1,5 +1,8 @@
 {
   "values": [
-    "#minecraft:incorrect_for_wooden_tool"
+    {
+      "id": "#minecraft:incorrect_for_wooden_tool",
+      "required": false
+    }
   ]
 }

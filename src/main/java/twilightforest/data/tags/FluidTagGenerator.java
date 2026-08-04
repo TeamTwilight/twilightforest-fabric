@@ -17,13 +17,13 @@ public class FluidTagGenerator extends FluidTagsProvider {
 
 	public static final TagKey<Fluid> FIRE_JET_FUEL = TagKey.create(Registries.FLUID, TwilightForestMod.prefix("fire_jet_fuel"));
 
-	public FluidTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper existingFileHelper) {
+	public FluidTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
 		super(output, provider);
 	}
 
 	@Override
 	protected void addTags(HolderLookup.Provider provider) {
-		tag(FIRE_JET_FUEL).addTag(FluidTags.LAVA);
+		tag(FIRE_JET_FUEL).addOptional(FluidTags.LAVA.location());
 	}
 
 	@Override

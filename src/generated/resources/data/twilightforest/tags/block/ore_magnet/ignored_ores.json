@@ -1,5 +1,8 @@
 {
   "values": [
-    "#minecraft:coal_ores"
+    {
+      "id": "#minecraft:coal_ores",
+      "required": false
+    }
   ]
 }

@@ -5,18 +5,17 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "ability": "shears_dig",
-          "condition": "porting_lib:can_item_perform_ability"
+          "condition": "minecraft:survives_explosion"
         }
       ],
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "twilightforest:clover_patch"
+          "name": "minecraft:zombie_head"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "twilightforest:blocks/clover_patch"
+  "random_sequence": "minecraft:blocks/zombie_head"
 }

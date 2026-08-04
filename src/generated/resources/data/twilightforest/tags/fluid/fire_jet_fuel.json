@@ -1,5 +1,8 @@
 {
   "values": [
-    "#minecraft:lava"
+    {
+      "id": "minecraft:lava",
+      "required": false
+    }
   ]
 }

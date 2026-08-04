@@ -1,5 +1,8 @@
 {
   "values": [
-    "#c:seeds"
+    {
+      "id": "#c:seeds",
+      "required": false
+    }
   ]
 }

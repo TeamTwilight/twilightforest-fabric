@@ -1,12 +1,33 @@
 {
   "values": [
-    "#c:stones",
-    "#minecraft:stone_bricks",
-    "#c:ores_in_ground/stone",
-    "#c:ores_in_ground/deepslate",
-    "#c:ores_in_ground/netherrack",
-    "#c:cobblestones",
-    "#c:netherracks",
+    {
+      "id": "#c:stones",
+      "required": false
+    },
+    {
+      "id": "#minecraft:stone_bricks",
+      "required": false
+    },
+    {
+      "id": "#c:ores_in_ground/stone",
+      "required": false
+    },
+    {
+      "id": "#c:ores_in_ground/deepslate",
+      "required": false
+    },
+    {
+      "id": "#c:ores_in_ground/netherrack",
+      "required": false
+    },
+    {
+      "id": "#c:cobblestones",
+      "required": false
+    },
+    {
+      "id": "#c:netherracks",
+      "required": false
+    },
     "twilightforest:giant_cobblestone",
     "minecraft:polished_andesite",
     "minecraft:polished_diorite",

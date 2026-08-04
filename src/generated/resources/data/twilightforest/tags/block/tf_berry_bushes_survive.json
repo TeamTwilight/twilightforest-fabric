@@ -1,6 +1,9 @@
 {
   "values": [
-    "#minecraft:dirt",
+    {
+      "id": "#minecraft:dirt",
+      "required": false
+    },
     "minecraft:snow_block"
   ]
 }

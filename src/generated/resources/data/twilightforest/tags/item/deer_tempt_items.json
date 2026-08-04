@@ -1,7 +1,10 @@
 {
   "values": [
-    "#c:crops/wheat",
     "minecraft:apple",
-    "twilightforest:shika_senbei"
+    "twilightforest:shika_senbei",
+    {
+      "id": "#c:crops/wheat",
+      "required": false
+    }
   ]
 }

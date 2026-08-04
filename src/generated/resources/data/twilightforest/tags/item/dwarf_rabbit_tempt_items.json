@@ -1,7 +1,10 @@
 {
   "values": [
-    "#c:crops/carrot",
     "minecraft:golden_carrot",
-    "minecraft:dandelion"
+    "minecraft:dandelion",
+    {
+      "id": "#c:crops/carrot",
+      "required": false
+    }
   ]
 }

@@ -1,22 +1,21 @@
 package twilightforest.data.tags;
 
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import io.github.fabricators_of_create.porting_lib.tags.Tags;
-import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
-import twilightforest.data.tags.compat.ModdedBlockTagGenerator;
 import twilightforest.init.TFBlocks;
 
 import java.util.concurrent.CompletableFuture;
 
-public class BlockTagGenerator extends ModdedBlockTagGenerator {
+public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 	public static final TagKey<Block> MAZESTONE = create("mazestone");
 	public static final TagKey<Block> TOWERWOOD = create("towerwood");
 	public static final TagKey<Block> CLOUDS = create("clouds");
@@ -107,51 +106,51 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 	public static final TagKey<Block> SMALL_LAKES_DONT_REPLACE = create("small_lakes_dont_replace");
 	public static final TagKey<Block> DRYING_RACKS = create("drying_racks");
 
-	public BlockTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> future, ExistingFileHelper helper) {
-		super(output, future, helper);
+	public BlockTagGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> future) {
+		super(output, future);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void addTags(HolderLookup.Provider provider) {
-		super.addTags(provider);
-		this.tag(TWILIGHT_OAK_LOGS).add(TFBlocks.TWILIGHT_OAK_LOG.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get(), TFBlocks.TWILIGHT_OAK_WOOD.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD.get());
-		this.tag(CANOPY_LOGS).add(TFBlocks.CANOPY_LOG.get(), TFBlocks.STRIPPED_CANOPY_LOG.get(), TFBlocks.CANOPY_WOOD.get(), TFBlocks.STRIPPED_CANOPY_WOOD.get());
-		this.tag(MANGROVE_LOGS).add(TFBlocks.MANGROVE_LOG.get(), TFBlocks.STRIPPED_MANGROVE_LOG.get(), TFBlocks.MANGROVE_WOOD.get(), TFBlocks.STRIPPED_MANGROVE_WOOD.get());
-		this.tag(DARKWOOD_LOGS).add(TFBlocks.DARK_LOG.get(), TFBlocks.STRIPPED_DARK_LOG.get(), TFBlocks.DARK_WOOD.get(), TFBlocks.STRIPPED_DARK_WOOD.get());
-		this.tag(TIME_LOGS).add(TFBlocks.TIME_LOG.get(), TFBlocks.STRIPPED_TIME_LOG.get(), TFBlocks.TIME_WOOD.get(), TFBlocks.STRIPPED_TIME_WOOD.get());
-		this.tag(TRANSFORMATION_LOGS).add(TFBlocks.TRANSFORMATION_LOG.get(), TFBlocks.STRIPPED_TRANSFORMATION_LOG.get(), TFBlocks.TRANSFORMATION_WOOD.get(), TFBlocks.STRIPPED_TRANSFORMATION_WOOD.get());
-		this.tag(MINING_LOGS).add(TFBlocks.MINING_LOG.get(), TFBlocks.STRIPPED_MINING_LOG.get(), TFBlocks.MINING_WOOD.get(), TFBlocks.STRIPPED_MINING_WOOD.get());
-		this.tag(SORTING_LOGS).add(TFBlocks.SORTING_LOG.get(), TFBlocks.STRIPPED_SORTING_LOG.get(), TFBlocks.SORTING_WOOD.get(), TFBlocks.STRIPPED_SORTING_WOOD.get());
-		this.tag(TF_LOGS).addTags(TWILIGHT_OAK_LOGS, CANOPY_LOGS, MANGROVE_LOGS, DARKWOOD_LOGS, TIME_LOGS, TRANSFORMATION_LOGS, MINING_LOGS, SORTING_LOGS);
-		this.tag(BlockTags.LOGS).addTag(TF_LOGS);
-		this.tag(BlockTags.LOGS_THAT_BURN).addTag(TF_LOGS);
 
-		this.tag(BlockTags.SAPLINGS).add(TFBlocks.TWILIGHT_OAK_SAPLING.get(), TFBlocks.CANOPY_SAPLING.get(), TFBlocks.MANGROVE_SAPLING.get(), TFBlocks.DARKWOOD_SAPLING.get(), TFBlocks.TIME_SAPLING.get(), TFBlocks.TRANSFORMATION_SAPLING.get(), TFBlocks.MINING_SAPLING.get(), TFBlocks.SORTING_SAPLING.get(), TFBlocks.HOLLOW_OAK_SAPLING.get(), TFBlocks.RAINBOW_OAK_SAPLING.get());
-		this.tag(BlockTags.LEAVES).add(TFBlocks.RAINBOW_OAK_LEAVES.get(), TFBlocks.TWILIGHT_OAK_LEAVES.get(), TFBlocks.CANOPY_LEAVES.get(), TFBlocks.MANGROVE_LEAVES.get(), TFBlocks.DARK_LEAVES.get(), TFBlocks.TIME_LEAVES.get(), TFBlocks.TRANSFORMATION_LEAVES.get(), TFBlocks.MINING_LEAVES.get(), TFBlocks.SORTING_LEAVES.get(), TFBlocks.THORN_LEAVES.get(), TFBlocks.BEANSTALK_LEAVES.get(), TFBlocks.HARDENED_DARK_LEAVES.get());
+		getOrCreateTagBuilder(TWILIGHT_OAK_LOGS).add(TFBlocks.TWILIGHT_OAK_LOG.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get(), TFBlocks.TWILIGHT_OAK_WOOD.get(), TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD.get());
+		getOrCreateTagBuilder(CANOPY_LOGS).add(TFBlocks.CANOPY_LOG.get(), TFBlocks.STRIPPED_CANOPY_LOG.get(), TFBlocks.CANOPY_WOOD.get(), TFBlocks.STRIPPED_CANOPY_WOOD.get());
+		getOrCreateTagBuilder(MANGROVE_LOGS).add(TFBlocks.MANGROVE_LOG.get(), TFBlocks.STRIPPED_MANGROVE_LOG.get(), TFBlocks.MANGROVE_WOOD.get(), TFBlocks.STRIPPED_MANGROVE_WOOD.get());
+		getOrCreateTagBuilder(DARKWOOD_LOGS).add(TFBlocks.DARK_LOG.get(), TFBlocks.STRIPPED_DARK_LOG.get(), TFBlocks.DARK_WOOD.get(), TFBlocks.STRIPPED_DARK_WOOD.get());
+		getOrCreateTagBuilder(TIME_LOGS).add(TFBlocks.TIME_LOG.get(), TFBlocks.STRIPPED_TIME_LOG.get(), TFBlocks.TIME_WOOD.get(), TFBlocks.STRIPPED_TIME_WOOD.get());
+		getOrCreateTagBuilder(TRANSFORMATION_LOGS).add(TFBlocks.TRANSFORMATION_LOG.get(), TFBlocks.STRIPPED_TRANSFORMATION_LOG.get(), TFBlocks.TRANSFORMATION_WOOD.get(), TFBlocks.STRIPPED_TRANSFORMATION_WOOD.get());
+		getOrCreateTagBuilder(MINING_LOGS).add(TFBlocks.MINING_LOG.get(), TFBlocks.STRIPPED_MINING_LOG.get(), TFBlocks.MINING_WOOD.get(), TFBlocks.STRIPPED_MINING_WOOD.get());
+		getOrCreateTagBuilder(SORTING_LOGS).add(TFBlocks.SORTING_LOG.get(), TFBlocks.STRIPPED_SORTING_LOG.get(), TFBlocks.SORTING_WOOD.get(), TFBlocks.STRIPPED_SORTING_WOOD.get());
+		getOrCreateTagBuilder(TF_LOGS).addTags(TWILIGHT_OAK_LOGS, CANOPY_LOGS, MANGROVE_LOGS, DARKWOOD_LOGS, TIME_LOGS, TRANSFORMATION_LOGS, MINING_LOGS, SORTING_LOGS);
+		getOrCreateTagBuilder(BlockTags.LOGS).addTag(TF_LOGS);
+		getOrCreateTagBuilder(BlockTags.LOGS_THAT_BURN).addTag(TF_LOGS);
 
-		this.tag(BlockTags.PLANKS).add(TFBlocks.TWILIGHT_OAK_PLANKS.get(), TFBlocks.CANOPY_PLANKS.get(), TFBlocks.MANGROVE_PLANKS.get(), TFBlocks.DARK_PLANKS.get(), TFBlocks.TIME_PLANKS.get(), TFBlocks.TRANSFORMATION_PLANKS.get(), TFBlocks.MINING_PLANKS.get(), TFBlocks.SORTING_PLANKS.get()).addTag(TOWERWOOD);
-		this.tag(BlockTags.WOODEN_SLABS).add(TFBlocks.TWILIGHT_OAK_SLAB.get(), TFBlocks.CANOPY_SLAB.get(), TFBlocks.MANGROVE_SLAB.get(), TFBlocks.DARK_SLAB.get(), TFBlocks.TIME_SLAB.get(), TFBlocks.TRANSFORMATION_SLAB.get(), TFBlocks.MINING_SLAB.get(), TFBlocks.SORTING_SLAB.get());
-		this.tag(BlockTags.SLABS).add(TFBlocks.AURORA_SLAB.get());
-		this.tag(BlockTags.WOODEN_STAIRS).add(TFBlocks.TWILIGHT_OAK_STAIRS.get(), TFBlocks.CANOPY_STAIRS.get(), TFBlocks.MANGROVE_STAIRS.get(), TFBlocks.DARK_STAIRS.get(), TFBlocks.TIME_STAIRS.get(), TFBlocks.TRANSFORMATION_STAIRS.get(), TFBlocks.MINING_STAIRS.get(), TFBlocks.SORTING_STAIRS.get());
-		this.tag(BlockTags.STAIRS).add(TFBlocks.CASTLE_BRICK_STAIRS.get(), TFBlocks.WORN_CASTLE_BRICK_STAIRS.get(), TFBlocks.CRACKED_CASTLE_BRICK_STAIRS.get(), TFBlocks.MOSSY_CASTLE_BRICK_STAIRS.get(), TFBlocks.ENCASED_CASTLE_BRICK_STAIRS.get(), TFBlocks.BOLD_CASTLE_BRICK_STAIRS.get(), TFBlocks.NAGASTONE_STAIRS_LEFT.get(), TFBlocks.NAGASTONE_STAIRS_RIGHT.get(), TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT.get(), TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT.get(), TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT.get(), TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT.get());
-		this.tag(BlockTags.WOODEN_FENCES).add(TFBlocks.TWILIGHT_OAK_FENCE.get(), TFBlocks.CANOPY_FENCE.get(), TFBlocks.MANGROVE_FENCE.get(), TFBlocks.DARK_FENCE.get(), TFBlocks.TIME_FENCE.get(), TFBlocks.TRANSFORMATION_FENCE.get(), TFBlocks.MINING_FENCE.get(), TFBlocks.SORTING_FENCE.get());
-		this.tag(BlockTags.FENCE_GATES).add(TFBlocks.TWILIGHT_OAK_GATE.get(), TFBlocks.CANOPY_GATE.get(), TFBlocks.MANGROVE_GATE.get(), TFBlocks.DARK_GATE.get(), TFBlocks.TIME_GATE.get(), TFBlocks.TRANSFORMATION_GATE.get(), TFBlocks.MINING_GATE.get(), TFBlocks.SORTING_GATE.get());
-		this.tag(Tags.Blocks.FENCE_GATES_WOODEN).add(TFBlocks.TWILIGHT_OAK_GATE.get(), TFBlocks.CANOPY_GATE.get(), TFBlocks.MANGROVE_GATE.get(), TFBlocks.DARK_GATE.get(), TFBlocks.TIME_GATE.get(), TFBlocks.TRANSFORMATION_GATE.get(), TFBlocks.MINING_GATE.get(), TFBlocks.SORTING_GATE.get());
-		this.tag(BlockTags.WOODEN_BUTTONS).add(TFBlocks.TWILIGHT_OAK_BUTTON.get(), TFBlocks.CANOPY_BUTTON.get(), TFBlocks.MANGROVE_BUTTON.get(), TFBlocks.DARK_BUTTON.get(), TFBlocks.TIME_BUTTON.get(), TFBlocks.TRANSFORMATION_BUTTON.get(), TFBlocks.MINING_BUTTON.get(), TFBlocks.SORTING_BUTTON.get());
-		this.tag(BlockTags.WOODEN_PRESSURE_PLATES).add(TFBlocks.TWILIGHT_OAK_PLATE.get(), TFBlocks.CANOPY_PLATE.get(), TFBlocks.MANGROVE_PLATE.get(), TFBlocks.DARK_PLATE.get(), TFBlocks.TIME_PLATE.get(), TFBlocks.TRANSFORMATION_PLATE.get(), TFBlocks.MINING_PLATE.get(), TFBlocks.SORTING_PLATE.get());
+		getOrCreateTagBuilder(BlockTags.SAPLINGS).add(TFBlocks.TWILIGHT_OAK_SAPLING.get(), TFBlocks.CANOPY_SAPLING.get(), TFBlocks.MANGROVE_SAPLING.get(), TFBlocks.DARKWOOD_SAPLING.get(), TFBlocks.TIME_SAPLING.get(), TFBlocks.TRANSFORMATION_SAPLING.get(), TFBlocks.MINING_SAPLING.get(), TFBlocks.SORTING_SAPLING.get(), TFBlocks.HOLLOW_OAK_SAPLING.get(), TFBlocks.RAINBOW_OAK_SAPLING.get());
+		getOrCreateTagBuilder(BlockTags.LEAVES).add(TFBlocks.RAINBOW_OAK_LEAVES.get(), TFBlocks.TWILIGHT_OAK_LEAVES.get(), TFBlocks.CANOPY_LEAVES.get(), TFBlocks.MANGROVE_LEAVES.get(), TFBlocks.DARK_LEAVES.get(), TFBlocks.TIME_LEAVES.get(), TFBlocks.TRANSFORMATION_LEAVES.get(), TFBlocks.MINING_LEAVES.get(), TFBlocks.SORTING_LEAVES.get(), TFBlocks.THORN_LEAVES.get(), TFBlocks.BEANSTALK_LEAVES.get(), TFBlocks.HARDENED_DARK_LEAVES.get());
 
-		this.tag(BlockTags.WOODEN_TRAPDOORS).add(TFBlocks.TWILIGHT_OAK_TRAPDOOR.get(), TFBlocks.CANOPY_TRAPDOOR.get(), TFBlocks.MANGROVE_TRAPDOOR.get(), TFBlocks.DARK_TRAPDOOR.get(), TFBlocks.TIME_TRAPDOOR.get(), TFBlocks.TRANSFORMATION_TRAPDOOR.get(), TFBlocks.MINING_TRAPDOOR.get(), TFBlocks.SORTING_TRAPDOOR.get());
-		this.tag(BlockTags.WOODEN_DOORS).add(TFBlocks.TWILIGHT_OAK_DOOR.get(), TFBlocks.CANOPY_DOOR.get(), TFBlocks.MANGROVE_DOOR.get(), TFBlocks.DARK_DOOR.get(), TFBlocks.TIME_DOOR.get(), TFBlocks.TRANSFORMATION_DOOR.get(), TFBlocks.MINING_DOOR.get(), TFBlocks.SORTING_DOOR.get());
+		getOrCreateTagBuilder(BlockTags.PLANKS).add(TFBlocks.TWILIGHT_OAK_PLANKS.get(), TFBlocks.CANOPY_PLANKS.get(), TFBlocks.MANGROVE_PLANKS.get(), TFBlocks.DARK_PLANKS.get(), TFBlocks.TIME_PLANKS.get(), TFBlocks.TRANSFORMATION_PLANKS.get(), TFBlocks.MINING_PLANKS.get(), TFBlocks.SORTING_PLANKS.get()).addTag(TOWERWOOD);
+		getOrCreateTagBuilder(BlockTags.WOODEN_SLABS).add(TFBlocks.TWILIGHT_OAK_SLAB.get(), TFBlocks.CANOPY_SLAB.get(), TFBlocks.MANGROVE_SLAB.get(), TFBlocks.DARK_SLAB.get(), TFBlocks.TIME_SLAB.get(), TFBlocks.TRANSFORMATION_SLAB.get(), TFBlocks.MINING_SLAB.get(), TFBlocks.SORTING_SLAB.get());
+		getOrCreateTagBuilder(BlockTags.SLABS).add(TFBlocks.AURORA_SLAB.get());
+		getOrCreateTagBuilder(BlockTags.WOODEN_STAIRS).add(TFBlocks.TWILIGHT_OAK_STAIRS.get(), TFBlocks.CANOPY_STAIRS.get(), TFBlocks.MANGROVE_STAIRS.get(), TFBlocks.DARK_STAIRS.get(), TFBlocks.TIME_STAIRS.get(), TFBlocks.TRANSFORMATION_STAIRS.get(), TFBlocks.MINING_STAIRS.get(), TFBlocks.SORTING_STAIRS.get());
+		getOrCreateTagBuilder(BlockTags.STAIRS).add(TFBlocks.CASTLE_BRICK_STAIRS.get(), TFBlocks.WORN_CASTLE_BRICK_STAIRS.get(), TFBlocks.CRACKED_CASTLE_BRICK_STAIRS.get(), TFBlocks.MOSSY_CASTLE_BRICK_STAIRS.get(), TFBlocks.ENCASED_CASTLE_BRICK_STAIRS.get(), TFBlocks.BOLD_CASTLE_BRICK_STAIRS.get(), TFBlocks.NAGASTONE_STAIRS_LEFT.get(), TFBlocks.NAGASTONE_STAIRS_RIGHT.get(), TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT.get(), TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT.get(), TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT.get(), TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT.get());
+		getOrCreateTagBuilder(BlockTags.WOODEN_FENCES).add(TFBlocks.TWILIGHT_OAK_FENCE.get(), TFBlocks.CANOPY_FENCE.get(), TFBlocks.MANGROVE_FENCE.get(), TFBlocks.DARK_FENCE.get(), TFBlocks.TIME_FENCE.get(), TFBlocks.TRANSFORMATION_FENCE.get(), TFBlocks.MINING_FENCE.get(), TFBlocks.SORTING_FENCE.get());
+		getOrCreateTagBuilder(BlockTags.FENCE_GATES).add(TFBlocks.TWILIGHT_OAK_GATE.get(), TFBlocks.CANOPY_GATE.get(), TFBlocks.MANGROVE_GATE.get(), TFBlocks.DARK_GATE.get(), TFBlocks.TIME_GATE.get(), TFBlocks.TRANSFORMATION_GATE.get(), TFBlocks.MINING_GATE.get(), TFBlocks.SORTING_GATE.get());
+		getOrCreateTagBuilder(Tags.Blocks.FENCE_GATES_WOODEN).add(TFBlocks.TWILIGHT_OAK_GATE.get(), TFBlocks.CANOPY_GATE.get(), TFBlocks.MANGROVE_GATE.get(), TFBlocks.DARK_GATE.get(), TFBlocks.TIME_GATE.get(), TFBlocks.TRANSFORMATION_GATE.get(), TFBlocks.MINING_GATE.get(), TFBlocks.SORTING_GATE.get());
+		getOrCreateTagBuilder(BlockTags.WOODEN_BUTTONS).add(TFBlocks.TWILIGHT_OAK_BUTTON.get(), TFBlocks.CANOPY_BUTTON.get(), TFBlocks.MANGROVE_BUTTON.get(), TFBlocks.DARK_BUTTON.get(), TFBlocks.TIME_BUTTON.get(), TFBlocks.TRANSFORMATION_BUTTON.get(), TFBlocks.MINING_BUTTON.get(), TFBlocks.SORTING_BUTTON.get());
+		getOrCreateTagBuilder(BlockTags.WOODEN_PRESSURE_PLATES).add(TFBlocks.TWILIGHT_OAK_PLATE.get(), TFBlocks.CANOPY_PLATE.get(), TFBlocks.MANGROVE_PLATE.get(), TFBlocks.DARK_PLATE.get(), TFBlocks.TIME_PLATE.get(), TFBlocks.TRANSFORMATION_PLATE.get(), TFBlocks.MINING_PLATE.get(), TFBlocks.SORTING_PLATE.get());
 
-		this.tag(Tags.Blocks.CHESTS_WOODEN).add(TFBlocks.TWILIGHT_OAK_CHEST.get(), TFBlocks.CANOPY_CHEST.get(), TFBlocks.MANGROVE_CHEST.get(), TFBlocks.DARK_CHEST.get(), TFBlocks.TIME_CHEST.get(), TFBlocks.TRANSFORMATION_CHEST.get(), TFBlocks.MINING_CHEST.get(), TFBlocks.SORTING_CHEST.get())
+		getOrCreateTagBuilder(BlockTags.WOODEN_TRAPDOORS).add(TFBlocks.TWILIGHT_OAK_TRAPDOOR.get(), TFBlocks.CANOPY_TRAPDOOR.get(), TFBlocks.MANGROVE_TRAPDOOR.get(), TFBlocks.DARK_TRAPDOOR.get(), TFBlocks.TIME_TRAPDOOR.get(), TFBlocks.TRANSFORMATION_TRAPDOOR.get(), TFBlocks.MINING_TRAPDOOR.get(), TFBlocks.SORTING_TRAPDOOR.get());
+		getOrCreateTagBuilder(BlockTags.WOODEN_DOORS).add(TFBlocks.TWILIGHT_OAK_DOOR.get(), TFBlocks.CANOPY_DOOR.get(), TFBlocks.MANGROVE_DOOR.get(), TFBlocks.DARK_DOOR.get(), TFBlocks.TIME_DOOR.get(), TFBlocks.TRANSFORMATION_DOOR.get(), TFBlocks.MINING_DOOR.get(), TFBlocks.SORTING_DOOR.get());
+
+		getOrCreateTagBuilder(Tags.Blocks.CHESTS_WOODEN).add(TFBlocks.TWILIGHT_OAK_CHEST.get(), TFBlocks.CANOPY_CHEST.get(), TFBlocks.MANGROVE_CHEST.get(), TFBlocks.DARK_CHEST.get(), TFBlocks.TIME_CHEST.get(), TFBlocks.TRANSFORMATION_CHEST.get(), TFBlocks.MINING_CHEST.get(), TFBlocks.SORTING_CHEST.get())
 			.add(TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.get(), TFBlocks.CANOPY_TRAPPED_CHEST.get(), TFBlocks.MANGROVE_TRAPPED_CHEST.get(), TFBlocks.DARK_TRAPPED_CHEST.get(), TFBlocks.TIME_TRAPPED_CHEST.get(), TFBlocks.TRANSFORMATION_TRAPPED_CHEST.get(), TFBlocks.MINING_TRAPPED_CHEST.get(), TFBlocks.SORTING_TRAPPED_CHEST.get());
 
-		this.tag(Tags.Blocks.CHESTS_TRAPPED).add(TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.get(), TFBlocks.CANOPY_TRAPPED_CHEST.get(), TFBlocks.MANGROVE_TRAPPED_CHEST.get(), TFBlocks.DARK_TRAPPED_CHEST.get(), TFBlocks.TIME_TRAPPED_CHEST.get(), TFBlocks.TRANSFORMATION_TRAPPED_CHEST.get(), TFBlocks.MINING_TRAPPED_CHEST.get(), TFBlocks.SORTING_TRAPPED_CHEST.get());
+		getOrCreateTagBuilder(Tags.Blocks.CHESTS_TRAPPED).add(TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.get(), TFBlocks.CANOPY_TRAPPED_CHEST.get(), TFBlocks.MANGROVE_TRAPPED_CHEST.get(), TFBlocks.DARK_TRAPPED_CHEST.get(), TFBlocks.TIME_TRAPPED_CHEST.get(), TFBlocks.TRANSFORMATION_TRAPPED_CHEST.get(), TFBlocks.MINING_TRAPPED_CHEST.get(), TFBlocks.SORTING_TRAPPED_CHEST.get());
 
-		this.tag(BlockTags.WALLS).add(TFBlocks.WROUGHT_IRON_FENCE.get());
+		getOrCreateTagBuilder(BlockTags.WALLS).add(TFBlocks.WROUGHT_IRON_FENCE.get());
 
-		this.tag(BANISTERS).add(
+		getOrCreateTagBuilder(BANISTERS).add(
 			TFBlocks.OAK_BANISTER.get(),
 			TFBlocks.SPRUCE_BANISTER.get(),
 			TFBlocks.BIRCH_BANISTER.get(),
@@ -174,7 +173,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.SORTING_BANISTER.get()
 		);
 
-		this.tag(HOLLOW_LOGS_HORIZONTAL).add(
+		getOrCreateTagBuilder(HOLLOW_LOGS_HORIZONTAL).add(
 			TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL.get(),
 			TFBlocks.HOLLOW_SPRUCE_LOG_HORIZONTAL.get(),
 			TFBlocks.HOLLOW_BIRCH_LOG_HORIZONTAL.get(),
@@ -195,7 +194,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.HOLLOW_SORTING_LOG_HORIZONTAL.get()
 		);
 
-		this.tag(HOLLOW_LOGS_VERTICAL).add(
+		getOrCreateTagBuilder(HOLLOW_LOGS_VERTICAL).add(
 			TFBlocks.HOLLOW_OAK_LOG_VERTICAL.get(),
 			TFBlocks.HOLLOW_SPRUCE_LOG_VERTICAL.get(),
 			TFBlocks.HOLLOW_BIRCH_LOG_VERTICAL.get(),
@@ -216,7 +215,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.HOLLOW_SORTING_LOG_VERTICAL.get()
 		);
 
-		this.tag(HOLLOW_LOGS_CLIMBABLE).add(
+		getOrCreateTagBuilder(HOLLOW_LOGS_CLIMBABLE).add(
 			TFBlocks.HOLLOW_OAK_LOG_CLIMBABLE.get(),
 			TFBlocks.HOLLOW_SPRUCE_LOG_CLIMBABLE.get(),
 			TFBlocks.HOLLOW_BIRCH_LOG_CLIMBABLE.get(),
@@ -237,12 +236,12 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.HOLLOW_SORTING_LOG_CLIMBABLE.get()
 		);
 
-		this.tag(HOLLOW_LOGS).addTags(HOLLOW_LOGS_HORIZONTAL, HOLLOW_LOGS_VERTICAL, HOLLOW_LOGS_CLIMBABLE);
+		getOrCreateTagBuilder(HOLLOW_LOGS).addTags(HOLLOW_LOGS_HORIZONTAL, HOLLOW_LOGS_VERTICAL, HOLLOW_LOGS_CLIMBABLE);
 
-		this.tag(BlockTags.STRIDER_WARM_BLOCKS).add(TFBlocks.FIERY_BLOCK.get());
-		this.tag(BlockTags.PORTALS).add(TFBlocks.TWILIGHT_PORTAL.get());
-		this.tag(BlockTags.ENCHANTMENT_POWER_PROVIDER).add(TFBlocks.CANOPY_BOOKSHELF.get());
-		this.tag(BlockTags.REPLACEABLE_BY_TREES).add(
+		getOrCreateTagBuilder(BlockTags.STRIDER_WARM_BLOCKS).add(TFBlocks.FIERY_BLOCK.get());
+		getOrCreateTagBuilder(BlockTags.PORTALS).add(TFBlocks.TWILIGHT_PORTAL.get());
+		getOrCreateTagBuilder(BlockTags.ENCHANTMENT_POWER_PROVIDER).add(TFBlocks.CANOPY_BOOKSHELF.get());
+		getOrCreateTagBuilder(BlockTags.REPLACEABLE_BY_TREES).add(
 			TFBlocks.HARDENED_DARK_LEAVES.get(),
 			TFBlocks.MAYAPPLE.get(),
 			TFBlocks.FIDDLEHEAD.get(),
@@ -260,41 +259,41 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.MALOBERRY_BUSH.get()
 		);
 
-		this.tag(BlockTags.CLIMBABLE).add(TFBlocks.IRON_LADDER.get(), TFBlocks.ROPE.get(), TFBlocks.ROOT_STRAND.get()).addTag(HOLLOW_LOGS_CLIMBABLE);
+		getOrCreateTagBuilder(BlockTags.CLIMBABLE).add(TFBlocks.IRON_LADDER.get(), TFBlocks.ROPE.get(), TFBlocks.ROOT_STRAND.get()).addTag(HOLLOW_LOGS_CLIMBABLE);
 
-		this.tag(BlockTags.STANDING_SIGNS).add(
+		getOrCreateTagBuilder(BlockTags.STANDING_SIGNS).add(
 			TFBlocks.TWILIGHT_OAK_SIGN.get(), TFBlocks.CANOPY_SIGN.get(),
 			TFBlocks.MANGROVE_SIGN.get(), TFBlocks.DARK_SIGN.get(),
 			TFBlocks.TIME_SIGN.get(), TFBlocks.TRANSFORMATION_SIGN.get(),
 			TFBlocks.MINING_SIGN.get(), TFBlocks.SORTING_SIGN.get());
 
-		this.tag(BlockTags.WALL_SIGNS).add(
+		getOrCreateTagBuilder(BlockTags.WALL_SIGNS).add(
 			TFBlocks.TWILIGHT_WALL_SIGN.get(), TFBlocks.CANOPY_WALL_SIGN.get(),
 			TFBlocks.MANGROVE_WALL_SIGN.get(), TFBlocks.DARK_WALL_SIGN.get(),
 			TFBlocks.TIME_WALL_SIGN.get(), TFBlocks.TRANSFORMATION_WALL_SIGN.get(),
 			TFBlocks.MINING_WALL_SIGN.get(), TFBlocks.SORTING_WALL_SIGN.get());
 
-		this.tag(BlockTags.CEILING_HANGING_SIGNS).add(
+		getOrCreateTagBuilder(BlockTags.CEILING_HANGING_SIGNS).add(
 			TFBlocks.TWILIGHT_OAK_HANGING_SIGN.get(), TFBlocks.CANOPY_HANGING_SIGN.get(),
 			TFBlocks.MANGROVE_HANGING_SIGN.get(), TFBlocks.DARK_HANGING_SIGN.get(),
 			TFBlocks.TIME_HANGING_SIGN.get(), TFBlocks.TRANSFORMATION_HANGING_SIGN.get(),
 			TFBlocks.MINING_HANGING_SIGN.get(), TFBlocks.SORTING_HANGING_SIGN.get());
 
-		this.tag(BlockTags.WALL_HANGING_SIGNS).add(
+		getOrCreateTagBuilder(BlockTags.WALL_HANGING_SIGNS).add(
 			TFBlocks.TWILIGHT_OAK_WALL_HANGING_SIGN.get(), TFBlocks.CANOPY_WALL_HANGING_SIGN.get(),
 			TFBlocks.MANGROVE_WALL_HANGING_SIGN.get(), TFBlocks.DARK_WALL_HANGING_SIGN.get(),
 			TFBlocks.TIME_WALL_HANGING_SIGN.get(), TFBlocks.TRANSFORMATION_WALL_HANGING_SIGN.get(),
 			TFBlocks.MINING_WALL_HANGING_SIGN.get(), TFBlocks.SORTING_WALL_HANGING_SIGN.get());
 
-		this.tag(TOWERWOOD).add(TFBlocks.TOWERWOOD.get(), TFBlocks.MOSSY_TOWERWOOD.get(), TFBlocks.CRACKED_TOWERWOOD.get(), TFBlocks.INFESTED_TOWERWOOD.get());
+		getOrCreateTagBuilder(TOWERWOOD).add(TFBlocks.TOWERWOOD.get(), TFBlocks.MOSSY_TOWERWOOD.get(), TFBlocks.CRACKED_TOWERWOOD.get(), TFBlocks.INFESTED_TOWERWOOD.get());
 
-		this.tag(MAZESTONE).add(
+		getOrCreateTagBuilder(MAZESTONE).add(
 			TFBlocks.MAZESTONE.get(), TFBlocks.MAZESTONE_BRICK.get(),
 			TFBlocks.CRACKED_MAZESTONE.get(), TFBlocks.MOSSY_MAZESTONE.get(),
 			TFBlocks.CUT_MAZESTONE.get(), TFBlocks.DECORATIVE_MAZESTONE.get(),
 			TFBlocks.MAZESTONE_MOSAIC.get(), TFBlocks.MAZESTONE_BORDER.get());
 
-		this.tag(CASTLE_BLOCKS).add(
+		getOrCreateTagBuilder(CASTLE_BLOCKS).add(
 			TFBlocks.CASTLE_BRICK.get(), TFBlocks.WORN_CASTLE_BRICK.get(),
 			TFBlocks.CRACKED_CASTLE_BRICK.get(), TFBlocks.MOSSY_CASTLE_BRICK.get(),
 			TFBlocks.CASTLE_ROOF_TILE.get(), TFBlocks.THICK_CASTLE_BRICK.get(),
@@ -309,23 +308,23 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.BLUE_CASTLE_DOOR.get(), TFBlocks.VIOLET_CASTLE_DOOR.get()
 		);
 
-		this.tag(MAZEBREAKER_ACCELERATED).addTag(MAZESTONE).addTag(CASTLE_BLOCKS);
+		getOrCreateTagBuilder(MAZEBREAKER_ACCELERATED).addTag(MAZESTONE).addTag(CASTLE_BLOCKS);
 
-		this.tag(STORAGE_BLOCKS_ARCTIC_FUR).add(TFBlocks.ARCTIC_FUR_BLOCK.get());
-		this.tag(STORAGE_BLOCKS_CARMINITE).add(TFBlocks.CARMINITE_BLOCK.get());
-		this.tag(STORAGE_BLOCKS_FIERY).add(TFBlocks.FIERY_BLOCK.get());
-		this.tag(STORAGE_BLOCKS_IRONWOOD).add(TFBlocks.IRONWOOD_BLOCK.get());
-		this.tag(STORAGE_BLOCKS_KNIGHTMETAL).add(TFBlocks.KNIGHTMETAL_BLOCK.get());
-		this.tag(STORAGE_BLOCKS_STEELEAF).add(TFBlocks.STEELEAF_BLOCK.get());
+		getOrCreateTagBuilder(STORAGE_BLOCKS_ARCTIC_FUR).add(TFBlocks.ARCTIC_FUR_BLOCK.get());
+		getOrCreateTagBuilder(STORAGE_BLOCKS_CARMINITE).add(TFBlocks.CARMINITE_BLOCK.get());
+		getOrCreateTagBuilder(STORAGE_BLOCKS_FIERY).add(TFBlocks.FIERY_BLOCK.get());
+		getOrCreateTagBuilder(STORAGE_BLOCKS_IRONWOOD).add(TFBlocks.IRONWOOD_BLOCK.get());
+		getOrCreateTagBuilder(STORAGE_BLOCKS_KNIGHTMETAL).add(TFBlocks.KNIGHTMETAL_BLOCK.get());
+		getOrCreateTagBuilder(STORAGE_BLOCKS_STEELEAF).add(TFBlocks.STEELEAF_BLOCK.get());
 
-		this.tag(BlockTags.BEACON_BASE_BLOCKS).addTags(STORAGE_BLOCKS_FIERY, STORAGE_BLOCKS_IRONWOOD, STORAGE_BLOCKS_KNIGHTMETAL, STORAGE_BLOCKS_STEELEAF);
+		getOrCreateTagBuilder(BlockTags.BEACON_BASE_BLOCKS).addTags(STORAGE_BLOCKS_FIERY, STORAGE_BLOCKS_IRONWOOD, STORAGE_BLOCKS_KNIGHTMETAL, STORAGE_BLOCKS_STEELEAF);
 
-		this.tag(Tags.Blocks.STORAGE_BLOCKS).addTags(STORAGE_BLOCKS_ARCTIC_FUR, STORAGE_BLOCKS_CARMINITE, STORAGE_BLOCKS_FIERY, STORAGE_BLOCKS_IRONWOOD, STORAGE_BLOCKS_KNIGHTMETAL, STORAGE_BLOCKS_STEELEAF);
+		getOrCreateTagBuilder(Tags.Blocks.STORAGE_BLOCKS).addTags(STORAGE_BLOCKS_ARCTIC_FUR, STORAGE_BLOCKS_CARMINITE, STORAGE_BLOCKS_FIERY, STORAGE_BLOCKS_IRONWOOD, STORAGE_BLOCKS_KNIGHTMETAL, STORAGE_BLOCKS_STEELEAF);
 
-		this.tag(BlockTags.DIRT).add(TFBlocks.UBEROUS_SOIL.get());
-		this.tag(PORTAL_EDGE).add(Blocks.FARMLAND, Blocks.DIRT_PATH).addTags(BlockTags.DIRT);
-		this.tag(PORTAL_POOL).add(Blocks.WATER);
-		this.tag(PORTAL_DECO).add(
+		getOrCreateTagBuilder(BlockTags.DIRT).add(TFBlocks.UBEROUS_SOIL.get());
+		getOrCreateTagBuilder(PORTAL_EDGE).add(Blocks.FARMLAND, Blocks.DIRT_PATH).addTags(BlockTags.DIRT);
+		getOrCreateTagBuilder(PORTAL_POOL).add(Blocks.WATER);
+		getOrCreateTagBuilder(PORTAL_DECO).add(
 				Blocks.BAMBOO,
 				Blocks.SHORT_GRASS, Blocks.TALL_GRASS,
 				Blocks.FERN, Blocks.LARGE_FERN,
@@ -353,9 +352,12 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 				TFBlocks.GIANT_LEAVES.get(),
 				TFBlocks.STEELEAF_BLOCK.get(),
 				TFBlocks.HARDENED_DARK_LEAVES.get())
-			.addTags(BlockTags.FLOWERS, BlockTags.LEAVES, BlockTags.SAPLINGS, BlockTags.CROPS);
+			.addOptionalTag(BlockTags.FLOWERS.location())
+			.addOptionalTag(BlockTags.LEAVES.location())
+			.addOptionalTag(BlockTags.SAPLINGS.location())
+			.addOptionalTag(BlockTags.CROPS.location());
 
-		this.tag(GENERATED_PORTAL_DECO)
+		getOrCreateTagBuilder(GENERATED_PORTAL_DECO)
 			.add(Blocks.BROWN_MUSHROOM, Blocks.RED_MUSHROOM,
 				Blocks.SHORT_GRASS, Blocks.FERN,
 				Blocks.BLUE_ORCHID, Blocks.AZURE_BLUET,
@@ -367,32 +369,32 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 				TFBlocks.MAYAPPLE.get(),
 				TFBlocks.FIDDLEHEAD.get());
 
-		this.tag(BlockTags.FROG_PREFER_JUMP_TO).add(TFBlocks.HUGE_LILY_PAD.get());
+		getOrCreateTagBuilder(BlockTags.FROG_PREFER_JUMP_TO).add(TFBlocks.HUGE_LILY_PAD.get());
 
-		this.tag(TROPHY_PEDESTAL_ACTIVATION_BLOCKS).add(
+		getOrCreateTagBuilder(TROPHY_PEDESTAL_ACTIVATION_BLOCKS).add(
 			TFBlocks.NAGA_TROPHY.get(), TFBlocks.LICH_TROPHY.get(),
 			TFBlocks.MINOSHROOM_TROPHY.get(), TFBlocks.HYDRA_TROPHY.get(),
 			TFBlocks.KNIGHT_PHANTOM_TROPHY.get(), TFBlocks.UR_GHAST_TROPHY.get(),
 			TFBlocks.ALPHA_YETI_TROPHY.get(), TFBlocks.SNOW_QUEEN_TROPHY.get());
 
-		this.tag(FIRE_JET_FUEL).add(Blocks.LAVA);
+		getOrCreateTagBuilder(FIRE_JET_FUEL).add(Blocks.LAVA);
 
-		this.tag(ICE_BOMB_REPLACEABLES)
+		getOrCreateTagBuilder(ICE_BOMB_REPLACEABLES)
 			.add(TFBlocks.MAYAPPLE.get(), TFBlocks.FIDDLEHEAD.get(), Blocks.SHORT_GRASS, Blocks.TALL_GRASS, Blocks.FERN, Blocks.LARGE_FERN)
-			.addTag(BlockTags.FLOWERS);
+			.addOptionalTag(BlockTags.FLOWERS.location());
 
-		this.tag(PLANTS_HANG_ON)
+		getOrCreateTagBuilder(PLANTS_HANG_ON)
 			.addTag(BlockTags.DIRT)
 			.add(Blocks.MOSS_BLOCK, TFBlocks.MANGROVE_ROOT.get(), TFBlocks.ROOT_BLOCK.get(), TFBlocks.LIVEROOT_BLOCK.get());
 
-		this.tag(OREBERRY_BUSHES_SURVIVE)
-			.addTags(Tags.Blocks.STONES)
-			.addTags(BlockTags.STONE_BRICKS)
-			.addTags(Tags.Blocks.ORES_IN_GROUND_STONE)
-			.addTags(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE)
-			.addTags(Tags.Blocks.ORES_IN_GROUND_NETHERRACK)
-			.addTags(Tags.Blocks.COBBLESTONES)
-			.addTags(Tags.Blocks.NETHERRACKS)
+		getOrCreateTagBuilder(OREBERRY_BUSHES_SURVIVE)
+			.addOptionalTag(Tags.Blocks.STONES.location())
+			.addOptionalTag(BlockTags.STONE_BRICKS.location())
+			.addOptionalTag(Tags.Blocks.ORES_IN_GROUND_STONE.location())
+			.addOptionalTag(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE.location())
+			.addOptionalTag(Tags.Blocks.ORES_IN_GROUND_NETHERRACK.location())
+			.addOptionalTag(Tags.Blocks.COBBLESTONES.location())
+			.addOptionalTag(Tags.Blocks.NETHERRACKS.location())
 			.add(TFBlocks.GIANT_COBBLESTONE.getKey())
 			.add(Blocks.POLISHED_ANDESITE.builtInRegistryHolder().key())
 			.add(Blocks.POLISHED_DIORITE.builtInRegistryHolder().key())
@@ -403,26 +405,26 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			.add(Blocks.INFESTED_MOSSY_STONE_BRICKS.builtInRegistryHolder().key())
 			.add(Blocks.INFESTED_STONE_BRICKS.builtInRegistryHolder().key());
 
-		this.tag(TF_BERRY_BUSHES_REPLACE)
-			.addTags(BlockTags.REPLACEABLE)
-			.addTags(BlockTags.FLOWERS)
+		getOrCreateTagBuilder(TF_BERRY_BUSHES_REPLACE)
+			.addOptionalTag(BlockTags.REPLACEABLE.location())
+			.addOptionalTag(BlockTags.FLOWERS.location())
 			.add(TFBlocks.MAYAPPLE.getKey());
 
-		this.tag(TF_BERRY_BUSHES_SURVIVE)
-			.addTags(BlockTags.DIRT)
+		getOrCreateTagBuilder(TF_BERRY_BUSHES_SURVIVE)
+			.addOptionalTag(BlockTags.DIRT.location())
 			.add(Blocks.SNOW_BLOCK.builtInRegistryHolder().key());
 
-		this.tag(DARK_TOWER_BERRY_BUSHES_SURVIVE)
-			.addTag(Tags.Blocks.NETHERRACKS)
-			.addTag(Tags.Blocks.ORES_IN_GROUND_NETHERRACK)
+		getOrCreateTagBuilder(DARK_TOWER_BERRY_BUSHES_SURVIVE)
 			.add(Blocks.BLACKSTONE)
 			.add(Blocks.SOUL_SAND)
-			.add(Blocks.SOUL_SOIL);
+			.add(Blocks.SOUL_SOIL)
+			.addOptionalTag(Tags.Blocks.NETHERRACKS.location())
+			.addOptionalTag(Tags.Blocks.ORES_IN_GROUND_NETHERRACK.location());
 
-		this.tag(DARK_TOWER_BERRY_BUSHES_DIE)
-			.addTags(BlockTags.NYLIUM);
+		getOrCreateTagBuilder(DARK_TOWER_BERRY_BUSHES_DIE)
+			.addOptionalTag(BlockTags.NYLIUM.location());
 
-		this.tag(COMMON_PROTECTIONS).add( // For any blocks that absolutely should not be meddled with
+		getOrCreateTagBuilder(COMMON_PROTECTIONS).add( // For any blocks that absolutely should not be meddled with
 			TFBlocks.NAGA_BOSS_SPAWNER.get(),
 			TFBlocks.LICH_BOSS_SPAWNER.get(),
 			TFBlocks.MINOSHROOM_BOSS_SPAWNER.get(),
@@ -459,17 +461,17 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			Blocks.REINFORCED_DEEPSLATE
 		);
 
-		this.tag(BlockTags.DRAGON_IMMUNE).addTag(COMMON_PROTECTIONS).add(TFBlocks.GIANT_OBSIDIAN.get(), TFBlocks.FAKE_DIAMOND.get(), TFBlocks.FAKE_GOLD.get());
+		getOrCreateTagBuilder(BlockTags.DRAGON_IMMUNE).addTag(COMMON_PROTECTIONS).add(TFBlocks.GIANT_OBSIDIAN.get(), TFBlocks.FAKE_DIAMOND.get(), TFBlocks.FAKE_GOLD.get());
 
-		this.tag(BlockTags.WITHER_IMMUNE).addTag(COMMON_PROTECTIONS).add(TFBlocks.FAKE_DIAMOND.get(), TFBlocks.FAKE_GOLD.get());
+		getOrCreateTagBuilder(BlockTags.WITHER_IMMUNE).addTag(COMMON_PROTECTIONS).add(TFBlocks.FAKE_DIAMOND.get(), TFBlocks.FAKE_GOLD.get());
 
-		this.tag(CARMINITE_REACTOR_IMMUNE).addTag(COMMON_PROTECTIONS);
+		getOrCreateTagBuilder(CARMINITE_REACTOR_IMMUNE).addTag(COMMON_PROTECTIONS);
 
-		this.tag(CARMINITE_REACTOR_ORES).add(Blocks.NETHER_QUARTZ_ORE, Blocks.NETHER_GOLD_ORE);
+		getOrCreateTagBuilder(CARMINITE_REACTOR_ORES).add(Blocks.NETHER_QUARTZ_ORE, Blocks.NETHER_GOLD_ORE);
 
-		this.tag(DEADROCK).add(TFBlocks.DEADROCK.get(), TFBlocks.CRACKED_DEADROCK.get(), TFBlocks.WEATHERED_DEADROCK.get());
+		getOrCreateTagBuilder(DEADROCK).add(TFBlocks.DEADROCK.get(), TFBlocks.CRACKED_DEADROCK.get(), TFBlocks.WEATHERED_DEADROCK.get());
 
-		this.tag(ANNIHILATION_INCLUSIONS) // This is NOT a blacklist! This is a whitelist
+		getOrCreateTagBuilder(ANNIHILATION_INCLUSIONS) // This is NOT a blacklist! This is a whitelist
 			.add(Blocks.NETHER_PORTAL)
 			.addTag(DEADROCK)
 			.add(TFBlocks.CASTLE_BRICK.get(), TFBlocks.THICK_CASTLE_BRICK.get(), TFBlocks.MOSSY_CASTLE_BRICK.get(), TFBlocks.CASTLE_ROOF_TILE.get(), TFBlocks.WORN_CASTLE_BRICK.get())
@@ -477,7 +479,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			.add(TFBlocks.PINK_FORCE_FIELD.get(), TFBlocks.ORANGE_FORCE_FIELD.get(), TFBlocks.GREEN_FORCE_FIELD.get(), TFBlocks.BLUE_FORCE_FIELD.get(), TFBlocks.VIOLET_FORCE_FIELD.get())
 			.add(TFBlocks.BROWN_THORNS.get(), TFBlocks.GREEN_THORNS.get());
 
-		this.tag(ANTIBUILDER_IGNORES).add(
+		getOrCreateTagBuilder(ANTIBUILDER_IGNORES).add(
 			Blocks.REDSTONE_LAMP,
 			Blocks.TNT,
 			Blocks.WATER,
@@ -492,41 +494,40 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.FAKE_GOLD.get()
 		).addTag(COMMON_PROTECTIONS).addOptional(ResourceLocation.parse("gravestone:gravestone"));
 
-		this.tag(STRUCTURE_BANNED_INTERACTIONS).add(Blocks.LEVER).add(TFBlocks.ANTIBUILDER.get()).addTags(BlockTags.BUTTONS, Tags.Blocks.CHESTS);
+		getOrCreateTagBuilder(STRUCTURE_BANNED_INTERACTIONS).add(Blocks.LEVER).add(TFBlocks.ANTIBUILDER.get()).addOptionalTag(BlockTags.BUTTONS.location()).addOptionalTag(Tags.Blocks.CHESTS.location());
 
 		// 添加更多坟墓模组到标签
-		this.tag(PROGRESSION_ALLOW_BREAKING)
+		getOrCreateTagBuilder(PROGRESSION_ALLOW_BREAKING)
 			.add(TFBlocks.SKULL_CHEST.get())
 			.add(TFBlocks.KEEPSAKE_CASKET.get())
 			.addOptional(ResourceLocation.fromNamespaceAndPath("gravestone", "gravestone"));
 
-		this.tag(CANNOT_TROLL_CAVE_HOLLOW)
+		getOrCreateTagBuilder(CANNOT_TROLL_CAVE_HOLLOW)
 			.add(Blocks.RED_MUSHROOM_BLOCK)
 			.add(Blocks.BROWN_MUSHROOM_BLOCK)
 			.add(TFBlocks.HUGE_MUSHGLOOM.get());
 
-		this.tag(ORE_MAGNET_SAFE_REPLACE_BLOCK).addTags(
-			BlockTags.DIRT,
-			Tags.Blocks.GRAVELS,
-			Tags.Blocks.SANDS,
-			BlockTags.NYLIUM,
-			BlockTags.BASE_STONE_OVERWORLD,
-			BlockTags.BASE_STONE_NETHER,
-			Tags.Blocks.END_STONES,
-			BlockTags.DEEPSLATE_ORE_REPLACEABLES,
-			BlockTags.STONE_ORE_REPLACEABLES,
-			ROOT_GROUND
-		);
+		getOrCreateTagBuilder(ORE_MAGNET_SAFE_REPLACE_BLOCK)
+			.addOptionalTag(BlockTags.DIRT.location())
+			.addOptionalTag(Tags.Blocks.GRAVELS.location())
+			.addOptionalTag(Tags.Blocks.SANDS.location())
+			.addOptionalTag(BlockTags.NYLIUM.location())
+			.addOptionalTag(BlockTags.BASE_STONE_OVERWORLD.location())
+			.addOptionalTag(BlockTags.BASE_STONE_NETHER.location())
+			.addOptionalTag(Tags.Blocks.END_STONES.location())
+			.addOptionalTag(BlockTags.DEEPSLATE_ORE_REPLACEABLES.location())
+			.addOptionalTag(BlockTags.STONE_ORE_REPLACEABLES.location())
+			.addTag(ROOT_GROUND);
 
-		this.tag(ORE_MAGNET_IGNORE).addTag(BlockTags.COAL_ORES);
-		this.tag(MINING_CORE_EXCLUDED).addTag(BlockTags.COAL_ORES);
+		getOrCreateTagBuilder(ORE_MAGNET_IGNORE).addOptionalTag(BlockTags.COAL_ORES.location());
+		getOrCreateTagBuilder(MINING_CORE_EXCLUDED).addOptionalTag(BlockTags.COAL_ORES.location());
 
-		this.tag(ROOT_GROUND).add(TFBlocks.ROOT_BLOCK.get());
-		this.tag(ROOT_ORES).add(TFBlocks.LIVEROOT_BLOCK.get());
+		getOrCreateTagBuilder(ROOT_GROUND).add(TFBlocks.ROOT_BLOCK.get());
+		getOrCreateTagBuilder(ROOT_ORES).add(TFBlocks.LIVEROOT_BLOCK.get());
 
-		this.tag(CLOUDS).add(TFBlocks.FLUFFY_CLOUD.get(), TFBlocks.WISPY_CLOUD.get(), TFBlocks.RAINY_CLOUD.get(), TFBlocks.SNOWY_CLOUD.get());
+		getOrCreateTagBuilder(CLOUDS).add(TFBlocks.FLUFFY_CLOUD.get(), TFBlocks.WISPY_CLOUD.get(), TFBlocks.RAINY_CLOUD.get(), TFBlocks.SNOWY_CLOUD.get());
 
-		this.tag(TF_CHESTS).add(
+		getOrCreateTagBuilder(TF_CHESTS).add(
 			TFBlocks.TWILIGHT_OAK_CHEST.get(),
 			TFBlocks.CANOPY_CHEST.get(),
 			TFBlocks.MANGROVE_CHEST.get(),
@@ -536,43 +537,54 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.MINING_CHEST.get(),
 			TFBlocks.SORTING_CHEST.get());
 
-		this.tag(BlockTags.DAMPENS_VIBRATIONS).addTag(CLOUDS).add(TFBlocks.ARCTIC_FUR_BLOCK.get());
-		this.tag(BlockTags.OCCLUDES_VIBRATION_SIGNALS).add(TFBlocks.ARCTIC_FUR_BLOCK.get());
+		getOrCreateTagBuilder(BlockTags.DAMPENS_VIBRATIONS).addTag(CLOUDS).add(TFBlocks.ARCTIC_FUR_BLOCK.get());
+		getOrCreateTagBuilder(BlockTags.OCCLUDES_VIBRATION_SIGNALS).add(TFBlocks.ARCTIC_FUR_BLOCK.get());
 
-		this.tag(BlockTags.SMALL_DRIPLEAF_PLACEABLE).add(TFBlocks.UBEROUS_SOIL.get());
+		getOrCreateTagBuilder(BlockTags.SMALL_DRIPLEAF_PLACEABLE).add(TFBlocks.UBEROUS_SOIL.get());
 
-		this.tag(BlockTags.FEATURES_CANNOT_REPLACE).addTag(COMMON_PROTECTIONS).add(TFBlocks.LIVEROOT_BLOCK.get(), TFBlocks.MANGROVE_ROOT.get(), TFBlocks.SINISTER_SPAWNER.get());
+		getOrCreateTagBuilder(BlockTags.FEATURES_CANNOT_REPLACE).addTag(COMMON_PROTECTIONS).add(TFBlocks.LIVEROOT_BLOCK.get(), TFBlocks.MANGROVE_ROOT.get(), TFBlocks.SINISTER_SPAWNER.get());
 		// For anything that permits replacement during Worldgen
-		this.tag(WORLDGEN_REPLACEABLES).addTags(BlockTags.LUSH_GROUND_REPLACEABLE, BlockTags.REPLACEABLE_BY_TREES);
+		getOrCreateTagBuilder(WORLDGEN_REPLACEABLES)
+			.addOptionalTag(BlockTags.LUSH_GROUND_REPLACEABLE.location())
+			.addOptionalTag(BlockTags.REPLACEABLE_BY_TREES.location());
 
-		this.tag(ROOT_TRACE_SKIP).addTag(BlockTags.LOGS).add(TFBlocks.ROOT_BLOCK.get(), TFBlocks.LIVEROOT_BLOCK.get(), TFBlocks.MANGROVE_ROOT.get(), TFBlocks.TIME_WOOD.get()).addTags(BlockTags.FEATURES_CANNOT_REPLACE);
+		getOrCreateTagBuilder(ROOT_TRACE_SKIP).addTag(BlockTags.LOGS).add(TFBlocks.ROOT_BLOCK.get(), TFBlocks.LIVEROOT_BLOCK.get(), TFBlocks.MANGROVE_ROOT.get(), TFBlocks.TIME_WOOD.get()).addTags(BlockTags.FEATURES_CANNOT_REPLACE);
 
-		this.tag(DRUID_PROJECTILE_REPLACEABLE).addTags(BlockTags.LEAVES, BlockTags.LOGS, BlockTags.PLANKS, BlockTags.OVERWORLD_CARVER_REPLACEABLES, BlockTags.NETHER_CARVER_REPLACEABLES, BlockTags.REPLACEABLE_BY_TREES, BlockTags.LUSH_GROUND_REPLACEABLE, BlockTags.SCULK_REPLACEABLE, Tags.Blocks.ORES);
+		getOrCreateTagBuilder(DRUID_PROJECTILE_REPLACEABLE)
+			.addOptionalTag(BlockTags.LEAVES.location())
+			.addOptionalTag(BlockTags.LOGS.location())
+			.addOptionalTag(BlockTags.PLANKS.location())
+			.addOptionalTag(BlockTags.OVERWORLD_CARVER_REPLACEABLES.location())
+			.addOptionalTag(BlockTags.NETHER_CARVER_REPLACEABLES.location())
+			.addOptionalTag(BlockTags.REPLACEABLE_BY_TREES.location())
+			.addOptionalTag(BlockTags.LUSH_GROUND_REPLACEABLE.location())
+			.addOptionalTag(BlockTags.SCULK_REPLACEABLE.location())
+			.addOptionalTag(Tags.Blocks.ORES.location());
 
-		this.tag(BlockTags.OVERWORLD_CARVER_REPLACEABLES).add(TFBlocks.TROLLSTEINN.get());
+		getOrCreateTagBuilder(BlockTags.OVERWORLD_CARVER_REPLACEABLES).add(TFBlocks.TROLLSTEINN.get());
 
-		this.tag(TIME_CORE_EXCLUDED).add(Blocks.NETHER_PORTAL);
+		getOrCreateTagBuilder(TIME_CORE_EXCLUDED).add(Blocks.NETHER_PORTAL);
 
-		this.tag(ORE_METER_TARGETABLE)
-			.addTag(Tags.Blocks.ORES)
-			.addTag(BlockTags.BASE_STONE_OVERWORLD)
-			.addTag(BlockTags.BASE_STONE_NETHER)
-			.addTag(BlockTags.DIRT)
-			.addTag(Tags.Blocks.SANDS)
-			.addTag(Tags.Blocks.SANDSTONE_BLOCKS)
-			.addTag(BlockTags.TERRACOTTA)
-			.addTag(Tags.Blocks.GRAVELS)
-			.addTag(BlockTags.NYLIUM)
-			.addTag(ROOT_ORES)
+		getOrCreateTagBuilder(ORE_METER_TARGETABLE)
 			.add(Blocks.BUDDING_AMETHYST)
 			.add(Blocks.CALCITE)
 			.add(Blocks.SOUL_SAND)
-			.add(Blocks.SOUL_SOIL);
+			.add(Blocks.SOUL_SOIL)
+			.addOptionalTag(Tags.Blocks.ORES.location())
+			.addOptionalTag(BlockTags.BASE_STONE_OVERWORLD.location())
+			.addOptionalTag(BlockTags.BASE_STONE_NETHER.location())
+			.addOptionalTag(BlockTags.DIRT.location())
+			.addOptionalTag(Tags.Blocks.SANDS.location())
+			.addOptionalTag(Tags.Blocks.SANDSTONE_BLOCKS.location())
+			.addOptionalTag(BlockTags.TERRACOTTA.location())
+			.addOptionalTag(Tags.Blocks.GRAVELS.location())
+			.addOptionalTag(BlockTags.NYLIUM.location())
+			.addTag(ROOT_ORES);
 
-		this.tag(PENGUINS_SPAWNABLE_ON).addTag(BlockTags.ICE);
-		this.tag(GIANTS_SPAWNABLE_ON).addTag(CLOUDS);
+		getOrCreateTagBuilder(PENGUINS_SPAWNABLE_ON).addOptionalTag(BlockTags.ICE.location());
+		getOrCreateTagBuilder(GIANTS_SPAWNABLE_ON).addTag(CLOUDS);
 
-		this.tag(BlockTags.MINEABLE_WITH_AXE).add(
+		getOrCreateTagBuilder(BlockTags.MINEABLE_WITH_AXE).add(
 			TFBlocks.HEDGE.get(),
 			TFBlocks.ROOT_BLOCK.get(),
 			TFBlocks.LIVEROOT_BLOCK.get(),
@@ -616,7 +628,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.ENCASED_TOWERWOOD.get()
 		).addTags(BANISTERS, HOLLOW_LOGS, TOWERWOOD, DRYING_RACKS);
 
-		this.tag(BlockTags.MINEABLE_WITH_HOE).add(
+		getOrCreateTagBuilder(BlockTags.MINEABLE_WITH_HOE).add(
 			//vanilla doesnt use the leaves tag
 			TFBlocks.TWILIGHT_OAK_LEAVES.get(),
 			TFBlocks.CANOPY_LEAVES.get(),
@@ -634,7 +646,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.ARCTIC_FUR_BLOCK.get()
 		);
 
-		this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
+		getOrCreateTagBuilder(BlockTags.MINEABLE_WITH_PICKAXE).add(
 			TFBlocks.NAGASTONE.get(),
 			TFBlocks.NAGASTONE_HEAD.get(),
 			TFBlocks.STRONGHOLD_SHIELD.get(),
@@ -696,13 +708,13 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.SINISTER_SPAWNER.value()
 		).addTags(MAZESTONE, CASTLE_BLOCKS, DEADROCK);
 
-		this.tag(BlockTags.MINEABLE_WITH_SHOVEL).add(
+		getOrCreateTagBuilder(BlockTags.MINEABLE_WITH_SHOVEL).add(
 			TFBlocks.SMOKER.get(),
 			TFBlocks.FIRE_JET.get(),
 			TFBlocks.UBEROUS_SOIL.get()
 		);
 
-		this.tag(Tags.Blocks.NEEDS_WOOD_TOOL).add(
+		getOrCreateTagBuilder(Tags.Blocks.NEEDS_WOOD_TOOL).add(
 			TFBlocks.NAGASTONE.get(),
 			TFBlocks.NAGASTONE_HEAD.get(),
 			TFBlocks.ETCHED_NAGASTONE.get(),
@@ -729,7 +741,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.TROLLSTEINN.get()
 		);
 
-		this.tag(BlockTags.NEEDS_STONE_TOOL).add(
+		getOrCreateTagBuilder(BlockTags.NEEDS_STONE_TOOL).add(
 			TFBlocks.UNDERBRICK.get(),
 			TFBlocks.CRACKED_UNDERBRICK.get(),
 			TFBlocks.MOSSY_UNDERBRICK.get(),
@@ -737,20 +749,20 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.IRON_LADDER.get()
 		);
 
-		this.tag(BlockTags.NEEDS_IRON_TOOL).add(
+		getOrCreateTagBuilder(BlockTags.NEEDS_IRON_TOOL).add(
 			TFBlocks.FIERY_BLOCK.get(),
 			TFBlocks.KNIGHTMETAL_BLOCK.get()
 		);
 
-		this.tag(BlockTags.NEEDS_DIAMOND_TOOL).add(TFBlocks.AURORA_BLOCK.get()).addTags(CASTLE_BLOCKS, MAZESTONE, DEADROCK);
+		getOrCreateTagBuilder(BlockTags.NEEDS_DIAMOND_TOOL).add(TFBlocks.AURORA_BLOCK.get()).addTags(CASTLE_BLOCKS, MAZESTONE, DEADROCK);
 
-		this.tag(BlockTags.MUSHROOM_GROW_BLOCK).add(TFBlocks.UBEROUS_SOIL.get());
+		getOrCreateTagBuilder(BlockTags.MUSHROOM_GROW_BLOCK).add(TFBlocks.UBEROUS_SOIL.get());
 
-		this.tag(BlockTags.MOSS_REPLACEABLE).add(TFBlocks.ROOT_BLOCK.get(), TFBlocks.LIVEROOT_BLOCK.get(), TFBlocks.TROLLSTEINN.get());
+		getOrCreateTagBuilder(BlockTags.MOSS_REPLACEABLE).add(TFBlocks.ROOT_BLOCK.get(), TFBlocks.LIVEROOT_BLOCK.get(), TFBlocks.TROLLSTEINN.get());
 
-		this.tag(BlockTags.INVALID_SPAWN_INSIDE).add(TFBlocks.TWILIGHT_PORTAL.get());
+		getOrCreateTagBuilder(BlockTags.INVALID_SPAWN_INSIDE).add(TFBlocks.TWILIGHT_PORTAL.get());
 
-		this.tag(Tags.Blocks.RELOCATION_NOT_SUPPORTED).add(TFBlocks.TWILIGHT_PORTAL.get(), TFBlocks.STRONGHOLD_SHIELD.get(),
+		getOrCreateTagBuilder(Tags.Blocks.RELOCATION_NOT_SUPPORTED).add(TFBlocks.TWILIGHT_PORTAL.get(), TFBlocks.STRONGHOLD_SHIELD.get(),
 			TFBlocks.TIME_LOG_CORE.get(), TFBlocks.TRANSFORMATION_LOG_CORE.get(),
 			TFBlocks.MINING_LOG_CORE.get(),
 			TFBlocks.ANTIBUILDER.get(), TFBlocks.BUILT_BLOCK.get(),
@@ -769,49 +781,49 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 			TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER.get(), TFBlocks.UR_GHAST_BOSS_SPAWNER.get(),
 			TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get(), TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.get());
 
-		this.tag(SUPPORTS_STALAGMITES).addTag(DEADROCK).add(Blocks.PACKED_ICE);
+		getOrCreateTagBuilder(SUPPORTS_STALAGMITES).addTag(DEADROCK).add(Blocks.PACKED_ICE);
 
-		this.tag(CARVER_REPLACEABLES).addTag(BlockTags.OVERWORLD_CARVER_REPLACEABLES).add(Blocks.SNOW_BLOCK);
+		getOrCreateTagBuilder(CARVER_REPLACEABLES).addTag(BlockTags.OVERWORLD_CARVER_REPLACEABLES).add(Blocks.SNOW_BLOCK);
 
-		this.tag(INCORRECT_FOR_IRONWOOD_TOOL).addTag(BlockTags.INCORRECT_FOR_IRON_TOOL);
-		this.tag(INCORRECT_FOR_FIERY_TOOL).addTag(BlockTags.INCORRECT_FOR_NETHERITE_TOOL);
-		this.tag(INCORRECT_FOR_STEELEAF_TOOL).addTag(BlockTags.INCORRECT_FOR_DIAMOND_TOOL);
-		this.tag(INCORRECT_FOR_KNIGHTMETAL_TOOL).addTag(BlockTags.INCORRECT_FOR_DIAMOND_TOOL);
-		this.tag(INCORRECT_FOR_GIANT_TOOL).addTag(BlockTags.INCORRECT_FOR_STONE_TOOL);
-		this.tag(INCORRECT_FOR_ICE_TOOL).addTag(BlockTags.INCORRECT_FOR_WOODEN_TOOL);
-		this.tag(INCORRECT_FOR_GLASS_TOOL).addTag(BlockTags.INCORRECT_FOR_WOODEN_TOOL);
+		getOrCreateTagBuilder(INCORRECT_FOR_IRONWOOD_TOOL).addOptionalTag(BlockTags.INCORRECT_FOR_IRON_TOOL.location());
+		getOrCreateTagBuilder(INCORRECT_FOR_FIERY_TOOL).addOptionalTag(BlockTags.INCORRECT_FOR_NETHERITE_TOOL.location());
+		getOrCreateTagBuilder(INCORRECT_FOR_STEELEAF_TOOL).addOptionalTag(BlockTags.INCORRECT_FOR_DIAMOND_TOOL.location());
+		getOrCreateTagBuilder(INCORRECT_FOR_KNIGHTMETAL_TOOL).addOptionalTag(BlockTags.INCORRECT_FOR_DIAMOND_TOOL.location());
+		getOrCreateTagBuilder(INCORRECT_FOR_GIANT_TOOL).addOptionalTag(BlockTags.INCORRECT_FOR_STONE_TOOL.location());
+		getOrCreateTagBuilder(INCORRECT_FOR_ICE_TOOL).addOptionalTag(BlockTags.INCORRECT_FOR_WOODEN_TOOL.location());
+		getOrCreateTagBuilder(INCORRECT_FOR_GLASS_TOOL).addOptionalTag(BlockTags.INCORRECT_FOR_WOODEN_TOOL.location());
 
-		this.tag(Tags.Blocks.GLASS_BLOCKS).add(TFBlocks.AURORALIZED_GLASS.get());
-		this.tag(Tags.Blocks.PLAYER_WORKSTATIONS_CRAFTING_TABLES).add(TFBlocks.UNCRAFTING_TABLE.get());
-		this.tag(Tags.Blocks.ROPES).add(TFBlocks.ROPE.get());
+		getOrCreateTagBuilder(Tags.Blocks.GLASS_BLOCKS).add(TFBlocks.AURORALIZED_GLASS.get());
+		getOrCreateTagBuilder(Tags.Blocks.PLAYER_WORKSTATIONS_CRAFTING_TABLES).add(TFBlocks.UNCRAFTING_TABLE.get());
+		getOrCreateTagBuilder(Tags.Blocks.ROPES).add(TFBlocks.ROPE.get());
 
-		this.tag(MINEABLE_WITH_BLOCK_AND_CHAIN).addTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.MINEABLE_WITH_AXE,
+		getOrCreateTagBuilder(MINEABLE_WITH_BLOCK_AND_CHAIN).addTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.MINEABLE_WITH_AXE,
 			BlockTags.MINEABLE_WITH_SHOVEL, BlockTags.MINEABLE_WITH_HOE);
 
-		this.tag(BLOCK_AND_CHAIN_NEVER_BREAKS).addTags(MAZESTONE, CASTLE_BLOCKS, DEADROCK, BlockTags.WITHER_IMMUNE)
+		getOrCreateTagBuilder(BLOCK_AND_CHAIN_NEVER_BREAKS).addTags(MAZESTONE, CASTLE_BLOCKS, DEADROCK, BlockTags.WITHER_IMMUNE)
 			.add(TFBlocks.TIME_LOG_CORE.getKey(), TFBlocks.TRANSFORMATION_LOG_CORE.getKey(), TFBlocks.MINING_LOG_CORE.getKey())
 			.add(TFBlocks.SORTING_LOG_CORE.getKey())
 			.add(TFBlocks.GIANT_OBSIDIAN.getKey());
 
-		this.tag(SMALL_LAKES_DONT_REPLACE).addTags(BlockTags.FEATURES_CANNOT_REPLACE, BlockTags.LOGS, BlockTags.LEAVES)
+		getOrCreateTagBuilder(SMALL_LAKES_DONT_REPLACE).addTags(BlockTags.FEATURES_CANNOT_REPLACE, BlockTags.LOGS, BlockTags.LEAVES)
 			.add(TFBlocks.ROOT_BLOCK.getKey(), TFBlocks.LIVEROOT_BLOCK.getKey(), Blocks.MUSHROOM_STEM.builtInRegistryHolder().key());
 
-		this.tag(BlockTags.INSIDE_STEP_SOUND_BLOCKS)
+		getOrCreateTagBuilder(BlockTags.INSIDE_STEP_SOUND_BLOCKS)
 			.add(TFBlocks.HUGE_LILY_PAD.get());
 
-		this.tag(BlockTags.SWORD_EFFICIENT)
+		getOrCreateTagBuilder(BlockTags.SWORD_EFFICIENT)
 			.add(TFBlocks.HUGE_LILY_PAD.get());
 
-		this.tag(Tags.Blocks.BOOKSHELVES)
+		getOrCreateTagBuilder(Tags.Blocks.BOOKSHELVES)
 			.add(TFBlocks.CANOPY_BOOKSHELF.get());
 
-		this.tag(BlockTags.WOOL_CARPETS)
+		getOrCreateTagBuilder(BlockTags.WOOL_CARPETS)
 			.add(TFBlocks.CORONATION_CARPET.get());
 
-		this.tag(BlockTags.FIRE)
+		getOrCreateTagBuilder(BlockTags.FIRE)
 			.add(TFBlocks.OMINOUS_FIRE.get());
 
-		this.tag(DRYING_RACKS).add(
+		getOrCreateTagBuilder(DRYING_RACKS).add(
 			TFBlocks.OAK_DRYING_RACK.get(), TFBlocks.SPRUCE_DRYING_RACK.get(),
 			TFBlocks.BIRCH_DRYING_RACK.get(), TFBlocks.JUNGLE_DRYING_RACK.get(),
 			TFBlocks.ACACIA_DRYING_RACK.get(), TFBlocks.DARK_OAK_DRYING_RACK.get(),
@@ -826,7 +838,7 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 
 		// Tags.Blocks.STRIPPED_LOGS is not available in PortingLib 1.21.1
 		/*
-		this.tag(Tags.Blocks.STRIPPED_LOGS).add(
+		getOrCreateTagBuilder(Tags.Blocks.STRIPPED_LOGS).add(
 			TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.get(), TFBlocks.STRIPPED_CANOPY_LOG.get(),
 			TFBlocks.STRIPPED_MANGROVE_LOG.get(), TFBlocks.STRIPPED_DARK_LOG.get(),
 			TFBlocks.STRIPPED_TIME_LOG.get(), TFBlocks.STRIPPED_TRANSFORMATION_LOG.get(),
@@ -835,14 +847,14 @@ public class BlockTagGenerator extends ModdedBlockTagGenerator {
 
 		// Tags.Blocks.STRIPPED_WOODS is not available in PortingLib 1.21.1
 		/*
-		this.tag(Tags.Blocks.STRIPPED_WOODS).add(
+		getOrCreateTagBuilder(Tags.Blocks.STRIPPED_WOODS).add(
 			TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD.get(), TFBlocks.STRIPPED_CANOPY_WOOD.get(),
 			TFBlocks.STRIPPED_MANGROVE_WOOD.get(), TFBlocks.STRIPPED_DARK_WOOD.get(),
 			TFBlocks.STRIPPED_TIME_WOOD.get(), TFBlocks.STRIPPED_TRANSFORMATION_WOOD.get(),
 			TFBlocks.STRIPPED_MINING_WOOD.get(), TFBlocks.STRIPPED_SORTING_WOOD.get());
 		*/
 
-		this.tag(Tags.Blocks.STORAGE_BLOCKS_SLIME).add(TFBlocks.MAZE_SLIME_BLOCK.get());
+		getOrCreateTagBuilder(Tags.Blocks.STORAGE_BLOCKS_SLIME).add(TFBlocks.MAZE_SLIME_BLOCK.get());
 	}
 
 	public static TagKey<Block> create(String tagName) {

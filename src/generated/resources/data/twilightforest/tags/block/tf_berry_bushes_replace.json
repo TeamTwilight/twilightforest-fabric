@@ -1,7 +1,13 @@
 {
   "values": [
-    "#minecraft:replaceable",
-    "#minecraft:flowers",
+    {
+      "id": "#minecraft:replaceable",
+      "required": false
+    },
+    {
+      "id": "#minecraft:flowers",
+      "required": false
+    },
     "twilightforest:mayapple"
   ]
 }
