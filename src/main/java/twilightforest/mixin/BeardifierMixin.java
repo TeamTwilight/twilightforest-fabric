@@ -8,38 +8,32 @@ import net.minecraft.world.level.levelgen.DensityFunction;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import twilightforest.asmhooks.BeardifierDuck;
 import twilightforest.asmhooks.WorldgenHooks;
 
-/**
- * Mixin that adds custom density function support to the Beardifier.
- * Uses {@link ModifyReturnValue} (matching the 1.20.1 Fabric port approach)
- * instead of {@code @Inject} + {@code cancellable = true} for reliable
- * return value modification.
- */
 @Mixin(Beardifier.class)
-public abstract class BeardifierMixin implements WorldgenHooks.CustomBeardifier {
+public abstract class BeardifierMixin implements BeardifierDuck {
 
 	@Unique
-	private ObjectListIterator<DensityFunction> twilightforest$customDensities;
-
-	@Override
-	public void tf$setCustomDensities(ObjectListIterator<DensityFunction> densities) {
-		this.twilightforest$customDensities = densities;
-	}
-
-	@Override
-	public ObjectListIterator<DensityFunction> tf$getCustomDensities() {
-		return this.twilightforest$customDensities;
-	}
+	private ObjectListIterator<DensityFunction> twilightforest$customStructureDensities;
 
 	@ModifyReturnValue(
-		method = "compute",
+		method = "compute(Lnet/minecraft/world/level/levelgen/DensityFunction$FunctionContext;)D",
 		at = @At("RETURN")
 	)
-	private double twilightforest$computeCustomDensity(
+	private double twilightforest$getCustomDensity(
 		double original,
-		@Local(argsOnly = true) DensityFunction.FunctionContext context
+		@Local(argsOnly = true, name = "context") DensityFunction.FunctionContext context
 	) {
-		return WorldgenHooks.getCustomDensity(original, context, this.twilightforest$customDensities);
+		return WorldgenHooks.getCustomDensity(
+			original,
+			context,
+			this.twilightforest$customStructureDensities
+		);
+	}
+
+	@Override
+	public void twilightforest$setCustomStructureDensities(ObjectListIterator<DensityFunction> structureDensities) {
+		this.twilightforest$customStructureDensities = structureDensities;
 	}
 }

@@ -40,8 +40,8 @@ public class TFSkyRenderer {
 		RenderSystem.setShaderColor(f, f1, f2, 1.0F);
 		ShaderInstance shaderinstance = RenderSystem.getShader();
 		LevelRendererAccessor accessor = (LevelRendererAccessor) levelRenderer;
-		accessor.getSkyBuffer().bind();
-		accessor.getSkyBuffer().drawWithShader(stack.last().pose(), projectionMatrix, shaderinstance);
+		accessor.twilightforest$getSkyBuffer().bind();
+		accessor.twilightforest$getSkyBuffer().drawWithShader(stack.last().pose(), projectionMatrix, shaderinstance);
 		VertexBuffer.unbind();
 		RenderSystem.enableBlend();
 		/* TF - snip out sunrise/sunset since that doesn't happen here
@@ -84,8 +84,8 @@ public class TFSkyRenderer {
 		if (d0 < 0.0D) {
 			stack.pushPose();
 			stack.translate(0.0F, 12.0F, 0.0F);
-			accessor.getDarkBuffer().bind();
-			accessor.getDarkBuffer().drawWithShader(stack.last().pose(), projectionMatrix, shaderinstance);
+			accessor.twilightforest$getDarkBuffer().bind();
+			accessor.twilightforest$getDarkBuffer().drawWithShader(stack.last().pose(), projectionMatrix, shaderinstance);
 			VertexBuffer.unbind();
 			stack.popPose();
 		}
