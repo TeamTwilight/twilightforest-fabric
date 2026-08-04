@@ -1,6 +1,6 @@
 package twilightforest.init.custom;
 
-import net.minecraft.ChatFormatting;
+import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
@@ -8,6 +8,7 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.Unit;
@@ -223,7 +224,7 @@ public class TravellersModifiersManager {
 		return Optional.empty();
 	}
 
-	public static final class CacheInvalidationReloadListener extends SimplePreparableReloadListener<Unit> {
+	public static final class CacheInvalidationReloadListener extends SimplePreparableReloadListener<Unit> implements IdentifiableResourceReloadListener {
 		public static final CacheInvalidationReloadListener INSTANCE = new CacheInvalidationReloadListener();
 
 		private CacheInvalidationReloadListener() {
@@ -237,6 +238,11 @@ public class TravellersModifiersManager {
 		@Override
 		protected void apply(Unit object, ResourceManager resourceManager, ProfilerFiller profiler) {
 			clearCache();
+		}
+
+		@Override
+		public ResourceLocation getFabricId() {
+			return TwilightForestMod.prefix(this.getName());
 		}
 	}
 }

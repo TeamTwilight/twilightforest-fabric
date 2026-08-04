@@ -35,9 +35,11 @@ import twilightforest.data.custom.stalactites.entry.StalactiteReloadListener;
 import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.entity.passive.DwarfRabbitVariant;
 import twilightforest.entity.passive.TinyBirdVariant;
+import twilightforest.entity.passive.quest.QuestReloadListener;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.init.custom.ChunkBlanketProcessors;
 import twilightforest.init.custom.TemplateMarkerHandlers;
+import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 import twilightforest.util.Restriction;
 import twilightforest.util.woods.WoodPalette;
@@ -72,11 +74,8 @@ public class RegistrationEvents {
 			INSTANCE.tfCommand.register(dispatcher, registryAccess);
 		});
 
-		// Register reload listeners - must be registered BEFORE server starts to participate in initial data pack load
-		// QuestReloadListener 和 CacheInvalidationReloadListener 待实现
-		// IdentifiableResourceReloadListener for Fabric's ResourceManagerHelper
-		// ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new QuestReloadListener());
-		// ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(TravellersModifiersManager.CacheInvalidationReloadListener.INSTANCE);
+		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new QuestReloadListener());
+		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(TravellersModifiersManager.CacheInvalidationReloadListener.INSTANCE);
 		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(StalactiteReloadListener.INSTANCE);
 		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(INSTANCE.structureTemplateDefinitions);
 
