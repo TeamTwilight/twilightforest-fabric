@@ -1,7 +1,6 @@
 package twilightforest.entity.monster;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -22,7 +21,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.util.TFEventHooks;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
@@ -122,7 +120,7 @@ public class SwarmSpider extends Spider {
 			if (druid != null) {
 				druid.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
 				druid.setBaby(true);
-				TFEventHooks.finalizeMobSpawn(druid, accessor, difficulty, MobSpawnType.JOCKEY, null);
+				druid.finalizeSpawn(accessor, difficulty, MobSpawnType.JOCKEY, null);
 
 				if (this.hasPassenger(e -> true)) this.ejectPassengers();
 				druid.startRiding(this);

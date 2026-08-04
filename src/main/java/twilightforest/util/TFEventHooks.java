@@ -4,13 +4,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -29,13 +27,6 @@ public class TFEventHooks {
 	 */
 	public static boolean canEntityGrief(Level level, @Nullable Entity entity) {
 		return level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
-	}
-
-	/**
-	 * 替代 NeoForge EventHooks.finalizeMobSpawn
-	 */
-	public static void finalizeMobSpawn(Mob mob, LevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData data) {
-		mob.finalizeSpawn((ServerLevel) mob.level(), difficulty, spawnType, data);
 	}
 
 	/**

@@ -906,7 +906,6 @@ public class TFClientSetup implements ClientModInitializer {
 			|| modelPath.startsWith("carminite_block")
 			|| modelPath.startsWith("carminite_builder")
 			|| modelPath.startsWith("carminite_reactor")
-			|| modelPath.startsWith("castle_rune")
 			|| modelPath.startsWith("encased_fire_jet")
 			|| modelPath.startsWith("encased_smoker")
 			|| modelPath.startsWith("ghast_trap")

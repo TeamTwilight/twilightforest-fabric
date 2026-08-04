@@ -22,7 +22,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.util.TFEventHooks;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.goal.RiderSpearAttackGoal;
@@ -112,7 +111,7 @@ public class LowerGoblinKnight extends Monster {
 
 		UpperGoblinKnight upper = new UpperGoblinKnight(TFEntities.UPPER_GOBLIN_KNIGHT.get(), this.level());
 		upper.moveTo(this.getX(), this.getY() + 1, this.getZ(), this.getYRot(), 0.0F);
-		TFEventHooks.finalizeMobSpawn(upper, accessor, difficulty, MobSpawnType.NATURAL, data);
+		upper.finalizeSpawn(accessor, difficulty, MobSpawnType.NATURAL, data);
 		upper.startRiding(this);
 
 		return data;

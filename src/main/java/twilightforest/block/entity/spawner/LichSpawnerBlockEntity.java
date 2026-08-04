@@ -9,7 +9,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.util.TFEventHooks;
 import twilightforest.entity.boss.Lich;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFEntities;
@@ -43,7 +42,7 @@ public class LichSpawnerBlockEntity extends BossSpawnerBlockEntity<Lich> {
 
 		myCreature.moveTo(mutableBlockPos, accessor.getLevel().random.nextFloat() * 360F, 0.0F);
 
-		TFEventHooks.finalizeMobSpawn(myCreature, accessor, accessor.getCurrentDifficultyAt(mutableBlockPos), MobSpawnType.SPAWNER, null);
+		myCreature.finalizeSpawn(accessor, accessor.getCurrentDifficultyAt(mutableBlockPos), MobSpawnType.SPAWNER, null);
 		myCreature.setAttackCooldown(40);
 		myCreature.setExtinguishTimer();
 
