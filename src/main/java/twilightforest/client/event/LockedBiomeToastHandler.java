@@ -21,7 +21,7 @@ public class LockedBiomeToastHandler {
 	 * Register Fabric API callback for locked biome toast logic.
 	 * Called from {@link twilightforest.client.TFClientSetup#onInitializeClient()}.
 	 */
-	public static void register() {
+	public static void init() {
 		ClientTickEvents.END_CLIENT_TICK.register(LockedBiomeToastHandler::tickLockedToastLogic);
 	}
 

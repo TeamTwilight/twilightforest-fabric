@@ -13,8 +13,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 
-
-import twilightforest.TwilightForestMod;
 import twilightforest.client.overlay.PortalOverlay;
 import twilightforest.client.overlay.QuestingRamIndicatorOverlay;
 import twilightforest.client.overlay.ShieldOverlay;
@@ -35,7 +33,7 @@ public class OverlayHandler {
 	 * Register all Twilight Forest HUD overlays via Fabric API's HudRenderCallback.
 	 * Called from TFClientSetup.onInitializeClient().
 	 */
-	public static void registerOverlays() {
+	public static void init() {
 		HudRenderCallback.EVENT.register((graphics, tickDelta) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			if (minecraft.player == null || minecraft.options.hideGui) return;

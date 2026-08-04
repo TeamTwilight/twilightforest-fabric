@@ -55,6 +55,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.event.*;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.*;
 import twilightforest.client.model.block.BrazierModel;
@@ -76,10 +77,6 @@ import twilightforest.client.model.block.patch.PatchModelLoader;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.item.TravellersGearItemModel;
 import twilightforest.client.model.item.TrollsteinnModel;
-import twilightforest.client.event.ColorHandler;
-import twilightforest.client.event.CloudEvents;
-import twilightforest.client.event.LockedBiomeToastHandler;
-import twilightforest.client.event.OverlayHandler;
 import twilightforest.client.particle.*;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.armor.TFArmorRenderer;
@@ -112,6 +109,8 @@ public class TFClientSetup implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
+		initializeClientEvents();
+
 		// Detect optifine
 		try {
 			Class.forName("net.optifine.Config");
@@ -150,15 +149,6 @@ public class TFClientSetup implements ClientModInitializer {
 		// Shaders
 		TFShaders.registerShaders();
 
-		// Overlays - registered via HudRenderCallback in OverlayHandler
-		OverlayHandler.registerOverlays();
-
-		// Cloud events - registered via ClientTickEvents and WorldRenderEvents
-		CloudEvents.register();
-
-		// Locked biome toast handler
-		LockedBiomeToastHandler.register();
-
 		// Register client-side network packet handlers
 		twilightforest.events.RegistrationEvents.registerClientPacketHandlers();
 
@@ -171,6 +161,15 @@ public class TFClientSetup implements ClientModInitializer {
 		// GeometryLoaderManager.init() runs in a static initializer too early,
 		// before any mod registers its callbacks, leaving the LOADERS map empty.
 		io.github.fabricators_of_create.porting_lib.models.geometry.GeometryLoaderManager.init();
+	}
+
+	private void initializeClientEvents() {
+		ClientGameEvents.init();
+		CloudEvents.init();
+		FoliageColorHandler.init();
+		LockedBiomeToastHandler.init();
+		OverlayHandler.init();
+		TravellersClientEvents.init();
 	}
 
 	private void registerModelLoaders() {

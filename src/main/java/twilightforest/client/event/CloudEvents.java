@@ -50,7 +50,7 @@ public class CloudEvents {
 	 * Register Fabric API callbacks for cloud weather effects.
 	 * Called from {@link twilightforest.client.TFClientSetup#onInitializeClient()}.
 	 */
-	public static void register() {
+	public static void init() {
 		ClientTickEvents.END_CLIENT_TICK.register(CloudEvents::tickWeatherEffects);
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(CloudEvents::renderPrecipitation);
 	}

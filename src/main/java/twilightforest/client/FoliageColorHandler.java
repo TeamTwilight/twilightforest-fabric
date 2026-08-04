@@ -26,9 +26,9 @@ public final class FoliageColorHandler {
 		put(TFBiomes.SWAMP, (o, x, z) -> biomeColorAlgorithms.swamp(BiomeColorAlgorithms.Type.Foliage));
 	}};
 
-	private final Map<Biome, Handler> HANDLES = new MapMaker().weakKeys().makeMap(); // Concurrent + Weak + Hash
+	private static final Map<Biome, Handler> HANDLES = new MapMaker().weakKeys().makeMap(); // Concurrent + Weak + Hash
 
-	public void init() {
+	public static void init() {
 		EntityLeaveLevelEvent.EVENT.register(event -> {
 			if (event.getLevel().isClientSide()) {
 				HANDLES.clear();
