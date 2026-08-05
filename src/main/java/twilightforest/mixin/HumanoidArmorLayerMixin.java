@@ -13,11 +13,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import twilightforest.asmhooks.ArmorHooks;
 
-/**
- * Cancels armor rendering for entities wearing Emperor's Cloth.
- * In 1.21.1, renderArmorPiece no longer takes float parameters.
- */
-@Mixin(HumanoidArmorLayer.class)
+@Mixin(value = HumanoidArmorLayer.class, priority = 500) // Needs to be before Porting Lib and Fabric API for some custom armor sets to work
 public class HumanoidArmorLayerMixin {
 
 	@Inject(

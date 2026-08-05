@@ -136,6 +136,10 @@ loom {
 	accessWidenerPath = file("src/main/resources/twilightforest.classtweaker")
 
 	runs {
+		client {
+			vmArg("-Dmixin.debug.export=true")
+		}
+
 		data {
 			client()
 			configName = "Data Generation"

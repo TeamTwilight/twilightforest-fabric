@@ -31,7 +31,7 @@ public class EmperorsClothRecipe extends CustomRecipe {
 				if (stack.is(TFItems.EMPERORS_CLOTH.get()) && !foundCloth) {
 					foundCloth = true;
 				} else if (!foundItem) {
-					if (stack.is(ItemTagGenerator.EMPERORS_CLOTH_APPLICABLE) && stack.getItem().getCraftingRemainingItem() == Items.AIR && !stack.has(TFDataComponents.EMPERORS_CLOTH.get())) {
+					if (stack.is(ItemTagGenerator.EMPERORS_CLOTH_APPLICABLE) && !stack.getItem().hasCraftingRemainingItem() && !stack.has(TFDataComponents.EMPERORS_CLOTH.get())) {
 						foundItem = true;
 					} else {
 						return false;
