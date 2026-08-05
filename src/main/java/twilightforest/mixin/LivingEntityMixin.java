@@ -1,5 +1,7 @@
 package twilightforest.mixin;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
@@ -7,6 +9,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.FluidState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -14,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import twilightforest.asmhooks.ArmorHooks;
+import twilightforest.asmhooks.BlockHooks;
 import twilightforest.asmhooks.EntityHooks;
 import twilightforest.compat.trinkets.TrinketsCompat;
 import twilightforest.components.entity.FortificationShieldAttachment;
@@ -123,5 +127,25 @@ public class LivingEntityMixin {
 				cir.setReturnValue(false);
 			}
 		}
+	}
+
+
+	@WrapOperation(
+		method = "travel",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/world/level/block/Block;getFriction()F"
+		)
+	)
+	private float twilightforest$resetFrictionWithUnrestrained(
+		Block block,
+		Operation<Float> original
+	) {
+		float originalResult = original.call(block);
+
+		return BlockHooks.resetBlockFrictionWithUnrestrained(
+			originalResult,
+			(LivingEntity) (Object) this
+		);
 	}
 }

@@ -74,15 +74,20 @@ public class BlockHooks {
 		return TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.UNRESTRAINED_MODIFIER) ? 0.6F : o;
 	}
 
-	public static boolean resetSlimeMomentumWithUnrestrained(boolean o, Entity entity) {
-		if (TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.UNRESTRAINED_MODIFIER)) {
-			return true; //dont return false here as the original check is looking that an entity is NOT stepping carefully
+	public static boolean stopBouncing(Entity entity) {
+		if (TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.UNRESTRAINED_MODIFIER) && entity.getDeltaMovement().y() > -0.08) {
+			entity.setDeltaMovement(new Vec3(entity.getDeltaMovement().x, Math.max(0, entity.getDeltaMovement().y), entity.getDeltaMovement().z));
+			return true;
 		}
-		return o;
+		return false;
 	}
 
-	public static void stopBouncing(Entity entity) {
-		if (TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.UNRESTRAINED_MODIFIER) && entity.getDeltaMovement().y() > -0.08)
-			entity.setDeltaMovement(new Vec3(entity.getDeltaMovement().x, Math.max(0, entity.getDeltaMovement().y), entity.getDeltaMovement().z));
+	public static void restoreStepOnVelocity(Entity entity, Vec3 original) {
+		if (original == null) return;
+
+		if (TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.UNRESTRAINED_MODIFIER)) {
+			Vec3 current = entity.getDeltaMovement();
+			entity.setDeltaMovement(original.x(), current.y(), original.z());
+		}
 	}
 }
