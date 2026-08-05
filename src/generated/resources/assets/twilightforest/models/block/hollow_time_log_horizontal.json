@@ -1,0 +1,9 @@
+{
+  "parent": "twilightforest:block/horizontal_hollow_log",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "inner": "twilightforest:block/stripped_time_log",
+    "side": "twilightforest:block/time_log",
+    "top": "twilightforest:block/time_log_top"
+  }
+}

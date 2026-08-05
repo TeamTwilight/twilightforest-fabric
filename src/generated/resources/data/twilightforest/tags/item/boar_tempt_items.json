@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "#c:crops/carrot",
+      "required": false
+    },
+    {
+      "id": "#c:crops/potato",
+      "required": false
+    },
+    {
+      "id": "#c:crops/beetroot",
+      "required": false
+    }
+  ]
+}

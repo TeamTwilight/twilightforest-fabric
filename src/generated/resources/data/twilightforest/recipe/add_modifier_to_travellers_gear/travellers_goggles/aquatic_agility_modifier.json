@@ -1,0 +1,31 @@
+{
+  "type": "twilightforest:travellers_gear_modifier_shaped_recipe",
+  "is_rotated": false,
+  "modifier_key": "twilightforest:aquatic_agility",
+  "pattern": {
+    "key": {
+      "b": {
+        "item": "minecraft:bamboo"
+      },
+      "g": {
+        "item": "twilightforest:travellers_goggles"
+      },
+      "s": {
+        "item": "minecraft:slime_ball"
+      },
+      "w": [
+        {
+          "item": "minecraft:potion"
+        },
+        {
+          "item": "minecraft:potion"
+        }
+      ]
+    },
+    "pattern": [
+      " b",
+      "gb",
+      "sw"
+    ]
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "values": [
+    {
+      "id": "#minecraft:leaves",
+      "required": false
+    },
+    {
+      "id": "#minecraft:logs",
+      "required": false
+    },
+    {
+      "id": "#minecraft:planks",
+      "required": false
+    },
+    {
+      "id": "#minecraft:overworld_carver_replaceables",
+      "required": false
+    },
+    {
+      "id": "#minecraft:nether_carver_replaceables",
+      "required": false
+    },
+    {
+      "id": "#minecraft:replaceable_by_trees",
+      "required": false
+    },
+    {
+      "id": "#minecraft:lush_ground_replaceable",
+      "required": false
+    },
+    {
+      "id": "#minecraft:sculk_replaceable",
+      "required": false
+    },
+    {
+      "id": "#c:ores",
+      "required": false
+    }
+  ]
+}

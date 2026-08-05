@@ -1,0 +1,9 @@
+{
+  "parent": "twilightforest:block/vertical_hollow_log_vine",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "inner": "minecraft:block/stripped_birch_log",
+    "side": "minecraft:block/birch_log",
+    "top": "minecraft:block/birch_log_top"
+  }
+}

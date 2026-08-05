@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "ability": "shears_dig",
+          "condition": "porting_lib:can_item_perform_ability"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:mayapple"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "twilightforest:blocks/mayapple"
+}

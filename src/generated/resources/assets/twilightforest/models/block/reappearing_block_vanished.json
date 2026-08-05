@@ -1,0 +1,72 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "porting_lib_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
+          "texture": "#all"
+        },
+        "east": {
+          "cullface": "east",
+          "porting_lib_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
+          "texture": "#all"
+        },
+        "north": {
+          "cullface": "north",
+          "porting_lib_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
+          "texture": "#all"
+        },
+        "south": {
+          "cullface": "south",
+          "porting_lib_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
+          "texture": "#all"
+        },
+        "up": {
+          "cullface": "up",
+          "porting_lib_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
+          "texture": "#all"
+        },
+        "west": {
+          "cullface": "west",
+          "porting_lib_data": {
+            "block_light": 15,
+            "sky_light": 15
+          },
+          "texture": "#all"
+        }
+      },
+      "from": [
+        6,
+        6,
+        6
+      ],
+      "to": [
+        10,
+        10,
+        10
+      ]
+    }
+  ],
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "all": "twilightforest:block/towerdev_reappearing_trace_off",
+    "particle": "#all"
+  }
+}

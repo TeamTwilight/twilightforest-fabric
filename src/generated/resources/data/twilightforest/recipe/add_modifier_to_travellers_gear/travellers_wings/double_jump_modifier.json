@@ -1,0 +1,34 @@
+{
+  "type": "twilightforest:travellers_gear_modifier_shaped_recipe",
+  "is_rotated": false,
+  "modifier_key": "twilightforest:double_jump",
+  "pattern": {
+    "key": {
+      "L": [
+        {
+          "item": "minecraft:potion"
+        },
+        {
+          "item": "minecraft:potion"
+        },
+        {
+          "item": "minecraft:potion"
+        }
+      ],
+      "P": {
+        "item": "minecraft:piston"
+      },
+      "S": {
+        "tag": "c:strings"
+      },
+      "W": {
+        "item": "twilightforest:travellers_wings"
+      }
+    },
+    "pattern": [
+      " L ",
+      "SWS",
+      "P P"
+    ]
+  }
+}
