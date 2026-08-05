@@ -2,20 +2,15 @@ package twilightforest.events;
 
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.levelgen.Heightmap;
 
-import io.github.fabricators_of_create.porting_lib.entity.events.living.LivingHurtEvent;
 import io.github.fabricators_of_create.porting_lib.entity.events.player.PlayerEvents;
 import io.github.fabricators_of_create.porting_lib.entity.events.tick.EntityTickEvent;
 import io.github.fabricators_of_create.porting_lib.entity.events.tick.PlayerTickEvent;
-import twilightforest.components.entity.FortificationShieldAttachment;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDimension;
@@ -29,19 +24,12 @@ public class CapabilityEvents {
 	public static void init() {
 		EntityTickEvent.Post.EVENT.register(INSTANCE::updateShields);
 		PlayerTickEvent.Post.EVENT.register(INSTANCE::updatePlayerCaps);
-		LivingHurtEvent.EVENT.register(INSTANCE::absorbShieldHits);
 		PlayerEvents.PlayerLoggedInEvent.EVENT.register(INSTANCE::playerLogsIn);
 		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {
 			if (newPlayer.getRespawnPosition() == null) {
 				newSpawnInTwilightForest(newPlayer);
 			}
 		});
-	}
-
-		private void updateShields(EntityTickEvent.Post event) {
-		if (event.getEntity() instanceof LivingEntity living && !living.level().isClientSide() && living.hasAttached(TFDataAttachments.FORTIFICATION_SHIELDS)) {
-			event.getEntity().getAttachedOrCreate(TFDataAttachments.FORTIFICATION_SHIELDS).tick(living);
-		}
 	}
 
 	private void updatePlayerCaps(PlayerTickEvent.Post event) {
@@ -58,19 +46,9 @@ public class CapabilityEvents {
 		event.getEntity().getAttachedOrCreate(TFDataAttachments.TF_PORTAL_COOLDOWN).tick(event.getEntity());
 	}
 
-	private void absorbShieldHits(LivingHurtEvent event) {
-		LivingEntity living = event.getEntity();
-		// shields
-		if (!living.level().isClientSide() && !event.getSource().is(DamageTypeTags.BYPASSES_ARMOR)) {
-            FortificationShieldAttachment attachment = living.getAttachedOrCreate(TFDataAttachments.FORTIFICATION_SHIELDS);
-			if (attachment.shieldsLeft() > 0) {
-				if (living.invulnerableTime <= 0) {
-					attachment.breakShield(living, false);
-					FortificationShieldAttachment.addShieldBreakParticles(event.getSource(), living);
-					living.invulnerableTime = living.invulnerableDuration;
-				}
-				event.setCanceled(true);
-			}
+	private void updateShields(EntityTickEvent.Post event) {
+		if (event.getEntity() instanceof LivingEntity living && !living.level().isClientSide() && living.hasAttached(TFDataAttachments.FORTIFICATION_SHIELDS)) {
+			event.getEntity().getAttachedOrCreate(TFDataAttachments.FORTIFICATION_SHIELDS).tick(living);
 		}
 	}
 

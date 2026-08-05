@@ -17,8 +17,12 @@ public class ShieldOverlay {
 	public static void render(GuiGraphics graphics, Minecraft minecraft, Gui gui, @Nullable Player player) {
 		if (player != null && !minecraft.options.hideGui && (minecraft.gameMode.canHurtPlayer() || TFConfig.showFortificationShieldIndicatorInCreative) && player.hasAttached(TFDataAttachments.FORTIFICATION_SHIELDS) && player.getAttachedOrCreate(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft() > 0 && TFConfig.showFortificationShieldIndicator) {
 			int shieldCount = player.getAttachedOrCreate(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft();
+			int y = graphics.guiHeight() - 49 - 10;
+			if (player.getArmorValue() <= 0) {
+				y += 10;
+			}
 			for (int i = 0; i < Math.min(shieldCount, 10); i++) {
-				graphics.blitSprite(FORTIFICATION_SHIELD_SPRITE, graphics.guiWidth() / 2 - 91 + (i * 8), graphics.guiHeight() - 49 - 10, 9, 9);
+				graphics.blitSprite(FORTIFICATION_SHIELD_SPRITE, graphics.guiWidth() / 2 - 91 + (i * 8), y, 9, 9);
 			}
 		}
 	}

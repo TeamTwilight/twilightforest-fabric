@@ -1,6 +1,7 @@
 package twilightforest.mixin;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -15,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import twilightforest.asmhooks.ArmorHooks;
 import twilightforest.asmhooks.EntityHooks;
 import twilightforest.compat.trinkets.TrinketsCompat;
+import twilightforest.components.entity.FortificationShieldAttachment;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.network.CreateMovingCicadaSoundPacket;
@@ -91,5 +93,35 @@ public class LivingEntityMixin {
 			TFDataAttachments.LAST_DAMAGE_ARMOR_TIME,
 			self.level().getGameTime()
 		);
+	}
+
+	@Inject(
+		method = "hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/world/entity/LivingEntity;isInvulnerableTo(Lnet/minecraft/world/damagesource/DamageSource;)Z"
+		),
+		cancellable = true
+	)
+	private void twilightforest$absorbShieldHits(
+		DamageSource source,
+		float amount,
+		CallbackInfoReturnable<Boolean> cir
+	) {
+		LivingEntity living = (LivingEntity) (Object) this;
+
+		if (!living.level().isClientSide()
+			&& !source.is(DamageTypeTags.BYPASSES_ARMOR)) {
+
+			FortificationShieldAttachment attachment =
+				living.getAttachedOrCreate(TFDataAttachments.FORTIFICATION_SHIELDS);
+
+			if (attachment.shieldsLeft() > 0) {
+				attachment.breakShield(living, false);
+				FortificationShieldAttachment.addShieldBreakParticles(source, living);
+
+				cir.setReturnValue(false);
+			}
+		}
 	}
 }
