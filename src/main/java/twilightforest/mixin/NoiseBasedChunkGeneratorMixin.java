@@ -23,8 +23,8 @@ public class NoiseBasedChunkGeneratorMixin {
 	)
 	private Beardifier tf$gatherCustomTerrain(
 		Beardifier original,
-		@Local(argsOnly = true, name = "structureManager") StructureManager structureManager,
-		@Local(argsOnly = true, name = "chunk") ChunkAccess chunk
+		@Local(argsOnly = true) StructureManager structureManager,
+		@Local(argsOnly = true) ChunkAccess chunk
 	) {
 		((BeardifierDuck) original).twilightforest$setCustomStructureDensities(WorldgenHooks.gatherCustomTerrain(structureManager, chunk.getPos()));
 		return original;

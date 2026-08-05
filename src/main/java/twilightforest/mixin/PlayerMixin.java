@@ -12,8 +12,7 @@ public class PlayerMixin {
 	@ModifyVariable(
 		method = "causeFoodExhaustion",
 		at = @At("HEAD"),
-		argsOnly = true,
-		name = "exhaustion"
+		argsOnly = true
 	)
 	private float twilightforest$modifyFoodExhaustion(float exhaustion) {
 		return PlayerHooks.getFoodExhaustion(exhaustion, (Player) (Object) this);

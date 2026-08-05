@@ -23,7 +23,7 @@ public abstract class BeardifierMixin implements BeardifierDuck {
 	)
 	private double twilightforest$getCustomDensity(
 		double original,
-		@Local(argsOnly = true, name = "context") DensityFunction.FunctionContext context
+		@Local(argsOnly = true) DensityFunction.FunctionContext context
 	) {
 		return WorldgenHooks.getCustomDensity(
 			original,

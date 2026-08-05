@@ -27,8 +27,7 @@ public abstract class ItemRendererMixin {
 	@ModifyVariable(
 		method = "render",
 		at = @At("HEAD"),
-		argsOnly = true,
-		name = "model"
+		argsOnly = true
 	)
 	private BakedModel twilightforest$replaceGiantToolGuiModel(
 		BakedModel model,

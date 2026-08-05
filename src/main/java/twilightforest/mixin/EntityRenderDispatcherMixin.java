@@ -20,7 +20,7 @@ public class EntityRenderDispatcherMixin {
 	private void twilightforest$bakeMultipartRenderers(
 		ResourceManager resourceManager,
 		CallbackInfo ci,
-		@Local(name = "context") EntityRendererProvider.Context context
+		@Local EntityRendererProvider.Context context
 	) {
 		BakedMultiPartRenderers.bakeMultiPartRenderers(context);
 	}
