@@ -1,6 +1,7 @@
 package twilightforest.events;
 
 import com.google.common.collect.Maps;
+import io.github.fabricators_of_create.porting_lib.resources.events.AddReloadListenersEvent;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
@@ -77,7 +78,8 @@ public class RegistrationEvents {
 		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new QuestReloadListener());
 		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(TravellersModifiersManager.CacheInvalidationReloadListener.INSTANCE);
 		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(StalactiteReloadListener.INSTANCE);
-		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(INSTANCE.structureTemplateDefinitions);
+
+		AddReloadListenersEvent.EVENT.register(INSTANCE.structureTemplateDefinitions::registerListener);
 
 		// Config sync on player login
 		ServerLifecycleEvents.SYNC_DATA_PACK_CONTENTS.register((player, joined) -> {

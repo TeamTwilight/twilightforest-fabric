@@ -77,15 +77,11 @@ public final class StructureTemplateDefinitions extends CodecResourceReloadListe
 	@Override
 	public void registerListener(AddReloadListenersEvent event) {
 		this.registryAccess = event.getRegistryAccess();
-
 		super.registerListener(event);
 	}
 
 	@Override
 	protected DynamicOps<JsonElement> initDynamicOps() {
-		if (this.registryAccess == null) {
-			return super.initDynamicOps();
-		}
 		return RegistryOps.create(super.initDynamicOps(), (HolderLookup.Provider) this.registryAccess);
 	}
 

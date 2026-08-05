@@ -6,14 +6,11 @@ import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.ReloadableServerRegistries;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootParams;
@@ -21,10 +18,8 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.util.TFAuxiliaryLightManager;
 import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
 import twilightforest.network.PacketDistributor;
-import io.github.fabricators_of_create.porting_lib.core.util.ServerLifecycleHooks;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.network.SetMasonJarItemPacket;
 
@@ -64,8 +59,7 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 	}
 
 	public boolean fillFromLootTable(ResourceKey<LootTable> lootTableKey, long seed, ServerLevel level) {
-		MinecraftServer currentServer = ServerLifecycleHooks.getCurrentServer();
-		return this.fillFromLootTable(lootTableKey, seed, level, currentServer.reloadableRegistries());
+		return this.fillFromLootTable(lootTableKey, seed, level, level.getServer().reloadableRegistries());
 	}
 
 	public boolean fillFromLootTable(ResourceKey<LootTable> lootTableKey, long seed, ServerLevel serverLevel, ReloadableServerRegistries.Holder holder) {
