@@ -4,21 +4,20 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.yggdrasil.ProfileResult;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
+import io.github.fabricators_of_create.porting_lib.core.util.ServerLifecycleHooks;
+import io.github.fabricators_of_create.porting_lib.core.util.TranslatableEnum;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
-import io.github.fabricators_of_create.porting_lib.core.util.TranslatableEnum;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
-
-import twilightforest.network.PacketDistributor;
-import io.github.fabricators_of_create.porting_lib.core.util.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
+import twilightforest.network.PacketDistributor;
 import twilightforest.network.SyncUncraftingTableConfigPacket;
 import twilightforest.util.PlayerHelper;
 
@@ -129,7 +128,7 @@ public class TFConfig {
 		return portalLockingAdvancement;
 	}
 
-	// Use registryAccess since datapack biomes are not in the static registry
+	//Forge's biome registry doesn't contain biomes done via datapacks, so we have to use registryaccess
 	public static List<Holder<Biome>> getValidAuroraBiomes(RegistryAccess access) {
 		if (VALID_AURORA_BIOMES.isEmpty() && !ConfigSetup.CLIENT_CONFIG.auroraBiomes.get().isEmpty()) {
 			ConfigSetup.CLIENT_CONFIG.auroraBiomes.get().forEach(s -> {
@@ -195,12 +194,12 @@ public class TFConfig {
 		//resends uncrafting settings to all players when the config is reloaded. This ensures all players have matching configs so things don't desync.
 		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
 		if (server != null && server.isDedicatedServer()) {
-		PacketDistributor.sendToAllPlayers(server, new SyncUncraftingTableConfigPacket(
-			uncraftingXpCostMultiplier, repairingXpCostMultiplier,
-			allowShapelessUncrafting, disableIngredientSwitching,
-			disableUncraftingOnly, disableEntireTable,
-			disableUncraftingRecipes, reverseRecipeBlacklist,
-			blacklistedUncraftingModIds, flipUncraftingModIdList));
+			PacketDistributor.sendToAllPlayers(server, new SyncUncraftingTableConfigPacket(
+				uncraftingXpCostMultiplier, repairingXpCostMultiplier,
+				allowShapelessUncrafting, disableIngredientSwitching,
+				disableUncraftingOnly, disableEntireTable,
+				disableUncraftingRecipes, reverseRecipeBlacklist,
+				blacklistedUncraftingModIds, flipUncraftingModIdList));
 		}
 		//sets cached portal locking advancement to null just in case it changed
 		portalLockingAdvancement = null;

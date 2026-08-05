@@ -1,7 +1,7 @@
 package twilightforest.config;
 
-import net.minecraft.resources.ResourceLocation;
 import io.github.fabricators_of_create.porting_lib.config.ModConfigSpec;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.List;

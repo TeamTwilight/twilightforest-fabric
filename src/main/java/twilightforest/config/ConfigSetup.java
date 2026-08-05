@@ -1,16 +1,16 @@
 package twilightforest.config;
 
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerPlayer;
 import io.github.fabricators_of_create.porting_lib.config.ConfigRegistry;
 import io.github.fabricators_of_create.porting_lib.config.ModConfig;
 import io.github.fabricators_of_create.porting_lib.config.ModConfigEvent;
 import io.github.fabricators_of_create.porting_lib.config.ModConfigSpec;
-import io.github.fabricators_of_create.porting_lib.entity.events.player.PlayerEvents;
-import twilightforest.network.PacketDistributor;
 import io.github.fabricators_of_create.porting_lib.core.util.ServerLifecycleHooks;
+import io.github.fabricators_of_create.porting_lib.entity.events.player.PlayerEvents;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
 import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.TwilightForestMod;
+import twilightforest.network.PacketDistributor;
 import twilightforest.network.SyncUncraftingTableConfigPacket;
 
 public final class ConfigSetup {

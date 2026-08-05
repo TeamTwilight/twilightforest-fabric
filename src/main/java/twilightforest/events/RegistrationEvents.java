@@ -1,9 +1,10 @@
 package twilightforest.events;
 
 import com.google.common.collect.Maps;
+import io.github.fabricators_of_create.porting_lib.config.ModConfigEvent;
+import io.github.fabricators_of_create.porting_lib.entity.events.player.PlayerEvents;
 import io.github.fabricators_of_create.porting_lib.resources.events.AddReloadListenersEvent;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -32,6 +33,7 @@ import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.command.TFCommand;
+import twilightforest.config.ConfigSetup;
 import twilightforest.data.custom.stalactites.entry.StalactiteReloadListener;
 import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.entity.passive.DwarfRabbitVariant;
@@ -81,11 +83,9 @@ public class RegistrationEvents {
 
 		AddReloadListenersEvent.EVENT.register(INSTANCE.structureTemplateDefinitions::registerListener);
 
-		// Config sync on player login
-		ServerLifecycleEvents.SYNC_DATA_PACK_CONTENTS.register((player, joined) -> {
-			// ConfigSetup.syncUncraftingConfig needs migration to Fabric
-			// ConfigSetup.syncUncraftingConfig(player, joined);
-		});
+		ModConfigEvent.Loading.EVENT.register(ConfigSetup::loadConfigs);
+		ModConfigEvent.Reloading.EVENT.register(ConfigSetup::reloadConfigs);
+		PlayerEvents.PlayerLoggedInEvent.EVENT.register(ConfigSetup::syncUncraftingConfig);
 	}
 
 	/**

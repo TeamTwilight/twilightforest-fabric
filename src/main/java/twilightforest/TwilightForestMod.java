@@ -12,7 +12,6 @@ import net.minecraft.world.entity.animal.Parrot;
 import net.minecraft.world.level.block.ComposterBlock;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import twilightforest.client.FoliageColorHandler;
 import twilightforest.config.ConfigSetup;
 import twilightforest.events.*;
 import twilightforest.init.*;
@@ -105,14 +104,14 @@ public final class TwilightForestMod implements ModInitializer {
 		DeferredSpawnEggItem.init();
 
 		// Registration events migrated to Fabric (Phase 2.5)
-		twilightforest.events.RegistrationEvents.registerPackets();
-		twilightforest.events.RegistrationEvents.registerServerPacketHandlers();
-		twilightforest.events.RegistrationEvents.addEntityAttributes();
-		twilightforest.events.RegistrationEvents.registerSpawnPlacements();
-		twilightforest.events.RegistrationEvents.commonInit();
-		twilightforest.events.RegistrationEvents.registerExtraStuff();
-		twilightforest.events.RegistrationEvents.createDataMaps();
-		twilightforest.events.RegistrationEvents.setRegistriesForDatapack();
+		RegistrationEvents.registerPackets();
+		RegistrationEvents.registerServerPacketHandlers();
+		RegistrationEvents.addEntityAttributes();
+		RegistrationEvents.registerSpawnPlacements();
+		RegistrationEvents.commonInit();
+		RegistrationEvents.registerExtraStuff();
+		RegistrationEvents.createDataMaps();
+		RegistrationEvents.setRegistriesForDatapack();
 
 		// Inject the original wooden drying racks, railings, etc. into the original Creative Mode tab (refer to NeoForge version addToTabs)
 		TFCreativeTabs.addCreativeTabEntries();
