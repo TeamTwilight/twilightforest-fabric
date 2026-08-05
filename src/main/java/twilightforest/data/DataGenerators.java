@@ -38,6 +38,7 @@ public class DataGenerators implements DataGeneratorEntrypoint {
 		//		pack.addProvider((output, registries) -> new ParticleGenerator(output, helper));
 		pack.addProvider((output, registries) -> new SoundGenerator(output, helper));
 
+		pack.addProvider(RegistryDataGenerator::new);
 		pack.addProvider(BiomeTagGenerator::new);
 		pack.addProvider((output, registries) -> new CustomTagGenerator.BannerPatternTagGenerator(output, registries, helper));
 		pack.addProvider((output, registries) -> new CustomTagGenerator.DimensionTypeTagGenerator(output, registries, helper));

@@ -1,9 +1,0 @@
-{
-  "values": [
-    "minecraft:elytra",
-    {
-      "id": "#c:armors",
-      "required": false
-    }
-  ]
-}
