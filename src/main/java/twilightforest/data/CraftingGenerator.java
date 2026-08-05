@@ -1,6 +1,8 @@
 package twilightforest.data;
 
 import com.mojang.datafixers.util.Pair;
+import net.fabricmc.fabric.api.recipe.v1.ingredient.DefaultCustomIngredients;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
@@ -854,7 +856,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.pattern("sw")
 				.define('b', Items.BAMBOO)
 				.define('w', potionsIngredient(Potions.WATER_BREATHING, Potions.LONG_WATER_BREATHING))
-				.define('s', Items.SLIME_BALL)
+				.define('s', ConventionalItemTags.SLIME_BALLS)
 				.define('g', TFItems.TRAVELLERS_GOGGLES)
 				.build(),
 			TravellersModifiersManager.AQUATIC_AGILITY_MODIFIER).save(output);
@@ -1381,10 +1383,12 @@ public class CraftingGenerator extends CraftingDataHelper {
 	@SafeVarargs
 	private static @NotNull Ingredient potionsIngredient(Holder<Potion> @NotNull ... potions) {
 		Ingredient[] ingredients = new Ingredient[potions.length];
+
 		for (int i = 0; i < potions.length; i++) {
 			ingredients[i] = potionIngredient(potions[i]);
 		}
-		return Ingredient.of(Arrays.stream(ingredients).flatMap(i -> Arrays.stream(i.getItems()))); // CompoundIngredient 待移植
+
+		return DefaultCustomIngredients.any(ingredients);
 	}
 
 	private static @NotNull Ingredient potionIngredient(@NotNull Holder<Potion> potion) {

@@ -13,17 +13,38 @@
       "M": {
         "item": "twilightforest:raw_meef"
       },
-      "P": [
-        {
-          "item": "minecraft:potion"
-        },
-        {
-          "item": "minecraft:potion"
-        },
-        {
-          "item": "minecraft:potion"
-        }
-      ]
+      "P": {
+        "fabric:type": "fabric:any",
+        "ingredients": [
+          {
+            "fabric:type": "porting_lib:components",
+            "components": {
+              "minecraft:potion_contents": {
+                "potion": "minecraft:swiftness"
+              }
+            },
+            "items": "minecraft:potion"
+          },
+          {
+            "fabric:type": "porting_lib:components",
+            "components": {
+              "minecraft:potion_contents": {
+                "potion": "minecraft:long_swiftness"
+              }
+            },
+            "items": "minecraft:potion"
+          },
+          {
+            "fabric:type": "porting_lib:components",
+            "components": {
+              "minecraft:potion_contents": {
+                "potion": "minecraft:strong_swiftness"
+              }
+            },
+            "items": "minecraft:potion"
+          }
+        ]
+      }
     },
     "pattern": [
       "MPM",

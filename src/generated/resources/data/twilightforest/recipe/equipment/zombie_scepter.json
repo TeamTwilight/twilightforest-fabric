@@ -2,17 +2,38 @@
   "type": "twilightforest:scepter_repair",
   "durability": 9,
   "repair_ingredients": [
-    [
-      {
-        "item": "minecraft:potion"
-      },
-      {
-        "item": "minecraft:potion"
-      },
-      {
-        "item": "minecraft:potion"
-      }
-    ],
+    {
+      "fabric:type": "fabric:any",
+      "ingredients": [
+        {
+          "fabric:type": "porting_lib:components",
+          "components": {
+            "minecraft:potion_contents": {
+              "potion": "minecraft:strength"
+            }
+          },
+          "items": "minecraft:potion"
+        },
+        {
+          "fabric:type": "porting_lib:components",
+          "components": {
+            "minecraft:potion_contents": {
+              "potion": "minecraft:long_strength"
+            }
+          },
+          "items": "minecraft:potion"
+        },
+        {
+          "fabric:type": "porting_lib:components",
+          "components": {
+            "minecraft:potion_contents": {
+              "potion": "minecraft:strong_strength"
+            }
+          },
+          "items": "minecraft:potion"
+        }
+      ]
+    },
     {
       "item": "minecraft:rotten_flesh"
     }

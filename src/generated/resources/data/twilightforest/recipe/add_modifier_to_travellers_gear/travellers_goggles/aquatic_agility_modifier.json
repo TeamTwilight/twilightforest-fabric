@@ -11,16 +11,31 @@
         "item": "twilightforest:travellers_goggles"
       },
       "s": {
-        "item": "minecraft:slime_ball"
+        "tag": "c:slime_balls"
       },
-      "w": [
-        {
-          "item": "minecraft:potion"
-        },
-        {
-          "item": "minecraft:potion"
-        }
-      ]
+      "w": {
+        "fabric:type": "fabric:any",
+        "ingredients": [
+          {
+            "fabric:type": "porting_lib:components",
+            "components": {
+              "minecraft:potion_contents": {
+                "potion": "minecraft:water_breathing"
+              }
+            },
+            "items": "minecraft:potion"
+          },
+          {
+            "fabric:type": "porting_lib:components",
+            "components": {
+              "minecraft:potion_contents": {
+                "potion": "minecraft:long_water_breathing"
+              }
+            },
+            "items": "minecraft:potion"
+          }
+        ]
+      }
     },
     "pattern": [
       " b",

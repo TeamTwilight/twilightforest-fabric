@@ -1,14 +1,29 @@
 {
   "type": "twilightforest:travellers_gear_modifier_shapeless_recipe",
   "ingredients": [
-    [
-      {
-        "item": "minecraft:potion"
-      },
-      {
-        "item": "minecraft:potion"
-      }
-    ],
+    {
+      "fabric:type": "fabric:any",
+      "ingredients": [
+        {
+          "fabric:type": "porting_lib:components",
+          "components": {
+            "minecraft:potion_contents": {
+              "potion": "minecraft:invisibility"
+            }
+          },
+          "items": "minecraft:potion"
+        },
+        {
+          "fabric:type": "porting_lib:components",
+          "components": {
+            "minecraft:potion_contents": {
+              "potion": "minecraft:long_invisibility"
+            }
+          },
+          "items": "minecraft:potion"
+        }
+      ]
+    },
     {
       "item": "minecraft:ender_eye"
     },

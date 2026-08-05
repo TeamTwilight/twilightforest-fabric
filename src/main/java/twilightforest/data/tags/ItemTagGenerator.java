@@ -2,6 +2,7 @@ package twilightforest.data.tags;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -677,8 +678,7 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 		);
 		getOrCreateTagBuilder(NUGGETS_COPPER).add(TFItems.COPPER_NUGGET.get());
 		getOrCreateTagBuilder(Tags.Items.NUGGETS).addTag(NUGGETS_COPPER);
-		// Tags.Items.SLIME_BALLS is not available in PortingLib 1.21.1
-		// getOrCreateTagBuilder(Tags.Items.SLIME_BALLS).add(TFItems.MAZE_SLIME_BALL.get());
+		getOrCreateTagBuilder(ConventionalItemTags.SLIME_BALLS).add(TFItems.MAZE_SLIME_BALL.get());
 		getOrCreateTagBuilder(Tags.Items.STORAGE_BLOCKS_SLIME).add(TFBlocks.MAZE_SLIME_BLOCK.asItem());
 
 		getOrCreateTagBuilder(RENDER_LOWER_ON_DRYING_RACK)

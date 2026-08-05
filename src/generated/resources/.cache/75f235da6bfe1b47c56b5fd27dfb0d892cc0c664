@@ -1,4 +1,4 @@
-// 1.21.1	2026-08-05T05:02:09.845672288	The Twilight Forest/Languages: en_us for mod: twilightforest
+// 1.21.1	2026-08-05T11:57:10.148565831	The Twilight Forest/Languages: en_us for mod: twilightforest
 b8b1b4889bb1b4124234f0d7434a9644629e7096 assets/twilightforest/tips/ore_magnet.json
 849d8eba943154d7be982ad51e4ddb5c9a1aaa0e assets/twilightforest/tips/key_biome_locations.json
 7b8dff50b13a2a7f5f17e3d3fba445d8764667b6 assets/twilightforest/tips/transformation_tree.json
@@ -22,8 +22,8 @@ a2698f4b6d912ee845447a1e20f14e06484daff1 assets/twilightforest/tips/giant_block.
 08488ec8ce73fdad767330f26b869a4046e9c739 assets/twilightforest/tips/the_lore.json
 544b40796458644c4ac7e10b03ade692fe2c4d93 assets/twilightforest/tips/renewal.json
 f5c8704fda01878bffddb587c799064cbf083f36 assets/twilightforest/tips/structure_conquering.json
-8a8b5d21b51a7292d34c50c8de5abddaed563a82 assets/twilightforest/tips/baby_jockey.json
 010e7f6e11cc8ffc989af8b6d8f83799527f951a assets/twilightforest/tips/maze_map_focus.json
+8a8b5d21b51a7292d34c50c8de5abddaed563a82 assets/twilightforest/tips/baby_jockey.json
 63eec5b3d6be47fb78d3fb80bc6166591583e354 assets/twilightforest/tips/carminite_builder.json
 290d92478e01b33bcaa8da66553918f007e698df assets/twilightforest/tips/moonworm_queen.json
 da325be7fd26516ba3124e887bb89e5825d5c650 assets/twilightforest/tips/labyrinth_vault.json
@@ -60,8 +60,8 @@ d6d73bfc5b2463609d6a8571f7a1c2a9a3865f92 assets/twilightforest/tips/redcap.json
 cbf804c6feccd51b892d3941ddbff85caca6941c assets/twilightforest/tips/hydra_chop.json
 3af80db9642cf21bc5e470d77b36772072f79845 assets/twilightforest/tips/magic_leaves.json
 6aee7802b01f24203a9849173d20c2cd4c13de0b assets/twilightforest/tips/worldgen_features.json
-5656019bfa4a6d576164f9ee85e73a7b6d88ba2f assets/twilightforest/tips/key_biomes.json
 6db33939c3acf582f6c70a070866bd89878cfbb5 assets/twilightforest/tips/ur_ghast.json
+5656019bfa4a6d576164f9ee85e73a7b6d88ba2f assets/twilightforest/tips/key_biomes.json
 27501cf6673b9f84152fe49e2079304343ea573a assets/twilightforest/tips/ominous_fire.json
 9e38a0524fcfe8fa3e76e439c61ecfb889a65b48 assets/twilightforest/tips/minoshroom.json
 e30b5607cb56ccf03a8d6114e3e1204b5c355c35 assets/twilightforest/tips/ghast_trap.json

@@ -1,4 +1,4 @@
-// 1.21.1	2026-08-05T05:02:09.846772006	The Twilight Forest/TwilightForest Item and BlockItem models
+// 1.21.1	2026-08-05T11:57:10.149908245	The Twilight Forest/TwilightForest Item and BlockItem models
 f9bea0cd2dcd603057e136167935ec827f15f565 assets/twilightforest/models/item/weathered_deadrock.json
 71bc42362895d9b1b8e5661199cc8526f6e1cbb3 assets/twilightforest/models/item/stale_bread.json
 40f22ccfa085414838c7cab1bb685b6270733126 assets/twilightforest/models/item/root.json
@@ -298,8 +298,8 @@ e2fe7dcbd99ec57c36d0044e45543f01d1017ce7 assets/twilightforest/models/item/green
 647e016ca809e3b4ed9986fe86b8a42503d3925e assets/twilightforest/models/item/arctic_helmet_gold_trim.json
 769efdc55d827ca471842cda8508ab3bd43f1442 assets/twilightforest/models/item/hollow_canopy_log.json
 226c3441a79c7ab365bf47892c6039e62e81a1b3 assets/twilightforest/models/item/cut_mazestone.json
-ee065f8e4f9df73fd8cec17cadf3c219607928da assets/twilightforest/models/item/stripped_twilight_oak_log.json
 94bf93398841347bf1044e34ad61322386678dae assets/twilightforest/models/item/hollow_oak_sapling.json
+ee065f8e4f9df73fd8cec17cadf3c219607928da assets/twilightforest/models/item/stripped_twilight_oak_log.json
 1938fba8d1e0136888af62aca7efadc369840b43 assets/twilightforest/models/item/yeti_leggings_gold_trim.json
 7d4977482c454d00a3147600f0e1d0458d6ee7db assets/twilightforest/models/item/sorting_planks.json
 413d1b50666d17e312d9050a3ab4f5839cc9ad32 assets/twilightforest/models/item/mining_trapped_chest.json
