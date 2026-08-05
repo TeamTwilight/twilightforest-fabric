@@ -1,4 +1,4 @@
-// 1.21.1	2026-08-05T13:48:44.445966602	The Twilight Forest/twilight/template_definition generator for Camp in twilightforest
+// 1.21.1	2026-08-05T15:55:25.583628216	The Twilight Forest/twilight/template_definition generator for Camp in twilightforest
 71be33686d7161546782210477fafe3ec8a73d04 data/twilightforest/twilight/template_definition/camp/campfire_west.json
 0623c2a511a40866f58a9099731e6dad52879d41 data/twilightforest/twilight/template_definition/camp/path/intersection_right.json
 bac1af2b52432caa1a41368ee9c7fbcd504e38ed data/twilightforest/twilight/template_definition/camp/path/path_2x6.json
@@ -26,8 +26,8 @@ cdfc8a321efd4753073e382179427fcd2c238dbc data/twilightforest/twilight/template_d
 3dfce1f61fb76199aa2fa2afb1c5ae4d7a1dffe5 data/twilightforest/twilight/template_definition/camp/deco/blackberry_wall.json
 1598bf87e488d85a21b8c193bbcbe2e26bd071ab data/twilightforest/twilight/template_definition/camp/deco/garden_u.json
 3dfce1f61fb76199aa2fa2afb1c5ae4d7a1dffe5 data/twilightforest/twilight/template_definition/camp/deco/berries_staked.json
-3f6c38509251890db5c7a61cafc79adab3f9232a data/twilightforest/twilight/template_definition/camp/path/path_3x4.json
 3f6c38509251890db5c7a61cafc79adab3f9232a data/twilightforest/twilight/template_definition/camp/path/path_2x4.json
+3f6c38509251890db5c7a61cafc79adab3f9232a data/twilightforest/twilight/template_definition/camp/path/path_3x4.json
 71be33686d7161546782210477fafe3ec8a73d04 data/twilightforest/twilight/template_definition/camp/campfire_south.json
 cdfc8a321efd4753073e382179427fcd2c238dbc data/twilightforest/twilight/template_definition/camp/deco/lumber2.json
 1598bf87e488d85a21b8c193bbcbe2e26bd071ab data/twilightforest/twilight/template_definition/camp/deco/compost_small.json

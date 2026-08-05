@@ -1,4 +1,4 @@
-// 1.21.1	2026-08-05T13:48:44.455197037	The Twilight Forest/Twilight Forest Block Tags
+// 1.21.1	2026-08-05T15:55:25.592106787	The Twilight Forest/Twilight Forest Block Tags
 f98aa64763572a677e5000aa195fdee107380dcc data/minecraft/tags/block/mineable/axe.json
 db6195d77bd598771b111d12750ba39f41fe35c7 data/twilightforest/tags/block/fire_jet_fuel.json
 60fd37e2676a3a670a13bc154a87988461a430a2 data/twilightforest/tags/block/worldgen_replaceables.json
@@ -32,10 +32,12 @@ f0813a14ba178a941ba37c4059a25e6b19f77091 data/minecraft/tags/block/wooden_button
 e33c5143db03e28da803a9f265902c39e93589e2 data/minecraft/tags/block/overworld_carver_replaceables.json
 dbb45e0d36df554b46ceb4028ec61bc7b7a6315a data/c/tags/block/chests/trapped.json
 2fa1fff55900c712d2a12cfe04f838cb1e43de3d data/twilightforest/tags/block/incorrect_for_knightmetal_tool.json
+44805839a86579813bbaa5d7948e5adc4a4421a7 data/c/tags/block/stripped_woods.json
 97652f431059f64ffc5747f498cdcf278ddd0555 data/twilightforest/tags/block/darkwood_logs.json
 5f9815895eca4e0b90e87d247658a28076d040a3 data/twilightforest/tags/block/small_lakes_dont_replace.json
 79857556646495e686a152e399b617fe7339b1a8 data/twilightforest/tags/block/penguins_spawnable_on.json
 b8b7b202d11aaf2d0c6d5c9fdd0bc9e1be9de7df data/minecraft/tags/block/mineable/pickaxe.json
+96e133a68b59752179daf0ace7f09c7aa6f86a6d data/c/tags/block/stripped_logs.json
 211134157771c86a72a0c5a1985c2b05da55729b data/minecraft/tags/block/fence_gates.json
 e76ac35d93be5d3604434978c6f388542c03f06a data/twilightforest/tags/block/hollow_logs_climbable.json
 8425f336c2742874f4e2c74f5faeea967993632d data/minecraft/tags/block/wool_carpets.json

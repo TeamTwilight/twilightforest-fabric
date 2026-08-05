@@ -11,7 +11,6 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
-import io.github.fabricators_of_create.porting_lib.tags.Tags;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
@@ -120,9 +119,7 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 			.addTag(TWILIGHT_OAK_LOGS).addTag(CANOPY_LOGS).addTag(MANGROVE_LOGS)
 			.addTag(TIME_LOGS).addTag(TRANSFORMATION_LOGS).addTag(MINING_LOGS).addTag(SORTING_LOGS);
 
-		// Tags.Items.STRIPPED_LOGS/STRIPPED_WOODS are not available in PortingLib 1.21.1
-		/*
-		getOrCreateTagBuilder(Tags.Items.STRIPPED_LOGS).add(
+		getOrCreateTagBuilder(ConventionalItemTags.STRIPPED_LOGS).add(
 			TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.value().asItem(),
 			TFBlocks.STRIPPED_CANOPY_LOG.value().asItem(),
 			TFBlocks.STRIPPED_MANGROVE_LOG.value().asItem(),
@@ -132,11 +129,8 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 			TFBlocks.STRIPPED_MINING_LOG.value().asItem(),
 			TFBlocks.STRIPPED_SORTING_LOG.value().asItem()
 		);
-		*/
 
-		// Tags.Items.STRIPPED_LOGS is not available in PortingLib 1.21.1
-		/*
-		getOrCreateTagBuilder(Tags.Items.STRIPPED_WOODS).add(
+		getOrCreateTagBuilder(ConventionalItemTags.STRIPPED_WOODS).add(
 			TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD.value().asItem(),
 			TFBlocks.STRIPPED_CANOPY_WOOD.value().asItem(),
 			TFBlocks.STRIPPED_MANGROVE_WOOD.value().asItem(),
@@ -146,7 +140,6 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 			TFBlocks.STRIPPED_MINING_WOOD.value().asItem(),
 			TFBlocks.STRIPPED_SORTING_WOOD.value().asItem()
 		);
-		*/
 
 		getOrCreateTagBuilder(ItemTags.SAPLINGS).add(
 			TFBlocks.TWILIGHT_OAK_SAPLING.asItem(),
@@ -250,7 +243,7 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 			TFBlocks.SORTING_GATE.asItem()
 		);
 
-		getOrCreateTagBuilder(Tags.Items.FENCE_GATES_WOODEN).add(
+		getOrCreateTagBuilder(ConventionalItemTags.WOODEN_FENCE_GATES).add(
 			TFBlocks.TWILIGHT_OAK_GATE.asItem(),
 			TFBlocks.CANOPY_GATE.asItem(),
 			TFBlocks.MANGROVE_GATE.asItem(),
@@ -305,7 +298,7 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 			TFBlocks.SORTING_DOOR.asItem()
 		);
 
-		getOrCreateTagBuilder(Tags.Items.CHESTS_WOODEN)
+		getOrCreateTagBuilder(ConventionalItemTags.WOODEN_CHESTS)
 			.add(
 				TFBlocks.TWILIGHT_OAK_CHEST.asItem(),
 				TFBlocks.CANOPY_CHEST.asItem(),
@@ -327,7 +320,7 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 				TFBlocks.SORTING_TRAPPED_CHEST.asItem()
 			);
 
-		getOrCreateTagBuilder(Tags.Items.CHESTS_TRAPPED).add(
+		getOrCreateTagBuilder(ConventionalItemTags.TRAPPED_CHESTS).add(
 			TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.asItem(),
 			TFBlocks.CANOPY_TRAPPED_CHEST.asItem(),
 			TFBlocks.MANGROVE_TRAPPED_CHEST.asItem(),
@@ -345,7 +338,7 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 		this.copy(BlockTagGenerator.STORAGE_BLOCKS_KNIGHTMETAL, STORAGE_BLOCKS_KNIGHTMETAL);
 		this.copy(BlockTagGenerator.STORAGE_BLOCKS_STEELEAF, STORAGE_BLOCKS_STEELEAF);
 
-		getOrCreateTagBuilder(Tags.Items.STORAGE_BLOCKS)
+		getOrCreateTagBuilder(ConventionalItemTags.STORAGE_BLOCKS)
 			.addTag(STORAGE_BLOCKS_FIERY).addTag(STORAGE_BLOCKS_ARCTIC_FUR)
 			.addTag(STORAGE_BLOCKS_CARMINITE).addTag(STORAGE_BLOCKS_IRONWOOD)
 			.addTag(STORAGE_BLOCKS_KNIGHTMETAL).addTag(STORAGE_BLOCKS_STEELEAF);
@@ -355,7 +348,7 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 		this.copy(BlockTagGenerator.DRYING_RACKS, DRYING_RACKS);
 
 		getOrCreateTagBuilder(PAPER).add(Items.PAPER);
-		getOrCreateTagBuilder(Tags.Items.FEATHERS).add(TFItems.RAVEN_FEATHER.get());
+		getOrCreateTagBuilder(ConventionalItemTags.FEATHERS).add(TFItems.RAVEN_FEATHER.get());
 
 		getOrCreateTagBuilder(FIERY_VIAL).add(TFItems.FIERY_BLOOD.get(), TFItems.FIERY_TEARS.get());
 
@@ -367,22 +360,22 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 		getOrCreateTagBuilder(STEELEAF_INGOTS).add(TFItems.STEELEAF_INGOT.get());
 		getOrCreateTagBuilder(WROUGHT_IRON_INGOTS).add(TFItems.WROUGHT_IRON_BAR.get());
 
-		getOrCreateTagBuilder(Tags.Items.GEMS).addTag(CARMINITE_GEMS);
+		getOrCreateTagBuilder(ConventionalItemTags.GEMS).addTag(CARMINITE_GEMS);
 
-		getOrCreateTagBuilder(Tags.Items.INGOTS)
+		getOrCreateTagBuilder(ConventionalItemTags.INGOTS)
 			.addTag(IRONWOOD_INGOTS).addTag(FIERY_INGOTS)
 			.addTag(KNIGHTMETAL_INGOTS).addTag(STEELEAF_INGOTS);
 
-		getOrCreateTagBuilder(Tags.Items.NUGGETS)
+		getOrCreateTagBuilder(ConventionalItemTags.NUGGETS)
 			.add(TFItems.COPPER_NUGGET.asItem());
 		getOrCreateTagBuilder(COPPER_NUGGETS)
 			.add(TFItems.COPPER_NUGGET.asItem());
 
 		getOrCreateTagBuilder(RAW_MATERIALS_IRONWOOD).add(TFItems.RAW_IRONWOOD.get());
 		getOrCreateTagBuilder(RAW_MATERIALS_KNIGHTMETAL).add(TFItems.ARMOR_SHARD_CLUSTER.get());
-		getOrCreateTagBuilder(Tags.Items.RAW_MATERIALS).addTag(RAW_MATERIALS_IRONWOOD).addTag(RAW_MATERIALS_KNIGHTMETAL);
+		getOrCreateTagBuilder(ConventionalItemTags.RAW_MATERIALS).addTag(RAW_MATERIALS_IRONWOOD).addTag(RAW_MATERIALS_KNIGHTMETAL);
 
-		getOrCreateTagBuilder(PORTAL_ACTIVATOR).addOptional(Tags.Items.GEMS_DIAMOND.location());
+		getOrCreateTagBuilder(PORTAL_ACTIVATOR).addOptional(ConventionalItemTags.DIAMOND_GEMS.location());
 
 		getOrCreateTagBuilder(ItemTags.BOATS).add(
 			TFItems.TWILIGHT_OAK_BOAT.get(), TFItems.CANOPY_BOAT.get(),
@@ -429,13 +422,13 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 		);
 
 		getOrCreateTagBuilder(KOBOLD_PACIFICATION_BREADS).add(Items.BREAD);
-		getOrCreateTagBuilder(BOAR_TEMPT_ITEMS).addOptionalTag(Tags.Items.CROPS_CARROT.location()).addOptionalTag(Tags.Items.CROPS_POTATO.location()).addOptionalTag(Tags.Items.CROPS_BEETROOT.location());
-		getOrCreateTagBuilder(DEER_TEMPT_ITEMS).add(Items.APPLE).add(TFItems.SHIKA_SENBEI.get()).addOptionalTag(Tags.Items.CROPS_WHEAT.location());
-		getOrCreateTagBuilder(DWARF_RABBIT_TEMPT_ITEMS).add(Items.GOLDEN_CARROT).add(Items.DANDELION).addOptionalTag(Tags.Items.CROPS_CARROT.location());
+		getOrCreateTagBuilder(BOAR_TEMPT_ITEMS).addOptionalTag(ConventionalItemTags.CARROT_CROPS.location()).addOptionalTag(ConventionalItemTags.POTATO_CROPS.location()).addOptionalTag(ConventionalItemTags.BEETROOT_CROPS.location());
+		getOrCreateTagBuilder(DEER_TEMPT_ITEMS).add(Items.APPLE).add(TFItems.SHIKA_SENBEI.get()).addOptionalTag(ConventionalItemTags.WHEAT_CROPS.location());
+		getOrCreateTagBuilder(DWARF_RABBIT_TEMPT_ITEMS).add(Items.GOLDEN_CARROT).add(Items.DANDELION).addOptionalTag(ConventionalItemTags.CARROT_CROPS.location());
 		getOrCreateTagBuilder(PENGUIN_TEMPT_ITEMS).addOptionalTag(ItemTags.FISHES.location());
-		getOrCreateTagBuilder(RAVEN_TEMPT_ITEMS).addOptionalTag(Tags.Items.SEEDS.location());
-		getOrCreateTagBuilder(SQUIRREL_TEMPT_ITEMS).addOptionalTag(Tags.Items.SEEDS.location());
-		getOrCreateTagBuilder(TINY_BIRD_TEMPT_ITEMS).addOptionalTag(Tags.Items.SEEDS.location());
+		getOrCreateTagBuilder(RAVEN_TEMPT_ITEMS).addOptionalTag(ConventionalItemTags.SEEDS.location());
+		getOrCreateTagBuilder(SQUIRREL_TEMPT_ITEMS).addOptionalTag(ConventionalItemTags.SEEDS.location());
+		getOrCreateTagBuilder(TINY_BIRD_TEMPT_ITEMS).addOptionalTag(ConventionalItemTags.SEEDS.location());
 
 		getOrCreateTagBuilder(BANNED_UNCRAFTING_INGREDIENTS).add(
 			TFBlocks.INFESTED_TOWERWOOD.asItem(),
@@ -447,7 +440,7 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 			TFItems.TRANSFORMATION_POWDER.get());
 
 		getOrCreateTagBuilder(BANNED_UNCRAFTABLES);
-		getOrCreateTagBuilder(UNCRAFTING_IGNORES_COST).addOptionalTag(Tags.Items.RODS_WOODEN.location());
+		getOrCreateTagBuilder(UNCRAFTING_IGNORES_COST).addOptionalTag(ConventionalItemTags.WOODEN_RODS.location());
 
 		getOrCreateTagBuilder(KEPT_ON_DEATH).add(TFItems.TOWER_KEY.get(), TFItems.PHANTOM_HELMET.get(), TFItems.PHANTOM_CHESTPLATE.get());
 
@@ -529,8 +522,8 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 		getOrCreateTagBuilder(ItemTags.AXES).add(TFItems.IRONWOOD_AXE.get(), TFItems.STEELEAF_AXE.get(), TFItems.KNIGHTMETAL_AXE.get(), TFItems.GOLDEN_MINOTAUR_AXE.get(), TFItems.DIAMOND_MINOTAUR_AXE.get());
 		getOrCreateTagBuilder(ItemTags.SHOVELS).add(TFItems.IRONWOOD_SHOVEL.get(), TFItems.STEELEAF_SHOVEL.get());
 		getOrCreateTagBuilder(ItemTags.HOES).add(TFItems.IRONWOOD_HOE.get(), TFItems.STEELEAF_HOE.get());
-		getOrCreateTagBuilder(Tags.Items.TOOLS_SHIELD).add(TFItems.KNIGHTMETAL_SHIELD.get());
-		getOrCreateTagBuilder(Tags.Items.TOOLS_BOW).add(TFItems.TRIPLE_BOW.get(), TFItems.SEEKER_BOW.get(), TFItems.ICE_BOW.get(), TFItems.ENDER_BOW.get());
+		getOrCreateTagBuilder(ConventionalItemTags.SHIELD_TOOLS).add(TFItems.KNIGHTMETAL_SHIELD.get());
+		getOrCreateTagBuilder(ConventionalItemTags.BOW_TOOLS).add(TFItems.TRIPLE_BOW.get(), TFItems.SEEKER_BOW.get(), TFItems.ICE_BOW.get(), TFItems.ENDER_BOW.get());
 
 		getOrCreateTagBuilder(ItemTags.CLUSTER_MAX_HARVESTABLES).add(
 			TFItems.IRONWOOD_PICKAXE.get(),
@@ -576,8 +569,6 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 		);
 		getOrCreateTagBuilder(ItemTags.BEACON_PAYMENT_ITEMS).addTags(IRONWOOD_INGOTS, STEELEAF_INGOTS, KNIGHTMETAL_INGOTS, FIERY_INGOTS);
 
-		// .remove() 在 vanilla tag builders 中不可用，已注释掉
-		/*
 		getOrCreateTagBuilder(ItemTags.TRIMMABLE_ARMOR)
 			.remove(TFItems.YETI_HELMET.get())
 			.remove(TFItems.TRAVELLERS_GOGGLES.get())
@@ -586,7 +577,6 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 			.remove(TFItems.TRAVELLERS_BELT.get())
 			.remove(TFItems.TRAVELLERS_WINGS.get())
 			.remove(TFItems.TRAVELLERS_BOOTS.get());
-		*/
 
 		getOrCreateTagBuilder(ItemTags.HEAD_ARMOR).add(
 			TFItems.IRONWOOD_HELMET.get(),
@@ -640,15 +630,14 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 			TFItems.TRIPLE_BOW.get(), TFItems.SEEKER_BOW.get(), TFItems.ICE_BOW.get(), TFItems.ENDER_BOW.get(),
 			TFItems.BLOCK_AND_CHAIN.get(), TFItems.KNIGHTMETAL_SHIELD.get(), TFItems.ORE_MAGNET.get(),
 			TFItems.PEACOCK_FEATHER_FAN.get(), TFItems.CRUMBLE_HORN.get());
-		// .remove() 在 vanilla tag builders 中不可用，已注释掉
-		/*
+
 		getOrCreateTagBuilder(ItemTags.FIRE_ASPECT_ENCHANTABLE).remove(TFItems.FIERY_SWORD.get(), TFItems.ICE_SWORD.get());
 		getOrCreateTagBuilder(ItemTags.VANISHING_ENCHANTABLE).remove(TFItems.PHANTOM_HELMET.get(), TFItems.PHANTOM_CHESTPLATE.get());
 		getOrCreateTagBuilder(ItemTags.EQUIPPABLE_ENCHANTABLE).remove(TFItems.PHANTOM_HELMET.get(), TFItems.PHANTOM_CHESTPLATE.get());
-		*/
+
 		getOrCreateTagBuilder(ItemTags.BREAKS_DECORATED_POTS).add(TFItems.BLOCK_AND_CHAIN.get());
 
-		getOrCreateTagBuilder(Tags.Items.FOODS).addTag(FOODS_JERKY).add(TFItems.GELATINOUS_SLIME_DROP.get(), TFItems.GELATINOUS_MAZE_SLIME_DROP.get(), TFItems.BERRY_MEDLEY.get(), TFItems.MAZE_WAFER.get());
+		getOrCreateTagBuilder(ConventionalItemTags.FOODS).addTag(FOODS_JERKY).add(TFItems.GELATINOUS_SLIME_DROP.get(), TFItems.GELATINOUS_MAZE_SLIME_DROP.get(), TFItems.BERRY_MEDLEY.get(), TFItems.MAZE_WAFER.get());
 		getOrCreateTagBuilder(FOODS_JERKY).add(
 			TFItems.MONSTER_JERKY.get(), TFItems.BEEF_JERKY.get(),
 			TFItems.PORK_JERKY.get(), TFItems.CHICKEN_JERKY.get(),
@@ -656,39 +645,38 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 			TFItems.VENISON_JERKY.get(), TFItems.MEEF_JERKY.get(),
 			TFItems.COD_JERKY.get(), TFItems.SALMON_JERKY.get(),
 			TFItems.TROPICAL_FISH_JERKY.get(), TFItems.FUGU_JERKY.get());
-		// Tags.Items.FOODS_BERRY is not available in PortingLib 1.21.1
-		/*
-		getOrCreateTagBuilder(Tags.Items.FOODS_BERRY).add(
+
+		getOrCreateTagBuilder(ConventionalItemTags.BERRY_FOODS).add(
 			TFItems.TORCHBERRIES.get(), TFItems.RASPBERRY.get(),
 			TFItems.BLACKBERRY.get(), TFItems.BLUEBERRY.get(),
 			TFItems.MALOBERRY.get(), TFItems.DUSKBERRY.get(),
 			TFItems.SKYBERRY.get(), TFItems.BLIGHTBERRY.get(),
 			TFItems.STINGBERRY.get());
-		getOrCreateTagBuilder(Tags.Items.FOODS_RAW_MEAT).add(TFItems.RAW_VENISON.get(), TFItems.RAW_MEEF.get());
-		getOrCreateTagBuilder(Tags.Items.FOODS_COOKED_MEAT).add(TFItems.COOKED_VENISON.get(), TFItems.COOKED_MEEF.get(), TFItems.HYDRA_CHOP.get());
-		getOrCreateTagBuilder(Tags.Items.FOODS_SOUP).add(TFItems.MEEF_STROGANOFF.get(), TFItems.MOSS_SOUP.get());
-		*/
-		getOrCreateTagBuilder(Tags.Items.FOODS_EDIBLE_WHEN_PLACED).add(TFItems.EXPERIMENT_115.get());
-		getOrCreateTagBuilder(Tags.Items.ROPES).add(TFItems.ROPE.get());
-		getOrCreateTagBuilder(Tags.Items.MUSHROOMS).add(TFBlocks.MUSHGLOOM.asItem());
-		getOrCreateTagBuilder(Tags.Items.MUSIC_DISCS).add(
+		getOrCreateTagBuilder(ConventionalItemTags.RAW_MEAT_FOODS).add(TFItems.RAW_VENISON.get(), TFItems.RAW_MEEF.get());
+		getOrCreateTagBuilder(ConventionalItemTags.COOKED_MEAT_FOODS).add(TFItems.COOKED_VENISON.get(), TFItems.COOKED_MEEF.get(), TFItems.HYDRA_CHOP.get());
+		getOrCreateTagBuilder(ConventionalItemTags.SOUP_FOODS).add(TFItems.MEEF_STROGANOFF.get(), TFItems.MOSS_SOUP.get());
+
+		getOrCreateTagBuilder(ConventionalItemTags.EDIBLE_WHEN_PLACED_FOODS).add(TFItems.EXPERIMENT_115.get());
+		getOrCreateTagBuilder(ConventionalItemTags.ROPES).add(TFItems.ROPE.get());
+		getOrCreateTagBuilder(ConventionalItemTags.MUSHROOMS).add(TFBlocks.MUSHGLOOM.asItem());
+		getOrCreateTagBuilder(ConventionalItemTags.MUSIC_DISCS).add(
 			TFItems.MUSIC_DISC_RADIANCE.get(), TFItems.MUSIC_DISC_STEPS.get(), TFItems.MUSIC_DISC_SUPERSTITIOUS.get(),
 			TFItems.MUSIC_DISC_HOME.get(), TFItems.MUSIC_DISC_WAYFARER.get(), TFItems.MUSIC_DISC_FINDINGS.get(),
 			TFItems.MUSIC_DISC_MAKER.get(), TFItems.MUSIC_DISC_THREAD.get(), TFItems.MUSIC_DISC_MOTION.get()
 		);
 		getOrCreateTagBuilder(NUGGETS_COPPER).add(TFItems.COPPER_NUGGET.get());
-		getOrCreateTagBuilder(Tags.Items.NUGGETS).addTag(NUGGETS_COPPER);
+		getOrCreateTagBuilder(ConventionalItemTags.NUGGETS).addTag(NUGGETS_COPPER);
 		getOrCreateTagBuilder(ConventionalItemTags.SLIME_BALLS).add(TFItems.MAZE_SLIME_BALL.get());
-		getOrCreateTagBuilder(Tags.Items.STORAGE_BLOCKS_SLIME).add(TFBlocks.MAZE_SLIME_BLOCK.asItem());
+		getOrCreateTagBuilder(ConventionalItemTags.STORAGE_BLOCKS_SLIME).add(TFBlocks.MAZE_SLIME_BLOCK.asItem());
 
 		getOrCreateTagBuilder(RENDER_LOWER_ON_DRYING_RACK)
 			.add(TFItems.GELATINOUS_SLIME_DROP.get(), TFItems.GELATINOUS_MAZE_SLIME_DROP.get())
 			.add(TFItems.ZOMBIE_SKULL_CANDLE.get(), TFItems.SKELETON_SKULL_CANDLE.get(), TFItems.WITHER_SKELETON_SKULL_CANDLE.get(), TFItems.CREEPER_SKULL_CANDLE.get(), TFItems.PLAYER_SKULL_CANDLE.get(), TFItems.PIGLIN_SKULL_CANDLE.get())
 			.add(Items.POINTED_DRIPSTONE, Items.RECOVERY_COMPASS, Items.CLOCK, Items.SPYGLASS, Items.TRIDENT)
 			.addOptionalTag(ItemTags.BANNERS.location())
-			.addOptionalTag(Tags.Items.TOOLS.location());
+			.addOptionalTag(ConventionalItemTags.TOOLS.location());
 			// .remove() 在 vanilla tag builders 中不可用
-			// .remove(Tags.Items.TOOLS_SHIELD);
+			// .remove(ConventionalItemTags.TOOLS_SHIELD);
 
 		getOrCreateTagBuilder(TROPHIES).add(
 			TFItems.NAGA_TROPHY.get(), TFItems.LICH_TROPHY.get(),
@@ -696,7 +684,7 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 			TFItems.KNIGHT_PHANTOM_TROPHY.get(), TFItems.UR_GHAST_TROPHY.get(),
 			TFItems.ALPHA_YETI_TROPHY.get(), TFItems.SNOW_QUEEN_TROPHY.get());
 
-		getOrCreateTagBuilder(EMPERORS_CLOTH_APPLICABLE).add(Items.ELYTRA).addOptionalTag(Tags.Items.ARMORS.location());
+		getOrCreateTagBuilder(EMPERORS_CLOTH_APPLICABLE).add(Items.ELYTRA).addOptionalTag(ConventionalItemTags.ARMORS.location());
 	}
 
 	public static TagKey<Item> create(String tagName) {
