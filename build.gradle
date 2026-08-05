@@ -118,16 +118,19 @@ dependencies {
 		include(modImplementation "io.github.fabricators_of_create.Porting-Lib:${module}:${porting_lib_version}+${minecraft_version}")
 	}
 
-	// ModMenu for config screen
-	modCompileOnly "com.terraformersmc:modmenu:${modmenu_version}"
-
-	// Compat mods (compileOnly for optional mods)
-	modCompileOnly "mezz.jei:jei-${minecraft_version}-fabric:${jei_version}"
+	// Compat mods
 	modCompileOnly "dev.emi:trinkets:${trinkets_version}"
+
+	// Make sure to only enable one recipe viewer at a time during testing
+	modCompileOnly "mezz.jei:jei-${minecraft_version}-fabric:${jei_version}"
 	modCompileOnly "me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}"
 	modCompileOnly "dev.emi:emi-fabric:${emi_version}+${minecraft_version}"
 
-	// Jade (compileOnly + localRuntime for dev environment; not a mandatory dependency)
+	// ModMenu for config screen
+	modCompileOnly "com.terraformersmc:modmenu:${modmenu_version}"
+	modRuntimeOnly "com.terraformersmc:modmenu:${modmenu_version}"
+
+	// Jade (nice to have in dev environment as well)
 	modCompileOnly "maven.modrinth:jade:${jade_version}"
 	modLocalRuntime "maven.modrinth:jade:${jade_version}"
 }
