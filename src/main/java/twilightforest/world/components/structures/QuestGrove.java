@@ -23,7 +23,6 @@ import twilightforest.util.features.FeaturePlacers;
 import twilightforest.world.components.processors.StoneBricksVariants;
 import twilightforest.world.components.processors.TargetedRotProcessor;
 
-
 public class QuestGrove extends TwilightTemplateStructurePiece {
 	private static final TargetedRotProcessor MOSSY_BRICK_DECAY = new TargetedRotProcessor(ImmutableSet.of(Blocks.MOSSY_STONE_BRICKS.defaultBlockState()), 0.5f);
 
