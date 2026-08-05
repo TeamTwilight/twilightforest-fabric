@@ -855,6 +855,13 @@ public class TFClientSetup implements ClientModInitializer {
 		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.ENCASED_FIRE_JET.get(), cutout);
 		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.ENCASED_SMOKER.get(), cutout);
 
+		// Castle rune bricks use a composite model with a cutout runes overlay on a solid brick base.
+		// Register them for cutout so the runes render with alpha testing on Fabric.
+		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get(), cutout);
+		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get(), cutout);
+		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.PINK_CASTLE_RUNE_BRICK.get(), cutout);
+		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.BLUE_CASTLE_RUNE_BRICK.get(), cutout);
+
 		// Register translucent render layer for force field blocks so their BlockItems render with alpha blending
 		var translucent = net.minecraft.client.renderer.RenderType.translucent();
 		BlockRenderLayerMap.INSTANCE.putBlock(TFBlocks.PINK_FORCE_FIELD.get(), translucent);

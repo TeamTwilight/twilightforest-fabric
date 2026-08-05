@@ -78,7 +78,8 @@ public class PortingLibEmissiveModel extends ForwardingBakedModel {
 	}
 
 	private static void emit(QuadEmitter emitter, BakedQuad quad) {
-		boolean emissive = quad.getSprite().contents().name().getPath().contains("tower_device_level_");
+		String path = quad.getSprite().contents().name().getPath();
+		boolean emissive = path.contains("tower_device_level_") || path.contains("castleblock_magic_");
 		emitter.fromVanilla(quad, emissive ? EMISSIVE_MATERIAL : CUTOUT_MATERIAL, null);
 		emitter.emit();
 	}
