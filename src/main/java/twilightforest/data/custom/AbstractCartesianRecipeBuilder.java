@@ -21,10 +21,19 @@ abstract class AbstractCartesianRecipeBuilder<R> {
 		this.shouldSplit = shouldSplit;
 	}
 
+	// Patched to work with convention tags on Fabric
 	protected List<Ingredient> wrap(Ingredient ingredient) {
-		return shouldSplit.test(ingredient)
-			? Arrays.stream(ingredient.getItems()).map(Ingredient::of).toList()
-			: List.of(ingredient);
+		if (shouldSplit.test(ingredient)) {
+			var items = ingredient.getItems();
+
+			if (items.length > 0) {
+				return Arrays.stream(items)
+					.map(Ingredient::of)
+					.toList();
+			}
+		}
+
+		return List.of(ingredient);
 	}
 
 	protected void addSlot(Ingredient ingredient) {
