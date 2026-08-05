@@ -287,10 +287,6 @@ accessible method net/minecraft/client/particle/SpellParticle <init> (Lnet/minec
 # ShieldLayer (renders quad lists for shield models)
 accessible method net/minecraft/client/renderer/entity/ItemRenderer renderQuadList (Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;Ljava/util/List;Lnet/minecraft/world/item/ItemStack;II)V
 
-# WeightedBakedModelMixin (delegates emitBlockQuads to randomly selected child model)
-accessible field net/minecraft/client/resources/model/WeightedBakedModel list Ljava/util/List;
-accessible field net/minecraft/client/resources/model/WeightedBakedModel totalWeight I
-
 # TFShaders - ShaderInstance constructor is public in 1.21.1, no access widener needed
 
 # TFGameRules (1.21.1 registration API is private/package-private: GameRules.register
