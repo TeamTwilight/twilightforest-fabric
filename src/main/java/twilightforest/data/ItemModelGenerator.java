@@ -962,9 +962,16 @@ public class ItemModelGenerator extends ItemModelProvider {
 	private void toGiantItemModel(DeferredHolder<Item, Item> item, ResourceLocation parent, ItemModelBuilder base, int x, int y) {
 		String name = item.getId().getPath();
 
-		// Use giant_tool_base as parent with the stone texture for proper display transforms
-		// The separate_transforms loader is not available in this version of PortingLib
+		// Main model uses giant_tool_base as parent with stone texture for proper giant display transforms
 		withExistingParent(name, base.getLocation()).texture("layer0", parent);
+
+		// GUI model renders an 8×8 cropped region of the tool texture, creating a zoomed-in "giant" look in the inventory
+		getBuilder(name + "_gui")
+			.texture("all", parent)
+			.element()
+			.from(0, 0, 0).to(16, 16, 0)
+			.face(Direction.SOUTH).texture("#all").uvs(x, y, x + 8, y + 8).tintindex(0).end()
+			.end();
 	}
 
 	private void trimmedArmor(DeferredHolder<Item, ArmorItem> armor) {
