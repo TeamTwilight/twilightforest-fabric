@@ -244,13 +244,13 @@ public class TravellersGearLogic {
 		if (instance != null) // Increase safe fall distance so the player can land up to 2 blocks below their starting height after performing a double jump at peak height without taking fall damage
 			instance.addOrUpdateTransientModifier(TFAttributeModifiers.TRAVELLERS_DOUBLE_JUMP_SAFE_FALL_DISTANCE);
 
-		if (player.getItemBySlot(EquipmentSlot.LEGS).is(TFItems.TRAVELLERS_WINGS)) {
+		if (player.getItemBySlot(EquipmentSlot.LEGS).is(TFItems.TRAVELLERS_WINGS.get())) {
 			TravellersWingsAttachment attachment = player.getAttachedOrCreate(TFDataAttachments.TRAVELLERS_WINGS);
 			attachment.state = TravellersWingsAttachment.WingState.DOUBLE_JUMP;
 			attachment.doubleJumpTimer = 0;
 		}
 
-		if (player.level() instanceof ServerLevel serverLevel && player.getItemBySlot(EquipmentSlot.LEGS).is(TFItems.TRAVELLERS_WINGS)) {
+		if (player.level() instanceof ServerLevel serverLevel && player.getItemBySlot(EquipmentSlot.LEGS).is(TFItems.TRAVELLERS_WINGS.get())) {
 			ParticlePacket particlePacket = new ParticlePacket();
 			Vec3 deltaMovement = player.getDeltaMovement();
 			for (int particleNumber = 0; particleNumber < 10; particleNumber++) {
