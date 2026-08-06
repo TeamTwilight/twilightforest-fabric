@@ -11,6 +11,8 @@
     "BlockEntityMixin",
     "BlockEntityTypeMixin",
     "BoatMixin",
+    "BoatTypeAccessor",
+    "BoatTypeMixin",
     "ChestBoatMixin",
     "ChunkGeneratorMixin",
     "ChunkStatusTasksMixin",
