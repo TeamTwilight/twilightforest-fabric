@@ -1,45 +1,37 @@
 package twilightforest.mixin;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.renderer.MultiBufferSource;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.renderer.entity.layers.CapeLayer;
-import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import twilightforest.asmhooks.ArmorHooks;
 
 /**
- * Hides cape rendering when the chestplate has Emperor's Cloth.
- * Simplified for 1.21.1 to avoid WrapOperation issues.
+ * Modifies the elytra check in CapeLayer so that Emperor's Cloth on the elytra
+ * allows the cape to render (since the elytra itself is hidden by the cloth).
+ * Matches the Neoforge FixCapeUnrenderingTransformer behavior.
  */
 @Mixin(CapeLayer.class)
 public class CapeLayerMixin {
 
-	@Inject(
+	@WrapOperation(
 		method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/client/player/AbstractClientPlayer;FFFFFF)V",
-		at = @At("HEAD"),
-		cancellable = true
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/world/item/ItemStack;is(Lnet/minecraft/world/item/Item;)Z"
+		)
 	)
-	private void twilightforest$fixCapeRendering(
-		PoseStack poseStack,
-		MultiBufferSource buffer,
-		int packedLight,
-		AbstractClientPlayer livingEntity,
-		float limbSwing,
-		float limbSwingAmount,
-		float partialTicks,
-		float ageInTicks,
-		float netHeadYaw,
-		float headPitch,
-		CallbackInfo ci
+	private boolean twilightforest$fixCapeRendering(
+		ItemStack stack,
+		Item item,
+		Operation<Boolean> original
 	) {
-		ItemStack stack = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
-		if (!ArmorHooks.fixCapeRendering(true, stack)) {
-			ci.cancel();
-		}
+		return ArmorHooks.fixCapeRendering(
+			original.call(stack, item),
+			stack
+		);
 	}
 }
