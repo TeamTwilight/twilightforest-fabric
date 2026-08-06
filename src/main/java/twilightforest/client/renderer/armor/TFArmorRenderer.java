@@ -11,6 +11,8 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.Unit;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -18,6 +20,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.DyedItemColor;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import io.github.fabricators_of_create.porting_lib.client.armor.ArmorRenderer;
 import io.github.fabricators_of_create.porting_lib.client_extensions.IClientItemExtensions;
@@ -73,37 +76,52 @@ public abstract class TFArmorRenderer implements IClientItemExtensions, ArmorRen
 		HumanoidModel<?> customModel = this.getArmorModel(entity, stack, slot, contextModel);
 
 		// Call setupModelAnimations first (sets wing animation), then copyPropertiesTo overrides
-	// the standard limb/head positions from the context model without touching wing parts.
-	if (customModel instanceof TravellersWingsModel wingsModel) {
-		float limbSwing = entity.walkAnimation.position();
-		float limbSwingAmount = Math.min(entity.walkAnimation.speed(), 1.0F);
-		float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
-		wingsModel.setupModelAnimations(entity, limbSwing, limbSwingAmount, entity.tickCount + partialTick, 0, 0);
-	}
+		// the standard limb/head positions from the context model without touching wing parts.
+		if (customModel instanceof TravellersWingsModel wingsModel) {
+			float limbSwing = entity.walkAnimation.position();
+			float limbSwingAmount = Math.min(entity.walkAnimation.speed(), 1.0F);
+			float partialTick = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
+			wingsModel.setupModelAnimations(entity, limbSwing, limbSwingAmount, entity.tickCount + partialTick, 0, 0);
+		}
 
 		((HumanoidModel) contextModel).copyPropertiesTo(customModel);
 		this.setPartVisibility(customModel, slot);
 
-		ArmorMaterial.Layer layer = armorItem.getMaterial().value().layers().getFirst();
+		ArmorMaterial material = armorItem.getMaterial().value();
 		boolean innerModel = slot == EquipmentSlot.LEGS;
-		ResourceLocation texture;
-
-		if (!innerModel
+		boolean useGogglesTexture = !innerModel
 			&& slot == EquipmentSlot.HEAD
-			&& entity.getAttachedOrCreate(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER)) {
-			texture = TwilightForestMod.prefix(
-				"textures/models/armor/travellers_layer_1_down.png"
-			);
-		} else {
-			texture = layer.texture(innerModel);
-		}
+			&& entity.getAttachedOrCreate(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER);
 
-		VertexConsumer consumer = vertexConsumers.getBuffer(RenderType.armorCutoutNoCull(texture));
-		((HumanoidModel) customModel).renderToBuffer(matrices, consumer, light, OverlayTexture.NO_OVERLAY);
+		// Mimics vanilla HumanoidArmorLayer#renderArmorPiece: every material layer is
+		// rendered, with dyeable layers tinted by the item's dye color (falling back to
+		// the renderer's default dye color) and non-dyeable layers (e.g. the arctic fur
+		// overlay) rendered untinted.
+		int dyeColor = stack.is(ItemTags.DYEABLE)
+			? FastColor.ARGB32.opaque(DyedItemColor.getOrDefault(stack, this.getDefaultDyeColor(stack)))
+			: -1;
+
+		for (ArmorMaterial.Layer layer : material.layers()) {
+			ResourceLocation texture = useGogglesTexture
+				? TwilightForestMod.prefix("textures/models/armor/travellers_layer_1_down.png")
+				: layer.texture(innerModel);
+
+			VertexConsumer consumer = vertexConsumers.getBuffer(RenderType.armorCutoutNoCull(texture));
+			((HumanoidModel) customModel).renderToBuffer(matrices, consumer, light, OverlayTexture.NO_OVERLAY, layer.dyeable() ? dyeColor : -1);
+		}
 
 		if (stack.hasFoil()) {
 			((HumanoidModel) customModel).renderToBuffer(matrices, vertexConsumers.getBuffer(RenderType.armorEntityGlint()), light, OverlayTexture.NO_OVERLAY);
 		}
+	}
+
+	/**
+	 * Returns the color used to tint dyeable armor layers when the stack carries no
+	 * dye_color component. Mirrors NeoForge's IClientItemExtensions#getDefaultDyeColor.
+	 * Defaults to vanilla leather's dye color.
+	 */
+	public int getDefaultDyeColor(ItemStack stack) {
+		return 0xFF626262;
 	}
 
 	private void setPartVisibility(HumanoidModel<?> model, EquipmentSlot slot) {

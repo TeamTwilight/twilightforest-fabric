@@ -1,4 +1,4 @@
-// 1.21.1	2026-08-06T13:31:42.865880926	The Twilight Forest/TwilightForest Item and BlockItem models
+// 1.21.1	2026-08-06T13:39:17.799728497	The Twilight Forest/TwilightForest Item and BlockItem models
 f9bea0cd2dcd603057e136167935ec827f15f565 assets/twilightforest/models/item/weathered_deadrock.json
 71bc42362895d9b1b8e5661199cc8526f6e1cbb3 assets/twilightforest/models/item/stale_bread.json
 40f22ccfa085414838c7cab1bb685b6270733126 assets/twilightforest/models/item/root.json
@@ -411,8 +411,8 @@ a8e1edadaf3d710647b01acbe6ecba65b21691c8 assets/twilightforest/models/item/castl
 311bfe0c2afccd18825141a33a687633d58da96f assets/twilightforest/models/item/arctic_boots_emerald_trim.json
 8d6955b7035e3b64f6325f3d620a3a1becab03a1 assets/twilightforest/models/item/twilight_scepter.json
 8aec0788c2c65ca40490794dddb280bc1367cf4c assets/twilightforest/models/item/ur_ghast_trophy.json
-6d5592e0ebb37ea67ad1239284ea9a2be34ee5e0 assets/twilightforest/models/item/fiery_leggings.json
 4b28163ede8b3310466003025f7940d12456189e assets/twilightforest/models/item/giant_pickaxe_gui.json
+6d5592e0ebb37ea67ad1239284ea9a2be34ee5e0 assets/twilightforest/models/item/fiery_leggings.json
 a8f03677eca5d5ab6f83fc4390bcb0338d799ae8 assets/twilightforest/models/item/fluffy_cloud.json
 b40819c5011d3c04a59e519e38e600ae6dd256c8 assets/twilightforest/models/item/phantom_helmet_lapis_trim.json
 d595f519d3b0bc04d05df292af27f32faafa1c7f assets/twilightforest/models/item/seeker_bow.json
@@ -871,8 +871,8 @@ b35b49da984ef2df61ec8bb40ea11c2affd62c26 assets/twilightforest/models/item/steel
 a64c3df922b7017d7f103ae983d021d17fe7aaa3 assets/twilightforest/models/item/canopy_window_pane.json
 90df13099476672a311c2357cc700eca4c0aa811 assets/twilightforest/models/item/vangrove_banister.json
 8a109a9340f9dacdd4e046d975309bb0376b2cc7 assets/twilightforest/models/item/mining_log_core.json
-6846b15a2df412a91954cada0d0d4b219c5f343e assets/twilightforest/models/item/thick_castle_brick.json
 68d6b04fbd98c2f5c09ead9a3da2894a7f2cdeb7 assets/twilightforest/models/item/yeti_leggings.json
+6846b15a2df412a91954cada0d0d4b219c5f343e assets/twilightforest/models/item/thick_castle_brick.json
 f076c20ad9fd867f9ab065751bd5da2d47977d4c assets/twilightforest/models/item/fiery_leggings_gold_trim.json
 9709b1c65bbb61956557ffd09e56042397d6e2c3 assets/twilightforest/models/item/arctic_chestplate_diamond_trim.json
 2cea206c6584e1a151690a6901db9c0aa9b0f8f1 assets/twilightforest/models/item/knightmetal_chestplate.json

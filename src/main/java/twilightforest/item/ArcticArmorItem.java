@@ -5,7 +5,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.FastColor;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
@@ -14,7 +13,6 @@ import net.minecraft.world.item.component.DyedItemColor;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
 import twilightforest.client.renderer.armor.TFSimpleArmorRenderer;
-import twilightforest.init.TFItems;
 
 import java.util.List;
 
@@ -43,10 +41,10 @@ public class ArcticArmorItem extends ArmorItem {
 			super(TFArmorModel::new, TFModelLayers.ARCTIC_ARMOR_INNER, TFModelLayers.ARCTIC_ARMOR_OUTER);
 		}
 
-		// getDefaultDyeColor removed in 1.21.1 - dye color handled via DyedItemColor component
-		// @Override
-		// public int getDefaultDyeColor(ItemStack stack) {
-		// 	return FastColor.ARGB32.opaque(DyedItemColor.getOrDefault(stack, DEFAULT_COLOR));
-		// }
+		// dye color handled via DyedItemColor component, default color is the arctic pale blue
+		@Override
+		public int getDefaultDyeColor(ItemStack stack) {
+			return FastColor.ARGB32.opaque(DyedItemColor.getOrDefault(stack, DEFAULT_COLOR));
+		}
 	}
 }

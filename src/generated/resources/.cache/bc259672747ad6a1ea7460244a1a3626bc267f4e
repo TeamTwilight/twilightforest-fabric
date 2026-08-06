@@ -1,4 +1,4 @@
-// 1.21.1	2026-08-06T13:31:42.856289222	The Twilight Forest/TwilightForest blockstates and block models
+// 1.21.1	2026-08-06T13:39:17.791985154	The Twilight Forest/TwilightForest blockstates and block models
 d9052b119402855417a6cb3c08e212acdea3dd96 assets/twilightforest/models/block/wood/stairs/canopy/canopy_stairs_inner_3.json
 e2d4d04c6e8e2cbb14e929dbf99b0c402c29772e assets/twilightforest/models/block/horizontal_hollow_log_carpet.json
 bea36f99feac6d8ae0eb701992364bef5184afa4 assets/twilightforest/blockstates/mining_log_core.json
@@ -641,8 +641,8 @@ e0adbbc5cc3b8bd856630f3315c52fd853f06249 assets/twilightforest/models/block/expe
 8c5584ef97316d83509c1e930654fe7119f59100 assets/twilightforest/models/block/wood/button/mine/mining_button_2.json
 90e7858d62c0067cdf1f35bb9f8c114b2f8c9fcd assets/twilightforest/models/block/blueberry_bush_large_8.json
 94ee00eebd82061338b6db439a84b3fdf98f3942 assets/twilightforest/blockstates/hydra_wall_trophy.json
-2d2854ffeda22c72ea65b44c75ab29310acf618c assets/twilightforest/blockstates/huge_mushgloom_stem.json
 e86bea94f77572b15fff713be3a8d75ace74e4b2 assets/twilightforest/blockstates/huge_mushgloom.json
+2d2854ffeda22c72ea65b44c75ab29310acf618c assets/twilightforest/blockstates/huge_mushgloom_stem.json
 8f0278b73c90c84ada540eeb94fd993829e7abcb assets/twilightforest/models/block/hollow_dark_log_climbable_ladder.json
 e1b87e27617981e6d92c3eb0208563a7bad67197 assets/twilightforest/models/block/blueberry_bush_grown_2.json
 ce9aef65e685cdbe0c25733cdc604ac5db5eb61e assets/twilightforest/models/block/wood/banister/darkwood/dark_banister_connected_extended_2.json

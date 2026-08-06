@@ -1,4 +1,4 @@
-// 1.21.1	2026-08-06T13:31:42.865137099	The Twilight Forest/Tags for minecraft:damage_type
+// 1.21.1	2026-08-06T13:39:17.799095168	The Twilight Forest/Tags for minecraft:damage_type
 a6ba639a122a7a458de0be23570a49780563792d data/minecraft/tags/damage_type/bypasses_enchantments.json
 f953fcb77923694dc4d54294fa83a1bc6249f0fb data/minecraft/tags/damage_type/is_fall.json
 95a58f3ed1b4a2272574f48d6e6901ca31e234c2 data/minecraft/tags/damage_type/bypasses_armor.json
@@ -17,8 +17,8 @@ bd6be0192266b3e40a5d112ff7486434d5732a65 data/twilightforest/tags/damage_type/br
 e871224cfaf3f71ec4cef5455688114b0d13ee16 data/neoforge/tags/damage_type/is_technical.json
 b84211b8bce51b7d8233bc8e8ea4ea0fc6befdf0 data/minecraft/tags/damage_type/panic_environmental_causes.json
 faa4e76aee9d404134f371135a067f96027f5347 data/minecraft/tags/damage_type/ignites_armor_stands.json
-91c5fbcde71b923440c0fea949bcca78dd841114 data/minecraft/tags/damage_type/bypasses_wolf_armor.json
 dd51976ea379a65cd9379c29f35319399619c5e7 data/minecraft/tags/damage_type/is_explosion.json
 e871224cfaf3f71ec4cef5455688114b0d13ee16 data/minecraft/tags/damage_type/bypasses_resistance.json
 e871224cfaf3f71ec4cef5455688114b0d13ee16 data/minecraft/tags/damage_type/always_most_significant_fall.json
+91c5fbcde71b923440c0fea949bcca78dd841114 data/minecraft/tags/damage_type/bypasses_wolf_armor.json
 e103f06859ecce616cf1cba9a27b0813edd39cc9 data/minecraft/tags/damage_type/no_knockback.json
