@@ -1,5 +1,6 @@
 package twilightforest.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.fabricmc.loader.api.FabricLoader;
@@ -41,16 +42,19 @@ public class LivingEntityMixin {
 		cir.setReturnValue(ArmorHooks.modifyArmorVisibility(cir.getReturnValue(), (LivingEntity) (Object) this));
 	}
 
-	@Inject(
-		method = "canStandOnFluid",
-		at = @At("RETURN"),
-		cancellable = true
+	@ModifyReturnValue(
+		method = "canStandOnFluid(Lnet/minecraft/world/level/material/FluidState;)Z",
+		at = @At("RETURN")
 	)
-	private void twilightforest$processWaterWalking(
-		FluidState fluidState,
-		CallbackInfoReturnable<Boolean> cir
+	private boolean twilightforest$processWaterWalking(
+		boolean original,
+		FluidState fluidState
 	) {
-		cir.setReturnValue(EntityHooks.processWaterWalking(cir.getReturnValue(), (LivingEntity) (Object) this, fluidState));
+		return EntityHooks.processWaterWalking(
+			original,
+			(LivingEntity)(Object) this,
+			fluidState
+		);
 	}
 
 	@Inject(
