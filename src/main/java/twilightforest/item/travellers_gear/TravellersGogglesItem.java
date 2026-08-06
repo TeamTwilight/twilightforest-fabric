@@ -6,8 +6,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SlotAccess;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
@@ -16,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import twilightforest.TwilightForestMod;
 import twilightforest.components.item.ItemDisplayContents;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.custom.TravellersModifiersManager;
@@ -89,7 +90,7 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 	@Override
 	public void inventoryTick(@NotNull ItemStack stack, @NotNull Level level, @NotNull Entity entity, int slotId, boolean isSelected) {
 		//only tick while on the player's head
-		if (slotId != Inventory.INVENTORY_SIZE + EquipmentSlot.HEAD.getIndex())
+		if (!(entity instanceof LivingEntity livingEntity) || livingEntity.getItemBySlot(EquipmentSlot.HEAD) != stack)
 			return;
 		if (level.isClientSide() || !TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER))
 			return;
@@ -105,6 +106,8 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 		ItemStack map = contents.items().get(mapSlot);
 		if (map.isEmpty() || !(map.getItem() instanceof MapItem mapItem))
 			return;
+
+		TwilightForestMod.LOGGER.warn("[Goggles] about to tick map={} mapId={}", map, map.get(DataComponents.MAP_ID));
 
 		//mark as selected so map properly updates
 		mapItem.inventoryTick(map, level, entity, slotId, true);
