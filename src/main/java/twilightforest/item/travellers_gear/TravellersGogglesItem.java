@@ -16,7 +16,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import twilightforest.TwilightForestMod;
 import twilightforest.components.item.ItemDisplayContents;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.custom.TravellersModifiersManager;
@@ -106,8 +105,6 @@ public class TravellersGogglesItem extends TravellersArmorItem {
 		ItemStack map = contents.items().get(mapSlot);
 		if (map.isEmpty() || !(map.getItem() instanceof MapItem mapItem))
 			return;
-
-		TwilightForestMod.LOGGER.warn("[Goggles] about to tick map={} mapId={}", map, map.get(DataComponents.MAP_ID));
 
 		//mark as selected so map properly updates
 		mapItem.inventoryTick(map, level, entity, slotId, true);
