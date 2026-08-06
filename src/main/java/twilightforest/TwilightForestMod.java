@@ -49,13 +49,7 @@ public final class TwilightForestMod implements ModInitializer {
 		TFDataComponents.COMPONENTS.register();
 		TFBlocks.BLOCKS.register();
 
-		// Register custom boat types BEFORE boat items are registered
-		// so that boat items get the correct custom Boat.Type instead of falling back to OAK
-		try {
-			TFBoatTypes.registerCustomTypes();
-		} catch (Throwable e) {
-			LOGGER.error("Failed to register custom Twilight Forest boat types. Boats will not be available.", e);
-		}
+		TFBoatTypes.init();
 
 		TFItems.ITEMS.register();
 		TFStats.STATS.register();
