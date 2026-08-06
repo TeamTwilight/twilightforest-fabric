@@ -264,7 +264,8 @@ public class TFClientSetup implements ClientModInitializer {
 					// resourceId can be null for block-state models; fall back to topLevelId().id()
 					var emissiveId = context.resourceId() != null ? context.resourceId() : context.topLevelId().id();
 					if (needsEmissiveWrapper(emissiveId.getPath())) {
-						result = new PortingLibEmissiveModel(result);
+						boolean translucent = needsTranslucentBlend(emissiveId.getPath());
+						result = new PortingLibEmissiveModel(result, translucent);
 					}
 				}
 
@@ -924,5 +925,20 @@ public class TFClientSetup implements ClientModInitializer {
 			|| modelPath.startsWith("uncrafting_table")
 			|| modelPath.startsWith("mushgloom")
 			|| modelPath.startsWith("trollber");
+	}
+
+	/**
+	 * Checks whether a block model uses translucent rendering
+	 * ({@code render_type: minecraft:translucent}) and therefore needs
+	 * {@link BlendMode#TRANSLUCENT} instead of {@link BlendMode#CUTOUT}
+	 * in its emissive wrapper material.
+	 */
+	private static boolean needsTranslucentBlend(String modelPath) {
+		if (modelPath.startsWith("block/")) {
+			modelPath = modelPath.substring("block/".length());
+		}
+
+		return modelPath.startsWith("uncrafting_table")
+			|| modelPath.startsWith("trophy_pedestal_active");
 	}
 }

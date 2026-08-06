@@ -26,9 +26,9 @@ import java.util.function.Supplier;
  * removed in 1.21.1, so emissive rendering must be applied at the model level
  * via the Fabric Renderer API.
  * <p>
- * Any quad whose sprite texture path contains {@code tower_device_level_} is
- * emitted with an emissive material, matching the NeoForge
- * {@code neoforge_data} behavior.
+ * Any quad whose sprite texture path contains {@code tower_device_level_},
+ * {@code castleblock_magic_}, or {@code uncrafting_glow} is emitted with an
+ * emissive material, matching the NeoForge {@code neoforge_data} behavior.
  */
 public class PortingLibEmissiveModel extends ForwardingBakedModel {
 
@@ -39,9 +39,25 @@ public class PortingLibEmissiveModel extends ForwardingBakedModel {
 		.blendMode(0, BlendMode.CUTOUT)
 		.emissive(0, true)
 		.find();
+	private static final RenderMaterial TRANSLUCENT_MATERIAL = RendererAccess.INSTANCE.getRenderer().materialFinder()
+		.blendMode(0, BlendMode.TRANSLUCENT)
+		.find();
+	private static final RenderMaterial EMISSIVE_TRANSLUCENT_MATERIAL = RendererAccess.INSTANCE.getRenderer().materialFinder()
+		.blendMode(0, BlendMode.TRANSLUCENT)
+		.emissive(0, true)
+		.find();
+
+	private final RenderMaterial normalMaterial;
+	private final RenderMaterial emissiveMaterial;
 
 	public PortingLibEmissiveModel(BakedModel wrapped) {
+		this(wrapped, false);
+	}
+
+	public PortingLibEmissiveModel(BakedModel wrapped, boolean translucent) {
 		this.wrapped = wrapped;
+		this.normalMaterial = translucent ? TRANSLUCENT_MATERIAL : CUTOUT_MATERIAL;
+		this.emissiveMaterial = translucent ? EMISSIVE_TRANSLUCENT_MATERIAL : EMISSIVE_MATERIAL;
 	}
 
 	@Override
@@ -77,10 +93,10 @@ public class PortingLibEmissiveModel extends ForwardingBakedModel {
 		}
 	}
 
-	private static void emit(QuadEmitter emitter, BakedQuad quad) {
+	private void emit(QuadEmitter emitter, BakedQuad quad) {
 		String path = quad.getSprite().contents().name().getPath();
-		boolean emissive = path.contains("tower_device_level_") || path.contains("castleblock_magic_");
-		emitter.fromVanilla(quad, emissive ? EMISSIVE_MATERIAL : CUTOUT_MATERIAL, null);
+		boolean emissive = path.contains("tower_device_level_") || path.contains("castleblock_magic_") || path.contains("uncrafting_glow");
+		emitter.fromVanilla(quad, emissive ? this.emissiveMaterial : this.normalMaterial, null);
 		emitter.emit();
 	}
 }
