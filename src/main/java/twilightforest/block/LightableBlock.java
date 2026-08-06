@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import io.github.fabricators_of_create.porting_lib.tool.ItemAbilities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -7,12 +8,11 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import io.github.fabricators_of_create.porting_lib.tool.ItemAbilities;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFParticleType;
 
@@ -38,8 +37,10 @@ public interface LightableBlock {
 			this.extinguish(player, state, level, pos);
 			return ItemInteractionResult.sidedSuccess(level.isClientSide());
 		} else if (this.canBeLit(state)) {
-			if (stack.canPerformAction(ItemAbilities.FIRESTARTER_LIGHT)) {
-				return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+			// There is an issue with ItemAbilities.FIRESTARTER_LIGHT from Porting Lib, so other items are checked for redundancy
+			if (stack.canPerformAction(ItemAbilities.FIRESTARTER_LIGHT) || stack.is(Items.FLINT_AND_STEEL) || stack.is(Items.FIRE_CHARGE)) {
+				this.setLit(level, state, pos, true);
+				return ItemInteractionResult.sidedSuccess(level.isClientSide());
 			}
 		}
 		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
