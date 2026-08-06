@@ -1,8 +1,8 @@
 package twilightforest.item.travellers_gear;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.resources.PlayerSkin;
@@ -13,28 +13,23 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Unit;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
-import net.minecraft.world.item.enchantment.Enchantment;
 import io.github.fabricators_of_create.porting_lib.models.ConcatenatedListView;
 import org.jetbrains.annotations.NotNull;
-import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
 import twilightforest.client.model.armor.TravellersWingsModel;
 import twilightforest.client.renderer.armor.TFArmorRenderer;
 import twilightforest.init.*;
 import twilightforest.init.custom.TravellersModifiersManager;
-import twilightforest.item.travellers_gear.modifiers.TooltipStringInterpolator;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifiable;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 
@@ -76,14 +71,6 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 	public @NotNull ItemAttributeModifiers getDefaultAttributeModifiers() {
 		return this.attributeModifiers == null ? super.getDefaultAttributeModifiers() : this.attributeModifiers;
 	}
-
-	// getArmorTexture is NeoForge-only; handle via armor renderer Mixin
-	// @Override
-	// public @Nullable ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
-	// 	return !innerModel && entity.getAttachedOrCreate(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER) ?
-	// 		TwilightForestMod.prefix("textures/models/armor/travellers_layer_1_down.png") :
-	// 		super.getArmorTexture(stack, entity, slot, layer, innerModel);
-	// }
 
 	public static Properties gogglesProperties(Properties properties) {
 		return properties
@@ -136,7 +123,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 		List<Holder.Reference<TravellersModifier>> insertableModifiers = TravellersModifiersManager.findAllInsertableModifiers(registries, stack);
 		for (Holder.Reference<TravellersModifier> modifier : insertableModifiers) {
 			tooltip.add(Component.literal("- ").append(TravellersModifiersManager.getModifierTooltipComponent(modifier).withStyle(ChatFormatting.GRAY)));
-			if (flags.isAdvanced()) {
+			if (Screen.hasShiftDown()) {
 				for (Component description : modifier.value().getDescription()) {
 					// There has to be a better way to bold only the indent and arrow and not the information component
 					tooltip.add(Component.literal("").append(Component.translatable("travellers_gear.info_indent").withStyle(ChatFormatting.BOLD)).append(description));
@@ -152,8 +139,7 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 			tooltip.add(GLOVES_TOOLTIP);
 		}
 
-		// TooltipFlag.hasShiftDown() removed in 1.21.1, using isAdvanced() instead
-		if (!flags.isAdvanced()) {
+		if (!Screen.hasShiftDown()) {
 			ConcatenatedListView<Holder.Reference<TravellersModifier>> modifiers = ConcatenatedListView.of(abilityModifiers, insertableModifiers);
 			boolean hasHiddenDescriptions = modifiers.stream().map(Holder::value).map(TravellersModifier::getDescription).anyMatch(Predicate.not(List::isEmpty));
 			if (hasHiddenDescriptions) {
