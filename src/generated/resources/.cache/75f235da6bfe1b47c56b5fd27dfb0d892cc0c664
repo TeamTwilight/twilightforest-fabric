@@ -1,12 +1,12 @@
-// 1.21.1	2026-08-06T12:52:19.59571366	The Twilight Forest/Languages: en_us for mod: twilightforest
+// 1.21.1	2026-08-06T13:31:42.864543857	The Twilight Forest/Languages: en_us for mod: twilightforest
 b8b1b4889bb1b4124234f0d7434a9644629e7096 assets/twilightforest/tips/ore_magnet.json
 849d8eba943154d7be982ad51e4ddb5c9a1aaa0e assets/twilightforest/tips/key_biome_locations.json
 7b8dff50b13a2a7f5f17e3d3fba445d8764667b6 assets/twilightforest/tips/transformation_tree.json
 8c4e96f2482076fe6c09974a974c5ecfd41b21c7 assets/twilightforest/tips/hollow_oak_tree.json
 c33d5db89728047e926b0de22d01fa345ccccb14 assets/twilightforest/tips/wrought_iron.json
 cf190f7be082bce456644d3c34ec3b10b04631b1 assets/twilightforest/tips/casket_usage.json
-e09acba8643fe59fc7b3e2aa47e2dd68ba7d16aa assets/twilightforest/tips/feather_fan.json
 3819bb80af6b75559de3760fbdf9ec583144a499 assets/twilightforest/tips/hollow_oak_sapling.json
+e09acba8643fe59fc7b3e2aa47e2dd68ba7d16aa assets/twilightforest/tips/feather_fan.json
 b5e7ccc3172e6b22d9cb3d82cabcb7623acd3b4e assets/twilightforest/tips/yeti.json
 240ced13e7af352c9ad80bf3b081076c05eae80a assets/twilightforest/tips/candelabra.json
 b3f4c268ae557aca01c867f47a6f4d70d53bd3d6 assets/twilightforest/tips/hydra_mortars.json
@@ -60,8 +60,8 @@ d6d73bfc5b2463609d6a8571f7a1c2a9a3865f92 assets/twilightforest/tips/redcap.json
 cbf804c6feccd51b892d3941ddbff85caca6941c assets/twilightforest/tips/hydra_chop.json
 3af80db9642cf21bc5e470d77b36772072f79845 assets/twilightforest/tips/magic_leaves.json
 6aee7802b01f24203a9849173d20c2cd4c13de0b assets/twilightforest/tips/worldgen_features.json
-5656019bfa4a6d576164f9ee85e73a7b6d88ba2f assets/twilightforest/tips/key_biomes.json
 6db33939c3acf582f6c70a070866bd89878cfbb5 assets/twilightforest/tips/ur_ghast.json
+5656019bfa4a6d576164f9ee85e73a7b6d88ba2f assets/twilightforest/tips/key_biomes.json
 27501cf6673b9f84152fe49e2079304343ea573a assets/twilightforest/tips/ominous_fire.json
 9e38a0524fcfe8fa3e76e439c61ecfb889a65b48 assets/twilightforest/tips/minoshroom.json
 e30b5607cb56ccf03a8d6114e3e1204b5c355c35 assets/twilightforest/tips/ghast_trap.json

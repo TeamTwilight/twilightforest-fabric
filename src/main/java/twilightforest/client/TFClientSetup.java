@@ -11,7 +11,6 @@ import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.*;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.server.packs.PackType;
 import net.fabricmc.loader.api.FabricLoader;
@@ -25,7 +24,6 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleEngine;
-import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
@@ -37,19 +35,15 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
-import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -62,7 +56,6 @@ import twilightforest.client.model.block.BrazierModel;
 import twilightforest.client.model.block.ConditionalMippedModel;
 import twilightforest.client.model.block.Experiment115Model;
 import twilightforest.client.model.block.PortingLibEmissiveModel;
-import twilightforest.client.model.block.ReactorDebrisModel;
 import twilightforest.client.model.block.TorchberryPlantModel;
 import twilightforest.client.model.block.aurorablock.NoiseVaryingModelLoader;
 import twilightforest.client.model.block.carpet.RoyalRagsModelLoader;
@@ -70,15 +63,12 @@ import twilightforest.client.model.block.connected.ConnectedTextureModelLoader;
 import twilightforest.client.model.block.doors.CastleDoorModelLoader;
 import twilightforest.client.model.block.forcefield.ForceFieldModelLoader;
 import twilightforest.client.model.item.ForceFieldItemModel;
-import twilightforest.client.model.SeparateTransformsModel;
 import twilightforest.client.model.block.giantblock.GiantBlockModelLoader;
 import twilightforest.client.model.block.patch.PatchModelLoader;
 
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.item.TravellersGearItemModel;
-import twilightforest.client.model.item.TrollsteinnModel;
 import twilightforest.client.particle.*;
-import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.armor.TFArmorRenderer;
 import twilightforest.client.renderer.armor.TFSimpleArmorRenderer;
 import twilightforest.client.renderer.block.*;
@@ -99,9 +89,6 @@ import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.item.travellers_gear.TravellersGogglesItem;
 import twilightforest.util.woods.TFWoodTypes;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.function.Predicate;
 
 public class TFClientSetup implements ClientModInitializer {
@@ -157,11 +144,6 @@ public class TFClientSetup implements ClientModInitializer {
 		if (FabricLoader.getInstance().isModLoaded("cosmeticarmorreworked")) {
 			// Will be handled via mixin/event
 		}
-
-		// Re-initialize geometry loaders now that all callbacks are registered.
-		// GeometryLoaderManager.init() runs in a static initializer too early,
-		// before any mod registers its callbacks, leaving the LOADERS map empty.
-		io.github.fabricators_of_create.porting_lib.models.geometry.GeometryLoaderManager.init();
 	}
 
 	private void initializeClientEvents() {
@@ -184,17 +166,11 @@ public class TFClientSetup implements ClientModInitializer {
 			loaders.put(TwilightForestMod.prefix("travellers_gear"), TravellersGearItemModel.Loader.INSTANCE);
 			loaders.put(TwilightForestMod.prefix("force_field"), ForceFieldModelLoader.INSTANCE);
 			loaders.put(TwilightForestMod.prefix("force_field_item"), ForceFieldItemModel.Loader.INSTANCE);
-			loaders.put(SeparateTransformsModel.ID, SeparateTransformsModel.Loader.INSTANCE);
-
 		});
 	}
 
 	private void registerModelEvents() {
 		ModelLoadingPlugin.register(pluginContext -> {
-			// Re-initialize geometry loaders to ensure all mods have registered their callbacks.
-			// This is needed because GeometryLoaderManager.init() may run before PortingLib
-			// registers its loaders (separate_transforms, composite, etc.), depending on mod load order.
-			io.github.fabricators_of_create.porting_lib.models.geometry.GeometryLoaderManager.init();
 
 			// Register additional models
 			pluginContext.addModels(
