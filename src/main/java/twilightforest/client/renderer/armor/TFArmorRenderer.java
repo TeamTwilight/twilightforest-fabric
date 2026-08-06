@@ -10,7 +10,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.Unit;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -25,6 +24,7 @@ import io.github.fabricators_of_create.porting_lib.client_extensions.IClientItem
 import io.github.fabricators_of_create.porting_lib.core.util.Lazy;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.armor.TravellersWingsModel;
+import twilightforest.init.TFDataAttachments;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -86,7 +86,17 @@ public abstract class TFArmorRenderer implements IClientItemExtensions, ArmorRen
 
 		ArmorMaterial.Layer layer = armorItem.getMaterial().value().layers().getFirst();
 		boolean innerModel = slot == EquipmentSlot.LEGS;
-		ResourceLocation texture = layer.texture(innerModel);
+		ResourceLocation texture;
+
+		if (!innerModel
+			&& slot == EquipmentSlot.HEAD
+			&& entity.getAttachedOrCreate(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER)) {
+			texture = TwilightForestMod.prefix(
+				"textures/models/armor/travellers_layer_1_down.png"
+			);
+		} else {
+			texture = layer.texture(innerModel);
+		}
 
 		VertexConsumer consumer = vertexConsumers.getBuffer(RenderType.armorCutoutNoCull(texture));
 		((HumanoidModel) customModel).renderToBuffer(matrices, consumer, light, OverlayTexture.NO_OVERLAY);

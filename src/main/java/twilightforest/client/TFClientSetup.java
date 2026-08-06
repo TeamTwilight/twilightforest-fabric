@@ -91,6 +91,7 @@ import twilightforest.client.renderer.tooltip.ItemDisplayTooltipComponent;
 import twilightforest.client.renderer.tooltip.PotionFlaskTooltipComponent;
 import twilightforest.client.renderer.tooltip.TravellersBeltTooltipComponent;
 import twilightforest.components.item.PotionFlaskComponent;
+import twilightforest.events.RegistrationEvents;
 import twilightforest.init.*;
 import twilightforest.item.*;
 import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
@@ -150,7 +151,7 @@ public class TFClientSetup implements ClientModInitializer {
 		TFShaders.registerShaders();
 
 		// Register client-side network packet handlers
-		twilightforest.events.RegistrationEvents.registerClientPacketHandlers();
+		RegistrationEvents.registerClientPacketHandlers();
 
 		// Compat
 		if (FabricLoader.getInstance().isModLoaded("cosmeticarmorreworked")) {
