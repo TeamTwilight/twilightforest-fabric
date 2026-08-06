@@ -35,7 +35,7 @@ public class DataGenerators implements DataGeneratorEntrypoint {
 		// client generators
 		pack.addProvider((output, registries) -> new BlockstateGenerator(output, helper));
 		pack.addProvider((output, registries) -> new ItemModelGenerator(output, helper));
-		pack.addProvider((output, registries) -> new ParticleGenerator(output));
+		pack.addProvider((output, registries) -> new ParticleGenerator(output, helper));
 		pack.addProvider((output, registries) -> new SoundGenerator(output, helper));
 
 		pack.addProvider(RegistryDataGenerator::new);

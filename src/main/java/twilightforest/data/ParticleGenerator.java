@@ -1,81 +1,63 @@
 package twilightforest.data;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import net.minecraft.data.CachedOutput;
-import net.minecraft.data.DataProvider;
+import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
 import twilightforest.TwilightForestMod;
+import twilightforest.data.custom.ParticleDescriptionProvider;
+import twilightforest.init.TFParticleType;
 
-import java.nio.file.Path;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
+import java.util.Iterator;
 
-public class ParticleGenerator implements DataProvider {
+public class ParticleGenerator extends ParticleDescriptionProvider {
 
-	private final PackOutput output;
-	private final Map<String, String[]> particles = new LinkedHashMap<>();
-
-	public ParticleGenerator(PackOutput output) {
-		this.output = output;
+	public ParticleGenerator(PackOutput output, ExistingFileHelper helper) {
+		super(output, helper);
 	}
 
 	@Override
-	public CompletableFuture<?> run(CachedOutput cache) {
-		this.registerParticles();
+	protected void addDescriptions() {
+		this.sprite(TFParticleType.ANNIHILATE.get(), TwilightForestMod.prefix("annihilate_particle"));
+		this.spriteSet(TFParticleType.CLOUD_PUFF.get(), ResourceLocation.withDefaultNamespace("generic"), 8, true);
+		this.sprite(TFParticleType.DIM_FLAME.get(), TwilightForestMod.prefix("dim_flame"));
+		this.spriteSet(TFParticleType.EXTENDED_SNOW_WARNING.get(), TwilightForestMod.prefix("snow"), 4, false);
+		this.sprite(TFParticleType.FALLEN_LEAF.get(), TwilightForestMod.prefix("fallen_leaf"));
+		this.sprite(TFParticleType.FIREFLY.get(), TwilightForestMod.prefix("firefly"));
+		this.spriteSet(TFParticleType.GHAST_TRAP.get(), ResourceLocation.withDefaultNamespace("generic"), 8, true);
+		this.spriteSet(TFParticleType.HUGE_SMOKE.get(), ResourceLocation.withDefaultNamespace("generic"), 8, true);
+		this.spriteSet(TFParticleType.ICE_BEAM.get(), TwilightForestMod.prefix("snow"), 4, false);
+		this.sprite(TFParticleType.LARGE_FLAME.get(), ResourceLocation.withDefaultNamespace("flame"));
+		this.spriteSet(TFParticleType.LEAF_RUNE.get(), () -> new Iterator<>() {
+			private int counter = 0;
 
-		CompletableFuture<?>[] futures = this.particles.entrySet().stream()
-			.map(entry -> {
-				Path path = this.output.getOutputFolder(PackOutput.Target.RESOURCE_PACK)
-					.resolve(TwilightForestMod.ID + "/particles/" + entry.getKey() + ".json");
-				JsonObject json = new JsonObject();
-				JsonArray textures = new JsonArray();
-				for (String texture : entry.getValue()) {
-					textures.add(texture);
-				}
-				json.add("textures", textures);
-				return DataProvider.saveStable(cache, json, path);
-			})
-			.toArray(CompletableFuture[]::new);
+			@Override
+			public boolean hasNext() {
+				return this.counter < 26;
+			}
 
-		return CompletableFuture.allOf(futures);
-	}
-
-	@Override
-	public String getName() {
-		return "Twilight Forest particle descriptions";
-	}
-
-	private void registerParticles() {
-		this.particles.put("large_flame", new String[]{"twilightforest:dim_flame"});
-		this.particles.put("leaf_rune", new String[]{"twilightforest:fallen_leaf"});
-		this.particles.put("boss_tear", new String[]{"minecraft:ghast_tear"});
-		this.particles.put("ghast_trap", new String[]{"twilightforest:twilight_orb"});
-		this.particles.put("protection", new String[]{"minecraft:enchanted_hit"});
-		this.particles.put("snow", new String[]{"twilightforest:snow_0", "twilightforest:snow_1", "twilightforest:snow_2", "twilightforest:snow_3"});
-		this.particles.put("snow_warning", new String[]{"twilightforest:snow_0", "twilightforest:snow_1", "twilightforest:snow_2", "twilightforest:snow_3"});
-		this.particles.put("extended_snow_warning", new String[]{"twilightforest:snow_0", "twilightforest:snow_1", "twilightforest:snow_2", "twilightforest:snow_3"});
-		this.particles.put("snow_guardian", new String[]{"twilightforest:snow_0", "twilightforest:snow_1", "twilightforest:snow_2", "twilightforest:snow_3"});
-		this.particles.put("ice_beam", new String[]{"twilightforest:twilight_orb_swirl"});
-		this.particles.put("annihilate", new String[]{"twilightforest:annihilate_particle"});
-		this.particles.put("perfect_dodge", new String[]{"twilightforest:twilight_orb"});
-		this.particles.put("double_jump", new String[]{"twilightforest:twilight_orb"});
-		this.particles.put("huge_smoke", new String[]{"minecraft:generic_7", "minecraft:generic_6", "minecraft:generic_5", "minecraft:generic_4", "minecraft:generic_3", "minecraft:generic_2", "minecraft:generic_1", "minecraft:generic_0"});
-		this.particles.put("firefly", new String[]{"twilightforest:firefly"});
-		this.particles.put("wandering_firefly", new String[]{"twilightforest:firefly"});
-		this.particles.put("particle_spawner_firefly", new String[]{"twilightforest:firefly"});
-		this.particles.put("fallen_leaf", new String[]{"twilightforest:fallen_leaf"});
-		this.particles.put("dim_flame", new String[]{"twilightforest:dim_flame"});
-		this.particles.put("ominous_flame", new String[]{"twilightforest:ominous_flame"});
-		this.particles.put("sorting_particle", new String[]{"twilightforest:log_core"});
-		this.particles.put("transformation_particle", new String[]{"twilightforest:log_core"});
-		this.particles.put("log_core_particle", new String[]{"twilightforest:log_core"});
-		this.particles.put("cloud_puff", new String[]{"minecraft:generic_7", "minecraft:generic_6", "minecraft:generic_5", "minecraft:generic_4", "minecraft:generic_3", "minecraft:generic_2", "minecraft:generic_1", "minecraft:generic_0"});
-		this.particles.put("twilight_orb", new String[]{"twilightforest:twilight_orb"});
-		this.particles.put("drying_rack", new String[]{"minecraft:generic_7", "minecraft:generic_6", "minecraft:generic_5", "minecraft:generic_4", "minecraft:generic_3", "minecraft:generic_2", "minecraft:generic_1", "minecraft:generic_0"});
-		this.particles.put("magic_effect", new String[]{"minecraft:effect_7", "minecraft:effect_6", "minecraft:effect_5", "minecraft:effect_4", "minecraft:effect_3", "minecraft:effect_2", "minecraft:effect_1", "minecraft:effect_0"});
-		this.particles.put("angry_lich", new String[]{"minecraft:angry"});
-		this.particles.put("shield_break", new String[]{"twilightforest:shield_break"});
+			@Override
+			public ResourceLocation next() {
+				ResourceLocation texture = ResourceLocation.withDefaultNamespace("sga_" + Character.toString('a' + this.counter));
+				this.counter++;
+				return texture;
+			}
+		});
+		this.sprite(TFParticleType.LOG_CORE_PARTICLE.get(), TwilightForestMod.prefix("log_core"));
+		this.sprite(TFParticleType.OMINOUS_FLAME.get(), TwilightForestMod.prefix("ominous_flame"));
+		this.sprite(TFParticleType.PARTICLE_SPAWNER_FIREFLY.get(), TwilightForestMod.prefix("firefly"));
+		this.spriteSet(TFParticleType.PERFECT_DODGE.get(), ResourceLocation.withDefaultNamespace("generic"), 8, true);
+		this.spriteSet(TFParticleType.DOUBLE_JUMP.get(), ResourceLocation.withDefaultNamespace("generic"), 8, true);
+		this.sprite(TFParticleType.PROTECTION.get(), ResourceLocation.withDefaultNamespace("glint"));
+		this.spriteSet(TFParticleType.SNOW.get(), TwilightForestMod.prefix("snow"), 4, false);
+		this.spriteSet(TFParticleType.SNOW_GUARDIAN.get(), TwilightForestMod.prefix("snow"), 4, false);
+		this.spriteSet(TFParticleType.SNOW_WARNING.get(), TwilightForestMod.prefix("snow"), 4, false);
+		this.sprite(TFParticleType.SORTING_PARTICLE.get(), TwilightForestMod.prefix("log_core"));
+		this.sprite(TFParticleType.TRANSFORMATION_PARTICLE.get(), TwilightForestMod.prefix("log_core"));
+		this.sprite(TFParticleType.WANDERING_FIREFLY.get(), TwilightForestMod.prefix("firefly"));
+		this.spriteSet(TFParticleType.DRYING_RACK.get(), ResourceLocation.withDefaultNamespace("generic"), 8, true);
+		this.spriteSet(TFParticleType.MAGIC_EFFECT.get(), ResourceLocation.withDefaultNamespace("effect"), 8, true);
+		this.sprite(TFParticleType.ANGRY_LICH.get(), ResourceLocation.withDefaultNamespace("angry"));
+		this.sprite(TFParticleType.TWILIGHT_ORB.get(), TwilightForestMod.prefix("twilight_orb"));
+		this.sprite(TFParticleType.SHIELD_BREAK.get(), TwilightForestMod.prefix("shield_break"));
 	}
 }
