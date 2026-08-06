@@ -1,4 +1,4 @@
-﻿{
+{
   "parent": "block/block",
   "render_type": "minecraft:cutout",
   "textures": {

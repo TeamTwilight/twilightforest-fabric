@@ -1,4 +1,4 @@
-// 1.21.1	2026-08-06T00:34:34.022022567	The Twilight Forest/Languages: en_us for mod: twilightforest
+// 1.21.1	2026-08-06T04:35:24.977115192	The Twilight Forest/Languages: en_us for mod: twilightforest
 b8b1b4889bb1b4124234f0d7434a9644629e7096 assets/twilightforest/tips/ore_magnet.json
 849d8eba943154d7be982ad51e4ddb5c9a1aaa0e assets/twilightforest/tips/key_biome_locations.json
 7b8dff50b13a2a7f5f17e3d3fba445d8764667b6 assets/twilightforest/tips/transformation_tree.json
@@ -89,8 +89,8 @@ dee1c181a95e14a0cac40fcdfeb5e07ff9785db2 assets/twilightforest/tips/casket_loggi
 e21bd375606478bc5eea422080d9e34e831c572b assets/twilightforest/tips/ice_core.json
 76052152cb5b0cca963eada3d446a1921f1c7009 assets/twilightforest/tips/trollber_ripening.json
 f49ab75316735dcf245463a9c0f80fe337c490bb assets/twilightforest/tips/red_thread.json
-7c598389ea99362dff187030555d1b91e3b6f430 assets/twilightforest/tips/mystic_crown.json
 a862679de00166481bfbbba5f2094070b6ee0c95 assets/twilightforest/tips/structure_spawning.json
+7c598389ea99362dff187030555d1b91e3b6f430 assets/twilightforest/tips/mystic_crown.json
 1e4f27cbc2de52f5f02ce20d1a6d76ec12759659 assets/twilightforest/tips/mining_tree.json
 763dc1764641e62954420ef3330610c63690f964 assets/twilightforest/tips/block_and_chain.json
 af9baf851b5a78e3d8172c7254621b6ea2828da6 assets/twilightforest/tips/berry_bushes.json

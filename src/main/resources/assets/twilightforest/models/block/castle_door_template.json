@@ -1,5 +1,5 @@
-﻿{
-  "loader": "porting_lib:composite",
+{
+  "loader": "neoforge:composite",
   "parent": "block/block",
   "children": {
     "main": {

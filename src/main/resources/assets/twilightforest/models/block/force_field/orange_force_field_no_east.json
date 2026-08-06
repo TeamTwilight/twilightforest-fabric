@@ -1,7 +1,0 @@
-{
-  "parent": "twilightforest:block/force_field/force_field_no_east",
-  "render_type": "minecraft:translucent",
-  "textures": {
-    "pane": "twilightforest:block/orange_force_field"
-  }
-}

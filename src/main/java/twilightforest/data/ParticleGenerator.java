@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
-import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 
 import java.nio.file.Path;
@@ -72,7 +71,7 @@ public class ParticleGenerator implements DataProvider {
 		this.particles.put("sorting_particle", new String[]{"twilightforest:log_core"});
 		this.particles.put("transformation_particle", new String[]{"twilightforest:log_core"});
 		this.particles.put("log_core_particle", new String[]{"twilightforest:log_core"});
-		this.particles.put("cloud_puff", new String[]{"twilightforest:twilight_orb"});
+		this.particles.put("cloud_puff", new String[]{"minecraft:generic_7", "minecraft:generic_6", "minecraft:generic_5", "minecraft:generic_4", "minecraft:generic_3", "minecraft:generic_2", "minecraft:generic_1", "minecraft:generic_0"});
 		this.particles.put("twilight_orb", new String[]{"twilightforest:twilight_orb"});
 		this.particles.put("drying_rack", new String[]{"minecraft:generic_7", "minecraft:generic_6", "minecraft:generic_5", "minecraft:generic_4", "minecraft:generic_3", "minecraft:generic_2", "minecraft:generic_1", "minecraft:generic_0"});
 		this.particles.put("magic_effect", new String[]{"minecraft:effect_7", "minecraft:effect_6", "minecraft:effect_5", "minecraft:effect_4", "minecraft:effect_3", "minecraft:effect_2", "minecraft:effect_1", "minecraft:effect_0"});

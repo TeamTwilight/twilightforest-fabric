@@ -32,15 +32,15 @@
             }
         }, {
             "from": [ 1, 8, 1 ],
-            "to": [ 8, 8.02, 15 ],
+            "to": [ 8, 8, 15 ],
             "faces": {
-                "up":    { "porting_lib_data": { "block_light": 15, "sky_light": 15 }, "texture": "#top_2" }
+                "up":    { "texture": "#top_2", "neoforge_data": { "block_light": 15, "sky_light": 15 } }
             }
         }, {
             "from": [ 8, 8, 8 ],
-            "to": [ 15, 8.02, 15 ],
+            "to": [ 15, 8, 15 ],
             "faces": {
-                "up":    { "porting_lib_data": { "block_light": 15, "sky_light": 15 }, "texture": "#top_2" }
+                "up":    { "texture": "#top_2", "neoforge_data": { "block_light": 15, "sky_light": 15 } }
             }
         }
     ]
