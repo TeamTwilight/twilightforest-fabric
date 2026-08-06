@@ -468,7 +468,7 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		registerWoodBlocks();
 		registerNagastone();
 		registerForceFields();
-		/*
+
 		simpleBlock(TFBlocks.POTTED_TWILIGHT_OAK_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_TWILIGHT_OAK_SAPLING.getId().getPath(), "block/flower_pot_cross").renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.TWILIGHT_OAK_SAPLING.get())));
 		simpleBlock(TFBlocks.POTTED_CANOPY_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_CANOPY_SAPLING.getId().getPath(), "block/flower_pot_cross").renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.CANOPY_SAPLING.get())));
 		simpleBlock(TFBlocks.POTTED_MANGROVE_SAPLING.get(), models().withExistingParent(TFBlocks.POTTED_MANGROVE_SAPLING.getId().getPath(), prefix("block/potted_larger_sapling")).renderType(CUTOUT).texture("plant", blockTexture(TFBlocks.MANGROVE_SAPLING.get())));
@@ -485,7 +485,6 @@ public class BlockstateGenerator extends BlockModelBuilders {
 		simpleBlock(TFBlocks.POTTED_THORN.get(), models().withExistingParent(TFBlocks.POTTED_THORN.getId().getPath(), prefix("block/potted_thorn_template")).texture("thorn_top", prefix("block/brown_thorns_top")).texture("thorn_side", prefix("block/brown_thorns_side")));
 		simpleBlock(TFBlocks.POTTED_GREEN_THORN.get(), models().withExistingParent(TFBlocks.POTTED_GREEN_THORN.getId().getPath(), prefix("block/potted_thorn_template")).texture("thorn_top", prefix("block/green_thorns_top")).texture("thorn_side", prefix("block/green_thorns_side")));
 		simpleBlock(TFBlocks.POTTED_DEAD_THORN.get(), models().withExistingParent(TFBlocks.POTTED_DEAD_THORN.getId().getPath(), prefix("block/potted_thorn_template")).texture("thorn_top", prefix("block/burnt_thorns_top")).texture("thorn_side", prefix("block/burnt_thorns_side")));
-		*/
 
 		builtinEntity(TFBlocks.TWILIGHT_OAK_SIGN.get(), "twilightforest:block/wood/planks_twilight_oak_0");
 		builtinEntity(TFBlocks.TWILIGHT_WALL_SIGN.get(), "twilightforest:block/wood/planks_twilight_oak_0");

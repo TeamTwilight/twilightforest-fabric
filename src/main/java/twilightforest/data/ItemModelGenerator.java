@@ -838,14 +838,12 @@ public class ItemModelGenerator extends ItemModelProvider {
 
 	@SuppressWarnings("UnusedReturnValue")
 	private ItemModelBuilder forcefield(String name, ResourceLocation... layers) {
-		// Force field items use a flat generated icon (parent "minecraft:item/generated") whose layer0
-		// points directly at the pre-colored per-color block texture (e.g. block/blue_force_field). This
-		// mirrors the upstream item icon, but with a per-color texture instead of upstream's runtime tint
-		// (NeoForge's ItemModelUtils.tintedModel is unavailable on Fabric, and Fabric's emitItemQuads path
-		// doesn't apply item tint to the translucent fullbright icon — so the pre-colored textures avoid
-		// both the broken tint and the "rod/stick" geometry from the force_field block loader).
-		// Manual models are in: src/main/resources/assets/twilightforest/models/item/*_force_field.json
-		return null;
+		ItemModelBuilder builder = withExistingParent(name, "item/generated");
+		for (int i = 0; i < layers.length; i++) {
+			builder = builder.texture("layer" + i, layers[i]);
+		}
+		builder = builder.customLoader(ItemLayerModelBuilder::begin).emissive(15, 15, 0).renderType("minecraft:translucent", 0).end();
+		return builder;
 	}
 
 	private ItemModelBuilder singleTexFullbright(DeferredHolder<Item, ? extends Item> item) {
@@ -1073,7 +1071,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		for (DeferredItem<? extends Item> item : items) {
 			String id = item.getId().getPath();
 			String modifierID = id.replace("travellers_", "");
-			withExistingParent(id, "forge:item/default").texture("base", prefix("item/" + id)).texture("broken", prefix("item/" + id + "_broken"))
+			withExistingParent(id, "neoforge:item/default").texture("base", prefix("item/" + id)).texture("broken", prefix("item/" + id + "_broken"))
 				.customLoader((parent, helper) -> TravellersGearItemModelBuilder.begin(parent, "travellers_modifiers/" + modifierID + "/", "travellers_modifiers/" + modifierID + "/broken/", helper)).end();
 		}
 	}
