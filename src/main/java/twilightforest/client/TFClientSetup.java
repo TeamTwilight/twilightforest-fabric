@@ -50,6 +50,7 @@ import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.event.*;
+import twilightforest.client.model.SeparateTransformsModel;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.*;
 import twilightforest.client.model.block.BrazierModel;
@@ -166,6 +167,9 @@ public class TFClientSetup implements ClientModInitializer {
 			loaders.put(TwilightForestMod.prefix("travellers_gear"), TravellersGearItemModel.Loader.INSTANCE);
 			loaders.put(TwilightForestMod.prefix("force_field"), ForceFieldModelLoader.INSTANCE);
 			loaders.put(TwilightForestMod.prefix("force_field_item"), ForceFieldItemModel.Loader.INSTANCE);
+
+			// FIXME: Try to get Porting Lib model working
+			loaders.put(SeparateTransformsModel.ID, SeparateTransformsModel.Loader.INSTANCE);
 		});
 	}
 

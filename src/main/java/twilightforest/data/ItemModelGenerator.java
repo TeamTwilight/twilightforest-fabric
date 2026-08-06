@@ -14,12 +14,12 @@ import io.github.fabricators_of_create.porting_lib.models.generators.ItemModelBu
 import io.github.fabricators_of_create.porting_lib.models.generators.ItemModelProvider;
 import io.github.fabricators_of_create.porting_lib.models.generators.ModelFile;
 import io.github.fabricators_of_create.porting_lib.models.generators.loaders.ItemLayerModelBuilder;
-import io.github.fabricators_of_create.porting_lib.models.generators.loaders.SeparateTransformsModelBuilder;
 import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
 import io.github.fabricators_of_create.porting_lib.registry.DeferredHolder;
 import io.github.fabricators_of_create.porting_lib.registry.DeferredItem;
 
 import twilightforest.TwilightForestMod;
+import twilightforest.data.custom.TFSeparateTransformsModelBuilder;
 import twilightforest.data.custom.TravellersGearItemModelBuilder;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
@@ -952,11 +952,20 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toGiantModel(b, model, model, base, gui);
 	}
 
+	// FIXME: Try to get Porting Lib model working
 	private void toGiantModel(Block b, ResourceLocation model, ResourceLocation top, ItemModelBuilder base, ItemModelBuilder gui) {
 		String name = BuiltInRegistries.BLOCK.getKey(b).getPath();
-		withExistingParent(name, model).customLoader(SeparateTransformsModelBuilder::begin)
-			.base(withExistingParent(name + "_base", base.getLocation()).texture("all", model).texture("top", top))
-			.perspective(ItemDisplayContext.GUI, withExistingParent(name + "_gui", gui.getLocation()).texture("all", model).texture("top", top)).end();
+		float giant = 4.0F;
+		withExistingParent(name, model)
+			.transforms()
+			.transform(ItemDisplayContext.GROUND).translation(0.0F, 3.0F, 0.0F).scale(0.25F * giant).end()
+			.transform(ItemDisplayContext.FIXED).scale(0.5F * giant * 0.625F).end()
+			.transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(75.0F, 45.0F, 0.0F).translation(0.0F, 2.5F * giant, 0.0F).scale(0.375F * giant).end()
+			.transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0.0F, 45.0F, 0.0F).translation(0.0F, -2.5F * giant, -2.5F * giant).scale(0.40F * giant).end()
+			.transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(1.0F, 225.0F, 0.0F).translation(0.0F, -2.5F * giant, -2.5F * giant).scale(0.40F * giant).end().end()
+			.customLoader(TFSeparateTransformsModelBuilder::begin)
+			.base(withExistingParent(name + "_separate_base", base.getLocation()).texture("all", model).texture("top", top))
+			.perspective(ItemDisplayContext.GUI, withExistingParent(name + "_separate_gui", gui.getLocation()).texture("all", model).texture("top", top)).end();
 	}
 
 	private void toGiantItemModel(DeferredHolder<Item, Item> item, ResourceLocation parent, ItemModelBuilder base, int x, int y) {
