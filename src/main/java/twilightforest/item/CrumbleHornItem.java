@@ -1,7 +1,10 @@
 package twilightforest.item;
 
+import io.github.fabricators_of_create.porting_lib.blocks.BlockHooks;
+import io.github.fabricators_of_create.porting_lib.blocks.extensions.HarvestableBlock;
 import io.github.fabricators_of_create.porting_lib.item.extensions.ContinueUsingItem;
 import io.github.fabricators_of_create.porting_lib.item.extensions.ReequipAnimationItem;
+import io.github.fabricators_of_create.porting_lib.level.events.BlockEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -13,6 +16,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -20,9 +24,6 @@ import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-
-import twilightforest.util.TFEventHooks;
-
 import twilightforest.init.TFDataMaps;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
@@ -102,24 +103,23 @@ public class CrumbleHornItem extends Item implements ContinueUsingItem, ReequipA
 		if (state.isAir() || crumbleMap == null) return false;
 
 		if (living instanceof Player) {
-			if (net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents.BEFORE.invoker().beforeBlockBreak(serverLevel, (Player) living, pos, state, null)) {
+			if (new BlockEvent.BreakEvent(serverLevel, pos, state, (Player) living).post())
 				return false;
-			}
 		}
 
 		if (crumbleMap.result() == Blocks.AIR) {
 			if (serverLevel.getRandom().nextFloat() < crumbleMap.chanceToCrumble()) {
 				if (living instanceof Player player) {
-					if (player.getMainHandItem().isCorrectToolForDrops(state)) {
+					if ((block instanceof HarvestableBlock harvestableBlock && harvestableBlock.canHarvestBlock(state, serverLevel, pos, player)) || BlockHooks.doPlayerHarvestCheck(player, state, serverLevel, pos)) {
 						serverLevel.removeBlock(pos, false);
-						block.playerDestroy(serverLevel, (Player) living, pos, state, serverLevel.getBlockEntity(pos), ItemStack.EMPTY);
+						block.playerDestroy(serverLevel, player, pos, state, serverLevel.getBlockEntity(pos), ItemStack.EMPTY);
 						serverLevel.levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, pos, Block.getId(state));
 						if (player instanceof ServerPlayer) {
 							player.awardStat(Stats.ITEM_USED.get(this));
 						}
 						return true;
 					}
-				} else if (TFEventHooks.canEntityGrief(serverLevel, living)) {
+				} else if (serverLevel.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
 					serverLevel.destroyBlock(pos, true);
 					return true;
 				}
