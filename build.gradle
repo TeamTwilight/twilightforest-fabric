@@ -138,7 +138,7 @@ dependencies {
 
 	// ModMenu for config screen
 	modCompileOnly "com.terraformersmc:modmenu:${modmenu_version}"
-	modRuntimeOnly "com.terraformersmc:modmenu:${modmenu_version}"
+	modLocalRuntime "com.terraformersmc:modmenu:${modmenu_version}"
 
 	// Jade (nice to have in dev environment as well)
 	modCompileOnly "maven.modrinth:jade:${jade_version}"
