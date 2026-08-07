@@ -88,6 +88,7 @@ import twilightforest.item.*;
 import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
 import twilightforest.item.travellers_gear.TravellersArmorItem;
 import twilightforest.item.travellers_gear.TravellersGogglesItem;
+import twilightforest.mixin.WoodTypeAccessor;
 import twilightforest.util.woods.TFWoodTypes;
 
 import java.util.function.Predicate;
@@ -866,10 +867,8 @@ public class TFClientSetup implements ClientModInitializer {
 
 	private static void registerWoodType(WoodType woodType) {
 		try {
-			java.lang.reflect.Method register = WoodType.class.getDeclaredMethod("register", WoodType.class);
-			register.setAccessible(true);
-			register.invoke(null, woodType);
-		} catch (Exception e) {
+			WoodTypeAccessor.twilightforest$register(woodType);
+		} catch (Throwable e) {
 			TwilightForestMod.LOGGER.error("Failed to register wood type: {}", woodType.name(), e);
 		}
 	}

@@ -43,6 +43,7 @@
     "SlimeBlockMixin",
     "SnowyDirtBlockMixin",
     "StructureStartMixin",
+    "WoodTypeAccessor",
     "WrittenBookItemMixin"
   ],
   "client": [

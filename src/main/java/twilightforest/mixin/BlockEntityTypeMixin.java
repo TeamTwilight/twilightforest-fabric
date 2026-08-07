@@ -32,7 +32,11 @@ public class BlockEntityTypeMixin {
 
 		// Allow TF chest/trapped chest blocks to be used with vanilla chest block entity types
 		String blockName = BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString();
-		if (blockName.startsWith("twilightforest:") && (blockName.endsWith("_chest") || blockName.endsWith("_trapped_chest"))) {
+		if (blockName.startsWith("twilightforest:") &&
+			(blockName.endsWith("_chest") ||
+				blockName.endsWith("_trapped_chest") ||
+				blockName.endsWith("_sign") ||
+				blockName.endsWith("_wall_sign"))) {
 			cir.setReturnValue(true);
 		}
 	}
