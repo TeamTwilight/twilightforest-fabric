@@ -46,7 +46,7 @@ public class DataGenerators implements DataGeneratorEntrypoint {
 		pack.addProvider((output, registries) -> new CustomTagGenerator.PaintingVariantTagGenerator(output, registries, helper));
 		pack.addProvider((output, registries) -> new DamageTypeTagGenerator(output, registries, helper));
 		pack.addProvider((output, registries) -> new StructureTagGenerator(output, registries, helper));
-		//		pack.addProvider((output, registries) -> new TFAdvancementProvider(output, lookupProvider, helper));
+		pack.addProvider(AdvancementGenerator::new);
 		pack.addProvider(LootGenerator::new);
 
 		// server generators
