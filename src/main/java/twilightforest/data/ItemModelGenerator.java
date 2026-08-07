@@ -730,38 +730,57 @@ public class ItemModelGenerator extends ItemModelProvider {
 			.override().predicate(ResourceLocation.withDefaultNamespace("phase"), 0.75F).model(quarter1).end()
 			.override().predicate(ResourceLocation.withDefaultNamespace("phase"), 0.875F).model(waxing_gib).end();
 
-		ModelFile fill1 = generated("brittle_flask_0", prefix("item/brittle_potion_flask_1"), prefix("item/brittle_potion_flask_labelled"));
-		ModelFile fill2 = generated("brittle_flask_1", prefix("item/brittle_potion_flask_2"), prefix("item/brittle_potion_flask_labelled"));
-		ModelFile fill3 = generated("brittle_flask_2", prefix("item/brittle_potion_flask_3"), prefix("item/brittle_potion_flask_labelled"));
+		ModelFile fill1 = generated("brittle_flask_0", prefix("item/brittle_potion_flask_1"),
+			prefix("item/brittle_potion_flask_labelled"));
+		ModelFile fill2 = generated("brittle_flask_1", prefix("item/brittle_potion_flask_2"),
+			prefix("item/brittle_potion_flask_labelled"));
+		ModelFile fill3 = generated("brittle_flask_2", prefix("item/brittle_potion_flask_3"),
+			prefix("item/brittle_potion_flask_labelled"));
 		ModelFile splintered = generated("brittle_flask_splintered", prefix("item/brittle_potion_flask_splintered"));
-		ModelFile fill1_splintered = generated("brittle_flask_0_splintered", prefix("item/brittle_potion_flask_1"), prefix("item/brittle_potion_flask_splintered"));
-		ModelFile fill2_splintered = generated("brittle_flask_1_splintered", prefix("item/brittle_potion_flask_2"), prefix("item/brittle_potion_flask_splintered"));
-		ModelFile fill3_splintered = generated("brittle_flask_2_splintered", prefix("item/brittle_potion_flask_3"), prefix("item/brittle_potion_flask_splintered"));
+		ModelFile fill1_splintered = generated("brittle_flask_0_splintered", prefix("item/brittle_potion_flask_1"),
+			prefix("item/brittle_potion_flask_splintered"));
+		ModelFile fill2_splintered = generated("brittle_flask_1_splintered", prefix("item/brittle_potion_flask_2"),
+			prefix("item/brittle_potion_flask_splintered"));
+		ModelFile fill3_splintered = generated("brittle_flask_2_splintered", prefix("item/brittle_potion_flask_3"),
+			prefix("item/brittle_potion_flask_splintered"));
 		ModelFile damaged = generated("brittle_flask_damaged", prefix("item/brittle_potion_flask_damaged"));
-		ModelFile fill1_damaged = generated("brittle_flask_0_damaged", prefix("item/brittle_potion_flask_1"), prefix("item/brittle_potion_flask_damaged"));
-		ModelFile fill2_damaged = generated("brittle_flask_1_damaged", prefix("item/brittle_potion_flask_2"), prefix("item/brittle_potion_flask_damaged"));
-		ModelFile fill3_damaged = generated("brittle_flask_2_damaged", prefix("item/brittle_potion_flask_3"), prefix("item/brittle_potion_flask_damaged"));
+		ModelFile fill1_damaged = generated("brittle_flask_0_damaged", prefix("item/brittle_potion_flask_1"),
+			prefix("item/brittle_potion_flask_damaged"));
+		ModelFile fill2_damaged = generated("brittle_flask_1_damaged", prefix("item/brittle_potion_flask_2"),
+			prefix("item/brittle_potion_flask_damaged"));
+		ModelFile fill3_damaged = generated("brittle_flask_2_damaged", prefix("item/brittle_potion_flask_3"),
+			prefix("item/brittle_potion_flask_damaged"));
 		generated(TFItems.BRITTLE_FLASK.getId().getPath(), prefix("block/blank"), prefix("item/brittle_potion_flask"))
-			.override().predicate(prefix("potion_level"), 1).model(fill1).end()
-			.override().predicate(prefix("potion_level"), 2).model(fill2).end()
-			.override().predicate(prefix("potion_level"), 3).model(fill3).end()
-			.override().predicate(prefix("potion_level"), 0).predicate(prefix("breakage"), 1).model(splintered).end()
-			.override().predicate(prefix("potion_level"), 1).predicate(prefix("breakage"), 1).model(fill1_splintered).end()
-			.override().predicate(prefix("potion_level"), 2).predicate(prefix("breakage"), 1).model(fill2_splintered).end()
-			.override().predicate(prefix("potion_level"), 3).predicate(prefix("breakage"), 1).model(fill3_splintered).end()
-			.override().predicate(prefix("potion_level"), 0).predicate(prefix("breakage"), 2).model(damaged).end()
-			.override().predicate(prefix("potion_level"), 1).predicate(prefix("breakage"), 2).model(fill1_damaged).end()
-			.override().predicate(prefix("potion_level"), 2).predicate(prefix("breakage"), 2).model(fill2_damaged).end()
-			.override().predicate(prefix("potion_level"), 3).predicate(prefix("breakage"), 2).model(fill3_damaged).end();
+			.override().predicate(prefix("potion_level"), 1.0F / 3.0F).model(fill1).end()
+			.override().predicate(prefix("potion_level"), 2.0F / 3.0F).model(fill2).end()
+			.override().predicate(prefix("potion_level"), 1.0F).model(fill3).end()
+			.override().predicate(prefix("potion_level"), 0).predicate(prefix("breakage"), 0.5F).model(splintered)
+			.end()
+			.override().predicate(prefix("potion_level"), 1.0F / 3.0F).predicate(prefix("breakage"), 0.5F)
+			.model(fill1_splintered).end()
+			.override().predicate(prefix("potion_level"), 2.0F / 3.0F).predicate(prefix("breakage"), 0.5F)
+			.model(fill2_splintered).end()
+			.override().predicate(prefix("potion_level"), 1.0F).predicate(prefix("breakage"), 0.5F)
+			.model(fill3_splintered).end()
+			.override().predicate(prefix("potion_level"), 0).predicate(prefix("breakage"), 1.0F).model(damaged).end()
+			.override().predicate(prefix("potion_level"), 1.0F / 3.0F).predicate(prefix("breakage"), 1.0F)
+			.model(fill1_damaged).end()
+			.override().predicate(prefix("potion_level"), 2.0F / 3.0F).predicate(prefix("breakage"), 1.0F)
+			.model(fill2_damaged).end()
+			.override().predicate(prefix("potion_level"), 1.0F).predicate(prefix("breakage"), 1.0F)
+			.model(fill3_damaged).end();
 
-		ModelFile gfill1 = generated("greater_flask_0", prefix("item/greater_potion_flask_1"), prefix("item/greater_potion_flask"));
-		ModelFile gfill2 = generated("greater_flask_1", prefix("item/greater_potion_flask_2"), prefix("item/greater_potion_flask"));
-		ModelFile gfill3 = generated("greater_flask_2", prefix("item/greater_potion_flask_3"), prefix("item/greater_potion_flask"));
+		ModelFile gfill1 = generated("greater_flask_0", prefix("item/greater_potion_flask_1"),
+			prefix("item/greater_potion_flask"));
+		ModelFile gfill2 = generated("greater_flask_1", prefix("item/greater_potion_flask_2"),
+			prefix("item/greater_potion_flask"));
+		ModelFile gfill3 = generated("greater_flask_2", prefix("item/greater_potion_flask_3"),
+			prefix("item/greater_potion_flask"));
 
 		generated(TFItems.GREATER_FLASK.getId().getPath(), prefix("block/blank"), prefix("item/greater_potion_flask"))
-			.override().predicate(prefix("potion_level"), 1).model(gfill1).end()
-			.override().predicate(prefix("potion_level"), 2).model(gfill2).end()
-			.override().predicate(prefix("potion_level"), 3).model(gfill3).end();
+			.override().predicate(prefix("potion_level"), 1.0F / 3.0F).model(gfill1).end()
+			.override().predicate(prefix("potion_level"), 2.0F / 3.0F).model(gfill2).end()
+			.override().predicate(prefix("potion_level"), 1.0F).model(gfill3).end();
 
 		singleTex(TFItems.MUSIC_DISC_FINDINGS);
 		singleTex(TFItems.MUSIC_DISC_HOME);

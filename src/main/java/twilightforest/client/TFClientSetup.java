@@ -363,12 +363,21 @@ public class TFClientSetup implements ClientModInitializer {
 		ItemProperties.register(TFItems.EXPERIMENT_115.get(), Experiment115Item.FULL, (stack, level, entity, idk) ->
 			stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS.get()) != null && stack.get(TFDataComponents.EXPERIMENT_115_VARIANTS.get()).equals("full") ? 1 : 0);
 
-		ItemProperties.register(TFItems.BRITTLE_FLASK.get(), TwilightForestMod.prefix("breakage"), (stack, level, entity, i) ->
-			stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS.get(), PotionFlaskComponent.EMPTY).breakage());
-		ItemProperties.register(TFItems.BRITTLE_FLASK.get(), TwilightForestMod.prefix("potion_level"), (stack, level, entity, i) ->
-			stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS.get(), PotionFlaskComponent.EMPTY).doses());
-		ItemProperties.register(TFItems.GREATER_FLASK.get(), TwilightForestMod.prefix("potion_level"), (stack, level, entity, i) ->
-			stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS.get(), PotionFlaskComponent.EMPTY).doses());
+		// Item model overrides use ClampedItemPropertyFunction, whose call() clamps the value to [0, 1].
+		// Normalize the flask's doses (0-3) and breakage (0-2) into that range so the per-dose fill
+		// layer models (1/2/3) can be selected instead of always resolving to the first layer.
+		ItemProperties.register(TFItems.BRITTLE_FLASK.get(), TwilightForestMod.prefix("breakage"),
+			(stack, level, entity, i) -> stack
+				.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS.get(), PotionFlaskComponent.EMPTY)
+				.breakage() / 2.0F);
+		ItemProperties.register(TFItems.BRITTLE_FLASK.get(), TwilightForestMod.prefix("potion_level"),
+			(stack, level, entity, i) -> stack
+				.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS.get(), PotionFlaskComponent.EMPTY)
+				.doses() / 3.0F);
+		ItemProperties.register(TFItems.GREATER_FLASK.get(), TwilightForestMod.prefix("potion_level"),
+			(stack, level, entity, i) -> stack
+				.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS.get(), PotionFlaskComponent.EMPTY)
+				.doses() / 3.0F);
 
 		ItemProperties.register(TFItems.CRUMBLE_HORN.get(), TwilightForestMod.prefix("tooting"), (stack, world, entity, i) ->
 			entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
