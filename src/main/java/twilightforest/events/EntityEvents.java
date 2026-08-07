@@ -197,14 +197,6 @@ public class EntityEvents {
 				ApplyFrostedEffect.doChillAuraEffect(target, chillLevel * 5 + 5, chillLevel, chillLevel > 0);
 			}
 		}
-
-		// triple bow strips invulnerableTime
-		if (source.getMsgId().equals("arrow") && trueSource instanceof Player player) {
-
-			if (player.getItemInHand(player.getUsedItemHand()).is(TFItems.TRIPLE_BOW.get())) {
-				living.invulnerableTime = 0;
-			}
-		}
 	}
 
 	//if our casket is owned by someone and that player isnt the one breaking it, stop them

@@ -1,15 +1,18 @@
 package twilightforest.asmhooks;
 
 import net.minecraft.tags.FluidTags;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import io.github.fabricators_of_create.porting_lib.fluids.FluidType;
 import io.github.fabricators_of_create.porting_lib.fluids.PortingLibFluids;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFDataAttachments;
+import twilightforest.init.TFItems;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.TravellersGearLogic;
 
@@ -61,5 +64,14 @@ public class EntityHooks {
 		living.stuckSpeedMultiplier = Vec3.ZERO;
 
 		return entity;
+	}
+
+	public static void stripInvulnerableTimeAfterTripleBowHit(Entity entity, DamageSource source, boolean tookDamage) {
+		if (tookDamage
+			&& source.getMsgId().equals("arrow")
+			&& source.getEntity() instanceof Player player
+			&& player.getItemInHand(player.getUsedItemHand()).is(TFItems.TRIPLE_BOW.get())) {
+			entity.invulnerableTime = 0;
+		}
 	}
 }

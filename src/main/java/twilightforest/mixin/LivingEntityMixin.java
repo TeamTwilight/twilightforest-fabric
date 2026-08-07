@@ -152,4 +152,16 @@ public class LivingEntityMixin {
 			(LivingEntity) (Object) this
 		);
 	}
+
+	@Inject(
+		method = "hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z",
+		at = @At("TAIL")
+	)
+	private void twilightforest$stripInvulnerableTimeForTripleBow(
+		DamageSource source,
+		float amount,
+		CallbackInfoReturnable<Boolean> cir
+	) {
+		EntityHooks.stripInvulnerableTimeAfterTripleBowHit((LivingEntity) (Object) this, source, cir.getReturnValueZ());
+	}
 }
