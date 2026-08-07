@@ -34,16 +34,14 @@ import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.fabricmc.loader.api.FabricLoader;
+import twilightforest.mixin.HangingEntityAccessor;
+import twilightforest.mixin.LivingEntityAccessor;
 import twilightforest.util.TFEventHooks;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.init.TFSounds;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -87,46 +85,14 @@ public class EntityUtil {
 		return rayTrace(player, modifier == null ? range : modifier.applyAsDouble(range));
 	}
 
-	private static final MethodHandles.Lookup LOOKUP = MethodHandles.lookup();
-	private static final Method LivingEntity_getDeathSound;
-	private static final MethodHandle handle_LivingEntity_getDeathSound;
-	private static final Method HangingEntity_setDirection;
-	private static final MethodHandle handle_HangingEntity_setDirection;
-
-	static {
-		Method tmp_LivingEntity_getDeathSound = null;
-		Method tmp_HangingEntity_setDirection = null;
-		MethodHandle tmp_handle_LivingEntity_getDeathSound = null;
-		MethodHandle tmp_handle_HangingEntity_setDirection = null;
-
-		try {
-			tmp_LivingEntity_getDeathSound = LivingEntity.class.getDeclaredMethod("getDeathSound");
-			tmp_LivingEntity_getDeathSound.setAccessible(true);
-			tmp_handle_LivingEntity_getDeathSound = LOOKUP.unreflect(tmp_LivingEntity_getDeathSound);
-
-			tmp_HangingEntity_setDirection = HangingEntity.class.getDeclaredMethod("setDirection", Direction.class);
-			tmp_HangingEntity_setDirection.setAccessible(true);
-			tmp_handle_HangingEntity_setDirection = LOOKUP.unreflect(tmp_HangingEntity_setDirection);
-		} catch (NoSuchMethodException | IllegalAccessException e) {
-			e.printStackTrace();
-		}
-		LivingEntity_getDeathSound = tmp_LivingEntity_getDeathSound;
-		HangingEntity_setDirection = tmp_HangingEntity_setDirection;
-		handle_LivingEntity_getDeathSound = tmp_handle_LivingEntity_getDeathSound;
-		handle_HangingEntity_setDirection = tmp_handle_HangingEntity_setDirection;
-	}
-
 	@Nullable
 	public static SoundEvent getDeathSound(LivingEntity living) {
-		SoundEvent sound = null;
-		if (handle_LivingEntity_getDeathSound != null) {
-			try {
-				sound = (SoundEvent) handle_LivingEntity_getDeathSound.invokeExact(living);
-			} catch (Throwable e) {
-				// FAIL SILENTLY
-			}
+		try {
+			return ((LivingEntityAccessor) living).twilightforest$getDeathSound();
+		} catch (Throwable t) {
+			// match your original behavior (fail silently)
+			return null;
 		}
-		return sound;
 	}
 
 	public static void killLavaAround(Entity entity) {
@@ -194,7 +160,7 @@ public class EntityUtil {
 
 		painting.setPos(pos.getX(), pos.getY(), pos.getZ());
 		try {
-			handle_HangingEntity_setDirection.invoke(painting, direction);
+			((HangingEntityAccessor) painting).twilightforest$setDirection(direction);
 		} catch (Throwable throwable) {
 			throwable.printStackTrace();
 
