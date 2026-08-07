@@ -8,7 +8,10 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.tags.ItemTags;
@@ -20,6 +23,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.armortrim.ArmorTrim;
 import net.minecraft.world.item.component.DyedItemColor;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import io.github.fabricators_of_create.porting_lib.client.armor.ArmorRenderer;
@@ -107,11 +111,36 @@ public abstract class TFArmorRenderer implements IClientItemExtensions, ArmorRen
 				: layer.texture(innerModel);
 
 			VertexConsumer consumer = vertexConsumers.getBuffer(RenderType.armorCutoutNoCull(texture));
-			((HumanoidModel) customModel).renderToBuffer(matrices, consumer, light, OverlayTexture.NO_OVERLAY, layer.dyeable() ? dyeColor : -1);
+			customModel.renderToBuffer(matrices, consumer, light, OverlayTexture.NO_OVERLAY, layer.dyeable() ? dyeColor : -1);
+		}
+
+		// Trim pass
+		ArmorTrim trim = stack.get(DataComponents.TRIM);
+
+		if (trim != null) {
+			ResourceLocation texture = innerModel
+				? trim.innerTexture(armorItem.getMaterial())
+				: trim.outerTexture(armorItem.getMaterial());
+
+			TextureAtlasSprite sprite = Minecraft.getInstance()
+				.getTextureAtlas(Sheets.ARMOR_TRIMS_SHEET)
+				.apply(texture);
+
+			VertexConsumer consumer = sprite.wrap(
+				vertexConsumers.getBuffer(Sheets.armorTrimsSheet(false))
+			);
+
+			customModel.renderToBuffer(
+				matrices,
+				consumer,
+				light,
+				OverlayTexture.NO_OVERLAY,
+				-1
+			);
 		}
 
 		if (stack.hasFoil()) {
-			((HumanoidModel) customModel).renderToBuffer(matrices, vertexConsumers.getBuffer(RenderType.armorEntityGlint()), light, OverlayTexture.NO_OVERLAY);
+			customModel.renderToBuffer(matrices, vertexConsumers.getBuffer(RenderType.armorEntityGlint()), light, OverlayTexture.NO_OVERLAY);
 		}
 	}
 
