@@ -72,17 +72,6 @@
     "modmenu": "*"
   },
   "custom": {
-    "loom:injected_interfaces": {
-      "io/github/fabricators_of_create/porting_lib/models/CompositeModel${'$'}Baked": [
-        "net/fabricmc/fabric/api/renderer/v1/model/FabricBakedModel"
-      ],
-      "net/minecraft/class_6880": [
-        "io/github/fabricators_of_create/porting_lib/resources/injections/HolderInjection<TT;>"
-      ],
-      "net/minecraft/class_7225${'$'}class_7226": [
-        "io/github/fabricators_of_create/porting_lib/resources/injections/RegistryLookupInjection<TT;>"
-      ]
-    },
     "modmenu": {
       "links": {
         "modmenu.discord": "https://discord.gg/teamtwilight"
