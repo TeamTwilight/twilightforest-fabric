@@ -38,8 +38,6 @@ public class ChiseledCanopyShelfBlockEntity extends ChiseledBookShelfBlockEntity
 				level.sendBlockUpdated(pos, blockstate, blockstate, 4);
 			}
 		}
-
-		// getOwner() is NeoForge-specific; BookshelfSpawner is standalone, no BaseSpawner dependency
 	};
 
 	public ChiseledCanopyShelfBlockEntity(BlockPos pos, BlockState state) {

@@ -153,15 +153,6 @@ public class TravellersArmorItem extends ArmorItem implements TravellersModifiab
 		return false;
 	}
 
-	// isBookEnchantable, isPrimaryItemFor, supportsEnchantment, isRepairable: NeoForge-only methods.
-	// Not needed on Fabric - isEnchantable() returns false, default behaviors suffice.
-
-	// canWalkOnPowderedSnow handled via LivingEntityMixin.canWalkOnPowderedSnow
-	// @Override
-	// public boolean canWalkOnPowderedSnow(ItemStack stack, @NotNull LivingEntity wearer) {
-	// 	return stack.is(TFItems.TRAVELLERS_BOOTS);
-	// }
-
 	public static boolean isTravellersArmorAndBroken(ItemStack stack) {
 		return stack.has(TFDataComponents.IS_TRAVELLERS_GEAR.get()) && stack.isDamageableItem() && stack.getMaxDamage() - 1 <= stack.getDamageValue();
 	}

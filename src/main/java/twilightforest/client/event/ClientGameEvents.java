@@ -75,20 +75,14 @@ public class ClientGameEvents {
 	private final HolderMatcher holderMatcher = HolderMatcher.INSTANCE;
 
 	public static void init() {
-		// Available in Porting-Lib:
 		SelectMusicEvent.EVENT.register(INSTANCE::setMusicInDimension);
 		ViewportEvent.ComputeCameraAngles.EVENT.register(INSTANCE::shakeCamera);
 		ComputeFovModifierEvent.EVENT.register(INSTANCE::updateBowFOV);
-
-		// Fabric API: Client tick events
 		ClientTickEvents.END_CLIENT_TICK.register(INSTANCE::clientTick);
 		ClientTickEvents.END_CLIENT_TICK.register(INSTANCE::killVignette);
-
-		// Fabric API: Item tooltip events
 		ItemTooltipCallback.EVENT.register((ItemStack stack, Item.TooltipContext context, TooltipFlag flag, List<Component> tooltip) -> addCustomTooltips(stack, context, flag, tooltip));
 		ItemTooltipCallback.EVENT.register((ItemStack stack, Item.TooltipContext context, TooltipFlag flag, List<Component> tooltip) -> translateBookAuthor(stack, context, flag, tooltip));
 
-		// Fabric API: World render events
 		WorldRenderEvents.LAST.register((WorldRenderContext context) -> {
 			if (Minecraft.getInstance().level == null) return;
 
@@ -117,16 +111,10 @@ public class ClientGameEvents {
 			}
 		});
 
-		// removeHostileMountHealth is handled by GuiMixin
-		// HudRenderCallback.EVENT.register(this::removeHostileMountHealth);
-
-		// Fabric API: Screen events
 		ScreenEvents.AFTER_INIT.register(INSTANCE::handleGameBootup);
-		// Splash customization handled via SplashRendererMixin
 		// clearEntityRenderUtilMap - ScreenEvents.REMOVE not available in Fabric API 1.21.1
 		// ScreenEvents.remove(screen -> clearEntityRenderUtilMap(screen));
 		ViewportEvent.RenderFog.EVENT.register(FogHandler::renderFog);
-		// FogHandler.unloadFog → LevelEvent.Unload (Porting-Lib level_events)
 		LevelEvent.Unload.EVENT.register(FogHandler::unloadFog);
 		// LockedBiomeToastHandler.tickLockedToastLogic → ClientTickEvents.END_CLIENT_TICK
 	}
@@ -154,8 +142,6 @@ public class ClientGameEvents {
 			event.setMusic(Minecraft.getInstance().level.getBiomeManager().getNoiseBiomeAtPosition(Minecraft.getInstance().player.blockPosition()).value().getBackgroundMusic().orElse(Musics.GAME));
 		}
 	}
-
-	// removeHostileMountHealth is handled by GuiMixin
 
 	private void killVignette(Minecraft minecraft) {
 		// only fire if we're in the twilight forest
@@ -257,8 +243,6 @@ public class ClientGameEvents {
 		}
 	}
 
-	// unrenderHeadWithTrophies is handled by LivingEntityRendererMixin
-
 	private static void clearEntityRenderUtilMap(Screen screen) {
 		if (!EntityRenderingUtil.ENTITY_MAP.isEmpty()) EntityRenderingUtil.ENTITY_MAP.clear();
 	}
@@ -275,7 +259,4 @@ public class ClientGameEvents {
 			}
 		}
 	}
-
-	// renderGiantBlockOutlines is handled by LevelRendererHitOutlineMixin
-	// renderCustomBossbars is handled by BossHealthOverlayMixin
 }

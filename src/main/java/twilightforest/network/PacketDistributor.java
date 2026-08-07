@@ -14,11 +14,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * 包装 Fabric Networking API，提供与 NeoForge PacketDistributor 兼容的接口。
+ * Fabric version of PacketDistributor
  */
 public class PacketDistributor {
 
-	/** Send a packet to all players on the server. Requires a MinecraftServer reference. */
 	public static <T extends CustomPacketPayload> void sendToAllPlayers(MinecraftServer server, T packet) {
 		for (ServerPlayer player : PlayerLookup.all(server)) {
 			ServerPlayNetworking.send(player, packet);
@@ -54,7 +53,6 @@ public class PacketDistributor {
 		}
 	}
 
-	/** sendToPlayersNear(ServerLevel, BlockPos, double, T) */
 	public static <T extends CustomPacketPayload> void sendToPlayersNear(ServerLevel level, BlockPos pos, double distance, T packet) {
 		Vec3 vec3 = Vec3.atCenterOf(pos);
 		for (ServerPlayer player : PlayerLookup.around(level, vec3, distance)) {
@@ -62,7 +60,6 @@ public class PacketDistributor {
 		}
 	}
 
-	/** sendToPlayersNear(ServerLevel, @Nullable, double, double, double, double, T) - 兼容 NeoForge 签名 */
 	public static <T extends CustomPacketPayload> void sendToPlayersNear(ServerLevel level, Object dummy, double x, double y, double z, double distance, T packet) {
 		Vec3 vec3 = new Vec3(x, y, z);
 		for (ServerPlayer player : PlayerLookup.around(level, vec3, distance)) {
@@ -70,7 +67,6 @@ public class PacketDistributor {
 		}
 	}
 
-	/** sendToPlayersNear(Level, @Nullable, double, double, double, double, T) - 兼容 Level 参数 */
 	public static <T extends CustomPacketPayload> void sendToPlayersNear(Level level, Object dummy, double x, double y, double z, double distance, T packet) {
 		if (level instanceof ServerLevel serverLevel) {
 			sendToPlayersNear(serverLevel, null, x, y, z, distance, packet);

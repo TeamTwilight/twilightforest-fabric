@@ -1,7 +1,6 @@
 package twilightforest.item.travellers_gear.modifiers;
 
 
-import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;

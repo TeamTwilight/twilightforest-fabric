@@ -93,7 +93,6 @@ public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvi
 	}
 
 	protected TemplatePoolInstance weightedPathTemplate(int weight, @Nullable Holder<TemplateMarkerHandlerList> markerHandlers, @Nullable Map<String, String> poolAliases) {
-		// 待后续优化：注册并引用 StructureTemplateDefinition
 		Holder<StructureProcessorList> projectionProcessorHolder = Holder.direct(new StructureProcessorList(List.of(new GravityProcessor(Heightmap.Types.WORLD_SURFACE_WG, -2))));
 		return new TemplatePoolInstance(
 			Weight.of(weight),

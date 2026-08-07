@@ -13,20 +13,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import twilightforest.asmhooks.MapHooks;
 
-/**
- * Replaces the NeoForge ASM transformer
- * {@code ResolveNearestNonRandomSpreadMapStructureTransformer}
- * which doesn't work on Fabric.
- * <p>
- * Vanilla's {@link ChunkGenerator#findNearestMapStructure} only searches structures
- * whose placements are {@code RandomSpreadStructurePlacement} or
- * {@code ConcentricRingsStructurePlacement} subclasses. Twilight Forest landmarks use
- * the custom {@code LandmarkGridPlacement}, which is neither, so /locate (and the
- * /map_locator command) would always report "structure not found" for every
- * landmark_grid structure (Quest Grove, Naga Courtyard, Lich Tower, Labyrinth,
- * Final Castle, etc.). This mixin injects the TF landmark grid search as a fallback
- * right before the method returns, mirroring the NeoForge transformer.
- */
 @Mixin(ChunkGenerator.class)
 public class ChunkGeneratorMixin {
 

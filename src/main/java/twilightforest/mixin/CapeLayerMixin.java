@@ -9,11 +9,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import twilightforest.asmhooks.ArmorHooks;
 
-/**
- * Modifies the elytra check in CapeLayer so that Emperor's Cloth on the elytra
- * allows the cape to render (since the elytra itself is hidden by the cloth).
- * Matches the Neoforge FixCapeUnrenderingTransformer behavior.
- */
 @Mixin(CapeLayer.class)
 public class CapeLayerMixin {
 

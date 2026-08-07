@@ -64,8 +64,6 @@ public class UrGhastFlightGoal extends Goal {
 				}
 			}
 
-			// wanderFactor 待重新引入
-
 			double x = this.pointsToVisit.get(this.currentPoint).getX();
 			double y = this.pointsToVisit.get(this.currentPoint).getY() + (this.ghast.getRestrictionPoint() != null ? HOVER_ALTITUDE : 0);
 			double z = this.pointsToVisit.get(this.currentPoint).getZ();

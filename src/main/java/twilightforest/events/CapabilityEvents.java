@@ -81,7 +81,6 @@ public class CapabilityEvents {
 	}
 
 	private static void dataFixLegacyBanish(ServerPlayer player) {
-		// getPersistentData() 和 Player.PERSISTED_NBT_TAG 在 1.21.1 中不再可用，使用 DataAttachment 替代
 		// Legacy data migration from old NeoForge persistent data system
 		/*
 		CompoundTag tagCompound = player.getPersistentData();

@@ -50,25 +50,18 @@ public class TravellersClientEvents {
 	}
 
 	public static void init() {
-		// Available in Porting-Lib:
 		InputEvent.Key.EVENT.register(INSTANCE::handleDoubleJump);
 		InputEvent.Key.EVENT.register(INSTANCE::cycleItemDisplayMap);
 		InputEvent.Key.EVENT.register(INSTANCE::swapHotbar);
 		InputEvent.Key.EVENT.register(INSTANCE::toggleRedThreadVision);
 		ComputeFovModifierEvent.EVENT.register(INSTANCE::updateZoomState);
 		RenderArmEvent.EVENT.register(INSTANCE::renderGlovesInFirstPerson);
-
-		// MovementInputUpdateCallback - different API, needs adaptation
 		MovementInputUpdateCallback.EVENT.register(INSTANCE::handleMovementInput);
-
-		// Fabric API: Client tick events for per-frame updates
 		ClientTickEvents.END_CLIENT_TICK.register(INSTANCE::handleStealth);
 		ClientTickEvents.END_CLIENT_TICK.register(INSTANCE::updateGradualGlideState);
-
 		// slowZoomSensitivity needs CalculatePlayerTurnEvent - not available in Porting-Lib
 	}
 
-	// Adapter for MovementInputUpdateCallback that combines handleAgileRanger, handleStraightAhead, speedUpControlledWhileSneaking, handleSidestep
 	private void handleMovementInput(Player player, Input input) {
 		if (!(player instanceof LocalPlayer localPlayer)) return;
 		handleAgileRanger(localPlayer, input);

@@ -18,12 +18,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import twilightforest.item.OreMeterItem;
 
-/**
- * Makes TF custom map items (MagicMapItem, MazeMapItem) render as maps in-hand.
- * In 1.21.1, ItemInHandRenderer checks stack.is(Items.FILLED_MAP) to decide
- * whether to render a map in the player's hand. We extend this to also match
- * any MapItem subclass.
- */
 @Mixin(ItemInHandRenderer.class)
 public class ItemInHandRendererMixin {
 
@@ -55,19 +49,6 @@ public class ItemInHandRendererMixin {
 		return original.call(stack, item);
 	}
 
-	/**
-	 * Prevents the "item re-equip" animation from playing when an Ore Meter's data
-	 * components change while held.
-	 *
-	 * <p>The Ore Meter updates its loading progress (and other scanning data) on the
-	 * server every tick, which syncs the held slot to the client with a fresh
-	 * ItemStack instance every tick. In 1.21.1 ItemInHandRenderer#tick decides
-	 * whether to drop/raise the held item animation by comparing the cached stack
-	 * reference against the current one, so any new instance (even of the same
-	 * item) makes the item look like it is being picked up again over and over.
-	 * This mirrors the NeoForge port, which overrides shouldCauseReequipAnimation
-	 * to only animate when the slot changes or the item type changes.
-	 */
 	@Inject(
 		method = "tick",
 		at = @At("HEAD")

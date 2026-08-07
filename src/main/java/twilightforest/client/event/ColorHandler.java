@@ -448,10 +448,6 @@ public class ColorHandler {
 		}
 	}
 
-	/**
-	 * Get the default block color (when world/pos is null).
-	 * Replicates the behavior of the official NeoForge version's item color lookup.
-	 */
 	private static int getBlockDefaultColor(Block block) {
 		if (block == TFBlocks.AURORA_BLOCK.get()) {
 			return 0xFF000000 | ColorUtil.hsvToRGB(0.45F, 1.0f, 1.0f);

@@ -69,8 +69,6 @@ public class KnightmetalBlock extends Block implements SimpleWaterloggedBlock {
 		builder.add(WATERLOGGED);
 	}
 
-	// getBlockPathType handled by WalkNodeEvaluatorMixin
-
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		entity.hurt(TFDamageTypes.getDamageSource(level, TFDamageTypes.KNIGHTMETAL), BLOCK_DAMAGE);

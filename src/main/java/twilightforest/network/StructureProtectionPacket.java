@@ -34,9 +34,6 @@ public record StructureProtectionPacket(Optional<List<Pair<BoundingBox, Boolean>
 
 	public static void handle(StructureProtectionPacket message, IPayloadContext ctx) {
 		ctx.enqueueWork(() -> {
-			// In Fabric, the current dimension's DimensionSpecialEffects is accessed via
-			// Minecraft.getInstance().level.effects(), which is the Fabric equivalent of
-			// NeoForge's DimensionSpecialEffectsManager.getForType().
 			DimensionSpecialEffects info = Minecraft.getInstance().level != null ? Minecraft.getInstance().level.effects() : null;
 
 			if (info instanceof TwilightForestRenderInfo) {

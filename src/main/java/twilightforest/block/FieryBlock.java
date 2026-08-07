@@ -47,6 +47,4 @@ public class FieryBlock extends Block {
 
 		super.stepOn(level, pos, state, entity);
 	}
-
-	// isFireSource handled via data tag: #minecraft:fire_source_blocks
 }

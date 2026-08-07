@@ -5,7 +5,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.*;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -218,8 +217,6 @@ public class SkullChestBlock extends BaseEntityBlock implements BlockLoggingEnum
 	public FluidState getFluidState(BlockState state) {
 		return state.getValue(BlockLoggingEnum.MULTILOGGED).getFluid().defaultFluidState();
 	}
-
-	// canEntityDestroy handled via block tags (wither_immune, dragon_immune)
 
 	@Override
 	protected BlockState rotate(BlockState state, Rotation rotation) {

@@ -12,10 +12,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import twilightforest.asmhooks.ArmorHooks;
 
-/**
- * Cancels elytra rendering when the chestplate has Emperor's Cloth.
- * In 1.21.1, ElytraLayer.shouldRender was removed - intercept render() instead.
- */
 @Mixin(ElytraLayer.class)
 public class ElytraLayerMixin {
 

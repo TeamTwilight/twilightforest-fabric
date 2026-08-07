@@ -112,7 +112,6 @@ public class TFClientSetup implements ClientModInitializer {
 		// Key bindings
 		TFKeyBinds.KEY_MAPPINGS.forEach(KeyBindingHelper::registerKeyBinding);
 
-		// Wood types - register via reflection since WoodType.register() is private in 1.21.1
 		registerWoodType(TFWoodTypes.TWILIGHT_OAK_WOOD_TYPE);
 		registerWoodType(TFWoodTypes.CANOPY_WOOD_TYPE);
 		registerWoodType(TFWoodTypes.MANGROVE_WOOD_TYPE);

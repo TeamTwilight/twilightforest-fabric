@@ -17,10 +17,6 @@ public class LockedBiomeToastHandler {
 	private static boolean shownToast = false;
 	private static int timeUntilToast = 60;
 
-	/**
-	 * Register Fabric API callback for locked biome toast logic.
-	 * Called from {@link twilightforest.client.TFClientSetup#onInitializeClient()}.
-	 */
 	public static void init() {
 		ClientTickEvents.END_CLIENT_TICK.register(LockedBiomeToastHandler::tickLockedToastLogic);
 	}

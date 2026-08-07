@@ -13,13 +13,6 @@ import twilightforest.item.mapdata.TFMagicMapData;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Reorders map decorations so that the player icon is always rendered last.
- * Since RenderType.text() uses LEQUAL_DEPTH_TEST and writes to the depth buffer,
- * the rendering order determines which decorations appear on top.
- * By moving player icons to the end of the decoration list, they receive the
- * highest z-index and render on top of all other decorations.
- */
 @Mixin(MapRenderer.MapInstance.class)
 public abstract class MapInstanceMixin {
 

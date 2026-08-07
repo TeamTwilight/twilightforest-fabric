@@ -11,12 +11,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import twilightforest.init.TFItems;
 import twilightforest.util.TFBoatTypes;
 
-/**
- * Mixin to handle custom Twilight Forest chest boat types.
- * In 1.21.1, ChestBoat.getDropItem() uses an exhaustive switch on Boat.Type,
- * which returns Items.OAK_CHEST_BOAT for unmatched types instead of the correct TF item.
- * This mixin intercepts the method to return the appropriate TF chest boat item.
- */
 @Mixin(ChestBoat.class)
 public class ChestBoatMixin {
 

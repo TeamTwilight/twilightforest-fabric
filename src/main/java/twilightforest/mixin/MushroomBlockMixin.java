@@ -10,10 +10,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import twilightforest.init.TFBlocks;
 
-/**
- * Allows mushrooms to survive on blocks near Twilight Portals.
- * In 1.21.1, BlockState#canSustainPlant was removed, so we intercept canSurvive directly.
- */
 @Mixin(MushroomBlock.class)
 public class MushroomBlockMixin {
 

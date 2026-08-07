@@ -585,7 +585,6 @@ public class UrGhast extends BaseTFBoss {
 		}
 	}
 
-	// makePoofParticles 在 1.21.1 中是 final，行为已移至 handleEntityEvent
 	/*
 	@Override
 	public void makePoofParticles() {

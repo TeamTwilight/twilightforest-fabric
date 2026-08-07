@@ -49,8 +49,4 @@ public class TwilightForestRenderInfo extends DimensionSpecialEffects {
 
 		//Make the fog on these biomes much much darker, maybe pitch black even. Do we keep this harsher fog underground too?
 	}
-
-	// renderSky, renderSnowAndRain, and tickRain were removed from DimensionSpecialEffects in 1.21.1.
-// These are now handled via LevelRendererMixin, which injects into LevelRenderer's methods
-// and calls TFSkyRenderer/TFWeatherRenderer when in the Twilight Forest dimension.
 }

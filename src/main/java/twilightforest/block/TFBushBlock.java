@@ -25,8 +25,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -197,7 +195,6 @@ public abstract class TFBushBlock extends Block implements SnowLoggable {
 		return canSurvive(state, level, pos);
 	}
 
-	// 1.21.9+: utilize Block.dropFromBlockInteractLootTable
 	protected static void dropFromBlockInteractLootTable(
 		ServerLevel serverlevel,
 		ResourceKey<LootTable> resourcekey,

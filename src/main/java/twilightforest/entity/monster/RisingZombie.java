@@ -109,7 +109,6 @@ public class RisingZombie extends Monster {
 		return SoundEvents.ZOMBIE_DEATH;
 	}
 
-	// 1.21.4+ 可替换为 LivingEntity.isLookingAtMe
 	public boolean isLookingInMyDirection(Player player, double width, boolean useLength, boolean checkAir, double... offsets) {
 		Vec3 vec3 = player.getViewVector(1.0F).normalize();
 
@@ -174,12 +173,6 @@ public class RisingZombie extends Monster {
 	protected boolean isAffectedByFluids() {
 		return false;
 	}
-
-	// isPushedByFluid is NeoForge-specific, not needed on Fabric
-	// @Override
-	// public boolean isPushedByFluid(FluidType type) {
-	// 	return false;
-	// }
 
 	@Override
 	public boolean canUsePortal(boolean force) {

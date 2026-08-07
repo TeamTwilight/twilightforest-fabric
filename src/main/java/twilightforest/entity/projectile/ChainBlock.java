@@ -138,12 +138,10 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 			DamageSource source = TFDamageTypes.getIndirectEntityDamageSource(level, TFDamageTypes.SPIKED, this, this.getOwner());
 			if (stack != null) {
 				if (result.getEntity() instanceof LivingEntity living) {
-					// EnchantmentHelper.modifyDamage 签名在 1.21.1 中已变更
 					// damage = EnchantmentHelper.modifyDamage((ServerLevel) level, this.stack, living, source, damage);
 				}
 				// PartEntity is NeoForge-specific; Fabric needs alternative approach
 				/* else if (result.getEntity() instanceof PartEntity<?> part && part.getParent() instanceof LivingEntity living) {
-					// EnchantmentHelper.modifyDamage 签名在 1.21.1 中已变更
 					// damage = EnchantmentHelper.modifyDamage((ServerLevel) level, this.stack, living, source, damage);
 				}*/
 			}

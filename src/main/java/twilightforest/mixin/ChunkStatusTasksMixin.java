@@ -12,11 +12,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import twilightforest.asmhooks.WorldgenHooks;
 
-/**
- * Injects chunk blanketing into the surface generation step.
- * In 1.21.1, WorldGenContext.level() returns ServerLevel (not WorldGenRegion),
- * so we use the ServerLevel overload of chunkBlanketing.
- */
 @Mixin(ChunkStatusTasks.class)
 public class ChunkStatusTasksMixin {
 

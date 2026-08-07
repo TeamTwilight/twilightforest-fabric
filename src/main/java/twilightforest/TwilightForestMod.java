@@ -96,7 +96,6 @@ public final class TwilightForestMod implements ModInitializer {
 		// Initialize deferred spawn eggs (dispenser behaviors and type mapping)
 		DeferredSpawnEggItem.init();
 
-		// Registration events migrated to Fabric (Phase 2.5)
 		RegistrationEvents.registerPackets();
 		RegistrationEvents.registerServerPacketHandlers();
 		RegistrationEvents.addEntityAttributes();

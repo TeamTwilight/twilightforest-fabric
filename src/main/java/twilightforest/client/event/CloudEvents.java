@@ -29,7 +29,6 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 
-
 import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.block.CloudBlock;
 import twilightforest.client.renderer.TFWeatherRenderer;
@@ -43,13 +42,8 @@ public class CloudEvents {
 	private static final List<PrecipitationRenderHelper> RENDER_HELPER = new ArrayList<>();
 
 	record PrecipitationRenderHelper(BlockPos cloudPos, Biome.Precipitation precipitation, float precipitationLevel, int rainOnY) {
-
 	}
 
-	/**
-	 * Register Fabric API callbacks for cloud weather effects.
-	 * Called from {@link twilightforest.client.TFClientSetup#onInitializeClient()}.
-	 */
 	public static void init() {
 		ClientTickEvents.END_CLIENT_TICK.register(CloudEvents::tickWeatherEffects);
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(CloudEvents::renderPrecipitation);

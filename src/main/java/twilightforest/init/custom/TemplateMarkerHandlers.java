@@ -39,7 +39,6 @@ public class TemplateMarkerHandlers {
 
 	public static final ResourceKey<TemplateMarkerHandlerList> CAMP_MARKER_HANDLERS = ResourceKey.create(TFRegistries.Keys.TEMPLATE_MARKER_HANDLER_LIST, TwilightForestMod.prefix("camp_marker_handlers"));
 
-	// 模板标记处理器待实现
 	//  Lich Tower:
 	//    Dangling handler
 	//    List handler

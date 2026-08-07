@@ -4,13 +4,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.util.TFTriState;
 import twilightforest.block.CloudBlock;
 import twilightforest.block.SnowLoggable;
 import twilightforest.block.WroughtIronFenceBlock;
@@ -25,7 +23,7 @@ public class BlockHooks {
 
 	public static boolean isRainingAt(boolean isRaining, Level level, BlockPos pos) {
 		if (!isRaining && TFConfig.commonCloudBlockPrecipitationDistance > 0) {
-			if (!level.hasChunkAt(pos)) return false; //do NOT try to load new chunks when checking for rain. This can cause deadlocks if mobs ry to spawn in unloaded areas and check for rain
+			if (!level.hasChunkAt(pos)) return false; //do NOT try to load new chunks when checking for rain. This can cause deadlocks if mobs try to spawn in unloaded areas and check for rain
 			LevelChunk chunk = level.getChunkAt(pos);
 			for (int y = pos.getY(); y < pos.getY() + TFConfig.commonCloudBlockPrecipitationDistance; y++) {
 				BlockPos newPos = pos.atY(y);
@@ -50,20 +48,6 @@ public class BlockHooks {
 			return true; // Short-circuit to avoid an unnecessary #getBlockState call
 		BlockState fenceState = entity.level().getBlockState(entity.getPos());
 		return fenceState.is(TFBlocks.WROUGHT_IRON_FENCE) && fenceState.getValue(WroughtIronFenceBlock.POST) != WroughtIronFenceBlock.PostState.NONE;
-	}
-
-	public static TFTriState modifySoilDecisionForMushroomBlockSurvivability(TFTriState o, LevelReader level, BlockPos pos) {
-		if (!o.isDefault())
-			return o; // Short-circuit - We should not override non-default soil behaviour otherwise this would allow Mushrooms to survive on ALL blocks
-		for (int x = -1; x <= 1; x++) {
-			for (int z = -1; z <= 1; z++) {
-				if (x == 0 && z == 0)
-					continue;
-				if (level.getBlockState(pos.offset(x, -1, z)).is(TFBlocks.TWILIGHT_PORTAL))
-					return TFTriState.TRUE;
-			}
-		}
-		return o;
 	}
 
 	public static int resolveFoliageColor(int o, Biome biome, double x, double z) {

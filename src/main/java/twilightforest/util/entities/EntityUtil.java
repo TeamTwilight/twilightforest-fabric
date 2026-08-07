@@ -61,8 +61,7 @@ public class EntityUtil {
 		float hardness = state.getDestroySpeed(world, pos);
 		return hardness >= 0f && hardness < 50f && !state.isAir()
 			&& !(world.getBlockEntity(pos) instanceof Container)
-			// canEntityDestroy is NeoForge-only; using TFEventHooks.onEntityDestroyBlock instead
-		&& (/* rude type limit */!(entity instanceof LivingEntity)
+		&& (!(entity instanceof LivingEntity)
 			|| TFEventHooks.onEntityDestroyBlock((LivingEntity) entity, pos, state));
 	}
 

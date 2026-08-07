@@ -7,7 +7,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -16,7 +15,6 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import twilightforest.util.TFTriState;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 
@@ -43,16 +41,6 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 		BlockState state = ctx.getLevel().getBlockState(ctx.getClickedPos().above());
 		return state.isSolid() && !(state.getBlock() instanceof BonemealableBlock && !state.is(this)) ? Blocks.DIRT.defaultBlockState() : super.getStateForPlacement(ctx);
 	}
-
-	// NOTE: canSustainPlant is NeoForge-specific. Vanilla 1.21.1 uses isValidBonemealTarget instead.
-	/*
-	@Override
-	public TFTriState canSustainPlant(BlockState state, BlockGetter level, BlockPos soilPosition, Direction facing, BlockState plant) {
-		if (facing.getAxis() != Direction.Axis.Y) return TFTriState.FALSE;
-		if (plant.is(BlockTags.CROPS)) return TFTriState.TRUE;
-		return super.canSustainPlant(state, level, soilPosition, facing, plant);
-	}
-	*/
 
 	@Override
 	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moving) {

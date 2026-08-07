@@ -40,8 +40,6 @@ public class HedgeBlock extends Block {
 		return HEDGE_BB;
 	}
 
-	// getBlockPathType handled by WalkNodeEvaluatorMixin
-
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		if (this.shouldDamage(entity)) {

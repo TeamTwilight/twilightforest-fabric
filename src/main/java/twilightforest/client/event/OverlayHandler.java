@@ -30,10 +30,6 @@ import java.util.*;
 public class OverlayHandler {
 	public static final Map<Long, OreMeterInfoCache> ORE_METER_STAT_CACHE = new HashMap<>();
 
-	/**
-	 * Register all Twilight Forest HUD overlays via Fabric API's HudRenderCallback.
-	 * Called from TFClientSetup.onInitializeClient().
-	 */
 	public static void init() {
 		HudRenderCallback.EVENT.register((graphics, tickDelta) -> {
 			Minecraft minecraft = Minecraft.getInstance();

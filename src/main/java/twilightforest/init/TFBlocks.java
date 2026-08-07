@@ -310,8 +310,6 @@ public class TFBlocks {
 	public static final DeferredBlock<TrophyWallBlock> ALPHA_YETI_WALL_TROPHY = BLOCKS.register("alpha_yeti_wall_trophy", () -> new TrophyWallBlock(BossVariant.ALPHA_YETI, BlockBehaviour.Properties.of().instabreak()));
 	public static final DeferredBlock<TrophyWallBlock> QUEST_RAM_WALL_TROPHY = BLOCKS.register("quest_ram_wall_trophy", () -> new TrophyWallBlock(BossVariant.QUEST_RAM, BlockBehaviour.Properties.of().instabreak()));
 
-	// 代码重构：树木相关方块待枚举化
-
 	//all tree related stuff
 	public static final DeferredBlock<BanisterBlock> OAK_BANISTER = register("oak_banister", () -> new BanisterBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)));
 	public static final DeferredBlock<BanisterBlock> SPRUCE_BANISTER = register("spruce_banister", () -> new BanisterBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SPRUCE_PLANKS)));

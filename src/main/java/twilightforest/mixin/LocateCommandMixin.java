@@ -4,7 +4,6 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -18,16 +17,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import java.lang.reflect.Field;
 import java.util.Locale;
 
-/**
- * Improves /locate structure tab-completion for Twilight Forest structures.
- * <p>
- * Vanilla's {@link SharedSuggestionProvider#filterResources} only suggests elements whose
- * <b>namespace</b> matches the typed prefix, or {@code minecraft:} elements by path. This
- * hides {@code twilightforest:} structures unless the player types the full namespace.
- * This mixin swaps the {@code /locate structure} argument suggestions for a substring
- * match over the whole structure id (and its tags), so typing "lich" will suggest
- * {@code twilightforest:lich_tower}.
- */
 @Mixin(LocateCommand.class)
 public class LocateCommandMixin {
 

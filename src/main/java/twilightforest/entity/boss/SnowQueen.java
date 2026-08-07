@@ -396,7 +396,6 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker, MultiPartE
 	@Override
 	public void doBreathAttack(Entity target) {
 		target.hurt(TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.CHILLING_BREATH, this, TFEntities.SNOW_QUEEN.get()), BREATH_DAMAGE);
-		// 减速目标
 	}
 
 	@Override

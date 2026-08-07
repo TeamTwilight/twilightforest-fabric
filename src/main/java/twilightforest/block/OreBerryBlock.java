@@ -42,8 +42,6 @@ public class OreBerryBlock extends TFBushBlock {
 		return shape;
 	}
 
-	// getBlockPathType handled by WalkNodeEvaluatorMixin
-
 	@Override
 	public boolean canBePlacedAt(BlockState state) {
 		return state.is(BlockTagGenerator.OREBERRY_BUSHES_SURVIVE);

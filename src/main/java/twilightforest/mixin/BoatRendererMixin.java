@@ -23,11 +23,6 @@ public class BoatRendererMixin implements CustomBoatModel {
 	@Final
 	private Map<Boat.Type, Pair<ResourceLocation, ListModel<Boat>>> boatResources;
 
-	/**
-	 * PortingLib's BoatRendererMixin (priority 951) calls this for ALL boats via instanceof check.
-	 * For TF boats we return TF texture + OAK model.
-	 * For vanilla boats we fall through to boatResources.get(type).
-	 */
 	@Override
 	public Pair<ResourceLocation, ListModel<Boat>> getModelWithLocation(Boat boat) {
 		Boat.Type type = boat.getVariant();

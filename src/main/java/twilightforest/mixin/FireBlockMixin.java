@@ -13,10 +13,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import twilightforest.block.ChiseledCanopyShelfBlock;
 import twilightforest.block.entity.bookshelf.ChiseledCanopyShelfBlockEntity;
 
-/**
- * 1.21.1: tryCatchFire was removed, replaced by checkBurnOut.
- * When ChiseledCanopyShelfBlock catches fire, spawn tomes from its spawner.
- */
 @Mixin(FireBlock.class)
 public class FireBlockMixin {
 

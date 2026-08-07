@@ -1,5 +1,6 @@
 package twilightforest.item.travellers_gear;
 
+import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
@@ -302,10 +303,7 @@ public class TravellersGearLogic {
 		}
 	}
 
-	private static void validateMovement(ServerPlayer serverPlayer,
-										 net.fabricmc.fabric.api.attachment.v1.AttachmentType<Integer> validator,
-										 net.fabricmc.fabric.api.attachment.v1.AttachmentType<Integer> lastCheck,
-										 String movementType) {
+	private static void validateMovement(ServerPlayer serverPlayer, AttachmentType<Integer> validator, AttachmentType<Integer> lastCheck, String movementType) {
 		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
 		if (server == null || !server.isDedicatedServer())
 			return;

@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import io.github.fabricators_of_create.porting_lib.config.ModConfigEvent;
 import io.github.fabricators_of_create.porting_lib.entity.events.player.PlayerEvents;
 import io.github.fabricators_of_create.porting_lib.resources.events.AddReloadListenersEvent;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
@@ -72,27 +73,19 @@ public class RegistrationEvents {
 	private final StructureTemplateDefinitions structureTemplateDefinitions = StructureTemplateDefinitions.INSTANCE;
 
 	public static void init() {
-		// Register commands - uses Fabric CommandRegistrationCallback
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
 			INSTANCE.tfCommand.register(dispatcher, registryAccess);
 		});
-
 		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new QuestReloadListener());
 		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(TravellersModifiersManager.CacheInvalidationReloadListener.INSTANCE);
 		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(StalactiteReloadListener.INSTANCE);
-
 		AddReloadListenersEvent.EVENT.register(INSTANCE.structureTemplateDefinitions::registerListener);
-
 		ModConfigEvent.Loading.EVENT.register(ConfigSetup::loadConfigs);
 		ModConfigEvent.Reloading.EVENT.register(ConfigSetup::reloadConfigs);
 		PlayerEvents.PlayerLoggedInEvent.EVENT.register(ConfigSetup::syncUncraftingConfig);
 	}
 
-	/**
-	 * 在 TwilightForestMod.onInitialize() 中调用，注册网络包。
-	 */
 	public static void registerPackets() {
-		// Play to Client (S2C)
 		PayloadTypeRegistry.playS2C().register(AreaProtectionPacket.TYPE, AreaProtectionPacket.STREAM_CODEC);
 		PayloadTypeRegistry.playS2C().register(CreateMovingCicadaSoundPacket.TYPE, CreateMovingCicadaSoundPacket.STREAM_CODEC);
 		PayloadTypeRegistry.playS2C().register(EnforceProgressionStatusPacket.TYPE, EnforceProgressionStatusPacket.STREAM_CODEC);
@@ -115,7 +108,6 @@ public class RegistrationEvents {
 		PayloadTypeRegistry.playS2C().register(SyncQuestsPacket.TYPE, SyncQuestsPacket.STREAM_CODEC);
 		PayloadTypeRegistry.playS2C().register(TravellersWingsStatePacket.TYPE, TravellersWingsStatePacket.STREAM_CODEC);
 
-		// Play to Server (C2S)
 		PayloadTypeRegistry.playC2S().register(PerformDoubleJumpPacket.TYPE, PerformDoubleJumpPacket.STREAM_CODEC);
 		PayloadTypeRegistry.playC2S().register(SwapHotbarPacket.TYPE, SwapHotbarPacket.STREAM_CODEC);
 		PayloadTypeRegistry.playC2S().register(PerformSidestepPacket.TYPE, PerformSidestepPacket.STREAM_CODEC);
@@ -123,18 +115,13 @@ public class RegistrationEvents {
 		PayloadTypeRegistry.playC2S().register(UncraftingGuiPacket.TYPE, UncraftingGuiPacket.STREAM_CODEC);
 		PayloadTypeRegistry.playC2S().register(WipeOreMeterPacket.TYPE, WipeOreMeterPacket.STREAM_CODEC);
 
-		// Bidirectional packets - register on both sides
 		PayloadTypeRegistry.playS2C().register(GogglesZoomPacket.TYPE, GogglesZoomPacket.STREAM_CODEC);
 		PayloadTypeRegistry.playC2S().register(GogglesZoomPacket.TYPE, GogglesZoomPacket.STREAM_CODEC);
 		PayloadTypeRegistry.playS2C().register(GradualGlidePacket.TYPE, GradualGlidePacket.STREAM_CODEC);
 		PayloadTypeRegistry.playC2S().register(GradualGlidePacket.TYPE, GradualGlidePacket.STREAM_CODEC);
 	}
 
-	/**
-	 * 在 TwilightForestMod.onInitialize() 中调用，注册服务端网络处理器。
-	 */
 	public static void registerServerPacketHandlers() {
-		// C2S packets handled on server
 		ServerPlayNetworking.registerGlobalReceiver(PerformDoubleJumpPacket.TYPE, (payload, context) ->
 			PerformDoubleJumpPacket.handle(payload, IPayloadContext.fromServerNetworking(context)));
 		ServerPlayNetworking.registerGlobalReceiver(SwapHotbarPacket.TYPE, (payload, context) ->
@@ -148,70 +135,63 @@ public class RegistrationEvents {
 		ServerPlayNetworking.registerGlobalReceiver(WipeOreMeterPacket.TYPE, (payload, context) ->
 			WipeOreMeterPacket.handle(payload, IPayloadContext.fromServerNetworking(context)));
 
-		// Bidirectional packets
 		ServerPlayNetworking.registerGlobalReceiver(GogglesZoomPacket.TYPE, (payload, context) ->
 			GogglesZoomPacket.handle(payload, IPayloadContext.fromServerNetworking(context)));
 		ServerPlayNetworking.registerGlobalReceiver(GradualGlidePacket.TYPE, (payload, context) ->
 			GradualGlidePacket.handle(payload, IPayloadContext.fromServerNetworking(context)));
 	}
 
-	/**
-	 * 在 TFClientSetup.onInitializeClient() 中调用，注册客户端网络处理器。
-	 */
 	public static void registerClientPacketHandlers() {
-		net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.registerGlobalReceiver(AreaProtectionPacket.TYPE, (payload, context) ->
+		ClientPlayNetworking.registerGlobalReceiver(AreaProtectionPacket.TYPE, (payload, context) ->
 			AreaProtectionPacket.handle(payload, IPayloadContext.fromClientNetworking(context)));
-		net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.registerGlobalReceiver(CreateMovingCicadaSoundPacket.TYPE, (payload, context) ->
+		ClientPlayNetworking.registerGlobalReceiver(CreateMovingCicadaSoundPacket.TYPE, (payload, context) ->
 			CreateMovingCicadaSoundPacket.handle(payload, IPayloadContext.fromClientNetworking(context)));
-		net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.registerGlobalReceiver(EnforceProgressionStatusPacket.TYPE, (payload, context) ->
+		ClientPlayNetworking.registerGlobalReceiver(EnforceProgressionStatusPacket.TYPE, (payload, context) ->
 			EnforceProgressionStatusPacket.handle(payload, IPayloadContext.fromClientNetworking(context)));
-		net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.registerGlobalReceiver(MagicMapPacket.TYPE, (payload, context) ->
+		ClientPlayNetworking.registerGlobalReceiver(MagicMapPacket.TYPE, (payload, context) ->
 			MagicMapPacket.handle(payload, IPayloadContext.fromClientNetworking(context)));
-		net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.registerGlobalReceiver(MazeMapPacket.TYPE, (payload, context) ->
+		ClientPlayNetworking.registerGlobalReceiver(MazeMapPacket.TYPE, (payload, context) ->
 			MazeMapPacket.handle(payload, IPayloadContext.fromClientNetworking(context)));
-		net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.registerGlobalReceiver(MissingAdvancementToastPacket.TYPE, (payload, context) ->
+		ClientPlayNetworking.registerGlobalReceiver(MissingAdvancementToastPacket.TYPE, (payload, context) ->
 			MissingAdvancementToastPacket.handle(payload, IPayloadContext.fromClientNetworking(context)));
-		net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.registerGlobalReceiver(MovePlayerPacket.TYPE, (payload, context) ->
+		ClientPlayNetworking.registerGlobalReceiver(MovePlayerPacket.TYPE, (payload, context) ->
 			MovePlayerPacket.handle(payload, IPayloadContext.fromClientNetworking(context)));
-		net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.registerGlobalReceiver(ParticlePacket.TYPE, (payload, context) ->
+		ClientPlayNetworking.registerGlobalReceiver(ParticlePacket.TYPE, (payload, context) ->
 			ParticlePacket.handle(payload, IPayloadContext.fromClientNetworking(context)));
-		net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.registerGlobalReceiver(SpawnCharmPacket.TYPE, (payload, context) ->
+		ClientPlayNetworking.registerGlobalReceiver(SpawnCharmPacket.TYPE, (payload, context) ->
 			SpawnCharmPacket.handle(payload, IPayloadContext.fromClientNetworking(context)));
-		net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.registerGlobalReceiver(SpawnFallenLeafFromPacket.TYPE, (payload, context) ->
+		ClientPlayNetworking.registerGlobalReceiver(SpawnFallenLeafFromPacket.TYPE, (payload, context) ->
 			SpawnFallenLeafFromPacket.handle(payload, IPayloadContext.fromClientNetworking(context)));
-		net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.registerGlobalReceiver(StructureProtectionPacket.TYPE, (payload, context) ->
+		ClientPlayNetworking.registerGlobalReceiver(StructureProtectionPacket.TYPE, (payload, context) ->
 			StructureProtectionPacket.handle(payload, IPayloadContext.fromClientNetworking(context)));
-		net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.registerGlobalReceiver(SyncUncraftingTableConfigPacket.TYPE, (payload, context) ->
+		ClientPlayNetworking.registerGlobalReceiver(SyncUncraftingTableConfigPacket.TYPE, (payload, context) ->
 			SyncUncraftingTableConfigPacket.handle(payload, IPayloadContext.fromClientNetworking(context)));
-		net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.registerGlobalReceiver(UpdateTFMultipartPacket.TYPE, (payload, context) ->
+		ClientPlayNetworking.registerGlobalReceiver(UpdateTFMultipartPacket.TYPE, (payload, context) ->
 			UpdateTFMultipartPacket.handle(payload, IPayloadContext.fromClientNetworking(context)));
-		net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.registerGlobalReceiver(UpdateThrownPacket.TYPE, (payload, context) ->
+		ClientPlayNetworking.registerGlobalReceiver(UpdateThrownPacket.TYPE, (payload, context) ->
 			UpdateThrownPacket.handle(payload, IPayloadContext.fromClientNetworking(context)));
-		net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.registerGlobalReceiver(LifedrainParticlePacket.TYPE, (payload, context) ->
+		ClientPlayNetworking.registerGlobalReceiver(LifedrainParticlePacket.TYPE, (payload, context) ->
 			LifedrainParticlePacket.handle(payload, IPayloadContext.fromClientNetworking(context)));
-		net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.registerGlobalReceiver(UpdateDeathTimePacket.TYPE, (payload, context) ->
+		ClientPlayNetworking.registerGlobalReceiver(UpdateDeathTimePacket.TYPE, (payload, context) ->
 			UpdateDeathTimePacket.handle(payload, IPayloadContext.fromClientNetworking(context)));
-		net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.registerGlobalReceiver(TFBossBarPacket.AddTFBossBarPacket.TYPE, (payload, context) ->
+		ClientPlayNetworking.registerGlobalReceiver(TFBossBarPacket.AddTFBossBarPacket.TYPE, (payload, context) ->
 			TFBossBarPacket.AddTFBossBarPacket.handle(payload, IPayloadContext.fromClientNetworking(context)));
-		net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.registerGlobalReceiver(TFBossBarPacket.UpdateTFBossBarStylePacket.TYPE, (payload, context) ->
+		ClientPlayNetworking.registerGlobalReceiver(TFBossBarPacket.UpdateTFBossBarStylePacket.TYPE, (payload, context) ->
 			TFBossBarPacket.UpdateTFBossBarStylePacket.handle(payload, IPayloadContext.fromClientNetworking(context)));
-		net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.registerGlobalReceiver(SetMasonJarItemPacket.TYPE, (payload, context) ->
+		ClientPlayNetworking.registerGlobalReceiver(SetMasonJarItemPacket.TYPE, (payload, context) ->
 			SetMasonJarItemPacket.handle(payload, IPayloadContext.fromClientNetworking(context)));
-		net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.registerGlobalReceiver(SyncQuestsPacket.TYPE, (payload, context) ->
+		ClientPlayNetworking.registerGlobalReceiver(SyncQuestsPacket.TYPE, (payload, context) ->
 			SyncQuestsPacket.handle(payload, IPayloadContext.fromClientNetworking(context)));
-		net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.registerGlobalReceiver(TravellersWingsStatePacket.TYPE, (payload, context) ->
+		ClientPlayNetworking.registerGlobalReceiver(TravellersWingsStatePacket.TYPE, (payload, context) ->
 			TravellersWingsStatePacket.handle(payload, IPayloadContext.fromClientNetworking(context)));
 
 		// Bidirectional packets
-		net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.registerGlobalReceiver(GogglesZoomPacket.TYPE, (payload, context) ->
+		ClientPlayNetworking.registerGlobalReceiver(GogglesZoomPacket.TYPE, (payload, context) ->
 			GogglesZoomPacket.handle(payload, IPayloadContext.fromClientNetworking(context)));
-		net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.registerGlobalReceiver(GradualGlidePacket.TYPE, (payload, context) ->
+		ClientPlayNetworking.registerGlobalReceiver(GradualGlidePacket.TYPE, (payload, context) ->
 			GradualGlidePacket.handle(payload, IPayloadContext.fromClientNetworking(context)));
 	}
 
-	/**
-	 * 在 TwilightForestMod.onInitialize() 中调用，注册实体属性。
-	 */
 	public static void addEntityAttributes() {
 		FabricDefaultAttributeRegistry.register(TFEntities.BOAR.get(), Boar.registerAttributes().build());
 		FabricDefaultAttributeRegistry.register(TFEntities.BIGHORN_SHEEP.get(), Sheep.createAttributes().build());
@@ -274,9 +254,6 @@ public class RegistrationEvents {
 		FabricDefaultAttributeRegistry.register(TFEntities.RISING_ZOMBIE.get(), Zombie.createAttributes().build());
 	}
 
-	/**
-	 * 在 TwilightForestMod.onInitialize() 中调用，注册生物生成位置。
-	 */
 	public static void registerSpawnPlacements() {
 		SpawnPlacements.register(TFEntities.BOAR.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
 		SpawnPlacements.register(TFEntities.BIGHORN_SHEEP.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
@@ -338,9 +315,6 @@ public class RegistrationEvents {
 		SpawnPlacements.register(TFEntities.RISING_ZOMBIE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
 	}
 
-	/**
-	 * 在 TwilightForestMod.onInitialize() 中调用，执行通用初始化。
-	 */
 	public static void commonInit() {
 		TFDispenserBehaviors.init();
 		TFStats.init();
@@ -371,7 +345,6 @@ public class RegistrationEvents {
 
 		FlowerPotBlock pot = (FlowerPotBlock) Blocks.FLOWER_POT;
 
-		// POTTED_* 方块已在 TFBlocks 中重新添加 (Phase 10)
 		/*
 		pot.addPlant(TFBlocks.TWILIGHT_OAK_SAPLING.getId(), TFBlocks.POTTED_TWILIGHT_OAK_SAPLING);
 		pot.addPlant(TFBlocks.CANOPY_SAPLING.getId(), TFBlocks.POTTED_CANOPY_SAPLING);
@@ -633,16 +606,10 @@ public class RegistrationEvents {
 		// HolidayEvent needs migration to Fabric
 	}
 
-	/**
-	 * 在 TwilightForestMod.onInitialize() 中调用，注册生物群系源。
-	 */
 	public static void registerExtraStuff() {
 		Registry.register(BuiltInRegistries.BIOME_SOURCE, TwilightForestMod.prefix("twilight_biomes"), TFBiomeProvider.TF_CODEC);
 	}
 
-	/**
-	 * 在 TwilightForestMod.onInitialize() 中调用，注册数据映射。
-	 */
 	public static void createDataMaps() {
 		io.github.fabricators_of_create.porting_lib.resources.data_maps.PortingLibDataMaps.registerDataMap(TFDataMaps.CRUMBLE_HORN);
 		io.github.fabricators_of_create.porting_lib.resources.data_maps.PortingLibDataMaps.registerDataMap(TFDataMaps.TRANSFORMATION_POWDER);
@@ -651,26 +618,16 @@ public class RegistrationEvents {
 		io.github.fabricators_of_create.porting_lib.resources.data_maps.PortingLibDataMaps.registerDataMap(TFDataMaps.ORE_MAP_ORE_COLOR);
 	}
 
-	/**
-	 * 在 TwilightForestMod.onInitialize() 中调用，注册自定义 Registry。
-	 */
-	public static void createNewRegistries() {
-		// Custom registries are already created in TFRegistries and registered in TwilightForestMod
-	}
-
-	/**
-	 * 在 TwilightForestMod.onInitialize() 中调用，注册 Datapack Registry。
-	 * Fabric uses DynamicRegistries.register() / registerSynced() for custom datapack registries.
-	 */
+	// FIXME: When cleaning up rest of datagen
 	public static void setRegistriesForDatapack() {
 		DynamicRegistries.registerSynced(TFRegistries.Keys.WOOD_PALETTES, WoodPalette.CODEC);
 		DynamicRegistries.registerSynced(TFRegistries.Keys.BIOME_STACK, BiomeLayerStack.DISPATCH_CODEC);
-		// Server-only registries (no client sync needed - they reference other registries)
+
 		DynamicRegistries.register(TFRegistries.Keys.BIOME_TERRAIN_DATA, BiomeDensitySource.CODEC);
 		DynamicRegistries.registerSynced(TFRegistries.Keys.RESTRICTIONS, Restriction.CODEC);
 		DynamicRegistries.registerSynced(TFRegistries.Keys.MAGIC_PAINTINGS, MagicPaintingVariant.CODEC);
 		DynamicRegistries.registerSynced(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS, StructureSpeleothemConfig.CODEC);
-		// Server-only: references worldgen/structure registry
+
 		DynamicRegistries.register(TFRegistries.Keys.CHUNK_BLANKET_PROCESSORS, ChunkBlanketProcessors.DISPATCH_CODEC);
 		DynamicRegistries.registerSynced(TFRegistries.Keys.TEMPLATE_MARKER_HANDLER, TemplateMarkerHandlers.DISPATCH_CODEC);
 		DynamicRegistries.registerSynced(TFRegistries.Keys.TEMPLATE_MARKER_HANDLER_LIST, TemplateMarkerHandlerList.CODEC);
