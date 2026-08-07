@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:diamond",
+    {
+      "id": "#c:gems/diamond",
+      "required": false
+    }
+  ]
+}

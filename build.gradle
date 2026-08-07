@@ -138,21 +138,20 @@ dependencies {
 	modLocalRuntime "maven.modrinth:jade:${jade_version}"
 }
 
+fabricApi {
+	configureDataGeneration {
+		modId = "twilightforest"
+		outputDirectory = file("src/generated/resources")
+		client = true
+	}
+}
+
 loom {
 	accessWidenerPath = file("src/main/resources/twilightforest.classtweaker")
 
 	runs {
 		client {
 			vmArg("-Dmixin.debug.export=true")
-		}
-
-		data {
-			client()
-			configName = "Data Generation"
-			runDir = "run/data"
-			vmArg("-Dfabric-api.datagen")
-			vmArg("-Dfabric-api.datagen.output-dir=${file("src/generated/resources")}")
-			vmArg("-Dfabric-api.datagen.modid=${mod_id}")
 		}
 	}
 }

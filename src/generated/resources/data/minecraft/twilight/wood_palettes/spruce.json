@@ -1,0 +1,10 @@
+{
+  "banister": "twilightforest:spruce_banister",
+  "button": "minecraft:spruce_button",
+  "fence": "minecraft:spruce_fence",
+  "gate": "minecraft:spruce_fence_gate",
+  "planks": "minecraft:spruce_planks",
+  "plate": "minecraft:spruce_pressure_plate",
+  "slab": "minecraft:spruce_slab",
+  "stairs": "minecraft:spruce_stairs"
+}

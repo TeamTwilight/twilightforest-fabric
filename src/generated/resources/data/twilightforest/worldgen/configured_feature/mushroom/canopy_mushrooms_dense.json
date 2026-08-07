@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:random_selector",
+  "config": {
+    "default": {
+      "feature": "twilightforest:tree/dummy",
+      "placement": []
+    },
+    "features": [
+      {
+        "chance": 0.675,
+        "feature": {
+          "feature": "twilightforest:mushroom/brown_canopy_mushroom",
+          "placement": []
+        }
+      },
+      {
+        "chance": 0.225,
+        "feature": {
+          "feature": "twilightforest:mushroom/red_canopy_mushroom",
+          "placement": []
+        }
+      }
+    ]
+  }
+}

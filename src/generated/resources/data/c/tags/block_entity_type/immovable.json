@@ -1,0 +1,15 @@
+{
+  "values": [
+    "twilightforest:antibuilder",
+    "twilightforest:beanstalk_grower",
+    "twilightforest:naga_spawner",
+    "twilightforest:lich_spawner",
+    "twilightforest:minoshroom_spawner",
+    "twilightforest:hydra_boss_spawner",
+    "twilightforest:knight_phantom_spawner",
+    "twilightforest:tower_boss_spawner",
+    "twilightforest:alpha_yeti_spawner",
+    "twilightforest:snow_queen_spawner",
+    "twilightforest:final_boss_spawner"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "parent": "twilightforest:block/hollow_log_snow",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "inner": "minecraft:block/stripped_spruce_log",
+    "side": "minecraft:block/spruce_log",
+    "top": "minecraft:block/spruce_log_top"
+  }
+}

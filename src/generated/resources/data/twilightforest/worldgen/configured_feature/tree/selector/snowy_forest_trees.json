@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:random_selector",
+  "config": {
+    "default": {
+      "feature": "twilightforest:tree/snowy_spruce_tree",
+      "placement": []
+    },
+    "features": [
+      {
+        "chance": 0.33,
+        "feature": {
+          "feature": "twilightforest:tree/mega_spruce_tree",
+          "placement": []
+        }
+      },
+      {
+        "chance": 0.125,
+        "feature": {
+          "feature": "twilightforest:tree/large_winter_tree",
+          "placement": []
+        }
+      }
+    ]
+  }
+}
