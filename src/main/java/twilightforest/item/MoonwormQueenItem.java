@@ -20,7 +20,6 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.component.BlockItemStateProperties;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -57,7 +56,7 @@ public class MoonwormQueenItem extends Item implements CustomEnchantingBehaviorI
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
-		if (stack.getDamageValue() == stack.getMaxDamage()) {
+		if (TFItemStackUtils.isAtZeroDurability(stack)) {
 			return InteractionResultHolder.fail(stack);
 		} else {
 			player.startUsingItem(hand);

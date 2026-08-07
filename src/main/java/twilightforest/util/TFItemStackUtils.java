@@ -29,7 +29,6 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class TFItemStackUtils {
 
@@ -160,12 +159,12 @@ public class TFItemStackUtils {
 		if (!blockedItems.isEmpty()) blockedItems.forEach(inventory::add);
 	}
 
+	public static boolean isAtZeroDurability(ItemStack stack) {
+		return stack.isDamageableItem() && stack.getDamageValue() >= stack.getMaxDamage();
+	}
+
 	public static void hurtButDontBreak(ItemStack stack, int amount, ServerLevel level, @Nullable LivingEntity entity) {
 		if (stack.isDamageableItem()) {
-			// Forge damageItem 已迁移到 1.21.1 标准 API
-			if (entity != null) {
-				stack.hurtAndBreak(amount, entity, LivingEntity.getSlotForHand(entity.getUsedItemHand()));
-			}
 			if (entity == null || !entity.hasInfiniteMaterials()) {
 				if (amount > 0) {
 					amount = EnchantmentHelper.processDurabilityChange(level, stack, amount);

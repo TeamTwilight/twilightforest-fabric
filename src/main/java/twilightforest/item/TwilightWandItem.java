@@ -33,7 +33,7 @@ public class TwilightWandItem extends Item {
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		if (stack.getDamageValue() == stack.getMaxDamage() && !player.getAbilities().instabuild) {
+		if (TFItemStackUtils.isAtZeroDurability(stack) && !player.getAbilities().instabuild) {
 			return InteractionResultHolder.fail(player.getItemInHand(hand));
 		} else {
 			player.playSound(TFSounds.TWILIGHT_SCEPTER_USE.get(), 1.0F, (level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.2F + 1.0F);
