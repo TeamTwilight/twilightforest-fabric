@@ -1,6 +1,13 @@
 package twilightforest.events;
 
 import com.mojang.datafixers.util.Pair;
+import io.github.fabricators_of_create.porting_lib.entity.events.living.LivingHurtEvent;
+import io.github.fabricators_of_create.porting_lib.entity.events.player.PlayerInteractEvent;
+import io.github.fabricators_of_create.porting_lib.entity.events.tick.PlayerTickEvent;
+import io.github.fabricators_of_create.porting_lib.level.BlockSnapshot;
+import io.github.fabricators_of_create.porting_lib.level.events.BlockEvent;
+import net.fabricmc.fabric.api.entity.FakePlayer;
+import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.commands.Commands;
@@ -22,14 +29,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-
-
-import io.github.fabricators_of_create.porting_lib.entity.events.living.LivingHurtEvent;
-import io.github.fabricators_of_create.porting_lib.entity.events.player.PlayerInteractEvent;
-import io.github.fabricators_of_create.porting_lib.entity.events.tick.PlayerTickEvent;
-import io.github.fabricators_of_create.porting_lib.level.BlockSnapshot;
-import io.github.fabricators_of_create.porting_lib.level.events.BlockEvent;
-import twilightforest.network.PacketDistributor;
 import twilightforest.block.TFPortalBlock;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.BlockTagGenerator;
@@ -40,6 +39,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDimension;
 import twilightforest.network.AreaProtectionPacket;
 import twilightforest.network.MissingAdvancementToastPacket;
+import twilightforest.network.PacketDistributor;
 import twilightforest.network.StructureProtectionPacket;
 import twilightforest.util.Enforcement;
 import twilightforest.util.PlayerHelper;
@@ -118,9 +118,7 @@ public class ProgressionEvents {
 		Level level = player.level();
 
 		if (!level.isClientSide() && level instanceof ServerLevel serverLevel && isBlockProtectedFromInteraction(level, event.getPos()) && isAreaProtected(serverLevel, player, event.getPos())) {
-			// TriState has been ported to Fabric
-			// event.setUseBlock(TriState.FALSE);
-			event.setCanceled(true);
+			event.setUseBlock(TriState.FALSE);
 		}
 	}
 
@@ -130,8 +128,7 @@ public class ProgressionEvents {
 	 */
 	private static boolean isAreaProtected(ServerLevel level, Player player, BlockPos pos) {
 		if (player.getAbilities().instabuild || player.isSpectator() ||
-			// FakePlayer check has been ported to Fabric
-			!LandmarkUtil.isProgressionEnforced(level) /* || player instanceof FakePlayer */) {
+			!LandmarkUtil.isProgressionEnforced(level) || player instanceof FakePlayer) {
 			return false;
 		}
 
@@ -159,7 +156,7 @@ public class ProgressionEvents {
 		return false;
 	}
 
-	// 忽略的实体应改为标签
+	//TODO make ignored entities into a tag
 	private void preventLockedAreaEntityDamage(LivingHurtEvent event) {
 		LivingEntity living = event.getEntity();
 		// cancel attacks in protected areas

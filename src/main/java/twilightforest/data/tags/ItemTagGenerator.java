@@ -375,7 +375,7 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 		getOrCreateTagBuilder(RAW_MATERIALS_KNIGHTMETAL).add(TFItems.ARMOR_SHARD_CLUSTER.get());
 		getOrCreateTagBuilder(ConventionalItemTags.RAW_MATERIALS).addTag(RAW_MATERIALS_IRONWOOD).addTag(RAW_MATERIALS_KNIGHTMETAL);
 
-		getOrCreateTagBuilder(PORTAL_ACTIVATOR).addOptional(ConventionalItemTags.DIAMOND_GEMS.location());
+		getOrCreateTagBuilder(PORTAL_ACTIVATOR).add(Items.DIAMOND).addOptionalTag(ConventionalItemTags.DIAMOND_GEMS);
 
 		getOrCreateTagBuilder(ItemTags.BOATS).add(
 			TFItems.TWILIGHT_OAK_BOAT.get(), TFItems.CANOPY_BOAT.get(),
