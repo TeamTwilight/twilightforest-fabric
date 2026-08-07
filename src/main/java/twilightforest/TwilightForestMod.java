@@ -8,7 +8,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.animal.Parrot;
 import net.minecraft.world.level.block.ComposterBlock;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,10 +16,10 @@ import twilightforest.events.*;
 import twilightforest.init.*;
 import twilightforest.init.custom.*;
 import io.github.fabricators_of_create.porting_lib.util.DeferredSpawnEggItem;
+import twilightforest.mixin.ParrotAccessor;
 import twilightforest.util.TFBoatTypes;
 import twilightforest.util.TFRemapper;
 
-import java.lang.reflect.Field;
 import java.util.Locale;
 import java.util.Map;
 
@@ -256,12 +255,9 @@ public final class TwilightForestMod implements ModInitializer {
 		FuelRegistry.INSTANCE.add(TFBlocks.SORTING_BANISTER.asItem(), 300);
 	}
 
-	@SuppressWarnings("unchecked")
 	private void registerParrotImitations() {
 		try {
-			Field field = Parrot.class.getDeclaredField("MOB_SOUND_MAP");
-			field.setAccessible(true);
-			Map<EntityType<?>, SoundEvent> map = (Map<EntityType<?>, SoundEvent>) field.get(null);
+			Map<EntityType<?>, SoundEvent> map = ParrotAccessor.twilightforest$getMobSoundMap();
 			map.put(TFEntities.ALPHA_YETI.get(), TFSounds.ALPHA_YETI_PARROT.get());
 			map.put(TFEntities.BLOCKCHAIN_GOBLIN.get(), TFSounds.REDCAP_PARROT.get());
 			map.put(TFEntities.CARMINITE_BROODLING.get(), SoundEvents.PARROT_IMITATE_SPIDER);
@@ -299,7 +295,7 @@ public final class TwilightForestMod implements ModInitializer {
 			map.put(TFEntities.WINTER_WOLF.get(), TFSounds.HOSTILE_WOLF_PARROT.get());
 			map.put(TFEntities.WRAITH.get(), TFSounds.WRAITH_PARROT.get());
 			map.put(TFEntities.YETI.get(), TFSounds.ALPHA_YETI_PARROT.get());
-		} catch (NoSuchFieldException | IllegalAccessException e) {
+		} catch (AssertionError e) {
 			LOGGER.error("Failed to register parrot imitations", e);
 		}
 	}

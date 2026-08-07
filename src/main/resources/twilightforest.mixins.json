@@ -35,6 +35,7 @@
     "MobMixin",
     "MushroomBlockMixin",
     "NoiseBasedChunkGeneratorMixin",
+    "ParrotAccessor",
     "PathfinderMobMixin",
     "PhantomSpawnerMixin",
     "PlayerMixin",
