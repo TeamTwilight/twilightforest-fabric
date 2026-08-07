@@ -1,6 +1,5 @@
 package twilightforest.events;
 
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -15,7 +14,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -28,10 +26,8 @@ import io.github.fabricators_of_create.porting_lib.entity.events.living.LivingFa
 import io.github.fabricators_of_create.porting_lib.entity.events.player.PlayerEvents;
 import io.github.fabricators_of_create.porting_lib.entity.events.tick.EntityTickEvent;
 import io.github.fabricators_of_create.porting_lib.entity.events.tick.PlayerTickEvent;
-import io.github.fabricators_of_create.porting_lib.event.common.ItemAttributeModifierEvent;
 import io.github.fabricators_of_create.porting_lib.transfer.item.ItemHandlerHelper;
 import twilightforest.network.PacketDistributor;
-import io.github.fabricators_of_create.porting_lib.core.util.ServerLifecycleHooks;
 import twilightforest.components.entity.SlimySolesAttachment;
 import twilightforest.init.*;
 import twilightforest.init.custom.TravellersModifiersManager;
@@ -58,7 +54,6 @@ public class TravellersGearEvents {
 		PlayerTickEvent.Pre.EVENT.register(INSTANCE::disableHighStepWhileSneaking);
 		EntityTickEvent.Post.EVENT.register(INSTANCE::updateOtherModifiers);
 		LivingEvents.LivingJumpEvent.EVENT.register(INSTANCE::cancelSlimySolesJump);
-		ItemAttributeModifierEvent.EVENT.register(INSTANCE::activateAndDeactivateTravellersModifiers);
 		PlayerEvents.ItemCraftedEvent.EVENT.register(INSTANCE::fireCraftingModifierTrigger);
 		PlayerEvents.Clone.EVENT.register(INSTANCE::keepAttachmentsOnDeath);
 	}
@@ -215,32 +210,6 @@ public class TravellersGearEvents {
 		TravellersGearLogic.travellersGearAutoRepair(livingEntity);
 		TravellersGearLogic.travellersBootsStraightAhead(livingEntity);
 		TravellersGearLogic.determineWingState(livingEntity);
-	}
-
-	private void activateAndDeactivateTravellersModifiers(ItemAttributeModifierEvent event) {
-		if (ServerLifecycleHooks.getCurrentServer() == null)
-			return;
-
-		ItemStack armor = event.getItemStack();
-		if (!armor.has(TFDataComponents.IS_TRAVELLERS_GEAR.get()) || !armor.isDamageableItem())
-			return;
-
-		if (armor.getMaxDamage() - 1 <= armor.getDamageValue()) {
-			if (armor.has(DataComponents.ATTRIBUTE_MODIFIERS)) {
-				Set<ItemAttributeModifiers.Entry> entries = new LinkedHashSet<>(armor.get(DataComponents.ATTRIBUTE_MODIFIERS).modifiers());
-				if (armor.has(TFDataComponents.STORED_BROKEN_ATTRIBUTES.get())) {
-					entries.addAll(armor.get(TFDataComponents.STORED_BROKEN_ATTRIBUTES.get()).modifiers());
-				}
-				armor.set(TFDataComponents.STORED_BROKEN_ATTRIBUTES.get(), new ItemAttributeModifiers(entries.stream().toList(), armor.get(DataComponents.ATTRIBUTE_MODIFIERS).showInTooltip()));
-				event.clearModifiers();
-			}
-		} else {
-			if (armor.has(TFDataComponents.STORED_BROKEN_ATTRIBUTES.get())) {
-				armor.get(TFDataComponents.STORED_BROKEN_ATTRIBUTES.get()).modifiers().forEach(entry -> event.replaceModifier(entry.attribute(), entry.modifier(), entry.slot()));
-				armor.remove(TFDataComponents.STORED_BROKEN_ATTRIBUTES.get());
-				armor.set(DataComponents.ATTRIBUTE_MODIFIERS, event.build());
-			}
-		}
 	}
 
 	private void fireCraftingModifierTrigger(PlayerEvents.ItemCraftedEvent event) {
