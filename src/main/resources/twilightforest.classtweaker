@@ -297,6 +297,3 @@ accessible method net/minecraft/world/level/GameRules$IntegerValue create (I)Lne
 
 # EntityEntryDefinition (For REI compat)
 accessible method net/minecraft/world/entity/Entity getEncodeId ()Ljava/lang/String;
-
-# Injected Interfaces
-inject-interface io/github/fabricators_of_create/porting_lib/models/CompositeModel$Baked net/fabricmc/fabric/api/renderer/v1/model/FabricBakedModel

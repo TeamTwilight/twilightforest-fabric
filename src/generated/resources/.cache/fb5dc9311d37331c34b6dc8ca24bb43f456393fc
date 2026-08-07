@@ -1,4 +1,4 @@
-// 1.21.1	2026-08-07T18:08:25.970688624	The Twilight Forest/Recipes
+// 1.21.1	2026-08-07T19:39:40.552198752	The Twilight Forest/Recipes
 72027db77a49f4876286a6c3f2ec13850986f763 data/twilightforest/recipe/equipment/steeleaf_boots.json
 f6080180f8d23c0d826d832699049458b16a383b data/twilightforest/recipe/equipment/travellers_wings.json
 1912b46e8c50403bd7236120208099e7cdee23ee data/twilightforest/advancement/recipes/decorations/canopy_window_pane.json
@@ -148,8 +148,8 @@ a3d5658b6a40c9812b2059b512e61cb26c00a9f6 data/twilightforest/advancement/recipes
 5dbc95e15699d5fbdd4ae99a62eeb5ca12283128 data/twilightforest/recipe/maze_stone/mossy_mazestone.json
 092df33a169854a19031268733baf42a078a4a2c data/twilightforest/recipe/wood/dark_sign.json
 a66d355cc6c5538408d2c3da599c19deec322352 data/twilightforest/recipe/stonecutting/sorting_log/hollow_sorting_log.json
-7bb676e2fcc96473fb48146c90f6fe201bfcf85e data/twilightforest/recipe/wood/crimson_drying_rack.json
 73059df3264d4ab92a53c2fbb1e2c96981d417a6 data/twilightforest/advancement/recipes/misc/equipment/knightmetal_ring.json
+7bb676e2fcc96473fb48146c90f6fe201bfcf85e data/twilightforest/recipe/wood/crimson_drying_rack.json
 b3dae997c3e19e197311dc3f422ba08a5b801958 data/twilightforest/advancement/recipes/misc/compressed_blocks/reversed/maze_slime_block.json
 811e524a86b4bf7a1c040e3d8a7db149b297b12f data/twilightforest/advancement/recipes/building_blocks/stonecutting/terrorcotta_curves/terrorcotta_arcs.json
 ccdfbfb61b9a074f59446950db17395e96249f58 data/twilightforest/recipe/gelatinous_maze_slime_drop.json
