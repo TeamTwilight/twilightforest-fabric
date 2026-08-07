@@ -23,7 +23,7 @@ import twilightforest.init.TFDataAttachments;
 
 public class ShieldLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M> {
 
-	public static final ResourceLocation SHIELD_MODEL = TwilightForestMod.prefix("shield");
+	public static final ResourceLocation SHIELD_MODEL = TwilightForestMod.prefix("item/shield");
 	private static final Direction[] DIRS = ArrayUtils.add(Direction.values(), null);
 
 	public ShieldLayer(RenderLayerParent<T, M> renderer) {
