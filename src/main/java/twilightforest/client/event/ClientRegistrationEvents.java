@@ -84,8 +84,6 @@ import java.util.Objects;
 @Component(dist = Dist.CLIENT)
 public class ClientRegistrationEvents {
 
-	private static boolean optifinePresent = false;
-
 	@PostConstruct
 	private void setup(IEventBus bus) {
 		bus.addListener(EntityRenderersEvent.AddLayers.class, this::attachRenderLayers);
@@ -185,13 +183,6 @@ public class ClientRegistrationEvents {
 	}
 
 	private void clientSetup(FMLClientSetupEvent evt) {
-		try {
-			Class.forName("net.optifine.Config");
-			optifinePresent = true;
-		} catch (ClassNotFoundException e) {
-			optifinePresent = false;
-		}
-
 		evt.enqueueWork(() -> {
 			Sheets.addWoodType(TFWoodTypes.TWILIGHT_OAK_WOOD_TYPE);
 			Sheets.addWoodType(TFWoodTypes.CANOPY_WOOD_TYPE);
@@ -602,9 +593,5 @@ public class ClientRegistrationEvents {
 	private <T extends LivingEntityRenderState, M extends EntityModel<T>> void attachRenderLayers(LivingEntityRenderer<?, T, M> renderer) {
 		renderer.addLayer(new ShieldLayer<>(renderer));
 		renderer.addLayer(new IceLayer<>(renderer));
-	}
-
-	public static boolean isOptifinePresent() {
-		return optifinePresent;
 	}
 }
