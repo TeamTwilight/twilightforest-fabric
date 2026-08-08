@@ -23,7 +23,7 @@ public class CharmOfKeepingRenderer implements TrinketRenderer {
 			matrices.translate(-0.0D, 0.15D, -0.15D);
 			matrices.mulPose(Axis.YP.rotationDegrees(0.0F));
 			matrices.scale(0.3F, -0.3F, -0.3F);
-			ItemInHandRenderer renderer = new ItemInHandRenderer(Minecraft.getInstance(), Minecraft.getInstance().getEntityRenderDispatcher(), Minecraft.getInstance().getItemRenderer());
+			ItemInHandRenderer renderer = Minecraft.getInstance().gameRenderer.itemInHandRenderer;
 			renderer.renderItem(entity, stack, ItemDisplayContext.FIXED, false, matrices, vertexConsumers, light);
 			matrices.popPose();
 		}

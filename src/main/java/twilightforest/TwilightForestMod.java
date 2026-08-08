@@ -11,6 +11,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.ComposterBlock;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import twilightforest.compat.trinkets.TrinketsCompat;
 import twilightforest.config.ConfigSetup;
 import twilightforest.events.*;
 import twilightforest.init.*;
@@ -111,10 +112,9 @@ public final class TwilightForestMod implements ModInitializer {
 		// Register grass color modifiers for client-side rendering (must be called at mod init, not just datapack bootstrap)
 		TFBiomes.registerGrassColorModifiers();
 
-		// Compat mods - will be handled via Fabric's mod loading
 		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
-			// Trinkets compat will be registered via fabric.mod.json entrypoints
 			LOGGER.info("Trinkets detected, loading compat");
+			TrinketsCompat.init();
 		}
 
 		// Register compostables (migrated from NeoForge DataMaps)

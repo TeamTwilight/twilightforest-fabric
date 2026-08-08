@@ -60,7 +60,6 @@
     "ItemRendererMixin",
     "LevelRendererAccessor",
     "LevelRendererMixin",
-    "LivingEntityRendererMixin",
     "MapInstanceMixin",
     "MinecraftMixin",
     "ModelBakeryMixin",

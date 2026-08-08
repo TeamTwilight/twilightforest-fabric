@@ -2,10 +2,14 @@ package twilightforest.client.event;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
+import io.github.fabricators_of_create.porting_lib.event.client.LivingEntityRenderEvents;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.client.model.HeadedModel;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
@@ -15,6 +19,8 @@ import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.TooltipFlag;
@@ -45,6 +51,7 @@ import twilightforest.client.OptifineWarningScreen;
 import twilightforest.client.TFClientSetup;
 import twilightforest.client.TFShaders;
 import twilightforest.client.renderer.entity.MagicPaintingRenderer;
+import twilightforest.compat.trinkets.TrinketsCompat;
 import twilightforest.config.TFConfig;
 import twilightforest.data.tags.ItemTagGenerator;
 import twilightforest.events.HostileMountEvents;
@@ -82,6 +89,20 @@ public class ClientGameEvents {
 		ClientTickEvents.END_CLIENT_TICK.register(INSTANCE::killVignette);
 		ItemTooltipCallback.EVENT.register((ItemStack stack, Item.TooltipContext context, TooltipFlag flag, List<Component> tooltip) -> addCustomTooltips(stack, context, flag, tooltip));
 		ItemTooltipCallback.EVENT.register((ItemStack stack, Item.TooltipContext context, TooltipFlag flag, List<Component> tooltip) -> translateBookAuthor(stack, context, flag, tooltip));
+
+		LivingEntityRenderEvents.PRE.register((living, renderer, partialTick, poseStack, buffer, packedLight) -> {
+			ItemStack stack = living.getItemBySlot(EquipmentSlot.HEAD);
+			boolean visible = !(stack.getItem() instanceof TrophyItem) && !areTrinketsEquipped(living);
+			boolean isPlayer = living instanceof Player;
+			if (renderer.getModel() instanceof HeadedModel headedModel) {
+				headedModel.getHead().visible = visible && (!isPlayer || headedModel.getHead().visible);
+				if (renderer.getModel() instanceof HumanoidModel<?> humanoidModel) {
+					humanoidModel.hat.visible = visible && (!isPlayer || humanoidModel.hat.visible);
+				}
+			}
+
+			return false;
+		});
 
 		WorldRenderEvents.LAST.register((WorldRenderContext context) -> {
 			if (Minecraft.getInstance().level == null) return;
@@ -241,6 +262,13 @@ public class ClientGameEvents {
 				event.setNewFovModifier((float) Mth.lerp(Minecraft.getInstance().options.fovEffectScale().get(), 1.0F, (event.getFovModifier() * (1.0F - f * 0.15F))));
 			}
 		}
+	}
+
+	private static boolean areTrinketsEquipped(LivingEntity entity) {
+		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
+			return TrinketsCompat.isTrinketEquipped(entity, stack -> stack.getItem() instanceof TrophyItem); // We do not have a visibility overload at the moment
+		}
+		return false;
 	}
 
 	private static void clearEntityRenderUtilMap(Screen screen) {

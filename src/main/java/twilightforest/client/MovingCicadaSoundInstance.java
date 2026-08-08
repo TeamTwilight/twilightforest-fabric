@@ -1,10 +1,12 @@
 package twilightforest.client;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import twilightforest.compat.trinkets.TrinketsCompat;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
@@ -25,7 +27,7 @@ public class MovingCicadaSoundInstance extends AbstractTickableSoundInstance {
 
 	@Override
 	public void tick() {
-		if (!this.wearer.isRemoved() && (this.wearer.getItemBySlot(EquipmentSlot.HEAD).is(TFBlocks.CICADA.asItem()) || this.isWearingCicadaCurio())) {
+		if (!this.wearer.isRemoved() && (this.wearer.getItemBySlot(EquipmentSlot.HEAD).is(TFBlocks.CICADA.asItem()) || this.isWearingCicadaTrinket())) {
 			this.x = (float) this.wearer.getX();
 			this.y = (float) this.wearer.getY();
 			this.z = (float) this.wearer.getZ();
@@ -34,7 +36,10 @@ public class MovingCicadaSoundInstance extends AbstractTickableSoundInstance {
 		}
 	}
 
-	private boolean isWearingCicadaCurio() {
+	private boolean isWearingCicadaTrinket() {
+		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
+			return TrinketsCompat.isTrinketEquipped(this.wearer, stack -> stack.is(TFBlocks.CICADA.asItem()));
+		}
 		return false;
 	}
 

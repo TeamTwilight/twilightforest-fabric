@@ -81,6 +81,7 @@ import twilightforest.client.renderer.map.MagicMapPlayerIconRenderer;
 import twilightforest.client.renderer.tooltip.ItemDisplayTooltipComponent;
 import twilightforest.client.renderer.tooltip.PotionFlaskTooltipComponent;
 import twilightforest.client.renderer.tooltip.TravellersBeltTooltipComponent;
+import twilightforest.compat.trinkets.TrinketsCompat;
 import twilightforest.components.item.PotionFlaskComponent;
 import twilightforest.events.RegistrationEvents;
 import twilightforest.init.*;
@@ -141,9 +142,10 @@ public class TFClientSetup implements ClientModInitializer {
 		// Register client-side network packet handlers
 		RegistrationEvents.registerClientPacketHandlers();
 
-		// Compat
-		if (FabricLoader.getInstance().isModLoaded("cosmeticarmorreworked")) {
-			// Will be handled via mixin/event
+		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
+			TwilightForestMod.LOGGER.info("Trinkets detected, loading client compat");
+			TrinketsCompat.registerTrinketLayers();
+			TrinketsCompat.registerTrinketRenderers();
 		}
 	}
 
