@@ -6,7 +6,6 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.resources.model.EquipmentClientInfo;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.client.model.armor.TFArmorModel;
 
 import java.util.function.Function;
