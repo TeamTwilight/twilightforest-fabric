@@ -26,7 +26,6 @@ import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
@@ -55,23 +54,23 @@ public abstract class AbstractSkullCandleBlock extends BaseEntityBlock implement
 	private final SkullBlock.Type type;
 
 	public AbstractSkullCandleBlock(SkullBlock.Type type, Properties properties) {
-		super(properties);
+		super(properties.lightLevel(state -> {
+			int candles = state.getValue(CANDLES);
+
+			return switch (state.getValue(LIGHTING)) {
+				case NORMAL -> 3 * candles;
+				case OMINOUS -> 2 * candles;
+				case DIM -> candles;
+				default -> 0;
+			};
+		}));
+
 		this.type = type;
 		this.registerDefaultState(this.getStateDefinition().any().setValue(LIGHTING, Lighting.NONE).setValue(CANDLES, 1));
 	}
 
 	public SkullBlock.Type getType() {
 		return this.type;
-	}
-
-	@Override
-	public int getLightEmission(BlockState state, BlockGetter getter, BlockPos pos) {
-		return switch (state.getValue(LIGHTING)) {
-			case NORMAL -> 3 * state.getValue(CANDLES);
-			case OMINOUS -> 2 * state.getValue(CANDLES);
-			case DIM -> state.getValue(CANDLES);
-			default -> 0;
-		};
 	}
 
 	@Override

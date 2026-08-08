@@ -82,7 +82,16 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 	public static final MapCodec<CandelabraBlock> CODEC = simpleCodec(CandelabraBlock::new);
 
 	public CandelabraBlock(Properties properties) {
-		super(properties);
+		super(properties.lightLevel(state -> {
+			int candleCount = getCandleCount(state);
+
+			return switch (state.getValue(LIGHTING)) {
+				case DIM, OMINOUS -> 2 * candleCount;
+				case NORMAL -> 5 * candleCount;
+				default -> 0;
+			};
+		}));
+
 		BlockState state = this.getStateDefinition().any().setValue(LIGHTING, Lighting.NONE).setValue(FACING, Direction.NORTH).setValue(ON_WALL, false).setValue(LIGHTING, Lighting.NONE).setValue(WATERLOGGED, false);
 
 		for (BooleanProperty booleanproperty : CANDLES) {
@@ -107,16 +116,6 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 	@Override
 	protected MapCodec<? extends BaseEntityBlock> codec() {
 		return CODEC;
-	}
-
-	@Override
-	public int getLightEmission(BlockState state, BlockGetter getter, BlockPos pos) {
-		int candleCount = getCandleCount(state);
-		return switch (state.getValue(LIGHTING)) {
-			case DIM, OMINOUS -> 2 * candleCount;
-			case NORMAL -> 5 * candleCount;
-			default -> 0;
-		};
 	}
 
 	@Override

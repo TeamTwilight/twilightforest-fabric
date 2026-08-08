@@ -1,16 +1,16 @@
-// 1.21.1	2026-08-07T19:39:40.563098674	The Twilight Forest/Languages: en_us for mod: twilightforest
+// 1.21.1	2026-08-07T22:32:22.940344284	The Twilight Forest/Languages: en_us for mod: twilightforest
 90c96a92130c02eb0b7ff3b3e14a2b6585d063b4 assets/twilightforest/tips/lich_deflection.json
 20550863e19e1572117dda536fd8b41d9a08c2be assets/twilightforest/tips/minion_buff.json
 b5e3a038ee043e0da8dc6aca7af9673b8b6182c2 assets/twilightforest/tips/banister_shape.json
 b3f4c268ae557aca01c867f47a6f4d70d53bd3d6 assets/twilightforest/tips/hydra_mortars.json
 08488ec8ce73fdad767330f26b869a4046e9c739 assets/twilightforest/tips/the_lore.json
 9e38a0524fcfe8fa3e76e439c61ecfb889a65b48 assets/twilightforest/tips/minoshroom.json
-764cb17c3a8d669767f1a24546ecc0d68b42080a assets/twilightforest/tips/uncrafting_table.json
 16663576068ebd88adccf2cb67a428fbcc06cc1c assets/twilightforest/tips/torchberries.json
+764cb17c3a8d669767f1a24546ecc0d68b42080a assets/twilightforest/tips/uncrafting_table.json
 3d7883f58a0a7072ae8c9be1b4838d2ba2045416 assets/twilightforest/tips/modify_travellers_gear.json
 51d1ceca0c113f3be9d9242bb93e24b923a4f6dc assets/twilightforest/tips/naga.json
-b5e7ccc3172e6b22d9cb3d82cabcb7623acd3b4e assets/twilightforest/tips/yeti.json
 16a97c38598694a9adfdbec8f488899973a72b4d assets/twilightforest/tips/phantoms.json
+b5e7ccc3172e6b22d9cb3d82cabcb7623acd3b4e assets/twilightforest/tips/yeti.json
 ea7f145b5d6baa274d62b295bbc38926716216d8 assets/twilightforest/tips/alpha_yeti.json
 6aee7802b01f24203a9849173d20c2cd4c13de0b assets/twilightforest/tips/worldgen_features.json
 f49ab75316735dcf245463a9c0f80fe337c490bb assets/twilightforest/tips/red_thread.json
