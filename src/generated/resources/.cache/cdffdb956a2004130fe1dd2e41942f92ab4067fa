@@ -1,4 +1,4 @@
-// 1.21.1	2026-08-07T22:32:22.943621263	The Twilight Forest/Twilight Forest Item Tags
+// 1.21.1	2026-08-08T11:15:27.738676129	The Twilight Forest/Twilight Forest Item Tags
 52413a870520da3227b0d97b44e5455211b16e49 data/twilightforest/tags/item/repairs_ice_tools.json
 5c0bc0dacac5f34901d1d434642280982605711c data/twilightforest/tags/item/portal/activator.json
 a9956ad8e4792ffb57c8825a50c8715ad893ba0b data/c/tags/item/foods/edible_when_placed.json
@@ -44,8 +44,8 @@ aa9ca0bf521d8c6b198f2c25e4d5528917308d9f data/twilightforest/tags/item/timewood_
 e69d5be074938c1ff9a1853ff8da6782500ff92f data/minecraft/tags/item/enchantable/mining.json
 e40d95a628eb206ce0b4bac90782bccc789cf8dc data/twilightforest/tags/item/sortwood_logs.json
 8f7c0ef218710e60290d8d7964f0f0599e792877 data/c/tags/item/foods.json
-c15f20a0c7467da527d9bde3456b9eb9e6a86021 data/c/tags/item/storage_blocks/fiery.json
 bed43612fb08f85dd3dc7dbc5a4a871f7440b9d7 data/c/tags/item/ingots/ironwood.json
+c15f20a0c7467da527d9bde3456b9eb9e6a86021 data/c/tags/item/storage_blocks/fiery.json
 dbb45e0d36df554b46ceb4028ec61bc7b7a6315a data/c/tags/item/chests/trapped.json
 7ae35dbf17ae8b58c9b692d0af6ee31961282467 data/c/tags/item/ingots/wrought_iron.json
 254ea448382315685abec81ddfec26119189ac76 data/minecraft/tags/item/leg_armor.json
@@ -68,8 +68,8 @@ af8520c845f14fb320bcefd284018a5ad57a7528 data/twilightforest/tags/item/banisters
 089e4347e6320066de4cd4d08b3e04a9442f4090 data/twilightforest/tags/item/mangrove_logs.json
 33e52f2e89c4cebba996ae0eae4b4974291b9d81 data/minecraft/tags/item/trim_materials.json
 59d21096164d700b60849f3aada9c7ea291f47e8 data/twilightforest/tags/item/deer_tempt_items.json
-211134157771c86a72a0c5a1985c2b05da55729b data/c/tags/item/fence_gates/wooden.json
 f0813a14ba178a941ba37c4059a25e6b19f77091 data/minecraft/tags/item/wooden_buttons.json
+211134157771c86a72a0c5a1985c2b05da55729b data/c/tags/item/fence_gates/wooden.json
 e69d5be074938c1ff9a1853ff8da6782500ff92f data/minecraft/tags/item/breaks_decorated_pots.json
 60d2c0021214d67e32e5edc0ee008326caa52bf7 data/minecraft/tags/item/stairs.json
 932bd2980da6d582ac5ba3cb6d86e51597a713b4 data/minecraft/tags/item/boats.json

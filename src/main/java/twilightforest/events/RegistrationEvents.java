@@ -3,10 +3,10 @@ package twilightforest.events;
 import com.google.common.collect.Maps;
 import io.github.fabricators_of_create.porting_lib.config.ModConfigEvent;
 import io.github.fabricators_of_create.porting_lib.entity.events.player.PlayerEvents;
+import io.github.fabricators_of_create.porting_lib.resources.data_maps.PortingLibDataMaps;
 import io.github.fabricators_of_create.porting_lib.resources.events.AddReloadListenersEvent;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
@@ -30,26 +30,13 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.levelgen.Heightmap;
-import twilightforest.TFRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.command.TFCommand;
 import twilightforest.config.ConfigSetup;
 import twilightforest.data.custom.stalactites.entry.StalactiteReloadListener;
-import twilightforest.entity.MagicPaintingVariant;
-import twilightforest.entity.passive.DwarfRabbitVariant;
-import twilightforest.entity.passive.TinyBirdVariant;
 import twilightforest.entity.passive.quest.QuestReloadListener;
-import twilightforest.init.custom.BiomeLayerStack;
-import twilightforest.init.custom.ChunkBlanketProcessors;
-import twilightforest.init.custom.TemplateMarkerHandlers;
 import twilightforest.init.custom.TravellersModifiersManager;
-import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
-import twilightforest.util.Restriction;
-import twilightforest.util.woods.WoodPalette;
-import twilightforest.world.components.layer.BiomeDensitySource;
-import twilightforest.world.components.structures.StructureSpeleothemConfig;
-import twilightforest.world.components.structures.util.TemplateMarkerHandlerList;
 import twilightforest.dispenser.TFDispenserBehaviors;
 import twilightforest.entity.RovingCube;
 import twilightforest.entity.boss.*;
@@ -611,28 +598,10 @@ public class RegistrationEvents {
 	}
 
 	public static void createDataMaps() {
-		io.github.fabricators_of_create.porting_lib.resources.data_maps.PortingLibDataMaps.registerDataMap(TFDataMaps.CRUMBLE_HORN);
-		io.github.fabricators_of_create.porting_lib.resources.data_maps.PortingLibDataMaps.registerDataMap(TFDataMaps.TRANSFORMATION_POWDER);
-		io.github.fabricators_of_create.porting_lib.resources.data_maps.PortingLibDataMaps.registerDataMap(TFDataMaps.OMINOUS_FIRE);
-		io.github.fabricators_of_create.porting_lib.resources.data_maps.PortingLibDataMaps.registerDataMap(TFDataMaps.MAGIC_MAP_BIOME_COLOR);
-		io.github.fabricators_of_create.porting_lib.resources.data_maps.PortingLibDataMaps.registerDataMap(TFDataMaps.ORE_MAP_ORE_COLOR);
-	}
-
-	// FIXME: When cleaning up rest of datagen
-	public static void setRegistriesForDatapack() {
-		DynamicRegistries.registerSynced(TFRegistries.Keys.WOOD_PALETTES, WoodPalette.CODEC);
-		DynamicRegistries.registerSynced(TFRegistries.Keys.BIOME_STACK, BiomeLayerStack.DISPATCH_CODEC);
-
-		DynamicRegistries.register(TFRegistries.Keys.BIOME_TERRAIN_DATA, BiomeDensitySource.CODEC);
-		DynamicRegistries.registerSynced(TFRegistries.Keys.RESTRICTIONS, Restriction.CODEC);
-		DynamicRegistries.registerSynced(TFRegistries.Keys.MAGIC_PAINTINGS, MagicPaintingVariant.CODEC);
-		DynamicRegistries.registerSynced(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS, StructureSpeleothemConfig.CODEC);
-
-		DynamicRegistries.register(TFRegistries.Keys.CHUNK_BLANKET_PROCESSORS, ChunkBlanketProcessors.DISPATCH_CODEC);
-		DynamicRegistries.registerSynced(TFRegistries.Keys.TEMPLATE_MARKER_HANDLER, TemplateMarkerHandlers.DISPATCH_CODEC);
-		DynamicRegistries.registerSynced(TFRegistries.Keys.TEMPLATE_MARKER_HANDLER_LIST, TemplateMarkerHandlerList.CODEC);
-		DynamicRegistries.registerSynced(TFRegistries.Keys.DWARF_RABBIT_VARIANT, DwarfRabbitVariant.DIRECT_CODEC);
-		DynamicRegistries.registerSynced(TFRegistries.Keys.TINY_BIRD_VARIANT, TinyBirdVariant.DIRECT_CODEC);
-		DynamicRegistries.registerSynced(TFRegistries.Keys.TRAVELLERS_MODIFIERS, TravellersModifier.CODEC);
+		PortingLibDataMaps.registerDataMap(TFDataMaps.CRUMBLE_HORN);
+		PortingLibDataMaps.registerDataMap(TFDataMaps.TRANSFORMATION_POWDER);
+		PortingLibDataMaps.registerDataMap(TFDataMaps.OMINOUS_FIRE);
+		PortingLibDataMaps.registerDataMap(TFDataMaps.MAGIC_MAP_BIOME_COLOR);
+		PortingLibDataMaps.registerDataMap(TFDataMaps.ORE_MAP_ORE_COLOR);
 	}
 }

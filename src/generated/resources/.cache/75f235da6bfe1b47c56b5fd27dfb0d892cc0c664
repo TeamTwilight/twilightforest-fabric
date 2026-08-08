@@ -1,4 +1,4 @@
-// 1.21.1	2026-08-07T22:32:22.940344284	The Twilight Forest/Languages: en_us for mod: twilightforest
+// 1.21.1	2026-08-08T11:15:27.735534958	The Twilight Forest/Languages: en_us for mod: twilightforest
 90c96a92130c02eb0b7ff3b3e14a2b6585d063b4 assets/twilightforest/tips/lich_deflection.json
 20550863e19e1572117dda536fd8b41d9a08c2be assets/twilightforest/tips/minion_buff.json
 b5e3a038ee043e0da8dc6aca7af9673b8b6182c2 assets/twilightforest/tips/banister_shape.json
@@ -38,8 +38,8 @@ caa537d278fb4c0d01e8ba9ff9db8772e00351f3 assets/twilightforest/tips/arctic_armor
 2ee0eebf9c6f00fe54b73fc3ee41f3ee6295cdbf assets/twilightforest/tips/essence_charge.json
 0f9755ab2e0e083481322efd3379bac0a2dfe82f assets/twilightforest/tips/magic_saplings.json
 849d8eba943154d7be982ad51e4ddb5c9a1aaa0e assets/twilightforest/tips/key_biome_locations.json
-4b98ecb2ca0e86246efe725bbec5a6c92337435d assets/twilightforest/tips/mushglooms.json
 af9baf851b5a78e3d8172c7254621b6ea2828da6 assets/twilightforest/tips/berry_bushes.json
+4b98ecb2ca0e86246efe725bbec5a6c92337435d assets/twilightforest/tips/mushglooms.json
 a9f0789153cdc0264756400e1ace52b6554a292c assets/twilightforest/tips/netherite_axe.json
 35362151aac080215585342e083473206cb973bf assets/twilightforest/tips/magic_map.json
 63eec5b3d6be47fb78d3fb80bc6166591583e354 assets/twilightforest/tips/carminite_builder.json
@@ -49,8 +49,8 @@ d93bb3c52c78b2e22792c96c4387240d08eb2804 assets/twilightforest/tips/hydra_heads.
 1e1b5918373c06cf701116e7f7c6a32b4249d3c4 assets/twilightforest/tips/druid_hut.json
 763dc1764641e62954420ef3330610c63690f964 assets/twilightforest/tips/block_and_chain.json
 65df15bd146dad43dce1df32968a7c18df32e8c5 assets/twilightforest/tips/bugs_on_head.json
-6a654cd4f1ffd4224bba788121d6fd1625b77e32 assets/twilightforest/tips/sorting_tree.json
 8c4e96f2482076fe6c09974a974c5ecfd41b21c7 assets/twilightforest/tips/hollow_oak_tree.json
+6a654cd4f1ffd4224bba788121d6fd1625b77e32 assets/twilightforest/tips/sorting_tree.json
 544b40796458644c4ac7e10b03ade692fe2c4d93 assets/twilightforest/tips/renewal.json
 1e4f27cbc2de52f5f02ce20d1a6d76ec12759659 assets/twilightforest/tips/mining_tree.json
 50a3e928833b8c99d115949bf76db0735b3965dd assets/twilightforest/tips/glass_sword.json

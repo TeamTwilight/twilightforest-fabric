@@ -103,7 +103,7 @@ public final class TwilightForestMod implements ModInitializer {
 		RegistrationEvents.commonInit();
 		RegistrationEvents.registerExtraStuff();
 		RegistrationEvents.createDataMaps();
-		RegistrationEvents.setRegistriesForDatapack();
+		TFRegistries.setRegistriesForDatapack();
 
 		// Inject the original wooden drying racks, railings, etc. into the original Creative Mode tab (refer to NeoForge version addToTabs)
 		TFCreativeTabs.addCreativeTabEntries();

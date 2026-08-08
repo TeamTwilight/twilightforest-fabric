@@ -1,8 +1,8 @@
-// 1.21.1	2026-08-07T22:32:22.933348471	The Twilight Forest/Twilight Forest Entity Tags
+// 1.21.1	2026-08-08T11:15:27.728693527	The Twilight Forest/Twilight Forest Entity Tags
 0865b5410d11831c91b4a4164d890df4852489ff data/c/tags/entity_type/bosses.json
 b245cf42cd9f43c4d13a1796cd914ba558e068bb data/minecraft/tags/entity_type/arthropod.json
-4c421f0abf08155c163118250eff7f5a24617998 data/minecraft/tags/entity_type/zombies.json
 9e5f68b2faa6d767538d0f4264a7145d32a2bdda data/minecraft/tags/entity_type/freeze_hurts_extra_types.json
+4c421f0abf08155c163118250eff7f5a24617998 data/minecraft/tags/entity_type/zombies.json
 20a1f4f56dc7667b8bc729dfd372c2e9f5d7ad1e data/twilightforest/tags/entity_type/lifedrain_drops_no_flesh.json
 016d3165a6f228f7416cec2923bf9b8bed8979fa data/minecraft/tags/entity_type/redirectable_projectile.json
 97ff9312c2bcde14cf20a5eec42f4dedc8dc8e6f data/twilightforest/tags/entity_type/lich_poppables.json

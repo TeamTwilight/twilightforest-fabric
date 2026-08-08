@@ -1,6 +1,7 @@
 package twilightforest;
 
 import com.mojang.serialization.MapCodec;
+import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -8,6 +9,9 @@ import io.github.fabricators_of_create.porting_lib.registry.RegistryBuilder;
 import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.entity.passive.DwarfRabbitVariant;
 import twilightforest.entity.passive.TinyBirdVariant;
+import twilightforest.init.custom.BiomeLayerStack;
+import twilightforest.init.custom.ChunkBlanketProcessors;
+import twilightforest.init.custom.TemplateMarkerHandlers;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 import twilightforest.item.travellers_gear.modifiers.display.ItemDisplayType;
 import twilightforest.util.Enforcement;
@@ -62,5 +66,27 @@ public class TFRegistries {
 		public static ResourceLocation namedRegistry(String name) {
 			return ResourceLocation.fromNamespaceAndPath(REGISTRY_NAMESPACE, name.toLowerCase(Locale.ROOT));
 		}
+	}
+
+	/**
+	 * Registers the datapack-driven registries so their generated data is loaded and synced to clients.
+	 * Must mirror {@link twilightforest.data.DataGenerators#buildRegistry}.
+	 */
+	// FIXME: When cleaning up rest of datagen
+	public static void setRegistriesForDatapack() {
+		DynamicRegistries.registerSynced(Keys.WOOD_PALETTES, WoodPalette.CODEC);
+		DynamicRegistries.registerSynced(Keys.BIOME_STACK, BiomeLayerStack.DISPATCH_CODEC);
+
+		DynamicRegistries.register(Keys.BIOME_TERRAIN_DATA, BiomeDensitySource.CODEC);
+		DynamicRegistries.registerSynced(Keys.RESTRICTIONS, Restriction.CODEC);
+		DynamicRegistries.registerSynced(Keys.MAGIC_PAINTINGS, MagicPaintingVariant.CODEC);
+		DynamicRegistries.registerSynced(Keys.STRUCTURE_SPELEOTHEM_SETTINGS, StructureSpeleothemConfig.CODEC);
+
+		DynamicRegistries.register(Keys.CHUNK_BLANKET_PROCESSORS, ChunkBlanketProcessors.DISPATCH_CODEC);
+		DynamicRegistries.registerSynced(Keys.TEMPLATE_MARKER_HANDLER, TemplateMarkerHandlers.DISPATCH_CODEC);
+		DynamicRegistries.registerSynced(Keys.TEMPLATE_MARKER_HANDLER_LIST, TemplateMarkerHandlerList.CODEC);
+		DynamicRegistries.registerSynced(Keys.DWARF_RABBIT_VARIANT, DwarfRabbitVariant.DIRECT_CODEC);
+		DynamicRegistries.registerSynced(Keys.TINY_BIRD_VARIANT, TinyBirdVariant.DIRECT_CODEC);
+		DynamicRegistries.registerSynced(Keys.TRAVELLERS_MODIFIERS, TravellersModifier.CODEC);
 	}
 }

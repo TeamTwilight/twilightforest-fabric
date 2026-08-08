@@ -32,14 +32,26 @@ public class DataGenerators implements DataGeneratorEntrypoint {
 		FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
 		ExistingFileHelper helper = getExistingFileHelper();
 
-		// client generators
+		addClientProviders(pack, helper);
+		addTagProviders(pack, helper);
+		addContentProviders(pack);
+		addStructureProviders(pack, helper);
+		addAssetProviders(pack, helper);
+
+		pack.addProvider((output, registries) -> new PackMetadataGenerator(output).add(PackMetadataSection.TYPE, new PackMetadataSection(
+			Component.literal("Resources for Twilight Forest"),
+			DetectedVersion.BUILT_IN.getPackVersion(PackType.SERVER_DATA),
+			Optional.of(new InclusiveRange<>(0, Integer.MAX_VALUE)))));
+	}
+
+	private static void addClientProviders(FabricDataGenerator.Pack pack, ExistingFileHelper helper) {
 		pack.addProvider((output, registries) -> new BlockstateGenerator(output, helper));
 		pack.addProvider((output, registries) -> new ItemModelGenerator(output, helper));
 		pack.addProvider((output, registries) -> new ParticleGenerator(output, helper));
 		pack.addProvider((output, registries) -> new SoundGenerator(output, helper));
+	}
 
-		// FIXME: I would like to figure out a cleaner datagen setup at some point
-		pack.addProvider(RegistryDataGenerator::new);
+	private static void addTagProviders(FabricDataGenerator.Pack pack, ExistingFileHelper helper) {
 		pack.addProvider(BiomeTagGenerator::new);
 		pack.addProvider((output, registries) -> new CustomTagGenerator.BannerPatternTagGenerator(output, registries, helper));
 		pack.addProvider((output, registries) -> new CustomTagGenerator.DimensionTypeTagGenerator(output, registries, helper));
@@ -47,40 +59,35 @@ public class DataGenerators implements DataGeneratorEntrypoint {
 		pack.addProvider((output, registries) -> new CustomTagGenerator.PaintingVariantTagGenerator(output, registries, helper));
 		pack.addProvider((output, registries) -> new DamageTypeTagGenerator(output, registries, helper));
 		pack.addProvider((output, registries) -> new StructureTagGenerator(output, registries, helper));
-		pack.addProvider(AdvancementGenerator::new);
-		pack.addProvider(LootGenerator::new);
-
-		// server generators
-		pack.addProvider(DataMapGenerator::new);
-		pack.addProvider((output, registries) -> new StalactiteGenerator(output));
-		pack.addProvider((output, registries) -> new TFStructureUpdater("structures", output, helper));
-
-		// normal tags
 		BlockTagGenerator blockTags = pack.addProvider(BlockTagGenerator::new);
 		pack.addProvider((output, registries) -> new CustomTagGenerator.BlockEntityTagGenerator(output, registries, helper));
 		pack.addProvider(FluidTagGenerator::new);
 		pack.addProvider((output, registries) -> new ItemTagGenerator(output, registries, blockTags));
 		pack.addProvider(EntityTagGenerator::new);
+	}
+
+	private static void addContentProviders(FabricDataGenerator.Pack pack) {
+		pack.addProvider(RegistryDataGenerator::new);
+		pack.addProvider(AdvancementGenerator::new);
+		pack.addProvider(LootGenerator::new);
+		pack.addProvider(DataMapGenerator::new);
 		pack.addProvider(CraftingGenerator::new);
 		pack.addProvider(LootModifierGenerator::new);
+	}
 
+	private static void addStructureProviders(FabricDataGenerator.Pack pack, ExistingFileHelper helper) {
+		pack.addProvider((output, registries) -> new StalactiteGenerator(output));
+		pack.addProvider((output, registries) -> new TFStructureUpdater("structures", output, helper));
 		pack.addProvider((output, registries) -> new CampStructureDefinitionGenerator(output, registries, helper));
 		pack.addProvider((output, registries) -> new FinalCastleStructureDefinitionGenerator(output, registries, helper));
 		pack.addProvider((output, registries) -> new LichTowerStructureDefinitionGenerator(output, registries, helper));
 		pack.addProvider((output, registries) -> new NagaCourtyardStructureDefinitionGenerator(output, registries, helper));
+	}
 
-		// these have to go last due to magic paintings
-		// when magic paintings are registered their atlas and lang content is too
+	private static void addAssetProviders(FabricDataGenerator.Pack pack, ExistingFileHelper helper) {
 		pack.addProvider((output, registries) -> new AtlasGenerator(output, registries, helper));
 		pack.addProvider(LangGenerator::new);
-
 		pack.addProvider((output, registries) -> new QuestGenerator(output));
-
-		// pack.mcmeta
-		pack.addProvider((output, registries) -> new PackMetadataGenerator(output).add(PackMetadataSection.TYPE, new PackMetadataSection(
-			Component.literal("Resources for Twilight Forest"),
-			DetectedVersion.BUILT_IN.getPackVersion(PackType.SERVER_DATA),
-			Optional.of(new InclusiveRange<>(0, Integer.MAX_VALUE)))));
 	}
 
 	@Override
