@@ -42,9 +42,6 @@ import java.util.function.BiConsumer;
 
 import static twilightforest.TwilightForestMod.prefix;
 
-// 此类为数据生成器，代码风格有待改善但功能正常
-//make better helper methods and move them to BlockModelBuilders
-//finish datagenning blocks that arent done yet
 public class BlockstateGenerator extends BlockModelBuilders {
 	@Nullable
 	private static ModelFile[][] abstractBushStates;
