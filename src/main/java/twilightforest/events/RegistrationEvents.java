@@ -1,8 +1,6 @@
 package twilightforest.events;
 
 import com.google.common.collect.Maps;
-import io.github.fabricators_of_create.porting_lib.config.ModConfigEvent;
-import io.github.fabricators_of_create.porting_lib.entity.events.player.PlayerEvents;
 import io.github.fabricators_of_create.porting_lib.resources.data_maps.PortingLibDataMaps;
 import io.github.fabricators_of_create.porting_lib.resources.events.AddReloadListenersEvent;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -67,9 +65,10 @@ public class RegistrationEvents {
 		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(TravellersModifiersManager.CacheInvalidationReloadListener.INSTANCE);
 		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(StalactiteReloadListener.INSTANCE);
 		AddReloadListenersEvent.EVENT.register(INSTANCE.structureTemplateDefinitions::registerListener);
-		ModConfigEvent.Loading.EVENT.register(ConfigSetup::loadConfigs);
-		ModConfigEvent.Reloading.EVENT.register(ConfigSetup::reloadConfigs);
-		PlayerEvents.PlayerLoggedInEvent.EVENT.register(ConfigSetup::syncUncraftingConfig);
+
+		ConfigSetup.loadConfigs();
+		ConfigSetup.reloadConfigs();
+		ConfigSetup.syncUncraftingConfig();
 	}
 
 	public static void registerPackets() {
