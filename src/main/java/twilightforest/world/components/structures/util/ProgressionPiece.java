@@ -1,5 +1,6 @@
 package twilightforest.world.components.structures.util;
 
+// TODO:
 //  Iterate structure pieces that do have protections and combine into a single VoxelShape.
 //  Use that VoxelShape as a "cache" for whether a player has entered a protected part of the structure
 //  instead of continuously iterating the List<StructurePiece> for ProgressionPiece impls (all pieces).

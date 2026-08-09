@@ -6,7 +6,8 @@ import twilightforest.world.components.structures.TFStructureDecorator;
 import twilightforest.world.components.structures.selectors.CastleRandomBlockSelectorFactory;
 
 public class StructureTFDecoratorCastle extends TFStructureDecorator {
-	private static CastleRandomBlockSelectorFactory castle = CastleRandomBlockSelectorFactory.INSTANCE;
+
+	private static final CastleRandomBlockSelectorFactory castle = CastleRandomBlockSelectorFactory.INSTANCE;
 
 	public StructureTFDecoratorCastle() {
 		this.blockState = TFBlocks.CASTLE_BRICK.get().defaultBlockState();

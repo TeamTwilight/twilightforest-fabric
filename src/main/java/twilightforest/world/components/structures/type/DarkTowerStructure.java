@@ -11,7 +11,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.MobSpawnSettings;
-import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
@@ -21,7 +20,6 @@ import twilightforest.data.tags.BiomeTagGenerator;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
-import twilightforest.world.components.structures.CustomDensitySource;
 import twilightforest.world.components.structures.darktower.DarkTowerMainComponent;
 import twilightforest.world.components.structures.util.ControlledSpawningStructure;
 
@@ -30,7 +28,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class DarkTowerStructure extends ControlledSpawningStructure implements CustomDensitySource {
+public class DarkTowerStructure extends ControlledSpawningStructure {
 	public static final MapCodec<DarkTowerStructure> CODEC = RecordCodecBuilder.mapCodec(instance ->
 		controlledSpawningCodec(instance).apply(instance, DarkTowerStructure::new)
 	);
@@ -47,11 +45,6 @@ public class DarkTowerStructure extends ControlledSpawningStructure implements C
 	@Override
 	public StructureType<?> type() {
 		return TFStructureTypes.DARK_TOWER.get();
-	}
-
-	@Override
-	public DensityFunction getStructureTerraformer(ChunkPos chunkPosAt, StructureStart structurePieceSource) {
-		return CustomDensitySource.getInvertedPyramidTerraformer(structurePieceSource, 1, 5);
 	}
 
 	public static DarkTowerStructure buildDarkTowerConfig(BootstrapContext<Structure> context) {

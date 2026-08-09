@@ -9,9 +9,10 @@ import twilightforest.util.ColorUtil;
 import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 
 public class BiomeColorAlgorithms {
+
 	public static final BiomeColorAlgorithms INSTANCE = new BiomeColorAlgorithms();
 
-	public int enchanted(int originalColor, int x, int z) {  // 附魔森林颜色算法待验证
+	public int enchanted(int originalColor, int x, int z) {  // TODO
 		BlockPos center = LegacyLandmarkPlacements.getNearestCenterXZ(x / 16, z / 16);  // Center is quest grove
 		int cx = center.getX();
 		int cz = center.getZ();
@@ -29,6 +30,7 @@ public class BiomeColorAlgorithms {
 		return (originalColor & 0xFFFF00) + color;
 	}
 
+	// FIXME Flat color, resolve
 	public int swamp(Type modifierType) {
 		int modifiedColor = switch (modifierType) {
 			case Grass -> GrassColor.get(0.8F, 0.9F);
@@ -37,6 +39,7 @@ public class BiomeColorAlgorithms {
 		return ((modifiedColor & 0xFEFEFE) + 0x4E0E4E) / 2;
 	}
 
+	// FIXME Flat color, resolve
 	public int darkForest(Type modifierType) {
 		int modifiedColor = switch (modifierType) {
 			case Grass -> GrassColor.get(0.7F, 0.8F);
@@ -46,7 +49,7 @@ public class BiomeColorAlgorithms {
 	}
 
 	public int darkForestCenterGrass(double x, double z) {
-		double noise = Biome.TEMPERATURE_NOISE.getValue(x * 0.0225D, z * 0.0225D, false); // 温度噪声参数待验证
+		double noise = Biome.TEMPERATURE_NOISE.getValue(x * 0.0225D, z * 0.0225D, false); //TODO: Check
 		return noise < -0.2D ? 0x667540 : 0x554114;
 	}
 

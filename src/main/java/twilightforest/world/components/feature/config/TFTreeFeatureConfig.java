@@ -76,32 +76,32 @@ public class TFTreeFeatureConfig implements FeatureConfiguration {
 			this.rootsProvider = roots;
 		}
 
-		public Builder minHeight(int height) {
+		public TFTreeFeatureConfig.Builder minHeight(int height) {
 			this.baseHeight = height;
 			return this;
 		}
 
-		public Builder chanceFirstFive(int chance) {
+		public TFTreeFeatureConfig.Builder chanceFirstFive(int chance) {
 			this.chanceFirstFive = chance;
 			return this;
 		}
 
-		public Builder chanceSecondFive(int chance) {
+		public TFTreeFeatureConfig.Builder chanceSecondFive(int chance) {
 			this.chanceSecondFive = chance;
 			return this;
 		}
 
-		public Builder noLeaves() {
+		public TFTreeFeatureConfig.Builder noLeaves() {
 			this.hasLeaves = false;
 			return this;
 		}
 
-		public Builder checksWater() {
+		public TFTreeFeatureConfig.Builder checksWater() {
 			this.checkWater = true;
 			return this;
 		}
 
-		public Builder addDecorator(TreeDecorator deco) {
+		public TFTreeFeatureConfig.Builder addDecorator(TreeDecorator deco) {
 			decorators.add(deco);
 			return this;
 		}

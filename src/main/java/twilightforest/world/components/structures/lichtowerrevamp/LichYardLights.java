@@ -1,5 +1,6 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
+import io.github.fabricators_of_create.porting_lib.world.PieceBeardifierModifier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -18,7 +19,7 @@ import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
 
-public class LichYardLights extends StructurePiece {
+public class LichYardLights extends StructurePiece implements PieceBeardifierModifier {
 	private final Direction.Axis placeAxis;
 
 	public LichYardLights(BoundingBox boundingBox, Direction.Axis placeAxis) {
@@ -58,5 +59,20 @@ public class LichYardLights extends StructurePiece {
 				}
 			}
 		}
+	}
+
+	@Override
+	public BoundingBox getBeardifierBox() {
+		return this.boundingBox;
+	}
+
+	@Override
+	public TerrainAdjustment getTerrainAdjustment() {
+		return TerrainAdjustment.NONE;
+	}
+
+	@Override
+	public int getGroundLevelDelta() {
+		return 0;
 	}
 }

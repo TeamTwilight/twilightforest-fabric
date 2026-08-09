@@ -95,6 +95,8 @@ public final class LichTowerPieces {
 
 	public static final ResourceLocation YARD_GRAVE = TwilightForestMod.prefix("lich_tower/grave");
 
+	public static final LichTowerPieces INSTANCE = new LichTowerPieces();
+
 	final List<Int2ObjectMap<ResourceLocation>> ladderRooms = List.of(
 		new Int2ObjectArrayMap<>(Map.of(
 			0, ROOM_5_LADDER_0,
@@ -113,6 +115,4 @@ public final class LichTowerPieces {
 			5, ROOM_9_LADDER_5
 		))
 	);
-
-	public static final LichTowerPieces INSTANCE = new LichTowerPieces();
 }

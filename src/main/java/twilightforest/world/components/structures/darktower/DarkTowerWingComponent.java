@@ -408,12 +408,13 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 				makeHalfFloor(world, sbb, rotation, y);
 
 				// decorate
+				// FIXME: Case 1 gets double weight when size >= 11
 				switch (rand.nextInt(8)) {
 					case 0:
 						if (this.size < 11) {
 							decorateReappearingFloor(world, sbb, rotation, y);
+							break;
 						}
-						break;
 					case 1:
 						decorateSpawner(world, rand, sbb, rotation, y);
 						break;
@@ -863,7 +864,7 @@ public class DarkTowerWingComponent extends TowerWingComponent {
 							|| ((z == minZ || z == maxZ) && ((x == minY || x == maxX) || (y == minY || y == maxY)))) {
 							this.placeBlock(world, deco.accentState, x, y, z, sbb);
 						} else {
-							BlockSelector blocker = deco.randomBlocks;
+							StructurePiece.BlockSelector blocker = deco.randomBlocks;
 
 							blocker.next(rand, x, y, z, true);
 							this.placeBlock(world, blocker.getNext(), x, y, z, sbb);

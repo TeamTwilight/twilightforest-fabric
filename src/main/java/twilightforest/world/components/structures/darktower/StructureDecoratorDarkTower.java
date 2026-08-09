@@ -6,7 +6,8 @@ import twilightforest.world.components.structures.TFStructureDecorator;
 import twilightforest.world.components.structures.selectors.TowerwoodRandomBlockSelectorFactory;
 
 public class StructureDecoratorDarkTower extends TFStructureDecorator {
-	private static TowerwoodRandomBlockSelectorFactory towerwood = TowerwoodRandomBlockSelectorFactory.INSTANCE;
+
+	private static final TowerwoodRandomBlockSelectorFactory towerwood = TowerwoodRandomBlockSelectorFactory.INSTANCE;
 
 	public StructureDecoratorDarkTower() {
 		this.blockState = TFBlocks.TOWERWOOD.get().defaultBlockState();

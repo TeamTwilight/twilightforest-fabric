@@ -23,8 +23,8 @@ import twilightforest.world.components.structures.selectors.MazestoneRandomBlock
 
 
 public class MinotaurMazeComponent extends TFStructureComponentOld {
-	private static final MazestoneRandomBlockSelectoryFactory mazestone = MazestoneRandomBlockSelectoryFactory.INSTANCE;
 
+	private static final MazestoneRandomBlockSelectoryFactory mazestone = MazestoneRandomBlockSelectoryFactory.INSTANCE;
 	final TFMaze maze;
 	final int[] rcoords;
 	private final int level;
@@ -42,6 +42,7 @@ public class MinotaurMazeComponent extends TFStructureComponentOld {
 		configureMaze();
 
 		// blank out rcoords above 1 so that the room generation works properly
+		//TODO: re-do this. :)
 		for (int i = 2; i < rcoords.length; i++) {
 			this.rcoords[i] = 0;
 		}

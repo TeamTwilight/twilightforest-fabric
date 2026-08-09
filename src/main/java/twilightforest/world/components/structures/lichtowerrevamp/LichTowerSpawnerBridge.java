@@ -1,6 +1,8 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
 import com.mojang.datafixers.util.Pair;
+import io.github.fabricators_of_create.porting_lib.core.util.ServerLifecycleHooks;
+import io.github.fabricators_of_create.porting_lib.world.PieceBeardifierModifier;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
@@ -10,7 +12,6 @@ import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import io.github.fabricators_of_create.porting_lib.core.util.ServerLifecycleHooks;
 import twilightforest.TFRegistries;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.init.custom.WoodPalettes;
@@ -24,7 +25,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class LichTowerSpawnerBridge extends TwilightJigsawPiece {
+public class LichTowerSpawnerBridge extends TwilightJigsawPiece implements PieceBeardifierModifier {
+
 	private static final LichTowerUtil lichTowerUtil = LichTowerUtil.INSTANCE;
 
 	private final boolean invertedPalette;
@@ -74,6 +76,21 @@ public class LichTowerSpawnerBridge extends TwilightJigsawPiece {
 		super.addAdditionalSaveData(ctx, structureTag);
 
 		structureTag.putBoolean("inverted", this.invertedPalette);
+	}
+
+	@Override
+	public BoundingBox getBeardifierBox() {
+		return this.boundingBox;
+	}
+
+	@Override
+	public TerrainAdjustment getTerrainAdjustment() {
+		return TerrainAdjustment.NONE;
+	}
+
+	@Override
+	public int getGroundLevelDelta() {
+		return 0;
 	}
 
 	@Override

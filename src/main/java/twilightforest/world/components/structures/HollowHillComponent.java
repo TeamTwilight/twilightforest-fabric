@@ -55,6 +55,7 @@ public class HollowHillComponent extends TFStructureComponentOld {
 		this.radius = ((this.hillSize * 2 + 1) * 8) - 6;
 		this.hdiam = (this.hillSize * 2 + 1) * 16;
 
+		// TODO: Maybe write a fallback based on hillsize/Class, possibly in a new superclass
 		Holder.Reference<StructureSpeleothemConfig> configHolder = StructureSpeleothemConfigs.getConfigHolder(ctx.registryAccess(), nbt.getString("config_id"));
 		this.speleothemConfig = configHolder.value();
 		this.speleothemConfigId = configHolder.key().location();

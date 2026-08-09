@@ -1,6 +1,7 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
 import com.google.common.collect.Streams;
+import io.github.fabricators_of_create.porting_lib.world.PieceBeardifierModifier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
@@ -23,7 +24,6 @@ import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import io.github.fabricators_of_create.porting_lib.world.PieceBeardifierModifier;
 import org.joml.SimplexNoise;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
@@ -40,6 +40,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class LichYardBox extends StructurePiece implements PieceBeardifierModifier, SortablePiece, SpawnIndexProvider {
+
 	private static final LichTowerUtil lichTowerUtil = LichTowerUtil.INSTANCE;
 
 	private final float edgeFeatheringRange;
@@ -172,11 +173,6 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 		return 0;
 	}
 
-	@Override
-	public int getSortKey() {
-		return this.doDirtMotley ? Integer.MIN_VALUE : Integer.MIN_VALUE + 255;
-	}
-
 	public static void beginYard(LichTowerFoyer foyerPiece, Structure.GenerationContext context, StructurePiecesBuilder pieces) {
 		WorldgenRandom random = context.random();
 		StructureTemplateManager structureManager = context.structureTemplateManager();
@@ -288,6 +284,11 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 				grave.addJigsaws(parent, pieces, context);
 			}
 		}
+	}
+
+	@Override
+	public int getSortKey() {
+		return this.doDirtMotley ? Integer.MIN_VALUE : Integer.MIN_VALUE + 255;
 	}
 
 	@Override

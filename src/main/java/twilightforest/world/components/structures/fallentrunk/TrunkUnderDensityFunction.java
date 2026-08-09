@@ -33,7 +33,7 @@ public class TrunkUnderDensityFunction extends Beardifier {
 	public TrunkUnderDensityFunction(ObjectListIterator<Rigid> pieceIterator, FallenTrunkPiece piece, boolean isBigTree, int minMounds, int maxMounds) {
 		super(pieceIterator, (ObjectListIterator<JigsawJunction>) ObjectIterators.<JigsawJunction>emptyIterator());
 		this.isBigTree = isBigTree;
-		boundingBox = piece.getBoundingBox();
+		boundingBox = getFallenTrunkPiece().box();
 		random = RandomSource.create(boundingBox.minX() * 14413411L + boundingBox.minZ() * 43387781L);
 		isXOriented = boundingBox.maxX() - boundingBox.minX() > boundingBox.maxZ() - boundingBox.minZ();
 		int length = isXOriented ? boundingBox.getXSpan() : boundingBox.getZSpan();
@@ -56,7 +56,7 @@ public class TrunkUnderDensityFunction extends Beardifier {
 		int y = context.blockY();
 		int z = context.blockZ();
 
-		int groundLevelDelta = 0;
+		int groundLevelDelta = getFallenTrunkPiece().groundLevelDelta();
 		int horizontalDistanceX = Math.max(0, Math.max(boundingBox.minX() - x, x - boundingBox.maxX()));
 		int horizontalDistanceZ = Math.max(0, Math.max(boundingBox.minZ() - z, z - boundingBox.maxZ()));
 		int adjustedGroundLevel = boundingBox.minY() + groundLevelDelta + (isBigTree ? 1 : 0);
@@ -135,6 +135,12 @@ public class TrunkUnderDensityFunction extends Beardifier {
 		return new TanhHillFunction(baseBlockPos.getX(), baseBlockPos.getY(), baseBlockPos.getZ(), moundRadius, moundHeight, moundBiasAngle, isXOriented, isOnRightSide);
 	}
 
+
+	protected Beardifier.Rigid getFallenTrunkPiece() {
+		Beardifier.Rigid piece = pieceIterator.next();
+		this.pieceIterator.back(Integer.MAX_VALUE);
+		return piece;
+	}
 
 	private static int getRadius(BoundingBox box) {
 		return getRadius(box.getYSpan());

@@ -38,7 +38,7 @@ public class CourtyardMain extends StructureMazeGenerator {
 
 	public static final ResourceLocation CENTER_POOL = TwilightForestMod.prefix("courtyard/center");
 
-	@Deprecated
+	@Deprecated // TODO remove in 1.22
 	private final boolean placeSpawner;
 
 	private static final StructureTemplateDefinitions structureTemplateDefinitions = StructureTemplateDefinitions.INSTANCE;
@@ -86,6 +86,7 @@ public class CourtyardMain extends StructureMazeGenerator {
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		if (this.placeSpawner) {
+			// TODO remove in 1.22
 			placeBlock(world, TFBlocks.NAGA_BOSS_SPAWNER.get().defaultBlockState(), RADIUS / 2, 3, RADIUS / 2, sbb);
 		}
 	}

@@ -1,5 +1,6 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
+import io.github.fabricators_of_create.porting_lib.world.PieceBeardifierModifier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
@@ -25,7 +26,8 @@ import twilightforest.world.components.structures.util.SortablePiece;
 
 import java.util.List;
 
-public final class LichTowerWingBridge extends TwilightJigsawPiece implements SortablePiece {
+public final class LichTowerWingBridge extends TwilightJigsawPiece implements PieceBeardifierModifier, SortablePiece {
+
 	private static final LichTowerUtil lichTowerUtil = LichTowerUtil.INSTANCE;
 
 	private final boolean fromCentral;
@@ -81,8 +83,18 @@ public final class LichTowerWingBridge extends TwilightJigsawPiece implements So
 	}
 
 	@Override
-	public int getSortKey() {
-		return 2;
+	public BoundingBox getBeardifierBox() {
+		return this.boundingBox;
+	}
+
+	@Override
+	public TerrainAdjustment getTerrainAdjustment() {
+		return TerrainAdjustment.NONE;
+	}
+
+	@Override
+	public int getGroundLevelDelta() {
+		return 1;
 	}
 
 	public static void tryRoomAndBridge(TwilightJigsawPiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, StructureTemplateManager structureManager, boolean fromCentralTower, int roomMaxSize, boolean generateGround, int newDepth, @Nullable ResourceLocation override) {
@@ -188,5 +200,10 @@ public final class LichTowerWingBridge extends TwilightJigsawPiece implements So
 		}
 
 		return false;
+	}
+
+	@Override
+	public int getSortKey() {
+		return 2;
 	}
 }

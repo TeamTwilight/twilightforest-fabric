@@ -155,9 +155,6 @@ public class BiomeDensitySource {
 			if (cx >= xCount) break;
 		}
 
-		if (totalContribution == 0.0) {
-			return new DensityData(0.0, 0.0);
-		}
 		return new DensityData(totalMappedDepth / totalContribution, totalScale / totalScaleContribution);
 	}
 }

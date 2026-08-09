@@ -42,6 +42,7 @@ public class MazeCorridorShroomsComponent extends MazeCorridorComponent {
 		}
 
 		// brackets?
+		//TODO: Flatten, or at least, be more accurate to current implementation
 		boolean mushFlag = rand.nextBoolean();
 		BlockState mushType = (mushFlag ? Blocks.RED_MUSHROOM_BLOCK : Blocks.BROWN_MUSHROOM_BLOCK).defaultBlockState();
 		BlockState fullStem = Blocks.MUSHROOM_STEM.defaultBlockState();

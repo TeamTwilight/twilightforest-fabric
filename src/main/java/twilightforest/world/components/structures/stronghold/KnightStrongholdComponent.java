@@ -27,7 +27,9 @@ import java.util.List;
 
 
 public abstract class KnightStrongholdComponent extends TFStructureComponentOld {
+
 	private static final StrongholdStonesRandomBlockSelectorFactory strongholdStones = StrongholdStonesRandomBlockSelectorFactory.INSTANCE;
+
 	private static final KnightStonesRandomBlockSelectorFactory knightStones = KnightStonesRandomBlockSelectorFactory.INSTANCE;
 
 	public final List<BlockPos> doors = new ArrayList<>();
@@ -134,7 +136,9 @@ public abstract class KnightStrongholdComponent extends TFStructureComponentOld 
 		}
 	}
 
-	// Check the list for components we can break in to at the specified point
+	/**
+	 * Check the list for components we can break in to at the specified point
+	 */
 	protected StructurePiece findBreakInComponent(StructurePieceAccessor list, int x, int y, int z) {
 		BlockPos pos = new BlockPos(x, y, z);
 		if (list instanceof StructurePiecesBuilder start) {
@@ -446,7 +450,7 @@ public abstract class KnightStrongholdComponent extends TFStructureComponentOld 
 	/**
 	 * Place stronghold walls in every position except those filled with dirt.
 	 */
-	protected void placeStrongholdWalls(WorldGenLevel world, BoundingBox sbb, int sx, int sy, int sz, int dx, int dy, int dz, RandomSource rand, BlockSelector randomBlocks) {
+	protected void placeStrongholdWalls(WorldGenLevel world, BoundingBox sbb, int sx, int sy, int sz, int dx, int dy, int dz, RandomSource rand, StructurePiece.BlockSelector randomBlocks) {
 		for (int y = sy; y <= dy; ++y) {
 			for (int x = sx; x <= dx; ++x) {
 				for (int z = sz; z <= dz; ++z) {
@@ -460,7 +464,7 @@ public abstract class KnightStrongholdComponent extends TFStructureComponentOld 
 						}
 					} else if (y == sy || y == dy) {
 						// do stronghold bricks for floor/ceiling
-						BlockSelector strongBlocks = TFStructureComponentOld.getStrongholdStones();
+						StructurePiece.BlockSelector strongBlocks = TFStructureComponentOld.getStrongholdStones();
 						strongBlocks.next(rand, x, y, z, wall);
 						this.placeBlock(world, strongBlocks.getNext(), x, y, z, sbb);
 
@@ -477,7 +481,7 @@ public abstract class KnightStrongholdComponent extends TFStructureComponentOld 
 	/**
 	 * Place stronghold walls on dirt/grass/stone
 	 */
-	protected void placeUpperStrongholdWalls(WorldGenLevel world, BoundingBox sbb, int sx, int sy, int sz, int dx, int dy, int dz, RandomSource rand, BlockSelector randomBlocks) {
+	protected void placeUpperStrongholdWalls(WorldGenLevel world, BoundingBox sbb, int sx, int sy, int sz, int dx, int dy, int dz, RandomSource rand, StructurePiece.BlockSelector randomBlocks) {
 		for (int y = sy; y <= dy; ++y) {
 			for (int x = sx; x <= dx; ++x) {
 				for (int z = sz; z <= dz; ++z) {
@@ -495,7 +499,7 @@ public abstract class KnightStrongholdComponent extends TFStructureComponentOld 
 					if (isValidSurface || isAirWithChance && isStoneBelow) {
 						if (y == sy || y == dy) {
 							// do stronghold bricks for floor/ceiling
-							BlockSelector strongBlocks = TFStructureComponentOld.getStrongholdStones();
+							StructurePiece.BlockSelector strongBlocks = TFStructureComponentOld.getStrongholdStones();
 							strongBlocks.next(rand, x, y, z, wall);
 							this.placeBlock(world, strongBlocks.getNext(), x, y, z, sbb);
 
@@ -510,15 +514,12 @@ public abstract class KnightStrongholdComponent extends TFStructureComponentOld 
 		}
 	}
 
-	// Stronghold components use NONE to match pre-1.21.1-port behavior:
-	// terrain is preserved at the piece level, structure-level BURY handles burial
-	@Override
-	public TerrainAdjustment getTerrainAdjustment() {
-		return TerrainAdjustment.NONE;
-	}
-
 	public interface Factory<T extends KnightStrongholdComponent> {
 		T newInstance(int i, Direction facing, int x, int y, int z);
 	}
 
+	@Override
+	public TerrainAdjustment getTerrainAdjustment() {
+		return this.isComponentProtected() ? TerrainAdjustment.BURY : TerrainAdjustment.NONE;
+	}
 }

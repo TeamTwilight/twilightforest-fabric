@@ -45,8 +45,7 @@ public class MegaOakTreeFeature extends CanopyTreeFeature {
 		}
 
 		// check if we're on dirt or grass
-		// canSustainPlant check removed - NeoForge-only API, not available in Fabric 1.21.1
-		if (false) {
+		if (!TFBlocks.CANOPY_SAPLING.get().defaultBlockState().canSurvive(world, pos.below())) {
 			return false;
 		}
 
