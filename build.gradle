@@ -147,7 +147,7 @@ fabricApi {
 }
 
 loom {
-	accessWidenerPath = file("src/main/resources/twilightforest.classtweaker")
+	accessWidenerPath = file("src/main/resources/twilightforest.accesswidener")
 
 	runs {
 		client {

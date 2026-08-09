@@ -19,8 +19,8 @@
   ],
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/the-twilight-forest",
-    "sources": "https://github.com/TeamTwilight/twilightforest",
-    "issues": "https://github.com/TeamTwilight/twilightforest/issues"
+    "sources": "https://github.com/TeamTwilight/twilightforest-fabric",
+    "issues": "https://github.com/TeamTwilight/twilightforest-fabric/issues"
   },
   "license": "LGPL-2.1",
   "icon": "icon.png",
@@ -54,15 +54,15 @@
       "twilightforest.data.DataGenerators"
     ]
   },
-  "accessWidener": "twilightforest.classtweaker",
+  "accessWidener": "twilightforest.accesswidener",
   "mixins": [
     "twilightforest.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=${loader_version}",
+    "fabricloader": ">=0.17.0",
     "minecraft": "~1.21.1",
     "java": ">=${java_version}",
-    "fabric-api": "*"
+    "fabric-api": ">=0.116.14+1.21.1"
   },
   "suggests": {
     "jei": "*",
@@ -74,7 +74,7 @@
   "custom": {
     "modmenu": {
       "links": {
-        "modmenu.discord": "https://discord.gg/teamtwilight"
+        "modmenu.discord": "https://discord.gg/6v3z26B"
       }
     }
   }
