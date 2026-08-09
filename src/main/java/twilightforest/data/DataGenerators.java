@@ -32,9 +32,9 @@ public class DataGenerators implements DataGeneratorEntrypoint {
 		FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
 		ExistingFileHelper helper = getExistingFileHelper();
 
+		addContentProviders(pack);
 		addClientProviders(pack, helper);
 		addTagProviders(pack, helper);
-		addContentProviders(pack);
 		addStructureProviders(pack, helper);
 		addAssetProviders(pack, helper);
 
@@ -68,6 +68,7 @@ public class DataGenerators implements DataGeneratorEntrypoint {
 
 	private static void addContentProviders(FabricDataGenerator.Pack pack) {
 		pack.addProvider(RegistryDataGenerator::new);
+		pack.addProvider(DynamicRegistryGenerator::new);
 		pack.addProvider(AdvancementGenerator::new);
 		pack.addProvider(LootGenerator::new);
 		pack.addProvider(DataMapGenerator::new);
@@ -103,7 +104,6 @@ public class DataGenerators implements DataGeneratorEntrypoint {
 		registryBuilder.add(TFRegistries.Keys.BIOME_STACK, BiomeLayerStack::bootstrap);
 		registryBuilder.add(TFRegistries.Keys.BIOME_TERRAIN_DATA, BiomeLayerStack::bootstrapData);
 		registryBuilder.add(Registries.DIMENSION_TYPE, TFDimensionData::bootstrapType);
-		registryBuilder.add(Registries.LEVEL_STEM, TFDimensionData::bootstrapStem);
 		registryBuilder.add(Registries.BIOME, TFBiomes::bootstrap);
 		registryBuilder.add(TFRegistries.Keys.WOOD_PALETTES, WoodPalettes::bootstrap);
 		registryBuilder.add(Registries.DAMAGE_TYPE, TFDamageTypes::bootstrap);

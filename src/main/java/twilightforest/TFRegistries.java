@@ -72,7 +72,6 @@ public class TFRegistries {
 	 * Registers the datapack-driven registries so their generated data is loaded and synced to clients.
 	 * Must mirror {@link twilightforest.data.DataGenerators#buildRegistry}.
 	 */
-	// FIXME: When cleaning up rest of datagen
 	public static void setRegistriesForDatapack() {
 		DynamicRegistries.registerSynced(Keys.WOOD_PALETTES, WoodPalette.CODEC);
 		DynamicRegistries.registerSynced(Keys.BIOME_STACK, BiomeLayerStack.DISPATCH_CODEC);

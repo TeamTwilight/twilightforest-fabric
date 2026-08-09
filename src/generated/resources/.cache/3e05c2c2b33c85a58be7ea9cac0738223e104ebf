@@ -1,4 +1,4 @@
-// 1.21.1	2026-08-09T01:22:38.627400099	The Twilight Forest/Twilight Forest Block Tags
+// 1.21.1	2026-08-09T12:24:26.110940392	The Twilight Forest/Twilight Forest Block Tags
 548dfc9d7e2225c6f7d761216b3fafc120978f73 data/twilightforest/tags/block/transwood_logs.json
 53df7d57255dd3eb5af7094e75d5c6cf8e7cbcb5 data/twilightforest/tags/block/trophy_pedestal_activation_blocks.json
 dfe388780d9d636ad393c72d71b3ff7e0d725c09 data/minecraft/tags/block/needs_stone_tool.json
@@ -48,8 +48,8 @@ d1f677ac5e8be6bff6bd3a82b3586cd745434ef9 data/minecraft/tags/block/needs_iron_to
 81ae71ba5178603742503fff3b4aca50fe7359a9 data/minecraft/tags/block/climbable.json
 b84211b8bce51b7d8233bc8e8ea4ea0fc6befdf0 data/minecraft/tags/block/fire.json
 d2e681a14efc494b83a43b07b35d26dad2fff850 data/c/tags/block/ropes.json
-e40d95a628eb206ce0b4bac90782bccc789cf8dc data/twilightforest/tags/block/sortwood_logs.json
 9a0837862b33f048722739e6314f5c471d56b2d6 data/twilightforest/tags/block/mining_logs.json
+e40d95a628eb206ce0b4bac90782bccc789cf8dc data/twilightforest/tags/block/sortwood_logs.json
 1c8be16360ba840051ed917f6b9667c66376d4ee data/c/tags/block/glass_blocks.json
 19bd74ce640c043c09053d7571fb7a9915d41417 data/minecraft/tags/block/logs_that_burn.json
 6fe1e441c4085be357b16f3ef9158eda9139f939 data/minecraft/tags/block/ceiling_hanging_signs.json
