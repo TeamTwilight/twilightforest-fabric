@@ -34,38 +34,27 @@ repositories {
 		url = "https://maven.shedaniel.me"
 	}
 	maven {
-		name = "TerraformersMC" // ModMenu
-		url = "https://maven.terraformersmc.com/"
+		name = "Ladysnake" // EMI, Trinkets
+		url = "https://maven.ladysnake.org/releases"
 	}
 	maven {
-		name = "Modrinth"
+		name = "Modrinth" // Jade
 		url = "https://api.modrinth.com/maven"
 		content {
 			includeGroup "maven.modrinth"
 		}
 	}
 	maven {
-		name = "Curseforge Maven"
-		url = "https://www.cursemaven.com"
-		content {
-			includeGroup "curse.maven"
-		}
-	}
-	maven {
-		name = "Sleeping Town"
-		url = "https://repo.sleeping.town/"
-	}
-	maven {
-		name = "Ladysnake"
-		url = "https://maven.ladysnake.org/releases"
-	}
-	maven {
-		name = "Jitpack"
-		url = "https://jitpack.io"
-	}
-	maven {
-		name = "DevOS Maven"
+		name = "DevOS Maven" // Porting Lib
 		url = "https://mvn.devos.one/snapshots/"
+	}
+	maven {
+		name = "TerraformersMC" // ModMenu
+		url = "https://maven.terraformersmc.com/"
+	}
+	maven {
+		name = "Fuzs Mod Resources" // Forge Config API Port
+		url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
 	}
 }
 
@@ -83,8 +72,8 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
 
+	// Bundled dependencies
 	// FIXME: Bundle the fat Porting Lib jar once it is published(cuts TF JAR size in half)
-	// Porting-Lib modules (from DevOS Maven) - bundled via jar-in-jar so players don't need it as a separate dependency
 	def portingLibModules = [
 		"attributes",
 		"base",
@@ -94,7 +83,7 @@ dependencies {
 		"client_events",
 		"client_extensions",
 		"common",
-		"config",
+		"config", // We have to bundle config since base depends on it
 		"core",
 		"data",
 		"entity",
@@ -123,17 +112,16 @@ dependencies {
 		include(modImplementation "io.github.fabricators_of_create.Porting-Lib:${module}:${porting_lib_version}+${minecraft_version}")
 	}
 
-	// Compat mods
+	// More stable than Porting Lib config
+	include(modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forge_config_api_port_version}")
 
-	modCompileOnly "dev.emi:trinkets:${trinkets_version}"
-	// Make sure to only enable one recipe viewer at a time during testing
+	// Compat mods
 	modCompileOnly "mezz.jei:jei-${minecraft_version}-fabric:${jei_version}"
 	modCompileOnly "me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}"
 	modCompileOnly "dev.emi:emi-fabric:${emi_version}+${minecraft_version}"
-	// ModMenu for config screen
+	modCompileOnly "dev.emi:trinkets:${trinkets_version}"
 	modCompileOnly "com.terraformersmc:modmenu:${modmenu_version}"
 	modLocalRuntime "com.terraformersmc:modmenu:${modmenu_version}"
-	// Jade (nice to have in dev environment as well)
 	modCompileOnly "maven.modrinth:jade:${jade_version}"
 	modLocalRuntime "maven.modrinth:jade:${jade_version}"
 }

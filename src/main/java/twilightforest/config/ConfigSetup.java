@@ -1,13 +1,13 @@
 package twilightforest.config;
 
-import io.github.fabricators_of_create.porting_lib.config.ConfigRegistry;
-import io.github.fabricators_of_create.porting_lib.config.ModConfig;
-import io.github.fabricators_of_create.porting_lib.config.ModConfigEvent;
-import io.github.fabricators_of_create.porting_lib.config.ModConfigSpec;
+import fuzs.forgeconfigapiport.fabric.api.neoforge.v4.NeoForgeConfigRegistry;
+import fuzs.forgeconfigapiport.fabric.api.neoforge.v4.NeoForgeModConfigEvents;
 import io.github.fabricators_of_create.porting_lib.core.util.ServerLifecycleHooks;
 import io.github.fabricators_of_create.porting_lib.entity.events.player.PlayerEvents;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.common.ModConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.TwilightForestMod;
 import twilightforest.network.PacketDistributor;
@@ -23,31 +23,31 @@ public final class ConfigSetup {
 	static {
 		{
 			final Pair<TFCommonConfig, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(TFCommonConfig::new);
-			ConfigRegistry.registerConfig(TwilightForestMod.ID, ModConfig.Type.COMMON, COMMON_SPEC = specPair.getRight());
+			NeoForgeConfigRegistry.INSTANCE.register(TwilightForestMod.ID, ModConfig.Type.COMMON, COMMON_SPEC = specPair.getRight());
 			COMMON_CONFIG = specPair.getLeft();
 		}
 		{
 			final Pair<TFClientConfig, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(TFClientConfig::new);
-			ConfigRegistry.registerConfig(TwilightForestMod.ID, ModConfig.Type.CLIENT, CLIENT_SPEC = specPair.getRight());
+			NeoForgeConfigRegistry.INSTANCE.register(TwilightForestMod.ID, ModConfig.Type.CLIENT, CLIENT_SPEC = specPair.getRight());
 			CLIENT_CONFIG = specPair.getLeft();
 		}
 	}
 
 	public static void loadConfigs() {
-		ModConfigEvent.Loading.EVENT.register(event1 -> {
-			if (event1.getConfig().getSpec() == CLIENT_SPEC) {
+		NeoForgeModConfigEvents.loading(TwilightForestMod.ID).register(config -> {
+			if (config.getSpec() == CLIENT_SPEC) {
 				TFConfig.rebakeClientOptions(CLIENT_CONFIG);
-			} else if (event1.getConfig().getSpec() == COMMON_SPEC) {
+			} else if (config.getSpec() == COMMON_SPEC) {
 				TFConfig.rebakeCommonOptions(COMMON_CONFIG);
 			}
 		});
 	}
 
 	public static void reloadConfigs() {
-		ModConfigEvent.Reloading.EVENT.register(event1 -> {
-			if (event1.getConfig().getSpec() == CLIENT_SPEC) {
+		NeoForgeModConfigEvents.reloading(TwilightForestMod.ID).register(config -> {
+			if (config.getSpec() == CLIENT_SPEC) {
 				TFConfig.rebakeClientOptions(CLIENT_CONFIG);
-			} else if (event1.getConfig().getSpec() == COMMON_SPEC) {
+			} else if (config.getSpec() == COMMON_SPEC) {
 				TFConfig.rebakeCommonOptions(COMMON_CONFIG);
 			}
 		});
