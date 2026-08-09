@@ -67,8 +67,8 @@ public class DataGenerators implements DataGeneratorEntrypoint {
 	}
 
 	private static void addContentProviders(FabricDataGenerator.Pack pack) {
-		pack.addProvider(RegistryDataGenerator::new);
 		pack.addProvider(DynamicRegistryGenerator::new);
+		pack.addProvider(RegistryDataGenerator::new);
 		pack.addProvider(AdvancementGenerator::new);
 		pack.addProvider(LootGenerator::new);
 		pack.addProvider(DataMapGenerator::new);

@@ -1,0 +1,10 @@
+{
+  "banister": "twilightforest:acacia_banister",
+  "button": "minecraft:acacia_button",
+  "fence": "minecraft:acacia_fence",
+  "gate": "minecraft:acacia_fence_gate",
+  "planks": "minecraft:acacia_planks",
+  "plate": "minecraft:acacia_pressure_plate",
+  "slab": "minecraft:acacia_slab",
+  "stairs": "minecraft:acacia_stairs"
+}

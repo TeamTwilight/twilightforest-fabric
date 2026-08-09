@@ -1,0 +1,10 @@
+{
+  "banister": "twilightforest:vangrove_banister",
+  "button": "minecraft:mangrove_button",
+  "fence": "minecraft:mangrove_fence",
+  "gate": "minecraft:mangrove_fence_gate",
+  "planks": "minecraft:mangrove_planks",
+  "plate": "minecraft:mangrove_pressure_plate",
+  "slab": "minecraft:mangrove_slab",
+  "stairs": "minecraft:mangrove_stairs"
+}
