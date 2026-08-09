@@ -20,8 +20,6 @@ import java.util.function.Supplier;
 
 /**
  * Fixes CompositeModel.Baked so that emitBlockQuads / emitItemQuads work on Fabric.
- * <p>
- * TODO: Find something safer to enable this functionality
  */
 @Mixin(targets = "io.github.fabricators_of_create.porting_lib.models.CompositeModel$Baked", remap = false)
 public class CompositeModel$BakedMixin {
