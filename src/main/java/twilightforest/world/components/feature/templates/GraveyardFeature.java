@@ -5,10 +5,10 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.GlobalPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.WorldGenLevel;
@@ -69,12 +69,7 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 			}
 		}
 
-		long count = heights.count();
-		if (count == 0) {
-			return false;
-		}
-
-		if (count >= 2 && heights.populationStandardDeviation() > 2.0) {
+		if (heights.populationStandardDeviation() > 2.0) {
 			return false;
 		}
 
@@ -181,7 +176,7 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 						}
 						Wraith wraith = new Wraith(TFEntities.WRAITH.get(), world.getLevel());
 						wraith.setPos(placement.getX(), placement.getY(), placement.getZ());
-						wraith.setRestrictionPoint(GlobalPos.of(world.getLevel().dimension(), wraith.blockPosition()));
+						wraith.finalizeSpawn(world, world.getCurrentDifficultyAt(placement), MobSpawnType.STRUCTURE, null);
 						world.addFreshEntity(wraith);
 					}
 				}
@@ -236,9 +231,8 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 			return TFStructureProcessors.WEB.get();
 		}
 
-		@Nullable
 		@Override
-		public StructureTemplate.StructureBlockInfo processBlock(LevelReader worldIn, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo p_process_3_, StructureTemplate.StructureBlockInfo blockInfo, StructurePlaceSettings settings) {
+		public @Nullable StructureTemplate.StructureBlockInfo processBlock(LevelReader level, BlockPos offset, BlockPos pos, StructureTemplate.StructureBlockInfo blockInfo, StructureTemplate.StructureBlockInfo relativeBlockInfo, StructurePlaceSettings settings) {
 			return blockInfo.state().getBlock() == Blocks.GRASS_BLOCK ? blockInfo : settings.getRandom(pos).nextInt(5) == 0 ? new StructureTemplate.StructureBlockInfo(pos, Blocks.COBWEB.defaultBlockState(), null) : blockInfo;
 		}
 	}

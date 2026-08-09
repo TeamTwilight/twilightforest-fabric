@@ -3,7 +3,6 @@ package twilightforest.world.components.feature.trees;
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelSimulatedReader;
@@ -47,8 +46,7 @@ public class CanopyTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 			return false;
 		}
 
-		// canSustainPlant check removed - NeoForge-only API, not available in Fabric 1.21.1
-		if (false) {
+		if (!TFBlocks.CANOPY_SAPLING.get().defaultBlockState().canSurvive(world, pos.below())) {
 			return false;
 		}
 

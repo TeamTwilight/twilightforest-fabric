@@ -16,8 +16,8 @@ import twilightforest.world.components.structures.stronghold.StrongholdDecorator
  * @author Ben
  */
 public class TFStructureDecorator {
-	private static final StrongholdStonesRandomBlockSelectorFactory strongholdStones = StrongholdStonesRandomBlockSelectorFactory.INSTANCE;
 
+	private static final StrongholdStonesRandomBlockSelectorFactory strongholdStones = StrongholdStonesRandomBlockSelectorFactory.INSTANCE;
 	public BlockState blockState = Blocks.STONE.defaultBlockState();
 	public BlockState accentState = Blocks.COBBLESTONE.defaultBlockState();
 	public BlockState stairState = Blocks.STONE_STAIRS.defaultBlockState();

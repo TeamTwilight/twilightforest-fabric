@@ -124,7 +124,7 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 
 	public static FallenTrunkStructure buildStructureConfig(HolderSet<Biome> biomes) {
 		return new FallenTrunkStructure(
-			new StructureSettings(
+			new Structure.StructureSettings(
 				biomes,
 				Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create()))), // Landmarks have Controlled Mob spawning
 				GenerationStep.Decoration.SURFACE_STRUCTURES,

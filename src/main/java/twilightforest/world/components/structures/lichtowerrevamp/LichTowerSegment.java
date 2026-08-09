@@ -1,5 +1,6 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
+import io.github.fabricators_of_create.porting_lib.world.PieceBeardifierModifier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.FrontAndTop;
 import net.minecraft.nbt.CompoundTag;
@@ -24,7 +25,8 @@ import twilightforest.world.components.structures.TwilightJigsawPiece;
 
 import java.util.ArrayList;
 
-public final class LichTowerSegment extends TwilightJigsawPiece implements SpawnIndexProvider {
+public final class LichTowerSegment extends TwilightJigsawPiece implements PieceBeardifierModifier, SpawnIndexProvider {
+
 	private static final LichTowerUtil lichTowerUtil = LichTowerUtil.INSTANCE;
 
 	private final boolean putMobBridge;
@@ -167,6 +169,21 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Spawn
 	@Override
 	protected void handleDataMarker(String label, BlockPos pos, WorldGenLevel level, RandomSource random, BoundingBox chunkBounds, ChunkGenerator chunkGen, Rotation rotation) {
 		LichBossRoom.placePainting(label, pos, level, random, chunkBounds, this.placeSettings.getRotation(), 2, 10, CustomTagGenerator.PaintingVariantTagGenerator.LICH_TOWER_PAINTINGS);
+	}
+
+	@Override
+	public BoundingBox getBeardifierBox() {
+		return this.boundingBox;
+	}
+
+	@Override
+	public TerrainAdjustment getTerrainAdjustment() {
+		return TerrainAdjustment.NONE;
+	}
+
+	@Override
+	public int getGroundLevelDelta() {
+		return 0;
 	}
 
 	@Override

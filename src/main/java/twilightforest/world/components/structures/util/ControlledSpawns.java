@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+// FIXME Using IDs to enumerate lists of mob spawn tables is a bad idea... Using String for now in the config, will transition this implementation detail later
 public interface ControlledSpawns {
 
 	String CODEC_NAME = "controlled_spawns";

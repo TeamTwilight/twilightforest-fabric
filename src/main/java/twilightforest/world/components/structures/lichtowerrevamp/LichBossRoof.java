@@ -1,5 +1,6 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
+import io.github.fabricators_of_create.porting_lib.world.PieceBeardifierModifier;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
@@ -11,7 +12,7 @@ import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.structures.SpawnIndexProvider;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 
-public final class LichBossRoof extends TwilightJigsawPiece implements SpawnIndexProvider.Deny {
+public final class LichBossRoof extends TwilightJigsawPiece implements PieceBeardifierModifier, SpawnIndexProvider.Deny {
 	public LichBossRoof(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		super(TFStructurePieceTypes.LICH_BOSS_ROOF.get(), compoundTag, ctx, readSettings(compoundTag));
 
@@ -26,5 +27,20 @@ public final class LichBossRoof extends TwilightJigsawPiece implements SpawnInde
 
 	@Override
 	protected void processJigsaw(TwilightJigsawPiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
+	}
+
+	@Override
+	public BoundingBox getBeardifierBox() {
+		return this.boundingBox;
+	}
+
+	@Override
+	public TerrainAdjustment getTerrainAdjustment() {
+		return TerrainAdjustment.NONE;
+	}
+
+	@Override
+	public int getGroundLevelDelta() {
+		return 0;
 	}
 }

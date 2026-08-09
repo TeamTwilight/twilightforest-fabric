@@ -1,10 +1,12 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
+import io.github.fabricators_of_create.porting_lib.world.PieceBeardifierModifier;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntArraySet;
 import it.unimi.dsi.fastutil.ints.IntList;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.Util;
 import net.minecraft.core.*;
 import net.minecraft.core.component.DataComponents;
@@ -43,7 +45,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.fabricmc.loader.api.FabricLoader;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -73,7 +74,8 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public final class LichTowerWingRoom extends TwilightJigsawPiece implements SpawnIndexProvider {
+public final class LichTowerWingRoom extends TwilightJigsawPiece implements PieceBeardifierModifier, SpawnIndexProvider {
+
 	private static final LichTowerUtil lichTowerUtil = LichTowerUtil.INSTANCE;
 
 	private final int roomSize;
@@ -285,7 +287,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Spaw
 			}
 
 			if (this.roofFallback >= 0) {
-				// if (!!FabricLoader.getInstance().isDevelopmentEnvironment()) TwilightForestMod.LOGGER.error("Failed to generate room above {}", this.templatePosition.offset(topPos));
+				// if (!FMLLoader.isProduction()) TwilightForestMod.LOGGER.error("Failed to generate room above {}", this.templatePosition.offset(topPos));
 				// If the room above cannot generate, then place the roof instead
 				this.putRoof(pieceAccessor, context, this.getSpareJigsaws().get(this.roofFallback));
 			}
@@ -552,7 +554,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Spaw
 				BlockState blockState = this.blockFromLabel(parameters[0]).rotate(stateRotation);
 				if (!blockState.isAir()) {
 					level.setBlock(pos, blockState, Block.UPDATE_CLIENTS);
-				} else if (!!FabricLoader.getInstance().isDevelopmentEnvironment()) {
+				} else if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
 					TwilightForestMod.LOGGER.warn("Variation label {} ({}) obtained {} in {}", parameters[0], parameters, blockState, this.templateName);
 				}
 			}
@@ -789,17 +791,8 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Spaw
 		if (level.getBlockEntity(pos) instanceof ChiseledCanopyShelfBlockEntity shelfBlockEntity) {
 			for (int index : filledSlots) {
 				// Spawner shelves never contain enchanted books; Otherwise Chiseled Shelves have a 1/10 chance of generating an enchanted book instead of only a book
-				ItemStack book = new ItemStack(Items.BOOK);
-				if (!isHostile && random.nextInt(16) == 0) {
-					book = EnchantmentHelper.enchantItem(random, book, random.nextIntBetweenInclusive(1, 40), registryAccess, Optional.empty());
-				}
-				if (!book.isEmpty()) {
-					// Directly fill the slot instead of calling setItem(): during structure
-					// generation the BlockEntity's level is still null (ProtoChunk/WorldGenRegion),
-					// and ChiseledBookShelfBlockEntity.updateState() calls Objects.requireNonNull(level),
-					// which throws an NPE and fails chunk generation.
-					shelfBlockEntity.items.set(index, book);
-				}
+				ItemStack book = isHostile || random.nextInt(16) != 0 ? new ItemStack(Items.BOOK) : EnchantmentHelper.enchantItem(random, new ItemStack(Items.BOOK), random.nextIntBetweenInclusive(1, 40), registryAccess, Optional.empty());
+				shelfBlockEntity.items.set(index, book);
 			}
 
 			if (isHostile) {
@@ -881,6 +874,21 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Spaw
 		} else if (level.getBlockEntity(pos) instanceof LecternBlockEntity lecternBlockEntity) {
 			lecternBlockEntity.setBook(new ItemStack(Items.WRITABLE_BOOK));
 		}
+	}
+
+	@Override
+	public BoundingBox getBeardifierBox() {
+		return this.boundingBox;
+	}
+
+	@Override
+	public TerrainAdjustment getTerrainAdjustment() {
+		return TerrainAdjustment.NONE;
+	}
+
+	@Override
+	public int getGroundLevelDelta() {
+		return 0;
 	}
 
 	@Override

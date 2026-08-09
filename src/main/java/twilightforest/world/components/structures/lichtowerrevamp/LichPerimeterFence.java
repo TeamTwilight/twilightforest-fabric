@@ -1,6 +1,7 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
 import com.google.common.collect.Streams;
+import io.github.fabricators_of_create.porting_lib.world.PieceBeardifierModifier;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -49,7 +50,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-public class LichPerimeterFence extends TwilightJigsawPiece implements SortablePiece, SpawnIndexProvider.Deny {
+public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBeardifierModifier, SortablePiece, SpawnIndexProvider.Deny {
 	private final @Nullable BlockPos leashPos;
 
 	public LichPerimeterFence(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
@@ -96,6 +97,21 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements SortableP
 			pieceAccessor.addPiece(treeClearance);
 			treeClearance.addChildren(this, pieceAccessor, context.random());
 		}
+	}
+
+	@Override
+	public BoundingBox getBeardifierBox() {
+		return this.boundingBox;
+	}
+
+	@Override
+	public TerrainAdjustment getTerrainAdjustment() {
+		return TerrainAdjustment.BEARD_BOX;
+	}
+
+	@Override
+	public int getGroundLevelDelta() {
+		return 2;
 	}
 
 	@Override
@@ -303,16 +319,6 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements SortableP
 	public int getSortKey() {
 		// Make higher-ups generate later so the lower fences' slabs don't replace full blocks
 		return this.boundingBox.maxY();
-	}
-
-	@Override
-	public TerrainAdjustment getTerrainAdjustment() {
-		return TerrainAdjustment.BEARD_BOX;
-	}
-
-	@Override
-	public int getGroundLevelDelta() {
-		return 2;
 	}
 
 	public Stream<BlockPos> fencePostPositions() {

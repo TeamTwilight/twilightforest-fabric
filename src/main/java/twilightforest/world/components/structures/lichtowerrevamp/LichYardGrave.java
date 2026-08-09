@@ -1,5 +1,6 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
+import io.github.fabricators_of_create.porting_lib.world.PieceBeardifierModifier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -23,7 +24,7 @@ import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 
-public class LichYardGrave extends TwilightJigsawPiece {
+public class LichYardGrave extends TwilightJigsawPiece implements PieceBeardifierModifier {
 	private final BoundingBox fillUnder;
 
 	public LichYardGrave(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
@@ -72,7 +73,8 @@ public class LichYardGrave extends TwilightJigsawPiece {
 	}
 
 	@Override
-	protected void processJigsaw(TwilightJigsawPiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
+	public BoundingBox getBeardifierBox() {
+		return this.boundingBox;
 	}
 
 	@Override
@@ -83,5 +85,9 @@ public class LichYardGrave extends TwilightJigsawPiece {
 	@Override
 	public int getGroundLevelDelta() {
 		return 1;
+	}
+
+	@Override
+	protected void processJigsaw(TwilightJigsawPiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
 	}
 }

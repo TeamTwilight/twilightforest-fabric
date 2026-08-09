@@ -9,6 +9,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFStructureProcessors;
 import twilightforest.util.features.FeaturePlacers;
 
@@ -20,19 +21,19 @@ public class SmoothStoneVariants extends StructureProcessor {
 	}
 
 	@Override
-	public StructureTemplate.StructureBlockInfo processBlock(LevelReader level, BlockPos origin, BlockPos centerBottom, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings) {
-		RandomSource random = settings.getRandom(modifiedBlockInfo.pos());
+	public @Nullable StructureTemplate.StructureBlockInfo processBlock(LevelReader level, BlockPos offset, BlockPos pos, StructureTemplate.StructureBlockInfo blockInfo, StructureTemplate.StructureBlockInfo relativeBlockInfo, StructurePlaceSettings settings) {
+		RandomSource random = settings.getRandom(relativeBlockInfo.pos());
 
 		// We use nextBoolean in other processors so this lets us re-seed deterministically
 		random.setSeed(random.nextLong() * 4);
 
-		if (modifiedBlockInfo.state().is(Blocks.SMOOTH_STONE_SLAB) && random.nextBoolean())
-			return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), FeaturePlacers.transferAllStateKeys(modifiedBlockInfo.state(), Blocks.COBBLESTONE_SLAB), null);
+		if (relativeBlockInfo.state().is(Blocks.SMOOTH_STONE_SLAB) && random.nextBoolean())
+			return new StructureTemplate.StructureBlockInfo(relativeBlockInfo.pos(), FeaturePlacers.transferAllStateKeys(relativeBlockInfo.state(), Blocks.COBBLESTONE_SLAB), null);
 
-		if (modifiedBlockInfo.state().is(Blocks.SMOOTH_STONE) && random.nextBoolean())
-			return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), Blocks.COBBLESTONE.defaultBlockState(), null);
+		if (relativeBlockInfo.state().is(Blocks.SMOOTH_STONE) && random.nextBoolean())
+			return new StructureTemplate.StructureBlockInfo(relativeBlockInfo.pos(), Blocks.COBBLESTONE.defaultBlockState(), null);
 
-		return modifiedBlockInfo;
+		return relativeBlockInfo;
 	}
 
 	@Override

@@ -24,12 +24,12 @@ import java.util.Optional;
 public class AvoidLandmarkGridPlacement extends RandomSpreadStructurePlacement {
 	public static final MapCodec<AvoidLandmarkGridPlacement> CODEC = RecordCodecBuilder.<AvoidLandmarkGridPlacement>mapCodec(instance -> instance.group(
 		Vec3i.offsetCodec(16).optionalFieldOf("locate_offset", Vec3i.ZERO).forGetter(AvoidLandmarkGridPlacement::locateOffset),
-		FrequencyReductionMethod.CODEC
-			.optionalFieldOf("frequency_reduction_method", FrequencyReductionMethod.DEFAULT)
+		StructurePlacement.FrequencyReductionMethod.CODEC
+			.optionalFieldOf("frequency_reduction_method", StructurePlacement.FrequencyReductionMethod.DEFAULT)
 			.forGetter(AvoidLandmarkGridPlacement::frequencyReductionMethod),
 		Codec.floatRange(0.0F, 1.0F).optionalFieldOf("frequency", 1.0F).forGetter(AvoidLandmarkGridPlacement::frequency),
 		ExtraCodecs.NON_NEGATIVE_INT.fieldOf("salt").forGetter(AvoidLandmarkGridPlacement::salt),
-		ExclusionZone.CODEC.optionalFieldOf("exclusion_zone").forGetter(AvoidLandmarkGridPlacement::exclusionZone),
+		StructurePlacement.ExclusionZone.CODEC.optionalFieldOf("exclusion_zone").forGetter(AvoidLandmarkGridPlacement::exclusionZone),
 		Codec.intRange(0, 4096).fieldOf("spacing").forGetter(AvoidLandmarkGridPlacement::spacing),
 		Codec.intRange(0, 4096).fieldOf("separation").forGetter(AvoidLandmarkGridPlacement::separation),
 		RandomSpreadType.CODEC.optionalFieldOf("spread_type", RandomSpreadType.LINEAR).forGetter(AvoidLandmarkGridPlacement::spreadType),

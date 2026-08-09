@@ -11,6 +11,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFStructureProcessors;
 import twilightforest.util.features.FeaturePlacers;
 
@@ -22,28 +23,28 @@ public final class CobbleVariants extends StructureProcessor {
 	}
 
 	@Override
-	public StructureTemplate.StructureBlockInfo processBlock(LevelReader worldReaderIn, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo p_215194_3_, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings) {
-		RandomSource random = settings.getRandom(modifiedBlockInfo.pos());
+	public @Nullable StructureTemplate.StructureBlockInfo processBlock(LevelReader level, BlockPos offset, BlockPos pos, StructureTemplate.StructureBlockInfo blockInfo, StructureTemplate.StructureBlockInfo relativeBlockInfo, StructurePlaceSettings settings) {
+		RandomSource random = settings.getRandom(relativeBlockInfo.pos());
 
 		// We use nextBoolean in other processors so this lets us re-seed deterministically
 		random.setSeed(random.nextLong() * 2);
 
-		BlockState state = modifiedBlockInfo.state();
+		BlockState state = relativeBlockInfo.state();
 		Block block = state.getBlock();
 
 		if (block == Blocks.COBBLESTONE && random.nextBoolean())
-			return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), Blocks.MOSSY_COBBLESTONE.defaultBlockState(), null);
+			return new StructureTemplate.StructureBlockInfo(relativeBlockInfo.pos(), Blocks.MOSSY_COBBLESTONE.defaultBlockState(), null);
 
 		if (block == Blocks.COBBLESTONE_STAIRS && random.nextBoolean())
-			return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), FeaturePlacers.transferAllStateKeys(state, Blocks.MOSSY_COBBLESTONE_STAIRS), null);
+			return new StructureTemplate.StructureBlockInfo(relativeBlockInfo.pos(), FeaturePlacers.transferAllStateKeys(state, Blocks.MOSSY_COBBLESTONE_STAIRS), null);
 
 		if (block == Blocks.COBBLESTONE_SLAB && random.nextBoolean())
-			return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), FeaturePlacers.transferAllStateKeys(state, Blocks.MOSSY_COBBLESTONE_SLAB), null);
+			return new StructureTemplate.StructureBlockInfo(relativeBlockInfo.pos(), FeaturePlacers.transferAllStateKeys(state, Blocks.MOSSY_COBBLESTONE_SLAB), null);
 
 		if (block == Blocks.COBBLESTONE_WALL && random.nextBoolean())
-			return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), FeaturePlacers.transferAllStateKeys(state, Blocks.MOSSY_COBBLESTONE_WALL), null);
+			return new StructureTemplate.StructureBlockInfo(relativeBlockInfo.pos(), FeaturePlacers.transferAllStateKeys(state, Blocks.MOSSY_COBBLESTONE_WALL), null);
 
-		return modifiedBlockInfo;
+		return relativeBlockInfo;
 	}
 
 	@Override

@@ -94,7 +94,7 @@ public enum ZoomLayer implements AreaTransformer1 {
 			BiomeLayerStack.HOLDER_CODEC.fieldOf("parent").forGetter(Factory::parent)
 		).apply(inst, Factory::new));
 
-		// 参数化位移量
+		// TODO Parameterize bit-shifting quantities
 		@Override
 		public LazyArea build(LongFunction<LazyAreaContext> contextFactory) {
 			LazyAreaContext seededContext = contextFactory.apply(this.salt);

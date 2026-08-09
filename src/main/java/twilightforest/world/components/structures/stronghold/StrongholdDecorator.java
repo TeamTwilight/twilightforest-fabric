@@ -8,6 +8,7 @@ import twilightforest.world.components.structures.TFStructureDecorator;
 import twilightforest.world.components.structures.selectors.KnightStonesRandomBlockSelectorFactory;
 
 public class StrongholdDecorator extends TFStructureDecorator {
+
 	private static final KnightStonesRandomBlockSelectorFactory knightStones = KnightStonesRandomBlockSelectorFactory.INSTANCE;
 
 	public StrongholdDecorator() {

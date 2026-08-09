@@ -47,7 +47,7 @@ public class StrongholdSmallStairsComponent extends KnightStrongholdComponent {
 	@Override
 	public BoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
 
-		if (y > -15) {
+		if (y > -15) { // FIXME
 			this.enterBottom = false;
 		} else if (y < -21) {
 			this.enterBottom = true;

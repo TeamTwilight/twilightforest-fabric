@@ -297,3 +297,6 @@ accessible method net/minecraft/world/level/GameRules$IntegerValue create (I)Lne
 
 # EntityEntryDefinition (For REI compat)
 accessible method net/minecraft/world/entity/Entity getEncodeId ()Ljava/lang/String;
+
+# TFCavesCarver (It is not final on NeoForge)
+extendable method net/minecraft/world/level/levelgen/carver/WorldCarver getCarveState (Lnet/minecraft/world/level/levelgen/carver/CarvingContext;Lnet/minecraft/world/level/levelgen/carver/CarverConfiguration;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/levelgen/Aquifer;)Lnet/minecraft/world/level/block/state/BlockState;

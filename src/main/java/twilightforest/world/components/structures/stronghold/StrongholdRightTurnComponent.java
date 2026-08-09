@@ -49,6 +49,12 @@ public class StrongholdRightTurnComponent extends KnightStrongholdComponent {
 		// clear inside
 		generateAirBox(world, sbb, 1, 1, 1, 7, 5, 7);
 
+//		// entrance doorway
+//		placeDoorwayAt(world, rand, 2, 4, 1, 0, sbb);
+//		
+//		// right turn doorway
+//		placeDoorwayAt(world, rand, 1, 0, 1, 4, sbb);
+
 		// statue
 		placeCornerStatue(world, 6, 1, 6, 3, sbb);
 

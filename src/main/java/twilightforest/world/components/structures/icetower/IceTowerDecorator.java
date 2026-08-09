@@ -8,6 +8,7 @@ import twilightforest.world.components.structures.TFStructureDecorator;
 import twilightforest.world.components.structures.selectors.IceTowerRandomBlockSelectorFactory;
 
 public class IceTowerDecorator extends TFStructureDecorator {
+
 	private static IceTowerRandomBlockSelectorFactory iceTower = IceTowerRandomBlockSelectorFactory.INSTANCE;
 
 	public IceTowerDecorator() {

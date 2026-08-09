@@ -20,20 +20,19 @@ public final class SoftReplaceProcessor extends StructureProcessor {
 	private SoftReplaceProcessor() {
 	}
 
-	@Nullable
 	@Override
-	public StructureTemplate.StructureBlockInfo processBlock(LevelReader level, BlockPos offset, BlockPos piecePos, StructureTemplate.StructureBlockInfo originalInfo, StructureTemplate.StructureBlockInfo modifiedInfo, StructurePlaceSettings placeSettings) {
-		BlockState blockAt = level.getBlockState(modifiedInfo.pos());
+	public @Nullable StructureTemplate.StructureBlockInfo processBlock(LevelReader level, BlockPos offset, BlockPos pos, StructureTemplate.StructureBlockInfo blockInfo, StructureTemplate.StructureBlockInfo relativeBlockInfo, StructurePlaceSettings settings) {
+		BlockState blockAt = level.getBlockState(relativeBlockInfo.pos());
 
 		boolean isReplaceableAt = blockAt.canBeReplaced() || blockAt.is(BlockTagGenerator.WORLDGEN_REPLACEABLES);
 
 		if (isReplaceableAt) {
-			return modifiedInfo;
+			return relativeBlockInfo;
 		}
 
 		// Replace partial blocks such as slabs or fences, if the replacement is a solid block
-		if (!this.isFullBlock(blockAt) && this.isFullBlock(modifiedInfo.state())) {
-			return modifiedInfo;
+		if (!this.isFullBlock(blockAt) && this.isFullBlock(relativeBlockInfo.state())) {
+			return relativeBlockInfo;
 		}
 
 		return null;

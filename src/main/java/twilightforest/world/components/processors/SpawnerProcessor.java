@@ -67,12 +67,11 @@ public class SpawnerProcessor extends StructureProcessor {
 		this.entityWidthMax = entityWidthMax.isEmpty() ? Optional.empty() : entityWidthMax.get() <= 0 ? Optional.empty() : entityWidthMax;
 	}
 
-	@Nullable
 	@Override
-	public StructureTemplate.StructureBlockInfo processBlock(LevelReader level, BlockPos offset, BlockPos piecePos, StructureTemplate.StructureBlockInfo originalInfo, StructureTemplate.StructureBlockInfo modifiedInfo, StructurePlaceSettings placeSettings) {
-		CompoundTag nbtInfo = modifiedInfo.nbt();
+	public @Nullable StructureTemplate.StructureBlockInfo processBlock(LevelReader level, BlockPos offset, BlockPos pos, StructureTemplate.StructureBlockInfo blockInfo, StructureTemplate.StructureBlockInfo relativeBlockInfo, StructurePlaceSettings settings) {
+		CompoundTag nbtInfo = relativeBlockInfo.nbt();
 
-		if (nbtInfo != null && (modifiedInfo.state().is(Blocks.SPAWNER) || modifiedInfo.state().is(TFBlocks.SINISTER_SPAWNER))) {
+		if (nbtInfo != null && (relativeBlockInfo.state().is(Blocks.SPAWNER) || relativeBlockInfo.state().is(TFBlocks.SINISTER_SPAWNER))) {
 			if (this.range.isPresent()) {
 				nbtInfo.putShort("SpawnRange", this.range.get());
 			}
@@ -81,7 +80,7 @@ public class SpawnerProcessor extends StructureProcessor {
 			}
 
 			if (!nbtInfo.contains("SpawnData") || nbtInfo.getList("SpawnData", Tag.TAG_COMPOUND).isEmpty()) {
-				Optional<SpawnData> randomSpawn = this.entities.getRandomValue(placeSettings.getRandom(modifiedInfo.pos()));
+				Optional<SpawnData> randomSpawn = this.entities.getRandomValue(settings.getRandom(relativeBlockInfo.pos()));
 
 				if (randomSpawn.isPresent()) {
 					SpawnData spawn = randomSpawn.get();
@@ -116,7 +115,7 @@ public class SpawnerProcessor extends StructureProcessor {
 			}
 		}
 
-		return modifiedInfo;
+		return relativeBlockInfo;
 	}
 
 	public float rescaleToFitWidth(float entityWidth) {

@@ -33,30 +33,29 @@ public final class CourtyardTerraceTemplateProcessor extends StructureProcessor 
 	private CourtyardTerraceTemplateProcessor() {
 	}
 
-	@Nullable
 	@Override
-	public StructureTemplate.StructureBlockInfo processBlock(LevelReader world, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo oldinfo, StructureTemplate.StructureBlockInfo newInfo, StructurePlaceSettings settings) {
-		BlockState newState = newInfo.state();
+	public @Nullable StructureTemplate.StructureBlockInfo processBlock(LevelReader level, BlockPos offset, BlockPos pos, StructureTemplate.StructureBlockInfo blockInfo, StructureTemplate.StructureBlockInfo relativeBlockInfo, StructurePlaceSettings settings) {
+		BlockState newState = relativeBlockInfo.state();
 
 		if (newState.getBlock() == Blocks.SANDSTONE_SLAB) {
-			BlockState stateAt = world.getBlockState(newInfo.pos());
+			BlockState stateAt = level.getBlockState(relativeBlockInfo.pos());
 
 			if (newState == Blocks.SANDSTONE_SLAB.defaultBlockState().setValue(SlabBlock.TYPE, SlabType.DOUBLE)) {
 				if (BLOCKS_REPLACE_TO_SLAB.contains(stateAt))
-					return new StructureTemplate.StructureBlockInfo(newInfo.pos(), Blocks.STONE_BRICK_SLAB.defaultBlockState(), null);
+					return new StructureTemplate.StructureBlockInfo(relativeBlockInfo.pos(), Blocks.STONE_BRICK_SLAB.defaultBlockState(), null);
 				else if (stateAt.is(Blocks.AIR)) // Do not skip Cave Air blocks
 					return null;
 				else
-					return new StructureTemplate.StructureBlockInfo(newInfo.pos(), Blocks.STONE_BRICKS.defaultBlockState(), null);
+					return new StructureTemplate.StructureBlockInfo(relativeBlockInfo.pos(), Blocks.STONE_BRICKS.defaultBlockState(), null);
 			}
 
 			if (stateAt.isAir())
 				return null;
 			else
-				return new StructureTemplate.StructureBlockInfo(newInfo.pos(), Blocks.STONE_BRICK_SLAB.defaultBlockState(), null);
+				return new StructureTemplate.StructureBlockInfo(relativeBlockInfo.pos(), Blocks.STONE_BRICK_SLAB.defaultBlockState(), null);
 		}
 
-		return newInfo;
+		return relativeBlockInfo;
 	}
 
 	@Override

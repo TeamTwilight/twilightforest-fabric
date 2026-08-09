@@ -1,5 +1,6 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
+import io.github.fabricators_of_create.porting_lib.world.PieceBeardifierModifier;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
@@ -11,7 +12,7 @@ import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 import twilightforest.world.components.structures.util.SortablePiece;
 
-public final class LichTowerBaseTrim extends TwilightJigsawPiece implements SortablePiece {
+public final class LichTowerBaseTrim extends TwilightJigsawPiece implements PieceBeardifierModifier, SortablePiece {
 	public LichTowerBaseTrim(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		super(TFStructurePieceTypes.LICH_TOWER_BASE_TRIM.get(), compoundTag, ctx, readSettings(compoundTag));
 
@@ -26,6 +27,11 @@ public final class LichTowerBaseTrim extends TwilightJigsawPiece implements Sort
 
 	@Override
 	protected void processJigsaw(TwilightJigsawPiece parent, StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, JigsawRecord connection, int jigsawIndex) {
+	}
+
+	@Override
+	public BoundingBox getBeardifierBox() {
+		return this.boundingBox;
 	}
 
 	@Override

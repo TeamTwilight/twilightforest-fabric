@@ -1,6 +1,7 @@
 package twilightforest.world.components.structures.finalcastle;
 
 import com.google.common.collect.ImmutableList;
+import io.github.fabricators_of_create.porting_lib.core.util.ServerLifecycleHooks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.FrontAndTop;
 import net.minecraft.nbt.CompoundTag;
@@ -19,7 +20,6 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import io.github.fabricators_of_create.porting_lib.core.util.ServerLifecycleHooks;
 import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;

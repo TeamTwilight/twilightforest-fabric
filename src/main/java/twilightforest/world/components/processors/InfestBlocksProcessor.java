@@ -13,6 +13,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFStructureProcessors;
 import twilightforest.util.features.FeaturePlacers;
 
@@ -24,6 +25,7 @@ public final class InfestBlocksProcessor extends StructureProcessor {
 	public static final InfestBlocksProcessor INSTANCE = new InfestBlocksProcessor();
 	public static final MapCodec<InfestBlocksProcessor> CODEC = MapCodec.unit(() -> INSTANCE);
 
+	// TODO Convert to DataMap
 	private static final Supplier<Map<Block, BlockState>> CONVERSIONS = Suppliers.memoize(() -> Util.make(new HashMap<>(), map -> {
 		map.put(Blocks.STONE, Blocks.INFESTED_STONE.defaultBlockState());
 		map.put(Blocks.COBBLESTONE, Blocks.INFESTED_COBBLESTONE.defaultBlockState());
@@ -37,18 +39,18 @@ public final class InfestBlocksProcessor extends StructureProcessor {
 	}
 
 	@Override
-	public StructureTemplate.StructureBlockInfo processBlock(LevelReader worldReaderIn, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo originalBlock, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings) {
-		RandomSource random = settings.getRandom(modifiedBlockInfo.pos().below(-10));
+	public @Nullable StructureTemplate.StructureBlockInfo processBlock(LevelReader level, BlockPos offset, BlockPos pos, StructureTemplate.StructureBlockInfo blockInfo, StructureTemplate.StructureBlockInfo relativeBlockInfo, StructurePlaceSettings settings) {
+		RandomSource random = settings.getRandom(relativeBlockInfo.pos().below(-10));
 
 		// We use nextBoolean in other processors so this lets us re-seed deterministically
 		random.setSeed(random.nextLong() * 2);
 
-		var replacement = CONVERSIONS.get().get(modifiedBlockInfo.state().getBlock());
+		var replacement = CONVERSIONS.get().get(relativeBlockInfo.state().getBlock());
 
 		if (replacement == null || random.nextFloat() > 1/12f)
-			return modifiedBlockInfo;
+			return relativeBlockInfo;
 
-		return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), replacement, null);
+		return new StructureTemplate.StructureBlockInfo(relativeBlockInfo.pos(), replacement, null);
 	}
 
 	@Override

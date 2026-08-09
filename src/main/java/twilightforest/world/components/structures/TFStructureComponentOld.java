@@ -1,5 +1,6 @@
 package twilightforest.world.components.structures;
 
+import io.github.fabricators_of_create.porting_lib.world.PieceBeardifierModifier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.QuartPos;
@@ -23,7 +24,6 @@ import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
-import io.github.fabricators_of_create.porting_lib.world.PieceBeardifierModifier;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
@@ -44,8 +44,8 @@ import java.util.function.Predicate;
 public abstract class TFStructureComponentOld extends TFStructureComponent implements PieceBeardifierModifier {
 
 	protected static final BlockState AIR = Blocks.AIR.defaultBlockState();
-	private static final StrongholdStonesRandomBlockSelectorFactory strongholdStones = StrongholdStonesRandomBlockSelectorFactory.INSTANCE;
 
+	private static final StrongholdStonesRandomBlockSelectorFactory strongholdStones = StrongholdStonesRandomBlockSelectorFactory.INSTANCE;
 
 	public TFStructureComponentOld(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);
@@ -265,8 +265,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 			world.setBlock(pos, Blocks.OAK_SIGN.defaultBlockState().setValue(StandingSignBlock.ROTATION, this.getOrientation().get2DDataValue() * 4), Block.UPDATE_CLIENTS);
 
 			if (world.getBlockEntity(pos) instanceof SignBlockEntity sign) {
-				sign.setLevel(world.getLevel());
-				sign.setText(sign.getFrontText().setMessage(1, Component.literal(string0)).setMessage(2, Component.literal(string1)), true);
+				sign.frontText = sign.frontText.setMessage(1, Component.literal(string0)).setMessage(2, Component.literal(string1));
 			}
 		}
 	}
@@ -467,7 +466,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 		}
 	}
 
-	protected static BlockSelector getStrongholdStones() {
+	protected static StructurePiece.BlockSelector getStrongholdStones() {
 		return strongholdStones.make();
 	}
 
@@ -529,7 +528,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 		int maxX = this.boundingBox.maxX() + 1;
 		int maxZ = this.boundingBox.maxZ() + 1;
 
-		for (int x = minX; x <= maxX; x++) {
+        for (int x = minX; x <= maxX; x++) {
 			for (int z = minZ; z <= maxZ; z++) {
 				if (!predicate.test(world.getUncachedNoiseBiome(  // getUncachedNoiseBiome() requires quart pos instead of blockPos, unlike getBiome()
 					QuartPos.fromBlock(x),

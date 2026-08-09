@@ -92,15 +92,13 @@ public class BlockSpikeFeature extends Feature<NoneFeatureConfiguration> {
 	private static boolean makeSpike(WorldGenLevel level, BlockPos startPos, Either<List<Pair<Block, Integer>>, Block> ore, int length, int dY, RandomSource random, boolean hang) {
 		int diameter = (int) (length / 4.5F); // diameter of the base
 
-		// only place spikes on solid ground, not on the tops of trees
+		//only place spikes on solid ground, not on the tops of trees
 		if (!hang) {
 			BlockPos below = startPos.below(2);
 			BlockState belowState = level.getBlockState(below);
 			if (!belowState.is(BlockTagGenerator.SUPPORTS_STALAGMITES) &&
 				(!FeatureLogic.worldGenReplaceable(belowState) || !belowState.isFaceSturdy(level, below, Direction.UP) || FeatureLogic.isBlockNotOk(belowState))) return false;
 		}
-
-		WeightedRandomList<WeightedEntry.Wrapper<Block>> weightedOres = ore.left().map(list -> WeightedRandomList.create(list.stream().map(pair -> WeightedEntry.wrap(pair.getFirst(), pair.getSecond())).toList())).orElse(null);
 
 		// let's see...
 		for (int dx = -diameter; dx <= diameter; dx++) {
@@ -121,7 +119,9 @@ public class BlockSpikeFeature extends Feature<NoneFeatureConfiguration> {
 						if (ore.right().isPresent()) {
 							level.setBlock(placement, ore.right().get().defaultBlockState(), Block.UPDATE_ALL);
 						} else {
-							level.setBlock(placement, weightedOres.getRandom(random).orElse(WeightedEntry.wrap(Blocks.STONE, 1)).data().defaultBlockState(), Block.UPDATE_ALL);
+							// FIXME Deduplicate this construction of the weightedlist, tt is constructed many times per generation
+							WeightedRandomList<WeightedEntry.Wrapper<Block>> entries = WeightedRandomList.create(ore.left().get().stream().map(pair -> WeightedEntry.wrap(pair.getFirst(), pair.getSecond())).toList());
+							level.setBlock(placement, entries.getRandom(random).orElse(WeightedEntry.wrap(Blocks.STONE, 1)).data().defaultBlockState(), Block.UPDATE_ALL);
 						}
 					}
 				}

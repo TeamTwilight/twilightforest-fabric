@@ -46,7 +46,7 @@ public class FinalCastleStructure extends ControlledSpawningStructure {
 	}
 
 	public static FinalCastleStructure buildFinalCastleConfig(BootstrapContext<Structure> context) {
-		return new FinalCastleStructure(
+		return new FinalCastleStructure( // TODO Re-enable mob spawns when proper castle mobs are created
 			ControlledSpawningConfig.create(List.of(List.of(
 				// plain parts of the castle, like the tower maze
 				//new MobSpawnSettings.SpawnerData(TFEntities.KOBOLD.get(), 10, 1, 2),
@@ -67,6 +67,7 @@ public class FinalCastleStructure extends ControlledSpawningStructure {
 				//new MobSpawnSettings.SpawnerData(EntityType.BLAZE, 10, 1, 1)
 			)), List.of(), List.of()),
 			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_troll"))),
+			// TODO: change this when we make a book for the castle
 			Optional.of(new HintConfig(HintConfig.defaultBook(), TFEntities.KOBOLD.get())),
 			Optional.of(new DecorationConfig(4, false, true, false)),
 			true, Optional.of(TFMapDecorations.FINAL_CASTLE),

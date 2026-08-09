@@ -1,6 +1,7 @@
 package twilightforest.world.components.structures;
 
 import com.mojang.serialization.DynamicOps;
+import io.github.fabricators_of_create.porting_lib.world.PieceBeardifierModifier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.*;
@@ -29,8 +30,6 @@ import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.structures.markerhandler.TemplateMarkerHandler;
 import twilightforest.world.components.structures.util.*;
 
-import io.github.fabricators_of_create.porting_lib.world.PieceBeardifierModifier;
-
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -38,7 +37,7 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 
 	private static final Logger LOGGER = LogManager.getLogger(TwilightForestMod.ID + "/TwilightJigsawPiece");
 
-	private static final StructureTemplateDefinitions structureTemplateDefinitions = StructureTemplateDefinitions.INSTANCE;
+	private static StructureTemplateDefinitions structureTemplateDefinitions = StructureTemplateDefinitions.INSTANCE;
 
 	private static final String NBT_JIGSAW_SOURCE = "source";
 	private static final String NBT_JIGSAW_CONNECTIONS = "connections";

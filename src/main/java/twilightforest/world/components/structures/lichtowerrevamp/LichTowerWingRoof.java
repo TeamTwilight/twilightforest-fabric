@@ -1,5 +1,6 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
+import io.github.fabricators_of_create.porting_lib.world.PieceBeardifierModifier;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -13,7 +14,7 @@ import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.processors.SoftReplaceProcessor;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 
-public class LichTowerWingRoof extends TwilightJigsawPiece {
+public class LichTowerWingRoof extends TwilightJigsawPiece implements PieceBeardifierModifier {
 	public LichTowerWingRoof(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
 		super(TFStructurePieceTypes.LICH_WING_ROOF.get(), compoundTag, ctx, readSettings(compoundTag));
 
@@ -24,6 +25,21 @@ public class LichTowerWingRoof extends TwilightJigsawPiece {
 		super(TFStructurePieceTypes.LICH_WING_ROOF.get(), genDepth, structureManager, templateLocation, jigsawContext);
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(SoftReplaceProcessor.INSTANCE));
+	}
+
+	@Override
+	public BoundingBox getBeardifierBox() {
+		return this.boundingBox;
+	}
+
+	@Override
+	public TerrainAdjustment getTerrainAdjustment() {
+		return TerrainAdjustment.NONE;
+	}
+
+	@Override
+	public int getGroundLevelDelta() {
+		return 0;
 	}
 
 	@Override

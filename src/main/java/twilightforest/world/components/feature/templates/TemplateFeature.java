@@ -119,12 +119,7 @@ public abstract class TemplateFeature<T extends FeatureConfiguration> extends Fe
 			}
 		}
 
-		long count = heights.count();
-		if (count == 0) {
-			return false;
-		}
-
-		if (count >= 2 && heights.populationStandardDeviation() > 2.0) {
+		if (heights.populationStandardDeviation() > 2.0) {
 			return false;
 		}
 

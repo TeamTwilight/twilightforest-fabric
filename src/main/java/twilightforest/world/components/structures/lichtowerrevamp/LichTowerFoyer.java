@@ -1,5 +1,6 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
+import io.github.fabricators_of_create.porting_lib.world.PieceBeardifierModifier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -27,7 +28,7 @@ import twilightforest.world.components.structures.TwilightJigsawPiece;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class LichTowerFoyer extends TwilightJigsawPiece implements SpawnIndexProvider {
+public final class LichTowerFoyer extends TwilightJigsawPiece implements PieceBeardifierModifier, SpawnIndexProvider {
 	private final boolean putChest;
 	private final boolean chestSide;
 
@@ -120,10 +121,17 @@ public final class LichTowerFoyer extends TwilightJigsawPiece implements SpawnIn
 		}
 	}
 
+	@Override
+	public BoundingBox getBeardifierBox() {
+		return this.boundingBox;
+	}
+
+	@Override
 	public TerrainAdjustment getTerrainAdjustment() {
 		return TerrainAdjustment.BEARD_BOX;
 	}
 
+	@Override
 	public int getGroundLevelDelta() {
 		return 1;
 	}

@@ -48,6 +48,8 @@ public class FoundationFeature extends Feature<RuinedFoundationConfig> {
 		//okay!
 		generateFoundation(world, rand, pos, xWidth, zWidth, dimensions.wallHeights(), dimensions.placeFloorTest(), blocks.wallBlock(), blocks.wallTop(), blocks.decayedWall(), blocks.decayedTop(), blocks.floor());
 
+		//TODO: chimney?
+
 		int basementDepth = dimensions.basementHeight().sample(rand);
 		if (basementDepth > 0) {
 			BlockPos basementCeilingPos = pos.offset(1, -3, 1);

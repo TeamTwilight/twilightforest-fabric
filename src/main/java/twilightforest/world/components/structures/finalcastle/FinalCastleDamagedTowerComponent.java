@@ -31,7 +31,7 @@ public class FinalCastleDamagedTowerComponent extends FinalCastleMazeTower13Comp
 	}
 
 	public FinalCastleDamagedTowerComponent(StructurePieceType piece, RandomSource rand, int i, int x, int y, int z, Direction direction) {
-		super(piece, rand, i, x, y, z, TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);
+		super(piece, rand, i, x, y, z, TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);  //TODO: change rune color
 	}
 
 	@Override

@@ -31,8 +31,7 @@ public class MiningTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 		}
 
 		// check soil
-		// canSustainPlant check removed - NeoForge-only API, not available in Fabric 1.21.1
-		if (false) {
+		if (!TFBlocks.MINING_SAPLING.get().defaultBlockState().canSurvive(world, pos.below())) {
 			return false;
 		}
 

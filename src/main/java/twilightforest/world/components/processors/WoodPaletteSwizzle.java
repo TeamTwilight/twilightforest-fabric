@@ -29,8 +29,8 @@ public final class WoodPaletteSwizzle extends StructureProcessor {
 	}
 
 	@Override
-	public StructureTemplate.StructureBlockInfo processBlock(LevelReader worldIn, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo p_215194_3_, StructureTemplate.StructureBlockInfo blockInfo, StructurePlaceSettings settings) {
-		return this.replacementPalette.value().modifyBlockWithType(this.targetPalette.value(), blockInfo);
+	public @Nullable StructureTemplate.StructureBlockInfo processBlock(LevelReader level, BlockPos offset, BlockPos pos, StructureTemplate.StructureBlockInfo blockInfo, StructureTemplate.StructureBlockInfo relativeBlockInfo, StructurePlaceSettings settings) {
+		return this.replacementPalette.value().modifyBlockWithType(this.targetPalette.value(), relativeBlockInfo);
 	}
 
 	@Override

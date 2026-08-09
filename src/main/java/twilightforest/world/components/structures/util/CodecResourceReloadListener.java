@@ -6,12 +6,12 @@ import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.JsonOps;
+import io.github.fabricators_of_create.porting_lib.resources.events.AddReloadListenersEvent;
+import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
-import io.github.fabricators_of_create.porting_lib.resources.events.AddReloadListenersEvent;
 import twilightforest.TwilightForestMod;
 
 import java.util.ArrayList;
@@ -78,15 +78,15 @@ public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceR
 
 	protected abstract void forLocation(ResourceManager manager, ResourceLocation location, T element);
 
-	@Override
-	public ResourceLocation getFabricId() {
-		return TwilightForestMod.prefix(this.getName());
-	}
-
 	/**
 	 * Intentionally not subscribed, it is on the subclasses to opt into subscription
 	 */
 	public void registerListener(AddReloadListenersEvent event) {
 		event.addListener(this);
+	}
+
+	@Override
+	public ResourceLocation getFabricId() {
+		return TwilightForestMod.prefix(this.getName());
 	}
 }

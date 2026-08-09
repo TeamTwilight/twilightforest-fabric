@@ -22,7 +22,6 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
-import twilightforest.util.HugeMushroomType;
 import twilightforest.util.HugeMushroomUtil;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.StructureSpeleothemConfig;
@@ -126,6 +125,7 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 
 	private void decorateWall(WorldGenLevel world, BoundingBox sbb, RandomSource decoRNG, Rotation rotation) {
 		if (decoRNG.nextBoolean()) {
+			//FIXME: AtomicBlom: Don't do this, bring rotation all the way through.
 			decorateBracketMushrooms(world, sbb, decoRNG, rotation);
 		} else if (decoRNG.nextBoolean()) {
 			decorateStoneFormation(world, sbb, decoRNG, rotation);
@@ -206,26 +206,26 @@ public class TrollCaveConnectComponent extends TrollCaveMainComponent {
 	 */
 	private void makeSingleBracketMushroom(WorldGenLevel world, BoundingBox sbb, Rotation rotation, int z, int y, int width, int depth, BlockState mushBlock) {
 
-		this.fillBlocksRotated(world, sbb, size - depth, y, z - (width - 1), size - 2, y, z + (width - 1), HugeMushroomUtil.getState(HugeMushroomType.CENTER, mushBlock), rotation);
+		this.fillBlocksRotated(world, sbb, size - depth, y, z - (width - 1), size - 2, y, z + (width - 1), HugeMushroomUtil.getState(HugeMushroomUtil.HugeMushroomType.CENTER, mushBlock), rotation);
 
-		this.fillBlocksRotated(world, sbb, size - (depth + 1), y, z - (width - 1), size - (depth + 1), y, z + (width - 1), getMushroomState(mushBlock, HugeMushroomType.EAST), rotation);
+		this.fillBlocksRotated(world, sbb, size - (depth + 1), y, z - (width - 1), size - (depth + 1), y, z + (width - 1), getMushroomState(mushBlock, HugeMushroomUtil.HugeMushroomType.EAST), rotation);
 
-		final BlockState northMushroom = getMushroomState(mushBlock, HugeMushroomType.SOUTH);
+		final BlockState northMushroom = getMushroomState(mushBlock, HugeMushroomUtil.HugeMushroomType.SOUTH);
 		for (int d = 0; d < (depth - 1); d++) {
 			this.setBlockStateRotated(world, northMushroom, size - (2 + d), y, z - width, rotation, sbb);
 		}
-		final BlockState northWestMushroom = getMushroomState(mushBlock, HugeMushroomType.SOUTH_EAST);
+		final BlockState northWestMushroom = getMushroomState(mushBlock, HugeMushroomUtil.HugeMushroomType.SOUTH_EAST);
 		this.setBlockStateRotated(world, northWestMushroom, size - (depth + 1), y, z - width, rotation, sbb);
 
-		final BlockState southMushroom = getMushroomState(mushBlock, HugeMushroomType.NORTH);
+		final BlockState southMushroom = getMushroomState(mushBlock, HugeMushroomUtil.HugeMushroomType.NORTH);
 		for (int d = 0; d < (depth - 1); d++) {
 			this.setBlockStateRotated(world, southMushroom, size - (2 + d), y, z + width, rotation, sbb);
 		}
-		final BlockState southWestMushroom = getMushroomState(mushBlock, HugeMushroomType.NORTH_EAST);
+		final BlockState southWestMushroom = getMushroomState(mushBlock, HugeMushroomUtil.HugeMushroomType.NORTH_EAST);
 		this.setBlockStateRotated(world, southWestMushroom, size - (depth + 1), y, z + width, rotation, sbb);
 	}
 
-	private BlockState getMushroomState(BlockState mushroomBlockState, HugeMushroomType defaultRotation) {
+	private BlockState getMushroomState(BlockState mushroomBlockState, HugeMushroomUtil.HugeMushroomType defaultRotation) {
 		return HugeMushroomUtil.getState(defaultRotation, mushroomBlockState);
 	}
 

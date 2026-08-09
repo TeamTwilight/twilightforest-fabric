@@ -32,14 +32,13 @@ public final class BoxCuttingProcessor extends StructureProcessor {
 		this.cutouts = cutouts;
 	}
 
-	@Nullable
 	@Override
-	public StructureTemplate.StructureBlockInfo processBlock(LevelReader level, BlockPos origin, BlockPos centerBottom, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings) {
+	public @Nullable StructureTemplate.StructureBlockInfo processBlock(LevelReader level, BlockPos offset, BlockPos pos, StructureTemplate.StructureBlockInfo blockInfo, StructureTemplate.StructureBlockInfo relativeBlockInfo, StructurePlaceSettings settings) {
 		for (BoundingBox cutout : this.cutouts)
-			if (cutout.isInside(modifiedBlockInfo.pos()))
+			if (cutout.isInside(relativeBlockInfo.pos()))
 				return null;
 
-		return modifiedBlockInfo;
+		return relativeBlockInfo;
 	}
 
 	@Override
