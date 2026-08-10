@@ -39,6 +39,7 @@
     "PathfinderMobMixin",
     "PhantomSpawnerMixin",
     "PlayerMixin",
+    "ReloadableResourceManagerMixin",
     "ServerEntityMixin",
     "ServerLevelMixin",
     "SlimeBlockMixin",
