@@ -15,8 +15,6 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TFMain;
 import twilightforest.TFRegistries;
 import twilightforest.init.TFBiomes;
@@ -33,25 +31,28 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 public final class ChunkBlanketProcessors {
-	public static final DeferredRegister<ChunkBlanketType> CHUNK_BLANKETING_TYPES = DeferredRegister.create(TFRegistries.Keys.CHUNK_BLANKET_TYPE, TFMain.ID);
 	public static final Codec<ChunkBlanketType> TYPE_CODEC = Codec.lazyInitialized(TFRegistries.CHUNK_BLANKET_TYPES::byNameCodec);
 	public static final Codec<ChunkBlanketProcessor> DISPATCH_CODEC = TYPE_CODEC.dispatch("type", ChunkBlanketProcessor::getType, ChunkBlanketType::getCodec);
 
-	public static final DeferredHolder<ChunkBlanketType, ChunkBlanketType> CANOPY = registerType("canopy", CanopyBlanketProcessor.CODEC);
-	public static final DeferredHolder<ChunkBlanketType, ChunkBlanketType> GLACIER = registerType("glacier", GlacierBlanketProcessor.CODEC);
+	public static final ChunkBlanketType CANOPY = registerType("canopy", CanopyBlanketProcessor.CODEC);
+	public static final ChunkBlanketType GLACIER = registerType("glacier", GlacierBlanketProcessor.CODEC);
 
 	public static final ResourceKey<ChunkBlanketProcessor> DARK_FOREST_CANOPY = ResourceKey.create(TFRegistries.Keys.CHUNK_BLANKET_PROCESSORS, TFMain.prefix("dark_forest_canopy"));
 	public static final ResourceKey<ChunkBlanketProcessor> SNOWY_FOREST_GLACIER = ResourceKey.create(TFRegistries.Keys.CHUNK_BLANKET_PROCESSORS, TFMain.prefix("snowy_forest_glacier"));
 
-	public static DeferredHolder<ChunkBlanketType, ChunkBlanketType> registerType(String name, MapCodec<? extends ChunkBlanketProcessor> codec) {
-		return CHUNK_BLANKETING_TYPES.register(name, () -> () -> codec);
+	public static ChunkBlanketType registerType(String name, MapCodec<? extends ChunkBlanketProcessor> codec) {
+		return Registry.register(
+			TFRegistries.CHUNK_BLANKET_TYPES,
+			TFMain.prefix(name),
+			() -> codec
+		);
 	}
 
 	public static void bootstrap(BootstrapContext<ChunkBlanketProcessor> context) {
 		HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
 		HolderGetter<Structure> structures = context.lookup(Registries.STRUCTURE);
 
-		context.register(DARK_FOREST_CANOPY, new CanopyBlanketProcessor(HolderSet.direct(biomes.getOrThrow(TFBiomes.DARK_FOREST), biomes.getOrThrow(TFBiomes.DARK_FOREST_CENTER)), BlockStateProvider.simple(TFBlocks.HARDENED_DARK_LEAVES.value()), 14, HolderSet.direct(structures.getOrThrow(TFStructures.DARK_TOWER))));
+		context.register(DARK_FOREST_CANOPY, new CanopyBlanketProcessor(HolderSet.direct(biomes.getOrThrow(TFBiomes.DARK_FOREST), biomes.getOrThrow(TFBiomes.DARK_FOREST_CENTER)), BlockStateProvider.simple(TFBlocks.HARDENED_DARK_LEAVES), 14, HolderSet.direct(structures.getOrThrow(TFStructures.DARK_TOWER))));
 		context.register(SNOWY_FOREST_GLACIER, new GlacierBlanketProcessor(HolderSet.direct(biomes.getOrThrow(TFBiomes.GLACIER)), BlockStateProvider.simple(Blocks.PACKED_ICE), BlockStateProvider.simple(Blocks.ICE), 32));
 	}
 

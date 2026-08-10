@@ -53,7 +53,7 @@ accessible field net/minecraft/world/entity/ai/goal/GoalSelector availableGoals 
 accessible method net/minecraft/world/level/storage/loot/LootTable shuffleAndSplitItems (Lit/unimi/dsi/fastutil/objects/ObjectArrayList;ILnet/minecraft/util/RandomSource;)V
 
 # JigsawUtil
-accessible method net/minecraft/world/level/levelgen/structure/pools/SinglePoolElement sortBySelectionPriority(Ljava/util/List;)V
+accessible method net/minecraft/world/level/levelgen/structure/pools/SinglePoolElement sortBySelectionPriority (Ljava/util/List;)V
 
 # MazeMapItem (renders a dot instead of an arrow if the player's y level is too far)
 accessible field net/minecraft/world/level/saveddata/maps/MapItemSavedData decorations Ljava/util/Map;
@@ -65,18 +65,18 @@ accessible field net/minecraft/world/entity/Entity dimensions Lnet/minecraft/wor
 accessible field net/minecraft/client/multiplayer/ClientAdvancements progress Ljava/util/Map;
 
 # ProgressionWrappedStructure (allows us to use the generation point from the wrapped structure)
-accessible method net/minecraft/world/level/levelgen/structure/Structure findGenerationPoint(Lnet/minecraft/world/level/levelgen/structure/Structure$GenerationContext;)Ljava/util/Optional;
+accessible method net/minecraft/world/level/levelgen/structure/Structure findGenerationPoint (Lnet/minecraft/world/level/levelgen/structure/Structure$GenerationContext;)Ljava/util/Optional;
 
 # SpecialFlowerPotBlock (sets pot to empty without dropping an item if pot has contents)
-accessible method net/minecraft/world/level/block/FlowerPotBlock isEmpty()Z
+accessible method net/minecraft/world/level/block/FlowerPotBlock isEmpty ()Z
 
 # StructureTreeGrower (unfinalizes the class so I can extend it)
 extendable class net/minecraft/world/level/block/grower/TreeGrower
 
 # TFCavesCarver
 accessible field net/minecraft/world/level/levelgen/carver/CaveCarverConfiguration floorLevel Lnet/minecraft/util/valueproviders/FloatProvider;
-accessible method net/minecraft/world/level/levelgen/carver/WorldCarver isDebugEnabled(Lnet/minecraft/world/level/levelgen/carver/CarverConfiguration;)Z
-accessible method net/minecraft/world/level/levelgen/carver/WorldCarver getCarveState(Lnet/minecraft/world/level/levelgen/carver/CarvingContext;Lnet/minecraft/world/level/levelgen/carver/CarverConfiguration;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/levelgen/Aquifer;)Lnet/minecraft/world/level/block/state/BlockState;
+accessible method net/minecraft/world/level/levelgen/carver/WorldCarver isDebugEnabled (Lnet/minecraft/world/level/levelgen/carver/CarverConfiguration;)Z
+accessible method net/minecraft/world/level/levelgen/carver/WorldCarver getCarveState (Lnet/minecraft/world/level/levelgen/carver/CarvingContext;Lnet/minecraft/world/level/levelgen/carver/CarverConfiguration;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/levelgen/Aquifer;)Lnet/minecraft/world/level/block/state/BlockState;
 
 # TFClientEvents (fetches the biome seed for the aurora shader)
 accessible field net/minecraft/world/level/biome/BiomeManager biomeZoomSeed J
@@ -86,7 +86,7 @@ accessible field net/minecraft/client/gui/components/SplashRenderer splash Lnet/
 accessible field net/minecraft/client/gui/screens/TitleScreen splash Lnet/minecraft/client/gui/components/SplashRenderer;
 
 # TFMagicMapData (sets decorations dirty after being loaded from nbt)
-accessible method net/minecraft/world/level/saveddata/maps/MapItemSavedData setDecorationsDirty()V
+accessible method net/minecraft/world/level/saveddata/maps/MapItemSavedData setDecorationsDirty ()V
 
 # TFMazeMapData and TFMagicMapData (sets our map data to inherit the vanilla ones)
 accessible method net/minecraft/world/level/saveddata/maps/MapItemSavedData <init> (IIBZZZLnet/minecraft/resources/ResourceKey;)V
@@ -95,7 +95,7 @@ accessible field net/minecraft/world/level/saveddata/maps/MapItemSavedData frame
 accessible field net/minecraft/world/level/saveddata/maps/MapItemSavedData trackedDecorationCount I
 
 # TFOverlays (partially determines if the quest ram indicator should render below the crosshair, and allows the food bar to be rendered when riding hostile mounts)
-accessible method net/minecraft/client/gui/Gui canRenderCrosshairForSpectator(Lnet/minecraft/world/phys/HitResult;)Z
+accessible method net/minecraft/client/gui/Gui canRenderCrosshairForSpectator (Lnet/minecraft/world/phys/HitResult;)Z
 
 # TFSkyRenderer (allows for rendering the sky)
 accessible field net/minecraft/client/renderer/LevelRenderer skyRenderer Lnet/minecraft/client/renderer/SkyRenderer;
@@ -112,13 +112,13 @@ accessible field net/minecraft/world/level/block/entity/SignBlockEntity frontTex
 extendable class net/minecraft/world/level/levelgen/structure/StructureStart
 
 # TFTreeFeature (updates leaves when generating trees)
-accessible method net/minecraft/world/level/levelgen/feature/TreeFeature updateLeaves(Lnet/minecraft/world/level/LevelAccessor;Lnet/minecraft/world/level/levelgen/structure/BoundingBox;Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;)Lnet/minecraft/world/phys/shapes/DiscreteVoxelShape;
+accessible method net/minecraft/world/level/levelgen/feature/TreeFeature updateLeaves (Lnet/minecraft/world/level/LevelAccessor;Lnet/minecraft/world/level/levelgen/structure/BoundingBox;Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;)Lnet/minecraft/world/phys/shapes/DiscreteVoxelShape;
 
 # TargetedRotProcessor (value used in codec)
 accessible field net/minecraft/world/level/levelgen/structure/templatesystem/BlockRotProcessor integrity F
 
 # TreeDecoratorType registration
-accessible method net/minecraft/world/level/levelgen/feature/treedecorators/TreeDecoratorType <init>(Lcom/mojang/serialization/MapCodec;)V
+accessible method net/minecraft/world/level/levelgen/feature/treedecorators/TreeDecoratorType <init> (Lcom/mojang/serialization/MapCodec;)V
 
 # TreeRootsDecorator (allows FeaturePlacers methods to get the root state and position)
 accessible field net/minecraft/world/level/levelgen/feature/treedecorators/TreeDecorator$Context decorationSetter Ljava/util/function/BiConsumer;
@@ -127,46 +127,46 @@ accessible field net/minecraft/world/level/levelgen/feature/treedecorators/TreeD
 accessible field net/minecraft/world/level/levelgen/feature/trunkplacers/TrunkPlacer baseHeight I
 accessible field net/minecraft/world/level/levelgen/feature/trunkplacers/TrunkPlacer heightRandA I
 accessible field net/minecraft/world/level/levelgen/feature/trunkplacers/TrunkPlacer heightRandB I
-accessible method net/minecraft/world/level/levelgen/feature/trunkplacers/TrunkPlacerType <init>(Lcom/mojang/serialization/MapCodec;)V
+accessible method net/minecraft/world/level/levelgen/feature/trunkplacers/TrunkPlacerType <init> (Lcom/mojang/serialization/MapCodec;)V
 
 # TwilightForestMod (adds blocks for stripping and burning repsectively)
 accessible field net/minecraft/world/item/AxeItem STRIPPABLES Ljava/util/Map;
-accessible method net/minecraft/world/level/block/FireBlock setFlammable(Lnet/minecraft/world/level/block/Block;II)V
+accessible method net/minecraft/world/level/block/FireBlock setFlammable (Lnet/minecraft/world/level/block/Block;II)V
 
 # TravellersGearCommand (the alternative is to copy the method verbatim into a TF class, might as well reuse the vanilla method)
-accessible method net/minecraft/commands/arguments/ResourceKeyArgument resolveKey(Lcom/mojang/brigadier/context/CommandContext;Ljava/lang/String;Lnet/minecraft/resources/ResourceKey;Lcom/mojang/brigadier/exceptions/DynamicCommandExceptionType;)Lnet/minecraft/core/Holder$Reference;
+accessible method net/minecraft/commands/arguments/ResourceKeyArgument resolveKey (Lcom/mojang/brigadier/context/CommandContext;Ljava/lang/String;Lnet/minecraft/resources/ResourceKey;Lcom/mojang/brigadier/exceptions/DynamicCommandExceptionType;)Lnet/minecraft/core/Holder$Reference;
 
 # Ur-Ghast (properly adds lightning strikes to the world when a tantrum starts)
-accessible method net/minecraft/server/level/ServerLevel findLightningTargetAround(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/core/BlockPos;
+accessible method net/minecraft/server/level/ServerLevel findLightningTargetAround (Lnet/minecraft/core/BlockPos;)Lnet/minecraft/core/BlockPos;
 
 # WorldUtil (gets sea level for dimension)
-accessible method net/minecraft/server/level/ChunkMap generator()Lnet/minecraft/world/level/chunk/ChunkGenerator;
+accessible method net/minecraft/server/level/ChunkMap generator() Lnet/minecraft/world/level/chunk/ChunkGenerator;
 
 # MapLocatorCommand
-accessible method net/minecraft/server/commands/LocateCommand getHolders(Lnet/minecraft/commands/arguments/ResourceOrTagKeyArgument$Result;Lnet/minecraft/core/Registry;)Ljava/util/Optional;
+accessible method net/minecraft/server/commands/LocateCommand getHolders (Lnet/minecraft/commands/arguments/ResourceOrTagKeyArgument$Result;Lnet/minecraft/core/Registry;)Ljava/util/Optional;
 
 # NbtHasher
 accessible field net/minecraft/nbt/CompoundTag tags Ljava/util/Map;
 
 # Bosses such as the Naga override this for custom particles
-accessible method net/minecraft/world/entity/LivingEntity makePoofParticles()V
+accessible method net/minecraft/world/entity/LivingEntity makePoofParticles ()V
 
 # Needed for custom boss bar rendering logic in BaseTFBoss
 accessible field net/minecraft/client/gui/components/BossHealthOverlay OVERLAY_BACKGROUND_SPRITES [Lnet/minecraft/resources/Identifier;
 accessible field net/minecraft/client/gui/components/BossHealthOverlay OVERLAY_PROGRESS_SPRITES [Lnet/minecraft/resources/Identifier;
 accessible field net/minecraft/client/gui/components/BossHealthOverlay events Ljava/util/Map;
-accessible method net/minecraft/network/protocol/game/ClientboundBossEventPacket encodeProperties(ZZZ)I # encodeProperties
+accessible method net/minecraft/network/protocol/game/ClientboundBossEventPacket encodeProperties (ZZZ)I # encodeProperties
 accessible field net/minecraft/server/level/ServerBossEvent players Ljava/util/Set;
 accessible field net/minecraft/server/level/ServerBossEvent visible Z
 
 # TFBlocks
-accessible method net/minecraft/world/level/block/TransparentBlock <init>(Lnet/minecraft/world/level/block/state/BlockBehaviour$Properties;)V
+accessible method net/minecraft/world/level/block/TransparentBlock <init> (Lnet/minecraft/world/level/block/state/BlockBehaviour$Properties;)V
 
 # KnightStrongholdStructure
 accessible field net/minecraft/world/level/levelgen/structure/StructureStart cachedBoundingBox Lnet/minecraft/world/level/levelgen/structure/BoundingBox;
 
 # BiomeMaker
-accessible method net/minecraft/core/Holder$Reference bindKey(Lnet/minecraft/resources/ResourceKey;)V
+accessible method net/minecraft/core/Holder$Reference bindKey (Lnet/minecraft/resources/ResourceKey;)V
 
 accessible field net/minecraft/server/packs/resources/ReloadableResourceManager listeners Ljava/util/List;
 
@@ -175,13 +175,13 @@ accessible field net/minecraft/server/packs/resources/ReloadableResourceManager 
 
 # TowerRoom (For setting book items / setting spawner)
 accessible field net/minecraft/world/level/block/entity/ChiseledBookShelfBlockEntity items Lnet/minecraft/core/NonNullList;
-accessible method net/minecraft/world/level/BaseSpawner setNextSpawnData(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/SpawnData;)V
+accessible method net/minecraft/world/level/BaseSpawner setNextSpawnData (Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/SpawnData;)V
 accessible field net/minecraft/world/level/block/entity/BrewingStandBlockEntity fuel I
 
 # For CursedSpawnerLogic (extending BaseSpawner)
-accessible method net/minecraft/world/level/BaseSpawner delay(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)V
-accessible method net/minecraft/world/level/BaseSpawner getOrCreateNextSpawnData(Lnet/minecraft/world/level/Level;Lnet/minecraft/util/RandomSource;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/SpawnData;
-accessible method net/minecraft/world/level/BaseSpawner isNearPlayer(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)Z
+accessible method net/minecraft/world/level/BaseSpawner delay (Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)V
+accessible method net/minecraft/world/level/BaseSpawner getOrCreateNextSpawnData (Lnet/minecraft/world/level/Level;Lnet/minecraft/util/RandomSource;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/SpawnData;
+accessible method net/minecraft/world/level/BaseSpawner isNearPlayer (Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)Z
 accessible field net/minecraft/world/level/BaseSpawner displayEntity Lnet/minecraft/world/entity/Entity;
 accessible field net/minecraft/world/level/BaseSpawner spin D
 accessible field net/minecraft/world/level/BaseSpawner oSpin D
@@ -196,29 +196,28 @@ accessible field net/minecraft/world/item/crafting/ShapedRecipe result Lnet/mine
 accessible field net/minecraft/world/item/crafting/ShapelessRecipe result Lnet/minecraft/world/item/ItemStackTemplate;
 
 #BoxDensityFunction
-accessible method net/minecraft/world/level/levelgen/Beardifier getBeardContribution(IIII)D
-accessible method net/minecraft/world/level/levelgen/Beardifier getBuryContribution(DDD)D
+accessible method net/minecraft/world/level/levelgen/Beardifier getBeardContribution (IIII)D
+accessible method net/minecraft/world/level/levelgen/Beardifier getBuryContribution (DDD)D
 
 # Lich
 accessible field net/minecraft/world/entity/ai/goal/MeleeAttackGoal speedModifier D
 
 # CountTemplateCommand
-accessible method net/minecraft/client/renderer/item/ItemStackRenderState firstLayer()Lnet/minecraft/client/renderer/item/ItemStackRenderState$LayerRenderState;
+accessible method net/minecraft/client/renderer/item/ItemStackRenderState firstLayer ()Lnet/minecraft/client/renderer/item/ItemStackRenderState$LayerRenderState;
 
 accessible class net/minecraft/client/data/models/ModelProvider$ItemInfoCollector
 accessible class net/minecraft/client/data/models/ModelProvider$BlockStateGeneratorCollector
 accessible class net/minecraft/client/data/models/ModelProvider$SimpleModelCollector
-accessible method net/minecraft/client/data/models/ModelProvider$SimpleModelCollector <init>()V
+accessible method net/minecraft/client/data/models/ModelProvider$SimpleModelCollector <init> ()V
 
-accessible method net/minecraft/world/item/BlockItem updateBlockEntityComponents(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/item/ItemStack;)V
+accessible method net/minecraft/world/item/BlockItem updateBlockEntityComponents (Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/item/ItemStack;)V
 
-#accessible net/minecraft/client/renderer/entity/layers/HumanoidArmorLayer renderArmorPiece(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;)V
-accessible method net/minecraft/client/renderer/entity/layers/HumanoidArmorLayer getArmorModel(Lnet/minecraft/client/renderer/entity/state/HumanoidRenderState;Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/client/model/HumanoidModel;
+accessible method net/minecraft/client/renderer/entity/layers/HumanoidArmorLayer getArmorModel (Lnet/minecraft/client/renderer/entity/state/HumanoidRenderState;Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/client/model/HumanoidModel;
 
 # TFArrow (add the effects of the original arrow to target entity)
-accessible method net/minecraft/world/entity/projectile/arrow/AbstractArrow doPostHurtEffects(Lnet/minecraft/world/entity/LivingEntity;)V
-accessible method net/minecraft/world/entity/projectile/arrow/Arrow doPostHurtEffects(Lnet/minecraft/world/entity/LivingEntity;)V
-accessible method net/minecraft/world/entity/projectile/arrow/SpectralArrow doPostHurtEffects(Lnet/minecraft/world/entity/LivingEntity;)V
+accessible method net/minecraft/world/entity/projectile/arrow/AbstractArrow doPostHurtEffects (Lnet/minecraft/world/entity/LivingEntity;)V
+accessible method net/minecraft/world/entity/projectile/arrow/Arrow doPostHurtEffects (Lnet/minecraft/world/entity/LivingEntity;)V
+accessible method net/minecraft/world/entity/projectile/arrow/SpectralArrow doPostHurtEffects (Lnet/minecraft/world/entity/LivingEntity;)V
 
 accessible field net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity litTimeRemaining I
 accessible field net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity litTotalTime I
@@ -227,8 +226,8 @@ accessible field net/minecraft/world/level/block/entity/AbstractFurnaceBlockEnti
 accessible field net/minecraft/world/level/block/entity/AbstractFurnaceBlockEntity quickCheck Lnet/minecraft/world/item/crafting/RecipeManager$CachedCheck;
 
 accessible field net/minecraft/client/model/player/PlayerModel slim Z
-accessible method net/minecraft/server/level/ServerPlayer synchronizeSpecialItemUpdates(Lnet/minecraft/world/item/ItemStack;)V
-accessible method net/minecraft/client/renderer/entity/layers/HumanoidArmorLayer renderArmorPiece(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/renderer/entity/state/HumanoidRenderState;)V
+accessible method net/minecraft/server/level/ServerPlayer synchronizeSpecialItemUpdates (Lnet/minecraft/world/item/ItemStack;)V
+accessible method net/minecraft/client/renderer/entity/layers/HumanoidArmorLayer renderArmorPiece (Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/renderer/entity/state/HumanoidRenderState;)V
 
 accessible field net/minecraft/world/level/saveddata/maps/MapItemSavedData trackingPosition Z
 accessible field net/minecraft/world/level/saveddata/maps/MapItemSavedData unlimitedTracking Z
@@ -237,15 +236,18 @@ accessible field net/minecraft/world/level/saveddata/maps/MapItemSavedData unlim
 accessible field net/minecraft/world/level/block/entity/SkullBlockEntity owner Lnet/minecraft/world/item/component/ResolvableProfile;
 
 # ClientLevel (Used in MagicPaintingRenderer)
-accessible method net/minecraft/client/multiplayer/ClientLevel getSkyFlashTime()I
+accessible method net/minecraft/client/multiplayer/ClientLevel getSkyFlashTime ()I
 
 # TFMagicMapData & TFMazeMapData (avoids a VanillaCopy for a helper method)
-accessible method net/minecraft/world/level/saveddata/maps/MapItemSavedData getFrameKey(I)Ljava/lang/String;
+accessible method net/minecraft/world/level/saveddata/maps/MapItemSavedData getFrameKey (I)Ljava/lang/String;
 
 # TFBlockTags
 accessible method net/minecraft/tags/BlockTags create (Ljava/lang/String;)Lnet/minecraft/tags/TagKey;
 
 # TFItemTags
 accessible method net/minecraft/tags/ItemTags bind (Ljava/lang/String;)Lnet/minecraft/tags/TagKey;
+
+# Interface Injection
+inject-interface net/minecraft/core/HolderLookup$Provider twilightforest/fabric/extensions/IHolderLookupProviderExtension
 
 # TODO: Validate and fix this file later on in Fabric development

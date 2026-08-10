@@ -2,6 +2,7 @@ package twilightforest.init.custom;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
@@ -15,7 +16,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.item.Item;
-import net.neoforged.neoforge.common.Tags;
 import twilightforest.TFRegistries;
 import twilightforest.TFMain;
 import twilightforest.client.MagicPaintingAtlasInfo;
@@ -59,7 +59,7 @@ public class MagicPaintingVariants {
 			new Layer("lightning", null, new OpacityModifier(OpacityModifier.Type.LIGHTNING, 1.0F, false, 0.0F, 1.0F), true, true),
 			new Layer("frame", null, null, false, false)
 		));
-		HolderSet<Item> goldIngots = context.lookup(Registries.ITEM).getOrThrow(Tags.Items.INGOTS_GOLD);
+		HolderSet<Item> goldIngots = context.lookup(Registries.ITEM).getOrThrow(ConventionalItemTags.GOLD_INGOTS);
 		register(context, LUCID_LANDS, "Lucid Lands", "Androsa", 3, 3, MagicPaintingAtlasInfo.BACK_SPRITE_LOCATION, List.of(
 			new Layer("background", null, null, true, true),
 			new Layer("clouds", new Parallax(Parallax.Type.LINEAR_TIME, 0.00075F, 122, 48), null, true, true),

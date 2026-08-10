@@ -1,9 +1,8 @@
 package twilightforest.init.custom;
 
+import net.minecraft.core.Registry;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.MapItem;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TFMain;
 import twilightforest.TFRegistries;
 import twilightforest.client.overlay.display.ClockDisplay;
@@ -17,10 +16,16 @@ import java.util.Optional;
 
 public class ItemDisplays {
 
-	public static final DeferredRegister<ItemDisplayType> DISPLAYS = DeferredRegister.create(TFRegistries.Keys.ITEM_DISPLAY_TYPE, TFMain.ID);
+	public static final ItemDisplayType MAP = register("map", new ItemDisplayType(stack -> stack.getItem() instanceof MapItem, () -> new MapDisplay(), Optional.of(TFMain.prefix("textures/item/map_display.png"))));
+	public static final ItemDisplayType COMPASS = register("compass", new ItemDisplayType(stack -> stack.is(Items.COMPASS), () -> new CompassDisplay(), Optional.of(TFMain.prefix("textures/item/compass_display.png"))));
+	public static final ItemDisplayType CLOCK = register("clock", new ItemDisplayType(stack -> stack.is(Items.CLOCK), () -> new ClockDisplay(), Optional.of(TFMain.prefix("textures/item/clock_display.png"))));
+	public static final ItemDisplayType MOON_DIAL = register("moon_dial", new ItemDisplayType(stack -> stack.is(TFItems.MOON_DIAL), () -> new MoonDialDisplay(), Optional.of(TFMain.prefix("textures/item/moon_dial_display.png"))));
 
-	public static final DeferredHolder<ItemDisplayType, ItemDisplayType> MAP = DISPLAYS.register("map", () -> new ItemDisplayType(stack -> stack.getItem() instanceof MapItem, () -> new MapDisplay(), Optional.of(TFMain.prefix("textures/item/map_display.png"))));
-	public static final DeferredHolder<ItemDisplayType, ItemDisplayType> COMPASS = DISPLAYS.register("compass", () -> new ItemDisplayType(stack -> stack.is(Items.COMPASS), () -> new CompassDisplay(), Optional.of(TFMain.prefix("textures/item/compass_display.png"))));
-	public static final DeferredHolder<ItemDisplayType, ItemDisplayType> CLOCK = DISPLAYS.register("clock", () -> new ItemDisplayType(stack -> stack.is(Items.CLOCK), () -> new ClockDisplay(), Optional.of(TFMain.prefix("textures/item/clock_display.png"))));
-	public static final DeferredHolder<ItemDisplayType, ItemDisplayType> MOON_DIAL = DISPLAYS.register("moon_dial", () -> new ItemDisplayType(stack -> stack.is(TFItems.MOON_DIAL), () -> new MoonDialDisplay(), Optional.of(TFMain.prefix("textures/item/moon_dial_display.png"))));
+	private static ItemDisplayType register(String name, ItemDisplayType type) {
+		return Registry.register(
+			TFRegistries.ITEM_DISPLAY_TYPE,
+			TFMain.prefix(name),
+			type
+		);
+	}
 }

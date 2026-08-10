@@ -1,6 +1,8 @@
 package twilightforest.init;
 
 import net.minecraft.core.HolderGetter;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
@@ -19,8 +21,6 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStatePr
 import net.minecraft.world.level.levelgen.heightproviders.BiasedToBottomHeight;
 import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TFMain;
 import twilightforest.tags.TFBlockTags;
 import twilightforest.world.components.TFCavesCarver;
@@ -29,9 +29,8 @@ import java.util.List;
 
 //this was all put into 1 class because it seems like a waste to have it in 2
 public class TFCaveCarvers {
-	public static final DeferredRegister<WorldCarver<?>> CARVER_TYPES = DeferredRegister.create(Registries.CARVER, TFMain.ID);
 
-	public static final DeferredHolder<WorldCarver<?>, TFCavesCarver> TF_CAVES = CARVER_TYPES.register("tf_caves", () -> new TFCavesCarver(
+	public static final TFCavesCarver TF_CAVES = register("tf_caves", new TFCavesCarver(
 		CaveCarverConfiguration.CODEC,
 		false,
 		new NoiseProvider(
@@ -50,12 +49,12 @@ public class TFCaveCarvers {
 			)
 		)
 	));
-	public static final DeferredHolder<WorldCarver<?>, TFCavesCarver> HIGHLAND_CAVES = CARVER_TYPES.register("highland_caves", () -> new TFCavesCarver(
+	public static final TFCavesCarver HIGHLAND_CAVES = register("highland_caves", new TFCavesCarver(
 		CaveCarverConfiguration.CODEC,
 		true,
 		new WeightedStateProvider(
 			WeightedList.<BlockState>builder()
-				.add(TFBlocks.TROLLSTEINN.value().defaultBlockState(), 1)
+				.add(TFBlocks.TROLLSTEINN.defaultBlockState(), 1)
 				.add(Blocks.STONE.defaultBlockState(), 3)
 				.build()
 		)
@@ -68,9 +67,17 @@ public class TFCaveCarvers {
 		return ResourceKey.create(Registries.CONFIGURED_CARVER, TFMain.prefix(name));
 	}
 
+	private static <T extends WorldCarver<?>> T register(String name, T carver) {
+		return Registry.register(
+			BuiltInRegistries.CARVER,
+			TFMain.prefix(name),
+			carver
+		);
+	}
+
 	public static void bootstrap(BootstrapContext<ConfiguredWorldCarver<?>> context) {
 		HolderGetter<Block> blocks = context.lookup(Registries.BLOCK);
-		context.register(TFCAVES_CONFIGURED, TF_CAVES.value().configured(new CaveCarverConfiguration(
+		context.register(TFCAVES_CONFIGURED, TF_CAVES.configured(new CaveCarverConfiguration(
 			0.1F,
 			UniformHeight.of(VerticalAnchor.aboveBottom(16), VerticalAnchor.absolute(-8)),
 			ConstantFloat.of(0.6F),
@@ -81,7 +88,7 @@ public class TFCaveCarvers {
 			ConstantFloat.of(-0.7F)
 		)));
 
-		context.register(HIGHLANDCAVES_CONFIGURED, HIGHLAND_CAVES.value().configured(new CaveCarverConfiguration(
+		context.register(HIGHLANDCAVES_CONFIGURED, HIGHLAND_CAVES.configured(new CaveCarverConfiguration(
 			1f,
 			BiasedToBottomHeight.of(VerticalAnchor.absolute(8), VerticalAnchor.absolute(32), 16),
 			ConstantFloat.of(0.6f),

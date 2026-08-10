@@ -1,10 +1,10 @@
 package twilightforest;
 
 import com.mojang.serialization.MapCodec;
+import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
-import net.neoforged.neoforge.registries.RegistryBuilder;
 import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.entity.passive.DwarfRabbitVariant;
 import twilightforest.entity.passive.TinyBirdVariant;
@@ -27,12 +27,12 @@ import java.util.Locale;
 
 public class TFRegistries {
 
-	public static final Registry<BiomeLayerType> BIOME_LAYER_TYPE = new RegistryBuilder<>(Keys.BIOME_LAYER_TYPE).create();
-	public static final Registry<Enforcement> ENFORCEMENT = new RegistryBuilder<>(Keys.ENFORCEMENT).sync(true).create();
-	public static final Registry<ChunkBlanketType> CHUNK_BLANKET_TYPES = new RegistryBuilder<>(Keys.CHUNK_BLANKET_TYPE).create();
-	public static final Registry<TemplateMarkerHandlerType> TEMPLATE_MARKER_HANDLER_TYPES = new RegistryBuilder<>(Keys.TEMPLATE_MARKER_HANDLER_TYPE).create();
-	public static final Registry<ItemDisplayType> ITEM_DISPLAY_TYPE = new RegistryBuilder<>(Keys.ITEM_DISPLAY_TYPE).sync(true).create();
-	public static final Registry<MapCodec<? extends TravellersModifier>> TRAVELLERS_MODIFIER_TYPE = new RegistryBuilder<>(Keys.TRAVELLERS_MODIFIER_TYPE).sync(true).create();
+	public static final Registry<BiomeLayerType> BIOME_LAYER_TYPE = FabricRegistryBuilder.create(Keys.BIOME_LAYER_TYPE).buildAndRegister();
+	public static final Registry<Enforcement> ENFORCEMENT = FabricRegistryBuilder.create(Keys.ENFORCEMENT).buildAndRegister(); // Should be synced
+	public static final Registry<ChunkBlanketType> CHUNK_BLANKET_TYPES = FabricRegistryBuilder.create(Keys.CHUNK_BLANKET_TYPE).buildAndRegister();
+	public static final Registry<TemplateMarkerHandlerType> TEMPLATE_MARKER_HANDLER_TYPES = FabricRegistryBuilder.create(Keys.TEMPLATE_MARKER_HANDLER_TYPE).buildAndRegister();
+	public static final Registry<ItemDisplayType> ITEM_DISPLAY_TYPE = FabricRegistryBuilder.create(Keys.ITEM_DISPLAY_TYPE).buildAndRegister(); // Should be synced
+	public static final Registry<MapCodec<? extends TravellersModifier>> TRAVELLERS_MODIFIER_TYPE = FabricRegistryBuilder.create(Keys.TRAVELLERS_MODIFIER_TYPE).buildAndRegister(); // Should be synced
 
 	public static final class Keys {
 		public static final String REGISTRY_NAMESPACE = "twilight";
