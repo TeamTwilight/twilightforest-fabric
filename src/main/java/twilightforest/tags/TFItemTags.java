@@ -110,7 +110,7 @@ public class TFItemTags {
 	public static final TagKey<Item> RANDOMIUM_BLACKLIST = create("randomium", "blacklist");
 
 	private static TagKey<Item> create(String tagName) {
-		return ItemTags.create(TFMain.prefix(tagName));
+		return ItemTags.bind(TFMain.prefix(tagName));
 	}
 
 	public static TagKey<Item> makeCommonTag(String tagName) {
@@ -118,6 +118,6 @@ public class TFItemTags {
 	}
 
 	private static TagKey<Item> create(String modid, String tagName) {
-		return ItemTags.create(Identifier.fromNamespaceAndPath(modid, tagName));
+		return ItemTags.bind(Identifier.fromNamespaceAndPath(modid, tagName));
 	}
 }
