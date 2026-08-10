@@ -178,9 +178,11 @@ public abstract class TFArmorRenderer implements IClientItemExtensions, ArmorRen
 	}
 
 	public static final class ResourceReloadListener implements IdentifiableResourceReloadListener {
+		public static final ResourceReloadListener INSTANCE = new ResourceReloadListener();
+
 		@Override
 		public ResourceLocation getFabricId() {
-			return TwilightForestMod.prefix("armor_renderer");
+			return TwilightForestMod.prefix(this.getName());
 		}
 
 		@Override

@@ -35,6 +35,7 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -656,8 +657,9 @@ public class TFClientSetup implements ClientModInitializer {
 	}
 
 	private void registerReloadListeners() {
+		ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(JappaPackReloadListener.INSTANCE);
 		ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(TextureGeneratorReloadListener.INSTANCE);
-		ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new TFArmorRenderer.ResourceReloadListener());
+		ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(TFArmorRenderer.ResourceReloadListener.INSTANCE);
 	}
 
 	private void registerClientExtensions() {
