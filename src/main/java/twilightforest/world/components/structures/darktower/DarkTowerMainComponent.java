@@ -29,7 +29,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.tags.TFBlockTags;
 import twilightforest.init.*;
 import twilightforest.loot.TFLootTables;
@@ -60,7 +60,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 		if (this.boundingBox.maxY() > 245) {
 			int amtToLower = (((this.boundingBox.maxY() - 245) / 5) * 5) + 5;
 
-			TwilightForestMod.LOGGER.info("Lowering Dark Tower max height by {} to be within world bounds", amtToLower);
+			TFMain.LOGGER.info("Lowering Dark Tower max height by {} to be within world bounds", amtToLower);
 
 			this.height -= amtToLower;
 			this.boundingBox = this.boundingBox.moved(0, -amtToLower, 0);
@@ -167,7 +167,7 @@ public class DarkTowerMainComponent extends DarkTowerWingComponent {
 
 			for (int i = 0; i < 4; i++) {
 				if (possibleKeyTowers.isEmpty()) {
-					TwilightForestMod.LOGGER.warn("Dark forest tower could not find four small towers to place keys in.");
+					TFMain.LOGGER.warn("Dark forest tower could not find four small towers to place keys in.");
 					break;
 				}
 

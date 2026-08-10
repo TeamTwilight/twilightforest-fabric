@@ -42,7 +42,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.entity.boss.AlphaYeti;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFEntities;
@@ -159,14 +159,14 @@ public class FallingIce extends Entity {
 								if (this.blockData != null && this.blockState.hasBlockEntity()) {
 									BlockEntity blockentity = this.level().getBlockEntity(blockpos);
 									if (blockentity != null) {
-										try(ProblemReporter.ScopedCollector reporter = new ProblemReporter.ScopedCollector(blockentity.problemPath(), TwilightForestMod.LOGGER)) {
+										try(ProblemReporter.ScopedCollector reporter = new ProblemReporter.ScopedCollector(blockentity.problemPath(), TFMain.LOGGER)) {
 											TagValueOutput output = TagValueOutput.createWithContext(reporter, this.level().registryAccess());
 											blockentity.saveWithoutMetadata(this.level().registryAccess());
 											CompoundTag compoundtag = output.buildResult();
 											this.blockData.forEach((name, tag) -> compoundtag.put(name, tag.copy()));
 											blockentity.loadWithComponents(TagValueInput.create(reporter, this.level().registryAccess(), compoundtag));
 										} catch (Exception exception) {
-											TwilightForestMod.LOGGER.error("Failed to load block entity from falling block", exception);
+											TFMain.LOGGER.error("Failed to load block entity from falling block", exception);
 										}
 
 										blockentity.setChanged();

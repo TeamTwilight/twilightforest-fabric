@@ -8,11 +8,11 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.world.components.processors.CobbleVariants;
 
 public class StoneCircleFeature extends TemplateFeature<NoneFeatureConfiguration> {
-	private static final Identifier STONE_CIRCLE = TwilightForestMod.prefix("feature/ruins/stone_circle");
+	private static final Identifier STONE_CIRCLE = TFMain.prefix("feature/ruins/stone_circle");
 
 	public StoneCircleFeature(Codec<NoneFeatureConfiguration> config) {
 		super(config);

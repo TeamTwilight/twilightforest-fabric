@@ -17,7 +17,7 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.common.Tags;
 import twilightforest.TFRegistries;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.MagicPaintingAtlasInfo;
 import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.entity.MagicPaintingVariant.Layer;
@@ -37,11 +37,11 @@ public class MagicPaintingVariants {
 	public static final Codec<Holder<MagicPaintingVariant>> CODEC = RegistryFileCodec.create(TFRegistries.Keys.MAGIC_PAINTINGS, MagicPaintingVariant.CODEC, false);
 	public static final StreamCodec<? super RegistryFriendlyByteBuf, Holder<MagicPaintingVariant>> STREAM_CODEC = ByteBufCodecs.holderRegistry(TFRegistries.Keys.MAGIC_PAINTINGS);
 
-	public static final ResourceKey<MagicPaintingVariant> DARKNESS = makeKey(TwilightForestMod.prefix("darkness"));
-	public static final ResourceKey<MagicPaintingVariant> LUCID_LANDS = makeKey(TwilightForestMod.prefix("lucid_lands"));
-	public static final ResourceKey<MagicPaintingVariant> THE_HOSTILE_PARADISE = makeKey(TwilightForestMod.prefix("the_hostile_paradise"));
-	public static final ResourceKey<MagicPaintingVariant> CASTAWAY_PARADISE = makeKey(TwilightForestMod.prefix("castaway_paradise"));
-	public static final ResourceKey<MagicPaintingVariant> MUSIC_IN_THE_MIRE = makeKey(TwilightForestMod.prefix("music_in_the_mire"));
+	public static final ResourceKey<MagicPaintingVariant> DARKNESS = makeKey(TFMain.prefix("darkness"));
+	public static final ResourceKey<MagicPaintingVariant> LUCID_LANDS = makeKey(TFMain.prefix("lucid_lands"));
+	public static final ResourceKey<MagicPaintingVariant> THE_HOSTILE_PARADISE = makeKey(TFMain.prefix("the_hostile_paradise"));
+	public static final ResourceKey<MagicPaintingVariant> CASTAWAY_PARADISE = makeKey(TFMain.prefix("castaway_paradise"));
+	public static final ResourceKey<MagicPaintingVariant> MUSIC_IN_THE_MIRE = makeKey(TFMain.prefix("music_in_the_mire"));
 
 	public static final ResourceKey<MagicPaintingVariant> DEFAULT = MagicPaintingVariants.LUCID_LANDS; // FIXME Switch to a smaller one once available or create a blank 1x1 that's not accessible by normal means
 

@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.HydraMortarModel;
 import twilightforest.client.state.entity.HydraMortarRenderState;
@@ -18,7 +18,7 @@ import twilightforest.entity.boss.HydraMortar;
 
 public class HydraMortarRenderer extends EntityRenderer<HydraMortar, HydraMortarRenderState> {
 
-	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("hydramortar.png");
+	private static final Identifier TEXTURE = TFMain.getModelTexture("hydramortar.png");
 	private final HydraMortarModel mortarModel;
 
 	public HydraMortarRenderer(EntityRendererProvider.Context context) {

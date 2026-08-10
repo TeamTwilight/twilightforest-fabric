@@ -26,7 +26,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.entity.projectile.NatureBolt;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
@@ -142,7 +142,7 @@ public class SkeletonDruid extends AbstractSkeleton {
 
 	// Below: VANILLACOPY Zombie Baby Code
 
-	private static final AttributeModifier SPEED_MODIFIER_BABY = new AttributeModifier(TwilightForestMod.prefix("baby_speed_boost"), 0.5D, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
+	private static final AttributeModifier SPEED_MODIFIER_BABY = new AttributeModifier(TFMain.prefix("baby_speed_boost"), 0.5D, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
 	private static final EntityDataAccessor<Boolean> DATA_BABY_ID = SynchedEntityData.defineId(SkeletonDruid.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDimensions BABY_DIMENSIONS = TFEntities.SKELETON_DRUID.get().getDimensions().scale(0.5F).withEyeHeight(0.93F);
 

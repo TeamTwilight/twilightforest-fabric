@@ -9,7 +9,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.neoforged.neoforge.client.CustomEnvironmentEffectsRendererManager;
 import net.neoforged.neoforge.client.CustomWeatherEffectRenderer;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.TwilightForestRenderInfo;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.init.TFDimension;
@@ -20,7 +20,7 @@ import java.util.Optional;
 
 public record StructureProtectionPacket(Optional<List<Pair<BoundingBox, Boolean>>> boxes) implements CustomPacketPayload {
 
-	public static final Type<StructureProtectionPacket> TYPE = new Type<>(TwilightForestMod.prefix("change_protection_renderer"));
+	public static final Type<StructureProtectionPacket> TYPE = new Type<>(TFMain.prefix("change_protection_renderer"));
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, StructureProtectionPacket> STREAM_CODEC =
 		StreamCodec.composite(

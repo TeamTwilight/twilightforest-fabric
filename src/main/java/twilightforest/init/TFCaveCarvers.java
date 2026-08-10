@@ -21,7 +21,7 @@ import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.tags.TFBlockTags;
 import twilightforest.world.components.TFCavesCarver;
 
@@ -29,7 +29,7 @@ import java.util.List;
 
 //this was all put into 1 class because it seems like a waste to have it in 2
 public class TFCaveCarvers {
-	public static final DeferredRegister<WorldCarver<?>> CARVER_TYPES = DeferredRegister.create(Registries.CARVER, TwilightForestMod.ID);
+	public static final DeferredRegister<WorldCarver<?>> CARVER_TYPES = DeferredRegister.create(Registries.CARVER, TFMain.ID);
 
 	public static final DeferredHolder<WorldCarver<?>, TFCavesCarver> TF_CAVES = CARVER_TYPES.register("tf_caves", () -> new TFCavesCarver(
 		CaveCarverConfiguration.CODEC,
@@ -65,7 +65,7 @@ public class TFCaveCarvers {
 	public static final ResourceKey<ConfiguredWorldCarver<?>> HIGHLANDCAVES_CONFIGURED = registerKey("highland_caves");
 
 	private static ResourceKey<ConfiguredWorldCarver<?>> registerKey(String name) {
-		return ResourceKey.create(Registries.CONFIGURED_CARVER, TwilightForestMod.prefix(name));
+		return ResourceKey.create(Registries.CONFIGURED_CARVER, TFMain.prefix(name));
 	}
 
 	public static void bootstrap(BootstrapContext<ConfiguredWorldCarver<?>> context) {

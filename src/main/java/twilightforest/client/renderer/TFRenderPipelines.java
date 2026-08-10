@@ -10,7 +10,7 @@ import com.mojang.blaze3d.platform.SourceFactor;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.renderer.RenderPipelines;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 
 import java.util.Optional;
 
@@ -19,10 +19,10 @@ public class TFRenderPipelines {
 	private static final BlendFunction SHADOW = new BlendFunction(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
 
 	public static final RenderPipeline RED_THREAD = RenderPipeline.builder(RenderPipelines.MATRICES_FOG_SNIPPET)
-		.withLocation(TwilightForestMod.prefix("core/red_thread/red_thread"))
+		.withLocation(TFMain.prefix("core/red_thread/red_thread"))
 		.withSampler("Sampler0")
-		.withVertexShader(TwilightForestMod.prefix("core/red_thread/red_thread"))
-		.withFragmentShader(TwilightForestMod.prefix("core/red_thread/red_thread"))
+		.withVertexShader(TFMain.prefix("core/red_thread/red_thread"))
+		.withFragmentShader(TFMain.prefix("core/red_thread/red_thread"))
 		.withVertexFormat(DefaultVertexFormat.BLOCK, VertexFormat.Mode.QUADS)
 		.withCull(true)
 		.withDepthStencilState(Optional.of(new DepthStencilState(CompareOp.ALWAYS_PASS, false)))

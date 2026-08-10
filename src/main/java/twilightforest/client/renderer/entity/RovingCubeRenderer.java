@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.CubeOfAnnihilationModel;
 import twilightforest.client.state.entity.CubeOfAnnihilationRenderState;
@@ -17,7 +17,7 @@ import twilightforest.entity.RovingCube;
 
 public class RovingCubeRenderer extends EntityRenderer<RovingCube, CubeOfAnnihilationRenderState> {
 
-	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("cubeofannihilation.png");
+	private static final Identifier TEXTURE = TFMain.getModelTexture("cubeofannihilation.png");
 	private final CubeOfAnnihilationModel model;
 
 	public RovingCubeRenderer(EntityRendererProvider.Context context) {

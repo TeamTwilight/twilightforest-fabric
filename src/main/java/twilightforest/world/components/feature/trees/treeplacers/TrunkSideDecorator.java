@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.TFFeatureModifiers;
 
 public class TrunkSideDecorator extends TreeDecorator {
@@ -39,7 +39,7 @@ public class TrunkSideDecorator extends TreeDecorator {
 		int blockCount = context.logs().size();
 
 		if (blockCount == 0) {
-			TwilightForestMod.LOGGER.error("[TrunkSideDecorator] Trunk Blocks were empty! Why?");
+			TFMain.LOGGER.error("[TrunkSideDecorator] Trunk Blocks were empty! Why?");
 			return;
 		}
 

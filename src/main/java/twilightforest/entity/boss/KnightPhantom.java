@@ -52,7 +52,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.entity.ai.control.NoClipMoveControl;
 import twilightforest.entity.ai.goal.PhantomAttackStartGoal;
 import twilightforest.entity.ai.goal.PhantomThrowWeaponGoal;
@@ -76,8 +76,8 @@ public class KnightPhantom extends BaseTFBoss {
 
 	private static final EntityDataAccessor<Boolean> FLAG_CHARGING = SynchedEntityData.defineId(KnightPhantom.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Boolean> IT_IS_OVER = SynchedEntityData.defineId(KnightPhantom.class, EntityDataSerializers.BOOLEAN);
-	private static final AttributeModifier CHARGING_MODIFIER = new AttributeModifier(TwilightForestMod.prefix("charging_attack_boost"), 7, AttributeModifier.Operation.ADD_VALUE);
-	private static final AttributeModifier NON_CHARGING_ARMOR_MODIFIER = new AttributeModifier(TwilightForestMod.prefix("inactive_armor_boost"), 4.0D, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+	private static final AttributeModifier CHARGING_MODIFIER = new AttributeModifier(TFMain.prefix("charging_attack_boost"), 7, AttributeModifier.Operation.ADD_VALUE);
+	private static final AttributeModifier NON_CHARGING_ARMOR_MODIFIER = new AttributeModifier(TFMain.prefix("inactive_armor_boost"), 4.0D, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 
 
 	private int number;

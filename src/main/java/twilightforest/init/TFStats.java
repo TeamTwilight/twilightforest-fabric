@@ -7,14 +7,14 @@ import net.minecraft.stats.StatFormatter;
 import net.minecraft.stats.Stats;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TFStats {
 
-	public static final DeferredRegister<Identifier> STATS = DeferredRegister.create(Registries.CUSTOM_STAT, TwilightForestMod.ID);
+	public static final DeferredRegister<Identifier> STATS = DeferredRegister.create(Registries.CUSTOM_STAT, TFMain.ID);
 	private static final List<Runnable> STAT_SETUP = new ArrayList<>();
 
 	public static final DeferredHolder<Identifier, Identifier> BUGS_SQUISHED = makeTFStat("bugs_squished");
@@ -29,7 +29,7 @@ public class TFStats {
 	public static final DeferredHolder<Identifier, Identifier> TF_SHIELDS_BROKEN = makeTFStat("tf_shields_broken");
 
 	private static DeferredHolder<Identifier, Identifier> makeTFStat(String key) {
-		Identifier identifier = TwilightForestMod.prefix(key);
+		Identifier identifier = TFMain.prefix(key);
 		STAT_SETUP.add(() -> Stats.CUSTOM.get(identifier, StatFormatter.DEFAULT));
 		return STATS.register(key, () -> identifier);
 	}

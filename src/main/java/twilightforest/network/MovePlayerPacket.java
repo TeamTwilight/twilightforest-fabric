@@ -5,11 +5,11 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 
 public record MovePlayerPacket(double motionX, double motionY, double motionZ) implements CustomPacketPayload {
 
-	public static final Type<MovePlayerPacket> TYPE = new Type<>(TwilightForestMod.prefix("move_player"));
+	public static final Type<MovePlayerPacket> TYPE = new Type<>(TFMain.prefix("move_player"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, MovePlayerPacket> STREAM_CODEC = CustomPacketPayload.codec(MovePlayerPacket::write, MovePlayerPacket::new);
 
 	public MovePlayerPacket(FriendlyByteBuf buf) {

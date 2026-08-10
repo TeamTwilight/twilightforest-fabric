@@ -9,7 +9,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import twilightforest.init.TFStats;
 
-import static twilightforest.TwilightForestMod.prefix;
+import static twilightforest.TFMain.prefix;
 
 public class Experiment115Item extends BlockItem {
 	public static final Identifier THINK = prefix("think");

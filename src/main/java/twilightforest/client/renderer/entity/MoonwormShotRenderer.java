@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Unit;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.MoonwormModel;
 import twilightforest.client.state.block.MoonwormRenderState;
@@ -18,7 +18,7 @@ import twilightforest.entity.projectile.MoonwormShot;
 
 public class MoonwormShotRenderer extends EntityRenderer<MoonwormShot, MoonwormShotRenderState> {
 
-	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("moonworm.png");
+	private static final Identifier TEXTURE = TFMain.getModelTexture("moonworm.png");
 	private final MoonwormModel model;
 	private final MoonwormRenderState state = new MoonwormRenderState();
 

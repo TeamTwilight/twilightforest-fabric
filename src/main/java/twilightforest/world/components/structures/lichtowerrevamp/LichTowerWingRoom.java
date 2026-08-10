@@ -41,7 +41,7 @@ import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import tamaized.beanification.Autowired;
 import twilightforest.block.ChiseledCanopyShelfBlock;
 import twilightforest.block.LightableBlock;
@@ -276,7 +276,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 
 			Direction front = connection.orientation().front();
 			if (front != Direction.UP) {
-				TwilightForestMod.LOGGER.error("Jigsaw {} was facing {} inside of {}", connection.name(), front, this.templateName);
+				TFMain.LOGGER.error("Jigsaw {} was facing {} inside of {}", connection.name(), front, this.templateName);
 			}
 
 			if (this.roofFallback >= 0) {
@@ -547,7 +547,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 				if (!blockState.isAir()) {
 					level.setBlock(pos, blockState, Block.UPDATE_CLIENTS);
 				} else if (!FMLLoader.getCurrent().isProduction()) {
-					TwilightForestMod.LOGGER.warn("Variation label {} ({}) obtained {} in {}", parameters[0], parameters, blockState, this.templateName);
+					TFMain.LOGGER.warn("Variation label {} ({}) obtained {} in {}", parameters[0], parameters, blockState, this.templateName);
 				}
 			}
 		}

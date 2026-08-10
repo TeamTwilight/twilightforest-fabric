@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.LichModel;
 import twilightforest.client.renderer.TFRenderTypes;
@@ -21,13 +21,13 @@ import twilightforest.entity.boss.Lich;
 
 public class LichRenderer extends HumanoidMobRenderer<Lich, LichRenderState, LichModel> {
 
-	public static final Identifier TEXTURE = TwilightForestMod.getModelTexture("twilightlich64.png");
+	public static final Identifier TEXTURE = TFMain.getModelTexture("twilightlich64.png");
 
 	public LichRenderer(EntityRendererProvider.Context context) {
 		super(context, new LichModel(context.bakeLayer(TFModelLayers.LICH)), 0.6F);
 		this.addLayer(new ShieldLayer<>(this));
 		this.addLayer(new EyesLayer<>(this) {
-			private static final RenderType EYES = RenderTypes.eyes(TwilightForestMod.getModelTexture("twilightlich64_eyes.png"));
+			private static final RenderType EYES = RenderTypes.eyes(TFMain.getModelTexture("twilightlich64_eyes.png"));
 
 			@Override
 			public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, LichRenderState state, float yRot, float xRot) {

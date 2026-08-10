@@ -24,7 +24,7 @@ import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.config.TFConfig;
 import twilightforest.tags.TFItemTags;
 import twilightforest.init.TFBlocks;
@@ -118,7 +118,7 @@ public class UncraftingMenu extends RecipeBookMenu<RecipeInput, Recipe<RecipeInp
 				joiner.add("[index " + slot.index + ": " + slot.getClass().getName() + " (container slot: " + slot.getContainerSlot() + ")]");
 			}
 
-			TwilightForestMod.LOGGER.info(joiner.toString());
+			TFMain.LOGGER.info(joiner.toString());
 		}
 	}
 

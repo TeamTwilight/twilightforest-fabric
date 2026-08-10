@@ -12,13 +12,13 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import org.jspecify.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.renderer.entity.KnightPhantomRenderer;
 import twilightforest.client.state.entity.KnightPhantomRenderState;
 
 public class KnightPhantomModel extends HumanoidModel<KnightPhantomRenderState> implements TrophyBlockModel {
 
-	private static final Identifier PHANTOM_ARMOR_TEXTURE = TwilightForestMod.prefix("textures/models/armor/phantom_layer_1.png");
+	private static final Identifier PHANTOM_ARMOR_TEXTURE = TFMain.prefix("textures/models/armor/phantom_layer_1.png");
 
 	@Nullable
 	private ModelPart helmet;

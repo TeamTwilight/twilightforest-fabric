@@ -18,7 +18,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import tamaized.beanification.Autowired;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.RotationUtil;
@@ -28,7 +28,7 @@ import twilightforest.world.components.structures.util.StructureTemplateDefiniti
 
 public class FinalCastleBellTower21Component extends FinalCastleMazeTower13Component {
 
-	public static final Identifier BELL_TOWER_TEMP_POOL = TwilightForestMod.prefix("final_castle/temp/bell_tower");
+	public static final Identifier BELL_TOWER_TEMP_POOL = TFMain.prefix("final_castle/temp/bell_tower");
 
 	private static final int FLOORS = 8;
 

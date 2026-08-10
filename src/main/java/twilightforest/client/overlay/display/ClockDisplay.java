@@ -8,7 +8,7 @@ import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.config.TFConfig;
 
 import java.time.LocalTime;
@@ -55,7 +55,7 @@ public class ClockDisplay implements ItemDisplay {
 			int yRow = k / 2 % 2;
 			float xMin = xRow * 8;
 			float yMin = yRow * 8;
-			graphics.blit(TwilightForestMod.getGuiTexture("time.png"), (widestWidgetWidth / 2 - 5) - minecraft.font.width(formattedcharsequence) / 2, 0, xMin, yMin, 8, 8, 16, 16);
+			graphics.blit(TFMain.getGuiTexture("time.png"), (widestWidgetWidth / 2 - 5) - minecraft.font.width(formattedcharsequence) / 2, 0, xMin, yMin, 8, 8, 16, 16);
 		}
 		graphics.drawString(minecraft.font, formattedcharsequence, Math.max(0, (widestWidgetWidth / 2 + 5) - minecraft.font.width(formattedcharsequence) / 2), 0, 0xFFFFFF);
 	}

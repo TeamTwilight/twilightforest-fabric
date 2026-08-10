@@ -7,14 +7,14 @@ import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.IceCrystalModel;
 import twilightforest.entity.monster.IceCrystal;
 
 public class IceCrystalRenderer extends MobRenderer<IceCrystal, LivingEntityRenderState, IceCrystalModel> {
 
-	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("icecrystal.png");
+	private static final Identifier TEXTURE = TFMain.getModelTexture("icecrystal.png");
 
 	public IceCrystalRenderer(EntityRendererProvider.Context context) {
 		super(context, new IceCrystalModel(context.bakeLayer(TFModelLayers.ICE_CRYSTAL)), 0.25F);

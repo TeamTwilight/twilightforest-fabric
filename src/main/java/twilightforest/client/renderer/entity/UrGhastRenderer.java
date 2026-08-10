@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.UrGhastModel;
 import twilightforest.client.state.entity.TFGhastRenderState;
@@ -14,9 +14,9 @@ import twilightforest.entity.boss.UrGhast;
 
 public class UrGhastRenderer extends MobRenderer<UrGhast, TFGhastRenderState, UrGhastModel> {
 
-	public static final Identifier TEXTURE = TwilightForestMod.getModelTexture("towerboss.png");
-	public static final Identifier LOOKING_TEXTURE = TwilightForestMod.getModelTexture("towerboss_openeyes.png");
-	public static final Identifier ATTACKING_TEXTURE = TwilightForestMod.getModelTexture("towerboss_fire.png");
+	public static final Identifier TEXTURE = TFMain.getModelTexture("towerboss.png");
+	public static final Identifier LOOKING_TEXTURE = TFMain.getModelTexture("towerboss_openeyes.png");
+	public static final Identifier ATTACKING_TEXTURE = TFMain.getModelTexture("towerboss_fire.png");
 
 	public UrGhastRenderer(EntityRendererProvider.Context context) {
 		super(context, new UrGhastModel(context.bakeLayer(TFModelLayers.UR_GHAST)), 8.0F);

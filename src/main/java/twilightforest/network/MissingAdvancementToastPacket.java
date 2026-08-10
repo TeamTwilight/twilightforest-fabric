@@ -8,12 +8,12 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.MissingAdvancementToast;
 
 public record MissingAdvancementToastPacket(Component title, ItemStack icon) implements CustomPacketPayload {
 
-	public static final Type<MissingAdvancementToastPacket> TYPE = new Type<>(TwilightForestMod.prefix("missing_advancement_toast"));
+	public static final Type<MissingAdvancementToastPacket> TYPE = new Type<>(TFMain.prefix("missing_advancement_toast"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, MissingAdvancementToastPacket> STREAM_CODEC = StreamCodec.composite(
 		ComponentSerialization.STREAM_CODEC, MissingAdvancementToastPacket::title,
 		ItemStack.STREAM_CODEC, MissingAdvancementToastPacket::icon,

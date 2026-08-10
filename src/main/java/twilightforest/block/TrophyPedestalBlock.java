@@ -28,7 +28,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
@@ -125,7 +125,7 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 	}
 
 	private boolean isPlayerEligible(Player player) {
-		return PlayerHelper.doesPlayerHaveRequiredAdvancements(player, TwilightForestMod.prefix("progress_lich")) || player.isCreative();
+		return PlayerHelper.doesPlayerHaveRequiredAdvancements(player, TFMain.prefix("progress_lich")) || player.isCreative();
 	}
 
 	private void doPedestalEffect(Level level, BlockPos pos, BlockState state) {

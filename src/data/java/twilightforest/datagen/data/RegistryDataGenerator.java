@@ -5,8 +5,8 @@ import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
+import twilightforest.TFMain;
 import twilightforest.TFRegistries;
-import twilightforest.TwilightForestMod;
 import twilightforest.init.*;
 import twilightforest.init.custom.*;
 
@@ -42,6 +42,6 @@ public class RegistryDataGenerator extends DatapackBuiltinEntriesProvider {
 		.add(Registries.ENCHANTMENT, TFEnchantments::bootstrap);
 
 	public RegistryDataGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
-		super(output, provider, BUILDER, Set.of("minecraft", TwilightForestMod.ID));
+		super(output, provider, BUILDER, Set.of("minecraft", TFMain.ID));
 	}
 }

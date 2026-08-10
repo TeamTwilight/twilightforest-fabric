@@ -14,7 +14,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.TFStructurePieceTypes;
 
 import java.util.List;
@@ -61,7 +61,7 @@ public class StrongholdEntranceComponent extends KnightStrongholdComponent {
 			}
 			this.addNewComponent(parent, old, random, Rotation.COUNTERCLOCKWISE_90, 18, 1, 4);
 			if (!this.listContainsBossRoom(list)) {
-				TwilightForestMod.LOGGER.error("Did not find boss room from exit 3 - EPIC FAIL"); //Sorry, no fatal here anymore
+				TFMain.LOGGER.error("Did not find boss room from exit 3 - EPIC FAIL"); //Sorry, no fatal here anymore
 			}
 
 			// add the upper stronghold

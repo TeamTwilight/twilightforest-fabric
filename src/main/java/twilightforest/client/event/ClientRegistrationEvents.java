@@ -45,7 +45,7 @@ import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsE
 import net.neoforged.neoforge.client.gui.map.RegisterMapDecorationRenderersEvent;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.*;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.*;
@@ -125,38 +125,38 @@ public class ClientRegistrationEvents {
 	}
 
 	private void registerBlockStateModels(RegisterBlockStateModels event) {
-		event.registerModel(TwilightForestMod.prefix("giant_block"), UnbakedGiantBlockStateModel.MAP_CODEC);
-		event.registerModel(TwilightForestMod.prefix("noise_varying"), UnbakedNoiseVaryingBlockStateModel.MAP_CODEC);
+		event.registerModel(TFMain.prefix("giant_block"), UnbakedGiantBlockStateModel.MAP_CODEC);
+		event.registerModel(TFMain.prefix("noise_varying"), UnbakedNoiseVaryingBlockStateModel.MAP_CODEC);
 	}
 
 	private void registerItemModels(RegisterItemModelsEvent event) {
-		event.register(TwilightForestMod.prefix("travellers_gear"), TravellersGearItemModel.Unbaked.MAP_CODEC);
+		event.register(TFMain.prefix("travellers_gear"), TravellersGearItemModel.Unbaked.MAP_CODEC);
 	}
 
 	private void registerModelLoaders(ModelEvent.RegisterLoaders event) {
-		event.register(TwilightForestMod.prefix("patch"), PatchModelLoader.INSTANCE);
-		event.register(TwilightForestMod.prefix("force_field"), ForceFieldModelLoader.INSTANCE);
-		event.register(TwilightForestMod.prefix("connected_texture_block"), ConnectedTextureModelLoader.INSTANCE);
-		event.register(TwilightForestMod.prefix("royal_rags"), RoyalRagsModelLoader.INSTANCE);
+		event.register(TFMain.prefix("patch"), PatchModelLoader.INSTANCE);
+		event.register(TFMain.prefix("force_field"), ForceFieldModelLoader.INSTANCE);
+		event.register(TFMain.prefix("connected_texture_block"), ConnectedTextureModelLoader.INSTANCE);
+		event.register(TFMain.prefix("royal_rags"), RoyalRagsModelLoader.INSTANCE);
 	}
 
 	private void registerConditionalProperties(RegisterConditionalItemModelPropertyEvent event) {
-		event.register(TwilightForestMod.prefix("moonworm_queen_pulse"), MoonwormQueenPulse.TYPE);
-		event.register(TwilightForestMod.prefix("ore_meter_flash"), OreMeterFlash.TYPE);
+		event.register(TFMain.prefix("moonworm_queen_pulse"), MoonwormQueenPulse.TYPE);
+		event.register(TFMain.prefix("ore_meter_flash"), OreMeterFlash.TYPE);
 	}
 
 	private void registerRangeProperties(RegisterRangeSelectItemModelPropertyEvent event) {
-		event.register(TwilightForestMod.prefix("potion_flask_dosage"), PotionFlaskDosage.TYPE);
-		event.register(TwilightForestMod.prefix("potion_flask_damage"), PotionFlaskDamage.TYPE);
+		event.register(TFMain.prefix("potion_flask_dosage"), PotionFlaskDosage.TYPE);
+		event.register(TFMain.prefix("potion_flask_damage"), PotionFlaskDamage.TYPE);
 	}
 
 	private void registerSelectProperties(RegisterSelectItemModelPropertyEvent event) {
-		event.register(TwilightForestMod.prefix("experiment_115_variant"), Experiment115Type.TYPE);
+		event.register(TFMain.prefix("experiment_115_variant"), Experiment115Type.TYPE);
 	}
 
 	private void bakeCustomModels(ModelEvent.ModifyBakingResult event) {
-		BakedModel oldModel = event.getModels().get(ModelResourceLocation.inventory(TwilightForestMod.prefix("trollsteinn")));
-		models.put(ModelResourceLocation.inventory(TwilightForestMod.prefix("trollsteinn")), new TrollsteinnModel(oldModel));
+		BakedModel oldModel = event.getModels().get(ModelResourceLocation.inventory(TFMain.prefix("trollsteinn")));
+		models.put(ModelResourceLocation.inventory(TFMain.prefix("trollsteinn")), new TrollsteinnModel(oldModel));
 
         BlockStateModel netherrackModel = event.getBakingResult().blockStateModels().get(Blocks.NETHERRACK.defaultBlockState());
 		event.getBakingResult().blockStateModels().put(TFBlocks.REACTOR_DEBRIS.get().defaultBlockState(), new ReactorDebrisModel(netherrackModel));
@@ -164,16 +164,16 @@ public class ClientRegistrationEvents {
 
 	private void registerAdditionalModels(ModelEvent.RegisterAdditional event) {
 		event.register(ShieldLayer.LOC);
-		event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy")));
-		event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy_minor")));
-		event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trophy_quest")));
+		event.register(ModelResourceLocation.standalone(TFMain.prefix("item/trophy")));
+		event.register(ModelResourceLocation.standalone(TFMain.prefix("item/trophy_minor")));
+		event.register(ModelResourceLocation.standalone(TFMain.prefix("item/trophy_quest")));
 		event.register(TrollsteinnModel.LIT_TROLLSTEINN);
 
 		for (JarRenderer.LidResource lid : JarRenderer.LID_LOCATION_LIST.get()) {
 			Identifier location = lid.identifier();
 			String name = location.getPath();
 			if (lid.customPath() != null) name = lid.customPath();
-			event.register(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/lid/" + name)));
+			event.register(ModelResourceLocation.standalone(TFMain.prefix("block/lid/" + name)));
 		}
 	}
 
@@ -181,7 +181,7 @@ public class ClientRegistrationEvents {
 		JarRenderer.LID_LOCATION_LIST.get().forEach((lid) -> {
 			String name = lid.identifier().getPath();
 			if (lid.customPath() != null) name = lid.customPath();
-			JarRenderer.LIDS.put(lid.lid(), event.getModels().get(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/lid/" + name))));
+			JarRenderer.LIDS.put(lid.lid(), event.getModels().get(ModelResourceLocation.standalone(TFMain.prefix("block/lid/" + name))));
 		});
 	}
 
@@ -203,8 +203,8 @@ public class ClientRegistrationEvents {
 	}
 
 	private void registerClientReloadListeners(AddClientReloadListenersEvent event) {
-		event.addListener(TwilightForestMod.prefix("texture_generator"), TextureGeneratorReloadListener.INSTANCE);
-		event.addListener(TwilightForestMod.prefix("armor_cache"), new TFArmorRenderer.ResourceReloadListener());
+		event.addListener(TFMain.prefix("texture_generator"), TextureGeneratorReloadListener.INSTANCE);
+		event.addListener(TFMain.prefix("armor_cache"), new TFArmorRenderer.ResourceReloadListener());
 	}
 
 	private void registerScreens(RegisterMenuScreensEvent event) {
@@ -279,8 +279,8 @@ public class ClientRegistrationEvents {
 
 		// projectiles
 		event.registerEntityRenderer(TFEntities.NATURE_BOLT.get(), ThrownItemRenderer::new);
-		event.registerEntityRenderer(TFEntities.LICH_BOLT.get(), c -> new CustomProjectileTextureRenderer(c, TwilightForestMod.prefix("textures/particle/twilight_orb.png"), 1.0F, true, false));
-		event.registerEntityRenderer(TFEntities.WAND_BOLT.get(), c -> new CustomProjectileTextureRenderer(c, TwilightForestMod.prefix("textures/particle/twilight_orb.png"), 1.0F, true, false));
+		event.registerEntityRenderer(TFEntities.LICH_BOLT.get(), c -> new CustomProjectileTextureRenderer(c, TFMain.prefix("textures/particle/twilight_orb.png"), 1.0F, true, false));
+		event.registerEntityRenderer(TFEntities.WAND_BOLT.get(), c -> new CustomProjectileTextureRenderer(c, TFMain.prefix("textures/particle/twilight_orb.png"), 1.0F, true, false));
 		event.registerEntityRenderer(TFEntities.LICH_BOMB.get(), c -> new CustomProjectileTextureRenderer(c, Identifier.withDefaultNamespace("textures/item/magma_cream.png"), 1.0F, true, true));
 		event.registerEntityRenderer(TFEntities.TOME_BOLT.get(), ThrownItemRenderer::new);
 		event.registerEntityRenderer(TFEntities.HYDRA_MORTAR.get(), HydraMortarRenderer::new);

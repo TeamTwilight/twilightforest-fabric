@@ -5,11 +5,11 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 
 public class HydraNeck extends HydraPart {
 
-	public static final Identifier RENDERER = TwilightForestMod.prefix("hydra_neck");
+	public static final Identifier RENDERER = TFMain.prefix("hydra_neck");
 
 	public final HydraHead head;
 

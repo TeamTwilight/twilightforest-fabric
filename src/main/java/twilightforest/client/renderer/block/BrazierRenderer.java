@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.block.BrazierBlock;
 import twilightforest.block.entity.BrazierBlockEntity;
 import twilightforest.client.model.TFModelLayers;
@@ -29,9 +29,9 @@ public class BrazierRenderer implements BlockEntityRenderer<BrazierBlockEntity, 
 
 	private final BlockModelResolver blockResolver;
 	private final BrazierModel model;
-	public static final Identifier TEXTURE_OFF = TwilightForestMod.getModelTexture("brazier/brazier.png");
-	public static final Identifier TEXTURE_ON = TwilightForestMod.getModelTexture("brazier/brazier_lit.png");
-	public static final Identifier TEXTURE_OVERLAY = TwilightForestMod.getModelTexture("brazier/brazier_overlay.png");
+	public static final Identifier TEXTURE_OFF = TFMain.getModelTexture("brazier/brazier.png");
+	public static final Identifier TEXTURE_ON = TFMain.getModelTexture("brazier/brazier_lit.png");
+	public static final Identifier TEXTURE_OVERLAY = TFMain.getModelTexture("brazier/brazier_overlay.png");
 
 	public BrazierRenderer(BlockEntityRendererProvider.Context context) {
 		this.blockResolver = context.blockModelResolver();

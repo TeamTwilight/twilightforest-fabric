@@ -22,7 +22,7 @@ import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.ItemLike;
 import org.codehaus.plexus.util.StringUtils;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.events.CharmEvents;
 import twilightforest.init.TFDataComponents;
@@ -47,7 +47,7 @@ public class TFItemStackUtils {
 
 	public static boolean consumeInventoryItem(final ItemStack stack, final ItemLike item, CompoundTag persistentTag, boolean saveItemToTag, HolderLookup.Provider provider) {
 		if (stack.is(item.asItem())) {
-			Optional<Tag> tag = ItemStack.CODEC.encodeStart(provider.createSerializationContext(NbtOps.INSTANCE), stack).resultOrPartial(TwilightForestMod.LOGGER::error);
+			Optional<Tag> tag = ItemStack.CODEC.encodeStart(provider.createSerializationContext(NbtOps.INSTANCE), stack).resultOrPartial(TFMain.LOGGER::error);
 			if (tag.isPresent()) {
 				persistentTag.put(CharmEvents.CONSUMED_CHARM_TAG, tag.get());
 			}

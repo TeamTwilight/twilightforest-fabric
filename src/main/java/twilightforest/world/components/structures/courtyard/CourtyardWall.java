@@ -5,7 +5,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.world.components.processors.CobbleVariants;
 import twilightforest.world.components.processors.NagastoneVariants;
@@ -27,9 +27,9 @@ public class CourtyardWall extends TwilightDoubleTemplateStructurePiece {
 		super(TFStructurePieceTypes.TFNCWl.get(),
 			i,
 			structureManager,
-			TwilightForestMod.prefix("courtyard/courtyard_wall"),
+			TFMain.prefix("courtyard/courtyard_wall"),
 			makeSettings(rotation).addProcessor(CourtyardMain.WALL_INTEGRITY_PROCESSOR).addProcessor(SmoothStoneVariants.INSTANCE).addProcessor(NagastoneVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE).addProcessor(CobbleVariants.INSTANCE),
-			TwilightForestMod.prefix("courtyard/courtyard_wall_decayed"),
+			TFMain.prefix("courtyard/courtyard_wall_decayed"),
 			makeSettings(rotation).addProcessor(CourtyardMain.WALL_DECAY_PROCESSOR).addProcessor(CobbleVariants.INSTANCE),
 			new BlockPos(x, y, z)
 		);

@@ -15,13 +15,13 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.entity.monster.MazeSlime;
 
 public class MazeSlimeRenderer extends MobRenderer<MazeSlime, SlimeRenderState, SlimeModel> {
 
-	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("mazeslime.png");
+	private static final Identifier TEXTURE = TFMain.getModelTexture("mazeslime.png");
 
 	public MazeSlimeRenderer(EntityRendererProvider.Context context) {
 		super(context, new SlimeModel(context.bakeLayer(TFModelLayers.MAZE_SLIME)), 0.625F);

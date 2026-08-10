@@ -20,7 +20,7 @@ import net.neoforged.neoforgespi.language.IModInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 
 import java.util.*;
 
@@ -40,7 +40,7 @@ public class EntityRenderingUtil {
 			try {
 				renderTheEntity(graphics, size / 2, size - 2, scale, living);
 			} catch (Exception e) {
-				TwilightForestMod.LOGGER.error("Error drawing entity " + BuiltInRegistries.ENTITY_TYPE.getKey(type), e);
+				TFMain.LOGGER.error("Error drawing entity " + BuiltInRegistries.ENTITY_TYPE.getKey(type), e);
 				EntityCache.addEntityToBlacklist(type);
 			}
 		}

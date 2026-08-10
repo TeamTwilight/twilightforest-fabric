@@ -10,14 +10,14 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.entity.PartEntity;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.network.UpdateTFMultipartPacket;
 
 import java.util.Objects;
 
 public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 
-	public static final Identifier RENDERER = TwilightForestMod.prefix("noop");
+	public static final Identifier RENDERER = TFMain.prefix("noop");
 
 	protected EntityDimensions realSize = EntityDimensions.fixed(1F, 1F);
 

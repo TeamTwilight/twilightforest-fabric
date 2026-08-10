@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import org.jspecify.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.TFBlocks;
 
 import java.util.EnumMap;
@@ -54,9 +54,9 @@ public class TFChestRenderer<T extends ChestBlockEntity> extends ChestRenderer<T
 
 	private static EnumMap<ChestType, SpriteId> chestMaterial(String type, String suffix) {
 		EnumMap<ChestType, SpriteId> map = new EnumMap<>(ChestType.class);
-		map.put(ChestType.SINGLE, Sheets.CHEST_MAPPER.apply(TwilightForestMod.prefix(type + "/" + suffix)));
-		map.put(ChestType.LEFT, Sheets.CHEST_MAPPER.apply(TwilightForestMod.prefix(type + "/" + suffix + "_left")));
-		map.put(ChestType.RIGHT, Sheets.CHEST_MAPPER.apply(TwilightForestMod.prefix(type + "/" + suffix + "_right")));
+		map.put(ChestType.SINGLE, Sheets.CHEST_MAPPER.apply(TFMain.prefix(type + "/" + suffix)));
+		map.put(ChestType.LEFT, Sheets.CHEST_MAPPER.apply(TFMain.prefix(type + "/" + suffix + "_left")));
+		map.put(ChestType.RIGHT, Sheets.CHEST_MAPPER.apply(TFMain.prefix(type + "/" + suffix + "_right")));
 		return map;
 	}
 }

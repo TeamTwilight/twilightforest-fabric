@@ -3,8 +3,8 @@ package twilightforest.datagen.data.tags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.TagsProvider;
+import twilightforest.TFMain;
 import twilightforest.TFRegistries;
-import twilightforest.TwilightForestMod;
 import twilightforest.init.custom.WoodPalettes;
 import twilightforest.tags.TFWoodPaletteTags;
 import twilightforest.util.woods.WoodPalette;
@@ -14,7 +14,7 @@ import java.util.concurrent.CompletableFuture;
 public class WoodPaletteTagGenerator extends TagsProvider<WoodPalette> {
 
 	public WoodPaletteTagGenerator(PackOutput output, CompletableFuture< HolderLookup.Provider> provider) {
-		super(output, TFRegistries.Keys.WOOD_PALETTES, provider, TwilightForestMod.ID);
+		super(output, TFRegistries.Keys.WOOD_PALETTES, provider, TFMain.ID);
 	}
 
 	@Override

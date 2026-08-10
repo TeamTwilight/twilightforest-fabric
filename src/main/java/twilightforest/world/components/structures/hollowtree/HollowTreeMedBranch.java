@@ -16,7 +16,7 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.features.FeatureLogic;
 
@@ -101,8 +101,8 @@ public class HollowTreeMedBranch extends HollowTreePiece {
 		tag.putDouble("branchTilt", this.tilt);
 		tag.putBoolean("branchLeafy", this.leafy);
 
-		tag.put("wood", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.wood).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
-		tag.put("leaves", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.leaves).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("wood", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.wood).resultOrPartial(TFMain.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("leaves", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.leaves).resultOrPartial(TFMain.LOGGER::error).orElseGet(CompoundTag::new));
 	}
 
 	@Override

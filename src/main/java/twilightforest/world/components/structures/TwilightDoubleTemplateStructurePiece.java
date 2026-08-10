@@ -22,7 +22,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 
 public abstract class TwilightDoubleTemplateStructurePiece extends TwilightTemplateStructurePiece {
 	protected final Identifier templateOverlayLocation;
@@ -78,10 +78,10 @@ public abstract class TwilightDoubleTemplateStructurePiece extends TwilightTempl
 						if (parserState != null) {
 							blockState = parserState;
 						} else {
-							TwilightForestMod.LOGGER.error("Error while parsing blockstate {} in jigsaw block @ {}", s, structureBlockInfo.pos());
+							TFMain.LOGGER.error("Error while parsing blockstate {} in jigsaw block @ {}", s, structureBlockInfo.pos());
 						}
 					} catch (CommandSyntaxException e) {
-						TwilightForestMod.LOGGER.error("Error while parsing blockstate {} in jigsaw block @ {}", s, structureBlockInfo.pos());
+						TFMain.LOGGER.error("Error while parsing blockstate {} in jigsaw block @ {}", s, structureBlockInfo.pos());
 					}
 
 					worldGenLevel.setBlock(structureBlockInfo.pos(), blockState, Block.UPDATE_ALL);

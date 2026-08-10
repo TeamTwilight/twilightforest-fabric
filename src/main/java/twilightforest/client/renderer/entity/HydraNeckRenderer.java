@@ -6,14 +6,14 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.resources.Identifier;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.model.entity.HydraNeckModel;
 import twilightforest.client.state.entity.HydraNeckRenderState;
 import twilightforest.entity.boss.HydraNeck;
 
 public class HydraNeckRenderer extends TFPartRenderer<HydraNeck, HydraNeckRenderState, HydraNeckModel> {
 
-	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("hydra4.png");
+	private static final Identifier TEXTURE = TFMain.getModelTexture("hydra4.png");
 
 	public HydraNeckRenderer(EntityRendererProvider.Context context, HydraNeckModel model) {
 		super(context, model);

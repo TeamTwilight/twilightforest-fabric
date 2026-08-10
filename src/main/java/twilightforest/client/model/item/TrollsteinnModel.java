@@ -11,11 +11,11 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.model.BakedModelWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.block.TrollsteinnBlock;
 
 public class TrollsteinnModel extends BakedModelWrapper<BakedModel> {
-	public static final ModelResourceLocation LIT_TROLLSTEINN = ModelResourceLocation.standalone(TwilightForestMod.prefix("item/trollsteinn_light"));
+	public static final ModelResourceLocation LIT_TROLLSTEINN = ModelResourceLocation.standalone(TFMain.prefix("item/trollsteinn_light"));
 	@Nullable
 	private BakedModel litTrollsteinnModel;
 	private final ItemOverrides overrides = new ItemOverrides() {

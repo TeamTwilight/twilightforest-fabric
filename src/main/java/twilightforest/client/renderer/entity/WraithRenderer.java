@@ -5,14 +5,14 @@ import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.WraithModel;
 import twilightforest.entity.monster.Wraith;
 
 public class WraithRenderer extends HumanoidMobRenderer<Wraith, HumanoidRenderState, WraithModel> {
 
-	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("ghost.png");
+	private static final Identifier TEXTURE = TFMain.getModelTexture("ghost.png");
 
 	public WraithRenderer(EntityRendererProvider.Context context) {
 		super(context, new WraithModel(context.bakeLayer(TFModelLayers.WRAITH)), 0.5F);

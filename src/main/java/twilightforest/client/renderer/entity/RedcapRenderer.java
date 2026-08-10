@@ -13,14 +13,14 @@ import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EquipmentSlot;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.RedcapModel;
 import twilightforest.entity.monster.Redcap;
 
 public class RedcapRenderer extends HumanoidMobRenderer<Redcap, HumanoidRenderState, RedcapModel> {
 
-	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("redcap.png");
+	private static final Identifier TEXTURE = TFMain.getModelTexture("redcap.png");
 
 	public RedcapRenderer(EntityRendererProvider.Context context) {
 		super(context, new RedcapModel(context.bakeLayer(TFModelLayers.REDCAP)), 0.4F);

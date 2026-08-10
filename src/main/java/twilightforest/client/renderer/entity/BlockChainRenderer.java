@@ -14,7 +14,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.Unit;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.ChainModel;
 import twilightforest.client.model.entity.SpikeBlockModel;
@@ -23,7 +23,7 @@ import twilightforest.entity.projectile.ChainBlock;
 
 public class BlockChainRenderer extends EntityRenderer<ChainBlock, ChainBlockRenderState> {
 
-	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("block_and_chain.png");
+	private static final Identifier TEXTURE = TFMain.getModelTexture("block_and_chain.png");
 	private final SpikeBlockModel model;
 	private final ChainModel chainModel;
 

@@ -15,7 +15,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.loot.TFLootTables;
@@ -32,7 +32,7 @@ public class QuestGrove extends TwilightTemplateStructurePiece {
 	}
 
 	public QuestGrove(StructureTemplateManager structureManager, BlockPos templatePosition) {
-		super(TFStructurePieceTypes.TFQuestGrove.get(), 0, structureManager, TwilightForestMod.prefix("quest_grove"), makeSettings(Rotation.NONE).addProcessor(MOSSY_BRICK_DECAY).addProcessor(StoneBricksVariants.INSTANCE), templatePosition);
+		super(TFStructurePieceTypes.TFQuestGrove.get(), 0, structureManager, TFMain.prefix("quest_grove"), makeSettings(Rotation.NONE).addProcessor(MOSSY_BRICK_DECAY).addProcessor(StoneBricksVariants.INSTANCE), templatePosition);
 	}
 
 	@Override

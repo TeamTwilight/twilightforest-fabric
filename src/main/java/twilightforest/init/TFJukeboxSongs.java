@@ -8,7 +8,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.JukeboxSong;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 
 public class TFJukeboxSongs {
 
@@ -23,7 +23,7 @@ public class TFJukeboxSongs {
 	public static final ResourceKey<JukeboxSong> MOTION = registerKey("motion");
 
 	private static ResourceKey<JukeboxSong> registerKey(String name) {
-		return ResourceKey.create(Registries.JUKEBOX_SONG, TwilightForestMod.prefix(name));
+		return ResourceKey.create(Registries.JUKEBOX_SONG, TFMain.prefix(name));
 	}
 
 	public static void bootstrap(BootstrapContext<JukeboxSong> context) {

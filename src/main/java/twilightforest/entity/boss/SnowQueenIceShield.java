@@ -8,13 +8,13 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.entity.TFPart;
 import twilightforest.init.TFSounds;
 
 public class SnowQueenIceShield extends TFPart<SnowQueen> {
 
-	public static final Identifier RENDERER = TwilightForestMod.prefix("snowqueen_iceshield");
+	public static final Identifier RENDERER = TFMain.prefix("snowqueen_iceshield");
 
 	public SnowQueenIceShield(SnowQueen parent) {
 		super(parent);

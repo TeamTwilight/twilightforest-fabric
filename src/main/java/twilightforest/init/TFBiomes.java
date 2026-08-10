@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.world.registration.biomes.BiomeHelper;
 
 public class TFBiomes {
@@ -44,7 +44,7 @@ public class TFBiomes {
 	public static final ResourceKey<Biome> UNDERGROUND = makeKey("underground");
 
 	private static ResourceKey<Biome> makeKey(String name) {
-		return ResourceKey.create(Registries.BIOME, TwilightForestMod.prefix(name));
+		return ResourceKey.create(Registries.BIOME, TFMain.prefix(name));
 	}
 
 	public static void bootstrap(BootstrapContext<Biome> context) {

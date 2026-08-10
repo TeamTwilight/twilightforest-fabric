@@ -28,7 +28,7 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.DeferredItem;
 import tamaized.beanification.PostConstruct;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.block.entity.SkullChestBlockEntity;
 import twilightforest.compat.curios.CuriosCompat;
@@ -225,21 +225,21 @@ public class CharmEvents {
 			if (player.getRandom().nextFloat() <= 0.15F) {
 				if (damage >= 2) {
 					setState = TFBlocks.SKULL_CHEST.get().withPropertiesOf(setState);
-					TwilightForestMod.LOGGER.debug("{}'s Casket damage value was too high, placing Skull Chest instead", player.getName().getString());
+					TFMain.LOGGER.debug("{}'s Casket damage value was too high, placing Skull Chest instead", player.getName().getString());
 				} else {
 					damage = damage + 1;
 					setState = TFBlocks.KEEPSAKE_CASKET.get().withPropertiesOf(setState).setValue(KeepsakeCasketBlock.BREAKAGE, damage);
-					TwilightForestMod.LOGGER.debug("{}'s Casket was randomly damaged, applying new damage", player.getName().getString());
+					TFMain.LOGGER.debug("{}'s Casket was randomly damaged, applying new damage", player.getName().getString());
 				}
 			}
 
 			if (!level.setBlockAndUpdate(immutablePos, setState)) {
-				TwilightForestMod.LOGGER.error("Could not place Keepsake Casket at {}", pos);
+				TFMain.LOGGER.error("Could not place Keepsake Casket at {}", pos);
 				return;
 			}
 
 			if (!(level.getBlockEntity(immutablePos) instanceof SkullChestBlockEntity casket)) {
-				TwilightForestMod.LOGGER.error("Failed to set Keepsake Casket data at {}", pos);
+				TFMain.LOGGER.error("Failed to set Keepsake Casket data at {}", pos);
 				return;
 			}
 
@@ -288,7 +288,7 @@ public class CharmEvents {
 	 */
 	private static void returnStoredItems(Player player) {
 
-		TwilightForestMod.LOGGER.debug("Player {} ({}) respawned and received items held in storage", player.getName().getString(), player.getUUID());
+		TFMain.LOGGER.debug("Player {} ({}) respawned and received items held in storage", player.getName().getString(), player.getUUID());
 
 		//check if our tag is in the persistent player data. If so, copy that inventory over to our own. Cloud storage at its finest!
 		CompoundTag playerData = getPlayerData(player);

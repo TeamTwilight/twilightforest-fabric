@@ -9,7 +9,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
@@ -35,7 +35,7 @@ public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 //			int amtToLower = (((this.boundingBox.maxY - 245) / 5) * 5) + 5;
 //
 //			FMLLog.info("[TwilightForest] Lowering Dark Tower max height by %d to be within world bounds", amtToLower);
-//			
+//
 //			this.height -= amtToLower;
 //			this.boundingBox.maxY -= amtToLower;
 //		}
@@ -66,7 +66,7 @@ public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 
 		// limit sprawl to a reasonable amount
 		if (this.getGenDepth() < 3) {
-			// make a special sub-tower that will lead back here 
+			// make a special sub-tower that will lead back here
 			// try 6 times
 			for (int i = 0; i < 6; i++) {
 				mainDir = makeAscenderTower(list, rand);
@@ -107,10 +107,10 @@ public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 		boolean madeIt = makeBridge(list, rand, this.getGenDepth() + 1, dest[0], dest[1], dest[2], size - 4, childHeight, mainDir, true);
 
 		if (madeIt) {
-			TwilightForestMod.LOGGER.debug("Main tower made a bridge to another tower");
+			TFMain.LOGGER.debug("Main tower made a bridge to another tower");
 			return mainDir;
 		} else {
-			TwilightForestMod.LOGGER.info("Main tower failed to branch off at index {}", this.genDepth);
+			TFMain.LOGGER.info("Main tower failed to branch off at index {}", this.genDepth);
 			return null;
 		}
 	}

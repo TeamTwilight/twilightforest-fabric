@@ -1,13 +1,10 @@
 package twilightforest.datagen.data.tags;
 
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.BiomeTagsProvider;
 import net.minecraft.tags.BiomeTags;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.level.biome.Biome;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.TFBiomes;
 import twilightforest.tags.TFBiomeTags;
 
@@ -16,7 +13,7 @@ import java.util.concurrent.CompletableFuture;
 public class BiomeTagGenerator extends BiomeTagsProvider {
 
 	public BiomeTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
-		super(output, provider, TwilightForestMod.ID);
+		super(output, provider, TFMain.ID);
 	}
 
 	@Override

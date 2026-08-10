@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.block.SkullChestBlock;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.KeepsakeCasketModel;
@@ -30,7 +30,7 @@ import java.util.Map;
 public class SkullChestRenderer<T extends BlockEntity & LidBlockEntity> implements BlockEntityRenderer<T, SkullChestRenderState> {
 
 	private static final Map<Direction, Transformation> TRANSFORMATIONS = Util.makeEnumMap(Direction.class, SkullChestRenderer::createModelTransformation);
-	public static final Identifier SKULL_CHEST_TEXTURE = TwilightForestMod.getModelTexture("casket/skull_chest.png");
+	public static final Identifier SKULL_CHEST_TEXTURE = TFMain.getModelTexture("casket/skull_chest.png");
 
 	private final KeepsakeCasketModel model;
 

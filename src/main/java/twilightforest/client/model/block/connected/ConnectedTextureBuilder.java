@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.client.model.generators.template.CustomLoaderBuilder;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ public class ConnectedTextureBuilder extends CustomLoaderBuilder {
 	private int emissivity = 0;
 
 	public ConnectedTextureBuilder() {
-		super(TwilightForestMod.prefix("connected_texture_block"), false);
+		super(TFMain.prefix("connected_texture_block"), false);
 	}
 
 	public static ConnectedTextureBuilder begin() {

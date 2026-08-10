@@ -4,11 +4,11 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.item.travellers_gear.TravellersGearLogic;
 
 public record PerformSidestepPacket(boolean isLeftStepSide) implements CustomPacketPayload {
-	public static final Type<twilightforest.network.PerformSidestepPacket> TYPE = new Type<>(TwilightForestMod.prefix("perform_sidestep_packet"));
+	public static final Type<twilightforest.network.PerformSidestepPacket> TYPE = new Type<>(TFMain.prefix("perform_sidestep_packet"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, twilightforest.network.PerformSidestepPacket> STREAM_CODEC = CustomPacketPayload.codec(twilightforest.network.PerformSidestepPacket::write, twilightforest.network.PerformSidestepPacket::new);
 	public PerformSidestepPacket(RegistryFriendlyByteBuf registryFriendlyByteBuf) {
 		 this(registryFriendlyByteBuf.readBoolean());

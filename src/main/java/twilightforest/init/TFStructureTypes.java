@@ -5,13 +5,13 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.world.components.structures.type.*;
 
 import java.util.function.Supplier;
 
 public class TFStructureTypes {
-	public static final DeferredRegister<StructureType<?>> STRUCTURE_TYPES = DeferredRegister.create(Registries.STRUCTURE_TYPE, TwilightForestMod.ID);
+	public static final DeferredRegister<StructureType<?>> STRUCTURE_TYPES = DeferredRegister.create(Registries.STRUCTURE_TYPE, TFMain.ID);
 
 	public static final DeferredHolder<StructureType<?>, StructureType<LandmarkWrappedStructure>> LANDMARK_WRAPPED = registerType("landmark", () -> () -> LandmarkWrappedStructure.CODEC);
 	public static final DeferredHolder<StructureType<?>, StructureType<ProgressionWrappedStructure>> PROGRESSION_WRAPPED = registerType("progression", () -> () -> ProgressionWrappedStructure.CODEC);

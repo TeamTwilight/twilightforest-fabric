@@ -8,28 +8,25 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.textures.GpuTextureView;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
-import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.state.level.LevelRenderState;
 import net.minecraft.client.renderer.state.level.SkyRenderState;
-import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.context.ContextKey;
 import net.neoforged.neoforge.client.event.ExtractLevelRenderStateEvent;
 import org.joml.*;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 
 import java.lang.Math;
-import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
 
 public class TFSkyRenderer implements AutoCloseable {
 
-	public static final ContextKey<Boolean> RENDER_DARK_DISC = new ContextKey<>(TwilightForestMod.prefix("render_dark_disc"));
+	public static final ContextKey<Boolean> RENDER_DARK_DISC = new ContextKey<>(TFMain.prefix("render_dark_disc"));
 	private final RenderSystem.AutoStorageIndexBuffer starIndices = RenderSystem.getSequentialBuffer(VertexFormat.Mode.QUADS);
 	private final GpuBuffer starBuffer;
 	private int starIndexCount;

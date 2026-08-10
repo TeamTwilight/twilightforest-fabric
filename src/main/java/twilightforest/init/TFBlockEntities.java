@@ -4,14 +4,14 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.block.entity.*;
 import twilightforest.block.entity.bookshelf.ChiseledCanopyShelfBlockEntity;
 import twilightforest.block.entity.spawner.*;
 
 public class TFBlockEntities {
 
-	public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, TwilightForestMod.ID);
+	public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, TFMain.ID);
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AntibuilderBlockEntity>> ANTIBUILDER = BLOCK_ENTITIES.register("antibuilder", () ->
 		new BlockEntityType<>(AntibuilderBlockEntity::new, TFBlocks.ANTIBUILDER.get()));

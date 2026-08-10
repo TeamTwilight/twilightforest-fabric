@@ -12,7 +12,7 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceR
 			if (location.getPath().contains("entries"))
 				continue;
 
-			if (TwilightForestMod.ID.equals(location.getNamespace())) {
+			if (TFMain.ID.equals(location.getNamespace())) {
 				JsonElement jsonElement = entry.getValue();
 				this.deserialize(manager, location, jsonElement);
 			} else {
@@ -68,10 +68,10 @@ public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceR
 			if (checkFile.isPresent()) {
 				this.forLocation(manager, location, checkFile.get());
 			} else {
-				TwilightForestMod.LOGGER.error("Listener '{}' failed to load resource {}", this.getName(), location);
+				TFMain.LOGGER.error("Listener '{}' failed to load resource {}", this.getName(), location);
 			}
 		} catch (Exception e) {
-			TwilightForestMod.LOGGER.error("Listener '{}' couldn't read element {}", this.getName(), location, e);
+			TFMain.LOGGER.error("Listener '{}' couldn't read element {}", this.getName(), location, e);
 		}
 	}
 
@@ -83,7 +83,7 @@ public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceR
 	 * Intentionally not subscribed, it is on the subclasses to opt into subscription
 	 */
 	public final void registerListener(AddServerReloadListenersEvent event) {
-		event.addListener(TwilightForestMod.prefix(this.getListenerName()), this);
+		event.addListener(TFMain.prefix(this.getListenerName()), this);
 	}
 
 	public abstract String getListenerName();

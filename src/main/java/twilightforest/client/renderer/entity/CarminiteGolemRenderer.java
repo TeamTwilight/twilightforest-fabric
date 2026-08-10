@@ -6,14 +6,14 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.state.IronGolemRenderState;
 import net.minecraft.resources.Identifier;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.CarminiteGolemModel;
 import twilightforest.entity.monster.CarminiteGolem;
 
 public class CarminiteGolemRenderer extends MobRenderer<CarminiteGolem, IronGolemRenderState, CarminiteGolemModel> {
 
-	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("carminitegolem.png");
+	private static final Identifier TEXTURE = TFMain.getModelTexture("carminitegolem.png");
 
 	public CarminiteGolemRenderer(EntityRendererProvider.Context context) {
 		super(context, new CarminiteGolemModel(context.bakeLayer(TFModelLayers.CARMINITE_GOLEM)), 0.75F);

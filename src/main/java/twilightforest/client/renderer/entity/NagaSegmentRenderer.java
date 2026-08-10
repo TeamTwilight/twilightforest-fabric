@@ -6,13 +6,13 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.resources.Identifier;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.model.entity.NagaModel;
 import twilightforest.client.state.entity.NagaSegmentRenderState;
 import twilightforest.entity.boss.NagaSegment;
 
 public class NagaSegmentRenderer extends TFPartRenderer<NagaSegment, NagaSegmentRenderState, NagaModel<NagaSegmentRenderState>> {
-	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("nagasegment.png");
+	private static final Identifier TEXTURE = TFMain.getModelTexture("nagasegment.png");
 
 	public NagaSegmentRenderer(EntityRendererProvider.Context context, NagaModel<NagaSegmentRenderState> model) {
 		super(context, model);

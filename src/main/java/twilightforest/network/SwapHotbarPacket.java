@@ -6,13 +6,13 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
 
 public class SwapHotbarPacket implements CustomPacketPayload {
 
 	public static final SwapHotbarPacket INSTANCE = new SwapHotbarPacket();
-	public static final Type<SwapHotbarPacket> TYPE = new Type<>(TwilightForestMod.prefix("swap_hotbar"));
+	public static final Type<SwapHotbarPacket> TYPE = new Type<>(TFMain.prefix("swap_hotbar"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, SwapHotbarPacket> STREAM_CODEC = StreamCodec.unit(INSTANCE);
 
 	private SwapHotbarPacket() {}

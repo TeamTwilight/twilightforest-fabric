@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.resources.Identifier;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.KnightPhantomModel;
 import twilightforest.client.state.entity.KnightPhantomRenderState;
@@ -18,7 +18,7 @@ import twilightforest.entity.boss.KnightPhantom;
 
 public class KnightPhantomRenderer extends HumanoidMobRenderer<KnightPhantom, KnightPhantomRenderState, KnightPhantomModel> {
 
-	public static final Identifier TEXTURE = TwilightForestMod.getModelTexture("phantomskeleton.png");
+	public static final Identifier TEXTURE = TFMain.getModelTexture("phantomskeleton.png");
 
 	public KnightPhantomRenderer(EntityRendererProvider.Context context) {
 		super(context, new KnightPhantomModel(context.bakeLayer(TFModelLayers.KNIGHT_PHANTOM)), 0.625F);

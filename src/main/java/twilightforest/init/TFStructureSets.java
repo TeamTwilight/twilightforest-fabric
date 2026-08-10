@@ -11,7 +11,7 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.world.components.structures.placements.AvoidLandmarkGridPlacement;
 import twilightforest.world.components.structures.placements.LandmarkGridPlacement;
 
@@ -48,7 +48,7 @@ public class TFStructureSets {
 	public static final ResourceKey<StructureSet> WORLD_TREE = registerKey("world_tree");
 
 	private static ResourceKey<StructureSet> registerKey(String name) {
-		return ResourceKey.create(Registries.STRUCTURE_SET, TwilightForestMod.prefix(name));
+		return ResourceKey.create(Registries.STRUCTURE_SET, TFMain.prefix(name));
 	}
 
 	public static void bootstrap(BootstrapContext<StructureSet> context) {

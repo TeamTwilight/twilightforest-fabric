@@ -4,10 +4,10 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 
 public class TFMapDecorations {
-	public static final DeferredRegister<MapDecorationType> DECORATIONS = DeferredRegister.create(Registries.MAP_DECORATION_TYPE, TwilightForestMod.ID);
+	public static final DeferredRegister<MapDecorationType> DECORATIONS = DeferredRegister.create(Registries.MAP_DECORATION_TYPE, TFMain.ID);
 
 	public static final DeferredHolder<MapDecorationType, MapDecorationType> HEDGE_MAZE = register("hedge_maze");
 	public static final DeferredHolder<MapDecorationType, MapDecorationType> SMALL_HOLLOW_HILL = register("small_hollow_hill");
@@ -26,6 +26,6 @@ public class TFMapDecorations {
 	public static final DeferredHolder<MapDecorationType, MapDecorationType> FINAL_CASTLE = register("final_castle");
 
 	private static DeferredHolder<MapDecorationType, MapDecorationType> register(String name) {
-		return DECORATIONS.register(name, () -> new MapDecorationType(TwilightForestMod.prefix(name), true, -1, false, true));
+		return DECORATIONS.register(name, () -> new MapDecorationType(TFMain.prefix(name), true, -1, false, true));
 	}
 }

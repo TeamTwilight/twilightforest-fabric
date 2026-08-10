@@ -13,7 +13,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.Unit;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.block.CicadaBlock;
 import twilightforest.block.entity.MoonwormBlockEntity;
 import twilightforest.client.model.TFModelLayers;
@@ -22,7 +22,7 @@ import twilightforest.client.state.block.MoonwormRenderState;
 
 public class MoonwormRenderer implements BlockEntityRenderer<MoonwormBlockEntity, MoonwormRenderState> {
 
-	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("moonworm.png");
+	private static final Identifier TEXTURE = TFMain.getModelTexture("moonworm.png");
 	private final MoonwormModel moonwormModel;
 
 	public MoonwormRenderer(BlockEntityRendererProvider.Context context) {

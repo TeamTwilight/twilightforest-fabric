@@ -32,7 +32,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.custom.Enforcements;
 import twilightforest.util.IntervalUtils;
 import twilightforest.util.MinecraftUtil;
@@ -52,7 +52,7 @@ public class TFWeatherRenderer {
 	public static final Identifier RAIN_TEXTURES = Identifier.withDefaultNamespace("textures/environment/rain.png");
 	public static final Identifier SNOW_TEXTURES = Identifier.withDefaultNamespace("textures/environment/snow.png");
 
-	private static final Identifier SPARKLES_TEXTURE = TwilightForestMod.getEnvTexture("sparkles.png");
+	private static final Identifier SPARKLES_TEXTURE = TFMain.getEnvTexture("sparkles.png");
 
 	public static final float[] rainxs = new float[1024];
 	public static final float[] rainzs = new float[1024];
@@ -366,7 +366,7 @@ public class TFWeatherRenderer {
 		BIG_RAIN("bigrain.png");
 
 		WeatherRenderType(String textureName) {
-			this.textureLocation = TwilightForestMod.getEnvTexture(textureName);
+			this.textureLocation = TFMain.getEnvTexture(textureName);
 		}
 
 		private final Identifier textureLocation;

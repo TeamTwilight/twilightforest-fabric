@@ -19,7 +19,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.*;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import tamaized.beanification.Autowired;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
@@ -44,7 +44,7 @@ public final class LichTowerBase extends TwilightJigsawPiece implements PieceBea
 	}
 
 	public LichTowerBase(StructureTemplateManager structureManager, JigsawPlaceContext jigsawContext) {
-		super(TFStructurePieceTypes.LICH_TOWER_BASE.get(), 1, structureManager, TwilightForestMod.prefix("lich_tower/tower_base"), jigsawContext);
+		super(TFStructurePieceTypes.LICH_TOWER_BASE.get(), 1, structureManager, TFMain.prefix("lich_tower/tower_base"), jigsawContext);
 
 		this.boundingBox = BoundingBoxUtils.cloneWithAdjustments(this.boundingBox, 0, 0, 0, 0, 30,0);
 		this.casketWingIndex = this.firstMatchIndex(r -> "twilightforest:lich_tower/bridge".equals(r.target()));
@@ -85,7 +85,7 @@ public final class LichTowerBase extends TwilightJigsawPiece implements PieceBea
 				}
 			}
 			case "twilightforest:lich_tower/tower_trim" -> {
-				Identifier decorId = TwilightForestMod.prefix("lich_tower/central_trim");
+				Identifier decorId = TFMain.prefix("lich_tower/central_trim");
 				JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), connection.orientation(), this.structureManager, decorId, "twilightforest:lich_tower/tower_trim", context.random());
 
 				if (placeableJunction != null) {

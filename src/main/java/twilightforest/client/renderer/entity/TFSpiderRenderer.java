@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.entity.SpiderRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.monster.spider.Spider;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 
 public class TFSpiderRenderer<T extends Spider> extends SpiderRenderer<T> {
 
@@ -16,7 +16,7 @@ public class TFSpiderRenderer<T extends Spider> extends SpiderRenderer<T> {
 	public TFSpiderRenderer(EntityRendererProvider.Context context, float shadowSize, String texture, float scale) {
 		super(context);
 		this.shadowRadius = shadowSize;
-		this.texture = TwilightForestMod.getModelTexture(texture);
+		this.texture = TFMain.getModelTexture(texture);
 		this.scale = scale;
 	}
 

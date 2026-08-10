@@ -18,7 +18,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockRotProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import tamaized.beanification.Autowired;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
@@ -36,7 +36,7 @@ public class CourtyardMain extends StructureMazeGenerator {
 	static final BlockRotProcessor WALL_INTEGRITY_PROCESSOR = new BlockRotProcessor(CourtyardMain.WALL_INTEGRITY);
 	static final BlockRotProcessor WALL_DECAY_PROCESSOR = new BlockRotProcessor(CourtyardMain.WALL_DECAY);
 
-	public static final Identifier CENTER_POOL = TwilightForestMod.prefix("courtyard/center");
+	public static final Identifier CENTER_POOL = TFMain.prefix("courtyard/center");
 
 	@Autowired
 	private static StructureTemplateDefinitions structureTemplateDefinitions;

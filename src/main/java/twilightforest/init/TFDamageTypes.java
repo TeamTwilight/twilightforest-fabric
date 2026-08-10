@@ -10,7 +10,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import tamaized.beanification.Autowired;
 import twilightforest.enums.extensions.TFDamageEffectsEnumExtension;
 import twilightforest.util.entities.EntityExcludedDamageSource;
@@ -63,7 +63,7 @@ public class TFDamageTypes {
 	public static final ResourceKey<DamageType> STALE_SANDWICH = create("stale_sandwich"); //You're a stale sandwich
 
 	public static ResourceKey<DamageType> create(String name) {
-		return ResourceKey.create(Registries.DAMAGE_TYPE, TwilightForestMod.prefix(name));
+		return ResourceKey.create(Registries.DAMAGE_TYPE, TFMain.prefix(name));
 	}
 
 	public static DamageSource getDamageSource(Level level, ResourceKey<DamageType> type, EntityType<?>... toIgnore) {

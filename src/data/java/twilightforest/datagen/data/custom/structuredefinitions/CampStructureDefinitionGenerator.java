@@ -10,7 +10,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTes
 import net.minecraft.world.level.levelgen.structure.templatesystem.ProcessorRule;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import tamaized.beanification.Autowired;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.custom.TemplateMarkerHandlers;
 import twilightforest.world.components.processors.StateTransfiguringProcessor;
@@ -27,7 +27,7 @@ public class CampStructureDefinitionGenerator extends StructureTemplateDefinitio
 	private static CampPieces campPieces;
 
 	public CampStructureDefinitionGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
-		super(output, lookupProvider, TwilightForestMod.ID, "Camp");
+		super(output, lookupProvider, TFMain.ID, "Camp");
 	}
 
 	@Override

@@ -17,7 +17,7 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.block.GiantBlock;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataAttachments;
@@ -41,8 +41,8 @@ public class GiantPickItem extends Item {
 			.attributes(ItemAttributeModifiers.builder()
 				.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, damage + material.attackDamageBonus(), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
 				.add(Attributes.ATTACK_SPEED, new AttributeModifier(Item.BASE_ATTACK_SPEED_ID, speed, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-				.add(Attributes.BLOCK_INTERACTION_RANGE, new AttributeModifier(TwilightForestMod.prefix("reach_modifier"), 2.5, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.HAND)
-				.add(Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(TwilightForestMod.prefix("range_modifier"), 2.5, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.HAND)
+				.add(Attributes.BLOCK_INTERACTION_RANGE, new AttributeModifier(TFMain.prefix("reach_modifier"), 2.5, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.HAND)
+				.add(Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(TFMain.prefix("range_modifier"), 2.5, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.HAND)
 				.build());
 	}
 
@@ -51,8 +51,8 @@ public class GiantPickItem extends Item {
 			.attributes(ItemAttributeModifiers.builder()
 				.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, damage + material.attackDamageBonus(), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
 				.add(Attributes.ATTACK_SPEED, new AttributeModifier(Item.BASE_ATTACK_SPEED_ID, speed, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-				.add(Attributes.BLOCK_INTERACTION_RANGE, new AttributeModifier(TwilightForestMod.prefix("reach_modifier"), 2.5, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.HAND)
-				.add(Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(TwilightForestMod.prefix("range_modifier"), 2.5, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.HAND)
+				.add(Attributes.BLOCK_INTERACTION_RANGE, new AttributeModifier(TFMain.prefix("reach_modifier"), 2.5, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.HAND)
+				.add(Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(TFMain.prefix("range_modifier"), 2.5, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.HAND)
 				.build());
 	}
 

@@ -13,7 +13,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.BlockChainGoblinModel;
 import twilightforest.client.model.entity.ChainModel;
@@ -24,8 +24,8 @@ import twilightforest.entity.monster.BlockChainGoblin;
 
 public class BlockChainGoblinRenderer extends HumanoidMobRenderer<BlockChainGoblin, BlockChainGoblinRenderState, BlockChainGoblinModel> {
 
-	private static final Identifier GOBLIN_TEXTURE = TwilightForestMod.getModelTexture("blockgoblin.png");
-	private static final Identifier BLOCK_AND_CHAIN_TEXTURE = TwilightForestMod.getModelTexture("block_and_chain.png");
+	private static final Identifier GOBLIN_TEXTURE = TFMain.getModelTexture("blockgoblin.png");
+	private static final Identifier BLOCK_AND_CHAIN_TEXTURE = TFMain.getModelTexture("block_and_chain.png");
 
 	private final SpikeBlockModel model;
 	private final ChainModel chainModel;

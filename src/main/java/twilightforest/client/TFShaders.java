@@ -8,7 +8,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceProvider;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 
 import java.io.IOException;
 
@@ -19,9 +19,9 @@ public class TFShaders {
 
 	public static void registerShaders(RegisterShadersEvent event) {
 		try {
-			event.registerShader(new ShaderInstance(event.getResourceProvider(), TwilightForestMod.prefix("red_thread/red_thread"), DefaultVertexFormat.BLOCK),
+			event.registerShader(new ShaderInstance(event.getResourceProvider(), TFMain.prefix("red_thread/red_thread"), DefaultVertexFormat.BLOCK),
 				shader -> RED_THREAD = shader);
-			event.registerShader(new PositionAwareShaderInstance(event.getResourceProvider(), TwilightForestMod.prefix("aurora/aurora"), DefaultVertexFormat.POSITION_COLOR),
+			event.registerShader(new PositionAwareShaderInstance(event.getResourceProvider(), TFMain.prefix("aurora/aurora"), DefaultVertexFormat.POSITION_COLOR),
 				shader -> AURORA = (PositionAwareShaderInstance) shader);
 		} catch (IOException e) {
 			e.printStackTrace();

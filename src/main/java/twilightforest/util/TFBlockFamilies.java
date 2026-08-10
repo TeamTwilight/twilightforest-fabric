@@ -4,7 +4,7 @@ import com.google.common.collect.Maps;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.BlockFamily;
 import net.minecraft.world.level.block.Block;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.TFBlocks;
 
 import java.util.ArrayList;
@@ -134,7 +134,7 @@ public class TFBlockFamilies {
 		List<BlockFamily.Variant> missing = findMissingFamilyShapes(family, required);
 
 		if (!missing.isEmpty())
-			TwilightForestMod.LOGGER.warn("BlockFamily " + family + " for " + family.getBaseBlock() + " is missing variants for " + missing);
+			TFMain.LOGGER.warn("BlockFamily " + family + " for " + family.getBaseBlock() + " is missing variants for " + missing);
 	}
 
 	public static List<BlockFamily.Variant> findMissingFamilyShapes(BlockFamily family, BlockFamily.Variant... required) {

@@ -9,14 +9,14 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ParticlePacket implements CustomPacketPayload {
 
-	public static final Type<ParticlePacket> TYPE = new Type<>(TwilightForestMod.prefix("particle_queue"));
+	public static final Type<ParticlePacket> TYPE = new Type<>(TFMain.prefix("particle_queue"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, ParticlePacket> STREAM_CODEC = CustomPacketPayload.codec(ParticlePacket::write, ParticlePacket::new);
 
 	private final List<QueuedParticle> queuedParticles = new ArrayList<>();

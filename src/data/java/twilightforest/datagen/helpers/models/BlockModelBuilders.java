@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.client.model.block.CompositeBlockModel;
 import net.neoforged.neoforge.client.model.generators.blockstate.CompositeBlockStateModelBuilder;
 import org.jetbrains.annotations.NotNull;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.block.*;
 import twilightforest.client.model.block.aurorablock.NoiseVaryingModelBuilder;
 import twilightforest.client.model.block.connected.ConnectedTextureBuilder;
@@ -84,11 +84,11 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		MultiVariant template = plainVariant(ModelLocationUtils.decorateBlockModelLocation("skull"));
 		this.blockStateOutput.accept(createSimpleBlock(floor, template));
 		this.blockStateOutput.accept(createSimpleBlock(wall, template));
-		this.itemModelOutput.accept(floor.asItem(), ItemModelUtils.specialModel(TwilightForestMod.prefix("item/template_skull_candle"), new SkullCandleSpecialRenderer.Unbaked(floor.getType())));
+		this.itemModelOutput.accept(floor.asItem(), ItemModelUtils.specialModel(TFMain.prefix("item/template_skull_candle"), new SkullCandleSpecialRenderer.Unbaked(floor.getType())));
 	}
 
 	public void spawner(Block block, String texture) {
-		TextureMapping texturemapping = TextureMapping.cube(new Material(TwilightForestMod.prefix(texture)));
+		TextureMapping texturemapping = TextureMapping.cube(new Material(TFMain.prefix(texture)));
 		this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(ModelTemplates.CUBE_ALL_INNER_FACES.create(block, texturemapping, this.modelOutput))));
 		this.generateBlockItem(block);
 	}
@@ -99,7 +99,7 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 	}
 
 	public void castleDoor(Block block, int tint) {
-		Function<Boolean, Identifier> door = bool -> TFModelTemplates.CTM.extend().customLoader(ConnectedTextureBuilder::new, builder -> builder.connectsTo(TFBlocks.BLUE_CASTLE_DOOR.get(), TFBlocks.PINK_CASTLE_DOOR.get(), TFBlocks.VIOLET_CASTLE_DOOR.get(), TFBlocks.YELLOW_CASTLE_DOOR.get()).setOverlayEmissivity(15).setOverlayTintIndex(0)).build().createWithSuffix(block, bool ? "_vanished" : "", TFTextureMapping.ctmBlock(TwilightForestMod.prefix("block/castle_door" + (bool ? "_vanished" : "")), TwilightForestMod.prefix("block/castle_door_runes")), this.modelOutput);
+		Function<Boolean, Identifier> door = bool -> TFModelTemplates.CTM.extend().customLoader(ConnectedTextureBuilder::new, builder -> builder.connectsTo(TFBlocks.BLUE_CASTLE_DOOR.get(), TFBlocks.PINK_CASTLE_DOOR.get(), TFBlocks.VIOLET_CASTLE_DOOR.get(), TFBlocks.YELLOW_CASTLE_DOOR.get()).setOverlayEmissivity(15).setOverlayTintIndex(0)).build().createWithSuffix(block, bool ? "_vanished" : "", TFTextureMapping.ctmBlock(TFMain.prefix("block/castle_door" + (bool ? "_vanished" : "")), TFMain.prefix("block/castle_door_runes")), this.modelOutput);
 		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(block).with(PropertyDispatch.initial(CastleDoorBlock.VANISHED).select(true, plainVariant(door.apply(true))).select(false, plainVariant(door.apply(false)))));
 		this.registerSimpleTintedItemModel(block, BuiltInRegistries.BLOCK.getKey(block).withPrefix("block/"), ItemModelUtils.constantTint(tint));
 	}
@@ -130,16 +130,16 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		TextureMapping mapping = TextureMapping.cube(TFBlocks.NAGASTONE.get());
 
 		TextureMapping solidMapping = TextureMapping.cube(TFBlocks.NAGASTONE.get())
-			.put(TextureSlot.SIDE, new Material(TwilightForestMod.prefix("block/nagastone_long_side")))
-			.put(TextureSlot.BOTTOM, new Material(TwilightForestMod.prefix("block/nagastone_bottom_long")))
-			.put(TextureSlot.TOP, new Material(TwilightForestMod.prefix("block/nagastone_turn_top")));
+			.put(TextureSlot.SIDE, new Material(TFMain.prefix("block/nagastone_long_side")))
+			.put(TextureSlot.BOTTOM, new Material(TFMain.prefix("block/nagastone_bottom_long")))
+			.put(TextureSlot.TOP, new Material(TFMain.prefix("block/nagastone_turn_top")));
 
 		Identifier solid = TFModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(TFBlocks.NAGASTONE.get(), "_solid", solidMapping, this.modelOutput);
 		// todo 1.21.x cleanup: generate these models as well
-		Identifier down = TwilightForestMod.prefix("block/naga_segment/down");
-		Identifier up = TwilightForestMod.prefix("block/naga_segment/up");
-		Identifier horizontal = TwilightForestMod.prefix("block/naga_segment/horizontal");
-		Identifier vertical = TwilightForestMod.prefix("block/naga_segment/vertical");
+		Identifier down = TFMain.prefix("block/naga_segment/down");
+		Identifier up = TFMain.prefix("block/naga_segment/up");
+		Identifier horizontal = TFMain.prefix("block/naga_segment/horizontal");
+		Identifier vertical = TFMain.prefix("block/naga_segment/vertical");
 
 		this.itemModelOutput.accept(TFBlocks.NAGASTONE.asItem(), ItemModelUtils.plainModel(solid));
 		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(TFBlocks.NAGASTONE.get()).with(
@@ -161,13 +161,13 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		));
 
 		TextureMapping faceMapping = TextureMapping.cube(TFBlocks.NAGASTONE_HEAD.get())
-			.put(TextureSlot.UP, new Material(TwilightForestMod.prefix("block/nagastone_top_tip")))
-			.put(TextureSlot.DOWN, new Material(TwilightForestMod.prefix("block/nagastone_bottom_tip")))
-			.put(TextureSlot.SOUTH, new Material(TwilightForestMod.prefix("block/nagastone_face_left")))
-			.put(TextureSlot.NORTH, new Material(TwilightForestMod.prefix("block/nagastone_face_right")))
-			.put(TextureSlot.WEST, new Material(TwilightForestMod.prefix("block/nagastone_face_front")))
-			.put(TextureSlot.EAST, new Material(TwilightForestMod.prefix("block/nagastone_cross_section")))
-			.put(TextureSlot.PARTICLE, new Material(TwilightForestMod.prefix("block/nagastone_face_front")));
+			.put(TextureSlot.UP, new Material(TFMain.prefix("block/nagastone_top_tip")))
+			.put(TextureSlot.DOWN, new Material(TFMain.prefix("block/nagastone_bottom_tip")))
+			.put(TextureSlot.SOUTH, new Material(TFMain.prefix("block/nagastone_face_left")))
+			.put(TextureSlot.NORTH, new Material(TFMain.prefix("block/nagastone_face_right")))
+			.put(TextureSlot.WEST, new Material(TFMain.prefix("block/nagastone_face_front")))
+			.put(TextureSlot.EAST, new Material(TFMain.prefix("block/nagastone_cross_section")))
+			.put(TextureSlot.PARTICLE, new Material(TFMain.prefix("block/nagastone_face_front")));
 		Identifier model = TFModelTemplates.CUBE.create(TFBlocks.NAGASTONE_HEAD.get(), faceMapping, this.modelOutput);
 
 		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(TFBlocks.NAGASTONE_HEAD.get(), plainVariant(model)).with(ROTATION_HORIZONTAL_FACING));
@@ -180,23 +180,23 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		etchedNagastone(TFBlocks.MOSSY_ETCHED_NAGASTONE.get(), "_mossy");
 		etchedNagastone(TFBlocks.CRACKED_ETCHED_NAGASTONE.get(), "_weathered");
 
-		bisectedStairsBlock(TFBlocks.NAGASTONE_STAIRS_LEFT.get(), ModelLocationUtils.decorateBlockModelLocation("block/etched_nagastone_left"), TwilightForestMod.prefix("block/stone_tiles"), TwilightForestMod.prefix("block/nagastone_bare"));
-		bisectedStairsBlock(TFBlocks.NAGASTONE_STAIRS_RIGHT.get(), TwilightForestMod.prefix("block/etched_nagastone_right"), TwilightForestMod.prefix("block/stone_tiles"), TwilightForestMod.prefix("block/nagastone_bare"));
-		bisectedStairsBlock(TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT.get(), TwilightForestMod.prefix("block/etched_nagastone_left_mossy"), TwilightForestMod.prefix("block/stone_tiles_mossy"), TwilightForestMod.prefix("block/nagastone_bare_mossy"));
-		bisectedStairsBlock(TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT.get(), TwilightForestMod.prefix("block/etched_nagastone_right_mossy"), TwilightForestMod.prefix("block/stone_tiles_mossy"), TwilightForestMod.prefix("block/nagastone_bare_mossy"));
-		bisectedStairsBlock(TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT.get(), TwilightForestMod.prefix("block/etched_nagastone_left_weathered"), TwilightForestMod.prefix("block/stone_tiles_weathered"), TwilightForestMod.prefix("block/nagastone_bare_weathered"));
-		bisectedStairsBlock(TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT.get(), TwilightForestMod.prefix("block/etched_nagastone_right_weathered"), TwilightForestMod.prefix("block/stone_tiles_weathered"), TwilightForestMod.prefix("block/nagastone_bare_weathered"));
+		bisectedStairsBlock(TFBlocks.NAGASTONE_STAIRS_LEFT.get(), ModelLocationUtils.decorateBlockModelLocation("block/etched_nagastone_left"), TFMain.prefix("block/stone_tiles"), TFMain.prefix("block/nagastone_bare"));
+		bisectedStairsBlock(TFBlocks.NAGASTONE_STAIRS_RIGHT.get(), TFMain.prefix("block/etched_nagastone_right"), TFMain.prefix("block/stone_tiles"), TFMain.prefix("block/nagastone_bare"));
+		bisectedStairsBlock(TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT.get(), TFMain.prefix("block/etched_nagastone_left_mossy"), TFMain.prefix("block/stone_tiles_mossy"), TFMain.prefix("block/nagastone_bare_mossy"));
+		bisectedStairsBlock(TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT.get(), TFMain.prefix("block/etched_nagastone_right_mossy"), TFMain.prefix("block/stone_tiles_mossy"), TFMain.prefix("block/nagastone_bare_mossy"));
+		bisectedStairsBlock(TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT.get(), TFMain.prefix("block/etched_nagastone_left_weathered"), TFMain.prefix("block/stone_tiles_weathered"), TFMain.prefix("block/nagastone_bare_weathered"));
+		bisectedStairsBlock(TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT.get(), TFMain.prefix("block/etched_nagastone_right_weathered"), TFMain.prefix("block/stone_tiles_weathered"), TFMain.prefix("block/nagastone_bare_weathered"));
 	}
 
 	private void nagastonePillar(Block block, String suffix) {
 		TextureMapping mapping = TextureMapping.cube(TFBlocks.NAGASTONE.get())
-			.put(TextureSlot.END, new Material(TwilightForestMod.prefix("block/nagastone_pillar_end" + suffix)))
-			.put(TextureSlot.SIDE, new Material(TwilightForestMod.prefix("block/nagastone_pillar_side" + suffix)));
+			.put(TextureSlot.END, new Material(TFMain.prefix("block/nagastone_pillar_end" + suffix)))
+			.put(TextureSlot.SIDE, new Material(TFMain.prefix("block/nagastone_pillar_side" + suffix)));
 		Identifier model = TFModelTemplates.CUBE_COLUMN.create(block, mapping, this.modelOutput);
 
 		TextureMapping altMapping = TextureMapping.cube(TFBlocks.NAGASTONE.get())
-			.put(TextureSlot.END, new Material(TwilightForestMod.prefix("block/nagastone_pillar_end" + suffix)))
-			.put(TextureSlot.SIDE, new Material(TwilightForestMod.prefix("block/nagastone_pillar_side" + suffix + "_alt")));
+			.put(TextureSlot.END, new Material(TFMain.prefix("block/nagastone_pillar_end" + suffix)))
+			.put(TextureSlot.SIDE, new Material(TFMain.prefix("block/nagastone_pillar_side" + suffix + "_alt")));
 		Identifier reversed = TFModelTemplates.CUBE_COLUMN.createWithSuffix(block, "_alt", altMapping, this.modelOutput);
 
 		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(block).with(
@@ -214,9 +214,9 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 
 	private void etchedNagastone(Block block, String suffix) {
 		TextureMapping mapping = TextureMapping.cube(TFBlocks.NAGASTONE.get())
-			.put(TextureSlot.END, new Material(TwilightForestMod.prefix("block/stone_tiles" + suffix)))
-			.put(TextureSlot.SIDE, new Material(TwilightForestMod.prefix("block/etched_nagastone_up" + suffix)))
-			.put(TextureSlot.PARTICLE, new Material(TwilightForestMod.prefix("block/stone_tiles" + suffix)));
+			.put(TextureSlot.END, new Material(TFMain.prefix("block/stone_tiles" + suffix)))
+			.put(TextureSlot.SIDE, new Material(TFMain.prefix("block/etched_nagastone_up" + suffix)))
+			.put(TextureSlot.PARTICLE, new Material(TFMain.prefix("block/stone_tiles" + suffix)));
 		Identifier model = ModelTemplates.CUBE_COLUMN.create(block, mapping, this.modelOutput);
 
 		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(block).with(
@@ -251,13 +251,13 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 	}
 
 	public void stonePillar() {
-		Identifier base = TwilightForestMod.prefix("block/pillar/pillar_base");
-		Identifier up = TwilightForestMod.prefix("block/pillar/pillar_up");
-		Identifier down = TwilightForestMod.prefix("block/pillar/pillar_down");
-		Identifier top = TwilightForestMod.prefix("block/pillar/pillar_top");
-		Identifier bottom = TwilightForestMod.prefix("block/pillar/pillar_bottom");
+		Identifier base = TFMain.prefix("block/pillar/pillar_base");
+		Identifier up = TFMain.prefix("block/pillar/pillar_up");
+		Identifier down = TFMain.prefix("block/pillar/pillar_down");
+		Identifier top = TFMain.prefix("block/pillar/pillar_top");
+		Identifier bottom = TFMain.prefix("block/pillar/pillar_bottom");
 
-		this.itemModelOutput.accept(TFBlocks.TWISTED_STONE_PILLAR.asItem(), ItemModelUtils.plainModel(TwilightForestMod.prefix("block/pillar/pillar_inventory")));
+		this.itemModelOutput.accept(TFBlocks.TWISTED_STONE_PILLAR.asItem(), ItemModelUtils.plainModel(TFMain.prefix("block/pillar/pillar_inventory")));
 
 		this.blockStateOutput.accept(
 			MultiPartGenerator.multiPart(TFBlocks.TWISTED_STONE_PILLAR.get())
@@ -395,15 +395,15 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 
 	private Identifier makeTerrorcottaCurvesModel(String type, int rotation) {
 		TextureMapping mapping = TextureMapping.cube(TFBlocks.TERRORCOTTA_CURVES.get())
-			.put(TextureSlot.UP, new Material(TwilightForestMod.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.UP))))
-			.put(TextureSlot.DOWN, new Material(TwilightForestMod.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.DOWN))))
-			.put(TextureSlot.SOUTH, new Material(TwilightForestMod.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.SOUTH))))
-			.put(TextureSlot.NORTH, new Material(TwilightForestMod.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.NORTH))))
-			.put(TextureSlot.WEST, new Material(TwilightForestMod.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.WEST))))
-			.put(TextureSlot.EAST, new Material(TwilightForestMod.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.EAST))))
-			.put(TextureSlot.PARTICLE, new Material(TwilightForestMod.prefix("block/" + type + "_a")));
+			.put(TextureSlot.UP, new Material(TFMain.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.UP))))
+			.put(TextureSlot.DOWN, new Material(TFMain.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.DOWN))))
+			.put(TextureSlot.SOUTH, new Material(TFMain.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.SOUTH))))
+			.put(TextureSlot.NORTH, new Material(TFMain.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.NORTH))))
+			.put(TextureSlot.WEST, new Material(TFMain.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.WEST))))
+			.put(TextureSlot.EAST, new Material(TFMain.prefix("block/" + type + curvesSuffixForFacing(rotation, Direction.EAST))))
+			.put(TextureSlot.PARTICLE, new Material(TFMain.prefix("block/" + type + "_a")));
 
-		return TFModelTemplates.CUBE.create(TwilightForestMod.prefix("block/" + type + "_" + (rotation * 90)), mapping, this.modelOutput);
+		return TFModelTemplates.CUBE.create(TFMain.prefix("block/" + type + "_" + (rotation * 90)), mapping, this.modelOutput);
 	}
 
 	@NotNull
@@ -447,37 +447,37 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 
 	private Identifier makeTerrorcottaLinesModel(String type, boolean rotated) {
 		TextureMapping mapping = TextureMapping.cube(TFBlocks.TERRORCOTTA_CURVES.get())
-			.put(TextureSlot.UP, new Material(TwilightForestMod.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.UP))))
-			.put(TextureSlot.DOWN, new Material(TwilightForestMod.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.DOWN))))
-			.put(TextureSlot.SOUTH, new Material(TwilightForestMod.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.SOUTH))))
-			.put(TextureSlot.NORTH, new Material(TwilightForestMod.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.NORTH))))
-			.put(TextureSlot.WEST, new Material(TwilightForestMod.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.WEST))))
-			.put(TextureSlot.EAST, new Material(TwilightForestMod.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.EAST))))
-			.put(TextureSlot.PARTICLE, new Material(TwilightForestMod.prefix("block/" + type + "_a")));
+			.put(TextureSlot.UP, new Material(TFMain.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.UP))))
+			.put(TextureSlot.DOWN, new Material(TFMain.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.DOWN))))
+			.put(TextureSlot.SOUTH, new Material(TFMain.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.SOUTH))))
+			.put(TextureSlot.NORTH, new Material(TFMain.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.NORTH))))
+			.put(TextureSlot.WEST, new Material(TFMain.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.WEST))))
+			.put(TextureSlot.EAST, new Material(TFMain.prefix("block/" + type + linesSuffixForFacing(rotated, Direction.EAST))))
+			.put(TextureSlot.PARTICLE, new Material(TFMain.prefix("block/" + type + "_a")));
 
-		return TFModelTemplates.CUBE.create(TwilightForestMod.prefix("block/" + type + "_" + (rotated ? 90 : 0)), mapping, this.modelOutput);
+		return TFModelTemplates.CUBE.create(TFMain.prefix("block/" + type + "_" + (rotated ? 90 : 0)), mapping, this.modelOutput);
 	}
 
 	public void makeJars() {
 		TextureMapping spawnerMapping = TextureMapping.cube(TFBlocks.MASON_JAR.get())
-			.put(TextureSlot.TOP, new Material(TwilightForestMod.prefix("block/jar_top")))
-			.put(TextureSlot.BOTTOM, new Material(TwilightForestMod.prefix("block/jar_bottom")))
-			.put(TextureSlot.SIDE, new Material(TwilightForestMod.prefix("block/jar_side")))
-			.put(TextureSlot.PARTICLE, new Material(TwilightForestMod.prefix("block/jar_side")))
+			.put(TextureSlot.TOP, new Material(TFMain.prefix("block/jar_top")))
+			.put(TextureSlot.BOTTOM, new Material(TFMain.prefix("block/jar_bottom")))
+			.put(TextureSlot.SIDE, new Material(TFMain.prefix("block/jar_side")))
+			.put(TextureSlot.PARTICLE, new Material(TFMain.prefix("block/jar_side")))
 			.put(TFTextureSlot.SOIL, new Material(Identifier.withDefaultNamespace("block/composter_compost")))
 			.put(TFTextureSlot.PLANT, new Material(Identifier.withDefaultNamespace("block/poppy")));
 
-		Identifier spawnerLocation = TFExtendedModelTemplates.FIREFLY_PARTICLE_SPAWNER.create(TwilightForestMod.prefix("block/" + TFBlocks.FIREFLY_SPAWNER.getId().getPath()), spawnerMapping, this.modelOutput);
+		Identifier spawnerLocation = TFExtendedModelTemplates.FIREFLY_PARTICLE_SPAWNER.create(TFMain.prefix("block/" + TFBlocks.FIREFLY_SPAWNER.getId().getPath()), spawnerMapping, this.modelOutput);
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.FIREFLY_SPAWNER.get(), plainVariant(spawnerLocation)));
 		this.itemModelOutput.accept(TFBlocks.FIREFLY_SPAWNER.get().asItem(), ItemModelUtils.plainModel(spawnerLocation));
 
 		TextureMapping mapping = TextureMapping.cube(TFBlocks.MASON_JAR.get())
-			.put(TextureSlot.TOP, new Material(TwilightForestMod.prefix("block/jar_top")))
-			.put(TextureSlot.BOTTOM, new Material(TwilightForestMod.prefix("block/jar_bottom")))
-			.put(TextureSlot.SIDE, new Material(TwilightForestMod.prefix("block/jar_side")))
-			.put(TextureSlot.PARTICLE, new Material(TwilightForestMod.prefix("block/jar_side")));
+			.put(TextureSlot.TOP, new Material(TFMain.prefix("block/jar_top")))
+			.put(TextureSlot.BOTTOM, new Material(TFMain.prefix("block/jar_bottom")))
+			.put(TextureSlot.SIDE, new Material(TFMain.prefix("block/jar_side")))
+			.put(TextureSlot.PARTICLE, new Material(TFMain.prefix("block/jar_side")));
 
-		Identifier jar = TFExtendedModelTemplates.MASON_JAR.create(TwilightForestMod.prefix("block/" + TFBlocks.MASON_JAR.getId().getPath()), mapping, this.modelOutput);
+		Identifier jar = TFExtendedModelTemplates.MASON_JAR.create(TFMain.prefix("block/" + TFBlocks.MASON_JAR.getId().getPath()), mapping, this.modelOutput);
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.MASON_JAR.get(), plainVariant(jar)));
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.CICADA_JAR.get(), plainVariant(jar)));
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.FIREFLY_JAR.get(), plainVariant(jar)));
@@ -495,7 +495,7 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 					.put(TextureSlot.SIDE, new Material(Identifier.withDefaultNamespace("block/pumpkin_side")))
 					.put(TextureSlot.END, new Material(Identifier.withDefaultNamespace("block/pumpkin_top")));
 
-				TFModelTemplates.JAR_LID.create(TwilightForestMod.prefix("block/lid/" + name), lidMapping, this.modelOutput);
+				TFModelTemplates.JAR_LID.create(TFMain.prefix("block/lid/" + name), lidMapping, this.modelOutput);
 				continue;
 			}
 			if (lid.customPath() != null) name = lid.customPath();
@@ -503,7 +503,7 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 				.put(TextureSlot.SIDE, new Material(Identifier.fromNamespaceAndPath(item.getNamespace(), "block/" + item.getPath())))
 				.put(TextureSlot.END, new Material(Identifier.fromNamespaceAndPath(item.getNamespace(), "block/" + item.getPath() + "_top")));
 
-			TFModelTemplates.JAR_LID.create(TwilightForestMod.prefix("block/lid/" + name), lidMapping, this.modelOutput);
+			TFModelTemplates.JAR_LID.create(TFMain.prefix("block/lid/" + name), lidMapping, this.modelOutput);
 		}
 	}
 
@@ -798,7 +798,7 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 				.ifElse().from(7, 7, 9).to(9, 9, 16).parents(ForceFieldModel.ExtraDirection.SOUTH).face(Direction.EAST).uvs(9, 7, 16, 9).texture("#pane").end()
 				.ifSame().from(9, 7, 7).to(16, 9, 9).parents(ForceFieldModel.ExtraDirection.EAST).face(Direction.SOUTH).uvs(0, 7, 7, 9).texture("#pane").end().end();
 		}).build().create(block, TFTextureMapping.forcefield(), this.modelOutput))));
-		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(block.asItem()), TextureMapping.layer0(new Material(TwilightForestMod.prefix("block/forcefield"))), this.modelOutput), ItemModelUtils.constantTint(tint)));
+		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(block.asItem()), TextureMapping.layer0(new Material(TFMain.prefix("block/forcefield"))), this.modelOutput), ItemModelUtils.constantTint(tint)));
 	}
 
 	public void generatePaneBlock(Block glassBlock, Block paneBlock) {
@@ -840,7 +840,7 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 	public void generateRuneBlock(Block runeBlock, int tint) {
 		Variant[] variants = new Variant[8];
 		for (int i = 0; i < 8; i++) {
-			variants[i] = plainModel(TFModelTemplates.CASTLE_RUNE_TEMPLATE.createWithSuffix(runeBlock, "_" + i, TextureMapping.cube(TFBlocks.CASTLE_BRICK.get()).put(TFTextureSlot.RUNE, new Material(TwilightForestMod.prefix("block/castleblock_magic_" + i))), this.modelOutput));
+			variants[i] = plainModel(TFModelTemplates.CASTLE_RUNE_TEMPLATE.createWithSuffix(runeBlock, "_" + i, TextureMapping.cube(TFBlocks.CASTLE_BRICK.get()).put(TFTextureSlot.RUNE, new Material(TFMain.prefix("block/castleblock_magic_" + i))), this.modelOutput));
 		}
 		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(runeBlock, variants(variants)));
 		this.itemModelOutput.accept(runeBlock.asItem(), ItemModelUtils.tintedModel(ModelLocationUtils.getModelLocation(runeBlock).withSuffix("_0"), ItemModelUtils.constantTint(tint)));

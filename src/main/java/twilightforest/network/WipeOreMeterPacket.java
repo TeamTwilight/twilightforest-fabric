@@ -7,13 +7,13 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
 
 public record WipeOreMeterPacket(InteractionHand hand) implements CustomPacketPayload {
 
-	public static final Type<WipeOreMeterPacket> TYPE = new Type<>(TwilightForestMod.prefix("wipe_ore_meter"));
+	public static final Type<WipeOreMeterPacket> TYPE = new Type<>(TFMain.prefix("wipe_ore_meter"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, WipeOreMeterPacket> STREAM_CODEC = CustomPacketPayload.codec(WipeOreMeterPacket::write, WipeOreMeterPacket::new);
 
 	public WipeOreMeterPacket(FriendlyByteBuf buf) {

@@ -8,12 +8,12 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.world.components.processors.StoneBricksVariants;
 
 public class GroveRuinsFeature extends TemplateFeature<NoneFeatureConfiguration> {
-	private static final Identifier PILLAR = TwilightForestMod.prefix("feature/ruins/grove_pillar");
-	private static final Identifier ARCH = TwilightForestMod.prefix("feature/ruins/grove_arch");
+	private static final Identifier PILLAR = TFMain.prefix("feature/ruins/grove_pillar");
+	private static final Identifier ARCH = TFMain.prefix("feature/ruins/grove_arch");
 
 	public GroveRuinsFeature(Codec<NoneFeatureConfiguration> config) {
 		super(config);

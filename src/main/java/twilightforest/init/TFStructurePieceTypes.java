@@ -4,7 +4,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.world.components.structures.*;
 import twilightforest.world.components.structures.courtyard.*;
 import twilightforest.world.components.structures.darktower.*;
@@ -22,7 +22,7 @@ import twilightforest.world.components.structures.trollcave.*;
 import java.util.Locale;
 
 public class TFStructurePieceTypes {
-	public static final DeferredRegister<StructurePieceType> STRUCTURE_PIECE_TYPES = DeferredRegister.create(Registries.STRUCTURE_PIECE, TwilightForestMod.ID);
+	public static final DeferredRegister<StructurePieceType> STRUCTURE_PIECE_TYPES = DeferredRegister.create(Registries.STRUCTURE_PIECE, TFMain.ID);
 
 	// Single-Piece Structures
 	//IStructurePieceTypes that can be referred to

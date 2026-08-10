@@ -63,7 +63,7 @@ import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.network.PacketDistributor;
 import tamaized.beanification.PostConstruct;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.advancements.DrinkFromFlaskTrigger;
 import tamaized.beanification.Autowired;
 import twilightforest.block.*;
@@ -156,7 +156,7 @@ public class EntityEvents {
 	}
 
 	private void alertPlayerCastleIsWIP(AdvancementEvent.AdvancementEarnEvent event) {
-		if (event.getAdvancement().id().equals(TwilightForestMod.prefix("progression_end"))) {
+		if (event.getAdvancement().id().equals(TFMain.prefix("progression_end"))) {
 			event.getEntity().sendSystemMessage(Component.translatable("gui.twilightforest.progression_end.message", Component.translatable("gui.twilightforest.progression_end.discord").withStyle(style -> style.withColor(ChatFormatting.BLUE).applyFormat(ChatFormatting.UNDERLINE).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.experiment115.com/")))));
 		}
 	}
@@ -441,7 +441,7 @@ public class EntityEvents {
 			if (TFConfig.multiplayerFightAdjuster.adjustsHealth()) {
 				List<ServerPlayer> nearbyPlayers = event.getLevel().getEntitiesOfClass(ServerPlayer.class, event.getEntity().getBoundingBox().inflate(32, 10, 32), player -> EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.ENTITY_STILL_ALIVE).test(player));
 				if (nearbyPlayers.size() > 1 && event.getEntity().getAttribute(Attributes.MAX_HEALTH) != null) {
-					event.getEntity().getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(TwilightForestMod.prefix("group_health_boost"), getHealthBasedOnDifficulty(event.getDifficulty().getDifficulty()) * (nearbyPlayers.size() - 1), AttributeModifier.Operation.ADD_VALUE));
+					event.getEntity().getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(TFMain.prefix("group_health_boost"), getHealthBasedOnDifficulty(event.getDifficulty().getDifficulty()) * (nearbyPlayers.size() - 1), AttributeModifier.Operation.ADD_VALUE));
 				}
 			}
 		}

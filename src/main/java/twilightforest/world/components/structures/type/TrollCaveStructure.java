@@ -15,8 +15,8 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TFMain;
 import twilightforest.TFRegistries;
-import twilightforest.TwilightForestMod;
 import twilightforest.tags.TFBiomeTags;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFMapDecorations;
@@ -83,7 +83,7 @@ public class TrollCaveStructure extends ProgressionStructure implements Configur
 				.build()
 			), WeightedList.of(), WeightedList.of()),
 			context.lookup(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS).getOrThrow(StructureSpeleothemConfigs.TROLL_CAVE),
-			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_merge"))),
+			new AdvancementLockConfig(List.of(TFMain.prefix("progress_merge"))),
 			Optional.of(new HintConfig(HintConfig.book("trollcave", 3), TFEntities.KOBOLD.get())),
 			Optional.of(new DecorationConfig(4, true, true, false)),
 			false, Optional.of(TFMapDecorations.TROLL_CAVES),

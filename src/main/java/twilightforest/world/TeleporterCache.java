@@ -15,7 +15,7 @@ import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
 import net.minecraft.world.level.storage.SavedDataStorage;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +26,7 @@ public class TeleporterCache extends SavedData {
 	private final Map<ResourceKey<Level>, Map<ColumnPos, TFTeleporter.PortalPosition>> destinationCoordinateCache = new HashMap<>();
 
 	public static final Codec<TeleporterCache> CODEC = CompoundTag.CODEC.xmap(TeleporterCache::load, cache -> cache.save(new CompoundTag()));
-	public static final SavedDataType<TeleporterCache> TELEPORTER_CACHE_TYPE = new SavedDataType<>(TwilightForestMod.prefix("teleporter_cache"), TeleporterCache::new, CODEC, null);
+	public static final SavedDataType<TeleporterCache> TELEPORTER_CACHE_TYPE = new SavedDataType<>(TFMain.prefix("teleporter_cache"), TeleporterCache::new, CODEC, null);
 
 	private TeleporterCache() {
 		this.setDirty();

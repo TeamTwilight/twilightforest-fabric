@@ -4,7 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.client.model.generators.template.CustomLoaderBuilder;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +14,7 @@ public class NoiseVaryingModelBuilder extends CustomLoaderBuilder {
 	private final List<Identifier> variants = new ArrayList<>();
 
 	public NoiseVaryingModelBuilder() {
-		super(TwilightForestMod.prefix("noise_varying"), false);
+		super(TFMain.prefix("noise_varying"), false);
 	}
 
 	public NoiseVaryingModelBuilder add(Identifier builder) {

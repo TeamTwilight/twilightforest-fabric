@@ -12,7 +12,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFConfiguredFeatures;
 
@@ -129,7 +129,7 @@ public class TFMaze {
 			return getRaw(sx * 2 + 1, sz * 2);
 		}
 
-		TwilightForestMod.LOGGER.info("Wall check out of bounds; s = {}, {}; d = {}, {}", sx, sz, dx, dz);
+		TFMain.LOGGER.info("Wall check out of bounds; s = {}, {}; d = {}, {}", sx, sz, dx, dz);
 
 		return OUT_OF_BOUNDS;
 	}

@@ -18,7 +18,7 @@ import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TFRegistries;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.block.AbstractSkullCandleBlock;
 import twilightforest.components.item.SkullCandles;
 import twilightforest.config.TFConfig;
@@ -30,7 +30,7 @@ import java.util.List;
 
 public class TFCreativeTabs {
 
-	public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, TwilightForestMod.ID);
+	public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, TFMain.ID);
 
 	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> BLOCKS = TABS.register("blocks", () -> CreativeModeTab.builder()
 		.title(Component.translatable("itemGroup.twilightforest.blocks"))

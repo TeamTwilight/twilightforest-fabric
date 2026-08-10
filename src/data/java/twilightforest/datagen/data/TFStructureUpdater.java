@@ -16,7 +16,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.util.datafix.DataFixers;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 
 import javax.annotation.Nonnull;
 import java.io.ByteArrayOutputStream;
@@ -43,7 +43,7 @@ public class TFStructureUpdater implements DataProvider {
 	public CompletableFuture<?> run(@Nonnull CachedOutput cache) {
 		try {
 			for (var entry : this.resources.listResources(this.basePath, $ -> true).entrySet())
-				if (entry.getKey().getNamespace().equals(TwilightForestMod.ID))
+				if (entry.getKey().getNamespace().equals(TFMain.ID))
 					process(entry.getKey(), entry.getValue(), cache);
 			return CompletableFuture.completedFuture(null);
 		} catch (IOException x) {

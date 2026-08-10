@@ -14,7 +14,7 @@ import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jspecify.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.entity.*;
 import twilightforest.entity.boss.*;
 import twilightforest.entity.monster.*;
@@ -27,8 +27,8 @@ import java.util.function.Supplier;
 
 public class TFEntities {
 
-	public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(Registries.ENTITY_TYPE, TwilightForestMod.ID);
-	public static final DeferredRegister<Item> SPAWN_EGGS = DeferredRegister.create(Registries.ITEM, TwilightForestMod.ID);
+	public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(Registries.ENTITY_TYPE, TFMain.ID);
+	public static final DeferredRegister<Item> SPAWN_EGGS = DeferredRegister.create(Registries.ITEM, TFMain.ID);
 	public static final Map<Holder<EntityType<?>>, Supplier<AttributeSupplier.Builder>> ATTRIBUTES = new HashMap<>();
 	public static final Map<Holder<EntityType<?>>, SpawnPlacements.SpawnPredicate<?>> SPAWN_PREDICATES = new HashMap<>();
 
@@ -161,6 +161,6 @@ public class TFEntities {
 	}
 
 	private static ResourceKey<EntityType<?>> createIDFor(String name) {
-		return ResourceKey.create(Registries.ENTITY_TYPE, TwilightForestMod.prefix(name));
+		return ResourceKey.create(Registries.ENTITY_TYPE, TFMain.prefix(name));
 	}
 }

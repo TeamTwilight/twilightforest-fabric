@@ -3,7 +3,7 @@ package twilightforest.tags;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 
 public class TFBiomeTags {
 
@@ -30,6 +30,6 @@ public class TFBiomeTags {
 	public static final TagKey<Biome> VALID_FINAL_CASTLE_BIOMES = create("valid_final_castle_biomes");
 
 	private static TagKey<Biome> create(String tagName) {
-		return TagKey.create(Registries.BIOME, TwilightForestMod.prefix(tagName));
+		return TagKey.create(Registries.BIOME, TFMain.prefix(tagName));
 	}
 }

@@ -6,13 +6,13 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.config.TFConfig;
 import twilightforest.inventory.UncraftingMenu;
 
 public record UncraftingGuiPacket(int operationType) implements CustomPacketPayload {
 
-	public static final Type<UncraftingGuiPacket> TYPE = new Type<>(TwilightForestMod.prefix("switch_uncrafting_operation"));
+	public static final Type<UncraftingGuiPacket> TYPE = new Type<>(TFMain.prefix("switch_uncrafting_operation"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, UncraftingGuiPacket> STREAM_CODEC = CustomPacketPayload.codec(UncraftingGuiPacket::write, UncraftingGuiPacket::new);
 
 	public UncraftingGuiPacket(FriendlyByteBuf buf) {

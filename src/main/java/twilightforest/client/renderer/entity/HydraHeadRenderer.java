@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.model.entity.HydraHeadModel;
 import twilightforest.client.state.entity.HydraHeadRenderState;
 import twilightforest.entity.boss.Hydra;
@@ -18,7 +18,7 @@ import twilightforest.entity.boss.HydraHeadContainer;
 
 public class HydraHeadRenderer extends TFPartRenderer<HydraHead, HydraHeadRenderState, HydraHeadModel> {
 
-	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("hydra4.png");
+	private static final Identifier TEXTURE = TFMain.getModelTexture("hydra4.png");
 
 	public HydraHeadRenderer(EntityRendererProvider.Context context, HydraHeadModel model) {
 		super(context, model);

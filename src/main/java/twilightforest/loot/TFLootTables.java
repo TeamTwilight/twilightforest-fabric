@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 
 import java.util.Collections;
 import java.util.Set;
@@ -151,7 +151,7 @@ public class TFLootTables {
 	}
 
 	private static ResourceKey<LootTable> register(String id) {
-		return register(ResourceKey.create(Registries.LOOT_TABLE, TwilightForestMod.prefix(id)));
+		return register(ResourceKey.create(Registries.LOOT_TABLE, TFMain.prefix(id)));
 	}
 
 	private static ResourceKey<LootTable> register(ResourceKey<LootTable> id) {

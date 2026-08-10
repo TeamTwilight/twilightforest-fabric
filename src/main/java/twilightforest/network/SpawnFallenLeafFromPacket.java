@@ -10,14 +10,14 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.TFParticleType;
 
 import java.util.Random;
 
 public record SpawnFallenLeafFromPacket(BlockPos pos, Vec3 motion) implements CustomPacketPayload {
 
-	public static final Type<SpawnFallenLeafFromPacket> TYPE = new Type<>(TwilightForestMod.prefix("spawn_fallen_leaf"));
+	public static final Type<SpawnFallenLeafFromPacket> TYPE = new Type<>(TFMain.prefix("spawn_fallen_leaf"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, SpawnFallenLeafFromPacket> STREAM_CODEC = CustomPacketPayload.codec(SpawnFallenLeafFromPacket::write, SpawnFallenLeafFromPacket::new);
 
 	public SpawnFallenLeafFromPacket(FriendlyByteBuf buf) {

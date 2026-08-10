@@ -4,7 +4,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 
 public class TFEntityTypeTags {
 
@@ -31,7 +31,7 @@ public class TFEntityTypeTags {
 	public static final TagKey<EntityType<?>> IE_SHADER_BLACKLIST = create("immersiveengineering", "shaderbag/blacklist");
 
 	private static TagKey<EntityType<?>> create(String tagName) {
-		return TagKey.create(Registries.ENTITY_TYPE, TwilightForestMod.prefix(tagName));
+		return TagKey.create(Registries.ENTITY_TYPE, TFMain.prefix(tagName));
 	}
 
 

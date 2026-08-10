@@ -5,7 +5,7 @@ import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
@@ -20,7 +20,7 @@ public final class LichTowerBaseTrim extends TwilightJigsawPiece implements Piec
 	}
 
 	public LichTowerBaseTrim(StructureTemplateManager structureManager, JigsawPlaceContext jigsawContext) {
-		super(TFStructurePieceTypes.LICH_TOWER_BASE_TRIM.get(), 1, structureManager, TwilightForestMod.prefix("lich_tower/central_trim"), jigsawContext);
+		super(TFStructurePieceTypes.LICH_TOWER_BASE_TRIM.get(), 1, structureManager, TFMain.prefix("lich_tower/central_trim"), jigsawContext);
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings);
 	}

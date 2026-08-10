@@ -3,7 +3,7 @@ package twilightforest.client.renderer.entity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.resources.Identifier;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.AlphaYetiModel;
 import twilightforest.client.state.entity.AlphaYetiRenderState;
@@ -11,7 +11,7 @@ import twilightforest.entity.boss.AlphaYeti;
 
 public class AlphaYetiRenderer extends HumanoidMobRenderer<AlphaYeti, AlphaYetiRenderState, AlphaYetiModel> {
 
-	public static final Identifier TEXTURE = TwilightForestMod.getModelTexture("yetialpha.png");
+	public static final Identifier TEXTURE = TFMain.getModelTexture("yetialpha.png");
 
 	public AlphaYetiRenderer(EntityRendererProvider.Context context) {
 		super(context, new AlphaYetiModel(context.bakeLayer(TFModelLayers.ALPHA_YETI)), 1.75F);

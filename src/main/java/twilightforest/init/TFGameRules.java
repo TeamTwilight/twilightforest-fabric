@@ -8,10 +8,10 @@ import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.level.gamerules.*;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 
 public class TFGameRules {
-	public static final DeferredRegister<GameRule<?>> RULES = DeferredRegister.create(Registries.GAME_RULE, TwilightForestMod.ID);
+	public static final DeferredRegister<GameRule<?>> RULES = DeferredRegister.create(Registries.GAME_RULE, TFMain.ID);
 
 	public static final DeferredHolder<GameRule<?>, GameRule<Boolean>> ENFORCED_PROGRESSION_RULE = registerBoolean("twilightforest_enforced_progression", GameRuleCategory.UPDATES, true);
 	public static final DeferredHolder<GameRule<?>, GameRule<Integer>> TF_PORTAL_DEFAULT_DELAY = registerInteger("players_twilight_portal_default_delay", GameRuleCategory.PLAYER, 60, 0);

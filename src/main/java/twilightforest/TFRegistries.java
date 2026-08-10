@@ -39,9 +39,9 @@ public class TFRegistries {
 
 		//Normal Registries
 		public static final ResourceKey<Registry<BiomeLayerType>> BIOME_LAYER_TYPE = ResourceKey.createRegistryKey(namedRegistry("biome_layer_type"));
-		public static final ResourceKey<Registry<Enforcement>> ENFORCEMENT = ResourceKey.createRegistryKey(TwilightForestMod.prefix("enforcement"));
-		public static final ResourceKey<Registry<ChunkBlanketType>> CHUNK_BLANKET_TYPE = ResourceKey.createRegistryKey(TwilightForestMod.prefix("chunk_blanket_type"));
-		public static final ResourceKey<Registry<TemplateMarkerHandlerType>> TEMPLATE_MARKER_HANDLER_TYPE = ResourceKey.createRegistryKey(TwilightForestMod.prefix("template_marker_handler_type"));
+		public static final ResourceKey<Registry<Enforcement>> ENFORCEMENT = ResourceKey.createRegistryKey(TFMain.prefix("enforcement"));
+		public static final ResourceKey<Registry<ChunkBlanketType>> CHUNK_BLANKET_TYPE = ResourceKey.createRegistryKey(TFMain.prefix("chunk_blanket_type"));
+		public static final ResourceKey<Registry<TemplateMarkerHandlerType>> TEMPLATE_MARKER_HANDLER_TYPE = ResourceKey.createRegistryKey(TFMain.prefix("template_marker_handler_type"));
 		public static final ResourceKey<Registry<ItemDisplayType>> ITEM_DISPLAY_TYPE = ResourceKey.createRegistryKey(namedRegistry("item_display_type"));
 		public static final ResourceKey<Registry<MapCodec<? extends TravellersModifier>>> TRAVELLERS_MODIFIER_TYPE = ResourceKey.createRegistryKey(namedRegistry("travellers_modifier_type"));
 

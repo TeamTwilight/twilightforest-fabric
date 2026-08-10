@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import org.jspecify.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.renderer.entity.UrGhastRenderer;
 import twilightforest.client.state.entity.TFGhastRenderState;
 
@@ -65,7 +65,7 @@ public class UrGhastModel extends TFGhastModel<TFGhastRenderState> implements Tr
 				case 7 -> PartPose.offsetAndRotation(7.5F, 3.5F, -1.0F, 0.0F, 0.0F, -Mth.PI / 4.0F);
 				case 8 -> PartPose.offsetAndRotation(7.5F, -1.5F, 3.5F, 0.0F, 0.0F, -Mth.PI / 3.0F);
 				default -> {
-					TwilightForestMod.LOGGER.warn("Out of bounds with Ur-Ghast Trophy limb creation: Iteration {}", iteration);
+					TFMain.LOGGER.warn("Out of bounds with Ur-Ghast Trophy limb creation: Iteration {}", iteration);
 					yield PartPose.ZERO;
 				}
 			});

@@ -18,7 +18,7 @@ import net.neoforged.neoforge.common.TranslatableEnum;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.network.SyncUncraftingTableConfigPacket;
 import twilightforest.util.PlayerHelper;
 
@@ -30,7 +30,7 @@ import java.util.*;
 
 public class TFConfig {
 
-	public static final String CONFIG_ID = "config." + TwilightForestMod.ID + ".";
+	public static final String CONFIG_ID = "config." + TFMain.ID + ".";
 	@Nullable
 	private static Identifier portalLockingAdvancement;
 	private static final List<Holder<Biome>> VALID_AURORA_BIOMES = new ArrayList<>();
@@ -117,11 +117,11 @@ public class TFConfig {
 			Identifier lock = Identifier.tryParse(ConfigSetup.COMMON_CONFIG.PORTAL.portalAdvancementLock.get());
 			if (lock == null || PlayerHelper.getAdvancement(player, lock) == null) {
 				//if the RL is not a valid advancement fail us
-				TwilightForestMod.LOGGER.error("The portal locking advancement is not a valid advancement! Setting to null!");
+				TFMain.LOGGER.error("The portal locking advancement is not a valid advancement! Setting to null!");
 				ConfigSetup.COMMON_CONFIG.PORTAL.portalAdvancementLock.set("");
 			} else {
 				portalLockingAdvancement = Identifier.tryParse(ConfigSetup.COMMON_CONFIG.PORTAL.portalAdvancementLock.get());
-				TwilightForestMod.LOGGER.debug("Portal locking advancement reloaded. Current advancement to check for is: {}", portalLockingAdvancement);
+				TFMain.LOGGER.debug("Portal locking advancement reloaded. Current advancement to check for is: {}", portalLockingAdvancement);
 			}
 		}
 		//always return the RL, even if its null. We can use this to run logic less often
@@ -134,7 +134,7 @@ public class TFConfig {
 			ConfigSetup.CLIENT_CONFIG.auroraBiomes.get().forEach(s -> {
 				Optional<Holder<Biome>> holder = Optional.ofNullable(Identifier.tryParse(s)).flatMap(key -> access.lookupOrThrow(Registries.BIOME).get(key));
 				if (holder.isEmpty()) {
-					TwilightForestMod.LOGGER.warn("Biome {} in Twilight Forest's validAuroraBiomes config option is not a valid biome. Skipping!", s);
+					TFMain.LOGGER.warn("Biome {} in Twilight Forest's validAuroraBiomes config option is not a valid biome. Skipping!", s);
 				} else {
 					VALID_AURORA_BIOMES.add(holder.get());
 				}
@@ -243,7 +243,7 @@ public class TFConfig {
 								GAME_PROFILES.add(result.profile());
 							}
 						} catch (IllegalArgumentException e) {
-							TwilightForestMod.LOGGER.error("\"{}\" is not a valid UUID!", stringUUID);
+							TFMain.LOGGER.error("\"{}\" is not a valid UUID!", stringUUID);
 						}
 					}
 					super.run();

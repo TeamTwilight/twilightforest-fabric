@@ -25,7 +25,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.event.EventHooks;
 import org.jspecify.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.BoundingBoxUtils;
 
@@ -119,7 +119,7 @@ public abstract class SinisterSpawnerLogic extends BaseSpawner {
 
 				for (BlockPos spawnAt : this.spawnBuffer) {
 					CompoundTag entityData = spawndata.getEntityToSpawn();
-					try (ProblemReporter.ScopedCollector reporter = new ProblemReporter.ScopedCollector(this::toString, TwilightForestMod.LOGGER)) {
+					try (ProblemReporter.ScopedCollector reporter = new ProblemReporter.ScopedCollector(this::toString, TFMain.LOGGER)) {
 						ValueInput input = TagValueInput.create(reporter, serverLevel.registryAccess(), entityData);
 						Optional<EntityType<?>> entityType = EntityType.by(input);
 						if (entityType.isEmpty()) {

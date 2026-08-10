@@ -19,7 +19,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.RotationUtil;
@@ -308,7 +308,7 @@ public class IceTowerWingComponent extends TowerWingComponent {
 			if (tries > FLOOR_PLAN_MAX_TRIES) {
 				topBlockedParts.clear();
 				bottomBlockedParts.clear();
-				TwilightForestMod.LOGGER.error("Unable to generate floor plan for aurora palace at {}. Please report mod version, coords, and seed to Twilight Forest devs", sbb.getCenter());
+				TFMain.LOGGER.error("Unable to generate floor plan for aurora palace at {}. Please report mod version, coords, and seed to Twilight Forest devs", sbb.getCenter());
 			}
 			Set<FloorParts> finalTopBlockedParts = topBlockedParts;
 			Set<FloorParts> finalBottomBlockedParts = bottomBlockedParts;

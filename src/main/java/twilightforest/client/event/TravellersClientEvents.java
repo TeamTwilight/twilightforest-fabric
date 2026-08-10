@@ -35,7 +35,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.config.TFConfig;
 import twilightforest.tags.TFItemTags;
 import twilightforest.init.*;
@@ -275,7 +275,7 @@ public class TravellersClientEvents {
 		ModelPart armPart = event.getArm() == HumanoidArm.RIGHT ? model.rightArm : model.leftArm;
         armPart.xRot = 0.0F;
 
-        Identifier gloveLocation = TwilightForestMod.prefix("textures/models/armor/travellers_layer_1.png");
+        Identifier gloveLocation = TFMain.prefix("textures/models/armor/travellers_layer_1.png");
 		event.getSubmitNodeCollector().submitModelPart(armPart, event.getPoseStack(), RenderTypes.armorCutoutNoCull(gloveLocation), event.getPackedLight(), OverlayTexture.NO_OVERLAY, null);
     }
 }

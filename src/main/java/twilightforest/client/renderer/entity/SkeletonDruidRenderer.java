@@ -4,14 +4,14 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.entity.state.SkeletonRenderState;
 import net.minecraft.resources.Identifier;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.SkeletonDruidModel;
 import twilightforest.entity.monster.SkeletonDruid;
 
 public class SkeletonDruidRenderer extends HumanoidMobRenderer<SkeletonDruid, SkeletonRenderState, SkeletonDruidModel> {
 
-	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("skeletondruid.png");
+	private static final Identifier TEXTURE = TFMain.getModelTexture("skeletondruid.png");
 
 	public SkeletonDruidRenderer(EntityRendererProvider.Context context) {
 		super(context, new SkeletonDruidModel(context.bakeLayer(TFModelLayers.SKELETON_DRUID)), 0.5F);

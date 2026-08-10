@@ -32,7 +32,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.block.WroughtIronFenceBlock;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataAttachments;
@@ -183,11 +183,11 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 		FrontAndTop orientation = FrontAndTop.fromFrontAndTop(Direction.UP, direction);
 		int baseY = fenceCenter.getY(); // context.chunkGenerator().getBaseHeight(fenceCenter.getX(), fenceCenter.getZ(), Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState());
 
-		JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(fenceCenter.atY(baseY - 2), BlockPos.ZERO, orientation, structureManager, TwilightForestMod.prefix("lich_tower/outer_fence_7"), "twilightforest:lich_tower/fence_source", random);
+		JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(fenceCenter.atY(baseY - 2), BlockPos.ZERO, orientation, structureManager, TFMain.prefix("lich_tower/outer_fence_7"), "twilightforest:lich_tower/fence_source", random);
 
 		if (placeableJunction == null) return null;
 
-		LichPerimeterFence fenceStarter = new LichPerimeterFence(structureManager, placeableJunction, TwilightForestMod.prefix("lich_tower/outer_fence_7"), random);
+		LichPerimeterFence fenceStarter = new LichPerimeterFence(structureManager, placeableJunction, TFMain.prefix("lich_tower/outer_fence_7"), random);
 		structurePiecesBuilder.addPiece(fenceStarter);
 		fenceStarter.addJigsaws(vestibule, structurePiecesBuilder, context);
 
@@ -196,7 +196,7 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 
 	// Bifurcated fence generation, using frontFence as the starting piece
 	public static void generatePerimeter(LichPerimeterFence frontFence, StructureTemplateManager structureManager, StructurePiecesBuilder structurePiecesBuilder, WorldgenRandom random, Structure.GenerationContext context, BoundingBox leftDest, BoundingBox rightDest) {
-		Identifier fullFenceId = TwilightForestMod.prefix("lich_tower/outer_fence_7");
+		Identifier fullFenceId = TFMain.prefix("lich_tower/outer_fence_7");
 
 		generateSidedPerimeter(frontFence, structureManager, structurePiecesBuilder, random, context, fullFenceId, leftDest, LichPerimeterFence::getLeftJunctions, Rotation.CLOCKWISE_90);
 		generateSidedPerimeter(frontFence, structureManager, structurePiecesBuilder, random, context, fullFenceId, rightDest, LichPerimeterFence::getRightJunctions, Rotation.COUNTERCLOCKWISE_90);
@@ -219,7 +219,7 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 			int stepSize = Math.min(distance, 7);
 			distance -= stepSize;
 
-			fence = nextFence(fence, structureManager, structurePiecesBuilder, random, junctionGetter.apply(fence), rotation, context, TwilightForestMod.prefix("lich_tower/outer_fence_" + stepSize), destination);
+			fence = nextFence(fence, structureManager, structurePiecesBuilder, random, junctionGetter.apply(fence), rotation, context, TFMain.prefix("lich_tower/outer_fence_" + stepSize), destination);
 			if (fence == null) return;
 			rotation = Rotation.NONE;
 		}

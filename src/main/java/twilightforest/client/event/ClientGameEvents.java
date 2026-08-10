@@ -40,7 +40,7 @@ import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import tamaized.beanification.PostConstruct;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import tamaized.beanification.Autowired;
 import twilightforest.block.GiantBlock;
 import twilightforest.block.MiniatureStructureBlock;
@@ -306,7 +306,7 @@ public class ClientGameEvents {
 				for (int i = 0; i < components.size(); i++) {
 					Component component = components.get(i);
 					if (component.toString().contains("book.byAuthor")) {
-						components.set(i, (Component.translatable("book.byAuthor", Component.translatable(TwilightForestMod.ID + ".book.author"))).withStyle(component.getStyle()));
+						components.set(i, (Component.translatable("book.byAuthor", Component.translatable(TFMain.ID + ".book.author"))).withStyle(component.getStyle()));
 					}
 				}
 			}

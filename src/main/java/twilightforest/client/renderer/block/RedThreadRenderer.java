@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.block.entity.RedThreadBlockEntity;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.RedThreadModel;
@@ -35,7 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RedThreadRenderer implements BlockEntityRenderer<RedThreadBlockEntity, RedThreadRenderState> {
-	public static final Identifier TEXTURE = TwilightForestMod.getModelTexture("red_thread.png");
+	public static final Identifier TEXTURE = TFMain.getModelTexture("red_thread.png");
 	private final RedThreadModel redThreadModel;
 
 	public RedThreadRenderer(BlockEntityRendererProvider.Context context) {

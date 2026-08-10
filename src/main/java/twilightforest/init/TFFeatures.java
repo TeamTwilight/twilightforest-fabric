@@ -5,7 +5,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.*;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.world.components.feature.*;
 import twilightforest.world.components.feature.config.*;
 import twilightforest.world.components.feature.templates.*;
@@ -16,7 +16,7 @@ import twilightforest.world.components.feature.trollcave.TrollHugeRedMushroomFea
 
 public class TFFeatures {
 
-	public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(Registries.FEATURE, TwilightForestMod.ID);
+	public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(Registries.FEATURE, TFMain.ID);
 
 	public static final DeferredHolder<Feature<?>, Feature<TFSmallLakeFeature.Configuration>> SMALL_LAKE = FEATURES.register("small_lake", () -> new TFSmallLakeFeature(TFSmallLakeFeature.Configuration.CODEC));
 	public static final DeferredHolder<Feature<?>, Feature<HugeMushroomFeatureConfiguration>> BIG_MUSHGLOOM = FEATURES.register("big_mushgloom", () -> new BigMushgloomFeature(HugeMushroomFeatureConfiguration.CODEC));

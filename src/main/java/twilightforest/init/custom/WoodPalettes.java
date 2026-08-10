@@ -8,7 +8,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Blocks;
 import twilightforest.TFRegistries;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.woods.WoodPalette;
 
@@ -37,7 +37,7 @@ public class WoodPalettes {
 	public static final ResourceKey<WoodPalette> SORTWOOD = makeKey("sortwood");
 
 	private static ResourceKey<WoodPalette> makeKey(String name) {
-		return makeKey(TwilightForestMod.prefix(name.toLowerCase(Locale.ROOT)));
+		return makeKey(TFMain.prefix(name.toLowerCase(Locale.ROOT)));
 	}
 
 	private static ResourceKey<WoodPalette> makeKey(Identifier name) {

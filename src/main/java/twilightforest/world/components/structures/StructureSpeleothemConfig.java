@@ -10,7 +10,7 @@ import net.minecraft.util.random.Weighted;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import org.jetbrains.annotations.NotNull;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.util.iterators.RectangleLatticeIterator;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 import twilightforest.world.components.speleothem.SpeleothemVarietyConfig;
@@ -59,7 +59,7 @@ public record StructureSpeleothemConfig(
 	private static Function<RandomSource, Stalactite> compileStalagmites(Supplier<SpeleothemVarietyConfig> varietyConfigSupplier) {
 		SpeleothemVarietyConfig varietyConfig = varietyConfigSupplier.get();
 
-		TwilightForestMod.LOGGER.debug("Compiling Stalagmite configs for " + varietyConfig.type() + " type");
+		TFMain.LOGGER.debug("Compiling Stalagmite configs for " + varietyConfig.type() + " type");
 
 		List<Stalactite> stalactites = StalactiteReloadListener.STALAGMITES_PER_HILL.get(varietyConfig.type());
 
@@ -70,7 +70,7 @@ public record StructureSpeleothemConfig(
 	private static Function<RandomSource, Stalactite> compileStalactites(Supplier<SpeleothemVarietyConfig> varietyConfigSupplier) {
 		SpeleothemVarietyConfig varietyConfig = varietyConfigSupplier.get();
 
-		TwilightForestMod.LOGGER.debug("Compiling Stalactite configs for " + varietyConfig.type() + " type");
+		TFMain.LOGGER.debug("Compiling Stalactite configs for " + varietyConfig.type() + " type");
 
 		// Ore Chance represents an interpolation between two weighted lists of A (stones) and B (ores)
 		float weightedListInterpolation = Mth.clamp(varietyConfig.oreChance(), 0, 1);
@@ -128,7 +128,7 @@ public record StructureSpeleothemConfig(
 
 			joiner.add("Total weight after counterweights: " + unbakedRandomList.stream().mapToInt(Weighted::weight).sum());
 
-			TwilightForestMod.LOGGER.debug(String.valueOf(joiner));
+			TFMain.LOGGER.debug(String.valueOf(joiner));
 		}
 
 		return compileSpeleothems(unbakedRandomList);

@@ -8,7 +8,7 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.world.components.structures.util.CodecResourceReloadListener;
 
 import java.io.IOException;
@@ -44,7 +44,7 @@ public class StalactiteReloadListener extends CodecResourceReloadListener<Speleo
 		if (!HILL_CONFIGS.containsKey(config.type()) || config.replace()) {
 			HILL_CONFIGS.put(config.type(), config);
 			if (config.replace()) {
-				TwilightForestMod.LOGGER.info("Stalactite Config {} wiped by {}", config.type(), location.getNamespace());
+				TFMain.LOGGER.info("Stalactite Config {} wiped by {}", config.type(), location.getNamespace());
 			}
 		}
 
@@ -65,14 +65,14 @@ public class StalactiteReloadListener extends CodecResourceReloadListener<Speleo
 				try {
 					Reader stalReader = stalRes.get().openAsReader();
 					JsonObject stalObject = GsonHelper.fromJson(this.gson, stalReader, JsonObject.class);
-					Stalactite stalactite = Stalactite.CODEC.parse(JsonOps.INSTANCE, stalObject).resultOrPartial(TwilightForestMod.LOGGER::error).orElseThrow();
+					Stalactite stalactite = Stalactite.CODEC.parse(JsonOps.INSTANCE, stalObject).resultOrPartial(TFMain.LOGGER::error).orElseThrow();
 					stalactitesForType.add(stalactite);
-					TwilightForestMod.LOGGER.debug("Loaded Stalactite {} for config {}", rl, config.type());
+					TFMain.LOGGER.debug("Loaded Stalactite {} for config {}", rl, config.type());
 				} catch (RuntimeException | IOException e) {
-					TwilightForestMod.LOGGER.error("Failed to parse stalactite entry {} in file {}", rl, config, e);
+					TFMain.LOGGER.error("Failed to parse stalactite entry {} in file {}", rl, config, e);
 				}
 			} else {
-				TwilightForestMod.LOGGER.error("Could not find stalactite entry for {}", rl);
+				TFMain.LOGGER.error("Could not find stalactite entry for {}", rl);
 			}
 		}
 	}

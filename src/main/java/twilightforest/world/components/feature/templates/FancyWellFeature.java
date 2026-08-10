@@ -12,15 +12,15 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.loot.TFLootTables;
 import twilightforest.world.components.feature.config.SwizzleConfig;
 import twilightforest.world.components.processors.SmartGrassProcessor;
 
 public class FancyWellFeature extends TemplateFeature<SwizzleConfig> {
 
-	private static final Identifier WELL_TOP = TwilightForestMod.prefix("feature/well/fancy_well_top");
-	private static final Identifier WELL_BOTTOM = TwilightForestMod.prefix("feature/well/fancy_well_bottom");
+	private static final Identifier WELL_TOP = TFMain.prefix("feature/well/fancy_well_top");
+	private static final Identifier WELL_BOTTOM = TFMain.prefix("feature/well/fancy_well_bottom");
 
 	public FancyWellFeature(Codec<SwizzleConfig> config) {
 		super(config);

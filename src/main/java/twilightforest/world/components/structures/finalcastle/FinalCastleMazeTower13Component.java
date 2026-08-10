@@ -2,9 +2,7 @@ package twilightforest.world.components.structures.finalcastle;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.util.RandomSource;
@@ -21,7 +19,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
@@ -479,7 +477,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 
 	public BlockState getGlyphMeta() {
 		if (color == null) {
-			TwilightForestMod.LOGGER.warn("Final Castle tower has null for glyph color, this is a bug.");
+			TFMain.LOGGER.warn("Final Castle tower has null for glyph color, this is a bug.");
 			return TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState();
 		} else {
 			return color;
@@ -574,7 +572,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		if (color == TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get().defaultBlockState()) {
 			return TFBlocks.VIOLET_CASTLE_DOOR.get().defaultBlockState();
 		}
-		TwilightForestMod.LOGGER.warn("Couldn't add door to tower, rune color couldn't be read");
+		TFMain.LOGGER.warn("Couldn't add door to tower, rune color couldn't be read");
 		return Blocks.AIR.defaultBlockState();
 	}
 }

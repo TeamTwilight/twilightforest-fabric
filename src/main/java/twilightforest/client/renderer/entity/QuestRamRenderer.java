@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.LightCoordsUtil;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.QuestRamModel;
 import twilightforest.client.state.entity.QuestingRamRenderState;
@@ -18,8 +18,8 @@ import twilightforest.entity.passive.QuestRam;
 
 public class QuestRamRenderer extends MobRenderer<QuestRam, QuestingRamRenderState, QuestRamModel> {
 
-	public static final Identifier TEXTURE = TwilightForestMod.getModelTexture("questram.png");
-	public static final Identifier LINE_TEXTURE = TwilightForestMod.getModelTexture("questram_lines.png");
+	public static final Identifier TEXTURE = TFMain.getModelTexture("questram.png");
+	public static final Identifier LINE_TEXTURE = TFMain.getModelTexture("questram_lines.png");
 
 	public QuestRamRenderer(EntityRendererProvider.Context context) {
 		super(context, new QuestRamModel(context.bakeLayer(TFModelLayers.QUEST_RAM)), 1.0F);

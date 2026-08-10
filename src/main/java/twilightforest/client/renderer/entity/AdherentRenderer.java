@@ -6,14 +6,14 @@ import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.AdherentModel;
 import twilightforest.entity.monster.Adherent;
 
 public class AdherentRenderer extends HumanoidMobRenderer<Adherent, HumanoidRenderState, AdherentModel> {
 
-	public static final Identifier TEXTURE = TwilightForestMod.getModelTexture("adherent.png");
+	public static final Identifier TEXTURE = TFMain.getModelTexture("adherent.png");
 
 	public AdherentRenderer(EntityRendererProvider.Context context) {
 		super(context, new AdherentModel(context.bakeLayer(TFModelLayers.ADHERENT)), 0.625F);

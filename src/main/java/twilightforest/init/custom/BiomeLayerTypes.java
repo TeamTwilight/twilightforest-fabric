@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TFRegistries;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.world.components.layer.*;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerType;
 import twilightforest.world.components.layer.vanillalegacy.SmoothLayer;
@@ -13,7 +13,7 @@ import twilightforest.world.components.layer.vanillalegacy.ZoomLayer;
 import java.util.function.Supplier;
 
 public class BiomeLayerTypes {
-	public static final DeferredRegister<BiomeLayerType> BIOME_LAYER_TYPES = DeferredRegister.create(TFRegistries.Keys.BIOME_LAYER_TYPE, TwilightForestMod.ID);
+	public static final DeferredRegister<BiomeLayerType> BIOME_LAYER_TYPES = DeferredRegister.create(TFRegistries.Keys.BIOME_LAYER_TYPE, TFMain.ID);
 	public static final Codec<BiomeLayerType> CODEC = Codec.lazyInitialized(TFRegistries.BIOME_LAYER_TYPE::byNameCodec);
 
 	public static final DeferredHolder<BiomeLayerType, BiomeLayerType> RANDOM_BIOMES = registerType("random_biomes", () -> () -> RandomBiomeLayer.Factory.CODEC);

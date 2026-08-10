@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.state.properties.StructureMode;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.TFEntities;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.entities.EntityUtil;
@@ -142,9 +142,9 @@ public class DruidHutFeature extends TemplateFeature<SwizzleConfig> {
 	}
 
 	private enum HutType {
-		REGULAR(TwilightForestMod.prefix("feature/druid_hut/druid_hut")),
-		SIDEWAYS(TwilightForestMod.prefix("feature/druid_hut/druid_sideways")),
-		DOUBLE_DECK(TwilightForestMod.prefix("feature/druid_hut/druid_doubledeck"));
+		REGULAR(TFMain.prefix("feature/druid_hut/druid_hut")),
+		SIDEWAYS(TFMain.prefix("feature/druid_hut/druid_sideways")),
+		DOUBLE_DECK(TFMain.prefix("feature/druid_hut/druid_doubledeck"));
 
 		private final Identifier identifier;
 
@@ -154,9 +154,9 @@ public class DruidHutFeature extends TemplateFeature<SwizzleConfig> {
 	}
 
 	private enum BasementType {
-		STUDY(TwilightForestMod.prefix("feature/druid_hut/basement_study"), TwilightForestMod.prefix("feature/druid_hut/basement_study_trap")),
-		SHELVES(TwilightForestMod.prefix("feature/druid_hut/basement_shelves"), TwilightForestMod.prefix("feature/druid_hut/basement_shelves_trap")),
-		GALLERY(TwilightForestMod.prefix("feature/druid_hut/basement_gallery"), TwilightForestMod.prefix("feature/druid_hut/basement_gallery_trap"));
+		STUDY(TFMain.prefix("feature/druid_hut/basement_study"), TFMain.prefix("feature/druid_hut/basement_study_trap")),
+		SHELVES(TFMain.prefix("feature/druid_hut/basement_shelves"), TFMain.prefix("feature/druid_hut/basement_shelves_trap")),
+		GALLERY(TFMain.prefix("feature/druid_hut/basement_gallery"), TFMain.prefix("feature/druid_hut/basement_gallery_trap"));
 
 		private final Identifier identifier;
 		private final Identifier identifierTrap;

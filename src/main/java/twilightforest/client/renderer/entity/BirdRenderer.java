@@ -5,7 +5,7 @@ import net.minecraft.client.renderer.entity.AgeableMobRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.state.entity.BirdRenderState;
 import twilightforest.entity.passive.Bird;
 
@@ -19,7 +19,7 @@ public class BirdRenderer<T extends Bird, M extends EntityModel<BirdRenderState>
 
 	public BirdRenderer(EntityRendererProvider.Context context, M model, M babyModel, float shadowSize, String textureName) {
 		super(context, model, babyModel, shadowSize);
-		this.texture = TwilightForestMod.getModelTexture(textureName);
+		this.texture = TFMain.getModelTexture(textureName);
 	}
 
 	@Override

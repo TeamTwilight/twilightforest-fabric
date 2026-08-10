@@ -9,7 +9,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.protocol.game.ClientboundBossEventPacket;
 import net.minecraft.world.BossEvent;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.entity.boss.bar.ClientTFBossBar;
 import twilightforest.entity.boss.bar.ServerTFBossBar;
 
@@ -39,7 +39,7 @@ public abstract class TFBossBarPacket implements CustomPacketPayload {
 		private final boolean playMusic;
 		private final boolean createWorldFog;
 
-		public static final Type<AddTFBossBarPacket> TYPE = new Type<>(TwilightForestMod.prefix("add_tf_boss_bar"));
+		public static final Type<AddTFBossBarPacket> TYPE = new Type<>(TFMain.prefix("add_tf_boss_bar"));
 		public static final StreamCodec<RegistryFriendlyByteBuf, AddTFBossBarPacket> STREAM_CODEC = CustomPacketPayload.codec(AddTFBossBarPacket::write, AddTFBossBarPacket::new);
 
 		public AddTFBossBarPacket(ServerTFBossBar bossEvent) {
@@ -99,7 +99,7 @@ public abstract class TFBossBarPacket implements CustomPacketPayload {
 		private final BossEvent.BossBarOverlay overlay;
 		private final boolean allowLerp;
 
-		public static final Type<UpdateTFBossBarStylePacket> TYPE = new Type<>(TwilightForestMod.prefix("update_tf_boss_bar_style"));
+		public static final Type<UpdateTFBossBarStylePacket> TYPE = new Type<>(TFMain.prefix("update_tf_boss_bar_style"));
 		public static final StreamCodec<RegistryFriendlyByteBuf, UpdateTFBossBarStylePacket> STREAM_CODEC = CustomPacketPayload.codec(UpdateTFBossBarStylePacket::write, UpdateTFBossBarStylePacket::new);
 
 		public UpdateTFBossBarStylePacket(ServerTFBossBar bossEvent, boolean allowLerp) {

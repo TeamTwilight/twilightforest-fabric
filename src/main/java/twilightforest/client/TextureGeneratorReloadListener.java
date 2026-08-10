@@ -8,7 +8,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.entity.vehicle.Boat;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +32,7 @@ public class TextureGeneratorReloadListener implements ResourceManagerReloadList
 					int vanillaScale = vanillaImage.getWidth() / defaultScale;
 					for (Boat.Type type : Boat.Type.values()) {
 						Identifier location = getTextureLocation(type);
-						if (location.getNamespace().equals(TwilightForestMod.ID)) { // We only want to do this to our boats
+						if (location.getNamespace().equals(TFMain.ID)) { // We only want to do this to our boats
 							manager.getResource(location).ifPresent(tfResource -> {
 								try (InputStream tfStream = tfResource.open()) {
 									try (NativeImage tfImage = NativeImage.read(tfStream)) {

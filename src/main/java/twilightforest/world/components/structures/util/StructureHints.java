@@ -1,8 +1,5 @@
 package twilightforest.world.components.structures.util;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.mojang.serialization.*;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
@@ -27,7 +24,7 @@ import net.minecraft.world.item.component.WrittenBookContent;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.TFDataComponents;
 
 import java.util.List;
@@ -38,7 +35,7 @@ import java.util.stream.Stream;
 public interface StructureHints {
 
 	String CODEC_NAME = "hint_creature";
-	String BOOK_AUTHOR = TwilightForestMod.ID + ".book.author";
+	String BOOK_AUTHOR = TFMain.ID + ".book.author";
 
 	/**
 	 * Create a hint book for the specified feature.  Only features with block protection will need this.
@@ -56,7 +53,7 @@ public interface StructureHints {
 	static void addBookInformationStatic(ItemStack book, @Nullable String name, int pageCount) {
 		String key = name == null ? "unknown" : name;
 
-		Function<Integer, Filterable<Component>> pageGenerationFunc = index -> Filterable.passThrough(Component.translatable(TwilightForestMod.ID + ".book." + key + "." + (index + 1)));
+		Function<Integer, Filterable<Component>> pageGenerationFunc = index -> Filterable.passThrough(Component.translatable(TFMain.ID + ".book." + key + "." + (index + 1)));
 
 		List<Filterable<Component>> list = Stream.iterate(0, index -> index + 1)
 			.limit(pageCount)
@@ -64,7 +61,7 @@ public interface StructureHints {
 			.toList();
 
 		book.set(DataComponents.WRITTEN_BOOK_CONTENT, new WrittenBookContent(
-			Filterable.passThrough(TwilightForestMod.ID + ".book." + key),
+			Filterable.passThrough(TFMain.ID + ".book." + key),
 			BOOK_AUTHOR,
 			3,
 			list,

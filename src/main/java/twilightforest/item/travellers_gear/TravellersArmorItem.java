@@ -28,7 +28,7 @@ import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.neoforged.neoforge.common.util.ConcatenatedListView;
 import org.jspecify.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
 import twilightforest.client.model.armor.TravellersWingsModel;
@@ -188,7 +188,7 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 		@Override
 		public Identifier getArmorTexture(ItemStack stack, EquipmentClientInfo.LayerType type, EquipmentClientInfo.Layer layer, Identifier def) {
 			return type != EquipmentClientInfo.LayerType.HUMANOID_LEGGINGS && entity.getData(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER) ?
-				TwilightForestMod.prefix("textures/models/armor/travellers_layer_1_down.png") :
+				TFMain.prefix("textures/models/armor/travellers_layer_1_down.png") :
 				super.getArmorTexture(stack, type, layer, def);
 		}
 

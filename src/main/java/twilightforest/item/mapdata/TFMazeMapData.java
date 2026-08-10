@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedDataType;
 import net.minecraft.world.level.saveddata.maps.*;
 import org.jspecify.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.TFStructures;
 import twilightforest.network.MazeMapPacket;
 import twilightforest.util.landmarks.LegacyLandmarkPlacements;
@@ -72,7 +72,7 @@ public class TFMazeMapData extends MapItemSavedData {
 
 	// [VanillaCopy] from MapItemSavedData but changed to use our Codec and namespace
 	public static SavedDataType<TFMazeMapData> mazeMapType(MapId id) {
-		return new SavedDataType<>(TwilightForestMod.prefix(id.key()), () -> {
+		return new SavedDataType<>(TFMain.prefix(id.key()), () -> {
 			throw new IllegalStateException("Should never create an empty map saved data");
 		}, CODEC, DataFixTypes.SAVED_DATA_MAP_DATA);
 	}

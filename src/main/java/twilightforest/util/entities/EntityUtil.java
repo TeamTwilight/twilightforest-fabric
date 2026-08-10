@@ -43,11 +43,10 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.util.ObfuscationReflectionHelper;
 import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.init.TFSounds;
 
-import java.awt.*;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
@@ -339,7 +338,7 @@ public class EntityUtil {
 					living.setHealth(living.getMaxHealth());
 				}
 			} catch (Exception e) {
-				TwilightForestMod.LOGGER.warn("Couldn't transform entity NBT data", e);
+				TFMain.LOGGER.warn("Couldn't transform entity NBT data", e);
 			}
 
 			ItemStack saddleStack = oldEntity.getItemBySlot(EquipmentSlot.SADDLE);

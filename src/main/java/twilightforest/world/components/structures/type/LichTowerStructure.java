@@ -21,7 +21,7 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.tags.TFBiomeTags;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFMapDecorations;
@@ -55,7 +55,7 @@ public class LichTowerStructure extends ControlledSpawningStructure implements C
 		BlockPos placePos = new BlockPos(x, y, z).relative(direction, 24);
 		FrontAndTop oriented = FrontAndTop.fromFrontAndTop(Direction.UP, direction);
 
-		JigsawPlaceContext placeContext = JigsawPlaceContext.pickPlaceableJunction(placePos, BlockPos.ZERO, oriented, context.structureTemplateManager(), TwilightForestMod.prefix("lich_tower/tower_foyer"), "twilightforest:lich_tower/vestibule", random);
+		JigsawPlaceContext placeContext = JigsawPlaceContext.pickPlaceableJunction(placePos, BlockPos.ZERO, oriented, context.structureTemplateManager(), TFMain.prefix("lich_tower/tower_foyer"), "twilightforest:lich_tower/vestibule", random);
 
 		// getFirstPiece() call is wrapped in an Optional#ofNullable
 		//noinspection DataFlowIssue
@@ -101,7 +101,7 @@ public class LichTowerStructure extends ControlledSpawningStructure implements C
 		);
 		return new LichTowerStructure(
 			monsters,
-			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_naga"))),
+			new AdvancementLockConfig(List.of(TFMain.prefix("progress_naga"))),
 			Optional.of(new HintConfig(HintConfig.book("lichtower", 4), TFEntities.KOBOLD.get())),
 			Optional.of(new DecorationConfig(0, false, true, false, true)),
 			true, Optional.of(TFMapDecorations.LICH_TOWER),

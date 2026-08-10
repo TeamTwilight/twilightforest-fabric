@@ -6,7 +6,6 @@ import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.*;
 import net.minecraft.client.data.models.model.*;
 import net.minecraft.client.renderer.block.dispatch.multipart.CombinedCondition;
-import net.minecraft.client.renderer.block.model.CompositeBlockModel;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
@@ -15,7 +14,7 @@ import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.joml.Vector3f;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.block.*;
 import twilightforest.client.model.block.connected.ConnectedTextureBuilder;
 import twilightforest.client.model.block.patch.PatchBuilder;
@@ -62,7 +61,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.WEATHERED_DEADROCK.get(), this::createTrivialCube);
 
 		this.createCrossBlock(TFBlocks.FIDDLEHEAD.get(), PlantType.TINTED);
-		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.POTTED_FIDDLEHEAD.get(), plainVariant(ModelTemplates.TINTED_FLOWER_POT_CROSS.create(TFBlocks.POTTED_FIDDLEHEAD.get(), TextureMapping.singleSlot(TextureSlot.PLANT, new Material(TwilightForestMod.prefix("block/potted_fiddlehead"))), this.modelOutput))));
+		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.POTTED_FIDDLEHEAD.get(), plainVariant(ModelTemplates.TINTED_FLOWER_POT_CROSS.create(TFBlocks.POTTED_FIDDLEHEAD.get(), TextureMapping.singleSlot(TextureSlot.PLANT, new Material(TFMain.prefix("block/potted_fiddlehead"))), this.modelOutput))));
 		this.createItemWithGrassTint(TFBlocks.FIDDLEHEAD.get());
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.MAYAPPLE.get(), plainVariant(ModelLocationUtils.getModelLocation(TFBlocks.MAYAPPLE.get()))));
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.POTTED_MAYAPPLE.get(), plainVariant(ModelLocationUtils.getModelLocation(TFBlocks.POTTED_MAYAPPLE.get()))));
@@ -78,7 +77,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.registerSimpleFlatItemModel(TFBlocks.TORCHBERRY_PLANT.get());
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.MUSHGLOOM.get(), plainVariant(ModelLocationUtils.getModelLocation(TFBlocks.MUSHGLOOM.get()))));
 		this.registerTwoLayerFlatItemModel(TFBlocks.MUSHGLOOM.get(), "_head");
-		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.POTTED_MUSHGLOOM.get(),plainVariant( ModelTemplates.FLOWER_POT_CROSS.create(TFBlocks.POTTED_MUSHGLOOM.get(), TextureMapping.singleSlot(TextureSlot.PLANT, new Material(TwilightForestMod.prefix("block/potted_mushgloom"))), this.modelOutput))));
+		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.POTTED_MUSHGLOOM.get(),plainVariant( ModelTemplates.FLOWER_POT_CROSS.create(TFBlocks.POTTED_MUSHGLOOM.get(), TextureMapping.singleSlot(TextureSlot.PLANT, new Material(TFMain.prefix("block/potted_mushgloom"))), this.modelOutput))));
 		this.wrapBlockItem(TFBlocks.HEDGE.get(), block -> this.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, new MultiVariant(WeightedList.of(
 			new Weighted<>(plainModel(ModelTemplates.CUBE_ALL.create(block, TextureMapping.cube(block), this.modelOutput)), 10),
 			new Weighted<>(plainModel(ModelTemplates.CUBE_ALL.createWithSuffix(block, "_rose", TextureMapping.cube(TextureMapping.getBlockTexture(block, "_rose")), this.modelOutput)), 1))))));
@@ -94,8 +93,8 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.nagaStone();
 
 		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(TFBlocks.SPIRAL_BRICKS.get()).with(PropertyDispatch.initial(SpiralBrickBlock.AXIS_FACING, SpiralBrickBlock.DIAGONAL).generate((axis, diagonals) ->
-			plainVariant(TwilightForestMod.prefix("block/spiral_bricks/" + axis.getName() + "_spiral_" + diagonals.getSerializedName())))));
-		this.itemModelOutput.accept(TFBlocks.SPIRAL_BRICKS.asItem(), ItemModelUtils.plainModel(TwilightForestMod.prefix("block/spiral_bricks/z_spiral_bottom_right")));
+			plainVariant(TFMain.prefix("block/spiral_bricks/" + axis.getName() + "_spiral_" + diagonals.getSerializedName())))));
+		this.itemModelOutput.accept(TFBlocks.SPIRAL_BRICKS.asItem(), ItemModelUtils.plainModel(TFMain.prefix("block/spiral_bricks/z_spiral_bottom_right")));
 
 		this.wrapBlockItem(TFBlocks.TWISTED_STONE.get(), block -> this.createRotatedPillarWithHorizontalVariant(block, TexturedModel.COLUMN_ALT, TexturedModel.COLUMN_HORIZONTAL_ALT));
 		this.wrapBlockItem(TFBlocks.BOLD_STONE_PILLAR.get(), block -> this.createRotatedPillarWithHorizontalVariant(block, TexturedModel.COLUMN_ALT, TexturedModel.COLUMN_HORIZONTAL_ALT));
@@ -133,8 +132,8 @@ public class BlockModelGenerator extends BlockModelBuilders {
 
 		this.generateHugeLilyPad();
 		this.createCrossBlockWithDefaultItem(TFBlocks.HUGE_WATER_LILY.get(), PlantType.NOT_TINTED);
-		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.RED_THREAD.get(), plainVariant(ModelTemplates.PARTICLE_ONLY.create(TFBlocks.RED_THREAD.get(), TextureMapping.particle(new Material(TwilightForestMod.prefix("block/blank"))), this.modelOutput))));
-		this.wrapBlockItem(TFBlocks.MAZE_SLIME_BLOCK.get(), block -> this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(ModelTemplates.create(TwilightForestMod.prefix("maze_slime_block").toString(), TextureSlot.TEXTURE, TextureSlot.PARTICLE).extend().parent(Identifier.withDefaultNamespace("block/slime_block")).build().create(block, TextureMapping.cube(block).put(TextureSlot.PARTICLE, TextureMapping.getBlockTexture(block)), this.modelOutput)))));
+		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.RED_THREAD.get(), plainVariant(ModelTemplates.PARTICLE_ONLY.create(TFBlocks.RED_THREAD.get(), TextureMapping.particle(new Material(TFMain.prefix("block/blank"))), this.modelOutput))));
+		this.wrapBlockItem(TFBlocks.MAZE_SLIME_BLOCK.get(), block -> this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(ModelTemplates.create(TFMain.prefix("maze_slime_block").toString(), TextureSlot.TEXTURE, TextureSlot.PARTICLE).extend().parent(Identifier.withDefaultNamespace("block/slime_block")).build().create(block, TextureMapping.cube(block).put(TextureSlot.PARTICLE, TextureMapping.getBlockTexture(block)), this.modelOutput)))));
 		this.wrapBlockItem(TFBlocks.MAZESTONE.get(), this::createTrivialCube);
 		this.wrapBlockItem(TFBlocks.MAZESTONE_BRICK.get(), this::createTrivialCube);
 		this.wrapBlockItem(TFBlocks.CRACKED_MAZESTONE.get(), this::createTrivialCube);
@@ -214,7 +213,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 			String suffix = String.format("_%d_8", 8 - bites);
 			Identifier model;
 			if (regen) {
-				model = TFModelTemplates.create("twilightforest:experiment_115" + suffix, suffix + "_regenerating", TFTextureSlot.TOP_2).create(TFBlocks.EXPERIMENT_115.get(), new TextureMapping().put(TFTextureSlot.TOP_2, new Material(TwilightForestMod.prefix("block/experiment115_sprinkle"))), this.modelOutput);
+				model = TFModelTemplates.create("twilightforest:experiment_115" + suffix, suffix + "_regenerating", TFTextureSlot.TOP_2).create(TFBlocks.EXPERIMENT_115.get(), new TextureMapping().put(TFTextureSlot.TOP_2, new Material(TFMain.prefix("block/experiment115_sprinkle"))), this.modelOutput);
 			} else {
 				model = ModelLocationUtils.getModelLocation(TFBlocks.EXPERIMENT_115.get(), suffix);
 			}
@@ -225,10 +224,10 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.HUGE_STALK.get(), block -> this.createRotatedPillarWithHorizontalVariant(block, TexturedModel.COLUMN_ALT, TexturedModel.COLUMN_HORIZONTAL_ALT));
 		this.createParticleOnlyBlock(TFBlocks.BEANSTALK_GROWER.get(), TFBlocks.HUGE_STALK.get());
 		this.wrapBlockItem(TFBlocks.BEANSTALK_LEAVES.get(), block -> plainVariant(ModelLocationUtils.getModelLocation(Blocks.AZALEA_LEAVES)));
-		Identifier mushgloomInside = ModelTemplates.SINGLE_FACE.create(TwilightForestMod.prefix("huge_mushgloom_inside"), TextureMapping.cube(new Material(TwilightForestMod.prefix("block/huge_mushgloom_inside"))), this.modelOutput);
+		Identifier mushgloomInside = ModelTemplates.SINGLE_FACE.create(TFMain.prefix("huge_mushgloom_inside"), TextureMapping.cube(new Material(TFMain.prefix("block/huge_mushgloom_inside"))), this.modelOutput);
 		this.createMultifaceBlock(TFBlocks.HUGE_MUSHGLOOM.get(), mushgloomInside, false);
 		this.createMultifaceBlock(TFBlocks.HUGE_MUSHGLOOM_STEM.get(), mushgloomInside, false);
-		Identifier trollsteinnInside = ModelTemplates.SINGLE_FACE.create(TwilightForestMod.prefix("trollsteinn_inside"), TextureMapping.cube(new Material(TwilightForestMod.prefix("block/trollsteinn_light"))), this.modelOutput);
+		Identifier trollsteinnInside = ModelTemplates.SINGLE_FACE.create(TFMain.prefix("trollsteinn_inside"), TextureMapping.cube(new Material(TFMain.prefix("block/trollsteinn_light"))), this.modelOutput);
 		this.createMultifaceBlock(TFBlocks.TROLLSTEINN.get(), trollsteinnInside, true);
 		this.createCrossBlockWithDefaultItem(TFBlocks.TROLLVIDR.get(), PlantType.NOT_TINTED);
 		this.createCrossBlockWithDefaultItem(TFBlocks.UNRIPE_TROLLBER.get(), PlantType.NOT_TINTED);
@@ -275,22 +274,22 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.forcefield(TFBlocks.BLUE_FORCE_FIELD.get(), 0xFF0DDEFF);
 		this.forcefield(TFBlocks.VIOLET_FORCE_FIELD.get(), 0xFF5C1074);
 
-		this.generateSpecialModel(TFBlocks.KEEPSAKE_CASKET.get(), Blocks.NETHERITE_BLOCK, block -> ItemModelUtils.specialModel(TwilightForestMod.prefix("item/keepsake_casket"), new KeepsakeCasketSpecialRenderer.Unbaked()));
-		this.generateSpecialModel(TFBlocks.SKULL_CHEST.get(), Blocks.LIGHT_GRAY_CONCRETE_POWDER, block -> ItemModelUtils.specialModel(TwilightForestMod.prefix("item/skull_chest"), new SkullChestSpecialRenderer.Unbaked()));
-		this.generateSpecialModel(TFBlocks.CICADA.get(), Blocks.SLIME_BLOCK, block -> ItemModelUtils.specialModel(TwilightForestMod.prefix("item/cicada"), new CicadaSpecialRenderer.Unbaked()));
-		this.generateSpecialModel(TFBlocks.FIREFLY.get(), Blocks.SLIME_BLOCK, block -> ItemModelUtils.specialModel(TwilightForestMod.prefix("item/firefly"), new FireflySpecialRenderer.Unbaked()));
-		this.generateSpecialModel(TFBlocks.MOONWORM.get(), Blocks.SLIME_BLOCK, block -> ItemModelUtils.specialModel(TwilightForestMod.prefix("item/moonworm"), new MoonwormSpecialRenderer.Unbaked()));
+		this.generateSpecialModel(TFBlocks.KEEPSAKE_CASKET.get(), Blocks.NETHERITE_BLOCK, block -> ItemModelUtils.specialModel(TFMain.prefix("item/keepsake_casket"), new KeepsakeCasketSpecialRenderer.Unbaked()));
+		this.generateSpecialModel(TFBlocks.SKULL_CHEST.get(), Blocks.LIGHT_GRAY_CONCRETE_POWDER, block -> ItemModelUtils.specialModel(TFMain.prefix("item/skull_chest"), new SkullChestSpecialRenderer.Unbaked()));
+		this.generateSpecialModel(TFBlocks.CICADA.get(), Blocks.SLIME_BLOCK, block -> ItemModelUtils.specialModel(TFMain.prefix("item/cicada"), new CicadaSpecialRenderer.Unbaked()));
+		this.generateSpecialModel(TFBlocks.FIREFLY.get(), Blocks.SLIME_BLOCK, block -> ItemModelUtils.specialModel(TFMain.prefix("item/firefly"), new FireflySpecialRenderer.Unbaked()));
+		this.generateSpecialModel(TFBlocks.MOONWORM.get(), Blocks.SLIME_BLOCK, block -> ItemModelUtils.specialModel(TFMain.prefix("item/moonworm"), new MoonwormSpecialRenderer.Unbaked()));
 
 		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(TFBlocks.CANDELABRA.get())
 			.with(PropertyDispatch.initial(CandelabraBlock.ON_WALL)
-				.select(true, plainVariant(TwilightForestMod.prefix("block/wall_candelabra")))
-				.select(false, plainVariant(TwilightForestMod.prefix("block/candelabra"))))
+				.select(true, plainVariant(TFMain.prefix("block/wall_candelabra")))
+				.select(false, plainVariant(TFMain.prefix("block/candelabra"))))
 			.with(PropertyDispatch.modify(CandelabraBlock.FACING)
 				.select(Direction.NORTH, Y_ROT_180)
 				.select(Direction.EAST, Y_ROT_270)
 				.select(Direction.WEST, Y_ROT_90)
 				.select(Direction.SOUTH, NOP)));
-		this.itemModelOutput.accept(TFBlocks.CANDELABRA.asItem(), ItemModelUtils.composite(ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(TFBlocks.CANDELABRA.get())), ItemModelUtils.specialModel(TwilightForestMod.prefix("block/candelabra"), new CandelabraSpecialRenderer.Unbaked())));
+		this.itemModelOutput.accept(TFBlocks.CANDELABRA.asItem(), ItemModelUtils.composite(ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(TFBlocks.CANDELABRA.get())), ItemModelUtils.specialModel(TFMain.prefix("block/candelabra"), new CandelabraSpecialRenderer.Unbaked())));
 
 		this.generateSkullCandle(TFBlocks.ZOMBIE_SKULL_CANDLE.get(), TFBlocks.ZOMBIE_WALL_SKULL_CANDLE.get());
 		this.generateSkullCandle(TFBlocks.SKELETON_SKULL_CANDLE.get(), TFBlocks.SKELETON_WALL_SKULL_CANDLE.get());
@@ -299,9 +298,9 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateSkullCandle(TFBlocks.PLAYER_SKULL_CANDLE.get(), TFBlocks.PLAYER_WALL_SKULL_CANDLE.get());
 		this.generateSkullCandle(TFBlocks.PIGLIN_SKULL_CANDLE.get(), TFBlocks.PIGLIN_WALL_SKULL_CANDLE.get());
 
-		var major = ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(TwilightForestMod.prefix("item/major_boss_trophy"), TextureMapping.layer0(new Material(TwilightForestMod.prefix("item/trophy"))), this.modelOutput));
-		var minor = ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(TwilightForestMod.prefix("item/minor_boss_trophy"), TextureMapping.layer0(new Material(TwilightForestMod.prefix("item/trophy_minor"))), this.modelOutput));
-		var quest = ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(TwilightForestMod.prefix("item/quest_trophy"), TextureMapping.layer0(new Material(TwilightForestMod.prefix("item/trophy_quest"))), this.modelOutput));
+		var major = ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(TFMain.prefix("item/major_boss_trophy"), TextureMapping.layer0(new Material(TFMain.prefix("item/trophy"))), this.modelOutput));
+		var minor = ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(TFMain.prefix("item/minor_boss_trophy"), TextureMapping.layer0(new Material(TFMain.prefix("item/trophy_minor"))), this.modelOutput));
+		var quest = ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(TFMain.prefix("item/quest_trophy"), TextureMapping.layer0(new Material(TFMain.prefix("item/trophy_quest"))), this.modelOutput));
 
 		this.generateTrophy(TFBlocks.NAGA_TROPHY.get(), TFBlocks.NAGA_WALL_TROPHY.get(), major);
 		this.generateTrophy(TFBlocks.LICH_TROPHY.get(), TFBlocks.LICH_WALL_TROPHY.get(), major);
@@ -352,16 +351,16 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.CINDER_FURNACE.get(), plainVariant(ModelLocationUtils.getModelLocation(Blocks.FURNACE))));
 		this.registerSimpleItemModel(TFBlocks.CINDER_FURNACE.get(), Identifier.withDefaultNamespace("block/furnace"));
 		this.woodProvider(TFBlocks.CINDER_LOG.get()).logWithHorizontal(TFBlocks.CINDER_LOG.get()).wood(TFBlocks.CINDER_WOOD.get());
-		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(), plainVariant(TwilightForestMod.prefix("block/miniature/portal"))));
-		this.registerSimpleTintedItemModel(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(), TwilightForestMod.prefix("block/miniature/portal"), new GrassColorSource());
-		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get(), plainVariant(TwilightForestMod.prefix("block/miniature/naga_courtyard"))));
-		this.registerSimpleTintedItemModel(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get(), TwilightForestMod.prefix("block/miniature/naga_courtyard"), new GrassColorSource());
-		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE.get(), plainVariant(TwilightForestMod.prefix("block/miniature/lich_tower"))));
-		this.registerSimpleItemModel(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE.get(), TwilightForestMod.prefix("block/miniature/lich_tower"));
-		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.MINOTAUR_LABYRINTH_MINIATURE_STRUCTURE.get(), plainVariant(TwilightForestMod.prefix("block/miniature/labyrinth"))));
-		this.registerSimpleItemModel(TFBlocks.MINOTAUR_LABYRINTH_MINIATURE_STRUCTURE.get(), TwilightForestMod.prefix("block/miniature/labyrinth"));
-		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.DARK_TOWER_MINIATURE_STRUCTURE.get(), plainVariant(TwilightForestMod.prefix("block/miniature/dark_tower"))));
-		this.registerSimpleItemModel(TFBlocks.DARK_TOWER_MINIATURE_STRUCTURE.get(), TwilightForestMod.prefix("block/miniature/dark_tower"));
+		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(), plainVariant(TFMain.prefix("block/miniature/portal"))));
+		this.registerSimpleTintedItemModel(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get(), TFMain.prefix("block/miniature/portal"), new GrassColorSource());
+		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get(), plainVariant(TFMain.prefix("block/miniature/naga_courtyard"))));
+		this.registerSimpleTintedItemModel(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE.get(), TFMain.prefix("block/miniature/naga_courtyard"), new GrassColorSource());
+		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE.get(), plainVariant(TFMain.prefix("block/miniature/lich_tower"))));
+		this.registerSimpleItemModel(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE.get(), TFMain.prefix("block/miniature/lich_tower"));
+		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.MINOTAUR_LABYRINTH_MINIATURE_STRUCTURE.get(), plainVariant(TFMain.prefix("block/miniature/labyrinth"))));
+		this.registerSimpleItemModel(TFBlocks.MINOTAUR_LABYRINTH_MINIATURE_STRUCTURE.get(), TFMain.prefix("block/miniature/labyrinth"));
+		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.DARK_TOWER_MINIATURE_STRUCTURE.get(), plainVariant(TFMain.prefix("block/miniature/dark_tower"))));
+		this.registerSimpleItemModel(TFBlocks.DARK_TOWER_MINIATURE_STRUCTURE.get(), TFMain.prefix("block/miniature/dark_tower"));
 	}
 
 	private void generateWoodBlocks() {
@@ -542,23 +541,23 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.createTintedLeaves(TFBlocks.RAINBOW_OAK_LEAVES.get(), TexturedModel.createDefault(block -> TextureMapping.cube(Blocks.OAK_LEAVES), ModelTemplates.LEAVES), -12012264);
 		this.generateSapling(TFBlocks.RAINBOW_OAK_SAPLING.get(), TFBlocks.POTTED_RAINBOW_OAK_SAPLING.get(), PlantType.NOT_TINTED);
 
-		this.createTFChest(TFBlocks.TWILIGHT_OAK_CHEST.get(), TFBlocks.TWILIGHT_OAK_PLANKS.get(), TwilightForestMod.prefix("twilight_oak/normal"));
-		this.createTFChest(TFBlocks.CANOPY_CHEST.get(), TFBlocks.CANOPY_PLANKS.get(), TwilightForestMod.prefix("canopy/normal"));
-		this.createTFChest(TFBlocks.MANGROVE_CHEST.get(), TFBlocks.MANGROVE_PLANKS.get(), TwilightForestMod.prefix("mangrove/normal"));
-		this.createTFChest(TFBlocks.DARK_CHEST.get(), TFBlocks.DARK_PLANKS.get(), TwilightForestMod.prefix("darkwood/normal"));
-		this.createTFChest(TFBlocks.TIME_CHEST.get(), TFBlocks.TIME_PLANKS.get(), TwilightForestMod.prefix("time/normal"));
-		this.createTFChest(TFBlocks.TRANSFORMATION_CHEST.get(), TFBlocks.TRANSFORMATION_PLANKS.get(), TwilightForestMod.prefix("transformation/normal"));
-		this.createTFChest(TFBlocks.MINING_CHEST.get(), TFBlocks.MINING_PLANKS.get(), TwilightForestMod.prefix("mining/normal"));
-		this.createTFChest(TFBlocks.SORTING_CHEST.get(), TFBlocks.SORTING_PLANKS.get(), TwilightForestMod.prefix("sorting/normal"));
+		this.createTFChest(TFBlocks.TWILIGHT_OAK_CHEST.get(), TFBlocks.TWILIGHT_OAK_PLANKS.get(), TFMain.prefix("twilight_oak/normal"));
+		this.createTFChest(TFBlocks.CANOPY_CHEST.get(), TFBlocks.CANOPY_PLANKS.get(), TFMain.prefix("canopy/normal"));
+		this.createTFChest(TFBlocks.MANGROVE_CHEST.get(), TFBlocks.MANGROVE_PLANKS.get(), TFMain.prefix("mangrove/normal"));
+		this.createTFChest(TFBlocks.DARK_CHEST.get(), TFBlocks.DARK_PLANKS.get(), TFMain.prefix("darkwood/normal"));
+		this.createTFChest(TFBlocks.TIME_CHEST.get(), TFBlocks.TIME_PLANKS.get(), TFMain.prefix("time/normal"));
+		this.createTFChest(TFBlocks.TRANSFORMATION_CHEST.get(), TFBlocks.TRANSFORMATION_PLANKS.get(), TFMain.prefix("transformation/normal"));
+		this.createTFChest(TFBlocks.MINING_CHEST.get(), TFBlocks.MINING_PLANKS.get(), TFMain.prefix("mining/normal"));
+		this.createTFChest(TFBlocks.SORTING_CHEST.get(), TFBlocks.SORTING_PLANKS.get(), TFMain.prefix("sorting/normal"));
 
-		this.createTFChest(TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.get(), TFBlocks.TWILIGHT_OAK_PLANKS.get(), TwilightForestMod.prefix("twilight_oak/trapped"));
-		this.createTFChest(TFBlocks.CANOPY_TRAPPED_CHEST.get(), TFBlocks.CANOPY_PLANKS.get(), TwilightForestMod.prefix("canopy/trapped"));
-		this.createTFChest(TFBlocks.MANGROVE_TRAPPED_CHEST.get(), TFBlocks.MANGROVE_PLANKS.get(), TwilightForestMod.prefix("mangrove/trapped"));
-		this.createTFChest(TFBlocks.DARK_TRAPPED_CHEST.get(), TFBlocks.DARK_PLANKS.get(), TwilightForestMod.prefix("darkwood/trapped"));
-		this.createTFChest(TFBlocks.TIME_TRAPPED_CHEST.get(), TFBlocks.TIME_PLANKS.get(), TwilightForestMod.prefix("time/trapped"));
-		this.createTFChest(TFBlocks.TRANSFORMATION_TRAPPED_CHEST.get(), TFBlocks.TRANSFORMATION_PLANKS.get(), TwilightForestMod.prefix("transformation/trapped"));
-		this.createTFChest(TFBlocks.MINING_TRAPPED_CHEST.get(), TFBlocks.MINING_PLANKS.get(), TwilightForestMod.prefix("mining/trapped"));
-		this.createTFChest(TFBlocks.SORTING_TRAPPED_CHEST.get(), TFBlocks.SORTING_PLANKS.get(), TwilightForestMod.prefix("sorting/trapped"));
+		this.createTFChest(TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.get(), TFBlocks.TWILIGHT_OAK_PLANKS.get(), TFMain.prefix("twilight_oak/trapped"));
+		this.createTFChest(TFBlocks.CANOPY_TRAPPED_CHEST.get(), TFBlocks.CANOPY_PLANKS.get(), TFMain.prefix("canopy/trapped"));
+		this.createTFChest(TFBlocks.MANGROVE_TRAPPED_CHEST.get(), TFBlocks.MANGROVE_PLANKS.get(), TFMain.prefix("mangrove/trapped"));
+		this.createTFChest(TFBlocks.DARK_TRAPPED_CHEST.get(), TFBlocks.DARK_PLANKS.get(), TFMain.prefix("darkwood/trapped"));
+		this.createTFChest(TFBlocks.TIME_TRAPPED_CHEST.get(), TFBlocks.TIME_PLANKS.get(), TFMain.prefix("time/trapped"));
+		this.createTFChest(TFBlocks.TRANSFORMATION_TRAPPED_CHEST.get(), TFBlocks.TRANSFORMATION_PLANKS.get(), TFMain.prefix("transformation/trapped"));
+		this.createTFChest(TFBlocks.MINING_TRAPPED_CHEST.get(), TFBlocks.MINING_PLANKS.get(), TFMain.prefix("mining/trapped"));
+		this.createTFChest(TFBlocks.SORTING_TRAPPED_CHEST.get(), TFBlocks.SORTING_PLANKS.get(), TFMain.prefix("sorting/trapped"));
 
 		this.generateHollowLog(Blocks.OAK_LOG, Blocks.STRIPPED_OAK_LOG, TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL.get(), TFBlocks.HOLLOW_OAK_LOG_VERTICAL.get(), TFBlocks.HOLLOW_OAK_LOG_CLIMBABLE.get());
 		this.generateBanister(TFBlocks.OAK_BANISTER.get(), TextureMapping.cube(Blocks.OAK_PLANKS));

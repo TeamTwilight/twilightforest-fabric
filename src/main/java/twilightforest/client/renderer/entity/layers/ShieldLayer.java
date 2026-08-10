@@ -19,15 +19,15 @@ import net.minecraft.util.context.ContextKey;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.entity.boss.Lich;
 import twilightforest.init.TFDataAttachments;
 
 public class ShieldLayer<S extends LivingEntityRenderState, M extends EntityModel<S>> extends RenderLayer<S, M> {
 
-	public static final Identifier LOC = TwilightForestMod.prefix("item/shield");
+	public static final Identifier LOC = TFMain.prefix("item/shield");
 
-	public static ContextKey<Integer> SHIELD_COUNT_KEY = new ContextKey<>(TwilightForestMod.prefix("shield_count"));
+	public static ContextKey<Integer> SHIELD_COUNT_KEY = new ContextKey<>(TFMain.prefix("shield_count"));
 
 	public ShieldLayer(RenderLayerParent<S, M> renderer) {
 		super(renderer);

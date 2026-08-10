@@ -5,7 +5,7 @@ import net.minecraft.client.renderer.rendertype.RenderSetup;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.TextureTransform;
 import org.joml.Matrix4f;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.renderer.block.RedThreadRenderer;
 import twilightforest.client.renderer.entity.LichRenderer;
 
@@ -21,7 +21,7 @@ public class TFRenderTypes {
 		.createRenderSetup());
 
 	public static final RenderType PROTECTION_BOX = RenderType.create("twilightforest:protection_box", RenderSetup.builder(TFRenderPipelines.PROTECTION_BOX)
-		.withTexture("Sampler0", TwilightForestMod.getModelTexture("protectionbox.png"))
+		.withTexture("Sampler0", TFMain.getModelTexture("protectionbox.png"))
 		.setTextureTransform(new ProtectionBoxTextureTransform())
 		.useLightmap()
 		.useOverlay()

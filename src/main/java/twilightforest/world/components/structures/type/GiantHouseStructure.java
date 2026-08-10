@@ -13,7 +13,7 @@ import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.tags.TFBiomeTags;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructureTypes;
@@ -60,7 +60,7 @@ public class GiantHouseStructure extends ProgressionStructure implements Configu
 
 	public static GiantHouseStructure buildGiantHouseConfig(BootstrapContext<Structure> context) {
 		return new GiantHouseStructure(
-			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_merge"))),
+			new AdvancementLockConfig(List.of(TFMain.prefix("progress_merge"))),
 			Optional.of(new HintConfig(HintConfig.book("trollcave", 3), TFEntities.KOBOLD.get())),
 			Optional.of(new DecorationConfig(1, true, true, false)),
 			false, Optional.empty(),

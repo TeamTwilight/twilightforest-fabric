@@ -1,16 +1,15 @@
 package twilightforest.client.model.block.patch;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.neoforged.neoforge.client.model.generators.template.CustomLoaderBuilder;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 
 public class PatchBuilder extends CustomLoaderBuilder {
 
 	private boolean shaggify = false;
 
 	public PatchBuilder() {
-		super(TwilightForestMod.prefix("patch"), false);
+		super(TFMain.prefix("patch"), false);
 	}
 
 	public PatchBuilder shaggify() {

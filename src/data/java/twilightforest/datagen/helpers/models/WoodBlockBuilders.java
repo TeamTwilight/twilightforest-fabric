@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.block.BanisterBlock;
 import twilightforest.block.ClimbableHollowLogBlock;
 import twilightforest.block.HorizontalHollowLogBlock;
@@ -204,9 +204,9 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 	public void generateHollowLog(Block log, Block stripped, Block horizontal, Block vertical, Block climbable) {
 		TextureMapping base = TextureMapping.logColumn(log).put(TextureSlot.INSIDE, TextureMapping.getBlockTexture(stripped));
 		Identifier horizModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG.create(horizontal, base, this.modelOutput);
-		Identifier mossModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG_CARPET.createWithSuffix(horizontal, "_moss", base.put(TFTextureSlot.CARPET, TextureMapping.getBlockTexture(TFBlocks.MOSS_PATCH.get())).put(TFTextureSlot.OVERHANG, new Material(TwilightForestMod.prefix("block/moss_overhang"))), this.modelOutput);
-		Identifier grassModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG_PLANT.createWithSuffix(horizontal, "_grass", base.put(TextureSlot.PLANT, TextureMapping.getBlockTexture(Blocks.SHORT_GRASS)).put(TFTextureSlot.CARPET, TextureMapping.getBlockTexture(TFBlocks.MOSS_PATCH.get())).put(TFTextureSlot.OVERHANG, new Material(TwilightForestMod.prefix("block/moss_overhang"))), this.modelOutput);
-		Identifier snowModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG_CARPET.createWithSuffix(horizontal, "_snow", base.put(TFTextureSlot.CARPET, TextureMapping.getBlockTexture(Blocks.SNOW)).put(TFTextureSlot.OVERHANG, new Material(TwilightForestMod.prefix("block/snow_overhang"))), this.modelOutput);
+		Identifier mossModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG_CARPET.createWithSuffix(horizontal, "_moss", base.put(TFTextureSlot.CARPET, TextureMapping.getBlockTexture(TFBlocks.MOSS_PATCH.get())).put(TFTextureSlot.OVERHANG, new Material(TFMain.prefix("block/moss_overhang"))), this.modelOutput);
+		Identifier grassModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG_PLANT.createWithSuffix(horizontal, "_grass", base.put(TextureSlot.PLANT, TextureMapping.getBlockTexture(Blocks.SHORT_GRASS)).put(TFTextureSlot.CARPET, TextureMapping.getBlockTexture(TFBlocks.MOSS_PATCH.get())).put(TFTextureSlot.OVERHANG, new Material(TFMain.prefix("block/moss_overhang"))), this.modelOutput);
+		Identifier snowModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG_CARPET.createWithSuffix(horizontal, "_snow", base.put(TFTextureSlot.CARPET, TextureMapping.getBlockTexture(Blocks.SNOW)).put(TFTextureSlot.OVERHANG, new Material(TFMain.prefix("block/snow_overhang"))), this.modelOutput);
 		Identifier vertModel = TFModelTemplates.VERTICAL_HOLLOW_LOG.create(vertical, base, this.modelOutput);
 		Identifier ladderModel = TFModelTemplates.CLIMBABLE_HOLLOW_LOG.createWithSuffix(climbable, "_ladder", base.put(TFTextureSlot.CLIMBABLE, TextureMapping.getBlockTexture(Blocks.LADDER)), this.modelOutput);
 		Identifier vineModel = TFModelTemplates.CLIMBABLE_HOLLOW_LOG.createWithSuffix(climbable, "_vine", base.put(TFTextureSlot.CLIMBABLE, TextureMapping.getBlockTexture(Blocks.VINE)), this.modelOutput);

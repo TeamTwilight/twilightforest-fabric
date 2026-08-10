@@ -22,7 +22,7 @@ import twilightforest.init.TFItems;
 import java.util.Collections;
 import java.util.Optional;
 
-import static twilightforest.TwilightForestMod.prefix;
+import static twilightforest.TFMain.prefix;
 
 public class StonecuttingGenerator {
 

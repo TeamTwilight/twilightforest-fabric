@@ -6,7 +6,7 @@ import net.minecraft.data.CachedOutput;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 
@@ -19,7 +19,7 @@ public class ModelGenerator extends ModelProvider {
 	private final PackOutput.PathProvider models;
 
 	public ModelGenerator(PackOutput packOutput) {
-		super(packOutput, TwilightForestMod.ID);
+		super(packOutput, TFMain.ID);
 		this.blocks = packOutput.createPathProvider(PackOutput.Target.RESOURCE_PACK, "blockstates");
 		this.items = packOutput.createPathProvider(PackOutput.Target.RESOURCE_PACK, "items");
 		this.models = packOutput.createPathProvider(PackOutput.Target.RESOURCE_PACK, "models");

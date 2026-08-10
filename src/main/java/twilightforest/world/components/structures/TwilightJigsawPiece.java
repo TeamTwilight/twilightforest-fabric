@@ -24,7 +24,7 @@ import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tamaized.beanification.Autowired;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
@@ -36,7 +36,7 @@ import java.util.function.Predicate;
 
 public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implements ProgressionPiece, PieceBeardifierModifier {
 
-	private static final Logger LOGGER = LogManager.getLogger(TwilightForestMod.ID + "/TwilightJigsawPiece");
+	private static final Logger LOGGER = LogManager.getLogger(TFMain.ID + "/TwilightJigsawPiece");
 
 	@Autowired
 	private static StructureTemplateDefinitions structureTemplateDefinitions;

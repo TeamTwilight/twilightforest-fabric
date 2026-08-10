@@ -19,7 +19,7 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.neoforged.neoforge.common.util.Lazy;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.advancements.*;
 import twilightforest.advancements.predicate.ItemColorPredicate;
 import tamaized.beanification.Autowired;
@@ -64,7 +64,7 @@ public class TFAdvancementGenerator implements AdvancementSubProvider {
 				TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE,
 				Component.translatable("advancement.twilightforest.root"),
 				Component.translatable("advancement.twilightforest.root.desc"),
-				TwilightForestMod.prefix("textures/block/mazestone_large_brick.png"),
+				TFMain.prefix("textures/block/mazestone_large_brick.png"),
 				AdvancementType.TASK,
 				true, false, false)
 			.requirements(AdvancementRequirements.Strategy.OR)
@@ -575,6 +575,6 @@ public class TFAdvancementGenerator implements AdvancementSubProvider {
 	}
 
 	private Criterion<PlayerTrigger.TriggerInstance> advancementTrigger(String name) {
-		return CriteriaTriggers.TICK.createCriterion(new PlayerTrigger.TriggerInstance(Optional.of(ContextAwarePredicate.create(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().subPredicate(PlayerPredicate.Builder.player().checkAdvancementDone(TwilightForestMod.prefix(name), true).build())).build()))));
+		return CriteriaTriggers.TICK.createCriterion(new PlayerTrigger.TriggerInstance(Optional.of(ContextAwarePredicate.create(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().subPredicate(PlayerPredicate.Builder.player().checkAdvancementDone(TFMain.prefix(name), true).build())).build()))));
 	}
 }

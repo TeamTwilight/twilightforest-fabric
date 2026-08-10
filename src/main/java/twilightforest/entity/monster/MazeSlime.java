@@ -17,13 +17,13 @@ import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 
 public class MazeSlime extends Slime {
 
-	private static final AttributeModifier DOUBLE_HEALTH = new AttributeModifier(TwilightForestMod.prefix("double_health"), 2, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
+	private static final AttributeModifier DOUBLE_HEALTH = new AttributeModifier(TFMain.prefix("double_health"), 2, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
 
 	public MazeSlime(EntityType<? extends MazeSlime> type, Level world) {
 		super(type, world);

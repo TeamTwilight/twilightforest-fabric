@@ -18,14 +18,14 @@ import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.config.TFConfig;
 import twilightforest.tags.TFItemTags;
 import twilightforest.inventory.UncraftingMenu;
 import twilightforest.network.UncraftingGuiPacket;
 
 public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> implements RecipeUpdateListener {
-	private static final Identifier TEXTURE = TwilightForestMod.getGuiTexture("guigoblintinkering.png");
+	private static final Identifier TEXTURE = TFMain.getGuiTexture("guigoblintinkering.png");
 	private final RecipeBookComponent recipeBookComponent = new UncraftingRecipeBookComponent();
 	private boolean widthTooNarrow;
 

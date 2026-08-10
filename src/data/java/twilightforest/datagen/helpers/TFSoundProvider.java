@@ -7,13 +7,13 @@ import net.neoforged.neoforge.common.data.SoundDefinition;
 import net.neoforged.neoforge.common.data.SoundDefinitionsProvider;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.datagen.assets.LangGenerator;
 
 public abstract class TFSoundProvider extends SoundDefinitionsProvider {
 
 	protected TFSoundProvider(PackOutput output) {
-		super(output, TwilightForestMod.ID);
+		super(output, TFMain.ID);
 	}
 
 	public void generateNewSoundWithSubtitle(DeferredHolder<SoundEvent, SoundEvent> event, String baseSoundDirectory, int numberOfSounds, String subtitle, float volume, float pitch) {
@@ -30,7 +30,7 @@ public abstract class TFSoundProvider extends SoundDefinitionsProvider {
 			this.createSubtitleAndLangEntry(event, definition, subtitle);
 		}
 		for (int i = 1; i <= numberOfSounds; i++) {
-			definition.with(SoundDefinition.Sound.sound(TwilightForestMod.prefix(baseSoundDirectory + (numberOfSounds > 1 ? i : "")), SoundDefinition.SoundType.SOUND).volume(volume).pitch(pitch));
+			definition.with(SoundDefinition.Sound.sound(TFMain.prefix(baseSoundDirectory + (numberOfSounds > 1 ? i : "")), SoundDefinition.SoundType.SOUND).volume(volume).pitch(pitch));
 		}
 		this.add(event, definition);
 	}
@@ -78,7 +78,7 @@ public abstract class TFSoundProvider extends SoundDefinitionsProvider {
 	public void makeNewStepjSound(DeferredHolder<SoundEvent, SoundEvent> event, String baseSoundDirectory, int numberOfSounds) {
 		SoundDefinition definition = SoundDefinition.definition();
 		for (int i = 1; i <= numberOfSounds; i++) {
-			definition.with(SoundDefinition.Sound.sound(TwilightForestMod.prefix(baseSoundDirectory + (numberOfSounds > 1 ? i : "")), SoundDefinition.SoundType.SOUND));
+			definition.with(SoundDefinition.Sound.sound(TFMain.prefix(baseSoundDirectory + (numberOfSounds > 1 ? i : "")), SoundDefinition.SoundType.SOUND));
 		}
 		this.add(event, definition.subtitle("subtitles.block.generic.footsteps"));
 	}
@@ -86,14 +86,14 @@ public abstract class TFSoundProvider extends SoundDefinitionsProvider {
 	public void makeNewGenericSound(DeferredHolder<SoundEvent, SoundEvent> event, String baseSoundDirectory, int numberOfSounds, @Nullable String type) {
 		SoundDefinition definition = SoundDefinition.definition();
 		for (int i = 1; i <= numberOfSounds; i++) {
-			definition.with(SoundDefinition.Sound.sound(TwilightForestMod.prefix(baseSoundDirectory + (numberOfSounds > 1 ? i : "")), SoundDefinition.SoundType.SOUND));
+			definition.with(SoundDefinition.Sound.sound(TFMain.prefix(baseSoundDirectory + (numberOfSounds > 1 ? i : "")), SoundDefinition.SoundType.SOUND));
 		}
 		this.add(event, type != null ? definition.subtitle("subtitles.block.generic." + type) : definition);
 	}
 
 	public void makeMusicDisc(DeferredHolder<SoundEvent, SoundEvent> event, String discName) {
 		this.add(event, SoundDefinition.definition()
-			.with(SoundDefinition.Sound.sound(TwilightForestMod.prefix("music/" + discName), SoundDefinition.SoundType.SOUND)
+			.with(SoundDefinition.Sound.sound(TFMain.prefix("music/" + discName), SoundDefinition.SoundType.SOUND)
 				.stream()));
 	}
 

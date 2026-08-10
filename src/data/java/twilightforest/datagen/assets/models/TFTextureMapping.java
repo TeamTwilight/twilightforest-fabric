@@ -7,8 +7,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.Nullable;
-import org.w3c.dom.Text;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.enums.BossVariant;
 import twilightforest.init.TFBlocks;
 
@@ -57,7 +56,7 @@ public class TFTextureMapping {
 	}
 
 	public static TextureMapping forcefield() {
-		var tex = new Material(TwilightForestMod.prefix("block/forcefield"));
+		var tex = new Material(TFMain.prefix("block/forcefield"));
 		return new TextureMapping().put(TextureSlot.PANE, tex).put(TextureSlot.PARTICLE, tex);
 	}
 

@@ -23,7 +23,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.block.AbstractTrophyBlock;
 import twilightforest.block.TrophyBlock;
 import twilightforest.block.TrophyWallBlock;
@@ -53,7 +53,7 @@ public class TrophyRenderer implements BlockEntityRenderer<TrophyBlockEntity, Tr
 				return (TrophyBlockModel) ((LivingEntityRenderer<?, ?, ?>)
 					Minecraft.getInstance().getEntityRenderDispatcher().renderers.get(type)).getModel().getClass().getDeclaredConstructor(ModelPart.class).newInstance(set.bakeLayer(layer));
 			} catch (Exception e) {
-				TwilightForestMod.LOGGER.warn("Failed to create trophy renderer for entity {}, using fallback", type.getDescription().getString());
+				TFMain.LOGGER.warn("Failed to create trophy renderer for entity {}, using fallback", type.getDescription().getString());
 				return createFallback(set, variant);
 			}
 		}, variant);

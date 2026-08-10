@@ -9,7 +9,7 @@ import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.world.level.saveddata.maps.MapId;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.item.mapdata.MapDataManager;
 import twilightforest.item.mapdata.TFMagicMapData;
 
@@ -19,7 +19,7 @@ import java.util.stream.StreamSupport;
 // Rewraps vanilla ClientboundMapItemDataPacket to sync conquered status of structures
 public record MagicMapPacket(ClientboundMapItemDataPacket inner, List<String> conqueredStructures) implements CustomPacketPayload {
 
-	public static final Type<MagicMapPacket> TYPE = new Type<>(TwilightForestMod.prefix("magic_map"));
+	public static final Type<MagicMapPacket> TYPE = new Type<>(TFMain.prefix("magic_map"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, MagicMapPacket> STREAM_CODEC = StreamCodec.composite(
 		ClientboundMapItemDataPacket.STREAM_CODEC, MagicMapPacket::inner,
 		ByteBufCodecs.STRING_UTF8.apply(ByteBufCodecs.list()), MagicMapPacket::conqueredStructures,

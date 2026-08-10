@@ -8,7 +8,7 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.equipment.trim.MaterialAssetGroup;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 
 public class TFTrimMaterials {
 	public static final ResourceKey<TrimMaterial> IRONWOOD = registerKey("ironwood");
@@ -19,7 +19,7 @@ public class TFTrimMaterials {
 	public static final ResourceKey<TrimMaterial> CARMINITE = registerKey("carminite");
 
 	private static ResourceKey<TrimMaterial> registerKey(String name) {
-		return ResourceKey.create(Registries.TRIM_MATERIAL, TwilightForestMod.prefix(name));
+		return ResourceKey.create(Registries.TRIM_MATERIAL, TFMain.prefix(name));
 	}
 
 	public static void bootstrap(BootstrapContext<TrimMaterial> context) {

@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Blocks;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.MinoshroomModel;
 import twilightforest.client.state.entity.MinoshroomRenderState;
@@ -23,7 +23,7 @@ import twilightforest.entity.boss.Minoshroom;
 public class MinoshroomRenderer extends HumanoidMobRenderer<Minoshroom, MinoshroomRenderState, MinoshroomModel> {
 	public static final BlockDisplayContext BLOCK_DISPLAY_CONTEXT = BlockDisplayContext.create();
 
-	public static final Identifier TEXTURE = TwilightForestMod.getModelTexture("minoshroomtaur.png");
+	public static final Identifier TEXTURE = TFMain.getModelTexture("minoshroomtaur.png");
 	private final BlockModelResolver blockModelResolver;
 
 	public MinoshroomRenderer(EntityRendererProvider.Context context) {

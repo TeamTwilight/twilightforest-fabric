@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.enums.Diagonals;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.structures.TFStructureComponent;
@@ -235,14 +235,14 @@ public abstract class StructureMazeGenerator extends TFStructureComponent {
 							break;
 						default:
 							if (random.nextInt(150) == 0) {
-								structure = new CourtyardTerrace(maze[x][y], xBB - 6, yBB - 3, zBB - 6, Rotation.NONE, this.structureManager, TwilightForestMod.prefix("courtyard/terrace_statue"));
+								structure = new CourtyardTerrace(maze[x][y], xBB - 6, yBB - 3, zBB - 6, Rotation.NONE, this.structureManager, TFMain.prefix("courtyard/terrace_statue"));
 							} else {
 								structure = switch (random.nextInt(5)) {
-									case 1 -> new CourtyardTerrace(maze[x][y], xBB - 6, yBB - 3, zBB - 6, Rotation.NONE, this.structureManager, TwilightForestMod.prefix("courtyard/terrace_duct"));
-									case 2 -> new CourtyardTerrace(maze[x][y], xBB - 6, yBB - 3, zBB - 6, Rotation.NONE, this.structureManager, TwilightForestMod.prefix("courtyard/terrace_channel"));
-									case 3 -> new CourtyardTerrace(maze[x][y], xBB - 6, yBB - 3, zBB - 6, Rotation.NONE, this.structureManager, TwilightForestMod.prefix("courtyard/terrace_reservoir"));
+									case 1 -> new CourtyardTerrace(maze[x][y], xBB - 6, yBB - 3, zBB - 6, Rotation.NONE, this.structureManager, TFMain.prefix("courtyard/terrace_duct"));
+									case 2 -> new CourtyardTerrace(maze[x][y], xBB - 6, yBB - 3, zBB - 6, Rotation.NONE, this.structureManager, TFMain.prefix("courtyard/terrace_channel"));
+									case 3 -> new CourtyardTerrace(maze[x][y], xBB - 6, yBB - 3, zBB - 6, Rotation.NONE, this.structureManager, TFMain.prefix("courtyard/terrace_reservoir"));
 									case 4 -> new CourtyardTerraceHedge(maze[x][y], xBB - 6, yBB - 3, zBB - 6, Rotation.NONE, this.structureManager);
-									default -> new CourtyardTerrace(maze[x][y], xBB - 6, yBB - 3, zBB - 6, Rotation.NONE, this.structureManager, TwilightForestMod.prefix("courtyard/terrace_fire"));
+									default -> new CourtyardTerrace(maze[x][y], xBB - 6, yBB - 3, zBB - 6, Rotation.NONE, this.structureManager, TFMain.prefix("courtyard/terrace_fire"));
 								};
 							}
 

@@ -12,15 +12,15 @@ import net.minecraft.world.level.levelgen.Noises;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import twilightforest.TFMain;
 import twilightforest.TFRegistries;
-import twilightforest.TwilightForestMod;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.world.components.chunkgenerators.*;
 import twilightforest.world.components.layer.BiomeDensitySource;
 
 @SuppressWarnings("unused")
 public class TFDensityFunctions {
-	public static final DeferredRegister<MapCodec<? extends DensityFunction>> DENSITY_FUNCTION_TYPES = DeferredRegister.create(Registries.DENSITY_FUNCTION_TYPE, TwilightForestMod.ID);
+	public static final DeferredRegister<MapCodec<? extends DensityFunction>> DENSITY_FUNCTION_TYPES = DeferredRegister.create(Registries.DENSITY_FUNCTION_TYPE, TFMain.ID);
 
 	public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<TerrainDensityRouter>> BIOME_DRIVEN_TERRAIN = register("biome_driven_terrain", TerrainDensityRouter.CODEC);
 	public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<NoiseDensityRouter>> BIOME_DRIVEN_NOISE = register("biome_driven_noise", NoiseDensityRouter.CODEC);
@@ -30,10 +30,10 @@ public class TFDensityFunctions {
 	public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<AbsoluteDifferenceFunction.Max>> COORD_MAX = register("coord_max", AbsoluteDifferenceFunction.Max.CODEC);
 	public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<SqrtDensityFunction>> SQRT = register("sqrt", SqrtDensityFunction.CODEC);
 
-	public static final ResourceKey<DensityFunction> BIOME_TERRAIN_RAW = ResourceKey.create(Registries.DENSITY_FUNCTION, TwilightForestMod.prefix("raw_biome_terrain"));
-	public static final ResourceKey<DensityFunction> BIOME_NOISE_RAW = ResourceKey.create(Registries.DENSITY_FUNCTION, TwilightForestMod.prefix("raw_biome_noise"));
-	public static final ResourceKey<DensityFunction> FORESTED_TERRAIN = ResourceKey.create(Registries.DENSITY_FUNCTION, TwilightForestMod.prefix("forested_terrain"));
-	public static final ResourceKey<DensityFunction> SKYLIGHT_TERRAIN = ResourceKey.create(Registries.DENSITY_FUNCTION, TwilightForestMod.prefix("skylight_terrain"));
+	public static final ResourceKey<DensityFunction> BIOME_TERRAIN_RAW = ResourceKey.create(Registries.DENSITY_FUNCTION, TFMain.prefix("raw_biome_terrain"));
+	public static final ResourceKey<DensityFunction> BIOME_NOISE_RAW = ResourceKey.create(Registries.DENSITY_FUNCTION, TFMain.prefix("raw_biome_noise"));
+	public static final ResourceKey<DensityFunction> FORESTED_TERRAIN = ResourceKey.create(Registries.DENSITY_FUNCTION, TFMain.prefix("forested_terrain"));
+	public static final ResourceKey<DensityFunction> SKYLIGHT_TERRAIN = ResourceKey.create(Registries.DENSITY_FUNCTION, TFMain.prefix("skylight_terrain"));
 
 	private static <T extends DensityFunction> DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<T>> register(String name, MapCodec<T> keyCodec) {
 		return DENSITY_FUNCTION_TYPES.register(name, () -> keyCodec);

@@ -3,7 +3,7 @@ package twilightforest.client.renderer.entity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.resources.Identifier;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.TrollModel;
 import twilightforest.client.state.entity.TrollRenderState;
@@ -11,7 +11,7 @@ import twilightforest.entity.monster.Troll;
 
 public class TrollRenderer extends HumanoidMobRenderer<Troll, TrollRenderState, TrollModel> {
 
-	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("troll.png");
+	private static final Identifier TEXTURE = TFMain.getModelTexture("troll.png");
 
 	public TrollRenderer(EntityRendererProvider.Context context) {
 		super(context, new TrollModel(context.bakeLayer(TFModelLayers.TROLL)), 0.625F);

@@ -7,7 +7,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.entity.TFPart;
 
 import javax.annotation.Nullable;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 public record UpdateTFMultipartPacket(int entityId, @Nullable Entity entity, @Nullable Map<Integer, PartDataHolder> data) implements CustomPacketPayload {
 
-	public static final Type<UpdateTFMultipartPacket> TYPE = new Type<>(TwilightForestMod.prefix("update_multipart_entity"));
+	public static final Type<UpdateTFMultipartPacket> TYPE = new Type<>(TFMain.prefix("update_multipart_entity"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, UpdateTFMultipartPacket> STREAM_CODEC = CustomPacketPayload.codec(UpdateTFMultipartPacket::write, UpdateTFMultipartPacket::new);
 
 	public UpdateTFMultipartPacket(RegistryFriendlyByteBuf buf) {

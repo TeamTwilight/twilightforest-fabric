@@ -7,11 +7,11 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.block.entity.MasonJarBlockEntity;
 
 public record SetMasonJarItemPacket(BlockPos pos, boolean empty, ItemStack stack, int rotation) implements CustomPacketPayload {
-	public static final Type<SetMasonJarItemPacket> TYPE = new Type<>(TwilightForestMod.prefix("set_mason_jar_item"));
+	public static final Type<SetMasonJarItemPacket> TYPE = new Type<>(TFMain.prefix("set_mason_jar_item"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, SetMasonJarItemPacket> STREAM_CODEC = CustomPacketPayload.codec(SetMasonJarItemPacket::write, SetMasonJarItemPacket::read);
 
 	public SetMasonJarItemPacket(BlockPos pos, ItemStack stack, int rotation) {

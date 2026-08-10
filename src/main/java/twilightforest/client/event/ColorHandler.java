@@ -10,7 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.block.ClimbableHollowLogBlock;
 import twilightforest.client.properties.PotionFlaskTintSource;
 import twilightforest.enums.HollowLogVariants;
@@ -286,6 +286,6 @@ public class ColorHandler {
 	}
 
 	protected static void registerItemColors(RegisterColorHandlersEvent.ItemTintSources event) {
-		event.register(TwilightForestMod.prefix("potion_flask"), PotionFlaskTintSource.TYPE);
+		event.register(TFMain.prefix("potion_flask"), PotionFlaskTintSource.TYPE);
 	}
 }

@@ -13,7 +13,7 @@ import net.minecraft.world.item.enchantment.effects.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.number.EnchantmentLevelProvider;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.enchantment.*;
 import twilightforest.tags.TFBlockTags;
 import twilightforest.tags.TFItemTags;
@@ -27,7 +27,7 @@ public class TFEnchantments {
 	public static final ResourceKey<Enchantment> RENEWAL = registerKey("renewal");
 
 	private static ResourceKey<Enchantment> registerKey(String name) {
-		return ResourceKey.create(Registries.ENCHANTMENT, TwilightForestMod.prefix(name));
+		return ResourceKey.create(Registries.ENCHANTMENT, TFMain.prefix(name));
 	}
 
 	public static void bootstrap(BootstrapContext<Enchantment> context) {

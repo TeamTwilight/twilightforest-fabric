@@ -27,7 +27,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.storage.loot.LootTable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructurePieceTypes;
@@ -78,7 +78,7 @@ public class FallenTrunkPiece extends StructurePiece {
 	protected void addAdditionalSaveData(StructurePieceSerializationContext context, CompoundTag tag) {
 		tag.putInt("length", this.length);
 		tag.putInt("radius", this.radius);
-		tag.put("log", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.log).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("log", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.log).resultOrPartial(TFMain.LOGGER::error).orElseGet(CompoundTag::new));
 		tag.putString("chest_loot_table", this.chestLootTable.identifier().toString());
 		tag.putLong("hole_seed", this.holeSeed);
 	}

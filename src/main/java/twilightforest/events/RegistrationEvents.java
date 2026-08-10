@@ -47,8 +47,8 @@ import org.jetbrains.annotations.Nullable;
 import tamaized.beanification.Autowired;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
+import twilightforest.TFMain;
 import twilightforest.TFRegistries;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.ChiseledCanopyShelfBlock;
 import twilightforest.block.entity.DryingRackBlockEntity;
 import twilightforest.block.entity.JarBlockEntity;
@@ -110,8 +110,8 @@ public class RegistrationEvents {
 		bus.addListener(ConfigSetup::reloadConfigs);
 
 		NeoForge.EVENT_BUS.addListener(this::registerCommands);
-		NeoForge.EVENT_BUS.addListener(AddServerReloadListenersEvent.class, event -> event.addListener(TwilightForestMod.prefix("quest"), new QuestReloadListener()));
-		NeoForge.EVENT_BUS.addListener(AddServerReloadListenersEvent.class, event -> event.addListener(TwilightForestMod.prefix("travellers_cache"), TravellersModifiersManager.CacheInvalidationReloadListener.INSTANCE));
+		NeoForge.EVENT_BUS.addListener(AddServerReloadListenersEvent.class, event -> event.addListener(TFMain.prefix("quest"), new QuestReloadListener()));
+		NeoForge.EVENT_BUS.addListener(AddServerReloadListenersEvent.class, event -> event.addListener(TFMain.prefix("travellers_cache"), TravellersModifiersManager.CacheInvalidationReloadListener.INSTANCE));
 		NeoForge.EVENT_BUS.addListener(StalactiteReloadListener.INSTANCE::registerListener);
 		NeoForge.EVENT_BUS.addListener(this.structureTemplateDefinitions::registerListener);
 		NeoForge.EVENT_BUS.addListener(ConfigSetup::syncUncraftingConfig);
@@ -195,7 +195,7 @@ public class RegistrationEvents {
 
 	public void registerExtraStuff(RegisterEvent evt) {
 		if (evt.getRegistryKey().equals(Registries.BIOME_SOURCE)) {
-			Registry.register(BuiltInRegistries.BIOME_SOURCE, TwilightForestMod.prefix("twilight_biomes"), TFBiomeProvider.TF_CODEC);
+			Registry.register(BuiltInRegistries.BIOME_SOURCE, TFMain.prefix("twilight_biomes"), TFBiomeProvider.TF_CODEC);
 		}
 	}
 
@@ -212,7 +212,7 @@ public class RegistrationEvents {
 	}
 
 	public void setupPackets(RegisterPayloadHandlersEvent event) {
-		PayloadRegistrar registrar = event.registrar(TwilightForestMod.ID).versioned("1.0.0").optional();
+		PayloadRegistrar registrar = event.registrar(TFMain.ID).versioned("1.0.0").optional();
 		registrar.playToClient(AreaProtectionPacket.TYPE, AreaProtectionPacket.STREAM_CODEC, AreaProtectionPacket::handle);
 		registrar.playToClient(CreateMovingCicadaSoundPacket.TYPE, CreateMovingCicadaSoundPacket.STREAM_CODEC, CreateMovingCicadaSoundPacket::handle);
 		registrar.playToClient(EnforceProgressionStatusPacket.TYPE, EnforceProgressionStatusPacket.STREAM_CODEC, EnforceProgressionStatusPacket::handle);

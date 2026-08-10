@@ -17,7 +17,7 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.block.*;
 import twilightforest.enums.BlockLoggingEnum;
 import twilightforest.enums.BossVariant;
@@ -31,7 +31,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class TFBlocks {
-	public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(TwilightForestMod.ID);
+	public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(TFMain.ID);
 
 	public static final DeferredBlock<TFPortalBlock> TWILIGHT_PORTAL = register("twilight_portal", TFPortalBlock::new, () -> BlockBehaviour.Properties.of().pushReaction(PushReaction.BLOCK).strength(-1.0F).sound(SoundType.GLASS).lightLevel((state) -> 11).noCollision().noOcclusion().noLootTable());
 
@@ -663,11 +663,11 @@ public class TFBlocks {
 	public static final DeferredBlock<FlowerPotBlock> POTTED_DEAD_THORN = register("potted_dead_thorn", properties -> new SpecialFlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, BURNT_THORNS, properties), () -> BlockBehaviour.Properties.ofFullCopy(Blocks.FLOWER_POT));
 
 	public static <T extends Block> DeferredBlock<T> register(String name, Function<BlockBehaviour.Properties, T> block, Supplier<BlockBehaviour.Properties> properties) {
-		return BLOCKS.register(name, () -> block.apply(properties.get().setId(ResourceKey.create(Registries.BLOCK, TwilightForestMod.prefix(name)))));
+		return BLOCKS.register(name, () -> block.apply(properties.get().setId(ResourceKey.create(Registries.BLOCK, TFMain.prefix(name)))));
 	}
 
 	public static <T extends Block> DeferredBlock<T> registerCustomID(String name, Function<BlockBehaviour.Properties, T> block, Supplier<BlockBehaviour.Properties> properties, String id) {
-		return BLOCKS.register(name, () -> block.apply(properties.get().setId(ResourceKey.create(Registries.BLOCK, TwilightForestMod.prefix(name))).overrideDescription("block.twilightforest." + id)));
+		return BLOCKS.register(name, () -> block.apply(properties.get().setId(ResourceKey.create(Registries.BLOCK, TFMain.prefix(name))).overrideDescription("block.twilightforest." + id)));
 	}
 
 	public static <T extends Block> DeferredBlock<T> registerWithItem(String name, Function<BlockBehaviour.Properties, T> block, Supplier<BlockBehaviour.Properties> properties) {

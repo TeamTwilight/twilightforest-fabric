@@ -11,7 +11,7 @@ import net.minecraft.client.resources.model.sprite.SpriteGetter;
 import net.minecraft.client.resources.model.sprite.SpriteId;
 import net.minecraft.util.Unit;
 import org.joml.Vector3fc;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.KnightmetalShieldModel;
 
@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 
 public record KnightmetalShieldSpecialRenderer(SpriteGetter sprites, KnightmetalShieldModel model) implements NoDataSpecialModelRenderer {
 
-	private static final SpriteId SHIELD_BASE = Sheets.SHIELD_MAPPER.apply(TwilightForestMod.prefix("knightmetal_shield"));
+	private static final SpriteId SHIELD_BASE = Sheets.SHIELD_MAPPER.apply(TFMain.prefix("knightmetal_shield"));
 
 	@Override
 	public void submit(PoseStack stack, SubmitNodeCollector collector, int light, int overlay, boolean hasFoil, int outlineColor) {

@@ -2,14 +2,14 @@ package twilightforest.datagen.data.custom.stalactites;
 
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Blocks;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.TFStructures;
 import twilightforest.world.components.feature.BlockSpikeFeature;
 
 public class StalactiteGenerator extends StalactiteProvider {
 
 	public StalactiteGenerator(PackOutput output) {
-		super(output, TwilightForestMod.ID);
+		super(output, TFMain.ID);
 	}
 
 	@Override

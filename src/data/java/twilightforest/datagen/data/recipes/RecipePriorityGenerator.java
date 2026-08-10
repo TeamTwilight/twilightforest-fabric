@@ -3,14 +3,14 @@ package twilightforest.datagen.data.recipes;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.RecipePrioritiesProvider;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 
 import java.util.concurrent.CompletableFuture;
 
 public class RecipePriorityGenerator extends RecipePrioritiesProvider {
 
 	public RecipePriorityGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
-		super(output, registries, TwilightForestMod.ID);
+		super(output, registries, TFMain.ID);
 	}
 
 	@Override

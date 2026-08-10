@@ -22,7 +22,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.storage.loot.LootTable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.features.FeatureLogic;
 
@@ -74,9 +74,9 @@ public class HollowTreeLargeBranch extends HollowTreeMedBranch {
 
 		tag.putBoolean("has_leaf_dungeon", this.hasLeafDungeon);
 
-		tag.put("dungeon_wood", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.dungeonWood).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
-		tag.put("dungeon_air", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.dungeonAir).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
-		tag.put("dungeon_loot_block", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.dungeonLootBlock).resultOrPartial(TwilightForestMod.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("dungeon_wood", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.dungeonWood).resultOrPartial(TFMain.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("dungeon_air", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.dungeonAir).resultOrPartial(TFMain.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("dungeon_loot_block", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.dungeonLootBlock).resultOrPartial(TFMain.LOGGER::error).orElseGet(CompoundTag::new));
 
 		tag.putString("dungeon_loot_table", this.dungeonLootTable.identifier().toString());
 

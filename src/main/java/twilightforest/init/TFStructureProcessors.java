@@ -5,7 +5,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProc
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.world.components.feature.templates.GraveyardFeature;
 import twilightforest.world.components.processors.*;
 import twilightforest.world.components.structures.courtyard.CourtyardTerraceTemplateProcessor;
@@ -17,7 +17,7 @@ import java.util.function.Supplier;
  */
 public class TFStructureProcessors {
 
-	public static final DeferredRegister<StructureProcessorType<?>> STRUCTURE_PROCESSORS = DeferredRegister.create(Registries.STRUCTURE_PROCESSOR, TwilightForestMod.ID);
+	public static final DeferredRegister<StructureProcessorType<?>> STRUCTURE_PROCESSORS = DeferredRegister.create(Registries.STRUCTURE_PROCESSOR, TFMain.ID);
 
 	public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<CobbleVariants>> COBBLE_VARIANTS = registerProcessor("cobble_variants", () -> () -> CobbleVariants.CODEC);
 	public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<SmoothStoneVariants>> SMOOTH_STONE_VARIANTS = registerProcessor("smooth_stone_variants", () -> () -> SmoothStoneVariants.CODEC);

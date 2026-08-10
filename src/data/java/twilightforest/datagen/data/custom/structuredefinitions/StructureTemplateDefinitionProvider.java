@@ -12,8 +12,8 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.GravityProces
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 import net.neoforged.neoforge.common.data.JsonCodecProvider;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.TFMain;
 import twilightforest.TFRegistries;
-import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.util.StructureTemplateDefinition;
 import twilightforest.world.components.structures.util.StructureTemplateDefinitions;
 import twilightforest.world.components.structures.util.TemplateMarkerHandlerList;
@@ -67,11 +67,11 @@ public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvi
 	}
 
 	protected void add(String roomId, Identifier poolId, int weight) {
-		this.add(TwilightForestMod.prefix(roomId), poolId, weight);
+		this.add(TFMain.prefix(roomId), poolId, weight);
 	}
 
 	protected void addEmpty(Identifier poolId, int weight) {
-		this.add(TwilightForestMod.prefix("_empty"), poolId, weight);
+		this.add(TFMain.prefix("_empty"), poolId, weight);
 	}
 
 	protected void add(Identifier templateId, Identifier poolId, int weight) {
@@ -79,7 +79,7 @@ public abstract class StructureTemplateDefinitionProvider extends JsonCodecProvi
 	}
 
 	protected void add(String roomId, Identifier poolId, TemplatePoolInstance poolData) {
-		this.add(TwilightForestMod.prefix(roomId), poolId, poolData);
+		this.add(TFMain.prefix(roomId), poolId, poolData);
 	}
 
 	protected void add(Identifier templateId, Identifier poolId, TemplatePoolInstance poolData) {

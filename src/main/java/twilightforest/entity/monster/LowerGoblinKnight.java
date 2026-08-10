@@ -26,7 +26,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.entity.ai.goal.RiderSpearAttackGoal;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
@@ -36,7 +36,7 @@ import java.util.Objects;
 public class LowerGoblinKnight extends Monster {
 
 	private static final EntityDataAccessor<Boolean> ARMOR = SynchedEntityData.defineId(LowerGoblinKnight.class, EntityDataSerializers.BOOLEAN);
-	private static final AttributeModifier ARMOR_MODIFIER = new AttributeModifier(TwilightForestMod.prefix("armor_boost"), 17, AttributeModifier.Operation.ADD_VALUE);
+	private static final AttributeModifier ARMOR_MODIFIER = new AttributeModifier(TFMain.prefix("armor_boost"), 17, AttributeModifier.Operation.ADD_VALUE);
 
 	@SuppressWarnings("this-escape")
 	public LowerGoblinKnight(EntityType<? extends LowerGoblinKnight> type, Level world) {

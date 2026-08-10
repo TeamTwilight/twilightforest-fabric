@@ -5,7 +5,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.portal.TeleportTransition;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 
 public class NoReturnTeleporter extends TFTeleporter {
 
@@ -22,27 +22,27 @@ public class NoReturnTeleporter extends TFTeleporter {
 		String name = entity.getName().getString();
 
 		if (spot != null) {
-			TwilightForestMod.LOGGER.debug("Found existing teleportation for {} at {}", name, spot);
+			TFMain.LOGGER.debug("Found existing teleportation for {} at {}", name, spot);
 			return safePosInColumn(level, entity, Vec3.atCenterOf(spot.above()));
 		}
 
 		spot = findPortalCoords(level, pos, blockpos -> isIdealForPortal(level, blockpos));
 
 		if (spot != null) {
-			TwilightForestMod.LOGGER.debug("Found ideal teleportation spot for {} at {}", name, spot);
+			TFMain.LOGGER.debug("Found ideal teleportation spot for {} at {}", name, spot);
 			return safePosInColumn(level, entity, Vec3.atCenterOf(spot.above()));
 		}
 
-		TwilightForestMod.LOGGER.debug("Did not find ideal teleportation spot, shooting for okay one for {}", name);
+		TFMain.LOGGER.debug("Did not find ideal teleportation spot, shooting for okay one for {}", name);
 		spot = findPortalCoords(level, pos, blockPos -> isOkayForPortal(level, blockPos));
 
 		if (spot != null) {
-			TwilightForestMod.LOGGER.debug("Found okay teleportation spot for {} at {}", name, spot);
+			TFMain.LOGGER.debug("Found okay teleportation spot for {} at {}", name, spot);
 			return safePosInColumn(level, entity, Vec3.atCenterOf(spot.above()));
 		}
 
 		// well I don't think we can actually just return and fail here
-		TwilightForestMod.LOGGER.debug("Did not even find an okay teleportation spot, just making a random one for {}", name);
+		TFMain.LOGGER.debug("Did not even find an okay teleportation spot, just making a random one for {}", name);
 
 		// adjust the portal height based on what level we're traveling to
 		double yFactor = getYFactor(level);

@@ -5,7 +5,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.tags.TFBiomeTags;
 import twilightforest.world.components.structures.type.*;
 
@@ -39,7 +39,7 @@ public class TFStructures {
 	public static final ResourceKey<Structure> WORLD_TREE = registerKey("world_tree");
 
 	public static ResourceKey<Structure> registerKey(String name) {
-		return ResourceKey.create(Registries.STRUCTURE, TwilightForestMod.prefix(name));
+		return ResourceKey.create(Registries.STRUCTURE, TFMain.prefix(name));
 	}
 
 	public static void bootstrap(BootstrapContext<Structure> context) {

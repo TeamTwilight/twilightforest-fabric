@@ -23,7 +23,7 @@ import net.minecraft.world.item.equipment.ArmorType;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import tamaized.beanification.Autowired;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.components.item.PotionFlaskComponent;
 import twilightforest.enums.extensions.TFRarityEnumExtension;
 import twilightforest.item.*;
@@ -44,7 +44,7 @@ public class TFItems {
 	@Autowired
 	private static TFRarityEnumExtension tfRarityEnumExtension;
 
-	public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(TwilightForestMod.ID);
+	public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(TFMain.ID);
 
 	public static final DeferredItem<Item> NAGA_SCALE = register("naga_scale", Item::new, () -> new Item.Properties().rarity(Rarity.UNCOMMON));
 	public static final DeferredItem<Item> NAGA_CHESTPLATE = register("naga_chestplate", Item::new, () -> new Item.Properties().humanoidArmor(TFArmorMaterials.NAGA, ArmorType.CHESTPLATE).rarity(Rarity.UNCOMMON));
@@ -332,6 +332,6 @@ public class TFItems {
 	public static final DeferredItem<Item> TANNED_LEATHER = register("tanned_leather", Item::new, Item.Properties::new);
 
 	public static <T extends Item> DeferredItem<T> register(String name, Function<Item.Properties, T> item, Supplier<Item.Properties> properties) {
-		return ITEMS.register(name, () -> item.apply(properties.get().setId(ResourceKey.create(Registries.ITEM, TwilightForestMod.prefix(name)))));
+		return ITEMS.register(name, () -> item.apply(properties.get().setId(ResourceKey.create(Registries.ITEM, TFMain.prefix(name)))));
 	}
 }

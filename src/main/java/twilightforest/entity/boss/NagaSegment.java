@@ -12,7 +12,7 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.entity.TFPart;
 import twilightforest.init.TFSounds;
 
@@ -20,7 +20,7 @@ import java.util.List;
 
 public class NagaSegment extends TFPart<Naga> {
 
-	public static final Identifier RENDERER = TwilightForestMod.prefix("naga_segment");
+	public static final Identifier RENDERER = TFMain.prefix("naga_segment");
 
 	private int deathCounter;
 

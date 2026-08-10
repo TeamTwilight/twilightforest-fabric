@@ -17,7 +17,7 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import tamaized.beanification.Autowired;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.tags.TFBiomeTags;
 import twilightforest.util.WorldUtil;
@@ -55,7 +55,7 @@ public class CampStructure extends Structure implements DecorationClearance {
 		FrontAndTop oriented = FrontAndTop.fromFrontAndTop(Direction.UP, direction);
 
 		return Optional.of(new GenerationStub(freePosition, structurePiecesBuilder -> {
-			Identifier templatePool = TwilightForestMod.prefix("camp/structure_start");
+			Identifier templatePool = TFMain.prefix("camp/structure_start");
 			TwilightJigsawPiece twilightJigsawPiece = structureTemplateDefinitions.initializeTemplateFromPool(templatePool, freePosition.mutable(), oriented, templatePool.toString(), random, 0, context.structureTemplateManager());
 
 			if (twilightJigsawPiece == null) return;

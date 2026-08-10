@@ -7,10 +7,10 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 
 public class FrostedEffect extends MobEffect {
-	public static final Identifier MOVEMENT_SPEED_MODIFIER = TwilightForestMod.prefix("frosted_slowdown");
+	public static final Identifier MOVEMENT_SPEED_MODIFIER = TFMain.prefix("frosted_slowdown");
 	public static final double FROST_MULTIPLIER = -0.15D;
 
 	public FrostedEffect() {

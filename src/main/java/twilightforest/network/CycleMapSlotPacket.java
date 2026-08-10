@@ -8,7 +8,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.components.item.ItemDisplayContents;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFSounds;
@@ -16,7 +16,7 @@ import twilightforest.init.custom.TravellersModifiersManager;
 
 public record CycleMapSlotPacket() implements CustomPacketPayload {
 	public static final CycleMapSlotPacket INSTANCE = new CycleMapSlotPacket();
-	public static final Type<CycleMapSlotPacket> TYPE = new Type<>(TwilightForestMod.prefix("cycle_map_slot_packet"));
+	public static final Type<CycleMapSlotPacket> TYPE = new Type<>(TFMain.prefix("cycle_map_slot_packet"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, CycleMapSlotPacket> STREAM_CODEC = StreamCodec.unit(INSTANCE);
 
 	public static void handle(CycleMapSlotPacket message, IPayloadContext ctx) {

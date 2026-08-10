@@ -30,7 +30,7 @@ import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.components.entity.SlimySolesAttachment;
 import twilightforest.components.entity.TravellersWingsAttachment;
 import twilightforest.init.*;
@@ -320,7 +320,7 @@ public class TravellersGearLogic {
 		int lastTick = serverPlayer.getData(lastCheck);
 		int currentTick = serverPlayer.tickCount;
 		int diff = currentTick - lastTick;
-		TwilightForestMod.LOGGER.debug("{} {} check: count={}, lastTick={}, currentTick={}, diff={}",
+		TFMain.LOGGER.debug("{} {} check: count={}, lastTick={}, currentTick={}, diff={}",
 			serverPlayer.getName().getString(), movementType, count, lastTick, currentTick, diff);
 
 		if (diff >= 45 && !serverPlayer.isFallFlying()) {
@@ -337,7 +337,7 @@ public class TravellersGearLogic {
 		serverPlayer.setData(validator, count + 1);
 
 		if (count > 1) {
-			TwilightForestMod.LOGGER.warn("{} illegal {}", serverPlayer.getName().getString(), movementType);
+			TFMain.LOGGER.warn("{} illegal {}", serverPlayer.getName().getString(), movementType);
 			serverPlayer.absSnapTo(serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(),
 				serverPlayer.getYRot(), serverPlayer.getXRot());
 			serverPlayer.connection.send(ClientboundPlayerPositionPacket.of(serverPlayer.getId(),

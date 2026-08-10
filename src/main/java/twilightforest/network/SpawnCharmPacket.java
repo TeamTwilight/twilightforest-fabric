@@ -16,14 +16,14 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.CharmEffect;
 import twilightforest.init.TFEntities;
 
 public record SpawnCharmPacket(ItemStack charm, ResourceKey<SoundEvent> event) implements CustomPacketPayload {
 
-	public static final Type<SpawnCharmPacket> TYPE = new Type<>(TwilightForestMod.prefix("spawn_charm"));
+	public static final Type<SpawnCharmPacket> TYPE = new Type<>(TFMain.prefix("spawn_charm"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, SpawnCharmPacket> STREAM_CODEC = CustomPacketPayload.codec(SpawnCharmPacket::write, SpawnCharmPacket::new);
 
 	public SpawnCharmPacket(RegistryFriendlyByteBuf buf) {

@@ -23,7 +23,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import tamaized.beanification.Autowired;
 import twilightforest.client.overlay.ItemDisplayOverlay;
 import twilightforest.components.entity.TFPortalAttachment;
@@ -43,16 +43,16 @@ import java.text.DecimalFormat;
 import java.util.*;
 
 public class OverlayHandler {
-	private static final Identifier QUESTING_RAM_CHECK_SPRITE = TwilightForestMod.prefix("questing_ram_check");
-	private static final Identifier QUESTING_RAM_X_SPRITE = TwilightForestMod.prefix("questing_ram_x");
-	private static final Identifier FORTIFICATION_SHIELD_SPRITE = TwilightForestMod.prefix("fortification_shield");
+	private static final Identifier QUESTING_RAM_CHECK_SPRITE = TFMain.prefix("questing_ram_check");
+	private static final Identifier QUESTING_RAM_X_SPRITE = TFMain.prefix("questing_ram_x");
+	private static final Identifier FORTIFICATION_SHIELD_SPRITE = TFMain.prefix("fortification_shield");
 	public static final Map<Long, OreMeterInfoCache> ORE_METER_STAT_CACHE = new HashMap<>();
 
 	@Autowired(dist = Dist.CLIENT)
 	private static QuestingRamCurrentContext questingRamCurrentContext;
 
 	protected static void registerOverlays(RegisterGuiLayersEvent event) {
-		event.registerAbove(VanillaGuiLayers.CROSSHAIR, TwilightForestMod.prefix("quest_ram_indicator"), (graphics, partialTicks) -> {
+		event.registerAbove(VanillaGuiLayers.CROSSHAIR, TFMain.prefix("quest_ram_indicator"), (graphics, partialTicks) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			LocalPlayer player = minecraft.player;
 			Gui gui = minecraft.gui;
@@ -62,7 +62,7 @@ public class OverlayHandler {
 				RenderSystem.disableBlend();
 			}
 		});
-		event.registerAbove(VanillaGuiLayers.VEHICLE_HEALTH, TwilightForestMod.prefix("hostile_mount_hunger_bar"), (graphics, partialTicks) -> {
+		event.registerAbove(VanillaGuiLayers.VEHICLE_HEALTH, TFMain.prefix("hostile_mount_hunger_bar"), (graphics, partialTicks) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			LocalPlayer player = minecraft.player;
 			Gui gui = minecraft.gui;
@@ -73,7 +73,7 @@ public class OverlayHandler {
 				gui.rightHeight += 10;
 			}
 		});
-		event.registerAboveAll(TwilightForestMod.prefix("ore_meter_stats"), (graphics, partialTicks) -> {
+		event.registerAboveAll(TFMain.prefix("ore_meter_stats"), (graphics, partialTicks) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			LocalPlayer player = minecraft.player;
 			Gui gui = minecraft.gui;
@@ -82,7 +82,7 @@ public class OverlayHandler {
 			}
 		});
 
-		event.registerAbove(VanillaGuiLayers.ARMOR_LEVEL, TwilightForestMod.prefix("fortification_shield_count"), (graphics, partialTick) -> {
+		event.registerAbove(VanillaGuiLayers.ARMOR_LEVEL, TFMain.prefix("fortification_shield_count"), (graphics, partialTick) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			LocalPlayer player = minecraft.player;
 			Gui gui = minecraft.gui;
@@ -91,7 +91,7 @@ public class OverlayHandler {
 			}
 		});
 
-		event.registerAboveAll(TwilightForestMod.prefix("portal_overlay"), (graphics, partialTick) -> {
+		event.registerAboveAll(TFMain.prefix("portal_overlay"), (graphics, partialTick) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			Window window = minecraft.getWindow();
 			LocalPlayer player = minecraft.player;
@@ -113,7 +113,7 @@ public class OverlayHandler {
 			}
 		});
 
-		event.registerAboveAll(TwilightForestMod.prefix("item_display_overlay"), (graphics, partialTick) -> {
+		event.registerAboveAll(TFMain.prefix("item_display_overlay"), (graphics, partialTick) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			Gui gui = minecraft.gui;
 			ItemDisplayOverlay.render(graphics, minecraft, minecraft.getWindow(), gui, getCameraPlayer());

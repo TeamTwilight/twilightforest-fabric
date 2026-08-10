@@ -4,11 +4,11 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 
 public final class TFSounds {
 
-	public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(Registries.SOUND_EVENT, TwilightForestMod.ID);
+	public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(Registries.SOUND_EVENT, TFMain.ID);
 
 	public static final DeferredHolder<SoundEvent, SoundEvent> ACID_RAIN_BURNS = createEvent("environment.twilightforest.acid_rain");
 	public static final DeferredHolder<SoundEvent, SoundEvent> ALPHA_YETI_ALERT = createEvent("entity.twilightforest.alpha_yeti.alert");
@@ -347,6 +347,6 @@ public final class TFSounds {
 	public static final DeferredHolder<SoundEvent, SoundEvent> MUSIC_DISC_MOTION = createEvent("music_disc.twilightforest.motion");
 
 	private static DeferredHolder<SoundEvent, SoundEvent> createEvent(String sound) {
-		return SOUNDS.register(sound, () -> SoundEvent.createVariableRangeEvent(TwilightForestMod.prefix(sound)));
+		return SOUNDS.register(sound, () -> SoundEvent.createVariableRangeEvent(TFMain.prefix(sound)));
 	}
 }

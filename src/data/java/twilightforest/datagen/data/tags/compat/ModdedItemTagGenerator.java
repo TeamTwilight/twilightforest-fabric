@@ -4,7 +4,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.world.level.block.Block;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 import twilightforest.tags.TFItemTags;
@@ -14,7 +14,7 @@ import java.util.concurrent.CompletableFuture;
 public class ModdedItemTagGenerator extends ItemTagsProvider {
 
 	public ModdedItemTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> future, CompletableFuture<TagLookup<Block>> provider) {
-		super(output, future, provider, TwilightForestMod.ID);
+		super(output, future, provider, TFMain.ID);
 	}
 
 	@Override

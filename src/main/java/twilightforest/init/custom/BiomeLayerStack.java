@@ -10,8 +10,8 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
+import twilightforest.TFMain;
 import twilightforest.TFRegistries;
-import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBiomes;
 import twilightforest.world.components.layer.*;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerFactory;
@@ -30,10 +30,10 @@ public class BiomeLayerStack {
 	public static final ResourceKey<BiomeLayerFactory> RANDOM_FOREST_BIOMES = registerKey("random_forest_biomes");
 	public static final ResourceKey<BiomeLayerFactory> BIOMES_ALONG_STREAMS = registerKey("biomes_along_streams");
 
-	public static final ResourceKey<BiomeDensitySource> BIOME_GRID = ResourceKey.create(TFRegistries.Keys.BIOME_TERRAIN_DATA, TwilightForestMod.prefix("biome_grid"));
+	public static final ResourceKey<BiomeDensitySource> BIOME_GRID = ResourceKey.create(TFRegistries.Keys.BIOME_TERRAIN_DATA, TFMain.prefix("biome_grid"));
 
 	public static ResourceKey<BiomeLayerFactory> registerKey(String name) {
-		return ResourceKey.create(TFRegistries.Keys.BIOME_STACK, TwilightForestMod.prefix(name));
+		return ResourceKey.create(TFRegistries.Keys.BIOME_STACK, TFMain.prefix(name));
 	}
 
 	public static void bootstrap(BootstrapContext<BiomeLayerFactory> context) {

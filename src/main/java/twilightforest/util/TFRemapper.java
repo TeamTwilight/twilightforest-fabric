@@ -6,7 +6,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.init.*;
 
 public class TFRemapper {
@@ -17,7 +17,7 @@ public class TFRemapper {
 		DeferredRegister<Item> itemReg = TFItems.ITEMS;
 		DeferredRegister<StructurePieceType> pieceTypeReg = TFStructurePieceTypes.STRUCTURE_PIECE_TYPES;
 
-		TFBlockEntities.BLOCK_ENTITIES.addAlias(TwilightForestMod.prefix("tf_chest"), Identifier.withDefaultNamespace("chest"));
+		TFBlockEntities.BLOCK_ENTITIES.addAlias(TFMain.prefix("tf_chest"), Identifier.withDefaultNamespace("chest"));
 
 		remapEntryFromRegistries("yeti_trophy", "alpha_yeti_trophy", blockReg, itemReg);
 		remapEntryFromRegistries("yeti_wall_trophy", "alpha_yeti_wall_trophy", blockReg, itemReg);
@@ -191,16 +191,16 @@ public class TFRemapper {
 		remapEntry(pieceTypeReg, "TFNCDu", "TFNCTe"); // Terrace Duct
 		remapEntry(pieceTypeReg, "TFNCSt", "TFNCTe"); // Terrace Statue
 
-		TFStructureProcessors.STRUCTURE_PROCESSORS.addAlias(TwilightForestMod.prefix("meta_block_processor"), Identifier.withDefaultNamespace("jigsaw_replacement"));
+		TFStructureProcessors.STRUCTURE_PROCESSORS.addAlias(TFMain.prefix("meta_block_processor"), Identifier.withDefaultNamespace("jigsaw_replacement"));
 	}
 
 	private static void remapEntry(DeferredRegister<?> registry, String oldId, String newId) {
-		registry.addAlias(TwilightForestMod.prefix(oldId), TwilightForestMod.prefix(newId));
+		registry.addAlias(TFMain.prefix(oldId), TFMain.prefix(newId));
 	}
 
 	private static void remapEntryFromRegistries(String oldId, String newId, DeferredRegister<?>... registries) {
 		for (DeferredRegister<?> registry : registries) {
-			registry.addAlias(TwilightForestMod.prefix(oldId), TwilightForestMod.prefix(newId));
+			registry.addAlias(TFMain.prefix(oldId), TFMain.prefix(newId));
 		}
 	}
 }

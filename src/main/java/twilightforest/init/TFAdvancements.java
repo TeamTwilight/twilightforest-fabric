@@ -4,13 +4,13 @@ import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.core.registries.Registries;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.advancements.*;
 import twilightforest.advancements.AddModifierTrigger;
 
 public class TFAdvancements {
 
-	public static final DeferredRegister<CriterionTrigger<?>> TRIGGERS = DeferredRegister.create(Registries.TRIGGER_TYPE, TwilightForestMod.ID);
+	public static final DeferredRegister<CriterionTrigger<?>> TRIGGERS = DeferredRegister.create(Registries.TRIGGER_TYPE, TFMain.ID);
 
 	public static final DeferredHolder<CriterionTrigger<?>, SimpleAdvancementTrigger> MADE_TF_PORTAL = TRIGGERS.register("make_tf_portal", SimpleAdvancementTrigger::new);
 	public static final DeferredHolder<CriterionTrigger<?>, SimpleAdvancementTrigger> CONSUME_HYDRA_CHOP = TRIGGERS.register("consume_hydra_chop_on_low_hunger", SimpleAdvancementTrigger::new);

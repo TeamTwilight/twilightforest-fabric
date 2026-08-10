@@ -3,7 +3,7 @@ package twilightforest.client.renderer.entity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.resources.Identifier;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.KoboldModel;
 import twilightforest.client.state.entity.KoboldRenderState;
@@ -11,7 +11,7 @@ import twilightforest.entity.monster.Kobold;
 
 public class KoboldRenderer extends HumanoidMobRenderer<Kobold, KoboldRenderState, KoboldModel> {
 
-	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("kobold.png");
+	private static final Identifier TEXTURE = TFMain.getModelTexture("kobold.png");
 
 	public KoboldRenderer(EntityRendererProvider.Context context) {
 		super(context, new KoboldModel(context.bakeLayer(TFModelLayers.KOBOLD)), 0.4F);

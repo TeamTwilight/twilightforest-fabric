@@ -15,15 +15,15 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.context.ContextKey;
 import net.minecraft.world.level.block.Blocks;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.model.entity.DeathTomeModel;
 import twilightforest.potions.FrostedEffect;
 
 public class IceLayer<S extends LivingEntityRenderState, M extends EntityModel<S>> extends RenderLayer<S, M> {
 	private final RandomSource random = RandomSource.create();
 
-	public static ContextKey<Double> FROST_COUNT_KEY = new ContextKey<>(TwilightForestMod.prefix("frost_count"));
-	public static ContextKey<Integer> FROST_ID_KEY = new ContextKey<>(TwilightForestMod.prefix("frost_id"));
+	public static ContextKey<Double> FROST_COUNT_KEY = new ContextKey<>(TFMain.prefix("frost_count"));
+	public static ContextKey<Integer> FROST_ID_KEY = new ContextKey<>(TFMain.prefix("frost_id"));
 
 	public IceLayer(RenderLayerParent<S, M> renderer) {
 		super(renderer);

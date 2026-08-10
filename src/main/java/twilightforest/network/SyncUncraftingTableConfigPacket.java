@@ -6,7 +6,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.config.TFConfig;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public record SyncUncraftingTableConfigPacket(
 	List<? extends String> disabledRecipes, boolean flipRecipeList,
 	List<? extends String> disabledModids, boolean flipModidList) implements CustomPacketPayload {
 
-	public static final Type<SyncUncraftingTableConfigPacket> TYPE = new Type<>(TwilightForestMod.prefix("sync_uncrafting_config"));
+	public static final Type<SyncUncraftingTableConfigPacket> TYPE = new Type<>(TFMain.prefix("sync_uncrafting_config"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, SyncUncraftingTableConfigPacket> STREAM_CODEC = CustomPacketPayload.codec(SyncUncraftingTableConfigPacket::write, SyncUncraftingTableConfigPacket::new);
 
 	public SyncUncraftingTableConfigPacket(FriendlyByteBuf buf) {

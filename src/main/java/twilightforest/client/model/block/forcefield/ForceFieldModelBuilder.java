@@ -18,7 +18,7 @@ import net.neoforged.neoforge.client.model.generators.template.CustomLoaderBuild
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.model.block.forcefield.ForceFieldModel.ExtraDirection;
 
 import java.util.*;
@@ -41,7 +41,7 @@ public class ForceFieldModelBuilder extends CustomLoaderBuilder {
 	}
 
 	public ForceFieldModelBuilder() {
-		super(TwilightForestMod.prefix("force_field"), false);
+		super(TFMain.prefix("force_field"), false);
 	}
 
 	public ForceFieldElementBuilder forceFieldElement() {

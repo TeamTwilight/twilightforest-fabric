@@ -5,8 +5,8 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import twilightforest.TFMain;
 import twilightforest.TFRegistries;
-import twilightforest.TwilightForestMod;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFMobEffects;
 import twilightforest.init.TFSounds;
@@ -14,7 +14,7 @@ import twilightforest.util.Enforcement;
 
 public class Enforcements {
 
-	public static final DeferredRegister<Enforcement> ENFORCEMENTS = DeferredRegister.create(TFRegistries.Keys.ENFORCEMENT, TwilightForestMod.ID);
+	public static final DeferredRegister<Enforcement> ENFORCEMENTS = DeferredRegister.create(TFRegistries.Keys.ENFORCEMENT, TFMain.ID);
 
 	public static final DeferredHolder<Enforcement, Enforcement> DARKNESS = ENFORCEMENTS.register("darkness", () -> new Enforcement((player, level, restriction) -> {
 		if (player.tickCount % 60 == 0 && level.tickRateManager().runsNormally()) {

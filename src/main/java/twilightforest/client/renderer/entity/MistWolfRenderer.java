@@ -5,7 +5,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.MistWolfModel;
 import twilightforest.client.state.entity.MistWolfRenderState;
@@ -13,7 +13,7 @@ import twilightforest.entity.monster.MistWolf;
 
 public class MistWolfRenderer extends MobRenderer<MistWolf, MistWolfRenderState, MistWolfModel> {
 
-	private static final Identifier TEXTURE = TwilightForestMod.getModelTexture("mistwolf.png");
+	private static final Identifier TEXTURE = TFMain.getModelTexture("mistwolf.png");
 
 	public MistWolfRenderer(EntityRendererProvider.Context context) {
 		super(context, new MistWolfModel(context.bakeLayer(TFModelLayers.HOSTILE_WOLF)), 1.0F);

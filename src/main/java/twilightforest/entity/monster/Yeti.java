@@ -30,7 +30,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.entity.IHostileMount;
 import twilightforest.entity.ai.goal.ThrowRiderGoal;
 import twilightforest.init.TFBiomes;
@@ -42,7 +42,7 @@ import java.util.Optional;
 public class Yeti extends Monster implements IHostileMount {
 
 	private static final EntityDataAccessor<Boolean> ANGER_FLAG = SynchedEntityData.defineId(Yeti.class, EntityDataSerializers.BOOLEAN);
-	private static final AttributeModifier ANGRY_MODIFIER = new AttributeModifier(TwilightForestMod.prefix("anger_follow_boost"), 8, AttributeModifier.Operation.ADD_VALUE);
+	private static final AttributeModifier ANGRY_MODIFIER = new AttributeModifier(TFMain.prefix("anger_follow_boost"), 8, AttributeModifier.Operation.ADD_VALUE);
 
 	public Yeti(EntityType<? extends Yeti> type, Level world) {
 		super(type, world);

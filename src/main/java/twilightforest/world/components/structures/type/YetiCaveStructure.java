@@ -18,7 +18,7 @@ import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFRegistries;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.tags.TFBiomeTags;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFMapDecorations;
@@ -66,7 +66,7 @@ public class YetiCaveStructure extends ControlledSpawningStructure implements Cu
 				.add(new MobSpawnSettings.SpawnerData(TFEntities.YETI.get(), 1, 2), 5)
 				.build()
 			),
-			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_lich"))),
+			new AdvancementLockConfig(List.of(TFMain.prefix("progress_lich"))),
 			Optional.of(new HintConfig(HintConfig.book("yeticave", 3), TFEntities.KOBOLD.get())),
 			Optional.of(new DecorationConfig(2, true, false, false)),
 			false, Optional.of(TFMapDecorations.YETI_LAIR),

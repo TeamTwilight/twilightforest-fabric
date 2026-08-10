@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.block.JarBlock;
 import twilightforest.components.item.JarLid;
 import twilightforest.init.TFBlockEntities;
@@ -35,7 +35,7 @@ public class JarBlockEntity extends BlockEntity {
 	public static final Codec<Item> ITEM_CODEC = BuiltInRegistries.ITEM.byNameCodec();
 	public static final Map<Item, BooleanSupplier> REGISTERED_LOG_LIDS = new HashMap<>();
 	public static final String TAG_LID = "lid";
-	public static final Identifier JAR_LID = TwilightForestMod.prefix("jar_lid");
+	public static final Identifier JAR_LID = TFMain.prefix("jar_lid");
 	public static final int EVENT_POT_WOBBLES = 1;
 
 	public static void addLid(Item item, BooleanSupplier supplier) {

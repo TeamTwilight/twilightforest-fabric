@@ -1,6 +1,6 @@
 package twilightforest.datagen.helpers;
 
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 
 import java.text.ChoiceFormat;
 import java.util.List;
@@ -56,7 +56,7 @@ public class LangConversionHelper {
 			try {
 				new ChoiceFormat(newFormatStyle);
 			} catch (IllegalArgumentException e) {
-				TwilightForestMod.LOGGER.warn("Failed to convert '{}' to an upside down choice format. Got: '{}' which was invalid.", formatStyle, newFormatStyle);
+				TFMain.LOGGER.warn("Failed to convert '{}' to an upside down choice format. Got: '{}' which was invalid.", formatStyle, newFormatStyle);
 				//Safety check for if we failed to convert it into a valid choice format just fallback to leaving the format as is
 				return component.contents();
 			}

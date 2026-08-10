@@ -1,27 +1,17 @@
 package twilightforest.client.renderer.tooltip;
 
-import com.mojang.blaze3d.opengl.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Holder;
-import net.minecraft.data.AtlasIds;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
-import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
-import org.joml.Matrix4f;
-import org.lwjgl.opengl.GL46C;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.components.item.PotionFlaskComponent;
 import twilightforest.item.PotionFlaskItem;
 
@@ -31,8 +21,8 @@ import java.util.Optional;
 
 public class PotionFlaskTooltipComponent implements ClientTooltipComponent {
 
-	private static final Identifier BORDER_SPRITE = TwilightForestMod.prefix("flask_bar_border");
-	private static final Identifier DOSE_SPRITE = TwilightForestMod.prefix("flask_dose_bar");
+	private static final Identifier BORDER_SPRITE = TFMain.prefix("flask_bar_border");
+	private static final Identifier DOSE_SPRITE = TFMain.prefix("flask_dose_bar");
 	private static final Component EMPTY_DESCRIPTION = Component.translatable("item.twilightforest.flask.empty_description");
 
 	public static final int WIDTH = 115; //hehe

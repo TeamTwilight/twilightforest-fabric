@@ -5,7 +5,7 @@ import net.neoforged.fml.loading.moddiscovery.ModInfo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import tamaized.beanification.Component;
 
 import java.lang.invoke.MethodHandle;
@@ -23,7 +23,7 @@ public class ModUpdateURLInterceptor {
 	private MethodHandle ModInfo_updateJSONURL = null;
 
 	public ModUpdateURLInterceptor() {
-		ModList.get().getModFileById(TwilightForestMod.ID).getMods().forEach(info -> {
+		ModList.get().getModFileById(TFMain.ID).getMods().forEach(info -> {
 			if (info instanceof ModInfo mod) {
 				if (ModInfo_updateJSONURL == null) {
 					try {

@@ -9,7 +9,7 @@ import net.neoforged.neoforge.common.conditions.ICondition;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.item.recipe.UncraftingTableCondition;
 import twilightforest.loot.LootingEnchantNumberProvider;
 import twilightforest.loot.MultiplayerBasedAdditionLootFunction;
@@ -21,10 +21,10 @@ import twilightforest.loot.conditions.UncraftingTableEnabledCondition;
 
 public class TFLoot {
 
-	public static final DeferredRegister<MapCodec<? extends LootItemCondition>> CONDITIONS = DeferredRegister.create(Registries.LOOT_CONDITION_TYPE, TwilightForestMod.ID);
-	public static final DeferredRegister<MapCodec<? extends LootItemFunction>> FUNCTIONS = DeferredRegister.create(Registries.LOOT_FUNCTION_TYPE, TwilightForestMod.ID);
-	public static final DeferredRegister<MapCodec<? extends NumberProvider>> NUMBERS = DeferredRegister.create(Registries.LOOT_NUMBER_PROVIDER_TYPE, TwilightForestMod.ID);
-	public static final DeferredRegister<MapCodec<? extends ICondition>> CONDITIONALS = DeferredRegister.create(NeoForgeRegistries.Keys.CONDITION_CODECS, TwilightForestMod.ID);
+	public static final DeferredRegister<MapCodec<? extends LootItemCondition>> CONDITIONS = DeferredRegister.create(Registries.LOOT_CONDITION_TYPE, TFMain.ID);
+	public static final DeferredRegister<MapCodec<? extends LootItemFunction>> FUNCTIONS = DeferredRegister.create(Registries.LOOT_FUNCTION_TYPE, TFMain.ID);
+	public static final DeferredRegister<MapCodec<? extends NumberProvider>> NUMBERS = DeferredRegister.create(Registries.LOOT_NUMBER_PROVIDER_TYPE, TFMain.ID);
+	public static final DeferredRegister<MapCodec<? extends ICondition>> CONDITIONALS = DeferredRegister.create(NeoForgeRegistries.Keys.CONDITION_CODECS, TFMain.ID);
 
 	public static final DeferredHolder<MapCodec<? extends LootItemCondition>, MapCodec<IsMinionCondition>> IS_MINION = CONDITIONS.register("is_minion", () -> IsMinionCondition.CODEC);
 	public static final DeferredHolder<MapCodec<? extends LootItemCondition>, MapCodec<ModExistsCondition>> MOD_EXISTS = CONDITIONS.register("mod_exists", () -> ModExistsCondition.CODEC);

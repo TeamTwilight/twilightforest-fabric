@@ -17,8 +17,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.level.Level;
+import twilightforest.TFMain;
 import twilightforest.TFRegistries;
-import twilightforest.TwilightForestMod;
 import twilightforest.components.item.ItemDisplayContents;
 import twilightforest.init.TFAttributeModifiers;
 import twilightforest.init.TFDataComponents;
@@ -65,7 +65,7 @@ public class TravellersModifiersManager {
 	public static final Set<ResourceKey<TravellersModifier>> ALWAYS_ACTIVE = Set.of(AUTO_REPAIR_MODIFIER);
 
 	private static ResourceKey<TravellersModifier> makeKey(String name) {
-		return ResourceKey.create(TFRegistries.Keys.TRAVELLERS_MODIFIERS, TwilightForestMod.prefix(name));
+		return ResourceKey.create(TFRegistries.Keys.TRAVELLERS_MODIFIERS, TFMain.prefix(name));
 	}
 
 	public static void bootstrap(BootstrapContext<TravellersModifier> context) {
@@ -188,7 +188,7 @@ public class TravellersModifiersManager {
 		Optional<Holder.Reference<TravellersModifier>> holder = registries.holder(key);
 
 		if (holder.isEmpty()) {
-			TwilightForestMod.LOGGER.warn("Travellers modifier {} is not present in the registry", key.identifier());
+			TFMain.LOGGER.warn("Travellers modifier {} is not present in the registry", key.identifier());
 		}
 
 		return holder;
@@ -196,7 +196,7 @@ public class TravellersModifiersManager {
 
 	public static ResourceKey<TravellersModifier> getKeyOrThrow(Holder<TravellersModifier> holder) {
 		return holder.unwrapKey().orElseThrow(() -> {
-			TwilightForestMod.LOGGER.error(
+			TFMain.LOGGER.error(
 				"Expected a registry-backed TravellersModifier holder but received {}",
 				holder
 			);

@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.tags.TFBiomeTags;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFMapDecorations;
@@ -71,7 +71,7 @@ public class FinalCastleStructure extends ControlledSpawningStructure {
 				//.add(new MobSpawnSettings.SpawnerData(EntityType.BLAZE, 1, 1), 10)
 				.build()
 			), WeightedList.of(), WeightedList.of()),
-			new AdvancementLockConfig(List.of(TwilightForestMod.prefix("progress_troll"))),
+			new AdvancementLockConfig(List.of(TFMain.prefix("progress_troll"))),
 			// TODO: change this when we make a book for the castle
 			Optional.of(new HintConfig(HintConfig.defaultBook(), TFEntities.KOBOLD.get())),
 			Optional.of(new DecorationConfig(4, false, true, false)),
