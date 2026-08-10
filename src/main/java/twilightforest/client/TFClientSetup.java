@@ -181,9 +181,9 @@ public class TFClientSetup implements ClientModInitializer {
 			// Register additional models
 			pluginContext.addModels(
 				ShieldLayer.SHIELD_MODEL,
-				new ModelResourceLocation(TwilightForestMod.prefix("trophy"), "inventory").id(),
-				new ModelResourceLocation(TwilightForestMod.prefix("trophy_minor"), "inventory").id(),
-				new ModelResourceLocation(TwilightForestMod.prefix("trophy_quest"), "inventory").id()
+				TwilightForestMod.prefix("item/trophy"),
+				TwilightForestMod.prefix("item/trophy_minor"),
+				TwilightForestMod.prefix("item/trophy_quest")
 			);
 
 			for (JarRenderer.LidResource lid : JarRenderer.LID_LOCATION_LIST.get()) {
