@@ -1,5 +1,7 @@
 package twilightforest.init;
 
+import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
+import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -14,11 +16,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
-import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TFRegistries;
-import twilightforest.TFMain;
 import twilightforest.block.AbstractSkullCandleBlock;
 import twilightforest.components.item.SkullCandles;
 import twilightforest.config.TFConfig;
@@ -29,10 +27,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class TFCreativeTabs {
-
-	public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, TFMain.ID);
-
-	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> BLOCKS = TABS.register("blocks", () -> CreativeModeTab.builder()
+	public static final CreativeModeTab BLOCKS = FabricCreativeModeTab.builder()
 		.title(Component.translatable("itemGroup.twilightforest.blocks"))
 		.icon(() -> new ItemStack(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE))
 		.displayItems((parameters, output) -> {
@@ -256,9 +251,9 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.DUSKBERRY_BUSH);
 			output.accept(TFBlocks.SKYBERRY_BUSH);
 			output.accept(TFBlocks.STINGBERRY_BUSH);
-			output.accept(TFItems.MASON_JAR.get().getDefaultInstance());
-			output.accept(TFItems.FIREFLY_JAR.get().getDefaultInstance());
-			output.accept(TFItems.CICADA_JAR.get().getDefaultInstance());
+			output.accept(TFItems.MASON_JAR.getDefaultInstance());
+			output.accept(TFItems.FIREFLY_JAR.getDefaultInstance());
+			output.accept(TFItems.CICADA_JAR.getDefaultInstance());
 			output.accept(TFBlocks.FIREFLY_SPAWNER);
 			output.accept(TFBlocks.FIREFLY);
 			output.accept(TFBlocks.CICADA);
@@ -426,10 +421,9 @@ public class TFCreativeTabs {
 			output.accept(TFBlocks.KNIGHTMETAL_BLOCK);
 			output.accept(TFBlocks.CARMINITE_BLOCK);
 			output.accept(TFBlocks.ARCTIC_FUR_BLOCK);
-		}).build());
+		}).build();
 
-	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ITEMS = TABS.register("items", () -> CreativeModeTab.builder()
-		.withTabsBefore(BLOCKS.getKey())
+	public static final CreativeModeTab ITEMS = FabricCreativeModeTab.builder()
 		.title(Component.translatable("itemGroup.twilightforest.items"))
 		.icon(() -> new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE))
 		.displayItems((parameters, output) -> {
@@ -512,12 +506,11 @@ public class TFCreativeTabs {
 			output.accept(TFItems.MINING_CHEST_BOAT);
 			output.accept(TFItems.SORTING_CHEST_BOAT);
 			createSpawnEggsAlphabetical(output);
-		}).build());
+		}).build();
 
-	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EQUIPMENT = TABS.register("equipment", () -> CreativeModeTab.builder()
-		.withTabsBefore(ITEMS.getKey())
+	public static final CreativeModeTab EQUIPMENT = FabricCreativeModeTab.builder()
 		.title(Component.translatable("itemGroup.twilightforest.equipment"))
-		.icon(() -> new ItemStack(TFItems.KNIGHTMETAL_PICKAXE.get()))
+		.icon(() -> new ItemStack(TFItems.KNIGHTMETAL_PICKAXE))
 		.displayItems((parameters, output) -> {
 			HolderLookup.RegistryLookup<Enchantment> lookup = parameters.holders().lookupOrThrow(Registries.ENCHANTMENT);
 			generateGearWithEnchants(output, TFItems.IRONWOOD_HELMET, new EnchantmentInstance(lookup.getOrThrow(Enchantments.AQUA_AFFINITY), 1));
@@ -597,12 +590,11 @@ public class TFCreativeTabs {
 			output.accept(TFItems.CRUMBLE_HORN);
 			output.accept(TFItems.PEACOCK_FEATHER_FAN);
 			output.accept(TFItems.MOONWORM_QUEEN);
-		}).build());
+		}).build();
 
-	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> FOOD = TABS.register("food", () -> CreativeModeTab.builder()
-		.withTabsBefore(EQUIPMENT.getKey())
+	public static final CreativeModeTab FOOD = FabricCreativeModeTab.builder()
 		.title(Component.translatable("itemGroup.twilightforest.food"))
-		.icon(() -> new ItemStack(TFItems.COOKED_MEEF.get()))
+		.icon(() -> new ItemStack(TFItems.COOKED_MEEF))
 		.displayItems((parameters, output) -> {
 			output.accept(TFItems.TORCHBERRIES);
 			output.accept(TFItems.RASPBERRY);
@@ -638,7 +630,7 @@ public class TFCreativeTabs {
 			output.accept(TFItems.MEEF_STROGANOFF);
 			output.accept(TFItems.HYDRA_CHOP);
 			output.accept(TFItems.EXPERIMENT_115);
-		}).build());
+		}).build();
 
 	private static void generateGearWithEnchants(CreativeModeTab.Output output, ItemLike item, EnchantmentInstance... instances) {
 		ItemStack stack = new ItemStack(item);
@@ -651,7 +643,7 @@ public class TFCreativeTabs {
 	}
 
 	private static void createSpawnEggsAlphabetical(CreativeModeTab.Output output) {
-		Collection<? extends Item> eggs = TFEntities.SPAWN_EGGS.getEntries().stream().map(DeferredHolder::value).toList();
+		Collection<? extends Item> eggs = TFEntities.SPAWN_EGGS.getoutput().stream().map(DeferredHolder::value).toList();
 		eggs.forEach(output::accept);
 	}
 
@@ -663,7 +655,7 @@ public class TFCreativeTabs {
 
 	private static void createCaskets(CreativeModeTab.Output output) {
 		for (int i = 0; i< 3; i++) {
-			ItemStack stack = new ItemStack(TFItems.KEEPSAKE_CASKET.get());
+			ItemStack stack = new ItemStack(TFItems.KEEPSAKE_CASKET);
 			stack.set(TFDataComponents.CASKET_DAMAGE, i);
 			output.accept(stack);
 		}
@@ -672,7 +664,7 @@ public class TFCreativeTabs {
 	private static void createGlassSwordAndLoreVer(CreativeModeTab.Output output) {
 		output.accept(TFItems.GLASS_SWORD);
 
-		ItemStack loreSword = new ItemStack(TFItems.GLASS_SWORD.get());
+		ItemStack loreSword = new ItemStack(TFItems.GLASS_SWORD);
 
 		List<Component> GLASS_SWORD_COMPONENTS = List.of(Component.translatable("item.twilightforest.glass_sword.desc").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
 		loreSword.set(DataComponents.LORE, new ItemLore(GLASS_SWORD_COMPONENTS, GLASS_SWORD_COMPONENTS));
@@ -685,53 +677,51 @@ public class TFCreativeTabs {
 	private static final Comparator<Holder<MagicPaintingVariant>> MAGIC_COMPARATOR = Comparator.comparing(Holder::value, Comparator.<MagicPaintingVariant>comparingInt((variant) ->
 		variant.height() * variant.width()).thenComparing(MagicPaintingVariant::width));
 
-	public static void addToTabs(BuildCreativeModeTabContentsEvent event) {
-		if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
-			event.insertAfter(new ItemStack(Items.OAK_WOOD), TFItems.HOLLOW_OAK_LOG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.SPRUCE_WOOD), TFItems.HOLLOW_SPRUCE_LOG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.BIRCH_WOOD), TFItems.HOLLOW_BIRCH_LOG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.JUNGLE_WOOD), TFItems.HOLLOW_JUNGLE_LOG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.ACACIA_WOOD), TFItems.HOLLOW_ACACIA_LOG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.DARK_OAK_WOOD), TFItems.HOLLOW_DARK_OAK_LOG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.CRIMSON_HYPHAE), TFItems.HOLLOW_CRIMSON_STEM.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.WARPED_HYPHAE), TFItems.HOLLOW_WARPED_STEM.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.MANGROVE_WOOD), TFItems.HOLLOW_VANGROVE_LOG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.CHERRY_WOOD), TFItems.HOLLOW_CHERRY_LOG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.PALE_OAK_WOOD), TFItems.HOLLOW_PALE_OAK_LOG.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+	public static void addToTabs() {
+		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.BUILDING_BLOCKS).register(output -> {
+			output.insertAfter(Items.OAK_WOOD, TFItems.HOLLOW_OAK_LOG.toStack());
+			output.insertAfter(Items.SPRUCE_WOOD, TFItems.HOLLOW_SPRUCE_LOG.toStack());
+			output.insertAfter(Items.BIRCH_WOOD, TFItems.HOLLOW_BIRCH_LOG.toStack());
+			output.insertAfter(Items.JUNGLE_WOOD, TFItems.HOLLOW_JUNGLE_LOG.toStack());
+			output.insertAfter(Items.ACACIA_WOOD, TFItems.HOLLOW_ACACIA_LOG.toStack());
+			output.insertAfter(Items.DARK_OAK_WOOD, TFItems.HOLLOW_DARK_OAK_LOG.toStack());
+			output.insertAfter(Items.CRIMSON_HYPHAE, TFItems.HOLLOW_CRIMSON_STEM.toStack());
+			output.insertAfter(Items.WARPED_HYPHAE, TFItems.HOLLOW_WARPED_STEM.toStack());
+			output.insertAfter(Items.MANGROVE_WOOD, TFItems.HOLLOW_VANGROVE_LOG.toStack());
+			output.insertAfter(Items.CHERRY_WOOD, TFItems.HOLLOW_CHERRY_LOG.toStack());
 
-			event.insertAfter(new ItemStack(Items.OAK_FENCE_GATE), TFBlocks.OAK_DRYING_RACK.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.SPRUCE_FENCE_GATE), TFBlocks.SPRUCE_DRYING_RACK.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.BIRCH_FENCE_GATE), TFBlocks.BIRCH_DRYING_RACK.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.JUNGLE_FENCE_GATE), TFBlocks.JUNGLE_DRYING_RACK.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.ACACIA_FENCE_GATE), TFBlocks.ACACIA_DRYING_RACK.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.DARK_OAK_FENCE_GATE), TFBlocks.DARK_OAK_DRYING_RACK.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.CRIMSON_FENCE_GATE), TFBlocks.CRIMSON_DRYING_RACK.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.WARPED_FENCE_GATE), TFBlocks.WARPED_DRYING_RACK.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.MANGROVE_FENCE_GATE), TFBlocks.VANGROVE_DRYING_RACK.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.BAMBOO_FENCE_GATE), TFBlocks.BAMBOO_DRYING_RACK.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.CHERRY_FENCE_GATE), TFBlocks.CHERRY_DRYING_RACK.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.PALE_OAK_FENCE_GATE), TFBlocks.PALE_OAK_DRYING_RACK.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			output.insertAfter(Items.OAK_FENCE_GATE, TFBlocks.OAK_DRYING_RACK.toStack());
+			output.insertAfter(Items.SPRUCE_FENCE_GATE, TFBlocks.SPRUCE_DRYING_RACK.toStack());
+			output.insertAfter(Items.BIRCH_FENCE_GATE, TFBlocks.BIRCH_DRYING_RACK.toStack());
+			output.insertAfter(Items.JUNGLE_FENCE_GATE, TFBlocks.JUNGLE_DRYING_RACK.toStack());
+			output.insertAfter(Items.ACACIA_FENCE_GATE, TFBlocks.ACACIA_DRYING_RACK.toStack());
+			output.insertAfter(Items.DARK_OAK_FENCE_GATE, TFBlocks.DARK_OAK_DRYING_RACK.toStack());
+			output.insertAfter(Items.CRIMSON_FENCE_GATE, TFBlocks.CRIMSON_DRYING_RACK.toStack());
+			output.insertAfter(Items.WARPED_FENCE_GATE, TFBlocks.WARPED_DRYING_RACK.toStack());
+			output.insertAfter(Items.MANGROVE_FENCE_GATE, TFBlocks.VANGROVE_DRYING_RACK.toStack());
+			output.insertAfter(Items.BAMBOO_FENCE_GATE, TFBlocks.BAMBOO_DRYING_RACK.toStack());
+			output.insertAfter(Items.CHERRY_FENCE_GATE, TFBlocks.CHERRY_DRYING_RACK.toStack());
 
-			event.insertAfter(new ItemStack(Items.OAK_FENCE_GATE), TFBlocks.OAK_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.SPRUCE_FENCE_GATE), TFBlocks.SPRUCE_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.BIRCH_FENCE_GATE), TFBlocks.BIRCH_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.JUNGLE_FENCE_GATE), TFBlocks.JUNGLE_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.ACACIA_FENCE_GATE), TFBlocks.ACACIA_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.DARK_OAK_FENCE_GATE), TFBlocks.DARK_OAK_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.CRIMSON_FENCE_GATE), TFBlocks.CRIMSON_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.WARPED_FENCE_GATE), TFBlocks.WARPED_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.MANGROVE_FENCE_GATE), TFBlocks.VANGROVE_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.BAMBOO_FENCE_GATE), TFBlocks.BAMBOO_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.CHERRY_FENCE_GATE), TFBlocks.CHERRY_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(Items.PALE_OAK_FENCE_GATE), TFBlocks.PALE_OAK_BANISTER.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-		} else if (event.getTabKey() == CreativeModeTabs.OP_BLOCKS && event.hasPermissions()) {
-			event.getParameters().holders().lookupOrThrow(TFRegistries.Keys.MAGIC_PAINTINGS)
+			output.insertAfter(Items.OAK_FENCE_GATE, TFBlocks.OAK_BANISTER.toStack());
+			output.insertAfter(Items.SPRUCE_FENCE_GATE, TFBlocks.SPRUCE_BANISTER.toStack());
+			output.insertAfter(Items.BIRCH_FENCE_GATE, TFBlocks.BIRCH_BANISTER.toStack());
+			output.insertAfter(Items.JUNGLE_FENCE_GATE, TFBlocks.JUNGLE_BANISTER.toStack());
+			output.insertAfter(Items.ACACIA_FENCE_GATE, TFBlocks.ACACIA_BANISTER.toStack());
+			output.insertAfter(Items.DARK_OAK_FENCE_GATE, TFBlocks.DARK_OAK_BANISTER.toStack());
+			output.insertAfter(Items.CRIMSON_FENCE_GATE, TFBlocks.CRIMSON_BANISTER.toStack());
+			output.insertAfter(Items.WARPED_FENCE_GATE, TFBlocks.WARPED_BANISTER.toStack());
+			output.insertAfter(Items.MANGROVE_FENCE_GATE, TFBlocks.VANGROVE_BANISTER.toStack());
+			output.insertAfter(Items.BAMBOO_FENCE_GATE, TFBlocks.BAMBOO_BANISTER.toStack());
+			output.insertAfter(Items.CHERRY_FENCE_GATE, TFBlocks.CHERRY_BANISTER.toStack());
+		});
+		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.OP_BLOCKS).register(output -> {
+			output.getContext().holders().lookupOrThrow(TFRegistries.Keys.MAGIC_PAINTINGS)
 				.listElements().sorted(MAGIC_COMPARATOR)
 				.forEach(holder -> {
-					ItemStack itemstack = new ItemStack(TFItems.MAGIC_PAINTING.get());
+					ItemStack itemstack = new ItemStack(TFItems.MAGIC_PAINTING);
 					itemstack.set(TFDataComponents.MAGIC_PAINTING_VARIANT, holder);
-					event.accept(itemstack);
+					output.accept(itemstack);
 				});
-		}
+		});
 	}
 }

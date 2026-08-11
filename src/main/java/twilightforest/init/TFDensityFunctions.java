@@ -3,6 +3,8 @@ package twilightforest.init;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
@@ -10,8 +12,6 @@ import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.DensityFunctions;
 import net.minecraft.world.level.levelgen.Noises;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TFMain;
 import twilightforest.TFRegistries;
 import twilightforest.init.custom.BiomeLayerStack;
@@ -20,23 +20,26 @@ import twilightforest.world.components.layer.BiomeDensitySource;
 
 @SuppressWarnings("unused")
 public class TFDensityFunctions {
-	public static final DeferredRegister<MapCodec<? extends DensityFunction>> DENSITY_FUNCTION_TYPES = DeferredRegister.create(Registries.DENSITY_FUNCTION_TYPE, TFMain.ID);
 
-	public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<TerrainDensityRouter>> BIOME_DRIVEN_TERRAIN = register("biome_driven_terrain", TerrainDensityRouter.CODEC);
-	public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<NoiseDensityRouter>> BIOME_DRIVEN_NOISE = register("biome_driven_noise", NoiseDensityRouter.CODEC);
-	public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<FocusedDensityFunction>> FOCUSED = register("focused", FocusedDensityFunction.CODEC);
-	public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<HollowHillFunction>> HOLLOW_HILL = register("hollow_hill", HollowHillFunction.CODEC);
-	public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<AbsoluteDifferenceFunction.Min>> COORD_MIN = register("coord_min", AbsoluteDifferenceFunction.Min.CODEC);
-	public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<AbsoluteDifferenceFunction.Max>> COORD_MAX = register("coord_max", AbsoluteDifferenceFunction.Max.CODEC);
-	public static final DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<SqrtDensityFunction>> SQRT = register("sqrt", SqrtDensityFunction.CODEC);
+	public static final MapCodec<TerrainDensityRouter> BIOME_DRIVEN_TERRAIN = register("biome_driven_terrain", TerrainDensityRouter.CODEC);
+	public static final MapCodec<NoiseDensityRouter> BIOME_DRIVEN_NOISE = register("biome_driven_noise", NoiseDensityRouter.CODEC);
+	public static final MapCodec<FocusedDensityFunction> FOCUSED = register("focused", FocusedDensityFunction.CODEC);
+	public static final MapCodec<HollowHillFunction> HOLLOW_HILL = register("hollow_hill", HollowHillFunction.CODEC);
+	public static final MapCodec<AbsoluteDifferenceFunction.Min> COORD_MIN = register("coord_min", AbsoluteDifferenceFunction.Min.CODEC);
+	public static final MapCodec<AbsoluteDifferenceFunction.Max> COORD_MAX = register("coord_max", AbsoluteDifferenceFunction.Max.CODEC);
+	public static final MapCodec<SqrtDensityFunction> SQRT = register("sqrt", SqrtDensityFunction.CODEC);
 
 	public static final ResourceKey<DensityFunction> BIOME_TERRAIN_RAW = ResourceKey.create(Registries.DENSITY_FUNCTION, TFMain.prefix("raw_biome_terrain"));
 	public static final ResourceKey<DensityFunction> BIOME_NOISE_RAW = ResourceKey.create(Registries.DENSITY_FUNCTION, TFMain.prefix("raw_biome_noise"));
 	public static final ResourceKey<DensityFunction> FORESTED_TERRAIN = ResourceKey.create(Registries.DENSITY_FUNCTION, TFMain.prefix("forested_terrain"));
 	public static final ResourceKey<DensityFunction> SKYLIGHT_TERRAIN = ResourceKey.create(Registries.DENSITY_FUNCTION, TFMain.prefix("skylight_terrain"));
 
-	private static <T extends DensityFunction> DeferredHolder<MapCodec<? extends DensityFunction>, MapCodec<T>> register(String name, MapCodec<T> keyCodec) {
-		return DENSITY_FUNCTION_TYPES.register(name, () -> keyCodec);
+	private static <T extends DensityFunction> MapCodec<T> register(String name, MapCodec<T> keyCodec) {
+		return Registry.register(
+			BuiltInRegistries.DENSITY_FUNCTION_TYPE,
+			TFMain.prefix(name),
+			keyCodec
+		);
 	}
 
 	public static void bootstrap(BootstrapContext<DensityFunction> context) {

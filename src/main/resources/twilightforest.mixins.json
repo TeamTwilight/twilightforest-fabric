@@ -3,7 +3,9 @@
   "minVersion": "0.8",
   "package": "twilightforest.asm.mixin",
   "compatibilityLevel": "JAVA_25",
-  "mixins": [],
+  "mixins": [
+    "DamageEffectsMixin"
+  ],
   "client": [],
   "injectors": {
     "defaultRequire": 1

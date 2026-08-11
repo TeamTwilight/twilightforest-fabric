@@ -19,19 +19,6 @@ public class TFEnumExtensions {
 	private static final ModidPrefixUtil modidPrefixUtil = new ModidPrefixUtil(); // Enum extensions run before the bean context loads
 
 	/**
-	 * {@link net.minecraft.world.damagesource.DamageEffects}<p/>
-	 *
-	 * {@link twilightforest.enums.extensions.TFDamageEffectsEnumExtension#PINCH}
-	 */
-	public static Object DamageEffects_PINCH(int idx, Class<?> type) {
-		return type.cast(switch (idx) {
-			case 0 -> modidPrefixUtil.stringPrefix("pinch");
-			case 1 -> TFSounds.PINCH_BEETLE_ATTACK;
-			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
-		});
-	}
-
-	/**
 	 * {@link net.minecraft.world.item.Rarity}<p/>
 	 *
 	 * {@link twilightforest.enums.extensions.TFRarityEnumExtension#TWILIGHT}
