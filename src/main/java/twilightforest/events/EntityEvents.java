@@ -18,7 +18,6 @@ import net.minecraft.server.players.PlayerList;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.EnderMan;
-import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileDeflection;
@@ -79,7 +78,6 @@ import twilightforest.network.SyncQuestsPacket;
 import twilightforest.network.WipeOreMeterPacket;
 import twilightforest.util.datamaps.EntityTransformation;
 import twilightforest.util.entities.EntityUtil;
-import twilightforest.util.entities.OminousFireDamageSource;
 import twilightforest.world.components.structures.SpawnIndexProvider;
 import twilightforest.world.components.structures.finalcastle.FinalCastleBossGazeboComponent;
 import twilightforest.world.components.structures.start.TFStructureStart;
@@ -99,7 +97,6 @@ public class EntityEvents {
 
 	public static void init() {
 		LivingDeathEvent.EVENT.register(INSTANCE::ominousFireConversion);
-		LivingHurtEvent.EVENT.register(INSTANCE::zombifiedPlayerAttacks);
 		AdvancementEvent.EARN.register(INSTANCE::alertPlayerCastleIsWIP);
 		PlayerInteractEvent.RightClickBlock.EVENT.register(INSTANCE::attachLeadToWroughtFence);
 		PlayerInteractEvent.LeftClickEmpty.EVENT.register(INSTANCE::wipeOreMeterOnLeftClick);
@@ -136,14 +133,6 @@ public class EntityEvents {
 			} else if (dataMap != null && event.getEntity().level() instanceof ServerLevel) {
 				EntityUtil.convertEntity(event.getEntity(), dataMap.result());
 			}
-		}
-	}
-
-	private void zombifiedPlayerAttacks(LivingHurtEvent event) {
-		if (!(event.getSource() instanceof OminousFireDamageSource) && event.getSource().getEntity() instanceof Zombie zombie && zombie.hasAttached(TFDataAttachments.ZOMBIFIED_PLAYER)) {
-			float amount = event.getAmount();
-			event.setCanceled(true);
-			event.getEntity().hurt(new OminousFireDamageSource(event.getSource()), amount);
 		}
 	}
 
