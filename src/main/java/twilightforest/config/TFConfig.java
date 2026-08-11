@@ -1,5 +1,7 @@
 package twilightforest.config;
 
+import carminite.network.PacketDistributor;
+import carminite.util.ServerLifecycleHooks;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.yggdrasil.ProfileResult;
@@ -15,8 +17,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.neoforged.neoforge.common.TranslatableEnum;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFMain;
 import twilightforest.network.SyncUncraftingTableConfigPacket;

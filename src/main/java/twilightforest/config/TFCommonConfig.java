@@ -1,6 +1,5 @@
 package twilightforest.config;
 
-import net.minecraft.commands.Commands;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.permissions.PermissionLevel;
 import net.neoforged.neoforge.common.ModConfigSpec;

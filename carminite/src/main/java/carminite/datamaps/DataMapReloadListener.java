@@ -14,7 +14,6 @@ import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 
-// TODO: Actually register this where we need it to listen
 public final class DataMapReloadListener implements SimpleSynchronousResourceReloadListener {
 	public static final DataMapReloadListener INSTANCE = new DataMapReloadListener();
 
