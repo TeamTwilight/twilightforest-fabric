@@ -1,5 +1,7 @@
 package twilightforest.entity;
 
+import carminite.entity.IMultiPartEntity;
+import carminite.entity.PartEntity;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -9,7 +11,6 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.entity.PartEntity;
 import twilightforest.TFMain;
 import twilightforest.network.UpdateTFMultipartPacket;
 
@@ -144,10 +145,12 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 	}
 
 	public static void assignPartIDs(Entity parent) {
-		PartEntity<?>[] parts = parent.getParts();
-		for (int i = 0, partsLength = Objects.requireNonNull(parts).length; i < partsLength; i++) {
-			PartEntity<?> part = parts[i];
-			part.setId(parent.getId() + i);
+		if (parent instanceof IMultiPartEntity multiPartEntity) {
+			PartEntity<?>[] parts = multiPartEntity.getParts();
+			for (int i = 0, partsLength = Objects.requireNonNull(parts).length; i < partsLength; i++) {
+				PartEntity<?> part = parts[i];
+				part.setId(parent.getId() + i);
+			}
 		}
 	}
 }

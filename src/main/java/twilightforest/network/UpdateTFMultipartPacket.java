@@ -1,12 +1,13 @@
 package twilightforest.network;
 
+import carminite.entity.IMultiPartEntity;
+import carminite.entity.PartEntity;
 import carminite.network.IPayloadContext;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
-import net.neoforged.neoforge.entity.PartEntity;
 import org.jspecify.annotations.Nullable;
 import twilightforest.TFMain;
 import twilightforest.entity.TFPart;
@@ -28,7 +29,7 @@ public record UpdateTFMultipartPacket(int entityId, @Nullable Entity entity, @Nu
 	}
 
 	public UpdateTFMultipartPacket(Entity entity) {
-		this(-1, entity, Arrays.stream(entity.getParts()).filter(part -> part instanceof TFPart<?>).map(part -> (TFPart<?>) part).collect(Collectors.toMap(TFPart::getId, TFPart::writeData)));
+		this(-1, entity, entity instanceof IMultiPartEntity multiPartEntity ? Arrays.stream(multiPartEntity.getParts()).filter(part -> part instanceof TFPart<?>).map(part -> (TFPart<?>) part).collect(Collectors.toMap(TFPart::getId, TFPart::writeData)) : null);
 	}
 
 	public void write(RegistryFriendlyByteBuf buf) {
@@ -53,14 +54,14 @@ public record UpdateTFMultipartPacket(int entityId, @Nullable Entity entity, @Nu
 		ctx.enqueueWork(() -> {
 			int eId = message.entity != null && message.entityId <= 0 ? message.entity.getId() : message.entityId; // Account for Singleplayer
 			Entity ent = ctx.player().level().getEntity(eId);
-			if (ent != null && ent.isMultipartEntity()) {
-				PartEntity<?>[] parts = ent.getParts();
+			if (ent instanceof IMultiPartEntity multiPartEntity && multiPartEntity.isMultipartEntity()) {
+				PartEntity<?>[] parts = multiPartEntity.getParts();
 				if (parts == null)
 					return;
 				for (PartEntity<?> part : parts) {
 					if (part instanceof TFPart<?> tfPart) {
-						if (message.data == null && message.entity != null) // Account for Singleplayer
-							Arrays.stream(message.entity.getParts())
+						if (message.data == null && message.entity instanceof IMultiPartEntity messageMultiPartEntity) // Account for Singleplayer
+							Arrays.stream(messageMultiPartEntity.getParts())
 								.filter(p -> p instanceof TFPart<?> && p.getId() == part.getId())
 								.map(p -> (TFPart<?>) p)
 								.findFirst().ifPresent(p -> tfPart.readData(p.writeData()));
