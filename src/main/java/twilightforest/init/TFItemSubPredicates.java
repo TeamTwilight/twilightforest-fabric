@@ -1,8 +1,5 @@
 package twilightforest.init;
 
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
-
 public class TFItemSubPredicates {
 
 	//TODO: These no longer exist. Check for their uses and port accordingly.

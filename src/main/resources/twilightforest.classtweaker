@@ -249,5 +249,6 @@ accessible method net/minecraft/tags/ItemTags bind (Ljava/lang/String;)Lnet/mine
 
 # Enum Extensions
 extend-enum net/minecraft/world/damagesource/DamageEffects TWILIGHTFOREST_PINCH
+extend-enum net/minecraft/world/item/Rarity TWILIGHTFOREST_TWILIGHT
 
 # TODO: Validate and fix this file later on in Fabric development

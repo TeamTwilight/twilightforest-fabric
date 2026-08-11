@@ -1,14 +1,8 @@
 package twilightforest;
 
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Style;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
-import tamaized.beanification.Autowired;
-import twilightforest.init.TFSounds;
 import twilightforest.util.ModidPrefixUtil;
 import twilightforest.world.components.BiomeColorAlgorithms;
-
-import java.util.function.UnaryOperator;
 
 @SuppressWarnings("unused") // Referenced by enumextender.json
 public class TFEnumExtensions {
@@ -17,20 +11,6 @@ public class TFEnumExtensions {
 	private static BiomeColorAlgorithms biomeColorAlgorithms;
 
 	private static final ModidPrefixUtil modidPrefixUtil = new ModidPrefixUtil(); // Enum extensions run before the bean context loads
-
-	/**
-	 * {@link net.minecraft.world.item.Rarity}<p/>
-	 *
-	 * {@link twilightforest.enums.extensions.TFRarityEnumExtension#TWILIGHT}
-	 */
-	public static Object Rarity_TWILIGHT(int idx, Class<?> type) {
-		return type.cast(switch (idx) {
-			case 0 -> -1;
-			case 1 -> modidPrefixUtil.stringPrefix("twilight");
-			case 2 -> (UnaryOperator<Style>) style -> style.withColor(ChatFormatting.DARK_GREEN);
-			default -> throw new IllegalArgumentException("Unexpected parameter index: " + idx);
-		});
-	}
 
 	/**
 	 * {@link net.minecraft.world.level.biome.BiomeSpecialEffects.GrassColorModifier}<p/>
