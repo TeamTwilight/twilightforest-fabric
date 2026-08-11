@@ -1,7 +1,7 @@
 package twilightforest.init;
 
-import net.neoforged.neoforge.common.util.DeferredSoundType;
+import net.minecraft.world.level.block.SoundType;
 
 public class TFSoundTypes {
-	public static final DeferredSoundType JAR = new DeferredSoundType(1.0F, 1.0F, TFSounds.JAR_BREAK, TFSounds.JAR_STEP, TFSounds.JAR_PLACE, TFSounds.JAR_HIT, TFSounds.JAR_FALL);
+	public static final SoundType JAR = new SoundType(1.0F, 1.0F, TFSounds.JAR_BREAK.value(), TFSounds.JAR_STEP.value(), TFSounds.JAR_PLACE.value(), TFSounds.JAR_HIT.value(), TFSounds.JAR_FALL.value());
 }

@@ -1,6 +1,7 @@
 package twilightforest.init.custom;
 
 import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -14,7 +15,8 @@ import twilightforest.util.Enforcement;
 
 public final class Enforcements {
 
-	public static final Enforcement DARKNESS = register("darkness", new Enforcement((player, level, restriction) -> {
+	public static final ResourceKey<Enforcement> DARKNESS_KEY = makeKey("darkness");
+	public static final Enforcement DARKNESS = register(DARKNESS_KEY, new Enforcement((player, level, restriction) -> {
 		if (player.tickCount % 60 == 0 && level.tickRateManager().runsNormally()) {
 			player.addEffect(new MobEffectInstance(
 				MobEffects.DARKNESS,
@@ -26,7 +28,8 @@ public final class Enforcements {
 		}
 	}));
 
-	public static final Enforcement HUNGER = register("hunger", new Enforcement((player, level, restriction) -> {
+	public static final ResourceKey<Enforcement> HUNGER_KEY = makeKey("hunger");
+	public static final Enforcement HUNGER = register(HUNGER_KEY, new Enforcement((player, level, restriction) -> {
 		if (player.tickCount % 60 == 0 && level.tickRateManager().runsNormally()) {
 			MobEffectInstance currentHunger = player.getEffect(MobEffects.HUNGER);
 			int hungerLevel = currentHunger != null
@@ -43,13 +46,15 @@ public final class Enforcements {
 		}
 	}));
 
-	public static final Enforcement FIRE = register("fire", new Enforcement((player, level, restriction) -> {
+	public static final ResourceKey<Enforcement> FIRE_KEY = makeKey("fire");
+	public static final Enforcement FIRE = register(FIRE_KEY, new Enforcement((player, level, restriction) -> {
 		if (player.tickCount % 60 == 0 && level.tickRateManager().runsNormally()) {
 			player.igniteForSeconds((int) restriction.multiplier());
 		}
 	}));
 
-	public static final Enforcement FROST = register("frost", new Enforcement((player, level, restriction) -> {
+	public static final ResourceKey<Enforcement> FROST_KEY = makeKey("frost");
+	public static final Enforcement FROST = register(FROST_KEY, new Enforcement((player, level, restriction) -> {
 		if (player.tickCount % 60 == 0 && level.tickRateManager().runsNormally()) {
 			player.addEffect(new MobEffectInstance(
 				TFMobEffects.FROSTY,
@@ -61,7 +66,8 @@ public final class Enforcements {
 		}
 	}));
 
-	public static final Enforcement ACID_RAIN = register("acid_rain", new Enforcement((player, level, restriction) -> {
+	public static final ResourceKey<Enforcement> ACID_RAIN_KEY = makeKey("acid_rain");
+	public static final Enforcement ACID_RAIN = register(ACID_RAIN_KEY, new Enforcement((player, level, restriction) -> {
 		if (player.tickCount % 5 == 0 && level.tickRateManager().runsNormally()) {
 			if (player.hurtServer(
 				level,
@@ -82,10 +88,14 @@ public final class Enforcements {
 		}
 	}));
 
-	private static Enforcement register(String name, Enforcement enforcement) {
+	private static ResourceKey<Enforcement> makeKey(String name) {
+		return ResourceKey.create(TFRegistries.Keys.ENFORCEMENT, TFMain.prefix(name));
+	}
+
+	private static Enforcement register(ResourceKey<Enforcement> key, Enforcement enforcement) {
 		return Registry.register(
 			TFRegistries.ENFORCEMENT,
-			Identifier.fromNamespaceAndPath(TFMain.ID, name),
+			Identifier.fromNamespaceAndPath(TFMain.ID, key.identifier().getPath()),
 			enforcement
 		);
 	}

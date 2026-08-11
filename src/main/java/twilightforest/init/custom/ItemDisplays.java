@@ -16,10 +16,10 @@ import java.util.Optional;
 
 public class ItemDisplays {
 
-	public static final ItemDisplayType MAP = register("map", new ItemDisplayType(stack -> stack.getItem() instanceof MapItem, () -> new MapDisplay(), Optional.of(TFMain.prefix("textures/item/map_display.png"))));
-	public static final ItemDisplayType COMPASS = register("compass", new ItemDisplayType(stack -> stack.is(Items.COMPASS), () -> new CompassDisplay(), Optional.of(TFMain.prefix("textures/item/compass_display.png"))));
-	public static final ItemDisplayType CLOCK = register("clock", new ItemDisplayType(stack -> stack.is(Items.CLOCK), () -> new ClockDisplay(), Optional.of(TFMain.prefix("textures/item/clock_display.png"))));
-	public static final ItemDisplayType MOON_DIAL = register("moon_dial", new ItemDisplayType(stack -> stack.is(TFItems.MOON_DIAL), () -> new MoonDialDisplay(), Optional.of(TFMain.prefix("textures/item/moon_dial_display.png"))));
+	public static final ItemDisplayType MAP = register("map", new ItemDisplayType(stack -> stack.getItem() instanceof MapItem, MapDisplay::new, Optional.of(TFMain.prefix("textures/item/map_display.png"))));
+	public static final ItemDisplayType COMPASS = register("compass", new ItemDisplayType(stack -> stack.is(Items.COMPASS), CompassDisplay::new, Optional.of(TFMain.prefix("textures/item/compass_display.png"))));
+	public static final ItemDisplayType CLOCK = register("clock", new ItemDisplayType(stack -> stack.is(Items.CLOCK), ClockDisplay::new, Optional.of(TFMain.prefix("textures/item/clock_display.png"))));
+	public static final ItemDisplayType MOON_DIAL = register("moon_dial", new ItemDisplayType(stack -> stack.is(TFItems.MOON_DIAL), MoonDialDisplay::new, Optional.of(TFMain.prefix("textures/item/moon_dial_display.png"))));
 
 	private static ItemDisplayType register(String name, ItemDisplayType type) {
 		return Registry.register(

@@ -10,8 +10,10 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.food.FoodProperties;
@@ -324,11 +326,71 @@ public class TFItems {
 	public static final Item TREATED_LEATHER = register("treated_leather", Item::new, Item.Properties::new);
 	public static final Item TANNED_LEATHER = register("tanned_leather", Item::new, Item.Properties::new);
 
+	public static final Item ALPHA_YETI_SPAWN_EGG = registerSpawnEgg("alpha_yeti_spawn_egg", TFEntities.ALPHA_YETI);
+	public static final Item ARMORED_GIANT_SPAWN_EGG = registerSpawnEgg("armored_giant_spawn_egg", TFEntities.ARMORED_GIANT);
+	public static final Item BIGHORN_SHEEP_SPAWN_EGG = registerSpawnEgg("bighorn_sheep_spawn_egg", TFEntities.BIGHORN_SHEEP);
+	public static final Item BLOCKCHAIN_GOBLIN_SPAWN_EGG = registerSpawnEgg("blockchain_goblin_spawn_egg", TFEntities.BLOCKCHAIN_GOBLIN);
+	public static final Item BOAR_SPAWN_EGG = registerSpawnEgg("boar_spawn_egg", TFEntities.BOAR);
+	public static final Item CARMINITE_BROODLING_SPAWN_EGG = registerSpawnEgg("carminite_broodling_spawn_egg", TFEntities.CARMINITE_BROODLING);
+	public static final Item CARMINITE_GHASTGUARD_SPAWN_EGG = registerSpawnEgg("carminite_ghastguard_spawn_egg", TFEntities.CARMINITE_GHASTGUARD);
+	public static final Item CARMINITE_GHASTLING_SPAWN_EGG = registerSpawnEgg("carminite_ghastling_spawn_egg", TFEntities.CARMINITE_GHASTLING);
+	public static final Item CARMINITE_GOLEM_SPAWN_EGG = registerSpawnEgg("carminite_golem_spawn_egg", TFEntities.CARMINITE_GOLEM);
+	public static final Item DEATH_TOME_SPAWN_EGG = registerSpawnEgg("death_tome_spawn_egg", TFEntities.DEATH_TOME);
+	public static final Item DEER_SPAWN_EGG = registerSpawnEgg("deer_spawn_egg", TFEntities.DEER);
+	public static final Item DWARF_RABBIT_SPAWN_EGG = registerSpawnEgg("dwarf_rabbit_spawn_egg", TFEntities.DWARF_RABBIT);
+	public static final Item FIRE_BEETLE_SPAWN_EGG = registerSpawnEgg("fire_beetle_spawn_egg", TFEntities.FIRE_BEETLE);
+	public static final Item GIANT_MINER_SPAWN_EGG = registerSpawnEgg("giant_miner_spawn_egg", TFEntities.GIANT_MINER);
+	public static final Item HEDGE_SPIDER_SPAWN_EGG = registerSpawnEgg("hedge_spider_spawn_egg", TFEntities.HEDGE_SPIDER);
+	public static final Item HELMET_CRAB_SPAWN_EGG = registerSpawnEgg("helmet_crab_spawn_egg", TFEntities.HELMET_CRAB);
+	public static final Item HOSTILE_WOLF_SPAWN_EGG = registerSpawnEgg("hostile_wolf_spawn_egg", TFEntities.HOSTILE_WOLF);
+	public static final Item HYDRA_SPAWN_EGG = registerSpawnEgg("hydra_spawn_egg", TFEntities.HYDRA);
+	public static final Item ICE_CRYSTAL_SPAWN_EGG = registerSpawnEgg("ice_crystal_spawn_egg", TFEntities.ICE_CRYSTAL);
+	public static final Item KING_SPIDER_SPAWN_EGG = registerSpawnEgg("king_spider_spawn_egg", TFEntities.KING_SPIDER);
+	public static final Item KNIGHT_PHANTOM_SPAWN_EGG = registerSpawnEgg("knight_phantom_spawn_egg", TFEntities.KNIGHT_PHANTOM);
+	public static final Item KOBOLD_SPAWN_EGG = registerSpawnEgg("kobold_spawn_egg", TFEntities.KOBOLD);
+	public static final Item LICH_SPAWN_EGG = registerSpawnEgg("lich_spawn_egg", TFEntities.LICH);
+	public static final Item LOWER_GOBLIN_KNIGHT_SPAWN_EGG = registerSpawnEgg("lower_goblin_knight_spawn_egg", TFEntities.LOWER_GOBLIN_KNIGHT);
+	public static final Item MAZE_SLIME_SPAWN_EGG = registerSpawnEgg("maze_slime_spawn_egg", TFEntities.MAZE_SLIME);
+	public static final Item MINOSHROOM_SPAWN_EGG = registerSpawnEgg("minoshroom_spawn_egg", TFEntities.MINOSHROOM);
+	public static final Item MINOTAUR_SPAWN_EGG = registerSpawnEgg("minotaur_spawn_egg", TFEntities.MINOTAUR);
+	public static final Item MIST_WOLF_SPAWN_EGG = registerSpawnEgg("mist_wolf_spawn_egg", TFEntities.MIST_WOLF);
+	public static final Item MOSQUITO_SWARM_SPAWN_EGG = registerSpawnEgg("mosquito_swarm_spawn_egg", TFEntities.MOSQUITO_SWARM);
+	public static final Item NAGA_SPAWN_EGG = registerSpawnEgg("naga_spawn_egg", TFEntities.NAGA);
+	public static final Item PENGUIN_SPAWN_EGG = registerSpawnEgg("penguin_spawn_egg", TFEntities.PENGUIN);
+	public static final Item PINCH_BEETLE_SPAWN_EGG = registerSpawnEgg("pinch_beetle_spawn_egg", TFEntities.PINCH_BEETLE);
+	public static final Item QUEST_RAM_SPAWN_EGG = registerSpawnEgg("quest_ram_spawn_egg", TFEntities.QUEST_RAM);
+	public static final Item RAVEN_SPAWN_EGG = registerSpawnEgg("raven_spawn_egg", TFEntities.RAVEN);
+	public static final Item REDCAP_SPAWN_EGG = registerSpawnEgg("redcap_spawn_egg", TFEntities.REDCAP);
+	public static final Item REDCAP_SAPPER_SPAWN_EGG = registerSpawnEgg("redcap_sapper_spawn_egg", TFEntities.REDCAP_SAPPER);
+	public static final Item SKELETON_DRUID_SPAWN_EGG = registerSpawnEgg("skeleton_druid_spawn_egg", TFEntities.SKELETON_DRUID);
+	public static final Item SLIME_BEETLE_SPAWN_EGG = registerSpawnEgg("slime_beetle_spawn_egg", TFEntities.SLIME_BEETLE);
+	public static final Item SNOW_GUARDIAN_SPAWN_EGG = registerSpawnEgg("snow_guardian_spawn_egg", TFEntities.SNOW_GUARDIAN);
+	public static final Item SNOW_QUEEN_SPAWN_EGG = registerSpawnEgg("snow_queen_spawn_egg", TFEntities.SNOW_QUEEN);
+	public static final Item SQUIRREL_SPAWN_EGG = registerSpawnEgg("squirrel_spawn_egg", TFEntities.SQUIRREL);
+	public static final Item STABLE_ICE_CORE_SPAWN_EGG = registerSpawnEgg("stable_ice_core_spawn_egg", TFEntities.STABLE_ICE_CORE);
+	public static final Item SWARM_SPIDER_SPAWN_EGG = registerSpawnEgg("swarm_spider_spawn_egg", TFEntities.SWARM_SPIDER);
+	public static final Item TINY_BIRD_SPAWN_EGG = registerSpawnEgg("tiny_bird_spawn_egg", TFEntities.TINY_BIRD);
+	public static final Item TOWERWOOD_BORER_SPAWN_EGG = registerSpawnEgg("towerwood_borer_spawn_egg", TFEntities.TOWERWOOD_BORER);
+	public static final Item TROLL_SPAWN_EGG = registerSpawnEgg("troll_spawn_egg", TFEntities.TROLL);
+	public static final Item UNSTABLE_ICE_CORE_SPAWN_EGG = registerSpawnEgg("unstable_ice_core_spawn_egg", TFEntities.UNSTABLE_ICE_CORE);
+	public static final Item UR_GHAST_SPAWN_EGG = registerSpawnEgg("ur_ghast_spawn_egg", TFEntities.UR_GHAST);
+	public static final Item WINTER_WOLF_SPAWN_EGG = registerSpawnEgg("winter_wolf_spawn_egg", TFEntities.WINTER_WOLF);
+	public static final Item WRAITH_SPAWN_EGG = registerSpawnEgg("wraith_spawn_egg", TFEntities.WRAITH);
+	public static final Item YETI_SPAWN_EGG = registerSpawnEgg("yeti_spawn_egg", TFEntities.YETI);
+
 	public static Item register(String name, Function<Item.Properties, Item> item, Supplier<Item.Properties> properties) {
 		return Registry.register(
 			BuiltInRegistries.ITEM,
 			TFMain.prefix(name),
 			item.apply(properties.get().setId(ResourceKey.create(Registries.ITEM, TFMain.prefix(name))))
+		);
+	}
+
+	private static <E extends LivingEntity> Item registerSpawnEgg(String name, EntityType<E> type) {
+		return Registry.register(
+			BuiltInRegistries.ITEM,
+			TFMain.prefix(name),
+			new SpawnEggItem(new Item.Properties().spawnEgg(type))
 		);
 	}
 }

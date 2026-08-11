@@ -22,7 +22,6 @@ import twilightforest.components.item.SkullCandles;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.MagicPaintingVariant;
 
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
@@ -505,7 +504,57 @@ public class TFCreativeTabs {
 			output.accept(TFItems.TRANSFORMATION_CHEST_BOAT);
 			output.accept(TFItems.MINING_CHEST_BOAT);
 			output.accept(TFItems.SORTING_CHEST_BOAT);
-			createSpawnEggsAlphabetical(output);
+			output.accept(TFItems.ALPHA_YETI_SPAWN_EGG);
+			output.accept(TFItems.ARMORED_GIANT_SPAWN_EGG);
+			output.accept(TFItems.BIGHORN_SHEEP_SPAWN_EGG);
+			output.accept(TFItems.BLOCKCHAIN_GOBLIN_SPAWN_EGG);
+			output.accept(TFItems.BOAR_SPAWN_EGG);
+			output.accept(TFItems.CARMINITE_BROODLING_SPAWN_EGG);
+			output.accept(TFItems.CARMINITE_GHASTGUARD_SPAWN_EGG);
+			output.accept(TFItems.CARMINITE_GHASTLING_SPAWN_EGG);
+			output.accept(TFItems.CARMINITE_GOLEM_SPAWN_EGG);
+			output.accept(TFItems.DEATH_TOME_SPAWN_EGG);
+			output.accept(TFItems.DEER_SPAWN_EGG);
+			output.accept(TFItems.DWARF_RABBIT_SPAWN_EGG);
+			output.accept(TFItems.FIRE_BEETLE_SPAWN_EGG);
+			output.accept(TFItems.GIANT_MINER_SPAWN_EGG);
+			output.accept(TFItems.HEDGE_SPIDER_SPAWN_EGG);
+			output.accept(TFItems.HELMET_CRAB_SPAWN_EGG);
+			output.accept(TFItems.HOSTILE_WOLF_SPAWN_EGG);
+			output.accept(TFItems.HYDRA_SPAWN_EGG);
+			output.accept(TFItems.ICE_CRYSTAL_SPAWN_EGG);
+			output.accept(TFItems.KING_SPIDER_SPAWN_EGG);
+			output.accept(TFItems.KNIGHT_PHANTOM_SPAWN_EGG);
+			output.accept(TFItems.KOBOLD_SPAWN_EGG);
+			output.accept(TFItems.LICH_SPAWN_EGG);
+			output.accept(TFItems.LOWER_GOBLIN_KNIGHT_SPAWN_EGG);
+			output.accept(TFItems.MAZE_SLIME_SPAWN_EGG);
+			output.accept(TFItems.MINOSHROOM_SPAWN_EGG);
+			output.accept(TFItems.MINOTAUR_SPAWN_EGG);
+			output.accept(TFItems.MIST_WOLF_SPAWN_EGG);
+			output.accept(TFItems.MOSQUITO_SWARM_SPAWN_EGG);
+			output.accept(TFItems.NAGA_SPAWN_EGG);
+			output.accept(TFItems.PENGUIN_SPAWN_EGG);
+			output.accept(TFItems.PINCH_BEETLE_SPAWN_EGG);
+			output.accept(TFItems.QUEST_RAM_SPAWN_EGG);
+			output.accept(TFItems.RAVEN_SPAWN_EGG);
+			output.accept(TFItems.REDCAP_SPAWN_EGG);
+			output.accept(TFItems.REDCAP_SAPPER_SPAWN_EGG);
+			output.accept(TFItems.SKELETON_DRUID_SPAWN_EGG);
+			output.accept(TFItems.SLIME_BEETLE_SPAWN_EGG);
+			output.accept(TFItems.SNOW_GUARDIAN_SPAWN_EGG);
+			output.accept(TFItems.SNOW_QUEEN_SPAWN_EGG);
+			output.accept(TFItems.SQUIRREL_SPAWN_EGG);
+			output.accept(TFItems.STABLE_ICE_CORE_SPAWN_EGG);
+			output.accept(TFItems.SWARM_SPIDER_SPAWN_EGG);
+			output.accept(TFItems.TINY_BIRD_SPAWN_EGG);
+			output.accept(TFItems.TOWERWOOD_BORER_SPAWN_EGG);
+			output.accept(TFItems.TROLL_SPAWN_EGG);
+			output.accept(TFItems.UNSTABLE_ICE_CORE_SPAWN_EGG);
+			output.accept(TFItems.UR_GHAST_SPAWN_EGG);
+			output.accept(TFItems.WINTER_WOLF_SPAWN_EGG);
+			output.accept(TFItems.WRAITH_SPAWN_EGG);
+			output.accept(TFItems.YETI_SPAWN_EGG);
 		}).build();
 
 	public static final CreativeModeTab EQUIPMENT = FabricCreativeModeTab.builder()
@@ -642,11 +691,6 @@ public class TFCreativeTabs {
 		output.accept(stack);
 	}
 
-	private static void createSpawnEggsAlphabetical(CreativeModeTab.Output output) {
-		Collection<? extends Item> eggs = TFEntities.SPAWN_EGGS.getoutput().stream().map(DeferredHolder::value).toList();
-		eggs.forEach(output::accept);
-	}
-
 	private static void createDefaultSkullCandle(CreativeModeTab.Output output, ItemLike item) {
 		ItemStack stack = new ItemStack(item);
 		stack.set(TFDataComponents.SKULL_CANDLES, new SkullCandles(AbstractSkullCandleBlock.CandleColors.PLAIN.getValue(), 1));
@@ -679,40 +723,40 @@ public class TFCreativeTabs {
 
 	public static void addToTabs() {
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.BUILDING_BLOCKS).register(output -> {
-			output.insertAfter(Items.OAK_WOOD, TFItems.HOLLOW_OAK_LOG.toStack());
-			output.insertAfter(Items.SPRUCE_WOOD, TFItems.HOLLOW_SPRUCE_LOG.toStack());
-			output.insertAfter(Items.BIRCH_WOOD, TFItems.HOLLOW_BIRCH_LOG.toStack());
-			output.insertAfter(Items.JUNGLE_WOOD, TFItems.HOLLOW_JUNGLE_LOG.toStack());
-			output.insertAfter(Items.ACACIA_WOOD, TFItems.HOLLOW_ACACIA_LOG.toStack());
-			output.insertAfter(Items.DARK_OAK_WOOD, TFItems.HOLLOW_DARK_OAK_LOG.toStack());
-			output.insertAfter(Items.CRIMSON_HYPHAE, TFItems.HOLLOW_CRIMSON_STEM.toStack());
-			output.insertAfter(Items.WARPED_HYPHAE, TFItems.HOLLOW_WARPED_STEM.toStack());
-			output.insertAfter(Items.MANGROVE_WOOD, TFItems.HOLLOW_VANGROVE_LOG.toStack());
-			output.insertAfter(Items.CHERRY_WOOD, TFItems.HOLLOW_CHERRY_LOG.toStack());
+			output.insertAfter(Items.OAK_WOOD, TFItems.HOLLOW_OAK_LOG);
+			output.insertAfter(Items.SPRUCE_WOOD, TFItems.HOLLOW_SPRUCE_LOG);
+			output.insertAfter(Items.BIRCH_WOOD, TFItems.HOLLOW_BIRCH_LOG);
+			output.insertAfter(Items.JUNGLE_WOOD, TFItems.HOLLOW_JUNGLE_LOG);
+			output.insertAfter(Items.ACACIA_WOOD, TFItems.HOLLOW_ACACIA_LOG);
+			output.insertAfter(Items.DARK_OAK_WOOD, TFItems.HOLLOW_DARK_OAK_LOG);
+			output.insertAfter(Items.CRIMSON_HYPHAE, TFItems.HOLLOW_CRIMSON_STEM);
+			output.insertAfter(Items.WARPED_HYPHAE, TFItems.HOLLOW_WARPED_STEM);
+			output.insertAfter(Items.MANGROVE_WOOD, TFItems.HOLLOW_VANGROVE_LOG);
+			output.insertAfter(Items.CHERRY_WOOD, TFItems.HOLLOW_CHERRY_LOG);
 
-			output.insertAfter(Items.OAK_FENCE_GATE, TFBlocks.OAK_DRYING_RACK.toStack());
-			output.insertAfter(Items.SPRUCE_FENCE_GATE, TFBlocks.SPRUCE_DRYING_RACK.toStack());
-			output.insertAfter(Items.BIRCH_FENCE_GATE, TFBlocks.BIRCH_DRYING_RACK.toStack());
-			output.insertAfter(Items.JUNGLE_FENCE_GATE, TFBlocks.JUNGLE_DRYING_RACK.toStack());
-			output.insertAfter(Items.ACACIA_FENCE_GATE, TFBlocks.ACACIA_DRYING_RACK.toStack());
-			output.insertAfter(Items.DARK_OAK_FENCE_GATE, TFBlocks.DARK_OAK_DRYING_RACK.toStack());
-			output.insertAfter(Items.CRIMSON_FENCE_GATE, TFBlocks.CRIMSON_DRYING_RACK.toStack());
-			output.insertAfter(Items.WARPED_FENCE_GATE, TFBlocks.WARPED_DRYING_RACK.toStack());
-			output.insertAfter(Items.MANGROVE_FENCE_GATE, TFBlocks.VANGROVE_DRYING_RACK.toStack());
-			output.insertAfter(Items.BAMBOO_FENCE_GATE, TFBlocks.BAMBOO_DRYING_RACK.toStack());
-			output.insertAfter(Items.CHERRY_FENCE_GATE, TFBlocks.CHERRY_DRYING_RACK.toStack());
+			output.insertAfter(Items.OAK_FENCE_GATE, TFBlocks.OAK_DRYING_RACK);
+			output.insertAfter(Items.SPRUCE_FENCE_GATE, TFBlocks.SPRUCE_DRYING_RACK);
+			output.insertAfter(Items.BIRCH_FENCE_GATE, TFBlocks.BIRCH_DRYING_RACK);
+			output.insertAfter(Items.JUNGLE_FENCE_GATE, TFBlocks.JUNGLE_DRYING_RACK);
+			output.insertAfter(Items.ACACIA_FENCE_GATE, TFBlocks.ACACIA_DRYING_RACK);
+			output.insertAfter(Items.DARK_OAK_FENCE_GATE, TFBlocks.DARK_OAK_DRYING_RACK);
+			output.insertAfter(Items.CRIMSON_FENCE_GATE, TFBlocks.CRIMSON_DRYING_RACK);
+			output.insertAfter(Items.WARPED_FENCE_GATE, TFBlocks.WARPED_DRYING_RACK);
+			output.insertAfter(Items.MANGROVE_FENCE_GATE, TFBlocks.VANGROVE_DRYING_RACK);
+			output.insertAfter(Items.BAMBOO_FENCE_GATE, TFBlocks.BAMBOO_DRYING_RACK);
+			output.insertAfter(Items.CHERRY_FENCE_GATE, TFBlocks.CHERRY_DRYING_RACK);
 
-			output.insertAfter(Items.OAK_FENCE_GATE, TFBlocks.OAK_BANISTER.toStack());
-			output.insertAfter(Items.SPRUCE_FENCE_GATE, TFBlocks.SPRUCE_BANISTER.toStack());
-			output.insertAfter(Items.BIRCH_FENCE_GATE, TFBlocks.BIRCH_BANISTER.toStack());
-			output.insertAfter(Items.JUNGLE_FENCE_GATE, TFBlocks.JUNGLE_BANISTER.toStack());
-			output.insertAfter(Items.ACACIA_FENCE_GATE, TFBlocks.ACACIA_BANISTER.toStack());
-			output.insertAfter(Items.DARK_OAK_FENCE_GATE, TFBlocks.DARK_OAK_BANISTER.toStack());
-			output.insertAfter(Items.CRIMSON_FENCE_GATE, TFBlocks.CRIMSON_BANISTER.toStack());
-			output.insertAfter(Items.WARPED_FENCE_GATE, TFBlocks.WARPED_BANISTER.toStack());
-			output.insertAfter(Items.MANGROVE_FENCE_GATE, TFBlocks.VANGROVE_BANISTER.toStack());
-			output.insertAfter(Items.BAMBOO_FENCE_GATE, TFBlocks.BAMBOO_BANISTER.toStack());
-			output.insertAfter(Items.CHERRY_FENCE_GATE, TFBlocks.CHERRY_BANISTER.toStack());
+			output.insertAfter(Items.OAK_FENCE_GATE, TFBlocks.OAK_BANISTER);
+			output.insertAfter(Items.SPRUCE_FENCE_GATE, TFBlocks.SPRUCE_BANISTER);
+			output.insertAfter(Items.BIRCH_FENCE_GATE, TFBlocks.BIRCH_BANISTER);
+			output.insertAfter(Items.JUNGLE_FENCE_GATE, TFBlocks.JUNGLE_BANISTER);
+			output.insertAfter(Items.ACACIA_FENCE_GATE, TFBlocks.ACACIA_BANISTER);
+			output.insertAfter(Items.DARK_OAK_FENCE_GATE, TFBlocks.DARK_OAK_BANISTER);
+			output.insertAfter(Items.CRIMSON_FENCE_GATE, TFBlocks.CRIMSON_BANISTER);
+			output.insertAfter(Items.WARPED_FENCE_GATE, TFBlocks.WARPED_BANISTER);
+			output.insertAfter(Items.MANGROVE_FENCE_GATE, TFBlocks.VANGROVE_BANISTER);
+			output.insertAfter(Items.BAMBOO_FENCE_GATE, TFBlocks.BAMBOO_BANISTER);
+			output.insertAfter(Items.CHERRY_FENCE_GATE, TFBlocks.CHERRY_BANISTER);
 		});
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.OP_BLOCKS).register(output -> {
 			output.getContext().holders().lookupOrThrow(TFRegistries.Keys.MAGIC_PAINTINGS)

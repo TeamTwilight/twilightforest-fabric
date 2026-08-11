@@ -1,16 +1,20 @@
 package twilightforest.init;
 
 import com.google.common.collect.ImmutableSet;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
 import twilightforest.TFMain;
 
 public class TFPOITypes {
 
-	public static final DeferredRegister<PoiType> POIS = DeferredRegister.create(Registries.POINT_OF_INTEREST_TYPE, TFMain.ID);
+	public static final PoiType GHAST_TRAP = register("ghast_trap", new PoiType(ImmutableSet.copyOf(TFBlocks.GHAST_TRAP.getStateDefinition().getPossibleStates()), 0, 1));
 
-	public static final DeferredHolder<PoiType, PoiType> GHAST_TRAP = POIS.register("ghast_trap", () -> new PoiType(ImmutableSet.copyOf(TFBlocks.GHAST_TRAP.get().getStateDefinition().getPossibleStates()), 0, 1));
-
+	private static PoiType register(String name, PoiType type) {
+		return Registry.register(
+			BuiltInRegistries.POINT_OF_INTEREST_TYPE,
+			TFMain.prefix(name),
+			type
+		);
+	}
 }

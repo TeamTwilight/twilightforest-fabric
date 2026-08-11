@@ -5,7 +5,7 @@ import twilightforest.TFMain;
 import twilightforest.loot.modifiers.FieryToolSmeltingModifier;
 import twilightforest.loot.modifiers.GiantToolGroupingModifier;
 
-// TODO: Port to mixin
+// TODO: [Fabric] Port to mixin
 public class TFLootModifiers {
 
 	/*public static final DeferredRegister<MapCodec<? extends IGlobalLootModifier>> LOOT_MODIFIERS = DeferredRegister.create(NeoForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, TFMain.ID);
