@@ -1,4 +1,4 @@
 @NullMarked
-package twilightforest.fabric.datamaps;
+package carminite;
 
 import org.jspecify.annotations.NullMarked;

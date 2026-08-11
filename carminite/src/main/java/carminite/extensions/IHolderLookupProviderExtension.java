@@ -1,4 +1,4 @@
-package twilightforest.fabric.extensions;
+package carminite.extensions;
 
 import java.util.Optional;
 import net.minecraft.core.Holder;

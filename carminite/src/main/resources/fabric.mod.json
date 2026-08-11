@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "carminite",
+  "version": "0.0.1",
+  "name": "Carminite",
+  "description": "A built in library used to help porting Twilight Forest to Fabric.",
+  "authors": [
+    "Autumn"
+  ],
+  "license": "LGPL-2.1",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "carminite.Carminite"
+    ],
+    "client": [
+      "carminite.CarminiteClient"
+    ],
+    "fabric-datagen": [
+      "carminite.CarminiteData"
+    ]
+  },
+  "accessWidener": "carminite.classtweaker",
+  "mixins": [
+    "carminite.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.3",
+    "minecraft": "~26.1",
+    "java": ">=25",
+    "fabric-api": ">=0.155.2+26.1.2"
+  }
+}

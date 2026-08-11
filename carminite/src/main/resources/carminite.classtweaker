@@ -1,0 +1,5 @@
+classTweaker v2 official
+
+# Interface Injections
+
+transitive-inject-interface net/minecraft/core/HolderLookup$Provider carminite/extensions/IHolderLookupProviderExtension

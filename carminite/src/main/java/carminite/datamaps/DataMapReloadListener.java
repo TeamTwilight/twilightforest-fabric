@@ -1,5 +1,6 @@
-package twilightforest.fabric.datamaps;
+package carminite.datamaps;
 
+import carminite.Carminite;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
@@ -8,12 +9,10 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
-import twilightforest.TFMain;
 
 import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
-
 
 // TODO: Actually register this where we need it to listen
 public final class DataMapReloadListener implements SimpleSynchronousResourceReloadListener {
@@ -21,7 +20,7 @@ public final class DataMapReloadListener implements SimpleSynchronousResourceRel
 
 	@Override
 	public Identifier getFabricId() {
-		return TFMain.prefix(this.getName());
+		return Carminite.prefix(this.getName());
 	}
 
 	@Override
@@ -32,12 +31,11 @@ public final class DataMapReloadListener implements SimpleSynchronousResourceRel
 	}
 
 	private static <R, T> void loadOne(ResourceManager manager, SimpleDataMap<R, T> map) {
-		String registryPath = map.registryKey().identifier().getPath(); // e.g. "entity_type", "block"
+		String registryPath = map.registryKey().identifier().getPath();
 		String dir = "data_maps/" + registryPath + "/" + map.id().getPath();
 
 		Map<Identifier, T> result = new HashMap<>();
 
-		// sort by pack order so later packs override earlier ones
 		for (Resource resource : manager.getResourceStack(map.id().withPath(dir + ".json"))) {
 			try (Reader reader = resource.openAsReader()) {
 				JsonObject json = GsonHelper.parse(reader);
@@ -63,7 +61,7 @@ public final class DataMapReloadListener implements SimpleSynchronousResourceRel
 					}
 				}
 			} catch (Exception e) {
-				TFMain.LOGGER.error("Error loading data map {} from {}", map.id(), resource.sourcePackId(), e);
+				Carminite.LOGGER.error("Error loading data map {} from {}", map.id(), resource.sourcePackId(), e);
 			}
 		}
 

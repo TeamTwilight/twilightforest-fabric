@@ -28,3 +28,7 @@ gource.sh
 .noai
 .profileconfig.json
 profile.jfr
+
+# carminite
+carminite/build
+carminite/run

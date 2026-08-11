@@ -1,4 +1,4 @@
-package twilightforest.fabric.datamaps;
+package carminite.datamaps;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
