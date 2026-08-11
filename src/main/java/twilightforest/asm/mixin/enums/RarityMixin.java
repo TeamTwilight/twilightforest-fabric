@@ -1,4 +1,4 @@
-package twilightforest.asm.mixin;
+package twilightforest.asm.mixin.enums;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.item.Rarity;

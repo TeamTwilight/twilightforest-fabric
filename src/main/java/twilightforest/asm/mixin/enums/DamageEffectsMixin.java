@@ -1,4 +1,4 @@
-package twilightforest.asm.mixin;
+package twilightforest.asm.mixin.enums;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageEffects;

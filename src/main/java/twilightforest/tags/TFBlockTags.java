@@ -1,7 +1,7 @@
 package twilightforest.tags;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import twilightforest.TFMain;
@@ -99,24 +99,24 @@ public class TFBlockTags {
 	public static final TagKey<Block> SMALL_LAKES_DONT_REPLACE = create("small_lakes_dont_replace");
 	public static final TagKey<Block> DRYING_RACKS = create("drying_racks");
 
-	public static final TagKey<Block> AC_FERROMAGNETIC_BLOCKS = create("alexscaves", "ferromagnetic_blocks");
-	public static final TagKey<Block> AC_GLOOMOTH_LIGHT_SOURCES = create("alexscaves", "gloomoth_light_sources");
-	public static final TagKey<Block> AC_UNDERZEALOT_LIGHT_SOURCES = create("alexscaves", "underzealot_light_sources");
+	public static final TagKey<Block> AC_FERROMAGNETIC_BLOCKS = createFromNamespace("alexscaves", "ferromagnetic_blocks");
+	public static final TagKey<Block> AC_GLOOMOTH_LIGHT_SOURCES = createFromNamespace("alexscaves", "gloomoth_light_sources");
+	public static final TagKey<Block> AC_UNDERZEALOT_LIGHT_SOURCES = createFromNamespace("alexscaves", "underzealot_light_sources");
 
-	public static final TagKey<Block> ARTIFACTS_CAMPSITE_CHESTS = create("artifacts", "campsite_chests");
+	public static final TagKey<Block> ARTIFACTS_CAMPSITE_CHESTS = createFromNamespace("artifacts", "campsite_chests");
 
-	public static final TagKey<Block> FD_COMPOST_ACTIVATORS = create("farmersdelight", "compost_activators");
-	public static final TagKey<Block> FD_HEAT_SOURCES = create("farmersdelight", "heat_sources");
-
-	private static TagKey<Block> create(String tagName) {
-		return BlockTags.create(TFMain.prefix(tagName));
-	}
+	public static final TagKey<Block> FD_COMPOST_ACTIVATORS = createFromNamespace("farmersdelight", "compost_activators");
+	public static final TagKey<Block> FD_HEAT_SOURCES = createFromNamespace("farmersdelight", "heat_sources");
 
 	public static TagKey<Block> makeCommonTag(String tagName) {
-		return create("c", tagName);
+		return createFromNamespace("c", tagName);
 	}
 
-	private static TagKey<Block> create(String modid, String tagName) {
-		return BlockTags.create(Identifier.fromNamespaceAndPath(modid, tagName));
+	public static TagKey<Block> create(final String name) {
+		return TagKey.create(Registries.BLOCK, TFMain.prefix(name));
+	}
+
+	private static TagKey<Block> createFromNamespace(String modid, String tagName) {
+		return TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(modid, tagName));
 	}
 }

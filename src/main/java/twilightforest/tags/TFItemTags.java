@@ -1,7 +1,7 @@
 package twilightforest.tags;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import twilightforest.TFMain;
@@ -95,29 +95,29 @@ public class TFItemTags {
 	public static final TagKey<Item> TROPHIES = create("trophies");
 	public static final TagKey<Item> EMPERORS_CLOTH_APPLICABLE = create("emperors_cloth_applicable");
 
-	public static final TagKey<Item> AC_FERNS = create("alexscaves", "ferns");
-	public static final TagKey<Item> AC_FERROMAGNETIC_ITEMS = create("alexscaves", "ferromagnetic_items");
-	public static final TagKey<Item> AC_RAW_MEATS = create("alexscaves", "raw_meats");
+	public static final TagKey<Item> AC_FERNS = createFromNamespace("alexscaves", "ferns");
+	public static final TagKey<Item> AC_FERROMAGNETIC_ITEMS = createFromNamespace("alexscaves", "ferromagnetic_items");
+	public static final TagKey<Item> AC_RAW_MEATS = createFromNamespace("alexscaves", "raw_meats");
 
-	public static final TagKey<Item> CURIOS_CHARM = create("curios", "charm");
-	public static final TagKey<Item> CURIOS_HEAD = create("curios", "head");
+	public static final TagKey<Item> CURIOS_CHARM = createFromNamespace("curios", "charm");
+	public static final TagKey<Item> CURIOS_HEAD = createFromNamespace("curios", "head");
 
-	public static final TagKey<Item> CA_PLANTS = create("createaddition", "plants");
-	public static final TagKey<Item> CA_PLANT_FOODS = create("createaddition", "plant_foods");
+	public static final TagKey<Item> CA_PLANTS = createFromNamespace("createaddition", "plants");
+	public static final TagKey<Item> CA_PLANT_FOODS = createFromNamespace("createaddition", "plant_foods");
 
-	public static final TagKey<Item> FD_CABBAGE_ROLL_INGREDIENTS = create("farmersdelight", "cabbage_roll_ingredients");
+	public static final TagKey<Item> FD_CABBAGE_ROLL_INGREDIENTS = createFromNamespace("farmersdelight", "cabbage_roll_ingredients");
 
-	public static final TagKey<Item> RANDOMIUM_BLACKLIST = create("randomium", "blacklist");
-
-	private static TagKey<Item> create(String tagName) {
-		return ItemTags.bind(TFMain.prefix(tagName));
-	}
+	public static final TagKey<Item> RANDOMIUM_BLACKLIST = createFromNamespace("randomium", "blacklist");
 
 	public static TagKey<Item> makeCommonTag(String tagName) {
-		return create("c", tagName);
+		return createFromNamespace("c", tagName);
 	}
 
-	private static TagKey<Item> create(String modid, String tagName) {
-		return ItemTags.bind(Identifier.fromNamespaceAndPath(modid, tagName));
+	public static TagKey<Item> create(final String name) {
+		return TagKey.create(Registries.ITEM, TFMain.prefix(name));
+	}
+
+	private static TagKey<Item> createFromNamespace(String modid, String tagName) {
+		return TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(modid, tagName));
 	}
 }

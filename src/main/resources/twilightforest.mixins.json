@@ -4,8 +4,8 @@
   "package": "twilightforest.asm.mixin",
   "compatibilityLevel": "JAVA_25",
   "mixins": [
-    "DamageEffectsMixin",
-    "RarityMixin"
+    "enums.DamageEffectsMixin",
+    "enums.RarityMixin"
   ],
   "client": [],
   "injectors": {

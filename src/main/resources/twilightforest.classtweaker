@@ -241,12 +241,6 @@ accessible method net/minecraft/client/multiplayer/ClientLevel getSkyFlashTime (
 # TFMagicMapData & TFMazeMapData (avoids a VanillaCopy for a helper method)
 accessible method net/minecraft/world/level/saveddata/maps/MapItemSavedData getFrameKey (I)Ljava/lang/String;
 
-# TFBlockTags
-accessible method net/minecraft/tags/BlockTags create (Ljava/lang/String;)Lnet/minecraft/tags/TagKey;
-
-# TFItemTags
-accessible method net/minecraft/tags/ItemTags bind (Ljava/lang/String;)Lnet/minecraft/tags/TagKey;
-
 # Enum Extensions
 extend-enum net/minecraft/world/damagesource/DamageEffects TWILIGHTFOREST_PINCH
 extend-enum net/minecraft/world/item/Rarity TWILIGHTFOREST_TWILIGHT
