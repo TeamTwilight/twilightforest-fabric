@@ -1,12 +1,12 @@
 package twilightforest.network;
 
+import carminite.network.IPayloadContext;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.TFMain;
 import twilightforest.components.entity.TravellersWingsAttachment;
 import twilightforest.init.TFDataAttachments;
@@ -48,7 +48,7 @@ public class TravellersWingsStatePacket implements CustomPacketPayload {
 			if (player != null && player.level() != null) {
 				Entity entity = player.level().getEntity(message.entityId);
 				if (entity instanceof LivingEntity livingEntity) {
-					TravellersWingsAttachment attachment = livingEntity.getData(TFDataAttachments.TRAVELLERS_WINGS);
+					TravellersWingsAttachment attachment = livingEntity.getAttached(TFDataAttachments.TRAVELLERS_WINGS);
 					attachment.state = message.state;
 					attachment.sidestepLeft = message.sidestepLeft;
 					attachment.doubleJumpTimer = message.doubleJumpTimer;

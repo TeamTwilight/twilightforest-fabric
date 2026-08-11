@@ -12,3 +12,9 @@ TODO
 
 ## IGlobalLootModifier & LootModifier
 - Port to post-generation mixin
+
+# TwilightForestRenderInfo
+- Port implementation and usages to Fabric alternatives
+
+# PartEntity
+- Port system to Fabric

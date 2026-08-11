@@ -1,5 +1,6 @@
 package twilightforest.network;
 
+import carminite.network.IPayloadContext;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -7,7 +8,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.TFMain;
 import twilightforest.components.item.ItemDisplayContents;
 import twilightforest.init.TFDataComponents;
@@ -38,7 +38,7 @@ public record CycleMapSlotPacket() implements CustomPacketPayload {
 				ItemDisplayContents updatedContents = mutable.toImmutable();
 				headStack.set(TFDataComponents.ITEM_DISPLAY, updatedContents);
 				serverPlayer.getInventory().setChanged();
-				player.playSound(newIndex == -1 ? TFSounds.CYCLE_MAPS_EMPTY.get() : TFSounds.CYCLE_MAPS.get(), 1F, 1F);
+				player.playSound(newIndex == -1 ? TFSounds.CYCLE_MAPS_EMPTY.value() : TFSounds.CYCLE_MAPS.value(), 1F, 1F);
 			}
 		});
 	}

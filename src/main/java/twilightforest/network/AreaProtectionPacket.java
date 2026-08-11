@@ -1,5 +1,6 @@
 package twilightforest.network;
 
+import carminite.network.IPayloadContext;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -9,7 +10,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.TFMain;
 import twilightforest.entity.ProtectionBox;
 import twilightforest.init.TFParticleType;
@@ -87,7 +87,7 @@ public class AreaProtectionPacket implements CustomPacketPayload {
 						double y = message.pos.getY() + 0.5D + level.getRandom().nextFloat() - level.getRandom().nextFloat();
 						double z = message.pos.getZ() + 0.5D + level.getRandom().nextFloat() - level.getRandom().nextFloat();
 
-						level.addParticle(TFParticleType.PROTECTION.get(), x, y, z, vx, vy, vz);
+						level.addParticle(TFParticleType.PROTECTION, x, y, z, vx, vy, vz);
 					}
 				}
 			});

@@ -1,5 +1,6 @@
 package twilightforest.network;
 
+import carminite.network.IPayloadContext;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -8,7 +9,6 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
 import net.minecraft.world.level.saveddata.maps.MapId;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.TFMain;
 import twilightforest.item.mapdata.MapDataManager;
 import twilightforest.item.mapdata.TFMagicMapData;

@@ -1,12 +1,12 @@
 package twilightforest.network;
 
+import carminite.network.IPayloadContext;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.LivingEntity;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
 import twilightforest.TFMain;
 
 public record UpdateDeathTimePacket(int entityID, int deathTime) implements CustomPacketPayload {

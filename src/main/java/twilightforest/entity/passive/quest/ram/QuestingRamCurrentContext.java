@@ -1,9 +1,7 @@
 package twilightforest.entity.passive.quest.ram;
 
-import tamaized.beanification.Component;
-
-@Component
 public class QuestingRamCurrentContext {
+	public static final QuestingRamCurrentContext INSTANCE = new QuestingRamCurrentContext();
 
 	private QuestingRamContext context = QuestingRamContext.FALLBACK;
 
@@ -14,5 +12,4 @@ public class QuestingRamCurrentContext {
 	public QuestingRamContext getContext() {
 		return context;
 	}
-
 }
