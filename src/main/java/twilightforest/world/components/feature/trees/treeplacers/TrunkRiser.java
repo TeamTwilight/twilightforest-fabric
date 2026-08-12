@@ -34,7 +34,7 @@ public class TrunkRiser extends TrunkPlacer {
 
 	@Override
 	protected TrunkPlacerType<TrunkRiser> type() {
-		return TFFeatureModifiers.TRUNK_RISER.get();
+		return TFFeatureModifiers.TRUNK_RISER;
 	}
 
 	@Override

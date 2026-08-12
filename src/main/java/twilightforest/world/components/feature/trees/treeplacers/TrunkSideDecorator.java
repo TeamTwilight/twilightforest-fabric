@@ -31,7 +31,7 @@ public class TrunkSideDecorator extends TreeDecorator {
 
 	@Override
 	protected TreeDecoratorType<TrunkSideDecorator> type() {
-		return TFFeatureModifiers.TRUNKSIDE_DECORATOR.get();
+		return TFFeatureModifiers.TRUNKSIDE_DECORATOR;
 	}
 
 	@Override

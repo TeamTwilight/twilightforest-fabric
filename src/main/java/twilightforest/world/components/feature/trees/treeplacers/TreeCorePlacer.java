@@ -25,7 +25,7 @@ public class TreeCorePlacer extends TreeDecorator {
 
 	@Override
 	protected TreeDecoratorType<TreeCorePlacer> type() {
-		return TFFeatureModifiers.CORE_PLACER.get();
+		return TFFeatureModifiers.CORE_PLACER;
 	}
 
 	@Override

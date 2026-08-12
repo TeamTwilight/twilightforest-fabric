@@ -1,4 +1,4 @@
 @NullMarked
-package carminite;
+package carminite.client.network;
 
 import org.jspecify.annotations.NullMarked;

@@ -1,4 +1,4 @@
-package carminite;
+package carminite.client;
 
 import net.fabricmc.api.ClientModInitializer;
 

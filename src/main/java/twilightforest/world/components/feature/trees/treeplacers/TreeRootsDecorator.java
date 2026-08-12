@@ -80,7 +80,7 @@ public class TreeRootsDecorator extends TreeDecorator {
 
 	@Override
 	protected TreeDecoratorType<TreeRootsDecorator> type() {
-		return TFFeatureModifiers.TREE_ROOTS.get();
+		return TFFeatureModifiers.TREE_ROOTS;
 	}
 
 	@Override

@@ -72,7 +72,7 @@ public abstract class CanopyMushroomFeature extends AbstractHugeMushroomFeature 
 			return false;
 		}
 
-		BlockState bugState = TFBlocks.FIREFLY.get().defaultBlockState().setValue(DirectionalBlock.FACING, direction);
+		BlockState bugState = TFBlocks.FIREFLY.defaultBlockState().setValue(DirectionalBlock.FACING, direction);
 		this.setBlock(levelAccessor, bugPos, bugState);
 		return true;
 	}

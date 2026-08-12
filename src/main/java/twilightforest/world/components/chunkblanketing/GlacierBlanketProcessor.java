@@ -44,6 +44,6 @@ public record GlacierBlanketProcessor(HolderSet<Biome> biomesForApplication, Blo
 
 	@Override
 	public ChunkBlanketType getType() {
-		return ChunkBlanketProcessors.GLACIER.value();
+		return ChunkBlanketProcessors.GLACIER;
 	}
 }

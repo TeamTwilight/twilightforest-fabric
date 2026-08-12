@@ -5,13 +5,11 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.biome.Biome;
-import tamaized.beanification.Component;
 import twilightforest.util.ColorUtil;
 import twilightforest.util.landmarks.LegacyLandmarkPlacements;
-import twilightforest.world.components.structures.type.QuestGroveStructure;
 
-@Component
 public class BiomeColorAlgorithms {
+	public static final BiomeColorAlgorithms INSTANCE = new BiomeColorAlgorithms();
 
 	public int enchanted(int originalColor, int x, int z) {  // TODO
 		BlockPos center = LegacyLandmarkPlacements.getNearestCenterXZ(x / 16, z / 16);  // Center is quest grove

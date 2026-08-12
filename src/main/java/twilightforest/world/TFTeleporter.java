@@ -524,7 +524,7 @@ public class TFTeleporter {
 		}
 
 		// portal in it
-		BlockState portal = TFBlocks.TWILIGHT_PORTAL.get().defaultBlockState().setValue(TFPortalBlock.DISALLOW_RETURN, (locked || !TFConfig.shouldReturnPortalBeUsable));
+		BlockState portal = TFBlocks.TWILIGHT_PORTAL.defaultBlockState().setValue(TFPortalBlock.DISALLOW_RETURN, (locked || !TFConfig.shouldReturnPortalBeUsable));
 
 		world.setBlock(pos, portal, Block.UPDATE_CLIENTS);
 		world.setBlock(pos.east(), portal, Block.UPDATE_CLIENTS);

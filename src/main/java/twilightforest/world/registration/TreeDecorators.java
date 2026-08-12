@@ -9,7 +9,7 @@ import twilightforest.world.components.feature.trees.treeplacers.TreeRootsDecora
 import twilightforest.world.components.feature.trees.treeplacers.TrunkSideDecorator;
 
 public final class TreeDecorators {
-	public static final BlockStateProvider ROOT_BLEND_PROVIDER = new WeightedStateProvider(WeightedList.<BlockState>builder().add(TFBlocks.ROOT_BLOCK.get().defaultBlockState(), 6).add(TFBlocks.LIVEROOT_BLOCK.get().defaultBlockState(), 1).build());
+	public static final BlockStateProvider ROOT_BLEND_PROVIDER = new WeightedStateProvider(WeightedList.<BlockState>builder().add(TFBlocks.ROOT_BLOCK.defaultBlockState(), 6).add(TFBlocks.LIVEROOT_BLOCK.defaultBlockState(), 1).build());
 	public static final TreeRootsDecorator LIVING_ROOTS = new TreeRootsDecorator(3, 1, 5, TreeDecorators.ROOT_BLEND_PROVIDER, 1);
-	public static final TrunkSideDecorator FIREFLY = new TrunkSideDecorator(2, 1.0f, BlockStateProvider.simple(TFBlocks.FIREFLY.get().defaultBlockState()));
+	public static final TrunkSideDecorator FIREFLY = new TrunkSideDecorator(2, 1.0f, BlockStateProvider.simple(TFBlocks.FIREFLY.defaultBlockState()));
 }

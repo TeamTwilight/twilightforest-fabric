@@ -1,4 +1,4 @@
-package carminite.network;
+package carminite.client.network;
 
 import java.util.Objects;
 

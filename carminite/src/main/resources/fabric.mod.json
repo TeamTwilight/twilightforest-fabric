@@ -14,10 +14,10 @@
       "carminite.Carminite"
     ],
     "client": [
-      "carminite.CarminiteClient"
+      "carminite.client.CarminiteClient"
     ],
     "fabric-datagen": [
-      "carminite.CarminiteData"
+      "carminite.client.CarminiteData"
     ]
   },
   "accessWidener": "carminite.classtweaker",

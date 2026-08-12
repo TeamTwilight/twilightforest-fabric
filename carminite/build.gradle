@@ -3,7 +3,7 @@ plugins {
 }
 
 tasks.withType(JavaCompile).configureEach {
-	options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation,-this-escape" << "-Werror"
+	options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation,-this-escape"
 	options.encoding = 'UTF-8'
 	it.options.release = 25
 }

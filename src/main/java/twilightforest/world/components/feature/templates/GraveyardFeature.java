@@ -22,9 +22,8 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.*;
-import net.neoforged.neoforge.event.EventHooks;
 import org.apache.commons.lang3.tuple.Pair;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TFMain;
 import twilightforest.entity.monster.Wraith;
 import twilightforest.init.TFEntities;
@@ -175,9 +174,9 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 							TFLootTables.generateChestContents(world, placement.offset(chestloc), TFLootTables.GRAVEYARD);
 							world.setBlock(placement.offset(chestloc).below(), Blocks.MOSSY_COBBLESTONE.defaultBlockState(), Block.UPDATE_ALL);
 						}
-						Wraith wraith = new Wraith(TFEntities.WRAITH.get(), world.getLevel());
+						Wraith wraith = new Wraith(TFEntities.WRAITH, world.getLevel());
 						wraith.setPos(placement.getX(), placement.getY(), placement.getZ());
-						EventHooks.finalizeMobSpawn(wraith, world, world.getCurrentDifficultyAt(placement), EntitySpawnReason.STRUCTURE, null);
+						wraith.finalizeSpawn(world, world.getCurrentDifficultyAt(placement), EntitySpawnReason.STRUCTURE, null);
 						world.addFreshEntity(wraith);
 					}
 				}
@@ -195,7 +194,7 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 						if (world.setBlock(p, Blocks.SPAWNER.defaultBlockState(), Block.UPDATE_ALL)) {
 							SpawnerBlockEntity ms = (SpawnerBlockEntity) world.getBlockEntity(p);
 							if (ms != null)
-								ms.setEntityId(TFEntities.RISING_ZOMBIE.get(), rand);
+								ms.setEntityId(TFEntities.RISING_ZOMBIE, rand);
 						}
 					}
 				}
@@ -230,13 +229,12 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 
 		@Override
 		protected StructureProcessorType<?> getType() {
-			return TFStructureProcessors.WEB.get();
+			return TFStructureProcessors.WEB;
 		}
 
-		@Nullable
 		@Override
-		public StructureTemplate.StructureBlockInfo process(LevelReader worldIn, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo p_process_3_, StructureTemplate.StructureBlockInfo blockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
-			return blockInfo.state().getBlock() == Blocks.GRASS_BLOCK ? blockInfo : settings.getRandom(pos).nextInt(5) == 0 ? new StructureTemplate.StructureBlockInfo(pos, Blocks.COBWEB.defaultBlockState(), null) : blockInfo;
+		public StructureTemplate.@Nullable StructureBlockInfo processBlock(LevelReader level, BlockPos targetPosition, BlockPos referencePos, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo processedBlockInfo, StructurePlaceSettings settings) {
+			return processedBlockInfo.state().getBlock() == Blocks.GRASS_BLOCK ? processedBlockInfo : settings.getRandom(targetPosition).nextInt(5) == 0 ? new StructureTemplate.StructureBlockInfo(targetPosition, Blocks.COBWEB.defaultBlockState(), null) : processedBlockInfo;
 		}
 	}
 }

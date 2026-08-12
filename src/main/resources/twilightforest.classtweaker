@@ -244,5 +244,10 @@ accessible method net/minecraft/world/level/saveddata/maps/MapItemSavedData getF
 # Enum Extensions
 extend-enum net/minecraft/world/damagesource/DamageEffects TWILIGHTFOREST_PINCH
 extend-enum net/minecraft/world/item/Rarity TWILIGHTFOREST_TWILIGHT
+extend-enum net/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier TWILIGHTFOREST_ENCHANTED_FOREST
+extend-enum net/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier TWILIGHTFOREST_SWAMP
+extend-enum net/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier TWILIGHTFOREST_DARK_FOREST
+extend-enum net/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier TWILIGHTFOREST_DARK_FOREST_CENTER
+extend-enum net/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier TWILIGHTFOREST_SPOOKY_FOREST
 
 # TODO: Validate and fix this file later on in Fabric development

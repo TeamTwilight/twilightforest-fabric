@@ -30,7 +30,7 @@ public class MiningTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 		}
 
 		// check soil
-		if (world.getBlockState(pos.below()).canSustainPlant(world, pos.below(), Direction.UP, TFBlocks.MINING_SAPLING.get().defaultBlockState()).isFalse()) {
+		if (!TFBlocks.MINING_SAPLING.defaultBlockState().canSurvive(world, pos.below())) {
 			return false;
 		}
 
@@ -55,8 +55,8 @@ public class MiningTreeFeature extends TFTreeFeature<TFTreeFeatureConfig> {
 		// place minewood core
 		BlockState stateAtCorePos = world.getBlockState(pos.above());
 		if (stateAtCorePos.is(BlockTags.LOGS) || stateAtCorePos.canBeReplaced()) {
-			world.setBlock(pos.above(), TFBlocks.MINING_LOG_CORE.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y), Block.UPDATE_ALL);
-			world.scheduleTick(pos.above(), TFBlocks.MINING_LOG_CORE.get(), 20);
+			world.setBlock(pos.above(), TFBlocks.MINING_LOG_CORE.defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y), Block.UPDATE_ALL);
+			world.scheduleTick(pos.above(), TFBlocks.MINING_LOG_CORE, 20);
 		}
 
 		// root bulb

@@ -15,16 +15,11 @@ import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import tamaized.beanification.Autowired;
-import twilightforest.enums.extensions.TFGrassColorModifierEnumExtension;
 import twilightforest.init.*;
 
 import java.util.List;
 
 public abstract class BiomeHelper {
-
-	@Autowired
-	private static TFGrassColorModifierEnumExtension grassColorModifierEnumExtension;
 
 	public static Biome.BiomeBuilder twilightForest(HolderGetter<PlacedFeature> featureGetter, HolderGetter<ConfiguredWorldCarver<?>> carverGetter) {
 		BiomeGenerationSettings.Builder biome = defaultGenSettingBuilder(featureGetter, carverGetter);
@@ -78,7 +73,7 @@ public abstract class BiomeHelper {
 			.downfall(0.8F)
 			.putAttributes(defaultEnvironmentBuilder()
 				.set(EnvironmentAttributes.WATER_FOG_COLOR, 0x005522)
-				.set(EnvironmentAttributes.AMBIENT_PARTICLES, List.of(new AmbientParticle(TFParticleType.WANDERING_FIREFLY.get(), 0.001F))))
+				.set(EnvironmentAttributes.AMBIENT_PARTICLES, List.of(new AmbientParticle(TFParticleType.WANDERING_FIREFLY, 0.001F))))
 			.specialEffects(new BiomeSpecialEffects.Builder().waterColor(0x005522).build())
 			.mobSpawnSettings(defaultMobSpawning().build())
 			.generationSettings(biome.build());
@@ -200,7 +195,7 @@ public abstract class BiomeHelper {
 			.specialEffects(defaultAmbientBuilder()
 				.foliageColorOverride(0x00FFFF)
 				.grassColorOverride(0x00FFFF)
-				.grassColorModifier(grassColorModifierEnumExtension.ENCHANTED_FOREST).build())
+				.grassColorModifier(BiomeSpecialEffects.GrassColorModifier.TWILIGHTFOREST_ENCHANTED_FOREST).build())
 			.mobSpawnSettings(defaultMobSpawning().build())
 			.generationSettings(biome.build());
 	}
@@ -235,14 +230,14 @@ public abstract class BiomeHelper {
 				.waterColor(0xBC8857)
 				.grassColorOverride(0xC45123)
 				.foliageColorOverride(0xFF8501)
-				.grassColorModifier(grassColorModifierEnumExtension.SPOOKY_FOREST).build())
+				.grassColorModifier(BiomeSpecialEffects.GrassColorModifier.TWILIGHTFOREST_SPOOKY_FOREST).build())
 			.mobSpawnSettings(new MobSpawnSettings.Builder()
 				.addSpawn(MobCategory.MONSTER, 50, new MobSpawnSettings.SpawnerData(EntityType.SPIDER, 1, 2))
 				.addMobCharge(EntityType.SPIDER, 0.75D, 0.25D)
 				.addSpawn(MobCategory.MONSTER, 20, new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 1, 2))
 				.addMobCharge(EntityType.SKELETON, 0.85D, 0.25D)
-				.addSpawn(MobCategory.MONSTER, 5, new MobSpawnSettings.SpawnerData(TFEntities.SKELETON_DRUID.get(), 1, 1))
-				.addMobCharge(TFEntities.SKELETON_DRUID.get(), 0.95D, 0.25D)
+				.addSpawn(MobCategory.MONSTER, 5, new MobSpawnSettings.SpawnerData(TFEntities.SKELETON_DRUID, 1, 1))
+				.addMobCharge(TFEntities.SKELETON_DRUID, 0.95D, 0.25D)
 				.addSpawn(MobCategory.AMBIENT, 20, new MobSpawnSettings.SpawnerData(EntityType.BAT, 2, 4)).build())
 			.generationSettings(biome.build());
 	}
@@ -315,7 +310,7 @@ public abstract class BiomeHelper {
 			.specialEffects(defaultAmbientBuilder().build())
 			.mobSpawnSettings(new MobSpawnSettings.Builder()
 				.creatureGenerationProbability(0.3f)
-				.addSpawn(MobCategory.CREATURE, 10, new MobSpawnSettings.SpawnerData(TFEntities.RAVEN.get(), 4, 4))
+				.addSpawn(MobCategory.CREATURE, 10, new MobSpawnSettings.SpawnerData(TFEntities.RAVEN, 4, 4))
 				.build())
 			.generationSettings(new BiomeGenerationSettings.Builder(featureGetter, carverGetter).build());
 	}
@@ -444,13 +439,13 @@ public abstract class BiomeHelper {
 				.grassColorOverride(0x5C694E)
 				.foliageColorOverride(0x496137)
 				.waterColor(0x95B55F)
-				.grassColorModifier(grassColorModifierEnumExtension.SWAMP)
+				.grassColorModifier(BiomeSpecialEffects.GrassColorModifier.TWILIGHTFOREST_SWAMP)
 				.build())
 			.mobSpawnSettings(new MobSpawnSettings.Builder()
 				.addSpawn(MobCategory.MONSTER, 10, new MobSpawnSettings.SpawnerData(EntityType.ZOMBIE, 1, 2))
 				.addMobCharge(EntityType.ZOMBIE, 0.7D, 0.15D)
-				.addSpawn(MobCategory.MONSTER, 10, new MobSpawnSettings.SpawnerData(TFEntities.MOSQUITO_SWARM.get(), 1, 1))
-				.addMobCharge(TFEntities.MOSQUITO_SWARM.get(), 0.7D, 0.15D)
+				.addSpawn(MobCategory.MONSTER, 10, new MobSpawnSettings.SpawnerData(TFEntities.MOSQUITO_SWARM, 1, 1))
+				.addMobCharge(TFEntities.MOSQUITO_SWARM, 0.7D, 0.15D)
 				.build())
 			.generationSettings(biome.build());
 	}
@@ -504,7 +499,7 @@ public abstract class BiomeHelper {
 			.specialEffects(defaultAmbientBuilder()
 				.grassColorOverride(0x4B6754)
 				.foliageColorOverride(0x3B5E3F)
-				.grassColorModifier(grassColorModifierEnumExtension.DARK_FOREST)
+				.grassColorModifier(BiomeSpecialEffects.GrassColorModifier.TWILIGHTFOREST_DARK_FOREST)
 				.build())
 			.mobSpawnSettings(new MobSpawnSettings.Builder()
 				.creatureGenerationProbability(0.05f)
@@ -514,14 +509,14 @@ public abstract class BiomeHelper {
 				.addMobCharge(EntityType.ZOMBIE, 0.7D, 0.15D)
 				.addSpawn(MobCategory.MONSTER, 5, new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 1, 2))
 				.addMobCharge(EntityType.SKELETON, 0.8D, 0.15D)
-				.addSpawn(MobCategory.MONSTER, 5, new MobSpawnSettings.SpawnerData(TFEntities.MIST_WOLF.get(), 1, 1))
-				.addMobCharge(TFEntities.MIST_WOLF.get(), 0.75D, 0.2D)
-				.addSpawn(MobCategory.MONSTER, 5, new MobSpawnSettings.SpawnerData(TFEntities.SKELETON_DRUID.get(), 1, 1))
-				.addMobCharge(TFEntities.SKELETON_DRUID.get(), 0.8D, 0.2D)
-				.addSpawn(MobCategory.MONSTER, 1, new MobSpawnSettings.SpawnerData(TFEntities.KING_SPIDER.get(), 1, 1))
-				.addMobCharge(TFEntities.KING_SPIDER.get(), 0.85D, 0.25D)
-				.addSpawn(MobCategory.MONSTER, 10, new MobSpawnSettings.SpawnerData(TFEntities.KOBOLD.get(), 1, 3))
-				.addMobCharge(TFEntities.KOBOLD.get(), 0.7D, 0.15D)
+				.addSpawn(MobCategory.MONSTER, 5, new MobSpawnSettings.SpawnerData(TFEntities.MIST_WOLF, 1, 1))
+				.addMobCharge(TFEntities.MIST_WOLF, 0.75D, 0.2D)
+				.addSpawn(MobCategory.MONSTER, 5, new MobSpawnSettings.SpawnerData(TFEntities.SKELETON_DRUID, 1, 1))
+				.addMobCharge(TFEntities.SKELETON_DRUID, 0.8D, 0.2D)
+				.addSpawn(MobCategory.MONSTER, 1, new MobSpawnSettings.SpawnerData(TFEntities.KING_SPIDER, 1, 1))
+				.addMobCharge(TFEntities.KING_SPIDER, 0.85D, 0.25D)
+				.addSpawn(MobCategory.MONSTER, 10, new MobSpawnSettings.SpawnerData(TFEntities.KOBOLD, 1, 3))
+				.addMobCharge(TFEntities.KOBOLD, 0.7D, 0.15D)
 				.addSpawn(MobCategory.MONSTER, 2, new MobSpawnSettings.SpawnerData(EntityType.WITCH, 1, 1))
 				.addMobCharge(EntityType.WITCH, 0.75D, 0.15D)
 				.build())
@@ -534,7 +529,7 @@ public abstract class BiomeHelper {
 			.specialEffects(defaultAmbientBuilder()
 				.grassColorOverride(0x667540)
 				.foliageColorOverride(0xF9821E)
-				.grassColorModifier(grassColorModifierEnumExtension.DARK_FOREST_CENTER)
+				.grassColorModifier(BiomeSpecialEffects.GrassColorModifier.TWILIGHTFOREST_DARK_FOREST_CENTER)
 				.build())
 			.mobSpawnSettings(new MobSpawnSettings.Builder().build());
 	}
@@ -567,10 +562,10 @@ public abstract class BiomeHelper {
 				.build())
 			.mobSpawnSettings(new MobSpawnSettings.Builder()
 				.creatureGenerationProbability(0.05F)
-				.addSpawn(MobCategory.MONSTER, 5, new MobSpawnSettings.SpawnerData(TFEntities.WINTER_WOLF.get(), 1, 1))
-				.addMobCharge(TFEntities.WINTER_WOLF.get(), 0.6D, 0.15D)
-				.addSpawn(MobCategory.MONSTER, 5, new MobSpawnSettings.SpawnerData(TFEntities.YETI.get(), 1, 1))
-				.addMobCharge(TFEntities.YETI.get(), 0.6D, 0.15D)
+				.addSpawn(MobCategory.MONSTER, 5, new MobSpawnSettings.SpawnerData(TFEntities.WINTER_WOLF, 1, 1))
+				.addMobCharge(TFEntities.WINTER_WOLF, 0.6D, 0.15D)
+				.addSpawn(MobCategory.MONSTER, 5, new MobSpawnSettings.SpawnerData(TFEntities.YETI, 1, 1))
+				.addMobCharge(TFEntities.YETI, 0.6D, 0.15D)
 				.build())
 			.generationSettings(biome.build())
 			.temperatureAdjustment(Biome.TemperatureModifier.FROZEN);
@@ -593,7 +588,7 @@ public abstract class BiomeHelper {
 				.build())
 			.mobSpawnSettings(new MobSpawnSettings.Builder()
 				.creatureGenerationProbability(0.15f)
-				.addSpawn(MobCategory.CREATURE, 10, new MobSpawnSettings.SpawnerData(TFEntities.PENGUIN.get(), 2, 4))
+				.addSpawn(MobCategory.CREATURE, 10, new MobSpawnSettings.SpawnerData(TFEntities.PENGUIN, 2, 4))
 				.build())
 			.generationSettings(biome.build())
 			.temperatureAdjustment(Biome.TemperatureModifier.FROZEN);
@@ -730,7 +725,7 @@ public abstract class BiomeHelper {
 
 	public static EnvironmentAttributeMap.Builder defaultEnvironmentBuilder() {
 		return defaultEnvironmentBuilderNoParticles()
-			.set(EnvironmentAttributes.AMBIENT_PARTICLES, List.of(new AmbientParticle(TFParticleType.WANDERING_FIREFLY.get(), 0.00025f)));
+			.set(EnvironmentAttributes.AMBIENT_PARTICLES, List.of(new AmbientParticle(TFParticleType.WANDERING_FIREFLY, 0.00025f)));
 	}
 
 	public static EnvironmentAttributeMap.Builder defaultEnvironmentBuilderNoParticles() {
@@ -766,15 +761,15 @@ public abstract class BiomeHelper {
 
 		spawnInfo.creatureGenerationProbability(0.15f);
 
-		spawnInfo.addSpawn(MobCategory.CREATURE, 12, new MobSpawnSettings.SpawnerData(TFEntities.BIGHORN_SHEEP.get(), 4, 4));
-		spawnInfo.addSpawn(MobCategory.CREATURE, 10, new MobSpawnSettings.SpawnerData(TFEntities.BOAR.get(), 4, 4));
+		spawnInfo.addSpawn(MobCategory.CREATURE, 12, new MobSpawnSettings.SpawnerData(TFEntities.BIGHORN_SHEEP, 4, 4));
+		spawnInfo.addSpawn(MobCategory.CREATURE, 10, new MobSpawnSettings.SpawnerData(TFEntities.BOAR, 4, 4));
 		spawnInfo.addSpawn(MobCategory.CREATURE, 10, new MobSpawnSettings.SpawnerData(EntityType.CHICKEN, 4, 4));
-		spawnInfo.addSpawn(MobCategory.CREATURE, 15, new MobSpawnSettings.SpawnerData(TFEntities.DEER.get(), 4, 5));
+		spawnInfo.addSpawn(MobCategory.CREATURE, 15, new MobSpawnSettings.SpawnerData(TFEntities.DEER, 4, 5));
 		spawnInfo.addSpawn(MobCategory.CREATURE, 5, new MobSpawnSettings.SpawnerData(EntityType.WOLF, 4, 4));
-		spawnInfo.addSpawn(MobCategory.CREATURE, 15, new MobSpawnSettings.SpawnerData(TFEntities.TINY_BIRD.get(), 4, 8));
-		spawnInfo.addSpawn(MobCategory.CREATURE, 10, new MobSpawnSettings.SpawnerData(TFEntities.SQUIRREL.get(), 2, 4));
-		spawnInfo.addSpawn(MobCategory.CREATURE, 10, new MobSpawnSettings.SpawnerData(TFEntities.DWARF_RABBIT.get(), 4, 5));
-		spawnInfo.addSpawn(MobCategory.CREATURE, 10, new MobSpawnSettings.SpawnerData(TFEntities.RAVEN.get(), 1, 2));
+		spawnInfo.addSpawn(MobCategory.CREATURE, 15, new MobSpawnSettings.SpawnerData(TFEntities.TINY_BIRD, 4, 8));
+		spawnInfo.addSpawn(MobCategory.CREATURE, 10, new MobSpawnSettings.SpawnerData(TFEntities.SQUIRREL, 2, 4));
+		spawnInfo.addSpawn(MobCategory.CREATURE, 10, new MobSpawnSettings.SpawnerData(TFEntities.DWARF_RABBIT, 4, 5));
+		spawnInfo.addSpawn(MobCategory.CREATURE, 10, new MobSpawnSettings.SpawnerData(TFEntities.RAVEN, 1, 2));
 
 		return spawnInfo;
 	}
@@ -788,7 +783,7 @@ public abstract class BiomeHelper {
 		spawnInfo.addSpawn(MobCategory.MONSTER, 1, new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 1, 1)).addMobCharge(EntityType.CREEPER, 0.35D, 0.15D);
 		spawnInfo.addSpawn(MobCategory.MONSTER, 10, new MobSpawnSettings.SpawnerData(EntityType.SLIME, 2, 4)).addMobCharge(EntityType.SLIME, 0.2D, 0.15D);
 		spawnInfo.addSpawn(MobCategory.MONSTER, 1, new MobSpawnSettings.SpawnerData(EntityType.ENDERMAN, 1, 2)).addMobCharge(EntityType.ENDERMAN, 0.4D, 0.15D);
-		spawnInfo.addSpawn(MobCategory.MONSTER, 10, new MobSpawnSettings.SpawnerData(TFEntities.KOBOLD.get(), 1, 3)).addMobCharge(TFEntities.KOBOLD.get(), 0.2D, 0.15D);
+		spawnInfo.addSpawn(MobCategory.MONSTER, 10, new MobSpawnSettings.SpawnerData(TFEntities.KOBOLD, 1, 3)).addMobCharge(TFEntities.KOBOLD, 0.2D, 0.15D);
 		spawnInfo.addSpawn(MobCategory.AMBIENT, 10, new MobSpawnSettings.SpawnerData(EntityType.BAT, 1, 1));
 
 		return spawnInfo;

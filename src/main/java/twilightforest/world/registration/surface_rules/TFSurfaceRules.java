@@ -19,9 +19,9 @@ public class TFSurfaceRules {
 	private static final SurfaceRules.RuleSource SAND = makeStateRule(Blocks.SAND);
 	private static final SurfaceRules.RuleSource SANDSTONE = makeStateRule(Blocks.SANDSTONE);
 	private static final SurfaceRules.RuleSource SNOW = makeStateRule(Blocks.SNOW_BLOCK);
-	private static final SurfaceRules.RuleSource WEATHERED_DEADROCK = makeStateRule(TFBlocks.WEATHERED_DEADROCK.get());
-	private static final SurfaceRules.RuleSource CRACKED_DEADROCK = makeStateRule(TFBlocks.CRACKED_DEADROCK.get());
-	private static final SurfaceRules.RuleSource DEADROCK = makeStateRule(TFBlocks.DEADROCK.get());
+	private static final SurfaceRules.RuleSource WEATHERED_DEADROCK = makeStateRule(TFBlocks.WEATHERED_DEADROCK);
+	private static final SurfaceRules.RuleSource CRACKED_DEADROCK = makeStateRule(TFBlocks.CRACKED_DEADROCK);
+	private static final SurfaceRules.RuleSource DEADROCK = makeStateRule(TFBlocks.DEADROCK);
 
 	private static SurfaceRules.RuleSource makeStateRule(Block block) {
 		return SurfaceRules.state(block.defaultBlockState());
