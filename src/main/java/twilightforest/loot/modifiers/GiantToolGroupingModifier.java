@@ -11,14 +11,14 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
-import net.neoforged.neoforge.common.loot.LootModifier;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.init.TFDataAttachments;
 
 import java.util.HashMap;
 import java.util.Map;
 
+// TODO: [Fabric] Port to mixin
+/*
 public class GiantToolGroupingModifier extends LootModifier {
 	public static Map<Block, Item> CONVERSIONS = new HashMap<>(); // Map of block-to-giant block conversions. Supposed to be similar to vanilla's AxeItem.STRIPPABLES Map
 
@@ -50,3 +50,4 @@ public class GiantToolGroupingModifier extends LootModifier {
 		return GiantToolGroupingModifier.CODEC;
 	}
 }
+*/
