@@ -34,7 +34,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 	public int level; // this is not serialized, since it's only used during build, which should be all one step
 
 	public FinalCastleDungeonRoom31Component(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(TFStructurePieceTypes.TFFCDunR31.get(), nbt);
+		this(TFStructurePieceTypes.TFFCDunR31, nbt);
 	}
 
 	public FinalCastleDungeonRoom31Component(StructurePieceType piece, CompoundTag nbt) {
@@ -100,7 +100,7 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 
 		BlockPos rc = this.getNewRoomCoords(rand, rotation);
 
-		FinalCastleDungeonRoom31Component dRoom = new FinalCastleDungeonRoom31Component(TFStructurePieceTypes.TFFCDunR31.get(), this.genDepth + 1, rc.getX(), rc.getY(), rc.getZ(), rotation.rotate(Direction.SOUTH), level);
+		FinalCastleDungeonRoom31Component dRoom = new FinalCastleDungeonRoom31Component(TFStructurePieceTypes.TFFCDunR31, this.genDepth + 1, rc.getX(), rc.getY(), rc.getZ(), rotation.rotate(Direction.SOUTH), level);
 
 		BoundingBox largerBB = BoundingBoxUtils.clone(dRoom.getBoundingBox());
 
@@ -166,8 +166,8 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 
 		this.fillWithAir(world, sbb, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1, replacing);
 
-		BlockState floor = TFBlocks.CASTLE_BRICK.get().defaultBlockState();
-		BlockState border = TFBlocks.THICK_CASTLE_BRICK.get().defaultBlockState();
+		BlockState floor = TFBlocks.CASTLE_BRICK.defaultBlockState();
+		BlockState border = TFBlocks.THICK_CASTLE_BRICK.defaultBlockState();
 
 		final int cs = 7;
 
@@ -192,16 +192,16 @@ public class FinalCastleDungeonRoom31Component extends TowerWingComponent {
 	}
 
 	protected BlockState getRuneColor(BlockState forceFieldColor) {
-		return forceFieldColor.is(TFBlocks.GREEN_FORCE_FIELD) ? TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState() : TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState();
+		return forceFieldColor.is(TFBlocks.GREEN_FORCE_FIELD) ? TFBlocks.YELLOW_CASTLE_RUNE_BRICK.defaultBlockState() : TFBlocks.BLUE_CASTLE_RUNE_BRICK.defaultBlockState();
 	}
 
 	protected BlockState getForceFieldColor(RandomSource decoRNG) {
 		int i = decoRNG.nextInt(2) + 3;
 
 		if (i == 3)
-			return TFBlocks.GREEN_FORCE_FIELD.get().defaultBlockState();
+			return TFBlocks.GREEN_FORCE_FIELD.defaultBlockState();
 		else
-			return TFBlocks.BLUE_FORCE_FIELD.get().defaultBlockState();
+			return TFBlocks.BLUE_FORCE_FIELD.defaultBlockState();
 	}
 
 	@Override

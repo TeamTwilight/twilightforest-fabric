@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.RandomSource;
@@ -57,19 +58,19 @@ public class YetiCaveStructure extends ControlledSpawningStructure implements Cu
 
 	@Override
 	public StructureType<?> type() {
-		return TFStructureTypes.YETI_CAVE.get();
+		return TFStructureTypes.YETI_CAVE;
 	}
 
 	public static YetiCaveStructure buildYetiCaveConfig(BootstrapContext<Structure> context) {
 		return new YetiCaveStructure(
 			ControlledSpawningConfig.firstIndexMonsters(WeightedList.<MobSpawnSettings.SpawnerData>builder()
-				.add(new MobSpawnSettings.SpawnerData(TFEntities.YETI.get(), 1, 2), 5)
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.YETI, 1, 2), 5)
 				.build()
 			),
 			new AdvancementLockConfig(List.of(TFMain.prefix("progress_lich"))),
-			Optional.of(new HintConfig(HintConfig.book("yeticave", 3), TFEntities.KOBOLD.get())),
+			Optional.of(new HintConfig(HintConfig.book("yeticave", 3), TFEntities.KOBOLD)),
 			Optional.of(new DecorationConfig(2, true, false, false)),
-			false, Optional.of(TFMapDecorations.YETI_LAIR),
+			false, Optional.of(BuiltInRegistries.MAP_DECORATION_TYPE.wrapAsHolder(TFMapDecorations.YETI_LAIR)),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_YETI_CAVE_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning

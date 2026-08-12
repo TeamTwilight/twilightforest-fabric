@@ -7,12 +7,12 @@ import twilightforest.init.TFStructurePieceTypes;
 public class TowerRoofPointyOverhangComponent extends TowerRoofPointyComponent {
 
 	public TowerRoofPointyOverhangComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFLTRPO.get(), nbt);
+		super(TFStructurePieceTypes.TFLTRPO, nbt);
 	}
 
 	@SuppressWarnings("this-escape")
 	public TowerRoofPointyOverhangComponent(int i, TowerWingComponent wing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFLTRPO.get(), i, wing, x, y, z);
+		super(TFStructurePieceTypes.TFLTRPO, i, wing, x, y, z);
 
 		// same facing, but it doesn't matter
 		this.setOrientation(wing.getOrientation());

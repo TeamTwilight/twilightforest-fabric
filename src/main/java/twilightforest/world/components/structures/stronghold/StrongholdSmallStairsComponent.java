@@ -26,14 +26,14 @@ public class StrongholdSmallStairsComponent extends KnightStrongholdComponent {
 	public boolean chestTrapped;
 
 	public StrongholdSmallStairsComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFSSS.get(), nbt);
+		super(TFStructurePieceTypes.TFSSS, nbt);
 		this.enterBottom = nbt.getBooleanOr("enterBottom", false);
 		this.hasTreasure = nbt.getBooleanOr("hasTreasure", false);
 		this.chestTrapped = nbt.getBooleanOr("chestTrapped", false);
 	}
 
 	public StrongholdSmallStairsComponent(int i, Direction facing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFSSS.get(), i, facing, x, y, z);
+		super(TFStructurePieceTypes.TFSSS, i, facing, x, y, z);
 	}
 
 	@Override

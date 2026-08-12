@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.RandomSource;
@@ -39,13 +40,13 @@ public class QuestGroveStructure extends ConquerableStructure {
 
 	@Override
 	public StructureType<?> type() {
-		return TFStructureTypes.QUEST_GROVE.get();
+		return TFStructureTypes.QUEST_GROVE;
 	}
 
 	public static QuestGroveStructure buildStructureConfig(BootstrapContext<Structure> context) {
 		return new QuestGroveStructure(
 			Optional.of(new DecorationConfig(2, false, true, true)),
-			true, Optional.of(TFMapDecorations.QUEST_GROVE),
+			true, Optional.of(BuiltInRegistries.MAP_DECORATION_TYPE.wrapAsHolder(TFMapDecorations.QUEST_GROVE)),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_QUEST_GROVE_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning

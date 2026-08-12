@@ -3,6 +3,7 @@ package twilightforest.world.components.structures.hollowtree;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
@@ -37,17 +38,17 @@ public abstract class HollowTreePiece extends StructurePiece {
 	public static final IntProvider DEFAULT_HEIGHT = UniformInt.of(32, 95);
 	public static final IntProvider DEFAULT_RADIUS = UniformInt.of(1, 4);
 
-	public static final BlockStateProvider DEFAULT_LOG = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG.value());
-	public static final BlockStateProvider DEFAULT_WOOD = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_WOOD.value());
-	public static final BlockStateProvider DEFAULT_ROOT = BlockStateProvider.simple(TFBlocks.ROOT_BLOCK.value());
-	public static final BlockStateProvider DEFAULT_LEAVES = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LEAVES.value());
+	public static final BlockStateProvider DEFAULT_LOG = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG);
+	public static final BlockStateProvider DEFAULT_WOOD = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_WOOD);
+	public static final BlockStateProvider DEFAULT_ROOT = BlockStateProvider.simple(TFBlocks.ROOT_BLOCK);
+	public static final BlockStateProvider DEFAULT_LEAVES = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LEAVES);
 	public static final BlockStateProvider DEFAULT_VINE = BlockStateProvider.simple(Blocks.VINE.defaultBlockState());
-	public static final BlockStateProvider DEFAULT_BUG = new WeightedStateProvider(WeightedList.<BlockState>builder().add(TFBlocks.FIREFLY.value().defaultBlockState().setValue(CritterBlock.FACING, Direction.NORTH), 1).add(TFBlocks.CICADA.value().defaultBlockState().setValue(CritterBlock.FACING, Direction.NORTH), 1).build());
+	public static final BlockStateProvider DEFAULT_BUG = new WeightedStateProvider(WeightedList.<BlockState>builder().add(TFBlocks.FIREFLY.defaultBlockState().setValue(CritterBlock.FACING, Direction.NORTH), 1).add(TFBlocks.CICADA.defaultBlockState().setValue(CritterBlock.FACING, Direction.NORTH), 1).build());
 	public static final BlockStateProvider DEFAULT_DUNGEON_AIR = BlockStateProvider.simple(Blocks.AIR);
 	public static final BlockStateProvider DEFAULT_DUNGEON_LOOT_BLOCK = BlockStateProvider.simple(Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, Direction.WEST));
 
 	public static final ResourceKey<LootTable> DEFAULT_DUNGEON_LOOT_TABLE = TFLootTables.TREE_CACHE;
-	public static final Holder<EntityType<?>> DEFAULT_DUNGEON_MONSTER = TFEntities.SWARM_SPIDER;
+	public static final Holder<EntityType<?>> DEFAULT_DUNGEON_MONSTER = BuiltInRegistries.ENTITY_TYPE.wrapAsHolder(TFEntities.SWARM_SPIDER);
 
 	protected HollowTreePiece(StructurePieceType type, int genDepth, BoundingBox boundingBox) {
 		super(type, genDepth, boundingBox);

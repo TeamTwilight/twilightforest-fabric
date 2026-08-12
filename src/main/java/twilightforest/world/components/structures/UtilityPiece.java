@@ -20,12 +20,12 @@ public class UtilityPiece extends StructurePiece {
 	}
 
 	public UtilityPiece(int genDepth, BoundingBox boundingBox, boolean allowFeatures) {
-		super(TFStructurePieceTypes.TFUtilityPiece.value(), genDepth, boundingBox);
+		super(TFStructurePieceTypes.TFUtilityPiece, genDepth, boundingBox);
 		this.allowFeatures = allowFeatures;
 	}
 
 	public UtilityPiece(StructurePieceSerializationContext context, CompoundTag compoundTag) {
-		super(TFStructurePieceTypes.TFUtilityPiece.value(), compoundTag);
+		super(TFStructurePieceTypes.TFUtilityPiece, compoundTag);
 		this.allowFeatures = compoundTag.getBooleanOr("allow_features", true);
 	}
 

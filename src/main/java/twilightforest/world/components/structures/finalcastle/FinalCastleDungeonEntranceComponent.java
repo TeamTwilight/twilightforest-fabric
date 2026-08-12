@@ -23,18 +23,18 @@ public class FinalCastleDungeonEntranceComponent extends FinalCastleDungeonRoom3
 	public boolean hasExit = false;
 
 	public FinalCastleDungeonEntranceComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFFCDunEn.get(), nbt);
+		super(TFStructurePieceTypes.TFFCDunEn, nbt);
 	}
 
 	public FinalCastleDungeonEntranceComponent(int i, int x, int y, int z, Direction direction, int level) {
-		super(TFStructurePieceTypes.TFFCDunEn.get(), i, x, y, z, direction, level);
+		super(TFStructurePieceTypes.TFFCDunEn, i, x, y, z, direction, level);
 	}
 
 	@Override
 	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		this.deco = new StructureTFDecoratorCastle();
-		this.deco.blockState = TFBlocks.PINK_CASTLE_RUNE_BRICK.get().defaultBlockState();
-		this.deco.fenceState = TFBlocks.PINK_FORCE_FIELD.get().defaultBlockState();
+		this.deco.blockState = TFBlocks.PINK_CASTLE_RUNE_BRICK.defaultBlockState();
+		this.deco.fenceState = TFBlocks.PINK_FORCE_FIELD.defaultBlockState();
 
 		// this is going to be the parent for all rooms on this level
 		super.addChildren(this, list, rand);
@@ -46,7 +46,7 @@ public class FinalCastleDungeonEntranceComponent extends FinalCastleDungeonRoom3
 		super.postProcess(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
 
 		final BlockState stairs = deco.stairState.setValue(StairBlock.FACING, Direction.SOUTH);
-		final BlockState deadRock = TFBlocks.DEADROCK.get().defaultBlockState();
+		final BlockState deadRock = TFBlocks.DEADROCK.defaultBlockState();
 		// stairs
 		for (int y = 0; y <= this.height; y++) {
 			int x = (this.size / 2) - 2;
@@ -58,18 +58,18 @@ public class FinalCastleDungeonEntranceComponent extends FinalCastleDungeonRoom3
 		}
 
 		// door
-		final BlockState castleDoor = TFBlocks.PINK_CASTLE_DOOR.get().defaultBlockState();
+		final BlockState castleDoor = TFBlocks.PINK_CASTLE_DOOR.defaultBlockState();
 		this.generateBox(world, sbb, 23, 0, 12, 23, 3, 14, castleDoor, AIR, false);
 		this.generateBox(world, sbb, 23, 4, 12, 23, 4, 14, deco.blockState, deco.blockState, false);
 	}
 
 	@Override
 	protected BlockState getForceFieldColor(RandomSource decoRNG) {
-		return TFBlocks.PINK_FORCE_FIELD.get().defaultBlockState();
+		return TFBlocks.PINK_FORCE_FIELD.defaultBlockState();
 	}
 
 	@Override
 	protected BlockState getRuneColor(BlockState fieldColor) {
-		return TFBlocks.PINK_CASTLE_RUNE_BRICK.get().defaultBlockState();
+		return TFBlocks.PINK_CASTLE_RUNE_BRICK.defaultBlockState();
 	}
 }

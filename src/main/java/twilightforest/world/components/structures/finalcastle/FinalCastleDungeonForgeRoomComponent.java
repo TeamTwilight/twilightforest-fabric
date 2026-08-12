@@ -17,12 +17,12 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 public class FinalCastleDungeonForgeRoomComponent extends TFStructureComponentOld {
 
 	public FinalCastleDungeonForgeRoomComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFFCDunBoR.get(), nbt);
+		super(TFStructurePieceTypes.TFFCDunBoR, nbt);
 	}
 
 	@SuppressWarnings("this-escape")
 	public FinalCastleDungeonForgeRoomComponent(int i, int x, int y, int z, Direction direction) {
-		super(TFStructurePieceTypes.TFFCDunBoR.get(), i, x, y, z);
+		super(TFStructurePieceTypes.TFFCDunBoR, i, x, y, z);
 		this.spawnListIndex = 3; // forge monsters
 		this.setOrientation(direction);
 		this.boundingBox = TFStructureComponentOld.getComponentToAddBoundingBox2(x, y, z, -15, 0, -15, 50, 30, 50, direction);

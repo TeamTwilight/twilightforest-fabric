@@ -19,7 +19,7 @@ import twilightforest.world.components.structures.lichtower.TowerRoofComponent;
 public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 
 	public MushroomTowerMainComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFMTMai.get(), nbt);
+		super(TFStructurePieceTypes.TFMTMai, nbt);
 	}
 
 	public MushroomTowerMainComponent(RandomSource rand, int index, int x, int y, int z) {
@@ -27,7 +27,7 @@ public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 	}
 
 	public MushroomTowerMainComponent(RandomSource rand, int index, int x, int y, int z, Direction rotation) {
-		super(TFStructurePieceTypes.TFMTMai.get(), index, x, y, z, MAIN_SIZE, 8 + (rand.nextInt(3) * FLOOR_HEIGHT), rotation);
+		super(TFStructurePieceTypes.TFMTMai, index, x, y, z, MAIN_SIZE, 8 + (rand.nextInt(3) * FLOOR_HEIGHT), rotation);
 
 //		// check to make sure we can build the whole tower
 //		if (this.boundingBox.maxY > 245)
@@ -47,7 +47,7 @@ public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 	}
 
 	protected MushroomTowerMainComponent(int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(TFStructurePieceTypes.TFMTMai.get(), i, x, y, z, pSize, pHeight, direction);
+		super(TFStructurePieceTypes.TFMTMai, i, x, y, z, pSize, pHeight, direction);
 	}
 
 	@Override

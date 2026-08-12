@@ -19,11 +19,11 @@ import twilightforest.init.TFStructurePieceTypes;
 public class MazeDeadEndShroomsComponent extends MazeDeadEndRootsComponent {
 
 	public MazeDeadEndShroomsComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFMMDES.get(), nbt);
+		super(TFStructurePieceTypes.TFMMDES, nbt);
 	}
 
 	public MazeDeadEndShroomsComponent(int i, int x, int y, int z, Direction rotation) {
-		super(TFStructurePieceTypes.TFMMDES.get(), i, x, y, z, rotation);
+		super(TFStructurePieceTypes.TFMMDES, i, x, y, z, rotation);
 	}
 
 	@Override

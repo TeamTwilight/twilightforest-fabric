@@ -28,12 +28,12 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 public class TowerMainComponent extends TowerWingComponent {
 
 	public TowerMainComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFLTMai.get(), nbt);
+		super(TFStructurePieceTypes.TFLTMai, nbt);
 	}
 
 	public TowerMainComponent(RandomSource rand, int index, int x, int y, int z) {
 		// some of these are subject to change if the ground level is > 30.
-		super(TFStructurePieceTypes.TFLTMai.get(), index, x, y + 1, z, 15, 55 + rand.nextInt(32), Direction.SOUTH);
+		super(TFStructurePieceTypes.TFLTMai, index, x, y + 1, z, 15, 55 + rand.nextInt(32), Direction.SOUTH);
 	}
 
 	@Override
@@ -251,7 +251,7 @@ public class TowerMainComponent extends TowerWingComponent {
 		// place spawner in the middle
 		EntityType<?> mobID = switch (rand.nextInt(4)) {
 			case 2 -> EntityType.ZOMBIE;
-			case 3 -> TFEntities.SWARM_SPIDER.get();
+			case 3 -> TFEntities.SWARM_SPIDER;
 			default -> EntityType.SKELETON;
 		};
 		setSpawner(world, 7, floorLevel + 2, 7, sbb, mobID);
@@ -285,7 +285,7 @@ public class TowerMainComponent extends TowerWingComponent {
 		decorateTorches(world, rand, floorLevel, sbb);
 
 		// seems like we should have a spawner
-		placeBlock(world, TFBlocks.LICH_BOSS_SPAWNER.get().defaultBlockState(), size / 2, floorLevel + 2, size / 2, sbb);
+		placeBlock(world, TFBlocks.LICH_BOSS_SPAWNER.defaultBlockState(), size / 2, floorLevel + 2, size / 2, sbb);
 	}
 
 	protected void makeTowerPaintings(WorldGenLevel world, RandomSource rand, BoundingBox sbb) {

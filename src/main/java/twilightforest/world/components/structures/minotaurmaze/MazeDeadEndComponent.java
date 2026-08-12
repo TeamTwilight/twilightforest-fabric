@@ -19,7 +19,7 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 public class MazeDeadEndComponent extends TFStructureComponentOld {
 
 	public MazeDeadEndComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(TFStructurePieceTypes.TFMMDE.get(), nbt);
+		this(TFStructurePieceTypes.TFMMDE, nbt);
 	}
 
 	public MazeDeadEndComponent(StructurePieceType piece, CompoundTag nbt) {

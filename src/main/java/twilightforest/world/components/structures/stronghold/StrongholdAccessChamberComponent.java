@@ -23,11 +23,11 @@ import twilightforest.init.TFStructurePieceTypes;
 public class StrongholdAccessChamberComponent extends KnightStrongholdComponent {
 
 	public StrongholdAccessChamberComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFSAC.get(), nbt);
+		super(TFStructurePieceTypes.TFSAC, nbt);
 	}
 
 	public StrongholdAccessChamberComponent(int i, Direction facing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFSAC.get(), i, facing, x, y, z);
+		super(TFStructurePieceTypes.TFSAC, i, facing, x, y, z);
 	}
 
 	@Override
@@ -76,10 +76,10 @@ public class StrongholdAccessChamberComponent extends KnightStrongholdComponent 
 		this.placeBlock(world, deco.pillarState, 2, 0, 2, sbb);
 
 		// pedestal
-		this.placeBlock(world, TFBlocks.TROPHY_PEDESTAL.get().defaultBlockState(), 2, 1, 2, sbb);
+		this.placeBlock(world, TFBlocks.TROPHY_PEDESTAL.defaultBlockState(), 2, 1, 2, sbb);
 
 		// block point
-		this.generateBox(world, sbb, 2, -1, 2, 6, -1, 6, TFBlocks.STRONGHOLD_SHIELD.get().defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 2, -1, 2, 6, -1, 6, TFBlocks.STRONGHOLD_SHIELD.defaultBlockState(), AIR, false);
 	}
 
 	@Override

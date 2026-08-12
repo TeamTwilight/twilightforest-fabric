@@ -22,12 +22,12 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 public class FinalCastleDungeonStepsComponent extends TFStructureComponentOld {
 
 	public FinalCastleDungeonStepsComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFFCDunSt.get(), nbt);
+		super(TFStructurePieceTypes.TFFCDunSt, nbt);
 	}
 
 	@SuppressWarnings("this-escape")
 	public FinalCastleDungeonStepsComponent(int i, int x, int y, int z, Direction rotation) {
-		super(TFStructurePieceTypes.TFFCDunSt.get(), i, x, y, z);
+		super(TFStructurePieceTypes.TFFCDunSt, i, x, y, z);
 		this.spawnListIndex = 2; // dungeon monsters
 
 		this.setOrientation(rotation);

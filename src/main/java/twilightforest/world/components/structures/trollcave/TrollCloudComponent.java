@@ -20,7 +20,7 @@ public class TrollCloudComponent extends TFStructureComponentOld {
 	private final int height;
 
 	public TrollCloudComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFTCloud.get(), nbt);
+		super(TFStructurePieceTypes.TFTCloud, nbt);
 		this.size = nbt.getIntOr("size", 0);
 		this.height = nbt.getIntOr("height", 0);
 	}

@@ -3,6 +3,7 @@ package twilightforest.world.components.structures.type;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.RandomSource;
@@ -43,7 +44,7 @@ public class FinalCastleStructure extends ControlledSpawningStructure {
 
 	@Override
 	public StructureType<?> type() {
-		return TFStructureTypes.FINAL_CASTLE.get();
+		return TFStructureTypes.FINAL_CASTLE;
 	}
 
 	public static FinalCastleStructure buildFinalCastleConfig(BootstrapContext<Structure> context) {
@@ -73,9 +74,9 @@ public class FinalCastleStructure extends ControlledSpawningStructure {
 			), WeightedList.of(), WeightedList.of()),
 			new AdvancementLockConfig(List.of(TFMain.prefix("progress_troll"))),
 			// TODO: change this when we make a book for the castle
-			Optional.of(new HintConfig(HintConfig.defaultBook(), TFEntities.KOBOLD.get())),
+			Optional.of(new HintConfig(HintConfig.defaultBook(), TFEntities.KOBOLD)),
 			Optional.of(new DecorationConfig(4, false, true, false)),
-			true, Optional.of(TFMapDecorations.FINAL_CASTLE),
+			true, Optional.of(BuiltInRegistries.MAP_DECORATION_TYPE.wrapAsHolder(TFMapDecorations.FINAL_CASTLE)),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_FINAL_CASTLE_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning

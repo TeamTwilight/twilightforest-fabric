@@ -21,12 +21,12 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 public class TrollVaultComponent extends TFStructureComponentOld {
 
 	public TrollVaultComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFTCVa.get(), nbt);
+		super(TFStructurePieceTypes.TFTCVa, nbt);
 	}
 
 	@SuppressWarnings("this-escape")
 	public TrollVaultComponent(int index, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFTCVa.get(), index, x, y, z);
+		super(TFStructurePieceTypes.TFTCVa, index, x, y, z);
 		this.setOrientation(Direction.SOUTH);
 
 		// adjust x, y, z
@@ -43,7 +43,7 @@ public class TrollVaultComponent extends TFStructureComponentOld {
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// make walls
-		this.generateBox(world, sbb, 0, 0, 0, 11, 11, 11, TFBlocks.GIANT_OBSIDIAN.get().defaultBlockState(), TFBlocks.GIANT_OBSIDIAN.get().defaultBlockState(), false);
+		this.generateBox(world, sbb, 0, 0, 0, 11, 11, 11, TFBlocks.GIANT_OBSIDIAN.defaultBlockState(), TFBlocks.GIANT_OBSIDIAN.defaultBlockState(), false);
 
 		// clear inside
 		this.generateAirBox(world, sbb, 4, 4, 4, 7, 7, 7);

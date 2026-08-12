@@ -4,14 +4,12 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.resources.Identifier;
 import twilightforest.TFMain;
-import tamaized.beanification.Component;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-@Component
 public final class LichTowerPieces {
 	public static final int YARD_SPAWNS = 0;
 	public static final int INTERIOR_SPAWNS = 1;
@@ -96,6 +94,8 @@ public final class LichTowerPieces {
 	public static final Identifier ROOM_9_LADDER_5 = TFMain.prefix("lich_tower/9x9/ladder_5");
 
 	public static final Identifier YARD_GRAVE = TFMain.prefix("lich_tower/grave");
+
+	public static final LichTowerPieces INSTANCE = new LichTowerPieces();
 
 	final List<Int2ObjectMap<Identifier>> ladderRooms = List.of(
 		new Int2ObjectArrayMap<>(Map.of(

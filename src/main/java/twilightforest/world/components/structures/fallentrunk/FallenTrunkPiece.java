@@ -37,11 +37,11 @@ import twilightforest.world.components.structures.type.FallenTrunkStructure;
 import java.util.*;
 
 public class FallenTrunkPiece extends StructurePiece {
-	public static final BlockStateProvider DEFAULT_LOG = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG.get());
+	public static final BlockStateProvider DEFAULT_LOG = BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG);
 
 	public static final int ERODED_LENGTH = 2;
 	protected static final float MOSS_CHANCE = 0.44F;
-	protected static final List<EntityType<?>> SPAWNER_MONSTERS = List.of(TFEntities.SWARM_SPIDER.get(), TFEntities.HOSTILE_WOLF.get(), EntityType.CAVE_SPIDER);
+	protected static final List<EntityType<?>> SPAWNER_MONSTERS = List.of(TFEntities.SWARM_SPIDER, TFEntities.HOSTILE_WOLF, EntityType.CAVE_SPIDER);
 	public static final int TERRAFORM_PIECE_SIZE = 10;
 	public static final int FEATURE_PIECE_SIZE = 3;
 	protected final BlockStateProvider log;
@@ -52,7 +52,7 @@ public class FallenTrunkPiece extends StructurePiece {
 	protected final Hole hole;
 
 	public FallenTrunkPiece(int length, int radius, BlockStateProvider log, ResourceKey<LootTable> chestLootTable, Direction orientation, BoundingBox boundingBox, long seed) {
-		super(TFStructurePieceTypes.TFFallenTrunk.value(), 0, boundingBox);
+		super(TFStructurePieceTypes.TFFallenTrunk, 0, boundingBox);
 		this.length = length;
 		this.radius = radius;
 		this.log = log;
@@ -63,7 +63,7 @@ public class FallenTrunkPiece extends StructurePiece {
 	}
 
 	public FallenTrunkPiece(StructurePieceSerializationContext context, CompoundTag tag) {
-		super(TFStructurePieceTypes.TFFallenTrunk.value(), tag);
+		super(TFStructurePieceTypes.TFFallenTrunk, tag);
 		this.length = tag.getIntOr("length", 0);
 		this.radius = tag.getIntOr("radius", 0);
 
@@ -196,7 +196,7 @@ public class FallenTrunkPiece extends StructurePiece {
 		Vec3i chestOffset = Util.getRandom(possibleChestsOffsets.stream().toList(), random);
 		BlockPos chestSpawnerPos = spawnerPos.offset(chestOffset);
 
-		BlockState chestState = TFBlocks.TWILIGHT_OAK_CHEST.get().defaultBlockState().setValue(ChestBlock.FACING, chestOffset.getX() < 0 ? orientation : orientation.getOpposite());
+		BlockState chestState = TFBlocks.TWILIGHT_OAK_CHEST.defaultBlockState().setValue(ChestBlock.FACING, chestOffset.getX() < 0 ? orientation : orientation.getOpposite());
 		BlockPos chestPos = getWorldPos(chestSpawnerPos.getX(), chestSpawnerPos.getY(), chestSpawnerPos.getZ());
 		RandomSource chestRandom = RandomSource.create(random.nextLong());
 		this.createChest(level, box, chestRandom, chestPos, chestLootTable, chestState);
@@ -218,11 +218,11 @@ public class FallenTrunkPiece extends StructurePiece {
 		if (hasHole && z > ERODED_LENGTH && z < length - 1 - ERODED_LENGTH - 1 && getAllAbsoluteHoleBlockPos().contains(getWorldPos(x, y, z)))
 			return;
 		BlockState blockState = this.getBlock(level, x, y, z, boundingbox);
-		if (blockState.is(BlockTags.REPLACEABLE_BY_TREES) || blockState.is(BlockTags.FLOWERS) || blockState.isEmpty() || randomChild.nextBoolean()) {
+		if (blockState.is(BlockTags.REPLACEABLE_BY_TREES) || blockState.is(BlockTags.FLOWERS) || (blockState.is(Blocks.AIR) || blockState.is(Blocks.CAVE_AIR) || blockState.is(Blocks.VOID_AIR)) || randomChild.nextBoolean()) {
 			placeBlock(level, blockstate, x, y, z, boundingbox);
 			if (randomChild.nextFloat() <= MOSS_CHANCE && boundingbox.isInside(getWorldPos(x, y + 1, z)) && this.getBlock(level, x, y + 1, z, boundingbox).is(BlockTags.REPLACEABLE)) {
-				placeBlock(level, TFBlocks.MOSS_PATCH.get().defaultBlockState(), x, y + 1, z, boundingbox);
-				level.updateNeighborsAt(getWorldPos(x, y + 1, z), TFBlocks.MOSS_PATCH.get());  // to connect moss patches
+				placeBlock(level, TFBlocks.MOSS_PATCH.defaultBlockState(), x, y + 1, z, boundingbox);
+				level.updateNeighborsAt(getWorldPos(x, y + 1, z), TFBlocks.MOSS_PATCH);  // to connect moss patches
 				level.getChunk(getWorldPos(x, y + 1, z)).markPosForPostprocessing(getWorldPos(x, y + 1, z));
 			}
 		}

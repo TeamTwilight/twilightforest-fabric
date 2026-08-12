@@ -21,11 +21,11 @@ import twilightforest.init.TFStructurePieceTypes;
 public class StrongholdBossRoomComponent extends KnightStrongholdComponent {
 
 	public StrongholdBossRoomComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFSBR.get(), nbt);
+		super(TFStructurePieceTypes.TFSBR, nbt);
 	}
 
 	public StrongholdBossRoomComponent(int i, Direction facing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFSBR.get(), i, facing, x, y, z);
+		super(TFStructurePieceTypes.TFSBR, i, facing, x, y, z);
 		this.spawnListIndex = Integer.MAX_VALUE;
 	}
 
@@ -94,7 +94,7 @@ public class StrongholdBossRoomComponent extends KnightStrongholdComponent {
 		this.generateBox(world, sbb, 12, 1, 3, 14, 4, 3, Blocks.IRON_BARS.defaultBlockState(), Blocks.IRON_BARS.defaultBlockState(), false);
 
 		//spawner
-		placeBlock(world, TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER.get().defaultBlockState(), 13, 2, 13, sbb);
+		placeBlock(world, TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER.defaultBlockState(), 13, 2, 13, sbb);
 
 		// doors
 		placeDoors(world, sbb);

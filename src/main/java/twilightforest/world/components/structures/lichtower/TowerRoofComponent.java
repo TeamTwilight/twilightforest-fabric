@@ -20,7 +20,7 @@ public class TowerRoofComponent extends TFStructureComponentOld {
 	protected int height;
 
 	public TowerRoofComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(TFStructurePieceTypes.TFLTRoo.get(), nbt);
+		this(TFStructurePieceTypes.TFLTRoo, nbt);
 	}
 
 	public TowerRoofComponent(StructurePieceType piece, CompoundTag nbt) {

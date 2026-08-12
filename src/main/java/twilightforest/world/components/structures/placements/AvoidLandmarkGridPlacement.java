@@ -83,7 +83,7 @@ public class AvoidLandmarkGridPlacement extends RandomSpreadStructurePlacement {
 
 	@Override
 	public StructurePlacementType<?> type() {
-		return TFStructurePlacementTypes.AVOID_GRID_LANDMARK_PLACEMENT_TYPE.get();
+		return TFStructurePlacementTypes.AVOID_GRID_LANDMARK_PLACEMENT_TYPE;
 	}
 
 	public record AvoidAdditionalStructures(Object2IntArrayMap<Holder<StructureSet>> avoidStructures) {

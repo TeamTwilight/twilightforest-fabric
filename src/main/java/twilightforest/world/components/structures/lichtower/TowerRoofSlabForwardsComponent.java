@@ -24,12 +24,12 @@ import twilightforest.init.TFStructurePieceTypes;
 public class TowerRoofSlabForwardsComponent extends TowerRoofSlabComponent {
 
 	public TowerRoofSlabForwardsComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFLTRSF.get(), nbt);
+		super(TFStructurePieceTypes.TFLTRSF, nbt);
 	}
 
 	@SuppressWarnings("this-escape")
 	public TowerRoofSlabForwardsComponent(int i, TowerWingComponent wing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFLTRSF.get(), i, wing, x, y, z);
+		super(TFStructurePieceTypes.TFLTRSF, i, wing, x, y, z);
 
 		// same alignment
 		this.setOrientation(wing.getOrientation());

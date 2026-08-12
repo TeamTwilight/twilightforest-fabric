@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.Mth;
@@ -59,15 +60,15 @@ public class HydraLairStructure extends ProgressionStructure implements CustomDe
 
 	@Override
 	public StructureType<?> type() {
-		return TFStructureTypes.HYDRA_LAIR.get();
+		return TFStructureTypes.HYDRA_LAIR;
 	}
 
 	public static HydraLairStructure buildHydraLairConfig(BootstrapContext<Structure> context) {
 		return new HydraLairStructure(
 			new AdvancementLockConfig(List.of(TFMain.prefix("progress_labyrinth"))),
-			Optional.of(new HintConfig(HintConfig.book("hydralair", 4), TFEntities.KOBOLD.get())),
+			Optional.of(new HintConfig(HintConfig.book("hydralair", 4), TFEntities.KOBOLD)),
 			Optional.of(new DecorationConfig(2, false, false, false)),
-			true, Optional.of(TFMapDecorations.HYDRA_LAIR),
+			true, Optional.of(BuiltInRegistries.MAP_DECORATION_TYPE.wrapAsHolder(TFMapDecorations.HYDRA_LAIR)),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_HYDRA_LAIR_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning

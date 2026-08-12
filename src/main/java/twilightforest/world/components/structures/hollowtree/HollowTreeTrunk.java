@@ -49,7 +49,7 @@ public class HollowTreeTrunk extends HollowTreePiece {
 
 	@SuppressWarnings("this-escape")
 	public HollowTreeTrunk(int height, int radius, BoundingBox pBoundingBox, BlockStateProvider log1, BlockStateProvider wood, BlockStateProvider root, BlockStateProvider leaves, BlockStateProvider vine, BlockStateProvider bug, BlockStateProvider dungeonWood, BlockStateProvider dungeonAir, BlockStateProvider dungeonLootBlock, ResourceKey<LootTable> dungeonLootTable, Holder<EntityType<?>> dungeonMonster) {
-		super(TFStructurePieceTypes.TFHTTr.value(), 0, pBoundingBox);
+		super(TFStructurePieceTypes.TFHTTr, 0, pBoundingBox);
 
 		this.setOrientation(Direction.SOUTH);
 
@@ -74,7 +74,7 @@ public class HollowTreeTrunk extends HollowTreePiece {
 	 * Load from NBT
 	 */
 	public HollowTreeTrunk(StructurePieceSerializationContext context, CompoundTag tag) {
-		super(TFStructurePieceTypes.TFHTTr.value(), tag);
+		super(TFStructurePieceTypes.TFHTTr, tag);
 
 		this.height = tag.getIntOr("trunkHeight", 0);
 		this.radius = tag.getIntOr("trunkRadius", 0);
@@ -308,7 +308,7 @@ public class HollowTreeTrunk extends HollowTreePiece {
 			facing = Rotation.COUNTERCLOCKWISE_90;
 		}
 
-		BlockState decor = this.bug.getState(world, random, src).rotate(world, src, facing);
+		BlockState decor = this.bug.getState(world, random, src).rotate(facing);
 		if (world.getBlockState(src).canBeReplaced() && decor.canSurvive(world, src)) {
 			world.setBlock(src, decor, Block.UPDATE_ALL);
 		}

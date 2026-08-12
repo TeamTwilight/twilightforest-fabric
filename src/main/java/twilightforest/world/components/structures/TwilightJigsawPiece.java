@@ -1,5 +1,6 @@
 package twilightforest.world.components.structures;
 
+import carminite.world.IPieceBeardifierModifier;
 import com.mojang.serialization.DynamicOps;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -20,10 +21,8 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.*;
-import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import tamaized.beanification.Autowired;
 import twilightforest.TFMain;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
@@ -34,12 +33,11 @@ import twilightforest.world.components.structures.util.*;
 import java.util.*;
 import java.util.function.Predicate;
 
-public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implements ProgressionPiece, PieceBeardifierModifier {
+public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implements ProgressionPiece, IPieceBeardifierModifier {
 
 	private static final Logger LOGGER = LogManager.getLogger(TFMain.ID + "/TwilightJigsawPiece");
 
-	@Autowired
-	private static StructureTemplateDefinitions structureTemplateDefinitions;
+	private static final StructureTemplateDefinitions structureTemplateDefinitions = StructureTemplateDefinitions.INSTANCE;
 
 	private static final String NBT_JIGSAW_SOURCE = "source";
 	private static final String NBT_JIGSAW_CONNECTIONS = "connections";
@@ -62,14 +60,14 @@ public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implemen
 	private final Map<String, String> poolAliases;
 
 	public static TwilightJigsawPiece defaultDeserialize(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-		TwilightJigsawPiece twilightJigsawPiece = new TwilightJigsawPiece(TFStructurePieceTypes.TFJigsawTemplate.value(), compoundTag, ctx, readSettings(compoundTag));
+		TwilightJigsawPiece twilightJigsawPiece = new TwilightJigsawPiece(TFStructurePieceTypes.TFJigsawTemplate, compoundTag, ctx, readSettings(compoundTag));
 		twilightJigsawPiece.placeSettings().addProcessor(JigsawReplacementProcessor.INSTANCE);
 		twilightJigsawPiece.placeSettings().addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
 		return twilightJigsawPiece;
 	}
 
 	public static TwilightJigsawPiece defaultForTemplate(int genDepth, StructureTemplateManager structureManager, Identifier templateLocation, JigsawPlaceContext jigsawContext, TemplatePoolInstance templatePoolInstance, StructureProcessorList serializedProcessors) {
-		TwilightJigsawPiece twilightJigsawPiece = new TwilightJigsawPiece(TFStructurePieceTypes.TFJigsawTemplate.value(), genDepth, structureManager, templateLocation, jigsawContext, templatePoolInstance, serializedProcessors, templatePoolInstance.poolAliases());
+		TwilightJigsawPiece twilightJigsawPiece = new TwilightJigsawPiece(TFStructurePieceTypes.TFJigsawTemplate, genDepth, structureManager, templateLocation, jigsawContext, templatePoolInstance, serializedProcessors, templatePoolInstance.poolAliases());
 		twilightJigsawPiece.placeSettings().addProcessor(JigsawReplacementProcessor.INSTANCE);
 		twilightJigsawPiece.placeSettings().addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
 		return twilightJigsawPiece;

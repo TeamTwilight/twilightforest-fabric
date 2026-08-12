@@ -1,5 +1,6 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
+import carminite.world.IPieceBeardifierModifier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -22,7 +23,6 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -38,15 +38,15 @@ import twilightforest.world.components.structures.TwilightJigsawPiece;
 
 import java.util.List;
 
-public final class LichBossRoom extends TwilightJigsawPiece implements PieceBeardifierModifier, SpawnIndexProvider.Deny {
+public final class LichBossRoom extends TwilightJigsawPiece implements IPieceBeardifierModifier, SpawnIndexProvider.Deny {
 	public LichBossRoom(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-		super(TFStructurePieceTypes.LICH_BOSS_ROOM.get(), compoundTag, ctx, readSettings(compoundTag));
+		super(TFStructurePieceTypes.LICH_BOSS_ROOM, compoundTag, ctx, readSettings(compoundTag));
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings);
 	}
 
 	public LichBossRoom(StructureTemplateManager structureManager, JigsawPlaceContext jigsawContext) {
-		super(TFStructurePieceTypes.LICH_BOSS_ROOM.get(), 1, structureManager, TFMain.prefix("lich_tower/tower_boss_room"), jigsawContext);
+		super(TFStructurePieceTypes.LICH_BOSS_ROOM, 1, structureManager, TFMain.prefix("lich_tower/tower_boss_room"), jigsawContext);
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings);
 	}

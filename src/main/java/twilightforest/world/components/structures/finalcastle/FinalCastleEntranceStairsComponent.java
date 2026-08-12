@@ -23,12 +23,12 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 public class FinalCastleEntranceStairsComponent extends TFStructureComponentOld {
 
 	public FinalCastleEntranceStairsComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFFCEnSt.get(), nbt);
+		super(TFStructurePieceTypes.TFFCEnSt, nbt);
 	}
 
 	@SuppressWarnings("this-escape")
 	public FinalCastleEntranceStairsComponent(int index, int x, int y, int z, Direction direction) {
-		super(TFStructurePieceTypes.TFFCEnSt.get(), index, x, y, z);
+		super(TFStructurePieceTypes.TFFCEnSt, index, x, y, z);
 		this.setOrientation(direction);
 		this.boundingBox = TFStructureComponentOld.getComponentToAddBoundingBox2(x, y, z, 0, -1, -5, 12, 0, 12, direction);
 	}

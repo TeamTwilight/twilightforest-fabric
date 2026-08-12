@@ -1,5 +1,6 @@
 package twilightforest.world.components.structures;
 
+import carminite.world.IPieceBeardifierModifier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.QuartPos;
@@ -28,10 +29,8 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFMain;
-import tamaized.beanification.Autowired;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.structures.selectors.StrongholdStonesRandomBlockSelectorFactory;
@@ -42,11 +41,11 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 @Deprecated
-public abstract class TFStructureComponentOld extends TFStructureComponent implements PieceBeardifierModifier {
+public abstract class TFStructureComponentOld extends TFStructureComponent implements IPieceBeardifierModifier {
 
 	protected static final BlockState AIR = Blocks.AIR.defaultBlockState();
-	@Autowired
-	private static StrongholdStonesRandomBlockSelectorFactory strongholdStones;
+
+	private static final StrongholdStonesRandomBlockSelectorFactory strongholdStones = StrongholdStonesRandomBlockSelectorFactory.INSTANCE;
 
 	public TFStructureComponentOld(StructurePieceType piece, CompoundTag nbt) {
 		super(piece, nbt);

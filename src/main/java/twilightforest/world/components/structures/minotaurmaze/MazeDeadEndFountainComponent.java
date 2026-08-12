@@ -19,7 +19,7 @@ import twilightforest.init.TFStructurePieceTypes;
 public class MazeDeadEndFountainComponent extends MazeDeadEndComponent {
 
 	public MazeDeadEndFountainComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(TFStructurePieceTypes.TFMMDEF.get(), nbt);
+		this(TFStructurePieceTypes.TFMMDEF, nbt);
 	}
 
 	public MazeDeadEndFountainComponent(StructurePieceType piece, CompoundTag nbt) {
@@ -36,7 +36,7 @@ public class MazeDeadEndFountainComponent extends MazeDeadEndComponent {
 		super.postProcess(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
 
 		// back wall brick
-		this.generateBox(world, sbb, 1, 1, 4, 4, 4, 4, TFBlocks.MAZESTONE_BRICK.get().defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 1, 1, 4, 4, 4, 4, TFBlocks.MAZESTONE_BRICK.defaultBlockState(), AIR, false);
 
 		// water
 		this.placeBlock(world, Blocks.WATER.defaultBlockState(), 2, 3, 4, sbb);

@@ -18,17 +18,17 @@ import twilightforest.init.TFStructurePieceTypes;
 public class MazeCorridorIronFenceComponent extends MazeCorridorComponent {
 
 	public MazeCorridorIronFenceComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFMMCIF.get(), nbt);
+		super(TFStructurePieceTypes.TFMMCIF, nbt);
 	}
 
 	public MazeCorridorIronFenceComponent(int i, int x, int y, int z, Direction rotation) {
-		super(TFStructurePieceTypes.TFMMCIF.get(), i, x, y, z, rotation);
+		super(TFStructurePieceTypes.TFMMCIF, i, x, y, z, rotation);
 	}
 
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		this.generateBox(world, sbb, 1, 4, 2, 4, 4, 3, TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState(), AIR, false);
-		this.generateBox(world, sbb, 1, 1, 2, 4, 3, 3, TFBlocks.CUT_MAZESTONE.get().defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 1, 4, 2, 4, 4, 3, TFBlocks.DECORATIVE_MAZESTONE.defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 1, 1, 2, 4, 3, 3, TFBlocks.CUT_MAZESTONE.defaultBlockState(), AIR, false);
 		this.generateBox(world, sbb, 2, 1, 2, 3, 3, 3, Blocks.IRON_BARS.defaultBlockState(), Blocks.AIR.defaultBlockState(), false);
 	}
 }

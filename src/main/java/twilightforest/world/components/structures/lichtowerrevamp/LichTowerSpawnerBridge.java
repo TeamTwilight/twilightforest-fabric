@@ -1,5 +1,7 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
+import carminite.util.ServerLifecycleHooks;
+import carminite.world.IPieceBeardifierModifier;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -10,10 +12,7 @@ import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import twilightforest.TFRegistries;
-import tamaized.beanification.Autowired;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.init.custom.WoodPalettes;
 import twilightforest.util.woods.WoodPalette;
@@ -26,14 +25,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class LichTowerSpawnerBridge extends TwilightJigsawPiece implements PieceBeardifierModifier {
-	@Autowired
-	private static LichTowerUtil lichTowerUtil;
+public class LichTowerSpawnerBridge extends TwilightJigsawPiece implements IPieceBeardifierModifier {
+	private static final LichTowerUtil lichTowerUtil = LichTowerUtil.INSTANCE;
 
 	private final boolean invertedPalette;
 
 	public LichTowerSpawnerBridge(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-		super(TFStructurePieceTypes.LICH_SPAWNER_BRIDGE.get(), compoundTag, ctx, readSettings(compoundTag));
+		super(TFStructurePieceTypes.LICH_SPAWNER_BRIDGE, compoundTag, ctx, readSettings(compoundTag));
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(lichTowerUtil.getCentralBridgeSpawnerProcessor()));
 
@@ -60,7 +58,7 @@ public class LichTowerSpawnerBridge extends TwilightJigsawPiece implements Piece
 	}
 
 	public LichTowerSpawnerBridge(int genDepth, StructureTemplateManager structureManager, Identifier templateLocation, JigsawPlaceContext jigsawContext, boolean invertedPalette) {
-		super(TFStructurePieceTypes.LICH_SPAWNER_BRIDGE.get(), genDepth, structureManager, templateLocation, jigsawContext);
+		super(TFStructurePieceTypes.LICH_SPAWNER_BRIDGE, genDepth, structureManager, templateLocation, jigsawContext);
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(lichTowerUtil.getCentralBridgeSpawnerProcessor()));
 

@@ -99,7 +99,7 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 	private boolean isValidNoiseBiome(GenerationContext context, int x, int worldY, int z) {
 		Holder<Biome> noiseBiome = context.chunkGenerator().getBiomeSource()
 			.getNoiseBiome(x >> 2, worldY >> 2, z >> 2, context.randomState().sampler());
-		return this.getModifiedStructureSettings().biomes().contains(noiseBiome);
+		return context.validBiome().test(noiseBiome);
 	}
 
 	private boolean hasInvalidNearbyBiome(GenerationContext context, int x, int worldY, int z, RandomSource random) {
@@ -121,7 +121,7 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 
 	@Override
 	public StructureType<?> type() {
-		return TFStructureTypes.FALLEN_TRUNK.get();
+		return TFStructureTypes.FALLEN_TRUNK;
 	}
 
 	public static FallenTrunkStructure buildStructureConfig(HolderSet<Biome> biomes) {
@@ -132,7 +132,7 @@ public class FallenTrunkStructure extends Structure implements CustomDensitySour
 				GenerationStep.Decoration.SURFACE_STRUCTURES,
 				TerrainAdjustment.NONE
 			),
-			UniformInt.of(17, 24), UniformInt.of(22, 28), BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG.get()), TFLootTables.FALLEN_TRUNK_LOOT
+			UniformInt.of(17, 24), UniformInt.of(22, 28), BlockStateProvider.simple(TFBlocks.TWILIGHT_OAK_LOG), TFLootTables.FALLEN_TRUNK_LOOT
 		);
 	}
 

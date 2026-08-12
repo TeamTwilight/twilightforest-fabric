@@ -20,7 +20,7 @@ public class TowerBeardComponent extends TFStructureComponentOld {
 	final int height;
 
 	public TowerBeardComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(TFStructurePieceTypes.TFLTBea.get(), nbt);
+		this(TFStructurePieceTypes.TFLTBea, nbt);
 	}
 
 	public TowerBeardComponent(StructurePieceType piece, CompoundTag nbt) {

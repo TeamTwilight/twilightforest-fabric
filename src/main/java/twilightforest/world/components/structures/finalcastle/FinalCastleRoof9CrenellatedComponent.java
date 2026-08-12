@@ -20,12 +20,12 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 public class FinalCastleRoof9CrenellatedComponent extends TFStructureComponentOld {
 
 	public FinalCastleRoof9CrenellatedComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFFCRo9Cr.get(), nbt);
+		super(TFStructurePieceTypes.TFFCRo9Cr, nbt);
 	}
 
 	@SuppressWarnings("this-escape")
 	public FinalCastleRoof9CrenellatedComponent(int i, TFStructureComponentOld sideTower, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFFCRo9Cr.get(), i, x, y, z);
+		super(TFStructurePieceTypes.TFFCRo9Cr, i, x, y, z);
 
 		int height = 5;
 

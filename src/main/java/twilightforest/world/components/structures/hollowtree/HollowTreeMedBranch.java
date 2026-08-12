@@ -43,7 +43,7 @@ public class HollowTreeMedBranch extends HollowTreePiece {
 	}
 
 	protected HollowTreeMedBranch(int i, BlockPos src, BlockPos dest, BoundingBox boundingBox, double length, double angle, double tilt, boolean leafy, BlockStateProvider wood, BlockStateProvider leaves) {
-		this(TFStructurePieceTypes.TFHTMB.value(), i, src, dest, boundingBox, length, angle, tilt, leafy, wood, leaves);
+		this(TFStructurePieceTypes.TFHTMB, i, src, dest, boundingBox, length, angle, tilt, leafy, wood, leaves);
 	}
 
 	@SuppressWarnings("this-escape")
@@ -67,7 +67,7 @@ public class HollowTreeMedBranch extends HollowTreePiece {
 	}
 
 	public HollowTreeMedBranch(StructurePieceSerializationContext context, CompoundTag tag) {
-		this(TFStructurePieceTypes.TFHTMB.value(), context, tag);
+		this(TFStructurePieceTypes.TFHTMB, context, tag);
 	}
 
 	protected HollowTreeMedBranch(StructurePieceType type, StructurePieceSerializationContext context, CompoundTag tag) {

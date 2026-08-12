@@ -19,11 +19,11 @@ import twilightforest.init.TFStructurePieceTypes;
 public class MazeDeadEndTripwireChestComponent extends MazeDeadEndChestComponent {
 
 	public MazeDeadEndTripwireChestComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFMMDETC.get(), nbt);
+		super(TFStructurePieceTypes.TFMMDETC, nbt);
 	}
 
 	public MazeDeadEndTripwireChestComponent(int i, int x, int y, int z, Direction rotation) {
-		super(TFStructurePieceTypes.TFMMDETC.get(), i, x, y, z, rotation);
+		super(TFStructurePieceTypes.TFMMDETC, i, x, y, z, rotation);
 	}
 
 	@Override

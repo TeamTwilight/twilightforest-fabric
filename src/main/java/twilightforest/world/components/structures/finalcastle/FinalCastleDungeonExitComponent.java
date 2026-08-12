@@ -24,11 +24,11 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 public class FinalCastleDungeonExitComponent extends FinalCastleDungeonRoom31Component {
 
 	public FinalCastleDungeonExitComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFFCDunEx.get(), nbt);
+		super(TFStructurePieceTypes.TFFCDunEx, nbt);
 	}
 
 	public FinalCastleDungeonExitComponent(int i, int x, int y, int z, Direction direction, int level) {
-		super(TFStructurePieceTypes.TFFCDunEx.get(), i, x, y, z, direction, level);
+		super(TFStructurePieceTypes.TFFCDunEx, i, x, y, z, direction, level);
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class FinalCastleDungeonExitComponent extends FinalCastleDungeonRoom31Com
 		super.postProcess(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
 
 		// door
-		final BlockState castleDoor = TFBlocks.PINK_CASTLE_DOOR.get().defaultBlockState();
+		final BlockState castleDoor = TFBlocks.PINK_CASTLE_DOOR.defaultBlockState();
 
 		this.generateBox(world, sbb, 7, 0, 16, 7, 3, 18, castleDoor, AIR, false);
 		this.generateBox(world, sbb, 7, 4, 16, 7, 4, 18, deco.blockState, deco.blockState, false);
@@ -84,11 +84,11 @@ public class FinalCastleDungeonExitComponent extends FinalCastleDungeonRoom31Com
 
 	@Override
 	protected BlockState getForceFieldColor(RandomSource decoRNG) {
-		return TFBlocks.PINK_FORCE_FIELD.get().defaultBlockState();
+		return TFBlocks.PINK_FORCE_FIELD.defaultBlockState();
 	}
 
 	@Override
 	protected BlockState getRuneColor(BlockState fieldColor) {
-		return TFBlocks.PINK_CASTLE_RUNE_BRICK.get().defaultBlockState();
+		return TFBlocks.PINK_CASTLE_RUNE_BRICK.defaultBlockState();
 	}
 }

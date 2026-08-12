@@ -43,7 +43,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 	protected final Holder.Reference<StructureSpeleothemConfig> speleothemConfigHolder;
 
 	public TrollCaveMainComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(TFStructurePieceTypes.TFTCMai.get(), ctx, nbt);
+		this(TFStructurePieceTypes.TFTCMai, ctx, nbt);
 	}
 
 	public TrollCaveMainComponent(StructurePieceType piece, StructurePieceSerializationContext ctx, CompoundTag nbt) {
@@ -167,7 +167,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 					if (dist > threshold) {
 						this.placeBlock(world, Blocks.AIR.defaultBlockState(), x, y, z, boundingBox);
 					} else if (dist == threshold && rand.nextInt(4) == 0 && this.getBlock(world, x, y, z, boundingBox).is(BlockTags.BASE_STONE_OVERWORLD)) {
-						this.placeBlock(world, TFBlocks.TROLLSTEINN.get().defaultBlockState(), x, y, z, boundingBox);
+						this.placeBlock(world, TFBlocks.TROLLSTEINN.defaultBlockState(), x, y, z, boundingBox);
 					}
 				}
 			}
@@ -241,7 +241,7 @@ public class TrollCaveMainComponent extends TFStructureComponentOld {
 		for (int i = 0; i < 15; i++) {
 			pos.move(0, 1, 0);
 			if (sbb.isInside(pos) && world.getBlockState(pos.above()).isAir()) {
-				world.registryAccess().lookupOrThrow(Registries.CONFIGURED_FEATURE).get(feature).get().value().place(world, generator, rand, pos);
+				world.registryAccess().lookupOrThrow(Registries.CONFIGURED_FEATURE).get(feature).orElseThrow().value().place(world, generator, rand, pos);
 				break;
 			}
 		}

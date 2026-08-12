@@ -5,6 +5,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.Mth;
@@ -77,15 +78,15 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
 	@Override
 	protected StructurePiece getFirstPiece(GenerationContext context, RandomSource random, ChunkPos chunkPos, int x, int y, int z) {
 		return switch (this.size) { // TODO Clean up once TFLandmark params are no longer necessary
-			case 1 -> new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), 0, this.size, x - 3, y - 2, z - 3, this.speleothemConfig);
-			case 2 -> new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), 0, this.size, x - 7, y - 5, z - 7, this.speleothemConfig);
-			default -> new HollowHillComponent(TFStructurePieceTypes.TFHill.get(), 0, this.size, x - 11, y - 5, z - 11, this.speleothemConfig);
+			case 1 -> new HollowHillComponent(TFStructurePieceTypes.TFHill, 0, this.size, x - 3, y - 2, z - 3, this.speleothemConfig);
+			case 2 -> new HollowHillComponent(TFStructurePieceTypes.TFHill, 0, this.size, x - 7, y - 5, z - 7, this.speleothemConfig);
+			default -> new HollowHillComponent(TFStructurePieceTypes.TFHill, 0, this.size, x - 11, y - 5, z - 11, this.speleothemConfig);
 		};
 	}
 
 	@Override
 	public StructureType<?> type() {
-		return TFStructureTypes.HOLLOW_HILL.get();
+		return TFStructureTypes.HOLLOW_HILL;
 	}
 
 	@Override
@@ -99,14 +100,14 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
 			ControlledSpawningConfig.create(List.of(WeightedList.<MobSpawnSettings.SpawnerData>builder()
 				.add(new MobSpawnSettings.SpawnerData(EntityType.SPIDER, 4, 4), 10)
 				.add(new MobSpawnSettings.SpawnerData(EntityType.ZOMBIE, 4, 4), 10)
-				.add(new MobSpawnSettings.SpawnerData(TFEntities.REDCAP.get(), 4, 4), 10)
-				.add(new MobSpawnSettings.SpawnerData(TFEntities.SWARM_SPIDER.get(), 4, 4), 10)
-				.add(new MobSpawnSettings.SpawnerData(TFEntities.KOBOLD.get(), 4, 8), 10)
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.REDCAP, 4, 4), 10)
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.SWARM_SPIDER, 4, 4), 10)
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.KOBOLD, 4, 8), 10)
 				.build()
 			), WeightedList.of(), WeightedList.of()),
 			context.lookup(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS).getOrThrow(StructureSpeleothemConfigs.SMALL_HILL),
 			Optional.of(new DecorationConfig(1, true, false, false)),
-			true, Optional.of(TFMapDecorations.SMALL_HOLLOW_HILL),
+			true, Optional.of(BuiltInRegistries.MAP_DECORATION_TYPE.wrapAsHolder(TFMapDecorations.SMALL_HOLLOW_HILL)),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_HOLLOW_HILL_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning
@@ -120,21 +121,21 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
 		return new HollowHillStructure(
 			2,
 			ControlledSpawningConfig.create(List.of(WeightedList.<MobSpawnSettings.SpawnerData>builder()
-				.add(new MobSpawnSettings.SpawnerData(TFEntities.REDCAP.get(), 1, 2), 10)
-				.add(new MobSpawnSettings.SpawnerData(TFEntities.REDCAP_SAPPER.get(), 1, 2), 2)
-				.add(new MobSpawnSettings.SpawnerData(TFEntities.KOBOLD.get(), 2, 4), 10)
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.REDCAP, 1, 2), 10)
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.REDCAP_SAPPER, 1, 2), 2)
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.KOBOLD, 2, 4), 10)
 				.add(new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 2, 3), 10)
-				.add(new MobSpawnSettings.SpawnerData(TFEntities.SWARM_SPIDER.get(), 2, 4), 10)
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.SWARM_SPIDER, 2, 4), 10)
 				.add(new MobSpawnSettings.SpawnerData(EntityType.SPIDER, 1, 3), 10)
 				.add(new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 1, 2), 5)
-				.add(new MobSpawnSettings.SpawnerData(TFEntities.FIRE_BEETLE.get(), 1, 1), 5)
-				.add(new MobSpawnSettings.SpawnerData(TFEntities.SLIME_BEETLE.get(), 1, 1), 5)
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.FIRE_BEETLE, 1, 1), 5)
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.SLIME_BEETLE, 1, 1), 5)
 				.add(new MobSpawnSettings.SpawnerData(EntityType.WITCH, 1, 1), 1)
 				.build()
 			), WeightedList.of(), WeightedList.of()),
 			context.lookup(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS).getOrThrow(StructureSpeleothemConfigs.MEDIUM_HILL),
 			Optional.of(new DecorationConfig(2, true, false, false)),
-			true, Optional.of(TFMapDecorations.MEDIUM_HOLLOW_HILL),
+			true, Optional.of(BuiltInRegistries.MAP_DECORATION_TYPE.wrapAsHolder(TFMapDecorations.MEDIUM_HOLLOW_HILL)),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_HOLLOW_HILL_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning
@@ -148,22 +149,22 @@ public class HollowHillStructure extends LandmarkStructure implements Configurab
 		return new HollowHillStructure(
 			3,
 			ControlledSpawningConfig.firstIndexMonsters(WeightedList.<MobSpawnSettings.SpawnerData>builder()
-				.add(new MobSpawnSettings.SpawnerData(TFEntities.REDCAP.get(), 2, 4), 10)
-				.add(new MobSpawnSettings.SpawnerData(TFEntities.REDCAP_SAPPER.get(), 1, 2), 2)
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.REDCAP, 2, 4), 10)
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.REDCAP_SAPPER, 1, 2), 2)
 				.add(new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 2, 3), 10)
 				.add(new MobSpawnSettings.SpawnerData(EntityType.CAVE_SPIDER, 1, 2), 10)
 				.add(new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 1, 1), 10)
 				.add(new MobSpawnSettings.SpawnerData(EntityType.ENDERMAN, 1, 1), 1)
-				.add(new MobSpawnSettings.SpawnerData(TFEntities.WRAITH.get(), 1, 2), 2)
-				.add(new MobSpawnSettings.SpawnerData(TFEntities.FIRE_BEETLE.get(), 1, 2), 10)
-				.add(new MobSpawnSettings.SpawnerData(TFEntities.SLIME_BEETLE.get(), 1, 2), 10)
-				.add(new MobSpawnSettings.SpawnerData(TFEntities.PINCH_BEETLE.get(), 1, 2), 10)
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.WRAITH, 1, 2), 2)
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.FIRE_BEETLE, 1, 2), 10)
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.SLIME_BEETLE, 1, 2), 10)
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.PINCH_BEETLE, 1, 2), 10)
 				.add(new MobSpawnSettings.SpawnerData(EntityType.WITCH, 1, 1), 1)
 				.build()
 			),
 			context.lookup(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS).getOrThrow(StructureSpeleothemConfigs.LARGE_HILL),
 			Optional.of(new DecorationConfig(3, true, false, false)),
-			true, Optional.of(TFMapDecorations.LARGE_HOLLOW_HILL),
+			true, Optional.of(BuiltInRegistries.MAP_DECORATION_TYPE.wrapAsHolder(TFMapDecorations.LARGE_HOLLOW_HILL)),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_HOLLOW_HILL_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning

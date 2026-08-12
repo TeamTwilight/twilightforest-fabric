@@ -1,12 +1,12 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
+import carminite.world.IPieceBeardifierModifier;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
@@ -15,11 +15,11 @@ import twilightforest.world.components.processors.SoftReplaceProcessor;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 import twilightforest.world.components.structures.util.SortablePiece;
 
-public class LichTowerWingBeard extends TwilightJigsawPiece implements PieceBeardifierModifier, SortablePiece {
+public class LichTowerWingBeard extends TwilightJigsawPiece implements IPieceBeardifierModifier, SortablePiece {
 	private final boolean generateGround;
 
 	public LichTowerWingBeard(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-		super(TFStructurePieceTypes.LICH_WING_BEARD.get(), compoundTag, ctx, readSettings(compoundTag));
+		super(TFStructurePieceTypes.LICH_WING_BEARD, compoundTag, ctx, readSettings(compoundTag));
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(SoftReplaceProcessor.INSTANCE));
 
@@ -27,7 +27,7 @@ public class LichTowerWingBeard extends TwilightJigsawPiece implements PieceBear
 	}
 
 	public LichTowerWingBeard(int genDepth, StructureTemplateManager structureManager, Identifier templateLocation, JigsawPlaceContext jigsawContext, boolean generateGround) {
-		super(TFStructurePieceTypes.LICH_WING_BEARD.get(), genDepth, structureManager, templateLocation, jigsawContext);
+		super(TFStructurePieceTypes.LICH_WING_BEARD, genDepth, structureManager, templateLocation, jigsawContext);
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(SoftReplaceProcessor.INSTANCE));
 

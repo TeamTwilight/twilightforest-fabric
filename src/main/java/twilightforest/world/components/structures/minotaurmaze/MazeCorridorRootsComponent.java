@@ -18,11 +18,11 @@ import twilightforest.init.TFStructurePieceTypes;
 public class MazeCorridorRootsComponent extends MazeCorridorComponent {
 
 	public MazeCorridorRootsComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFMMCR.get(), nbt);
+		super(TFStructurePieceTypes.TFMMCR, nbt);
 	}
 
 	public MazeCorridorRootsComponent(int i, int x, int y, int z, Direction rotation) {
-		super(TFStructurePieceTypes.TFMMCR.get(), i, x, y, z, rotation);
+		super(TFStructurePieceTypes.TFMMCR, i, x, y, z, rotation);
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class MazeCorridorRootsComponent extends MazeCorridorComponent {
 
 					// roots
 					for (int y = 6 - length; y < 6; y++) {
-						this.placeBlock(world, TFBlocks.ROOT_STRAND.get().defaultBlockState(), x, y, z, sbb);
+						this.placeBlock(world, TFBlocks.ROOT_STRAND.defaultBlockState(), x, y, z, sbb);
 					}
 
 					// occasional gravel

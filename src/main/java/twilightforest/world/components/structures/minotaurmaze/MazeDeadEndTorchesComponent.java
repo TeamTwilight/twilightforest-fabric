@@ -18,11 +18,11 @@ import twilightforest.init.TFStructurePieceTypes;
 public class MazeDeadEndTorchesComponent extends MazeDeadEndComponent {
 
 	public MazeDeadEndTorchesComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFMMDET.get(), nbt);
+		super(TFStructurePieceTypes.TFMMDET, nbt);
 	}
 
 	public MazeDeadEndTorchesComponent(int i, int x, int y, int z, Direction rotation) {
-		super(TFStructurePieceTypes.TFMMDET.get(), i, x, y, z, rotation);
+		super(TFStructurePieceTypes.TFMMDET, i, x, y, z, rotation);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
+import carminite.world.IPieceBeardifierModifier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -17,18 +18,17 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.JigsawReplacementProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 
-public class LichYardGrave extends TwilightJigsawPiece implements PieceBeardifierModifier {
+public class LichYardGrave extends TwilightJigsawPiece implements IPieceBeardifierModifier {
 	private final BoundingBox fillUnder;
 
 	public LichYardGrave(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-		super(TFStructurePieceTypes.LICH_YARD_GRAVE.value(), compoundTag, ctx, readSettings(compoundTag));
+		super(TFStructurePieceTypes.LICH_YARD_GRAVE, compoundTag, ctx, readSettings(compoundTag));
 
 		this.placeSettings().addProcessor(JigsawReplacementProcessor.INSTANCE);
 		this.placeSettings().addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
@@ -37,7 +37,7 @@ public class LichYardGrave extends TwilightJigsawPiece implements PieceBeardifie
 	}
 
 	public LichYardGrave(StructureTemplateManager structureManager, JigsawPlaceContext jigsawContext, Identifier templateId) {
-		super(TFStructurePieceTypes.LICH_YARD_GRAVE.value(), 0, structureManager, templateId, jigsawContext);
+		super(TFStructurePieceTypes.LICH_YARD_GRAVE, 0, structureManager, templateId, jigsawContext);
 
 		this.placeSettings().addProcessor(JigsawReplacementProcessor.INSTANCE);
 		this.placeSettings().addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);

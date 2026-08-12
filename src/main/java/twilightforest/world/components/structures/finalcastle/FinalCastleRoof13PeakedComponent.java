@@ -20,12 +20,12 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 public class FinalCastleRoof13PeakedComponent extends TFStructureComponentOld {
 
 	public FinalCastleRoof13PeakedComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFFCRo13Pk.get(), nbt);
+		super(TFStructurePieceTypes.TFFCRo13Pk, nbt);
 	}
 
 	@SuppressWarnings("this-escape")
 	public FinalCastleRoof13PeakedComponent(int i, TFStructureComponentOld sideTower, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFFCRo13Pk.get(), i, x, y, z);
+		super(TFStructurePieceTypes.TFFCRo13Pk, i, x, y, z);
 
 		int height = 18;
 

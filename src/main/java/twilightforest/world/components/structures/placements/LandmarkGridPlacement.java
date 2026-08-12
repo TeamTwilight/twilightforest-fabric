@@ -46,6 +46,6 @@ public class LandmarkGridPlacement extends StructurePlacement {
 
 	@Override
 	public StructurePlacementType<?> type() {
-		return TFStructurePlacementTypes.GRID_LANDMARK_PLACEMENT_TYPE.get();
+		return TFStructurePlacementTypes.GRID_LANDMARK_PLACEMENT_TYPE;
 	}
 }

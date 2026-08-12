@@ -22,12 +22,12 @@ public class StrongholdBalconyRoomComponent extends KnightStrongholdComponent {
 	boolean enterBottom;
 
 	public StrongholdBalconyRoomComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFSBalR.get(), nbt);
+		super(TFStructurePieceTypes.TFSBalR, nbt);
 		this.enterBottom = nbt.getBooleanOr("enterBottom", false);
 	}
 
 	public StrongholdBalconyRoomComponent(int i, Direction facing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFSBalR.get(), i, facing, x, y, z);
+		super(TFStructurePieceTypes.TFSBalR, i, facing, x, y, z);
 	}
 
 	@Override

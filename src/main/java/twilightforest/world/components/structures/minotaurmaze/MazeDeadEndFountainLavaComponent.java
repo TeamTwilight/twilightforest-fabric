@@ -17,11 +17,11 @@ import twilightforest.init.TFStructurePieceTypes;
 public class MazeDeadEndFountainLavaComponent extends MazeDeadEndFountainComponent {
 
 	public MazeDeadEndFountainLavaComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFMMDEFL.get(), nbt);
+		super(TFStructurePieceTypes.TFMMDEFL, nbt);
 	}
 
 	public MazeDeadEndFountainLavaComponent(int i, int x, int y, int z, Direction rotation) {
-		super(TFStructurePieceTypes.TFMMDEFL.get(), i, x, y, z, rotation);
+		super(TFStructurePieceTypes.TFMMDEFL, i, x, y, z, rotation);
 	}
 
 	@Override

@@ -22,7 +22,7 @@ public class FinalCastleMuralComponent extends TFStructureComponentOld {
 	private final FinalCastleMural mural;
 
 	public FinalCastleMuralComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFFCMur.get(), nbt);
+		super(TFStructurePieceTypes.TFFCMur, nbt);
 
 		if (nbt.contains("muralBytes")) {
 			this.mural = new FinalCastleMural(nbt);
@@ -33,7 +33,7 @@ public class FinalCastleMuralComponent extends TFStructureComponentOld {
 
 	@SuppressWarnings("this-escape")
 	public FinalCastleMuralComponent(int i, int x, int y, int z, int width, int height, Direction direction) {
-		super(TFStructurePieceTypes.TFFCMur.get(), i, x, y, z);
+		super(TFStructurePieceTypes.TFFCMur, i, x, y, z);
 		this.setOrientation(direction);
 		this.boundingBox = TFStructureComponentOld.getComponentToAddBoundingBox2(x, y, z, 0, -height / 2, -width / 2, 1, height - 1, width - 1, direction);
 
@@ -50,7 +50,7 @@ public class FinalCastleMuralComponent extends TFStructureComponentOld {
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 
-		final BlockState castleMagic = TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState();
+		final BlockState castleMagic = TFBlocks.YELLOW_CASTLE_RUNE_BRICK.defaultBlockState();
 
 		// copy mural to world
 		for (int x = 0; x < this.mural.width; x++) {

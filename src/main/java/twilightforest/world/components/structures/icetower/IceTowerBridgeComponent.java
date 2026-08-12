@@ -24,14 +24,14 @@ public class IceTowerBridgeComponent extends TFStructureComponentOld {
 	private final int extraZlength;
 
 	public IceTowerBridgeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFITBri.get(), nbt);
+		super(TFStructurePieceTypes.TFITBri, nbt);
 		this.length = nbt.getIntOr("bridgeLength", 0);
 		this.extraZlength = nbt.getIntOr("extraZlength", 0);
 	}
 
 	@SuppressWarnings("this-escape")
 	public IceTowerBridgeComponent(int index, int x, int y, int z, int length, int zLength, Direction direction) {
-		super(TFStructurePieceTypes.TFITBri.get(), index, x, y, z);
+		super(TFStructurePieceTypes.TFITBri, index, x, y, z);
 		this.length = length;
 		this.setOrientation(direction);
 		this.extraZlength = zLength;

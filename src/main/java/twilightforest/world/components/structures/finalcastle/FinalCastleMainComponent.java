@@ -18,7 +18,6 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilde
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
-import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
 
@@ -29,12 +28,12 @@ import java.util.List;
 public class FinalCastleMainComponent extends TFStructureComponentOld {
 
 	public FinalCastleMainComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFFCMain.get(), nbt);
+		super(TFStructurePieceTypes.TFFCMain, nbt);
 	}
 
 	@SuppressWarnings("this-escape")
 	public FinalCastleMainComponent(int i, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFFCMain.get(), i, x, y, z);
+		super(TFStructurePieceTypes.TFFCMain, i, x, y, z);
 		this.setOrientation(Direction.SOUTH);
 		this.spawnListIndex = 1; // main monsters
 
@@ -81,12 +80,12 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 
 		// tower maze towards entrance
 		BlockPos dest = new BlockPos(boundingBox.minX() - 4, boundingBox.maxY(), boundingBox.minZ() - 24);
-		buildTowerMaze(list, rand, 48, 0, 24, 60, Direction.SOUTH, TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState(), dest);
+		buildTowerMaze(list, rand, 48, 0, 24, 60, Direction.SOUTH, TFBlocks.YELLOW_CASTLE_RUNE_BRICK.defaultBlockState(), dest);
 
 
 		// another tower/bridge maze towards the clock tower
 		dest = new BlockPos(boundingBox.maxX() + 4, boundingBox.minY(), boundingBox.maxZ() + 24);
-		buildTowerMaze(list, rand, 0, 30, 24, 60, Direction.NORTH, TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState(), dest);
+		buildTowerMaze(list, rand, 0, 30, 24, 60, Direction.NORTH, TFBlocks.BLUE_CASTLE_RUNE_BRICK.defaultBlockState(), dest);
 
 
 		// initial stairs down towards dungeon
@@ -130,7 +129,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 
 				// build
 				BlockPos tc = this.offsetTowerCCoords(x, y, z, howFar, direction);
-				FinalCastleMazeTower13Component sTower = new FinalCastleMazeTower13Component(TFStructurePieceTypes.TFFCSiTo.get(), rand, 3, tc.getX(), tc.getY(), tc.getZ(), type, direction);
+				FinalCastleMazeTower13Component sTower = new FinalCastleMazeTower13Component(TFStructurePieceTypes.TFFCSiTo, rand, 3, tc.getX(), tc.getY(), tc.getZ(), type, direction);
 
 				// add bridge
 				BlockPos bc = this.offsetTowerCCoords(x, y, z, 1, direction);
@@ -168,10 +167,10 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 				int y = (boundingBox.maxY() - boundingBox.minY() / 2) + boundingBox.minY();
 				int z = (boundingBox.maxZ() - boundingBox.minZ() / 2) + boundingBox.minZ();
 				//TwilightForestMod.LOGGER.debug("Component {} at {},{},{}", structurecomponent.getClass().getSimpleName(), x, y, z);
-				if (type == TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState() && structurecomponent instanceof FinalCastleEntranceTowerComponent) {
+				if (type == TFBlocks.YELLOW_CASTLE_RUNE_BRICK.defaultBlockState() && structurecomponent instanceof FinalCastleEntranceTowerComponent) {
 					return true;
 				}
-				if (type == TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState() && structurecomponent instanceof FinalCastleBellTower21Component) {
+				if (type == TFBlocks.BLUE_CASTLE_RUNE_BRICK.defaultBlockState() && structurecomponent instanceof FinalCastleBellTower21Component) {
 					return true;
 				}
 			}
@@ -266,7 +265,7 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 		generateBox(world, sbb, 1, 20, 1, 47, 20, 47, false, rand, deco.randomBlocks);
 
 		// force field around dungeon stairs
-		BlockState fieldBlock = TFBlocks.PINK_FORCE_FIELD.get().defaultBlockState();
+		BlockState fieldBlock = TFBlocks.PINK_FORCE_FIELD.defaultBlockState();
 		this.generateBox(world, sbb, 12, 1, 12, 24, 10, 12, fieldBlock, fieldBlock, false);
 		this.generateBox(world, sbb, 12, 1, 12, 12, 10, 24, fieldBlock, fieldBlock, false);
 		this.generateBox(world, sbb, 24, 1, 12, 24, 10, 24, fieldBlock, fieldBlock, false);
@@ -276,8 +275,8 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 		this.generateBox(world, sbb, 24, 10, 12, 24, 10, 24, fieldBlock, fieldBlock, false);
 
 		// doors in dungeon force field
-		this.generateBox(world, sbb, 17, 1, 12, 19, 4, 12, TFBlocks.PINK_CASTLE_DOOR.get().defaultBlockState(), AIR, false);
-		this.generateBox(world, sbb, 17, 1, 24, 19, 4, 24, TFBlocks.PINK_CASTLE_DOOR.get().defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 17, 1, 12, 19, 4, 12, TFBlocks.PINK_CASTLE_DOOR.defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 17, 1, 24, 19, 4, 24, TFBlocks.PINK_CASTLE_DOOR.defaultBlockState(), AIR, false);
 
 		// stairs to stair towers
 		makeSmallTowerStairs(world, sbb, Rotation.NONE);
@@ -286,10 +285,10 @@ public class FinalCastleMainComponent extends TFStructureComponentOld {
 		makeLargeTowerStairs(world, sbb, Rotation.CLOCKWISE_180);
 
 		// door, first floor
-		this.generateBox(world, sbb, 48, 1, 23, 48, 4, 25, TFBlocks.YELLOW_CASTLE_DOOR.get().defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 48, 1, 23, 48, 4, 25, TFBlocks.YELLOW_CASTLE_DOOR.defaultBlockState(), AIR, false);
 
 		// door, second floor
-		this.generateBox(world, sbb, 0, 31, 23, 0, 34, 25, TFBlocks.BLUE_CASTLE_DOOR.get().defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 0, 31, 23, 0, 34, 25, TFBlocks.BLUE_CASTLE_DOOR.defaultBlockState(), AIR, false);
 	}
 
 	private void makeSmallTowerStairs(WorldGenLevel world, BoundingBox sbb, Rotation rotation) {

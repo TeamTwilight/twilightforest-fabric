@@ -15,12 +15,12 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 public class FinalCastleEntranceSideTowerComponent extends FinalCastleMazeTower13Component {
 
 	public FinalCastleEntranceSideTowerComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFFCEnSiTo.get(), nbt);
+		super(TFStructurePieceTypes.TFFCEnSiTo, nbt);
 	}
 
 	@SuppressWarnings("this-escape")
 	public FinalCastleEntranceSideTowerComponent(int i, int x, int y, int z, int floors, int entranceFloor, Direction direction) {
-		super(TFStructurePieceTypes.TFFCEnSiTo.get(), i, x, y, z, floors, entranceFloor, TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);
+		super(TFStructurePieceTypes.TFFCEnSiTo, i, x, y, z, floors, entranceFloor, TFBlocks.YELLOW_CASTLE_RUNE_BRICK.defaultBlockState(), direction);
 
 		addOpening(0, 1, size / 2, Rotation.CLOCKWISE_180);
 	}
@@ -32,7 +32,7 @@ public class FinalCastleEntranceSideTowerComponent extends FinalCastleMazeTower1
 		}
 
 		// add foundation
-		FinalCastleFoundation13Component foundation = new FinalCastleFoundation13Component(TFStructurePieceTypes.TFFCToF13.get(), 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+		FinalCastleFoundation13Component foundation = new FinalCastleFoundation13Component(TFStructurePieceTypes.TFFCToF13, 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(foundation);
 		foundation.addChildren(this, list, rand);
 

@@ -24,12 +24,12 @@ public class StrongholdTreasureRoomComponent extends KnightStrongholdComponent {
 	private boolean enterBottom;
 
 	public StrongholdTreasureRoomComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFTreaR.get(), nbt);
+		super(TFStructurePieceTypes.TFTreaR, nbt);
 		this.enterBottom = nbt.getBooleanOr("enterBottom", false);
 	}
 
 	public StrongholdTreasureRoomComponent(int i, Direction facing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFTreaR.get(), i, facing, x, y, z);
+		super(TFStructurePieceTypes.TFTreaR, i, facing, x, y, z);
 	}
 
 	@Override
@@ -68,9 +68,9 @@ public class StrongholdTreasureRoomComponent extends KnightStrongholdComponent {
 		this.generateBox(world, sbb, 3, 1, 8, 5, 4, 9, Blocks.IRON_BARS.defaultBlockState(), Blocks.IRON_BARS.defaultBlockState(), false);
 
 		// spawnwers
-		this.setSpawner(world, 4, 1, 4, sbb, TFEntities.HELMET_CRAB.get());
+		this.setSpawner(world, 4, 1, 4, sbb, TFEntities.HELMET_CRAB);
 
-		this.setSpawner(world, 4, 4, 15, sbb, TFEntities.HELMET_CRAB.get());
+		this.setSpawner(world, 4, 4, 15, sbb, TFEntities.HELMET_CRAB);
 
 		// treasure!
 		this.manualTreaurePlacement(world, 2, 4, 13, Direction.WEST, TFLootTables.STRONGHOLD_ROOM, false, sbb);

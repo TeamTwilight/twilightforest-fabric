@@ -57,6 +57,6 @@ public record SwitchMarkerHandler(char groupDelimiter, String safeGroupSplitter,
 
 	@Override
 	public TemplateMarkerHandlerType getType() {
-		return TemplateMarkerHandlers.HANDLER_SWITCH.value();
+		return TemplateMarkerHandlers.HANDLER_SWITCH;
 	}
 }

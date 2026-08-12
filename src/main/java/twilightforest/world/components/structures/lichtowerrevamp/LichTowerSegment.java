@@ -1,5 +1,6 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
+import carminite.world.IPieceBeardifierModifier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.FrontAndTop;
 import net.minecraft.nbt.CompoundTag;
@@ -14,9 +15,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import twilightforest.TFMain;
-import tamaized.beanification.Autowired;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.tags.TFPaintingVariantTags;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
@@ -26,16 +25,15 @@ import twilightforest.world.components.structures.TwilightJigsawPiece;
 
 import java.util.ArrayList;
 
-public final class LichTowerSegment extends TwilightJigsawPiece implements PieceBeardifierModifier, SpawnIndexProvider {
-	@Autowired
-	private static LichTowerUtil lichTowerUtil;
+public final class LichTowerSegment extends TwilightJigsawPiece implements IPieceBeardifierModifier, SpawnIndexProvider {
+	private static final LichTowerUtil lichTowerUtil = LichTowerUtil.INSTANCE;
 
 	private final boolean putMobBridge;
 	private final boolean putWings;
 	private final boolean putGallery;
 
 	public LichTowerSegment(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-		super(TFStructurePieceTypes.LICH_TOWER_SEGMENT.get(), compoundTag, ctx, readSettings(compoundTag));
+		super(TFStructurePieceTypes.LICH_TOWER_SEGMENT, compoundTag, ctx, readSettings(compoundTag));
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings);
 		stairDecay(this.genDepth, this.placeSettings);
@@ -46,7 +44,7 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements Piece
 	}
 
 	public LichTowerSegment(StructureTemplateManager structureManager, int genDepth, JigsawPlaceContext jigsawContext, boolean putMobBridge, boolean putWings, boolean putGallery, Identifier template) {
-		super(TFStructurePieceTypes.LICH_TOWER_SEGMENT.get(), genDepth, structureManager, template, jigsawContext);
+		super(TFStructurePieceTypes.LICH_TOWER_SEGMENT, genDepth, structureManager, template, jigsawContext);
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings);
 		stairDecay(this.genDepth, this.placeSettings);

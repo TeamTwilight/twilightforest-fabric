@@ -19,11 +19,11 @@ import twilightforest.init.TFStructurePieceTypes;
 public class StrongholdSmallHallwayComponent extends KnightStrongholdComponent {
 
 	public StrongholdSmallHallwayComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFSSH.get(), nbt);
+		super(TFStructurePieceTypes.TFSSH, nbt);
 	}
 
 	public StrongholdSmallHallwayComponent(int i, Direction facing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFSSH.get(), i, facing, x, y, z);
+		super(TFStructurePieceTypes.TFSSH, i, facing, x, y, z);
 	}
 
 	@Override

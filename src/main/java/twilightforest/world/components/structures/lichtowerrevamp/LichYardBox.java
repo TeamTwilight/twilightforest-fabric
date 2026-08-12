@@ -1,5 +1,6 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
+import carminite.world.IPieceBeardifierModifier;
 import com.google.common.collect.Streams;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,9 +24,7 @@ import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.joml.SimplexNoise;
-import tamaized.beanification.Autowired;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
@@ -40,9 +39,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class LichYardBox extends StructurePiece implements PieceBeardifierModifier, SortablePiece, SpawnIndexProvider {
-	@Autowired
-	private static LichTowerUtil lichTowerUtil;
+public class LichYardBox extends StructurePiece implements IPieceBeardifierModifier, SortablePiece, SpawnIndexProvider {
+	private static final LichTowerUtil lichTowerUtil = LichTowerUtil.INSTANCE;
 
 	private final float edgeFeatheringRange;
 	private final Direction direction;
@@ -51,7 +49,7 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 	private final float offset;
 
 	public LichYardBox(BoundingBox boundingBox, float edgeFeatheringRange, Direction direction, boolean doDirtMotley, float scale, float offset) {
-		super(TFStructurePieceTypes.LICH_YARD_PATH.value(), 0, boundingBox);
+		super(TFStructurePieceTypes.LICH_YARD_PATH, 0, boundingBox);
 
 		this.edgeFeatheringRange = edgeFeatheringRange;
 		this.direction = direction;
@@ -61,7 +59,7 @@ public class LichYardBox extends StructurePiece implements PieceBeardifierModifi
 	}
 
 	public LichYardBox(StructurePieceSerializationContext ctx, CompoundTag tag) {
-		super(TFStructurePieceTypes.LICH_YARD_PATH.value(), tag);
+		super(TFStructurePieceTypes.LICH_YARD_PATH, tag);
 
 		this.edgeFeatheringRange = tag.getFloatOr("feather", 0.0F);
 		this.direction = Direction.values()[tag.getIntOr("direction", Direction.UP.ordinal())];

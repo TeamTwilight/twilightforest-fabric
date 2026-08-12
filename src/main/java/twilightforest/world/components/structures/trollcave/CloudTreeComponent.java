@@ -19,12 +19,12 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 public class CloudTreeComponent extends TFStructureComponentOld {
 
 	public CloudTreeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFClTr.get(), nbt);
+		super(TFStructurePieceTypes.TFClTr, nbt);
 	}
 
 	@SuppressWarnings("this-escape")
 	public CloudTreeComponent(int index, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFClTr.get(), index, x, y, z);
+		super(TFStructurePieceTypes.TFClTr, index, x, y, z);
 
 		this.setOrientation(Direction.SOUTH);
 
@@ -40,15 +40,15 @@ public class CloudTreeComponent extends TFStructureComponentOld {
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 
 		// leaves
-		this.generateBox(world, sbb, 0, 12, 0, 19, 19, 19, TFBlocks.GIANT_LEAVES.get().defaultBlockState(), TFBlocks.GIANT_LEAVES.get().defaultBlockState(), false);
-		this.generateBox(world, sbb, 4, 20, 4, 15, 23, 15, TFBlocks.GIANT_LEAVES.get().defaultBlockState(), TFBlocks.GIANT_LEAVES.get().defaultBlockState(), false);
-		this.generateBox(world, sbb, 8, 24, 4, 11, 27, 15, TFBlocks.GIANT_LEAVES.get().defaultBlockState(), TFBlocks.GIANT_LEAVES.get().defaultBlockState(), false);
-		this.generateBox(world, sbb, 4, 24, 8, 15, 27, 11, TFBlocks.GIANT_LEAVES.get().defaultBlockState(), TFBlocks.GIANT_LEAVES.get().defaultBlockState(), false);
+		this.generateBox(world, sbb, 0, 12, 0, 19, 19, 19, TFBlocks.GIANT_LEAVES.defaultBlockState(), TFBlocks.GIANT_LEAVES.defaultBlockState(), false);
+		this.generateBox(world, sbb, 4, 20, 4, 15, 23, 15, TFBlocks.GIANT_LEAVES.defaultBlockState(), TFBlocks.GIANT_LEAVES.defaultBlockState(), false);
+		this.generateBox(world, sbb, 8, 24, 4, 11, 27, 15, TFBlocks.GIANT_LEAVES.defaultBlockState(), TFBlocks.GIANT_LEAVES.defaultBlockState(), false);
+		this.generateBox(world, sbb, 4, 24, 8, 15, 27, 11, TFBlocks.GIANT_LEAVES.defaultBlockState(), TFBlocks.GIANT_LEAVES.defaultBlockState(), false);
 
 		// trunk
-		this.generateBox(world, sbb, 8, 0, 8, 11, 23, 11, TFBlocks.GIANT_LOG.get().defaultBlockState(), TFBlocks.GIANT_LOG.get().defaultBlockState(), false);
+		this.generateBox(world, sbb, 8, 0, 8, 11, 23, 11, TFBlocks.GIANT_LOG.defaultBlockState(), TFBlocks.GIANT_LOG.defaultBlockState(), false);
 
 		// cloud base
-		this.generateBox(world, sbb, 8, -4, 8, 11, -1, 11, TFBlocks.FLUFFY_CLOUD.get().defaultBlockState(), TFBlocks.FLUFFY_CLOUD.get().defaultBlockState(), false);
+		this.generateBox(world, sbb, 8, -4, 8, 11, -1, 11, TFBlocks.FLUFFY_CLOUD.defaultBlockState(), TFBlocks.FLUFFY_CLOUD.defaultBlockState(), false);
 	}
 }

@@ -16,11 +16,11 @@ import twilightforest.init.TFStructurePieceTypes;
 public class TowerRoofAttachedSlabComponent extends TowerRoofSlabComponent {
 
 	public TowerRoofAttachedSlabComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFLTRAS.get(), nbt);
+		super(TFStructurePieceTypes.TFLTRAS, nbt);
 	}
 
 	public TowerRoofAttachedSlabComponent(int i, TowerWingComponent wing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFLTRAS.get(), i, wing, x, y, z);
+		super(TFStructurePieceTypes.TFLTRAS, i, wing, x, y, z);
 	}
 
 	/**

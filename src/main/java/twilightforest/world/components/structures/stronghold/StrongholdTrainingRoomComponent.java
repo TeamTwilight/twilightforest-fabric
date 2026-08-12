@@ -21,11 +21,11 @@ import twilightforest.init.TFStructurePieceTypes;
 public class StrongholdTrainingRoomComponent extends KnightStrongholdComponent {
 
 	public StrongholdTrainingRoomComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFSTR.get(), nbt);
+		super(TFStructurePieceTypes.TFSTR, nbt);
 	}
 
 	public StrongholdTrainingRoomComponent(int i, Direction facing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFSTR.get(), i, facing, x, y, z);
+		super(TFStructurePieceTypes.TFSTR, i, facing, x, y, z);
 	}
 
 	@Override

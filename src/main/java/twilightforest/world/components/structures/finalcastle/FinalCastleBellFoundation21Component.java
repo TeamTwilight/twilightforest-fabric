@@ -22,11 +22,11 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 public class FinalCastleBellFoundation21Component extends FinalCastleFoundation13Component {
 
 	public FinalCastleBellFoundation21Component(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFFCBeF21.get(), nbt);
+		super(TFStructurePieceTypes.TFFCBeF21, nbt);
 	}
 
 	public FinalCastleBellFoundation21Component(int i, TFStructureComponentOld sideTower, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFFCBeF21.get(), i, sideTower, x, y, z);
+		super(TFStructurePieceTypes.TFFCBeF21, i, sideTower, x, y, z);
 
 		this.boundingBox = new BoundingBox(sideTower.getBoundingBox().minX() - 2, sideTower.getBoundingBox().maxY() - 1, sideTower.getBoundingBox().minZ() - 2, sideTower.getBoundingBox().minX() + 2, sideTower.getBoundingBox().maxY(), sideTower.getBoundingBox().maxZ() + 2);
 	}

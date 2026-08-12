@@ -38,7 +38,7 @@ public class HollowTreeLargeBranch extends HollowTreeMedBranch {
 	private final Holder<EntityType<?>> dungeonMonster;
 
 	protected HollowTreeLargeBranch(int i, BlockPos src, double length, double angle, double tilt, boolean leafy, RandomSource rand, BlockStateProvider wood, BlockStateProvider leaves, BlockStateProvider dungeonWood, BlockStateProvider dungeonAir, BlockStateProvider dungeonLootBlock, ResourceKey<LootTable> dungeonLootTable, Holder<EntityType<?>> dungeonMonster) {
-		super(TFStructurePieceTypes.TFHTLB.value(), i, src, FeatureLogic.translate(src, length, angle, tilt), length, angle, tilt, leafy, wood, leaves);
+		super(TFStructurePieceTypes.TFHTLB, i, src, FeatureLogic.translate(src, length, angle, tilt), length, angle, tilt, leafy, wood, leaves);
 
 		this.hasLeafDungeon = rand.nextInt(LEAF_DUNGEON_CHANCE) == 0;
 
@@ -50,7 +50,7 @@ public class HollowTreeLargeBranch extends HollowTreeMedBranch {
 	}
 
 	public HollowTreeLargeBranch(StructurePieceSerializationContext context, CompoundTag tag) {
-		super(TFStructurePieceTypes.TFHTLB.value(), context, tag);
+		super(TFStructurePieceTypes.TFHTLB, context, tag);
 
 		this.hasLeafDungeon = tag.getBooleanOr("has_leaf_dungeon", false);
 

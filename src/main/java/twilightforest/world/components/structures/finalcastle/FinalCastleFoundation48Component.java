@@ -20,12 +20,12 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 public class FinalCastleFoundation48Component extends TFStructureComponentOld {
 
 	public FinalCastleFoundation48Component(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFFCToF48.get(), nbt);
+		super(TFStructurePieceTypes.TFFCToF48, nbt);
 	}
 
 	@SuppressWarnings("this-escape")
 	public FinalCastleFoundation48Component(int i, TFStructureComponentOld sideTower, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFFCToF48.get(), i, x, y, z);
+		super(TFStructurePieceTypes.TFFCToF48, i, x, y, z);
 
 		this.setOrientation(sideTower.getOrientation());
 		this.boundingBox = new BoundingBox(sideTower.getBoundingBox().minX(), sideTower.getBoundingBox().minY(), sideTower.getBoundingBox().minZ(), sideTower.getBoundingBox().maxX(), sideTower.getBoundingBox().maxY() - 1, sideTower.getBoundingBox().maxZ());

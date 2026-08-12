@@ -16,8 +16,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.JigsawReplace
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import org.jetbrains.annotations.Nullable;
-import tamaized.beanification.Autowired;
-import tamaized.beanification.Component;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFEntities;
 import twilightforest.world.components.processors.*;
@@ -28,33 +26,32 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
 
-@Component
 public class LichTowerUtil {
-	@Autowired
-	private LichTowerPieces lichRoomPieces;
+	public static final LichTowerUtil INSTANCE = new LichTowerUtil();
 
-	@Autowired
-	private StructureTemplateDefinitions structureTemplateDefinitions;
+	private final LichTowerPieces lichRoomPieces = LichTowerPieces.INSTANCE;
+
+	private final StructureTemplateDefinitions structureTemplateDefinitions = StructureTemplateDefinitions.INSTANCE;
 
 	private final Supplier<StructureProcessor> roomSpawners = Suppliers.memoize(() -> SpawnerProcessor.compile(2, 0.8f, Object2IntMaps.unmodifiable(Util.make(new Object2IntArrayMap<>(), map -> {
 		// 1/3 chance for any spider variant, 1/3 chance for skeleton, 1/3 chance for zombie
 		map.put(EntityType.SPIDER, 1);
 		map.put(EntityType.CAVE_SPIDER, 1);
-		map.put(TFEntities.SWARM_SPIDER.get(), 1);
-		map.put(TFEntities.HEDGE_SPIDER.get(), 1);
+		map.put(TFEntities.SWARM_SPIDER, 1);
+		map.put(TFEntities.HEDGE_SPIDER, 1);
 		map.put(EntityType.SKELETON, 4);
 		map.put(EntityType.ZOMBIE, 4);
 	}))));
 	private final Supplier<StructureProcessor> centralSpawners = Suppliers.memoize(() -> SpawnerProcessor.compile(4, Object2IntMaps.unmodifiable(Util.make(new Object2IntArrayMap<>(), map -> {
 		map.put(EntityType.SKELETON, 2);
 		map.put(EntityType.ZOMBIE, 1);
-		map.put(TFEntities.SWARM_SPIDER.get(), 1);
+		map.put(TFEntities.SWARM_SPIDER, 1);
 	}))));
 	private final Supplier<List<Block>> STAIR_DECAY_BLOCKS = Suppliers.memoize(() -> List.of(
-		TFBlocks.TWILIGHT_OAK_SLAB.value(),
-		TFBlocks.CANOPY_SLAB.value(),
-		TFBlocks.TWILIGHT_OAK_BANISTER.value(),
-		TFBlocks.CANOPY_BANISTER.value()
+		TFBlocks.TWILIGHT_OAK_SLAB,
+		TFBlocks.CANOPY_SLAB,
+		TFBlocks.TWILIGHT_OAK_BANISTER,
+		TFBlocks.CANOPY_BANISTER
 	));
 	private final Supplier<StructureProcessor[]> stairDecayProcessors = Suppliers.memoize(() -> {
 		List<Block> filter = this.STAIR_DECAY_BLOCKS.get();
@@ -76,9 +73,9 @@ public class LichTowerUtil {
 		Blocks.MOSSY_STONE_BRICK_WALL,
 		Blocks.COBBLESTONE_WALL,
 		Blocks.MOSSY_COBBLESTONE_WALL,
-		TFBlocks.WROUGHT_IRON_FENCE.value(),
-		TFBlocks.CANOPY_FENCE.value(),
-		TFBlocks.TWISTED_STONE_PILLAR.value()
+		TFBlocks.WROUGHT_IRON_FENCE,
+		TFBlocks.CANOPY_FENCE,
+		TFBlocks.TWISTED_STONE_PILLAR
 	));
 
 	public StructureProcessor getRoomSpawnerProcessor() {

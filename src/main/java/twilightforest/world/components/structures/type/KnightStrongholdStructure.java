@@ -3,6 +3,7 @@ package twilightforest.world.components.structures.type;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.nbt.CompoundTag;
@@ -48,26 +49,26 @@ public class KnightStrongholdStructure extends ControlledSpawningStructure {
 
 	@Override
 	public StructureType<?> type() {
-		return TFStructureTypes.KNIGHT_STRONGHOLD.get();
+		return TFStructureTypes.KNIGHT_STRONGHOLD;
 	}
 
 	public static KnightStrongholdStructure buildKnightStrongholdConfig(BootstrapContext<Structure> context) {
 		return new KnightStrongholdStructure(
 			ControlledSpawningConfig.firstIndexMonsters(WeightedList.<MobSpawnSettings.SpawnerData>builder()
-				.add(new MobSpawnSettings.SpawnerData(TFEntities.BLOCKCHAIN_GOBLIN.get(), 1, 2), 10)
-				.add(new MobSpawnSettings.SpawnerData(TFEntities.LOWER_GOBLIN_KNIGHT.get(), 1, 2), 5)
-				.add(new MobSpawnSettings.SpawnerData(TFEntities.HELMET_CRAB.get(), 2, 4), 10)
-				.add(new MobSpawnSettings.SpawnerData(TFEntities.SLIME_BEETLE.get(), 2, 3), 10)
-				.add(new MobSpawnSettings.SpawnerData(TFEntities.REDCAP_SAPPER.get(), 1, 2), 2)
-				.add(new MobSpawnSettings.SpawnerData(TFEntities.KOBOLD.get(), 2, 4), 10)
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.BLOCKCHAIN_GOBLIN, 1, 2), 10)
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.LOWER_GOBLIN_KNIGHT, 1, 2), 5)
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.HELMET_CRAB, 2, 4), 10)
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.SLIME_BEETLE, 2, 3), 10)
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.REDCAP_SAPPER, 1, 2), 2)
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.KOBOLD, 2, 4), 10)
 				.add(new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 1, 2), 5)
 				.add(new MobSpawnSettings.SpawnerData(EntityType.SLIME, 4, 4), 5)
 				.build()
 			),
 			new AdvancementLockConfig(List.of(TFMain.prefix("progress_trophy_pedestal"))),
-			Optional.of(new HintConfig(HintConfig.book("tfstronghold", 4), TFEntities.KOBOLD.get())),
+			Optional.of(new HintConfig(HintConfig.book("tfstronghold", 4), TFEntities.KOBOLD)),
 			Optional.of(new DecorationConfig(3, true, false, false)),
-			true, Optional.of(TFMapDecorations.KNIGHT_STRONGHOLD),
+			true, Optional.of(BuiltInRegistries.MAP_DECORATION_TYPE.wrapAsHolder(TFMapDecorations.KNIGHT_STRONGHOLD)),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_KNIGHT_STRONGHOLD_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning

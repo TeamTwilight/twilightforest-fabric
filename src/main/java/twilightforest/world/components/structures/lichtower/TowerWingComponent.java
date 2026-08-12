@@ -37,7 +37,7 @@ import java.util.List;
 public class TowerWingComponent extends TFStructureComponentOld {
 
 	public TowerWingComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(TFStructurePieceTypes.TFLTWin.get(), nbt);
+		this(TFStructurePieceTypes.TFLTWin, nbt);
 	}
 
 	public TowerWingComponent(StructurePieceType piece, CompoundTag nbt) {
@@ -46,7 +46,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		this.size = nbt.getIntOr("towerSize", 0);
 		this.height = nbt.getIntOr("towerHeight", 0);
 
-		this.readOpeningsFromArray(nbt.getIntArray("doorInts").get());
+		this.readOpeningsFromArray(nbt.getIntArray("doorInts").orElse(new int[]{0}));
 
 		this.highestOpening = nbt.getIntOr("highestOpening", 0);
 		// too lazy to do this as a loop
@@ -165,7 +165,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 			// I think there are very few circumstances where we can make a wing and not a bridge
 		}
 
-		TowerWingComponent wing = new TowerWingComponent(TFStructurePieceTypes.TFLTWin.get(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		TowerWingComponent wing = new TowerWingComponent(TFStructurePieceTypes.TFLTWin, index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
 		StructurePiece intersect = list.findCollisionPiece(wing.boundingBox);
 		if (intersect == null || intersect == this) {
@@ -241,7 +241,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		if (attached) {
 			beard = new TowerBeardAttachedComponent(index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		} else {
-			beard = new TowerBeardComponent(TFStructurePieceTypes.TFLTBea.get(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+			beard = new TowerBeardComponent(TFStructurePieceTypes.TFLTBea, index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		}
 		list.addPiece(beard);
 		beard.addChildren(this, list, rand);
@@ -333,7 +333,7 @@ public class TowerWingComponent extends TFStructureComponentOld {
 
 		if (roofType == null && rand.nextInt(53) != 0) {
 			// fall through to this next roof
-			roof = new TowerRoofSlabComponent(TFStructurePieceTypes.TFLTRS.get(), index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+			roof = new TowerRoofSlabComponent(TFStructurePieceTypes.TFLTRS, index + 1, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 			tryToFitRoof(list, rand, roof);
 		}
 
@@ -711,8 +711,8 @@ public class TowerWingComponent extends TFStructureComponentOld {
 		if (rand.nextInt(5) == 0) {
 			EntityType<?> spiderName = switch (rand.nextInt(4)) {
 				case 3 -> EntityType.CAVE_SPIDER;
-				case 2 -> TFEntities.SWARM_SPIDER.get();
-				case 1 -> TFEntities.HEDGE_SPIDER.get();
+				case 2 -> TFEntities.SWARM_SPIDER;
+				case 1 -> TFEntities.HEDGE_SPIDER;
 				default -> EntityType.SPIDER;
 			};
 

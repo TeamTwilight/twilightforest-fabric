@@ -17,11 +17,11 @@ import twilightforest.util.features.FeatureLogic;
 
 public class HollowTreeSmallBranch extends HollowTreeMedBranch {
 	protected HollowTreeSmallBranch(int i, BlockPos src, double length, double angle, double tilt, boolean leafy, BlockStateProvider wood, BlockStateProvider leaves) {
-		super(TFStructurePieceTypes.TFHTSB.value(), i, src, FeatureLogic.translate(src, length, angle, tilt), length, angle, tilt, leafy, wood, leaves);
+		super(TFStructurePieceTypes.TFHTSB, i, src, FeatureLogic.translate(src, length, angle, tilt), length, angle, tilt, leafy, wood, leaves);
 	}
 
 	public HollowTreeSmallBranch(StructurePieceSerializationContext context, CompoundTag tag) {
-		super(TFStructurePieceTypes.TFHTSB.value(), context, tag);
+		super(TFStructurePieceTypes.TFHTSB, context, tag);
 	}
 
 	@Override

@@ -66,6 +66,6 @@ public class ProgressionWrappedStructure extends ProgressionStructure {
 
 	@Override
 	public StructureType<?> type() {
-		return TFStructureTypes.PROGRESSION_WRAPPED.get();
+		return TFStructureTypes.PROGRESSION_WRAPPED;
 	}
 }

@@ -24,13 +24,13 @@ public class StrongholdEntranceComponent extends KnightStrongholdComponent {
 	public final StrongholdPieces lowerPieces;
 
 	public StrongholdEntranceComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFSEnter.get(), nbt);
+		super(TFStructurePieceTypes.TFSEnter, nbt);
 		this.deco = new StrongholdDecorator();
 		this.lowerPieces = new StrongholdPieces();
 	}
 
 	public StrongholdEntranceComponent(int i, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFSEnter.get(), i, Direction.SOUTH, x, y - 10, z);
+		super(TFStructurePieceTypes.TFSEnter, i, Direction.SOUTH, x, y - 10, z);
 		this.deco = new StrongholdDecorator();
 		this.lowerPieces = new StrongholdPieces();
 	}

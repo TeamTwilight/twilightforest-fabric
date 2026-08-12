@@ -23,12 +23,12 @@ public class StrongholdFoundryComponent extends KnightStrongholdComponent {
 	int entranceLevel;
 
 	public StrongholdFoundryComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFSFo.get(), nbt);
+		super(TFStructurePieceTypes.TFSFo, nbt);
 		this.entranceLevel = nbt.getIntOr("entranceLevel", 0);
 	}
 
 	public StrongholdFoundryComponent(int i, Direction facing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFSFo.get(), i, facing, x, y, z);
+		super(TFStructurePieceTypes.TFSFo, i, facing, x, y, z);
 	}
 
 	@Override

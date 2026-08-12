@@ -18,12 +18,12 @@ import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 public class IceTowerRoofComponent extends TowerRoofComponent {
 
 	public IceTowerRoofComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFITRoof.get(), nbt);
+		super(TFStructurePieceTypes.TFITRoof, nbt);
 	}
 
 	@SuppressWarnings("this-escape")
 	public IceTowerRoofComponent(int i, TowerWingComponent wing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFITRoof.get(), i, x, y, z);
+		super(TFStructurePieceTypes.TFITRoof, i, x, y, z);
 
 		// same alignment
 		this.setOrientation(wing.getOrientation());

@@ -40,7 +40,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 	}
 
 	public FinalCastleMazeTower13Component(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(TFStructurePieceTypes.TFFCSiTo.get(), nbt);
+		this(TFStructurePieceTypes.TFFCSiTo, nbt);
 	}
 
 	@SuppressWarnings("this-escape")
@@ -98,7 +98,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 		}
 
 		// add foundation
-		FinalCastleFoundation13Component foundation = new FinalCastleFoundation13Component(TFStructurePieceTypes.TFFCToF13.get(), 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+		FinalCastleFoundation13Component foundation = new FinalCastleFoundation13Component(TFStructurePieceTypes.TFFCToF13, 4, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(foundation);
 		foundation.addChildren(this, list, rand);
 
@@ -258,7 +258,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 
 			if (isWithinRange(centerX, centerZ, tc.getX(), tc.getZ(), 128)) {
 
-				FinalCastleMazeTower13Component sTower = new FinalCastleMazeTower13Component(TFStructurePieceTypes.TFFCSiTo.get(), rand, this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), this.color, facing);
+				FinalCastleMazeTower13Component sTower = new FinalCastleMazeTower13Component(TFStructurePieceTypes.TFFCSiTo, rand, this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), this.color, facing);
 
 				BoundingBox largerBB = new BoundingBox(
 					sTower.getBoundingBox().minX() - 6, 0, sTower.getBoundingBox().minZ() - 6,
@@ -329,7 +329,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 	}
 
 	protected FinalCastleMazeTower13Component makeNewDamagedTower(RandomSource rand, Direction facing, BlockPos tc) {
-		return new FinalCastleDamagedTowerComponent(TFStructurePieceTypes.TFFCDamT.get(), rand, this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
+		return new FinalCastleDamagedTowerComponent(TFStructurePieceTypes.TFFCDamT, rand, this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
 	}
 
 	private int adjustOpening(int posY, BlockPos dest) {
@@ -363,7 +363,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 
 		// what color of tower?
 		FinalCastleMazeTower13Component eTower;
-		if (this.color == TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState()) {
+		if (this.color == TFBlocks.YELLOW_CASTLE_RUNE_BRICK.defaultBlockState()) {
 			eTower = new FinalCastleEntranceTowerComponent(this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
 		} else {
 			eTower = new FinalCastleBellTower21Component(this.getGenDepth() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
@@ -478,7 +478,7 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 	public BlockState getGlyphMeta() {
 		if (color == null) {
 			TFMain.LOGGER.warn("Final Castle tower has null for glyph color, this is a bug.");
-			return TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState();
+			return TFBlocks.BLUE_CASTLE_RUNE_BRICK.defaultBlockState();
 		} else {
 			return color;
 		}
@@ -560,17 +560,17 @@ public class FinalCastleMazeTower13Component extends TowerWingComponent {
 	}
 
 	public BlockState doorColor() {
-		if (color == TFBlocks.PINK_CASTLE_RUNE_BRICK.get().defaultBlockState()) {
-			return TFBlocks.PINK_CASTLE_DOOR.get().defaultBlockState();
+		if (color == TFBlocks.PINK_CASTLE_RUNE_BRICK.defaultBlockState()) {
+			return TFBlocks.PINK_CASTLE_DOOR.defaultBlockState();
 		}
-		if (color == TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState()) {
-			return TFBlocks.BLUE_CASTLE_DOOR.get().defaultBlockState();
+		if (color == TFBlocks.BLUE_CASTLE_RUNE_BRICK.defaultBlockState()) {
+			return TFBlocks.BLUE_CASTLE_DOOR.defaultBlockState();
 		}
-		if (color == TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState()) {
-			return TFBlocks.YELLOW_CASTLE_DOOR.get().defaultBlockState();
+		if (color == TFBlocks.YELLOW_CASTLE_RUNE_BRICK.defaultBlockState()) {
+			return TFBlocks.YELLOW_CASTLE_DOOR.defaultBlockState();
 		}
-		if (color == TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get().defaultBlockState()) {
-			return TFBlocks.VIOLET_CASTLE_DOOR.get().defaultBlockState();
+		if (color == TFBlocks.VIOLET_CASTLE_RUNE_BRICK.defaultBlockState()) {
+			return TFBlocks.VIOLET_CASTLE_DOOR.defaultBlockState();
 		}
 		TFMain.LOGGER.warn("Couldn't add door to tower, rune color couldn't be read");
 		return Blocks.AIR.defaultBlockState();

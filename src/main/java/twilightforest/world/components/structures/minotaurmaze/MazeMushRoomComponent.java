@@ -20,12 +20,12 @@ import twilightforest.util.HugeMushroomUtil;
 public class MazeMushRoomComponent extends MazeRoomComponent {
 
 	public MazeMushRoomComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFMMMR.get(), nbt);
+		super(TFStructurePieceTypes.TFMMMR, nbt);
 	}
 
 	@SuppressWarnings("this-escape")
 	public MazeMushRoomComponent(int i, RandomSource rand, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFMMMR.get(), i, rand, x, y, z);
+		super(TFStructurePieceTypes.TFMMMR, i, rand, x, y, z);
 
 		this.setOrientation(Direction.SOUTH); // let's just make this easy on us?
 	}

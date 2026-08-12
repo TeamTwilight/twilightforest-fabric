@@ -20,12 +20,12 @@ import twilightforest.loot.TFLootTables;
 public class MazeDeadEndTrappedChestComponent extends MazeDeadEndComponent {
 
 	public MazeDeadEndTrappedChestComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFMMDETrC.get(), nbt);
+		super(TFStructurePieceTypes.TFMMDETrC, nbt);
 	}
 
 	@SuppressWarnings("this-escape")
 	public MazeDeadEndTrappedChestComponent(int i, int x, int y, int z, Direction rotation) {
-		super(TFStructurePieceTypes.TFMMDETrC.get(), i, x, y, z, rotation);
+		super(TFStructurePieceTypes.TFMMDETrC, i, x, y, z, rotation);
 		this.setOrientation(rotation);
 
 		// specify a non-existant high spawn list value to stop actual monster spawns
@@ -50,8 +50,8 @@ public class MazeDeadEndTrappedChestComponent extends MazeDeadEndComponent {
 //		this.setBlockState(world, Blocks.TORCH, 0, 4, 3, 4, sbb);
 
 		// doorway w/ bars
-		this.generateBox(world, sbb, 1, 1, 0, 4, 3, 1, TFBlocks.CUT_MAZESTONE.get().defaultBlockState(), AIR, false);
-		this.generateBox(world, sbb, 1, 4, 0, 4, 4, 1, TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 1, 1, 0, 4, 3, 1, TFBlocks.CUT_MAZESTONE.defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 1, 4, 0, 4, 4, 1, TFBlocks.DECORATIVE_MAZESTONE.defaultBlockState(), AIR, false);
 		this.generateBox(world, sbb, 2, 1, 0, 3, 3, 1, Blocks.IRON_BARS.defaultBlockState(), AIR, false);
 
 		// TNT!

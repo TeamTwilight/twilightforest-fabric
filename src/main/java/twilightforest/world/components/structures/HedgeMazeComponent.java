@@ -32,14 +32,14 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 	private static final int FLOOR_LEVEL = 0;
 
 	public HedgeMazeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFHedge.get(), nbt);
+		super(TFStructurePieceTypes.TFHedge, nbt);
 
 		this.boundingBox = BoundingBoxUtils.NBTToBoundingBox(nbt);
 	}
 
 	@SuppressWarnings("this-escape")
 	public HedgeMazeComponent(int i, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFHedge.get(), i, x, y, z);
+		super(TFStructurePieceTypes.TFHedge, i, x, y, z);
 
 		this.setOrientation(Direction.SOUTH);
 
@@ -53,8 +53,8 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 		TFMaze maze = new TFMaze(MSIZE, MSIZE, rand);
 
 		maze.oddBias = 2;
-		maze.torchBlockState = TFBlocks.FIREFLY.get().defaultBlockState();
-		maze.wallBlockState = TFBlocks.HEDGE.get().defaultBlockState();
+		maze.torchBlockState = TFBlocks.FIREFLY.defaultBlockState();
+		maze.wallBlockState = TFBlocks.HEDGE.defaultBlockState();
 		maze.type = 4;
 		maze.tall = 3;
 		maze.roots = 3;
@@ -186,9 +186,9 @@ public class HedgeMazeComponent extends TFStructureComponentOld {
 		int rz = z + rand.nextInt(diameter) - (diameter / 2);
 
 		EntityType<?> mobID = switch (rand.nextInt(3)) {
-			case 1 -> TFEntities.SWARM_SPIDER.get();
-			case 2 -> TFEntities.HOSTILE_WOLF.get();
-			default -> TFEntities.HEDGE_SPIDER.get();
+			case 1 -> TFEntities.SWARM_SPIDER;
+			case 2 -> TFEntities.HOSTILE_WOLF;
+			default -> TFEntities.HEDGE_SPIDER;
 		};
 
 		setSpawner(world, rx, FLOOR_LEVEL, rz, sbb, mobID);

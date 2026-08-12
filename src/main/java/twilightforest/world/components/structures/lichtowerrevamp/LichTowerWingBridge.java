@@ -1,5 +1,6 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
+import carminite.world.IPieceBeardifierModifier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
@@ -14,9 +15,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.jetbrains.annotations.Nullable;
-import tamaized.beanification.Autowired;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.tags.TFBlockTags;
 import twilightforest.util.BoundingBoxUtils;
@@ -27,21 +26,20 @@ import twilightforest.world.components.structures.util.SortablePiece;
 
 import java.util.List;
 
-public final class LichTowerWingBridge extends TwilightJigsawPiece implements PieceBeardifierModifier, SortablePiece {
-	@Autowired
-	private static LichTowerUtil lichTowerUtil;
+public final class LichTowerWingBridge extends TwilightJigsawPiece implements IPieceBeardifierModifier, SortablePiece {
+	private static final LichTowerUtil lichTowerUtil = LichTowerUtil.INSTANCE;
 
 	private final boolean fromCentral;
 
 	public LichTowerWingBridge(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-		super(TFStructurePieceTypes.LICH_WING_BRIDGE.get(), compoundTag, ctx, readSettings(compoundTag));
+		super(TFStructurePieceTypes.LICH_WING_BRIDGE, compoundTag, ctx, readSettings(compoundTag));
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings);
 		this.fromCentral = compoundTag.getBooleanOr("from_central", false);
 	}
 
 	public LichTowerWingBridge(StructureTemplateManager structureManager, int genDepth, JigsawPlaceContext jigsawContext, Identifier templateLocation, boolean fromCentral) {
-		super(TFStructurePieceTypes.LICH_WING_BRIDGE.get(), genDepth, structureManager, templateLocation, jigsawContext);
+		super(TFStructurePieceTypes.LICH_WING_BRIDGE, genDepth, structureManager, templateLocation, jigsawContext);
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings);
 		this.fromCentral = fromCentral;

@@ -27,6 +27,6 @@ public record PaintingMarkerHandler(TagKey<PaintingVariant> paintings) implement
 
 	@Override
 	public TemplateMarkerHandlerType getType() {
-		return TemplateMarkerHandlers.PAINTING.value();
+		return TemplateMarkerHandlers.PAINTING;
 	}
 }

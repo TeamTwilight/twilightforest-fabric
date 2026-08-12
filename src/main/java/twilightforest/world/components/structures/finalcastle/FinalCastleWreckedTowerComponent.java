@@ -19,11 +19,11 @@ import java.util.ArrayList;
 public class FinalCastleWreckedTowerComponent extends FinalCastleDamagedTowerComponent {
 
 	public FinalCastleWreckedTowerComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFFCWrT.get(), nbt);
+		super(TFStructurePieceTypes.TFFCWrT, nbt);
 	}
 
 	public FinalCastleWreckedTowerComponent(RandomSource rand, int i, int x, int y, int z, Direction direction) {
-		super(TFStructurePieceTypes.TFFCWrT.get(), rand, i, x, y, z, direction);
+		super(TFStructurePieceTypes.TFFCWrT, rand, i, x, y, z, direction);
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class FinalCastleWreckedTowerComponent extends FinalCastleDamagedTowerCom
 
 	@Override
 	public BlockState getGlyphMeta() {
-		return TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState();
+		return TFBlocks.YELLOW_CASTLE_RUNE_BRICK.defaultBlockState();
 	}
 
 	@Override

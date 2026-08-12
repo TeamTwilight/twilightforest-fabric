@@ -23,11 +23,11 @@ public class HollowTreeRoot extends HollowTreeMedBranch {
 	}
 
 	protected HollowTreeRoot(int i, BlockPos src, BlockPos dest, double length, double angle, double tilt, boolean leafy, BlockStateProvider root, BlockStateProvider wood) {
-		super(TFStructurePieceTypes.TFHTRo.value(), i, src, dest, branchBoundingBox(src, dest, 0), length, angle, tilt, leafy, wood, root); // Might as well re-use the otherwise unused leaves field for configuring its root block
+		super(TFStructurePieceTypes.TFHTRo, i, src, dest, branchBoundingBox(src, dest, 0), length, angle, tilt, leafy, wood, root); // Might as well re-use the otherwise unused leaves field for configuring its root block
 	}
 
 	public HollowTreeRoot(StructurePieceSerializationContext context, CompoundTag tag) {
-		super(TFStructurePieceTypes.TFHTRo.value(), context, tag);
+		super(TFStructurePieceTypes.TFHTRo, context, tag);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
+import carminite.world.IPieceBeardifierModifier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
@@ -16,11 +17,9 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.*;
-import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TFMain;
-import tamaized.beanification.Autowired;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
@@ -29,14 +28,14 @@ import twilightforest.world.components.structures.SpawnIndexProvider;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 import twilightforest.world.components.structures.util.SortablePiece;
 
-public final class LichTowerBase extends TwilightJigsawPiece implements PieceBeardifierModifier, SpawnIndexProvider, SortablePiece {
-	@Autowired
-	private static LichTowerUtil lichTowerUtil;
+public final class LichTowerBase extends TwilightJigsawPiece implements IPieceBeardifierModifier, SpawnIndexProvider, SortablePiece {
+
+	private static final LichTowerUtil lichTowerUtil = LichTowerUtil.INSTANCE;
 
 	private final int casketWingIndex;
 
 	public LichTowerBase(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-		super(TFStructurePieceTypes.LICH_TOWER_BASE.get(), compoundTag, ctx, readSettings(compoundTag));
+		super(TFStructurePieceTypes.LICH_TOWER_BASE, compoundTag, ctx, readSettings(compoundTag));
 
 		this.casketWingIndex = compoundTag.getIntOr("CasketWingIdx", 0);
 
@@ -44,7 +43,7 @@ public final class LichTowerBase extends TwilightJigsawPiece implements PieceBea
 	}
 
 	public LichTowerBase(StructureTemplateManager structureManager, JigsawPlaceContext jigsawContext) {
-		super(TFStructurePieceTypes.LICH_TOWER_BASE.get(), 1, structureManager, TFMain.prefix("lich_tower/tower_base"), jigsawContext);
+		super(TFStructurePieceTypes.LICH_TOWER_BASE, 1, structureManager, TFMain.prefix("lich_tower/tower_base"), jigsawContext);
 
 		this.boundingBox = BoundingBoxUtils.cloneWithAdjustments(this.boundingBox, 0, 0, 0, 0, 30,0);
 		this.casketWingIndex = this.firstMatchIndex(r -> "twilightforest:lich_tower/bridge".equals(r.target()));
@@ -144,15 +143,14 @@ public final class LichTowerBase extends TwilightJigsawPiece implements PieceBea
 	private static class TrimProcessor extends StructureProcessor {
 		private static final TrimProcessor INSTANCE = new TrimProcessor();
 
-		@Nullable
 		@Override
-		public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos origin, BlockPos centerBottom, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
-			if (modifiedBlockInfo.state().is(Blocks.POLISHED_ANDESITE_STAIRS) && level.getBlockState(modifiedBlockInfo.pos()).is(BlockTags.STONE_BRICKS)) {
+		public StructureTemplate.@Nullable StructureBlockInfo processBlock(LevelReader level, BlockPos targetPosition, BlockPos referencePos, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo processedBlockInfo, StructurePlaceSettings settings) {
+			if (processedBlockInfo.state().is(Blocks.POLISHED_ANDESITE_STAIRS) && level.getBlockState(processedBlockInfo.pos()).is(BlockTags.STONE_BRICKS)) {
 				// Don't replace trim blocks placed by tower wings
 				return null;
 			}
 
-			return super.process(level, origin, centerBottom, originalBlockInfo, modifiedBlockInfo, settings, template);
+			return super.processBlock(level, targetPosition, referencePos, originalBlockInfo, processedBlockInfo, settings);
 		}
 
 		@Override

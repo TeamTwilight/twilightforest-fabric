@@ -19,12 +19,12 @@ import twilightforest.init.TFStructurePieceTypes;
 public class TowerRoofStairsOverhangComponent extends TowerRoofComponent {
 
 	public TowerRoofStairsOverhangComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFLTRStO.get(), nbt);
+		super(TFStructurePieceTypes.TFLTRStO, nbt);
 	}
 
 	@SuppressWarnings("this-escape")
 	public TowerRoofStairsOverhangComponent(int i, TowerWingComponent wing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFLTRStO.get(), i, x, y, z);
+		super(TFStructurePieceTypes.TFLTRStO, i, x, y, z);
 
 		// always facing = 0.  This roof cannot rotate, due to stair facing issues.
 		this.setOrientation(Direction.SOUTH);

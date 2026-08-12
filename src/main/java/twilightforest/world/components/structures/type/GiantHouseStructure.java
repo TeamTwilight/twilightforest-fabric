@@ -50,7 +50,7 @@ public class GiantHouseStructure extends ProgressionStructure implements Configu
 
 	@Override
 	public StructureType<?> type() {
-		return TFStructureTypes.GIANT_HOUSE.get();
+		return TFStructureTypes.GIANT_HOUSE;
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class GiantHouseStructure extends ProgressionStructure implements Configu
 	public static GiantHouseStructure buildGiantHouseConfig(BootstrapContext<Structure> context) {
 		return new GiantHouseStructure(
 			new AdvancementLockConfig(List.of(TFMain.prefix("progress_merge"))),
-			Optional.of(new HintConfig(HintConfig.book("trollcave", 3), TFEntities.KOBOLD.get())),
+			Optional.of(new HintConfig(HintConfig.book("trollcave", 3), TFEntities.KOBOLD)),
 			Optional.of(new DecorationConfig(1, true, true, false)),
 			false, Optional.empty(),
 			new StructureSettings(
@@ -71,8 +71,8 @@ public class GiantHouseStructure extends ProgressionStructure implements Configu
 				TerrainAdjustment.NONE
 			),
 			ControlledSpawningConfig.create(List.of(WeightedList.<MobSpawnSettings.SpawnerData>builder() // cloud monsters
-				.add(new MobSpawnSettings.SpawnerData(TFEntities.GIANT_MINER.get(), 1, 1), 10)
-				.add(new MobSpawnSettings.SpawnerData(TFEntities.ARMORED_GIANT.get(), 1, 1), 10)
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.GIANT_MINER, 1, 1), 10)
+				.add(new MobSpawnSettings.SpawnerData(TFEntities.ARMORED_GIANT, 1, 1), 10)
 				.build()
 			), WeightedList.of(), WeightedList.of())
 		);

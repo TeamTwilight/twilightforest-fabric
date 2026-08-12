@@ -1,5 +1,6 @@
 package twilightforest.world.components.structures.finalcastle;
 
+import carminite.util.ServerLifecycleHooks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.FrontAndTop;
 import net.minecraft.nbt.CompoundTag;
@@ -13,8 +14,6 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
-import tamaized.beanification.Autowired;
 import twilightforest.TFMain;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
@@ -26,17 +25,16 @@ public class FinalCastleBossGazeboComponent extends TFStructureComponentOld {
 
 	public static final Identifier GAZEBO_TEMP_POOL = TFMain.prefix("final_castle/temp/gazebo");
 
-	@Autowired
-	private static StructureTemplateDefinitions structureTemplateDefinitions;
+	private static final StructureTemplateDefinitions structureTemplateDefinitions = StructureTemplateDefinitions.INSTANCE;
 
 	@SuppressWarnings("unused")
 	public FinalCastleBossGazeboComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFFCBoGaz.get(), nbt);
+		super(TFStructurePieceTypes.TFFCBoGaz, nbt);
 	}
 
 	@SuppressWarnings("this-escape")
 	public FinalCastleBossGazeboComponent(int i, TFStructureComponentOld keep, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFFCBoGaz.get(), i, x, y, z);
+		super(TFStructurePieceTypes.TFFCBoGaz, i, x, y, z);
 		this.spawnListIndex = -1; // no monsters
 
 		this.setOrientation(keep.getOrientation());
@@ -47,9 +45,9 @@ public class FinalCastleBossGazeboComponent extends TFStructureComponentOld {
 	@Override
 	public void addChildren(StructurePiece parent, StructurePieceAccessor list, RandomSource rand) {
 		this.deco = new StructureTFDecoratorCastle();
-		this.deco.blockState = TFBlocks.VIOLET_CASTLE_RUNE_BRICK.get().defaultBlockState();
+		this.deco.blockState = TFBlocks.VIOLET_CASTLE_RUNE_BRICK.defaultBlockState();
 
-		this.deco.fenceState = TFBlocks.VIOLET_FORCE_FIELD.get().defaultBlockState();
+		this.deco.fenceState = TFBlocks.VIOLET_FORCE_FIELD.defaultBlockState();
 
 		TwilightJigsawPiece templatePiece = structureTemplateDefinitions.initializeTemplateFromPool(GAZEBO_TEMP_POOL, this.getWorldPos(10, -1, 10), this.rotation.rotation().rotate(FrontAndTop.UP_SOUTH), "twilightforest:final_castle/final_boss", rand, this.genDepth + 1, ServerLifecycleHooks.getCurrentServer().getStructureManager());
 		if (templatePiece != null) {

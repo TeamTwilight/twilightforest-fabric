@@ -21,14 +21,14 @@ public class IceTowerBeardComponent extends TFStructureComponentOld {
 	protected final int height;
 
 	public IceTowerBeardComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFITBea.get(), nbt);
+		super(TFStructurePieceTypes.TFITBea, nbt);
 		this.size = nbt.getIntOr("beardSize", 0);
 		this.height = nbt.getIntOr("beardHeight", 0);
 	}
 
 	@SuppressWarnings("this-escape")
 	public IceTowerBeardComponent(int i, TowerWingComponent wing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFITBea.get(), i, x, y, z);
+		super(TFStructurePieceTypes.TFITBea, i, x, y, z);
 
 		// same alignment
 		this.setOrientation(wing.getOrientation());

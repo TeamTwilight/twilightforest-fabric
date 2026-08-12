@@ -17,11 +17,11 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 public class FinalCastleEntranceBottomTowerComponent extends FinalCastleMazeTower13Component {
 
 	public FinalCastleEntranceBottomTowerComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFFCEnBoTo.get(), nbt);
+		super(TFStructurePieceTypes.TFFCEnBoTo, nbt);
 	}
 
 	public FinalCastleEntranceBottomTowerComponent(int i, int x, int y, int z, int floors, int entranceFloor, Direction direction) {
-		super(TFStructurePieceTypes.TFFCEnBoTo.get(), i, x, y, z, floors, entranceFloor, TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);
+		super(TFStructurePieceTypes.TFFCEnBoTo, i, x, y, z, floors, entranceFloor, TFBlocks.YELLOW_CASTLE_RUNE_BRICK.defaultBlockState(), direction);
 
 	}
 

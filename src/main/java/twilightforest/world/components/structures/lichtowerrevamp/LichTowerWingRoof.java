@@ -1,12 +1,12 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
+import carminite.world.IPieceBeardifierModifier;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
@@ -14,15 +14,15 @@ import twilightforest.util.jigsaw.JigsawRecord;
 import twilightforest.world.components.processors.SoftReplaceProcessor;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 
-public class LichTowerWingRoof extends TwilightJigsawPiece implements PieceBeardifierModifier {
+public class LichTowerWingRoof extends TwilightJigsawPiece implements IPieceBeardifierModifier {
 	public LichTowerWingRoof(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-		super(TFStructurePieceTypes.LICH_WING_ROOF.get(), compoundTag, ctx, readSettings(compoundTag));
+		super(TFStructurePieceTypes.LICH_WING_ROOF, compoundTag, ctx, readSettings(compoundTag));
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(SoftReplaceProcessor.INSTANCE));
 	}
 
 	public LichTowerWingRoof(int genDepth, StructureTemplateManager structureManager, Identifier templateLocation, JigsawPlaceContext jigsawContext) {
-		super(TFStructurePieceTypes.LICH_WING_ROOF.get(), genDepth, structureManager, templateLocation, jigsawContext);
+		super(TFStructurePieceTypes.LICH_WING_ROOF, genDepth, structureManager, templateLocation, jigsawContext);
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(SoftReplaceProcessor.INSTANCE));
 	}

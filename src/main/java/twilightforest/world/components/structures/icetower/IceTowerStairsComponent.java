@@ -21,11 +21,11 @@ public class IceTowerStairsComponent extends TowerWingComponent {
 	protected static final int stairsLength = 5;
 
 	public IceTowerStairsComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFITSt.get(), nbt);
+		super(TFStructurePieceTypes.TFITSt, nbt);
 	}
 
 	public IceTowerStairsComponent(int index, int x, int y, int z, int size, int height, Direction direction) {
-		super(TFStructurePieceTypes.TFITSt.get(), index, x, y + 1 - stairsLength, z, size, stairsLength, direction);
+		super(TFStructurePieceTypes.TFITSt, index, x, y + 1 - stairsLength, z, size, stairsLength, direction);
 	}
 
 	@Override

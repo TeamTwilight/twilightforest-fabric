@@ -18,11 +18,11 @@ import twilightforest.init.TFStructurePieceTypes;
 public class MazeDeadEndPaintingComponent extends MazeDeadEndComponent {
 
 	public MazeDeadEndPaintingComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFMMDEP.get(), nbt);
+		super(TFStructurePieceTypes.TFMMDEP, nbt);
 	}
 
 	public MazeDeadEndPaintingComponent(int i, int x, int y, int z, Direction rotation) {
-		super(TFStructurePieceTypes.TFMMDEP.get(), i, x, y, z, rotation);
+		super(TFStructurePieceTypes.TFMMDEP, i, x, y, z, rotation);
 	}
 
 	@Override
@@ -35,10 +35,10 @@ public class MazeDeadEndPaintingComponent extends MazeDeadEndComponent {
 		this.placeBlock(world, Blocks.WALL_TORCH.defaultBlockState().setValue(WallTorchBlock.FACING, Direction.EAST), 4, 3, 3, sbb);
 
 //		// painting
-//		EntityPainting painting = new EntityPainting(world, pCoords.posX, pCoords.posY, pCoords.posZ, this.get); 
+//		EntityPainting painting = new EntityPainting(world, pCoords.posX, pCoords.posY, pCoords.posZ, this.get);
 //		painting.art = getPaintingOfSize(rand, minSize);
 //		painting.setDirection(direction);
-//		
+//
 //		world.addEntity(painting);
 	}
 }

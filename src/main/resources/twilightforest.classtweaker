@@ -76,7 +76,7 @@ extendable class net/minecraft/world/level/block/grower/TreeGrower
 # TFCavesCarver
 accessible field net/minecraft/world/level/levelgen/carver/CaveCarverConfiguration floorLevel Lnet/minecraft/util/valueproviders/FloatProvider;
 accessible method net/minecraft/world/level/levelgen/carver/WorldCarver isDebugEnabled (Lnet/minecraft/world/level/levelgen/carver/CarverConfiguration;)Z
-accessible method net/minecraft/world/level/levelgen/carver/WorldCarver getCarveState (Lnet/minecraft/world/level/levelgen/carver/CarvingContext;Lnet/minecraft/world/level/levelgen/carver/CarverConfiguration;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/levelgen/Aquifer;)Lnet/minecraft/world/level/block/state/BlockState;
+extendable method net/minecraft/world/level/levelgen/carver/WorldCarver getCarveState (Lnet/minecraft/world/level/levelgen/carver/CarvingContext;Lnet/minecraft/world/level/levelgen/carver/CarverConfiguration;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/levelgen/Aquifer;)Lnet/minecraft/world/level/block/state/BlockState;
 
 # TFClientEvents (fetches the biome seed for the aurora shader)
 accessible field net/minecraft/world/level/biome/BiomeManager biomeZoomSeed J

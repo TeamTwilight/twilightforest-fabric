@@ -67,6 +67,6 @@ public class LandmarkWrappedStructure extends LandmarkStructure {
 
 	@Override
 	public StructureType<?> type() {
-		return TFStructureTypes.LANDMARK_WRAPPED.get();
+		return TFStructureTypes.LANDMARK_WRAPPED;
 	}
 }

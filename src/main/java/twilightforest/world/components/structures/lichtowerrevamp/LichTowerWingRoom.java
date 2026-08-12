@@ -1,10 +1,12 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
+import carminite.world.IPieceBeardifierModifier;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntArraySet;
 import it.unimi.dsi.fastutil.ints.IntList;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.*;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -37,12 +39,9 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.neoforged.fml.loading.FMLLoader;
-import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFMain;
-import tamaized.beanification.Autowired;
 import twilightforest.block.ChiseledCanopyShelfBlock;
 import twilightforest.block.LightableBlock;
 import twilightforest.block.SkullCandleBlock;
@@ -67,9 +66,8 @@ import twilightforest.world.components.structures.TwilightJigsawPiece;
 import java.util.*;
 import java.util.function.Predicate;
 
-public final class LichTowerWingRoom extends TwilightJigsawPiece implements PieceBeardifierModifier, SpawnIndexProvider {
-	@Autowired
-	private static LichTowerUtil lichTowerUtil;
+public final class LichTowerWingRoom extends TwilightJigsawPiece implements IPieceBeardifierModifier, SpawnIndexProvider {
+	private static final LichTowerUtil lichTowerUtil = LichTowerUtil.INSTANCE;
 
 	private final int roomSize;
 	private final boolean generateGround;
@@ -79,7 +77,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 	private final int[] allowedCeilingPlacements;
 
 	public LichTowerWingRoom(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-		super(TFStructurePieceTypes.LICH_WING_ROOM.get(), compoundTag, ctx, readSettings(compoundTag));
+		super(TFStructurePieceTypes.LICH_WING_ROOM, compoundTag, ctx, readSettings(compoundTag));
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(lichTowerUtil.getRoomSpawnerProcessor()));
 		this.placeSettings().setLiquidSettings(LiquidSettings.IGNORE_WATERLOGGING);
@@ -89,11 +87,11 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		this.ladderIndex = compoundTag.getIntOr("ladder_index", 0);
 		this.jigsawLadderTarget = this.shouldLadderUpwards() ? this.getSpareJigsaws().get(this.ladderIndex).target() : "";
 		this.roofFallback = compoundTag.getIntOr("roof_index", 0);
-		this.allowedCeilingPlacements = compoundTag.getIntArray("allowed_ceiling_placements").get();
+		this.allowedCeilingPlacements = compoundTag.getIntArray("allowed_ceiling_placements").orElse(new int[]{0});
 	}
 
 	public LichTowerWingRoom(StructureTemplateManager structureManager, int genDepth, JigsawPlaceContext jigsawContext, Identifier roomId, int roomSize, boolean generateGround, boolean canGenerateLadder, RandomSource random) {
-		super(TFStructurePieceTypes.LICH_WING_ROOM.get(), genDepth, structureManager, roomId, jigsawContext);
+		super(TFStructurePieceTypes.LICH_WING_ROOM, genDepth, structureManager, roomId, jigsawContext);
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings.addProcessor(lichTowerUtil.getRoomSpawnerProcessor()));
 		this.placeSettings().setLiquidSettings(LiquidSettings.IGNORE_WATERLOGGING);
@@ -164,7 +162,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		if (nbt.isEmpty() || !nbt.contains("metadata"))
 			return true;
 
-		String metadata = nbt.getString("metadata").get().split("%", 1)[0];
+		String metadata = nbt.getStringOr("metadata", "").split("%", 1)[0];
 		String chance = metadata.startsWith("rope") ? metadata.substring("rope".length()) : metadata.substring("chain".length());
 
 		return chance.isBlank() || StringUtils.isNumeric(chance) && random.nextFloat() > Integer.parseInt(chance) * 0.01f;
@@ -418,14 +416,14 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		String variety = modifiedLabel.length == 2 ? modifiedLabel[1] : label;
 		if (modifiedLabel.length == 2) {
 			if (modifiedLabel[0].startsWith("rope")) {
-				pos = this.danglingBlock(pos, level, random, TFBlocks.ROPE.value().defaultBlockState(), modifiedLabel[0].substring("rope".length()));
+				pos = this.danglingBlock(pos, level, random, TFBlocks.ROPE.defaultBlockState(), modifiedLabel[0].substring("rope".length()));
 				if (pos == null) return;
 			} if (modifiedLabel[0].startsWith("chain")) {
 				pos = this.danglingBlock(pos, level, random, Blocks.IRON_CHAIN.defaultBlockState(), modifiedLabel[0].substring("chain".length()));
 				if (pos == null) return;
 			} else if (modifiedLabel[0].equals("pedestal")) {
 
-				level.setBlock(pos, TFBlocks.TWISTED_STONE_PILLAR.value().defaultBlockState(), Block.UPDATE_CLIENTS);
+				level.setBlock(pos, TFBlocks.TWISTED_STONE_PILLAR.defaultBlockState(), Block.UPDATE_CLIENTS);
 
 				pos = pos.above();
 			} else if (modifiedLabel[0].equals("below")) {
@@ -480,23 +478,23 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		switch (parameters[0]) {
 			case "air", "empty" -> {} // No-Op; block already replaced
 			case "bookshelf" -> level.setBlock(pos, Blocks.BOOKSHELF.defaultBlockState(), Block.UPDATE_CLIENTS);
-			case "canopy_shelf", "canopy_bookshelf" -> level.setBlock(pos, TFBlocks.CANOPY_BOOKSHELF.value().defaultBlockState(), Block.UPDATE_CLIENTS);
+			case "canopy_shelf", "canopy_bookshelf" -> level.setBlock(pos, TFBlocks.CANOPY_BOOKSHELF.defaultBlockState(), Block.UPDATE_CLIENTS);
 			case "stone_brick_slab" -> level.setBlock(pos, Blocks.STONE_BRICK_SLAB.defaultBlockState(), Block.UPDATE_CLIENTS);
 			case "lava" -> level.setBlock(pos, Blocks.LAVA.defaultBlockState(), Block.UPDATE_CLIENTS);
 			case "water" -> level.setBlock(pos, Blocks.WATER.defaultBlockState(), Block.UPDATE_CLIENTS);
-			case "firefly_jar" -> level.setBlock(pos, TFBlocks.FIREFLY_JAR.value().defaultBlockState(), Block.UPDATE_CLIENTS);
-			case "terrorcotta_arcs" -> level.setBlock(pos, TFBlocks.TERRORCOTTA_ARCS.value().defaultBlockState(), Block.UPDATE_CLIENTS);
+			case "firefly_jar" -> level.setBlock(pos, TFBlocks.FIREFLY_JAR.defaultBlockState(), Block.UPDATE_CLIENTS);
+			case "terrorcotta_arcs" -> level.setBlock(pos, TFBlocks.TERRORCOTTA_ARCS.defaultBlockState(), Block.UPDATE_CLIENTS);
 			case "mason_jar" -> this.putMasonJar(pos, level, random, parameters);
-			case "canopy_slab" -> level.setBlock(pos, TFBlocks.CANOPY_SLAB.value().defaultBlockState(), Block.UPDATE_CLIENTS);
-			case "canopy_stairs" -> level.setBlock(pos, TFBlocks.CANOPY_STAIRS.value().defaultBlockState(), Block.UPDATE_CLIENTS);
+			case "canopy_slab" -> level.setBlock(pos, TFBlocks.CANOPY_SLAB.defaultBlockState(), Block.UPDATE_CLIENTS);
+			case "canopy_stairs" -> level.setBlock(pos, TFBlocks.CANOPY_STAIRS.defaultBlockState(), Block.UPDATE_CLIENTS);
 			case "creeper_head" -> this.putHead(pos, level, random, parameters, Blocks.CREEPER_HEAD, dataRotation);
 			case "skeleton_skull" -> this.putHead(pos, level, random, parameters, Blocks.SKELETON_SKULL, dataRotation);
 			case "wither_skull" -> this.putHead(pos, level, random, parameters, Blocks.WITHER_SKELETON_SKULL, dataRotation);
 			case "zombie_head" -> this.putHead(pos, level, random, parameters, Blocks.ZOMBIE_HEAD, dataRotation);
-			case "creeper_candle" -> this.putHeadCandles(pos, level, random, parameters, TFBlocks.CREEPER_SKULL_CANDLE.value(), dataRotation);
-			case "skeleton_candle" -> this.putHeadCandles(pos, level, random, parameters, TFBlocks.SKELETON_SKULL_CANDLE.value(), dataRotation);
-			case "wither_candle" -> this.putHeadCandles(pos, level, random, parameters, TFBlocks.WITHER_SKELE_SKULL_CANDLE.value(), dataRotation);
-			case "zombie_candle" -> this.putHeadCandles(pos, level, random, parameters, TFBlocks.ZOMBIE_SKULL_CANDLE.value(), dataRotation);
+			case "creeper_candle" -> this.putHeadCandles(pos, level, random, parameters, TFBlocks.CREEPER_SKULL_CANDLE, dataRotation);
+			case "skeleton_candle" -> this.putHeadCandles(pos, level, random, parameters, TFBlocks.SKELETON_SKULL_CANDLE, dataRotation);
+			case "wither_candle" -> this.putHeadCandles(pos, level, random, parameters, TFBlocks.WITHER_SKELE_SKULL_CANDLE, dataRotation);
+			case "zombie_candle" -> this.putHeadCandles(pos, level, random, parameters, TFBlocks.ZOMBIE_SKULL_CANDLE, dataRotation);
 			case "spawner" -> this.putSpawner(pos, level, random, parameters);
 			case "sinister_spawner" -> this.putSinisterSpawner(pos, level, random, parameters);
 			case "brewing_stand" -> this.putBrewingStand(pos, level, random);
@@ -524,7 +522,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 			case "water_cauldron" -> this.putWaterCauldron(parameters, random, level, pos);
 			case "zombie_trap" -> this.putZombieTrap(random, level, pos);
 			case "wrought_iron_post" -> {
-				level.setBlock(pos, TFBlocks.WROUGHT_IRON_FENCE.value().defaultBlockState().setValue(WroughtIronFenceBlock.POST, WroughtIronFenceBlock.PostState.POST), Block.UPDATE_CLIENTS);
+				level.setBlock(pos, TFBlocks.WROUGHT_IRON_FENCE.defaultBlockState().setValue(WroughtIronFenceBlock.POST, WroughtIronFenceBlock.PostState.POST), Block.UPDATE_CLIENTS);
 				level.getChunk(pos).markPosForPostprocessing(pos);
 			}
 			case "empty_lectern" -> {
@@ -535,7 +533,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 				if (random.nextInt(4) != 0) {
 					this.putCandles(parameters, random, level, pos.above(), Blocks.CANDLE.defaultBlockState());
 				} else {
-					this.putHeadCandles(pos.above(), level, random, parameters, TFBlocks.SKELETON_SKULL_CANDLE.value(), dataRotation);
+					this.putHeadCandles(pos.above(), level, random, parameters, TFBlocks.SKELETON_SKULL_CANDLE, dataRotation);
 				}
 
 				Rotation stateRotation = this.placeSettings.getRotation().getRotated(dataRotation);
@@ -546,7 +544,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 				BlockState blockState = this.blockFromLabel(parameters[0]).rotate(stateRotation);
 				if (!blockState.isAir()) {
 					level.setBlock(pos, blockState, Block.UPDATE_CLIENTS);
-				} else if (!FMLLoader.getCurrent().isProduction()) {
+				} else if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
 					TFMain.LOGGER.warn("Variation label {} ({}) obtained {} in {}", parameters[0], parameters, blockState, this.templateName);
 				}
 			}
@@ -554,7 +552,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 	}
 
 	private void putMasonJar(BlockPos pos, WorldGenLevel level, RandomSource random, String[] parameters) {
-		BlockState jar = TFBlocks.MASON_JAR.value().defaultBlockState();
+		BlockState jar = TFBlocks.MASON_JAR.defaultBlockState();
 		level.setBlock(pos, jar, Block.UPDATE_CLIENTS);
 
 		if (parameters.length >= 2) {
@@ -585,7 +583,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		}
 
 		if (level.getBlockState(pos.above()).is(TFBlocks.CANOPY_BOOKSHELF)) {
-			level.setBlock(pos.above(), TFBlocks.CANOPY_SLAB.value().defaultBlockState().setValue(SlabBlock.TYPE, SlabType.TOP), Block.UPDATE_CLIENTS);
+			level.setBlock(pos.above(), TFBlocks.CANOPY_SLAB.defaultBlockState().setValue(SlabBlock.TYPE, SlabType.TOP), Block.UPDATE_CLIENTS);
 		}
 	}
 
@@ -624,12 +622,12 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 	}
 
 	private void putSinisterSpawner(BlockPos pos, WorldGenLevel level, RandomSource random, String[] parameters) {
-		level.setBlock(pos, TFBlocks.SINISTER_SPAWNER.value().defaultBlockState(), Block.UPDATE_CLIENTS);
+		level.setBlock(pos, TFBlocks.SINISTER_SPAWNER.defaultBlockState(), Block.UPDATE_CLIENTS);
 
 		if (!(level.getBlockEntity(pos) instanceof SinisterSpawnerBlockEntity spawner))
 			return;
 
-		spawner.addParticle(TFParticleType.OMINOUS_FLAME.value(), false);
+		spawner.addParticle(TFParticleType.OMINOUS_FLAME, false);
 		spawner.setLootTable(TFLootTables.OMINOUS_SPAWNER_DROPS);
 
 		this.configureBaseSpawner(pos, random, parameters, spawner.getSpawner());
@@ -668,8 +666,8 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 			case 7, 8, 9 -> EntityType.SKELETON;
 			case 6 -> EntityType.SPIDER;
 			case 5 -> EntityType.CAVE_SPIDER;
-			case 4 -> TFEntities.HEDGE_SPIDER.value();
-			case 3 -> TFEntities.SWARM_SPIDER.value();
+			case 4 -> TFEntities.HEDGE_SPIDER;
+			case 3 -> TFEntities.SWARM_SPIDER;
 			default -> EntityType.ZOMBIE;
 		};
 	}
@@ -677,8 +675,8 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 	private static EntityType<?> randomMobFromParams(RandomSource random, String[] monsters) {
 		String label = Util.getRandom(monsters, random);
 		return switch (label) {
-			case "hedge_spider" -> TFEntities.HEDGE_SPIDER.value();
-			case "swarm_spider" -> TFEntities.SWARM_SPIDER.value();
+			case "hedge_spider" -> TFEntities.HEDGE_SPIDER;
+			case "swarm_spider" -> TFEntities.SWARM_SPIDER;
 			default -> EntityType.byString(label).orElse(EntityType.ZOMBIE);
 		};
 	}
@@ -699,7 +697,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 
 	private void putZombieTrap(RandomSource random, WorldGenLevel level, BlockPos pos) {
 		WroughtIronFenceBlock.PostState postProperty = level.getBlockState(pos.above()).isAir() ? WroughtIronFenceBlock.PostState.CAPPED : WroughtIronFenceBlock.PostState.POST;
-		BlockState fenceBlock = TFBlocks.WROUGHT_IRON_FENCE.value().defaultBlockState().setValue(WroughtIronFenceBlock.POST, postProperty);
+		BlockState fenceBlock = TFBlocks.WROUGHT_IRON_FENCE.defaultBlockState().setValue(WroughtIronFenceBlock.POST, postProperty);
 		level.setBlock(pos, fenceBlock, Block.UPDATE_CLIENTS);
 		level.getChunk(pos).markPosForPostprocessing(pos);
 
@@ -719,7 +717,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		trapEntity.setPersistenceRequired();
 		trapEntity.setLeashedTo(knot, false);
 		trapEntity.snapTo(zombiePos.getX() + 0.5, zombiePos.getY() - 1, zombiePos.getZ() + 0.5);
-		trapEntity.setData(TFDataAttachments.LEASH_PATHFINDER_OVERRIDE, Unit.INSTANCE);
+		trapEntity.setAttached(TFDataAttachments.LEASH_PATHFINDER_OVERRIDE, Unit.INSTANCE);
 		level.addFreshEntity(trapEntity);
 	}
 
@@ -744,9 +742,9 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 
 	private BlockState blockFromLabel(String label) {
 		if (label.contains(".")) {
-			return BuiltInRegistries.BLOCK.get(Identifier.bySeparator(label, '.')).get().value().defaultBlockState();
+			return BuiltInRegistries.BLOCK.get(Identifier.bySeparator(label, '.')).orElseThrow().value().defaultBlockState();
 		} else {
-			return BuiltInRegistries.BLOCK.get(Identifier.parse(label)).get().value().defaultBlockState();
+			return BuiltInRegistries.BLOCK.get(Identifier.parse(label)).orElseThrow().value().defaultBlockState();
 		}
 	}
 
@@ -767,14 +765,14 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		}
 
 		if (level.getBlockState(pos.above()).is(TFBlocks.CANOPY_BOOKSHELF)) {
-			level.setBlock(pos.above(), TFBlocks.CANOPY_SLAB.value().defaultBlockState().setValue(SlabBlock.TYPE, SlabType.TOP), Block.UPDATE_CLIENTS);
+			level.setBlock(pos.above(), TFBlocks.CANOPY_SLAB.defaultBlockState().setValue(SlabBlock.TYPE, SlabType.TOP), Block.UPDATE_CLIENTS);
 		}
 	}
 
 	private void putTrappableBookshelf(BlockPos pos, WorldGenLevel level, RegistryAccess registryAccess, RandomSource random, Rotation dataRotation) {
 		boolean isHostile = random.nextInt(12) == 0;
 		Rotation stateRotation = this.placeSettings.getRotation().getRotated(dataRotation);
-		BlockState shelf = TFBlocks.CHISELED_CANOPY_BOOKSHELF.value().defaultBlockState().setValue(ChiseledCanopyShelfBlock.SPAWNER, isHostile).rotate(stateRotation);
+		BlockState shelf = TFBlocks.CHISELED_CANOPY_BOOKSHELF.defaultBlockState().setValue(ChiseledCanopyShelfBlock.SPAWNER, isHostile).rotate(stateRotation);
 
 		IntList filledSlots = new IntArrayList();
 		for (int index = 0; index < 6; index++) {
@@ -793,7 +791,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 			}
 
 			if (isHostile) {
-				shelfBlockEntity.getSpawner().setEntityId(TFEntities.DEATH_TOME.value(), null, random, pos);
+				shelfBlockEntity.getSpawner().setEntityId(TFEntities.DEATH_TOME, null, random, pos);
 			}
 		}
 	}
@@ -860,7 +858,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements Piec
 		level.setBlock(pos, lectern, Block.UPDATE_CLIENTS);
 
 		if (putMimic) {
-			DeathTome tomeMimic = TFEntities.DEATH_TOME.value().create(level.getLevel(), EntitySpawnReason.STRUCTURE);
+			DeathTome tomeMimic = TFEntities.DEATH_TOME.create(level.getLevel(), EntitySpawnReason.STRUCTURE);
 			if (tomeMimic != null) {
 				tomeMimic.setPersistenceRequired();
 				tomeMimic.snapTo(pos, lectern.getValue(HorizontalDirectionalBlock.FACING).toYRot(), 0);

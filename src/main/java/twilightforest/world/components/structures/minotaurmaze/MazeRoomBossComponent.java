@@ -20,11 +20,11 @@ import twilightforest.loot.TFLootTables;
 public class MazeRoomBossComponent extends MazeRoomComponent {
 
 	public MazeRoomBossComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFMMRB.get(), nbt);
+		super(TFStructurePieceTypes.TFMMRB, nbt);
 	}
 
 	public MazeRoomBossComponent(int i, RandomSource rand, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFMMRB.get(), i, rand, x, y, z);
+		super(TFStructurePieceTypes.TFMMRB, i, rand, x, y, z);
 
 		//get the fuck outta here
 		this.spawnListIndex = Integer.MAX_VALUE;
@@ -102,7 +102,7 @@ public class MazeRoomBossComponent extends MazeRoomComponent {
 		generateBox(world, sbb, 8, 4, 8, 10, 5, 10, redMushroom, AIR, false);
 
 		// the moo-cen-mino-shrom-taur!
-		final BlockState taurSpawner = TFBlocks.MINOSHROOM_BOSS_SPAWNER.get().defaultBlockState();
+		final BlockState taurSpawner = TFBlocks.MINOSHROOM_BOSS_SPAWNER.defaultBlockState();
 		setBlockStateRotated(world, taurSpawner, 7, 2, 7, Rotation.NONE, sbb);
 	}
 }

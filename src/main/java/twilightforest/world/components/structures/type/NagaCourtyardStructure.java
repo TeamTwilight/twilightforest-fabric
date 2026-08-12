@@ -3,6 +3,7 @@ package twilightforest.world.components.structures.type;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.RandomSource;
@@ -40,13 +41,13 @@ public class NagaCourtyardStructure extends ConquerableStructure implements Cust
 
 	@Override
 	public StructureType<?> type() {
-		return TFStructureTypes.NAGA_COURTYARD.get();
+		return TFStructureTypes.NAGA_COURTYARD;
 	}
 
 	public static NagaCourtyardStructure buildStructureConfig(BootstrapContext<Structure> context) {
 		return new NagaCourtyardStructure(
 			Optional.of(new DecorationConfig(3, false, true, true)),
-			true, Optional.of(TFMapDecorations.NAGA_COURTYARD),
+			true, Optional.of(BuiltInRegistries.MAP_DECORATION_TYPE.wrapAsHolder(TFMapDecorations.NAGA_COURTYARD)),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_NAGA_COURTYARD_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, _ -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning

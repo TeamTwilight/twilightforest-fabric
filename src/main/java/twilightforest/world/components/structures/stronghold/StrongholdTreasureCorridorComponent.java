@@ -21,11 +21,11 @@ import twilightforest.loot.TFLootTables;
 public class StrongholdTreasureCorridorComponent extends KnightStrongholdComponent {
 
 	public StrongholdTreasureCorridorComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFSTC.get(), nbt);
+		super(TFStructurePieceTypes.TFSTC, nbt);
 	}
 
 	public StrongholdTreasureCorridorComponent(int i, Direction facing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFSTC.get(), i, facing, x, y, z);
+		super(TFStructurePieceTypes.TFSTC, i, facing, x, y, z);
 	}
 
 	@Override

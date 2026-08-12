@@ -16,7 +16,6 @@ import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
-import tamaized.beanification.Autowired;
 import twilightforest.TFMain;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.tags.TFBiomeTags;
@@ -29,9 +28,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class CampStructure extends Structure implements DecorationClearance {
-
-	@Autowired
-	private static StructureTemplateDefinitions structureTemplateDefinitions;
+	private static final StructureTemplateDefinitions structureTemplateDefinitions = StructureTemplateDefinitions.INSTANCE;
 
 	public static final MapCodec<CampStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		Structure.settingsCodec(instance)
@@ -68,7 +65,7 @@ public class CampStructure extends Structure implements DecorationClearance {
 
 	@Override
 	public StructureType<?> type() {
-		return TFStructureTypes.CAMP.value();
+		return TFStructureTypes.CAMP;
 	}
 
 	public static CampStructure buildStructureConfig(BootstrapContext<Structure> context) {

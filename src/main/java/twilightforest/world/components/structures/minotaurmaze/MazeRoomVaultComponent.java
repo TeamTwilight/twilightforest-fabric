@@ -19,11 +19,11 @@ import twilightforest.loot.TFLootTables;
 public class MazeRoomVaultComponent extends MazeRoomComponent {
 
 	public MazeRoomVaultComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFMMRV.get(), nbt);
+		super(TFStructurePieceTypes.TFMMRV, nbt);
 	}
 
 	public MazeRoomVaultComponent(int i, RandomSource rand, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFMMRV.get(), i, rand, x, y, z);
+		super(TFStructurePieceTypes.TFMMRV, i, rand, x, y, z);
 
 		// specify a non-existant high spawn list value to stop actual monster spawns
 		this.spawnListIndex = Integer.MAX_VALUE;
@@ -32,8 +32,8 @@ public class MazeRoomVaultComponent extends MazeRoomComponent {
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// fill room with bricks
-		generateBox(world, sbb, 0, 1, 0, 15, 4, 15, TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState(), AIR, false);
-		generateBox(world, sbb, 0, 2, 0, 15, 3, 15, TFBlocks.MAZESTONE_BRICK.get().defaultBlockState(), AIR, false);
+		generateBox(world, sbb, 0, 1, 0, 15, 4, 15, TFBlocks.DECORATIVE_MAZESTONE.defaultBlockState(), AIR, false);
+		generateBox(world, sbb, 0, 2, 0, 15, 3, 15, TFBlocks.MAZESTONE_BRICK.defaultBlockState(), AIR, false);
 
 		// 4x4 room in the middle
 		generateAirBox(world, sbb, 6, 2, 6, 9, 3, 9);

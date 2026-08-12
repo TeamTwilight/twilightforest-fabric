@@ -38,6 +38,6 @@ public record LootMarkerHandler(BlockStateProvider provider, ResourceKey<LootTab
 
 	@Override
 	public TemplateMarkerHandlerType getType() {
-		return TemplateMarkerHandlers.LOOT.value();
+		return TemplateMarkerHandlers.LOOT;
 	}
 }

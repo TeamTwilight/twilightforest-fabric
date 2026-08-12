@@ -19,7 +19,7 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 public class MazeCorridorComponent extends TFStructureComponentOld {
 
 	public MazeCorridorComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(TFStructurePieceTypes.TFMMC.get(), nbt);
+		this(TFStructurePieceTypes.TFMMC, nbt);
 	}
 
 	public MazeCorridorComponent(StructurePieceType piece, CompoundTag nbt) {

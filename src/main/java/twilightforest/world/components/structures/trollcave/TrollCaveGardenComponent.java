@@ -31,12 +31,12 @@ import java.util.function.Predicate;
 public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 
 	public TrollCaveGardenComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFTCGard.get(), ctx, nbt);
+		super(TFStructurePieceTypes.TFTCGard, ctx, nbt);
 	}
 
 	@SuppressWarnings("this-escape")
 	public TrollCaveGardenComponent(int index, int x, int y, int z, int caveSize, int caveHeight, Direction direction, Holder.Reference<StructureSpeleothemConfig> speleothemConfig) {
-		super(TFStructurePieceTypes.TFTCGard.get(), index, x, y, z, speleothemConfig);
+		super(TFStructurePieceTypes.TFTCGard, index, x, y, z, speleothemConfig);
 		this.size = caveSize;
 		this.height = caveHeight;
 		this.setOrientation(direction);
@@ -108,7 +108,7 @@ public class TrollCaveGardenComponent extends TrollCaveMainComponent {
 
 		BlockPos pos = new BlockPos(dx, dy, dz);
 		if (sbb.isInside(pos)) {
-			world.registryAccess().lookupOrThrow(Registries.CONFIGURED_FEATURE).get(feature).get().value().place(world, generator, rand, pos);
+			world.registryAccess().lookupOrThrow(Registries.CONFIGURED_FEATURE).get(feature).orElseThrow().value().place(world, generator, rand, pos);
 		}
 	}
 }

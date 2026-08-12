@@ -21,7 +21,7 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 public class MazeRoomComponent extends TFStructureComponentOld {
 
 	public MazeRoomComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(TFStructurePieceTypes.TFMMR.get(), nbt);
+		this(TFStructurePieceTypes.TFMMR, nbt);
 	}
 
 	public MazeRoomComponent(StructurePieceType piece, CompoundTag nbt) {
@@ -47,8 +47,8 @@ public class MazeRoomComponent extends TFStructureComponentOld {
 	@Override
 	public void postProcess(WorldGenLevel world, StructureManager manager, ChunkGenerator generator, RandomSource rand, BoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// floor border
-		generateBox(world, sbb, 1, 0, 1, 14, 0, 14, TFBlocks.MAZESTONE_BORDER.get().defaultBlockState(), AIR, true);
-		generateBox(world, sbb, 2, 0, 2, 13, 0, 13, TFBlocks.MAZESTONE_MOSAIC.get().defaultBlockState(), AIR, true);
+		generateBox(world, sbb, 1, 0, 1, 14, 0, 14, TFBlocks.MAZESTONE_BORDER.defaultBlockState(), AIR, true);
+		generateBox(world, sbb, 2, 0, 2, 13, 0, 13, TFBlocks.MAZESTONE_MOSAIC.defaultBlockState(), AIR, true);
 
 		// doorways
 		if (this.getBlock(world, 7, 1, 0, sbb).getBlock() == Blocks.AIR) {

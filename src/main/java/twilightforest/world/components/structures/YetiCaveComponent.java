@@ -25,11 +25,11 @@ import twilightforest.init.TFStructurePieceTypes;
 public class YetiCaveComponent extends HollowHillComponent {
 
 	public YetiCaveComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(ctx, TFStructurePieceTypes.TFYeti.get(), nbt);
+		super(ctx, TFStructurePieceTypes.TFYeti, nbt);
 	}
 
 	public YetiCaveComponent(int i, int x, int y, int z, Holder.Reference<StructureSpeleothemConfig> speleothemConfig) {
-		super(TFStructurePieceTypes.TFYeti.get(), i, 2, x, y, z, speleothemConfig);
+		super(TFStructurePieceTypes.TFYeti, i, 2, x, y, z, speleothemConfig);
 
 		// FIXME Get rid of HollowHillComponent so this ugly hack can be sanitized
 		this.boundingBox = new BoundingBox(
@@ -75,7 +75,7 @@ public class YetiCaveComponent extends HollowHillComponent {
 		}
 
 		// spawn alpha yeti
-		final BlockState yetiSpawner = TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get().defaultBlockState();
+		final BlockState yetiSpawner = TFBlocks.ALPHA_YETI_BOSS_SPAWNER.defaultBlockState();
 		this.setBlockStateRotated(world, yetiSpawner, this.radius, 1, this.radius, Rotation.NONE, writeableBounds);
 	}
 

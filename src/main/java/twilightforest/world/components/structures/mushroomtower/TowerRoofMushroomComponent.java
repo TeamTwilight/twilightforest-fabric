@@ -21,12 +21,12 @@ import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 public class TowerRoofMushroomComponent extends TowerRoofComponent {
 
 	public TowerRoofMushroomComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFMTRoofMush.get(), nbt);
+		super(TFStructurePieceTypes.TFMTRoofMush, nbt);
 	}
 
 	@SuppressWarnings("this-escape")
 	public TowerRoofMushroomComponent(int i, TowerWingComponent wing, float pHang, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFMTRoofMush.get(), i, x, y, z);
+		super(TFStructurePieceTypes.TFMTRoofMush, i, x, y, z);
 		this.height = wing.size;
 		int overhang = (int) (height * pHang);
 		this.size = height + (overhang * 2);

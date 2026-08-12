@@ -17,11 +17,11 @@ import twilightforest.init.TFStructurePieceTypes;
 public class MazeRoomCollapseComponent extends MazeRoomComponent {
 
 	public MazeRoomCollapseComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFMMRC.get(), nbt);
+		super(TFStructurePieceTypes.TFMMRC, nbt);
 	}
 
 	public MazeRoomCollapseComponent(int i, RandomSource rand, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFMMRC.get(), i, rand, x, y, z);
+		super(TFStructurePieceTypes.TFMMRC, i, rand, x, y, z);
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class MazeRoomCollapseComponent extends MazeRoomComponent {
 					this.generateAirBox(world, sbb, x, gravel, z, x, gravel + 5, z);
 				} else if (root > 0) {
 					this.generateBox(world, sbb, x, 5, z, x, 5 + root, z, Blocks.DIRT.defaultBlockState(), AIR, true);
-					this.generateBox(world, sbb, x, 5 - rand.nextInt(5), z, x, 5, z, TFBlocks.ROOT_STRAND.get().defaultBlockState(), AIR, false);
+					this.generateBox(world, sbb, x, 5 - rand.nextInt(5), z, x, 5, z, TFBlocks.ROOT_STRAND.defaultBlockState(), AIR, false);
 				} else if (rand.nextInt(dist + 1) > 0) {
 					// remove ceiling
 					this.generateAirBox(world, sbb, x, 5, z, x, 5, z);

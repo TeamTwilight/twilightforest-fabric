@@ -22,11 +22,11 @@ import twilightforest.util.features.FeaturePlacers;
 
 public class HydraLairComponent extends HollowHillComponent {
 	public HydraLairComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(ctx, TFStructurePieceTypes.TFHydra.get(), nbt);
+		super(ctx, TFStructurePieceTypes.TFHydra, nbt);
 	}
 
 	public HydraLairComponent(int i, int x, int y, int z, Holder.Reference<StructureSpeleothemConfig> speleothemConfig) {
-		super(TFStructurePieceTypes.TFHydra.get(), i, 2, x, y + 2, z, speleothemConfig);
+		super(TFStructurePieceTypes.TFHydra, i, 2, x, y + 2, z, speleothemConfig);
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class HydraLairComponent extends HollowHillComponent {
 		this.generateSpeleothems(world, rand, writeableBounds);
 
 		// boss spawner seems important
-		placeBlock(world, TFBlocks.HYDRA_BOSS_SPAWNER.get().defaultBlockState(), 27, 3, 27, writeableBounds);
+		placeBlock(world, TFBlocks.HYDRA_BOSS_SPAWNER.defaultBlockState(), 27, 3, 27, writeableBounds);
 	}
 
 	private void generateSpeleothems(WorldGenLevel world, RandomSource rand, BoundingBox writeableBounds) {

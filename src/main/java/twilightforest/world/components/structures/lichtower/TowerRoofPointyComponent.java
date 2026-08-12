@@ -18,7 +18,7 @@ import twilightforest.init.TFStructurePieceTypes;
 public class TowerRoofPointyComponent extends TowerRoofComponent {
 
 	public TowerRoofPointyComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFLTRP.get(), nbt);
+		super(TFStructurePieceTypes.TFLTRP, nbt);
 	}
 
 	public TowerRoofPointyComponent(StructurePieceType piece, CompoundTag nbt) {

@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class FinalCastleDamagedTowerComponent extends FinalCastleMazeTower13Component {
 
 	public FinalCastleDamagedTowerComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(TFStructurePieceTypes.TFFCDamT.get(), nbt);
+		this(TFStructurePieceTypes.TFFCDamT, nbt);
 	}
 
 	public FinalCastleDamagedTowerComponent(StructurePieceType piece, CompoundTag nbt) {
@@ -31,7 +31,7 @@ public class FinalCastleDamagedTowerComponent extends FinalCastleMazeTower13Comp
 	}
 
 	public FinalCastleDamagedTowerComponent(StructurePieceType piece, RandomSource rand, int i, int x, int y, int z, Direction direction) {
-		super(piece, rand, i, x, y, z, TFBlocks.YELLOW_CASTLE_RUNE_BRICK.get().defaultBlockState(), direction);  //TODO: change rune color
+		super(piece, rand, i, x, y, z, TFBlocks.YELLOW_CASTLE_RUNE_BRICK.defaultBlockState(), direction);  //TODO: change rune color
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class FinalCastleDamagedTowerComponent extends FinalCastleMazeTower13Comp
 		}
 
 		// add foundation
-		FinalCastleFoundation13Component foundation = new FinalCastleFoundation13Component(TFStructurePieceTypes.TFFCToF13.get(), 0, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
+		FinalCastleFoundation13Component foundation = new FinalCastleFoundation13Component(TFStructurePieceTypes.TFFCToF13, 0, this, getLocatorPosition().getX(), getLocatorPosition().getY(), getLocatorPosition().getZ());
 		list.addPiece(foundation);
 		foundation.addChildren(this, list, rand);
 
@@ -88,7 +88,7 @@ public class FinalCastleDamagedTowerComponent extends FinalCastleMazeTower13Comp
 				for (int z = this.boundingBox.minZ() - 2; z <= this.boundingBox.maxZ() + 2; z++) {
 					pos.set(x, y, z);
 					if (sbb.isInside(pos)) {
-						if (world.getBlockState(pos).getBlock() == TFBlocks.DEADROCK.get()) {
+						if (world.getBlockState(pos).getBlock() == TFBlocks.DEADROCK) {
 							hitDeadRock = true;
 						}
 						determineBlockDestroyed(world, areas, y, x, z);

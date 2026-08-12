@@ -1,5 +1,6 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
+import carminite.world.IPieceBeardifierModifier;
 import com.google.common.collect.Streams;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -30,7 +31,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnorePr
 import net.minecraft.world.level.levelgen.structure.templatesystem.JigsawReplacementProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import net.neoforged.neoforge.common.world.PieceBeardifierModifier;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFMain;
 import twilightforest.block.WroughtIronFenceBlock;
@@ -51,11 +51,11 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBeardifierModifier, SortablePiece, SpawnIndexProvider.Deny {
+public class LichPerimeterFence extends TwilightJigsawPiece implements IPieceBeardifierModifier, SortablePiece, SpawnIndexProvider.Deny {
 	private final @Nullable BlockPos leashPos;
 
 	public LichPerimeterFence(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-		super(TFStructurePieceTypes.LICH_PERIMETER_FENCE.value(), compoundTag, ctx, readSettings(compoundTag));
+		super(TFStructurePieceTypes.LICH_PERIMETER_FENCE, compoundTag, ctx, readSettings(compoundTag));
 
 		this.placeSettings.addProcessor(JigsawReplacementProcessor.INSTANCE);
 		this.placeSettings.addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
@@ -66,12 +66,12 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 	}
 
 	public LichPerimeterFence(StructureTemplateManager structureManager, JigsawPlaceContext jigsawContext, Identifier templateId, RandomSource random) {
-		super(TFStructurePieceTypes.LICH_PERIMETER_FENCE.value(), 0, structureManager, templateId, jigsawContext);
+		super(TFStructurePieceTypes.LICH_PERIMETER_FENCE, 0, structureManager, templateId, jigsawContext);
 
 		this.placeSettings.addProcessor(JigsawReplacementProcessor.INSTANCE);
 		this.placeSettings.addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
 
-		List<StructureTemplate.StructureBlockInfo> fenceBlocks = random.nextFloat() > 0.25 ? List.of() : this.template.filterBlocks(BlockPos.ZERO, this.placeSettings, TFBlocks.WROUGHT_IRON_FENCE.value(), true);
+		List<StructureTemplate.StructureBlockInfo> fenceBlocks = random.nextFloat() > 0.25 ? List.of() : this.template.filterBlocks(BlockPos.ZERO, this.placeSettings, TFBlocks.WROUGHT_IRON_FENCE, true);
 		if (!fenceBlocks.isEmpty()) {
 			fenceBlocks.removeIf(info -> info.state().getValue(WroughtIronFenceBlock.POST) != WroughtIronFenceBlock.PostState.POST);
 			Util.shuffle(fenceBlocks, random);
@@ -359,7 +359,7 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements PieceBear
 		boundedEntity.setPersistenceRequired();
 		boundedEntity.setLeashedTo(knot, false);
 		boundedEntity.snapTo(zombiePos.getX() + 0.5, zombiePos.getY() - 1, zombiePos.getZ() + 0.5);
-		boundedEntity.setData(TFDataAttachments.LEASH_PATHFINDER_OVERRIDE, Unit.INSTANCE);
+		boundedEntity.setAttached(TFDataAttachments.LEASH_PATHFINDER_OVERRIDE, Unit.INSTANCE);
 		level.addFreshEntity(boundedEntity);
 	}
 

@@ -20,12 +20,12 @@ public record BlockPlaceMarkerHandler(BlockStateProvider provider) implements Te
 
 	@Override
 	public boolean handleDataMarker(String label, BlockPos pos, WorldGenLevel level, RandomSource random, BoundingBox chunkBounds, ChunkGenerator chunkGen, Rotation rotation) {
-		BlockState state = this.provider.getState(level, random, pos).rotate(level, pos, rotation);
+		BlockState state = this.provider.getState(level, random, pos).rotate(rotation);
 		return level.setBlock(pos, state, Block.UPDATE_ALL);
 	}
 
 	@Override
 	public TemplateMarkerHandlerType getType() {
-		return TemplateMarkerHandlers.BLOCK_PLACEMENT.value();
+		return TemplateMarkerHandlers.BLOCK_PLACEMENT;
 	}
 }

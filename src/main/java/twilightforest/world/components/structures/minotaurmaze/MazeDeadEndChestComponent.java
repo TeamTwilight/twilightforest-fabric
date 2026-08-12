@@ -20,7 +20,7 @@ import twilightforest.loot.TFLootTables;
 public class MazeDeadEndChestComponent extends MazeDeadEndComponent {
 
 	public MazeDeadEndChestComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(TFStructurePieceTypes.TFMMDEC.get(), nbt);
+		this(TFStructurePieceTypes.TFMMDEC, nbt);
 	}
 
 	public MazeDeadEndChestComponent(StructurePieceType piece, CompoundTag nbt) {
@@ -54,8 +54,8 @@ public class MazeDeadEndChestComponent extends MazeDeadEndComponent {
 //		this.setBlockState(world, Blocks.TORCH, 0, 4, 3, 4, sbb);
 
 		// doorway w/ bars
-		this.generateBox(world, sbb, 1, 1, 0, 4, 3, 1, TFBlocks.CUT_MAZESTONE.get().defaultBlockState(), AIR, false);
-		this.generateBox(world, sbb, 1, 4, 0, 4, 4, 1, TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 1, 1, 0, 4, 3, 1, TFBlocks.CUT_MAZESTONE.defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 1, 4, 0, 4, 4, 1, TFBlocks.DECORATIVE_MAZESTONE.defaultBlockState(), AIR, false);
 		this.generateBox(world, sbb, 2, 1, 0, 3, 3, 1, Blocks.IRON_BARS.defaultBlockState(), AIR, false);
 	}
 }

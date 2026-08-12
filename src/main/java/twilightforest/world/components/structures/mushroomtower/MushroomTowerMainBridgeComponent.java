@@ -13,12 +13,12 @@ import twilightforest.init.TFStructurePieceTypes;
 public class MushroomTowerMainBridgeComponent extends MushroomTowerBridgeComponent {
 
 	public MushroomTowerMainBridgeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFMTMB.get(), nbt);
+		super(TFStructurePieceTypes.TFMTMB, nbt);
 	}
 
 	protected MushroomTowerMainBridgeComponent(int i, int x, int y, int z, int pHeight, Direction direction) {
 		// bridge only 11 long
-		super(TFStructurePieceTypes.TFMTMB.get(), i, x, y, z, 11, pHeight, direction);
+		super(TFStructurePieceTypes.TFMTMB, i, x, y, z, 11, pHeight, direction);
 	}
 
 	@Override

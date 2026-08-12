@@ -1,5 +1,6 @@
 package twilightforest.world.components.structures.finalcastle;
 
+import carminite.util.ServerLifecycleHooks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
@@ -15,8 +16,6 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
-import tamaized.beanification.Autowired;
 import twilightforest.TFMain;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
@@ -30,16 +29,15 @@ public class FinalCastleLargeTowerComponent extends TowerWingComponent {
 
 	public static final Identifier LARGE_TOWER_TEMP_POOL = TFMain.prefix("final_castle/temp/large_tower");
 
-	@Autowired
-	private static StructureTemplateDefinitions structureTemplateDefinitions;
+	private static final StructureTemplateDefinitions structureTemplateDefinitions = StructureTemplateDefinitions.INSTANCE;
 
 	public FinalCastleLargeTowerComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFFCLaTo.get(), nbt);
+		super(TFStructurePieceTypes.TFFCLaTo, nbt);
 	}
 
 	@SuppressWarnings("this-escape")
 	public FinalCastleLargeTowerComponent(int i, int x, int y, int z, Direction rotation) {
-		super(TFStructurePieceTypes.TFFCLaTo.get(), i, x, y, z);
+		super(TFStructurePieceTypes.TFFCLaTo, i, x, y, z);
 		this.setOrientation(rotation);
 		this.size = 13;
 		this.height = 61;
@@ -82,7 +80,7 @@ public class FinalCastleLargeTowerComponent extends TowerWingComponent {
 		this.placeBlock(world, deco.blockState, 4, -7, 4, sbb);
 
 		// door, first floor
-		final BlockState castleDoor = TFBlocks.YELLOW_CASTLE_DOOR.get().defaultBlockState();
+		final BlockState castleDoor = TFBlocks.YELLOW_CASTLE_DOOR.defaultBlockState();
 		this.generateBox(world, sbb, 0, 1, 1, 0, 4, 3, castleDoor, AIR, false);
 
 		// sign placed by template
@@ -92,6 +90,6 @@ public class FinalCastleLargeTowerComponent extends TowerWingComponent {
 	}
 
 	public BlockState getGlyphMeta() {
-		return TFBlocks.BLUE_CASTLE_RUNE_BRICK.get().defaultBlockState();
+		return TFBlocks.BLUE_CASTLE_RUNE_BRICK.defaultBlockState();
 	}
 }

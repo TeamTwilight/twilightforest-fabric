@@ -17,11 +17,11 @@ import twilightforest.init.TFStructurePieceTypes;
 public class MazeRoomExitComponent extends MazeRoomComponent {
 
 	public MazeRoomExitComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFMMRE.get(), nbt);
+		super(TFStructurePieceTypes.TFMMRE, nbt);
 	}
 
 	public MazeRoomExitComponent(int i, RandomSource rand, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFMMRE.get(), i, rand, x, y, z);
+		super(TFStructurePieceTypes.TFMMRE, i, rand, x, y, z);
 	}
 
 	@Override
@@ -29,10 +29,10 @@ public class MazeRoomExitComponent extends MazeRoomComponent {
 		super.postProcess(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
 
 		// shaft down
-		this.generateBox(world, sbb, 5, -5, 5, 10, 0, 10, TFBlocks.MAZESTONE_BRICK.get().defaultBlockState(), AIR, false);
-		this.generateBox(world, sbb, 5, 1, 5, 10, 1, 10, TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 5, -5, 5, 10, 0, 10, TFBlocks.MAZESTONE_BRICK.defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 5, 1, 5, 10, 1, 10, TFBlocks.DECORATIVE_MAZESTONE.defaultBlockState(), AIR, false);
 		this.generateBox(world, sbb, 5, 2, 5, 10, 3, 10, Blocks.IRON_BARS.defaultBlockState(), AIR, false);
-		this.generateBox(world, sbb, 5, 4, 5, 10, 4, 10, TFBlocks.DECORATIVE_MAZESTONE.get().defaultBlockState(), AIR, false);
+		this.generateBox(world, sbb, 5, 4, 5, 10, 4, 10, TFBlocks.DECORATIVE_MAZESTONE.defaultBlockState(), AIR, false);
 		this.generateAirBox(world, sbb, 6, -5, 6, 9, 4, 9);
 	}
 }

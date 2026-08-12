@@ -44,6 +44,6 @@ public record RotationMarkerHandler(char delimiter, String safeSplitter, Holder<
 
 	@Override
 	public TemplateMarkerHandlerType getType() {
-		return TemplateMarkerHandlers.ROTATION.value();
+		return TemplateMarkerHandlers.ROTATION;
 	}
 }

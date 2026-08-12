@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.RandomSource;
@@ -78,21 +79,21 @@ public class LichTowerStructure extends ControlledSpawningStructure implements C
 
 	@Override
 	public StructureType<?> type() {
-		return TFStructureTypes.LICH_TOWER.get();
+		return TFStructureTypes.LICH_TOWER;
 	}
 
 	@SuppressWarnings("unchecked")
 	public static LichTowerStructure buildLichTowerConfig(BootstrapContext<Structure> context) {
 		final ControlledSpawningConfig monsters;
 		WeightedList<MobSpawnSettings.SpawnerData> yardSpawns = WeightedList.<MobSpawnSettings.SpawnerData>builder()
-			.add(new MobSpawnSettings.SpawnerData(TFEntities.RISING_ZOMBIE.value(), 1, 2), 2)
+			.add(new MobSpawnSettings.SpawnerData(TFEntities.RISING_ZOMBIE, 1, 2), 2)
 			.build();
 		WeightedList<MobSpawnSettings.SpawnerData> interiorSpawns = WeightedList.<MobSpawnSettings.SpawnerData>builder()
 			.add(new MobSpawnSettings.SpawnerData(EntityType.ZOMBIE, 1, 2), 10)
 			.add(new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 1, 2), 10)
 			.add(new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 1, 1), 1)
 			.add(new MobSpawnSettings.SpawnerData(EntityType.ENDERMAN, 1, 2), 1)
-			.add(new MobSpawnSettings.SpawnerData(TFEntities.DEATH_TOME.value(), 2, 3), 10)
+			.add(new MobSpawnSettings.SpawnerData(TFEntities.DEATH_TOME, 2, 3), 10)
 			.add(new MobSpawnSettings.SpawnerData(EntityType.WITCH, 1, 1), 1)
 			.build();
 		monsters = ControlledSpawningConfig.justMonsters(
@@ -102,9 +103,9 @@ public class LichTowerStructure extends ControlledSpawningStructure implements C
 		return new LichTowerStructure(
 			monsters,
 			new AdvancementLockConfig(List.of(TFMain.prefix("progress_naga"))),
-			Optional.of(new HintConfig(HintConfig.book("lichtower", 4), TFEntities.KOBOLD.get())),
+			Optional.of(new HintConfig(HintConfig.book("lichtower", 4), TFEntities.KOBOLD)),
 			Optional.of(new DecorationConfig(0, false, true, false, true)),
-			true, Optional.of(TFMapDecorations.LICH_TOWER),
+			true, Optional.of(BuiltInRegistries.MAP_DECORATION_TYPE.wrapAsHolder(TFMapDecorations.LICH_TOWER)),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_LICH_TOWER_BIOMES),
 				Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning

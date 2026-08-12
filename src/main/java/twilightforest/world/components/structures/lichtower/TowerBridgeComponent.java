@@ -24,11 +24,11 @@ public class TowerBridgeComponent extends TowerWingComponent {
 	int dHeight;
 
 	public TowerBridgeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFLTBri.get(), nbt);
+		super(TFStructurePieceTypes.TFLTBri, nbt);
 	}
 
 	protected TowerBridgeComponent(int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(TFStructurePieceTypes.TFLTBri.get(), i, x, y, z, 3, 3, direction);
+		super(TFStructurePieceTypes.TFLTBri, i, x, y, z, 3, 3, direction);
 
 		this.dSize = pSize;
 		this.dHeight = pHeight;

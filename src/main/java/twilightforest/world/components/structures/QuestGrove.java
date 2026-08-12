@@ -28,11 +28,11 @@ public class QuestGrove extends TwilightTemplateStructurePiece {
 	private static final TargetedRotProcessor MOSSY_BRICK_DECAY = new TargetedRotProcessor(ImmutableSet.of(Blocks.MOSSY_STONE_BRICKS.defaultBlockState()), 0.5f);
 
 	public QuestGrove(StructurePieceSerializationContext ctx, CompoundTag compoundTag) {
-		super(TFStructurePieceTypes.TFQuestGrove.get(), compoundTag, ctx, readSettings(compoundTag).addProcessor(StoneBricksVariants.INSTANCE));
+		super(TFStructurePieceTypes.TFQuestGrove, compoundTag, ctx, readSettings(compoundTag).addProcessor(StoneBricksVariants.INSTANCE));
 	}
 
 	public QuestGrove(StructureTemplateManager structureManager, BlockPos templatePosition) {
-		super(TFStructurePieceTypes.TFQuestGrove.get(), 0, structureManager, TFMain.prefix("quest_grove"), makeSettings(Rotation.NONE).addProcessor(MOSSY_BRICK_DECAY).addProcessor(StoneBricksVariants.INSTANCE), templatePosition);
+		super(TFStructurePieceTypes.TFQuestGrove, 0, structureManager, TFMain.prefix("quest_grove"), makeSettings(Rotation.NONE).addProcessor(MOSSY_BRICK_DECAY).addProcessor(StoneBricksVariants.INSTANCE), templatePosition);
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class QuestGrove extends TwilightTemplateStructurePiece {
 		if (!chunkBounds.isInside(pos)) return;
 
 		if ("quest_ram".equals(name)) {
-			FeaturePlacers.placeEntity(TFEntities.QUEST_RAM.get(), pos, levelAccessor);
+			FeaturePlacers.placeEntity(TFEntities.QUEST_RAM, pos, levelAccessor);
 		} else if ("dispenser".equals(name)) {
 			TFLootTables.generateLootContainer(levelAccessor, pos, Blocks.DROPPER.defaultBlockState().setValue(DispenserBlock.FACING, this.placeSettings.getRotation().rotate(Direction.NORTH)), 16 | 4 | 2, random.nextLong(), TFLootTables.QUEST_GROVE);
 		}

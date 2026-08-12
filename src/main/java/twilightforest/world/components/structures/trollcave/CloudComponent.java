@@ -23,7 +23,7 @@ public class CloudComponent extends StructurePiece {
 	private static final int DEPTH = 8;
 
 	public CloudComponent(int genDepth, int centerChunkX, int yHeight, int centerChunkZ) {
-		super(TFStructurePieceTypes.TFCloud.value(), genDepth, makeBoundingBox((centerChunkX + OFFSET) & ~0b1111, yHeight, (centerChunkZ + OFFSET) & ~0b1111));
+		super(TFStructurePieceTypes.TFCloud, genDepth, makeBoundingBox((centerChunkX + OFFSET) & ~0b1111, yHeight, (centerChunkZ + OFFSET) & ~0b1111));
 	}
 
 	@NotNull
@@ -32,7 +32,7 @@ public class CloudComponent extends StructurePiece {
 	}
 
 	public CloudComponent(StructurePieceSerializationContext ctx, CompoundTag tag) {
-		super(TFStructurePieceTypes.TFCloud.value(), tag);
+		super(TFStructurePieceTypes.TFCloud, tag);
 	}
 
 	@Override
@@ -54,8 +54,8 @@ public class CloudComponent extends StructurePiece {
 		ChunkPos center = chunkAccess.getPos();
 		BlockPos chunkBlockPos = center.getWorldPosition();
 
-		BlockState wispyCloud = TFBlocks.WISPY_CLOUD.get().defaultBlockState();
-		BlockState fluffyCloud = TFBlocks.FLUFFY_CLOUD.get().defaultBlockState();
+		BlockState wispyCloud = TFBlocks.WISPY_CLOUD.defaultBlockState();
+		BlockState fluffyCloud = TFBlocks.FLUFFY_CLOUD.defaultBlockState();
 
 		int regionX = center.x() + 8 >> 4;
 		int regionZ = center.z() + 8 >> 4;

@@ -23,12 +23,12 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 public class FinalCastleBridgeComponent extends TFStructureComponentOld {
 
 	public FinalCastleBridgeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFFCBri.get(), nbt);
+		super(TFStructurePieceTypes.TFFCBri, nbt);
 	}
 
 	@SuppressWarnings("this-escape")
 	public FinalCastleBridgeComponent(int i, int x, int y, int z, int length, Direction direction) {
-		super(TFStructurePieceTypes.TFFCBri.get(), i, x, y, z);
+		super(TFStructurePieceTypes.TFFCBri, i, x, y, z);
 		this.setOrientation(direction);
 		this.boundingBox = TFStructureComponentOld.getComponentToAddBoundingBox2(x, y, z, 0, -1, -3, length - 1, 5, 6, direction);
 	}
@@ -47,7 +47,7 @@ public class FinalCastleBridgeComponent extends TFStructureComponentOld {
 		// span
 		generateBox(world, sbb, 0, 0, 0, length, 1, 6, false, rand, deco.randomBlocks);
 		// rails
-		BlockState castlePillar = TFBlocks.BOLD_CASTLE_BRICK_PILLAR.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
+		BlockState castlePillar = TFBlocks.BOLD_CASTLE_BRICK_PILLAR.defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
 
 		generateBox(world, sbb, 0, 2, 0, length, 2, 0, castlePillar, castlePillar, false);
 		generateBox(world, sbb, 0, 2, 6, length, 2, 6, castlePillar, castlePillar, false);
