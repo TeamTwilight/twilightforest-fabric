@@ -30,8 +30,8 @@ import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import java.util.Collection;
 import java.util.Collections;
 
-@tamaized.beanification.Component
 public class MapLocatorCommand {
+	public static final MapLocatorCommand INSTANCE = new MapLocatorCommand();
 
 	// [vanillacopy] LocateCommand.java
 	private final DynamicCommandExceptionType ERROR_STRUCTURE_INVALID = new DynamicCommandExceptionType(

@@ -16,44 +16,16 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.levelgen.structure.*;
-import net.neoforged.fml.util.ObfuscationReflectionHelper;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.reflect.Method;
 import java.util.Comparator;
 import java.util.List;
 
-@tamaized.beanification.Component
 public class CountTemplateCommand {
+	public static final CountTemplateCommand INSTANCE = new CountTemplateCommand();
+
 	public LiteralArgumentBuilder<CommandSourceStack> register() {
 		return Commands.literal("count_template").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 			.then(Commands.argument("filter_structure", ResourceKeyArgument.key(Registries.STRUCTURE)).executes(this::countTemplates));
-	}
-
-	private static final MethodHandles.Lookup LOOKUP = MethodHandles.lookup();
-	private static final Method TemplateStructurePiece_makeTemplateLocation = ObfuscationReflectionHelper.findMethod(TemplateStructurePiece.class, "makeTemplateLocation");
-	private static final MethodHandle handle_TemplateStructurePiece_makeTemplateLocation;
-
-	static {
-		MethodHandle tmp_handle_TemplateStructurePiece_makeTemplateLocation = null;
-
-		try {
-			tmp_handle_TemplateStructurePiece_makeTemplateLocation =
-				LOOKUP.unreflect(TemplateStructurePiece_makeTemplateLocation);
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
-
-		handle_TemplateStructurePiece_makeTemplateLocation = tmp_handle_TemplateStructurePiece_makeTemplateLocation;
-	}
-
-	public static Identifier makeTemplateLocation(TemplateStructurePiece piece) {
-		try {
-			return (Identifier) handle_TemplateStructurePiece_makeTemplateLocation.invokeExact(piece);
-		} catch (Throwable t) {
-			throw new RuntimeException("Failed to invoke makeTemplateLocation", t);
-		}
 	}
 
 	private int countTemplates(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
@@ -72,7 +44,7 @@ public class CountTemplateCommand {
 		List<StructurePiece> structurePieces = structureAt.getPieces();
 		for (StructurePiece piece : structurePieces) {
 			if (piece instanceof TemplateStructurePiece templatePiece) {
-				Identifier identifier = makeTemplateLocation(templatePiece);
+				Identifier identifier = templatePiece.makeTemplateLocation();
 				templateCounts.put(identifier, templateCounts.getOrDefault(identifier, 0) + 1);
 			}
 		}

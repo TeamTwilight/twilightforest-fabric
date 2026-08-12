@@ -5,6 +5,8 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -16,7 +18,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.storage.LevelResource;
-import net.neoforged.fml.loading.FMLEnvironment;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFDataMaps;
 import twilightforest.util.ColorUtil;
@@ -32,8 +33,8 @@ import java.util.Map;
 /**
  * Thank you @SuperCoder79 (from Twitter) for sharing the original code! Code sourced from a LGPL project
  */
-@tamaized.beanification.Component
 public class MapBiomesCommand {
+	public static final MapBiomesCommand INSTANCE = new MapBiomesCommand();
 
 	private final DecimalFormat numberFormat = new DecimalFormat("#.00");
 
@@ -78,7 +79,7 @@ public class MapBiomesCommand {
 	}
 
 	private int createMap(CommandSourceStack source, int width, int height, boolean showBiomePercents) {
-		if (FMLEnvironment.getDist().isDedicatedServer())
+		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER)
 			return -1;
 
 		if (BIOME2COLOR.isEmpty()) {
@@ -156,7 +157,7 @@ public class MapBiomesCommand {
 	}
 
 	public static int getBiomeColor(Holder<Biome> biome) {
-		MagicMapBiomeColor c = biome.getData(TFDataMaps.MAGIC_MAP_BIOME_COLOR);
+		MagicMapBiomeColor c = TFDataMaps.MAGIC_MAP_BIOME_COLOR.get(biome);
 		return c != null ? getMapColor(c) : 0xFF000000;
 	}
 

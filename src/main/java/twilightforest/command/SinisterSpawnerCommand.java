@@ -18,8 +18,9 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.storage.loot.LootTable;
 import twilightforest.block.entity.spawner.SinisterSpawnerBlockEntity;
 
-@tamaized.beanification.Component
 public class SinisterSpawnerCommand {
+	public static final SinisterSpawnerCommand INSTANCE = new SinisterSpawnerCommand();
+
 	public static final SuggestionProvider<CommandSourceStack> SUGGEST_LOOT_TABLE = (context, builder) -> {
 		var registryAccess = context.getSource().getServer().registryAccess();
 
@@ -67,7 +68,7 @@ public class SinisterSpawnerCommand {
 		Holder<LootTable> loot = ResourceOrIdArgument.getLootTable(context, "loot");
 
 		if (context.getSource().getLevel().getBlockEntity(pos) instanceof SinisterSpawnerBlockEntity entity)
-			if (entity.setLootTable(loot.getKey()))
+			if (entity.setLootTable(loot.unwrapKey().orElseThrow()))
 				return 1;
 
 		return 0;

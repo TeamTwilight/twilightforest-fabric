@@ -11,8 +11,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 
-@tamaized.beanification.Component
 public class CenterCommand {
+	public static final CenterCommand INSTANCE = new CenterCommand();
 
 	public LiteralArgumentBuilder<CommandSourceStack> register() {
 		return Commands.literal("center").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS)).executes(this::run);

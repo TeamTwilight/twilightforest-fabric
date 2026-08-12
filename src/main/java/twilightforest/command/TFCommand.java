@@ -10,55 +10,39 @@ import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
-import tamaized.beanification.Autowired;
 
-@tamaized.beanification.Component
 public class TFCommand {
+	public static final TFCommand INSTANCE = new TFCommand();
 
-	@Autowired
-	private CenterCommand centerCommand;
+	private final CenterCommand centerCommand = CenterCommand.INSTANCE;
 
-	@Autowired
-	private ConquerCommand conquerCommand;
+	private final ConquerCommand conquerCommand = ConquerCommand.INSTANCE;
 
-	@Autowired
-	private GenerateBookCommand generateBookCommand;
+	private final GenerateBookCommand generateBookCommand = GenerateBookCommand.INSTANCE;
 
-	@Autowired
-	private InfoCommand infoCommand;
+	private final InfoCommand infoCommand = InfoCommand.INSTANCE;
 
-	@Autowired
-	private MapBiomesCommand mapBiomesCommand;
+	private final MapBiomesCommand mapBiomesCommand = MapBiomesCommand.INSTANCE;
 
-	@Autowired
-	private MapLocatorCommand mapLocatorCommand;
+	private final MapLocatorCommand mapLocatorCommand = MapLocatorCommand.INSTANCE;
 
-	@Autowired
-	private ShieldCommand shieldCommand;
+	private final ShieldCommand shieldCommand = ShieldCommand.INSTANCE;
 
-	@Autowired
-	private SinisterSpawnerCommand spawnerCommand;
+	private final SinisterSpawnerCommand spawnerCommand = SinisterSpawnerCommand.INSTANCE;
 
-	@Autowired
-	private DisplayPiecesCommand displayPiecesCommand;
+	private final DisplayPiecesCommand displayPiecesCommand = DisplayPiecesCommand.INSTANCE;
 
-	@Autowired
-	private CountLootCommand countLootCommand;
+	private final CountLootCommand countLootCommand = CountLootCommand.INSTANCE;
 
-	@Autowired
-	private CountTemplateCommand countTemplateCommand;
+	private final CountTemplateCommand countTemplateCommand = CountTemplateCommand.INSTANCE;
 
-	@Autowired
-	private StructureDistanceCommand structureDistanceCommand;
+	private final StructureDistanceCommand structureDistanceCommand = StructureDistanceCommand.INSTANCE;
 
-	@Autowired
-	private ClearDisplayCommand clearDisplayCommand;
+	private final ClearDisplayCommand clearDisplayCommand = ClearDisplayCommand.INSTANCE;
 
-	@Autowired
-	private TravellersGearCommand travellersGearCommand;
+	private final TravellersGearCommand travellersGearCommand = TravellersGearCommand.INSTANCE;
 
-	@Autowired
-	private TFTeleportCommand tfTeleportCommand;
+	private final TFTeleportCommand tfTeleportCommand = TFTeleportCommand.INSTANCE;
 
 	public void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext buildContext) {
 		LiteralArgumentBuilder<CommandSourceStack> structureBranch = Commands.literal("structure_util")

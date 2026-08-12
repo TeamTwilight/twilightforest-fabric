@@ -18,12 +18,12 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.storage.TagValueInput;
 import net.minecraft.world.level.storage.ValueInput;
 import org.joml.Matrix4f;
-import tamaized.beanification.Component;
 
 import java.util.Optional;
 
-@Component
 public class DisplayUtil {
+	public static final DisplayUtil INSTANCE = new DisplayUtil();
+
 	public final String tag = "twilightforest_debug_display";
 
 	// Instead of making methods in Display and Display.BlockDisplay public, this is a lazy way of compiling the NBT data then using it to initialize the entity

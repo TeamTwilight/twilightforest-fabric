@@ -20,13 +20,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-import tamaized.beanification.Autowired;
 import twilightforest.util.DisplayUtil;
 
-@tamaized.beanification.Component
 public class StructureDistanceCommand {
-	@Autowired
-	private DisplayUtil displayUtil;
+	public static final StructureDistanceCommand INSTANCE = new StructureDistanceCommand();
+
+	private final DisplayUtil displayUtil = DisplayUtil.INSTANCE;
 
 	public ArgumentBuilder<CommandSourceStack, ?> register() {
 		return Commands.literal("generator_radius").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))

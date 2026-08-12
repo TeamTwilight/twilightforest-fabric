@@ -3,6 +3,7 @@ package twilightforest.command;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -19,7 +20,6 @@ import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-import net.neoforged.fml.loading.FMLEnvironment;
 import twilightforest.events.EntityEvents;
 import twilightforest.util.landmarks.LandmarkUtil;
 import twilightforest.world.components.structures.start.TFStructureStart;
@@ -30,8 +30,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.StringJoiner;
 
-@tamaized.beanification.Component
 public class InfoCommand {
+	public static final InfoCommand INSTANCE = new InfoCommand();
 
 	public LiteralArgumentBuilder<CommandSourceStack> register() {
 		return Commands.literal("info").requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS)).executes(this::run);
@@ -51,7 +51,7 @@ public class InfoCommand {
 
 		Identifier key = possibleStructureRegistry.orElseThrow().getKey(landmarkStructure);
 
-		if (FMLEnvironment.isProduction()) {
+		if (!FabricLoader.getInstance().isDevelopmentEnvironment()) {
 			source.sendSuccess(() -> Component.translatable("commands.tffeature.info.wip").withStyle(ChatFormatting.RED, ChatFormatting.BOLD), false);
 		}
 
