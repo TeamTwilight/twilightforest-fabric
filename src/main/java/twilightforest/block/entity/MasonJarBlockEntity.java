@@ -1,5 +1,7 @@
 package twilightforest.block.entity;
 
+import carminite.network.PacketDistributor;
+import carminite.util.ServerLifecycleHooks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
@@ -22,8 +24,6 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.world.AuxiliaryLightManager;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
 import net.neoforged.neoforge.transfer.transaction.TransactionContext;
@@ -42,7 +42,7 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 	protected int itemRotation = 0;
 
 	public MasonJarBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.MASON_JAR.get(), pos, state);
+		super(TFBlockEntities.MASON_JAR, pos, state);
 		this.item = new MasonJarItemStackHandler(this);
 	}
 

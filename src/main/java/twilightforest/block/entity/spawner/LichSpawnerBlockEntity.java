@@ -9,7 +9,6 @@ import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.entity.boss.Lich;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFEntities;
@@ -18,7 +17,7 @@ import twilightforest.init.TFParticleType;
 public class LichSpawnerBlockEntity extends BossSpawnerBlockEntity<Lich> {
 
 	public LichSpawnerBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.LICH_SPAWNER.get(), TFEntities.LICH.get(), pos, state);
+		super(TFBlockEntities.LICH_SPAWNER, TFEntities.LICH, pos, state);
 	}
 
 	@Override
@@ -43,7 +42,7 @@ public class LichSpawnerBlockEntity extends BossSpawnerBlockEntity<Lich> {
 
 		myCreature.snapTo(mutableBlockPos, level.getRandom().nextFloat() * 360F, 0.0F);
 
-		EventHooks.finalizeMobSpawn(myCreature, level, level.getCurrentDifficultyAt(mutableBlockPos), EntitySpawnReason.SPAWNER, null);
+		myCreature.finalizeSpawn(level, level.getCurrentDifficultyAt(mutableBlockPos), EntitySpawnReason.SPAWNER, null);
 		myCreature.setAttackCooldown(40);
 		myCreature.setExtinguishTimer();
 
@@ -56,6 +55,6 @@ public class LichSpawnerBlockEntity extends BossSpawnerBlockEntity<Lich> {
 
 	@Override
 	public ParticleOptions getSpawnerParticle() {
-		return TFParticleType.OMINOUS_FLAME.get();
+		return TFParticleType.OMINOUS_FLAME;
 	}
 }

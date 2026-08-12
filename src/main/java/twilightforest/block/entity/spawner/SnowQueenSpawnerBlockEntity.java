@@ -13,7 +13,7 @@ import twilightforest.init.TFParticleType;
 public class SnowQueenSpawnerBlockEntity extends BossSpawnerBlockEntity<SnowQueen> {
 
 	public SnowQueenSpawnerBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.SNOW_QUEEN_SPAWNER.get(), TFEntities.SNOW_QUEEN.get(), pos, state);
+		super(TFBlockEntities.SNOW_QUEEN_SPAWNER, TFEntities.SNOW_QUEEN, pos, state);
 	}
 
 	@Override
@@ -24,6 +24,6 @@ public class SnowQueenSpawnerBlockEntity extends BossSpawnerBlockEntity<SnowQuee
 
 	@Override
 	public ParticleOptions getSpawnerParticle() {
-		return TFParticleType.SNOW.get();
+		return TFParticleType.SNOW;
 	}
 }

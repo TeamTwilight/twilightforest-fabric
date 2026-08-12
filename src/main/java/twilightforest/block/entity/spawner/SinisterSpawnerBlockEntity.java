@@ -28,14 +28,14 @@ import java.util.List;
 public class SinisterSpawnerBlockEntity extends BlockEntity implements Spawner {
 	private final SinisterSpawnerLogic spawner = new SinisterSpawnerLogic() {
 		@Override
-		public Either<BlockEntity, Entity> getOwner() {
+		public Either<BlockEntity, Entity> carminite$getOwner() {
 			return Either.left(SinisterSpawnerBlockEntity.this);
 		}
 	};
 	@Nullable private ResourceKey<LootTable> lootTable = null;
 
 	public SinisterSpawnerBlockEntity(BlockPos pos, BlockState blockState) {
-		super(TFBlockEntities.SINISTER_SPAWNER.value(), pos, blockState);
+		super(TFBlockEntities.SINISTER_SPAWNER, pos, blockState);
 	}
 
 	@Override

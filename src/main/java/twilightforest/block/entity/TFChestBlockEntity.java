@@ -8,6 +8,6 @@ import twilightforest.init.TFBlockEntities;
 public class TFChestBlockEntity extends ChestBlockEntity {
 
 	public TFChestBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.TF_CHEST.get(), pos, state);
+		super(TFBlockEntities.TF_CHEST, pos, state);
 	}
 }

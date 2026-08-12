@@ -1,5 +1,6 @@
 package twilightforest.block.entity;
 
+import carminite.util.ServerLifecycleHooks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -23,10 +24,6 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
-import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import twilightforest.block.DryingRackBlock;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFRecipes;
@@ -38,14 +35,14 @@ public class DryingRackBlockEntity extends BlockEntity {
 
 	public static final int DEFAULT_DRYING_TIME = 20 * 60 * 5; //5 Minutes
 	private ItemStack stack = ItemStack.EMPTY;
-	private final RecipeManager.CachedCheck<SingleRecipeInput, DryingRecipe> quickCheck = RecipeManager.createCheck(TFRecipes.DRYING_RECIPE.get());
+	private final RecipeManager.CachedCheck<SingleRecipeInput, DryingRecipe> quickCheck = RecipeManager.createCheck(TFRecipes.DRYING_RECIPE);
 
 	protected boolean drying;
 	protected int dryTime;
 	protected int totalDryTime;
 
 	public DryingRackBlockEntity(BlockPos pos, BlockState blockState) {
-		super(TFBlockEntities.DRYING_RACK.get(), pos, blockState);
+		super(TFBlockEntities.DRYING_RACK, pos, blockState);
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, DryingRackBlockEntity entity) {

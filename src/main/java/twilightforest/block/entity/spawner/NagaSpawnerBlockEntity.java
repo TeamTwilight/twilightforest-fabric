@@ -11,7 +11,7 @@ import twilightforest.init.TFEntities;
 public class NagaSpawnerBlockEntity extends BossSpawnerBlockEntity<Naga> {
 
 	public NagaSpawnerBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.NAGA_SPAWNER.get(), TFEntities.NAGA.get(), pos, state);
+		super(TFBlockEntities.NAGA_SPAWNER, TFEntities.NAGA, pos, state);
 	}
 
 	@Override

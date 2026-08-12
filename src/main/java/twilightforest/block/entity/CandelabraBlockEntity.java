@@ -28,7 +28,7 @@ public class CandelabraBlockEntity extends BlockEntity {
 	private CandelabraData data;
 
 	public CandelabraBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.CANDELABRA.get(), pos, state);
+		super(TFBlockEntities.CANDELABRA, pos, state);
 		this.data = CandelabraData.EMPTY;
 	}
 

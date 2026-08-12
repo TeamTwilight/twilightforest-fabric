@@ -15,7 +15,7 @@ public class OminousCandleBlockEntity extends BlockEntity {
 	}
 
 	public OminousCandleBlockEntity(BlockPos pos, BlockState state) {
-		this(TFBlockEntities.OMINOUS_CANDLE.get(), pos, state);
+		this(TFBlockEntities.OMINOUS_CANDLE, pos, state);
 	}
 
 	@Override

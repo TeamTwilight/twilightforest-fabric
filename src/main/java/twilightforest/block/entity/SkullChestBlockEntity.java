@@ -31,12 +31,12 @@ public class SkullChestBlockEntity extends RandomizableContainerBlockEntity impl
 	private final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
 		@Override
 		protected void onOpen(Level level, BlockPos pos, BlockState state) {
-			level.playSound(null, pos, TFSounds.SKULL_CHEST_OPEN.get(), SoundSource.BLOCKS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
+			level.playSound(null, pos, TFSounds.SKULL_CHEST_OPEN.value(), SoundSource.BLOCKS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
 		}
 
 		@Override
 		protected void onClose(Level level, BlockPos pos, BlockState state) {
-			level.playSound(null, pos, TFSounds.SKULL_CHEST_CLOSE.get(), SoundSource.BLOCKS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
+			level.playSound(null, pos, TFSounds.SKULL_CHEST_CLOSE.value(), SoundSource.BLOCKS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
 		}
 
 		@Override
@@ -59,7 +59,7 @@ public class SkullChestBlockEntity extends RandomizableContainerBlockEntity impl
 	public ResolvableProfile owner;
 
 	public SkullChestBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.SKULL_CHEST.get(), pos, state);
+		super(TFBlockEntities.SKULL_CHEST, pos, state);
 	}
 
 	public SkullChestBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -182,7 +182,7 @@ public class SkullChestBlockEntity extends RandomizableContainerBlockEntity impl
 	}
 
 	public void displayLockedInfo(Player player) {
-		player.level().playLocalSound(this.getBlockPos(), TFSounds.SKULL_CHEST_LOCKED.get(), SoundSource.BLOCKS, 0.5F, 0.5F, false);
+		player.level().playLocalSound(this.getBlockPos(), TFSounds.SKULL_CHEST_LOCKED.value(), SoundSource.BLOCKS, 0.5F, 0.5F, false);
 		player.sendOverlayMessage(Component.translatable("block.twilightforest.skull_chest.locked", this.owner.name().orElse("???")).withStyle(ChatFormatting.RED));
 	}
 

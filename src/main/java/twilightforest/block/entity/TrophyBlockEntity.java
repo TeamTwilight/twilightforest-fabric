@@ -13,7 +13,7 @@ public class TrophyBlockEntity extends BlockEntity {
 	private boolean animated;
 
 	public TrophyBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.TROPHY.get(), pos, state);
+		super(TFBlockEntities.TROPHY, pos, state);
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, TrophyBlockEntity te) {

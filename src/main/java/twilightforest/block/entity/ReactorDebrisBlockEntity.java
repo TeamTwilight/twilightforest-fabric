@@ -44,7 +44,7 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 	public Vector3f maxPos = new Vector3f(Z_FIGHTING_MAX);
 
 	public ReactorDebrisBlockEntity(BlockPos pos, BlockState blockState) {
-		super(TFBlockEntities.REACTOR_DEBRIS.get(), pos, blockState);
+		super(TFBlockEntities.REACTOR_DEBRIS, pos, blockState);
 	}
 
 	public void randomizeTextures() {

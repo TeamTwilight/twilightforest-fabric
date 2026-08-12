@@ -12,7 +12,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.entity.EnforcedHomePoint;
 
 import java.util.Objects;
@@ -59,7 +58,7 @@ public abstract class BossSpawnerBlockEntity<T extends Mob & EnforcedHomePoint> 
 
 		BlockPos spawnPos = level.getBlockState(this.getBlockPos().below()).getCollisionShape(level, this.getBlockPos().below()).isEmpty() ? this.getBlockPos().below() : this.getBlockPos();
 		myCreature.snapTo(spawnPos, level.getLevel().getRandom().nextFloat() * 360F, 0.0F);
-		EventHooks.finalizeMobSpawn(myCreature, level, level.getCurrentDifficultyAt(spawnPos), EntitySpawnReason.SPAWNER, null);
+		myCreature.finalizeSpawn(level, level.getCurrentDifficultyAt(spawnPos), EntitySpawnReason.SPAWNER, null);
 
 		// set creature's home to this
 		this.initializeCreature(myCreature);

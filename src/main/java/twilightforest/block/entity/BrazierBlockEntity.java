@@ -13,7 +13,7 @@ public class BrazierBlockEntity extends BlockEntity {
 	private static int tick = 0;
 
 	public BrazierBlockEntity(BlockPos pos, BlockState blockState) {
-		super(TFBlockEntities.BRAZIER.get(), pos, blockState);
+		super(TFBlockEntities.BRAZIER, pos, blockState);
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, BrazierBlockEntity entity) {

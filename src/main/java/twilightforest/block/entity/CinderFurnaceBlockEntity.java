@@ -1,5 +1,6 @@
 package twilightforest.block.entity;
 
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerLevel;
@@ -22,7 +23,6 @@ import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.common.Tags;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFBlocks;
 
@@ -35,7 +35,7 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 
 	@Override
 	public BlockEntityType<?> getType() {
-		return TFBlockEntities.CINDER_FURNACE.get();
+		return TFBlockEntities.CINDER_FURNACE;
 	}
 
 	// [VanillaCopy] AbstactFurnaceBlockEntity.serverTick, edits noted
@@ -129,7 +129,7 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 			BlockState nearbyBlock = level.getBlockState(pos);
 
 			if (!nearbyBlock.is(TFBlocks.CINDER_LOG) && nearbyBlock.is(BlockTags.LOGS)) {
-				level.setBlock(pos, TFBlocks.CINDER_LOG.get().withPropertiesOf(nearbyBlock), Block.UPDATE_CLIENTS);
+				level.setBlock(pos, TFBlocks.CINDER_LOG.withPropertiesOf(nearbyBlock), Block.UPDATE_CLIENTS);
 				level.levelEvent(LevelEvent.PARTICLES_MOBBLOCK_SPAWN, pos, 0);
 				level.levelEvent(LevelEvent.PARTICLES_MOBBLOCK_SPAWN, pos, 0);
 				level.playSound(null, pos, SoundEvents.FIRE_AMBIENT, SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -165,7 +165,7 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 			for (int dy = -1; dy <= 1; dy++) {
 				for (int dz = -1; dz <= 1; dz++) {
 					BlockPos pos = getBlockPos().offset(dx, dy, dz);
-					if (level.hasChunkAt(pos) && level.getBlockState(pos).is(TFBlocks.CINDER_LOG.get())) {
+					if (level.hasChunkAt(pos) && level.getBlockState(pos).is(TFBlocks.CINDER_LOG)) {
 						count++;
 					}
 				}
@@ -227,7 +227,7 @@ public class CinderFurnaceBlockEntity extends FurnaceBlockEntity {
 	}
 
 	private boolean canMultiply(ItemStack input) {
-		return input.is(ItemTags.LOGS) || input.is(Tags.Items.ORES);
+		return input.is(ItemTags.LOGS) || input.is(ConventionalItemTags.ORES);
 	}
 
 	/**

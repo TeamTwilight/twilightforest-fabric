@@ -28,9 +28,10 @@ import twilightforest.init.TFBlocks;
 public class ChiseledCanopyShelfBlockEntity extends ChiseledBookShelfBlockEntity implements Spawner {
 
 	private final BookshelfSpawner spawner = new BookshelfSpawner() {
+
 		@Override
 		public void broadcastEvent(Level level, BlockPos pos, int id) {
-			level.blockEvent(pos, TFBlocks.CHISELED_CANOPY_BOOKSHELF.get(), id, 0);
+			level.blockEvent(pos, TFBlocks.CHISELED_CANOPY_BOOKSHELF, id, 0);
 		}
 
 		@Override
@@ -43,7 +44,7 @@ public class ChiseledCanopyShelfBlockEntity extends ChiseledBookShelfBlockEntity
 		}
 
 		@Override
-		public Either<BlockEntity, Entity> getOwner() {
+		public Either<BlockEntity, Entity> carminite$getOwner() {
 			return Either.left(ChiseledCanopyShelfBlockEntity.this);
 		}
 	};
@@ -54,7 +55,7 @@ public class ChiseledCanopyShelfBlockEntity extends ChiseledBookShelfBlockEntity
 
 	@Override
 	public boolean isValidBlockState(BlockState state) {
-		return TFBlockEntities.CHISELED_CANOPY_BOOKSHELF.get().isValid(state);
+		return TFBlockEntities.CHISELED_CANOPY_BOOKSHELF.isValid(state);
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, ChiseledCanopyShelfBlockEntity te) {
@@ -65,7 +66,7 @@ public class ChiseledCanopyShelfBlockEntity extends ChiseledBookShelfBlockEntity
 
 	@Override
 	public BlockEntityType<?> getType() {
-		return TFBlockEntities.CHISELED_CANOPY_BOOKSHELF.get();
+		return TFBlockEntities.CHISELED_CANOPY_BOOKSHELF;
 	}
 
 	@Override

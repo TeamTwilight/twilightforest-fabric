@@ -6,7 +6,7 @@ TODO
 
 ## Add these to Fabric convention tags
 - Gold Ingot to ConventionalItemTags.GOLD_INGOTS
-- Ores to ConventionalBlocktags.ORES
+- Ores to ConventionalBlocktags.ORES and ConventionalItemTags.ORES
 
 ## ICondition for Uncrafting Table
 - Replace the UncraftingTableCondition usages with ResourceCondition from Fabric
@@ -19,3 +19,6 @@ TODO
 
 # PartEntity
 - Port system to Fabric
+
+# Transfer
+- Create NeoForge transfer shim for Fabric

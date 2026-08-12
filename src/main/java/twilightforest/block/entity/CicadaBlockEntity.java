@@ -21,7 +21,7 @@ public class CicadaBlockEntity extends BlockEntity {
 	private int singDelay;
 
 	public CicadaBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.CICADA.get(), pos, state);
+		super(TFBlockEntities.CICADA, pos, state);
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, CicadaBlockEntity te) {
@@ -79,7 +79,7 @@ public class CicadaBlockEntity extends BlockEntity {
 
 	private void playSong() {
 		if (!TFConfig.silentCicadas) {
-			this.getLevel().playLocalSound(this.getBlockPos().getX(), this.getBlockPos().getY(), this.getBlockPos().getZ(), TFSounds.CICADA.get(), SoundSource.NEUTRAL, 1.0f, (this.getLevel().getRandom().nextFloat() - this.getLevel().getRandom().nextFloat()) * 0.2F + 1.0F, false);
+			this.getLevel().playLocalSound(this.getBlockPos().getX(), this.getBlockPos().getY(), this.getBlockPos().getZ(), TFSounds.CICADA.value(), SoundSource.NEUTRAL, 1.0f, (this.getLevel().getRandom().nextFloat() - this.getLevel().getRandom().nextFloat()) * 0.2F + 1.0F, false);
 		}
 	}
 }

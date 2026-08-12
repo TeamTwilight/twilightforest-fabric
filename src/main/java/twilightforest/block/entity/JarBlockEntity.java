@@ -57,7 +57,7 @@ public class JarBlockEntity extends BlockEntity {
 	}
 
 	public JarBlockEntity(BlockPos pos, BlockState state) {
-		this(TFBlockEntities.JAR.get(), pos, state);
+		this(TFBlockEntities.JAR, pos, state);
 	}
 
 	@Override

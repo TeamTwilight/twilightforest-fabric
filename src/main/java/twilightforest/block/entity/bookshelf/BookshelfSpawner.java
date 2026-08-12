@@ -1,5 +1,6 @@
 package twilightforest.block.entity.bookshelf;
 
+import carminite.extensions.IOwnedSpawner;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -25,8 +26,6 @@ import net.minecraft.world.level.storage.TagValueInput;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.common.extensions.IOwnedSpawner;
-import net.neoforged.neoforge.event.EventHooks;
 import org.jspecify.annotations.Nullable;
 import twilightforest.TFMain;
 import twilightforest.block.ChiseledCanopyShelfBlock;
@@ -235,9 +234,7 @@ public abstract class BookshelfSpawner implements IOwnedSpawner {
 
 				entity.snapTo(entity.getX(), entity.getY(), entity.getZ(), random.nextFloat() * 360.0F, 0.0F);
 				if (entity instanceof Mob mob) {
-					boolean hasNoConfiguration = data.getEntityToSpawn().size() == 1 && data.getEntityToSpawn().getString("id").isPresent();
-					EventHooks.finalizeMobSpawnSpawner(mob, level, level.getCurrentDifficultyAt(entity.blockPosition()), EntitySpawnReason.SPAWNER, null, this, hasNoConfiguration);
-
+					mob.finalizeSpawn(level, level.getCurrentDifficultyAt(entity.blockPosition()), EntitySpawnReason.SPAWNER, null);
 					data.getEquipment().ifPresent(mob::equip);
 				}
 

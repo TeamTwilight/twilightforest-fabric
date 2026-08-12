@@ -18,12 +18,12 @@ public class KeepsakeCasketBlockEntity extends SkullChestBlockEntity {
 	private final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
 		@Override
 		protected void onOpen(Level level, BlockPos pos, BlockState state) {
-			level.playSound(null, pos, TFSounds.CASKET_OPEN.get(), SoundSource.BLOCKS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
+			level.playSound(null, pos, TFSounds.CASKET_OPEN.value(), SoundSource.BLOCKS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
 		}
 
 		@Override
 		protected void onClose(Level level, BlockPos pos, BlockState state) {
-			level.playSound(null, pos, TFSounds.CASKET_CLOSE.get(), SoundSource.BLOCKS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
+			level.playSound(null, pos, TFSounds.CASKET_CLOSE.value(), SoundSource.BLOCKS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
 		}
 
 		@Override
@@ -43,7 +43,7 @@ public class KeepsakeCasketBlockEntity extends SkullChestBlockEntity {
 	};
 
 	public KeepsakeCasketBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.KEEPSAKE_CASKET.get(), pos, state);
+		super(TFBlockEntities.KEEPSAKE_CASKET, pos, state);
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class KeepsakeCasketBlockEntity extends SkullChestBlockEntity {
 
 	@Override
 	public void displayLockedInfo(Player player) {
-		player.level().playLocalSound(this.getBlockPos(), TFSounds.CASKET_LOCKED.get(), SoundSource.BLOCKS, 0.5F, 0.5F, false);
+		player.level().playLocalSound(this.getBlockPos(), TFSounds.CASKET_LOCKED.value(), SoundSource.BLOCKS, 0.5F, 0.5F, false);
 		player.sendOverlayMessage(Component.translatable("block.twilightforest.casket.locked", this.owner.name().orElse("???")).withStyle(ChatFormatting.RED));
 	}
 }

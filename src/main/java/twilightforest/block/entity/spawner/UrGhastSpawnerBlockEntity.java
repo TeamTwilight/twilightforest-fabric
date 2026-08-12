@@ -13,7 +13,7 @@ import twilightforest.init.TFEntities;
 public class UrGhastSpawnerBlockEntity extends BossSpawnerBlockEntity<UrGhast> {
 
 	public UrGhastSpawnerBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.UR_GHAST_SPAWNER.get(), TFEntities.UR_GHAST.get(), pos, state);
+		super(TFBlockEntities.UR_GHAST_SPAWNER, TFEntities.UR_GHAST, pos, state);
 	}
 
 	@Override

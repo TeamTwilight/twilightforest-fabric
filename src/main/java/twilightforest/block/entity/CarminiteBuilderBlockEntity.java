@@ -19,7 +19,7 @@ import twilightforest.init.TFSounds;
 
 public class CarminiteBuilderBlockEntity extends BlockEntity {
 	private static final int RANGE = 16;
-	private final BlockState blockBuiltState = TFBlocks.BUILT_BLOCK.get().defaultBlockState().setValue(TranslucentBuiltBlock.ACTIVE, false);
+	private final BlockState blockBuiltState = TFBlocks.BUILT_BLOCK.defaultBlockState().setValue(TranslucentBuiltBlock.ACTIVE, false);
 	public boolean makingBlocks = false;
 	private int ticksRunning = 0;
 	private int blockedCounter = 0;
@@ -31,7 +31,7 @@ public class CarminiteBuilderBlockEntity extends BlockEntity {
 	private Player trackedPlayer;
 
 	public CarminiteBuilderBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.TOWER_BUILDER.get(), pos, state);
+		super(TFBlockEntities.TOWER_BUILDER, pos, state);
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, CarminiteBuilderBlockEntity te) {
@@ -54,7 +54,7 @@ public class CarminiteBuilderBlockEntity extends BlockEntity {
 				if (te.blocksMade <= RANGE && level.isEmptyBlock(nextPos)) {
 					level.setBlock(nextPos, te.blockBuiltState, Block.UPDATE_ALL);
 
-					level.playSound(null, pos, TFSounds.BUILDER_CREATE.get(), SoundSource.BLOCKS, 0.75F, 1.2F);
+					level.playSound(null, pos, TFSounds.BUILDER_CREATE.value(), SoundSource.BLOCKS, 0.75F, 1.2F);
 
 					te.lastBlockCoords = nextPos;
 

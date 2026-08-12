@@ -12,7 +12,7 @@ import twilightforest.init.TFParticleType;
 public class FinalBossSpawnerBlockEntity extends BossSpawnerBlockEntity<PlateauBoss> {
 
 	public FinalBossSpawnerBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.FINAL_BOSS_SPAWNER.get(), TFEntities.PLATEAU_BOSS.get(), pos, state);
+		super(TFBlockEntities.FINAL_BOSS_SPAWNER, TFEntities.PLATEAU_BOSS, pos, state);
 	}
 
 	//no spawning for you
@@ -23,6 +23,6 @@ public class FinalBossSpawnerBlockEntity extends BossSpawnerBlockEntity<PlateauB
 
 	@Override
 	public ParticleOptions getSpawnerParticle() {
-		return TFParticleType.ANNIHILATE.get();
+		return TFParticleType.ANNIHILATE;
 	}
 }

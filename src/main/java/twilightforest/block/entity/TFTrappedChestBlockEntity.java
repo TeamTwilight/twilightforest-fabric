@@ -6,7 +6,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.TrappedChestBlock;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
-import net.minecraft.world.level.block.entity.TrappedChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.redstone.ExperimentalRedstoneUtils;
 import net.minecraft.world.level.redstone.Orientation;
@@ -15,7 +14,7 @@ import twilightforest.init.TFBlockEntities;
 public class TFTrappedChestBlockEntity extends ChestBlockEntity {
 
 	public TFTrappedChestBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.TF_TRAPPED_CHEST.get(), pos, state);
+		super(TFBlockEntities.TF_TRAPPED_CHEST, pos, state);
 	}
 
 	@Override

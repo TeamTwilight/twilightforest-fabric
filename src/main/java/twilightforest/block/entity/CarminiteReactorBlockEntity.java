@@ -28,7 +28,7 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 	private int terX, terY, terZ;
 
 	public CarminiteReactorBlockEntity(BlockPos pos, BlockState state) {
-		super(TFBlockEntities.CARMINITE_REACTOR.get(), pos, state);
+		super(TFBlockEntities.CARMINITE_REACTOR, pos, state);
 		RandomSource rand = RandomSource.create();
 
 		// determine the two smaller bursts
@@ -58,8 +58,8 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 
 				if (te.counter % 5 == 0) {
 					if (te.counter == 5) {
-						BlockState fakeGold = TFBlocks.FAKE_GOLD.get().defaultBlockState();
-						BlockState fakeDiamond = TFBlocks.FAKE_DIAMOND.get().defaultBlockState();
+						BlockState fakeGold = TFBlocks.FAKE_GOLD.defaultBlockState();
+						BlockState fakeDiamond = TFBlocks.FAKE_DIAMOND.defaultBlockState();
 
 						// transformation!
 						te.createFakeBlock(pos.offset(1, 1, 1), fakeDiamond);
@@ -104,7 +104,7 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 						te.drawBlob(pos, (primary - offset) / 40, Blocks.AIR.defaultBlockState(), primary - offset, false);
 					}
 					if (primary <= 200) {
-						te.drawBlob(pos, primary / 40, TFBlocks.REACTOR_DEBRIS.get().defaultBlockState(), te.counter, false);
+						te.drawBlob(pos, primary / 40, TFBlocks.REACTOR_DEBRIS.defaultBlockState(), te.counter, false);
 					}
 
 					// secondary burst
@@ -143,14 +143,14 @@ public class CarminiteReactorBlockEntity extends BlockEntity {
 
 			} else {
 				if (te.counter % 5 == 0 && te.counter <= 250) {
-					level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, TFSounds.REACTOR_AMBIENT.get(), SoundSource.BLOCKS, te.counter / 100F, te.counter / 100F, false);
+					level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, TFSounds.REACTOR_AMBIENT.value(), SoundSource.BLOCKS, te.counter / 100F, te.counter / 100F, false);
 				}
 			}
 		}
 	}
 
 	private void spawnGhastNear(Level level, int x, int y, int z) {
-		CarminiteGhastling ghast = TFEntities.CARMINITE_GHASTLING.get().create(level, EntitySpawnReason.TRIGGERED);
+		CarminiteGhastling ghast = TFEntities.CARMINITE_GHASTLING.create(level, EntitySpawnReason.TRIGGERED);
 		if (ghast != null) {
 			ghast.snapTo(x - 1.5 + level.getRandom().nextFloat() * 3.0, y - 1.5 + level.getRandom().nextFloat() * 3.0, z - 1.5 + level.getRandom().nextFloat() * 3.0, level.getRandom().nextFloat() * 360F, 0.0F);
 			level.addFreshEntity(ghast);
