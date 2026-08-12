@@ -8,7 +8,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.enchantment.EnchantedItemInUse;
 import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 import net.minecraft.world.phys.Vec3;
@@ -30,7 +29,7 @@ public record RechargeScepterEffect() implements EnchantmentEntityEffect {
 
 	public static void applyRecharge(ServerLevel level, ItemStack item, Entity entity) {
 		if (entity instanceof Player player && item.getDamageValue() == item.getMaxDamage()) {
-			List<ScepterRepairRecipe> recipes = level.recipeAccess().recipeMap().byType(RecipeType.CRAFTING).stream().filter(holder -> holder.value() instanceof ScepterRepairRecipe).map(RecipeHolder::value).map(ScepterRepairRecipe.class::cast).toList();
+			List<ScepterRepairRecipe> recipes = level.recipeAccess().getRecipes().stream().filter(holder -> holder.value() instanceof ScepterRepairRecipe).map(RecipeHolder::value).map(ScepterRepairRecipe.class::cast).toList();
 			List<Integer> slotsToConsume = new ArrayList<>();
 			for (var recipe : recipes) {
 				if (item.is(recipe.getScepter())) {
