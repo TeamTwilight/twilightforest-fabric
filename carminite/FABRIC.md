@@ -6,6 +6,7 @@ TODO
 
 ## Add these to Fabric convention tags
 - Gold Ingot to ConventionalItemTags.GOLD_INGOTS
+- Ores to ConventionalBlocktags.ORES
 
 ## ICondition for Uncrafting Table
 - Replace the UncraftingTableCondition usages with ResourceCondition from Fabric

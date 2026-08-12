@@ -1,5 +1,6 @@
 package twilightforest.components.entity;
 
+import carminite.network.PacketDistributor;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -14,7 +15,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TraceableEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.init.*;
 import twilightforest.network.ParticlePacket;
 
@@ -84,10 +84,10 @@ public class FortificationShieldAttachment {
 		}
 
 		if (entity instanceof ServerPlayer player && !expired) {
-			player.awardStat(TFStats.TF_SHIELDS_BROKEN.get());
+			player.awardStat(TFStats.TF_SHIELDS_BROKEN);
 		}
-		entity.level().playSound(null, entity.blockPosition(), expired ? TFSounds.SHIELD_EXPIRE.get() : TFSounds.SHIELD_BREAK.get(), SoundSource.PLAYERS, 1.0F, (entity.getRandom().nextFloat() - entity.getRandom().nextFloat()) * 0.3F + 1.0F);
-		entity.setData(TFDataAttachments.FORTIFICATION_SHIELDS, this);
+		entity.level().playSound(null, entity.blockPosition(), expired ? TFSounds.SHIELD_EXPIRE.value() : TFSounds.SHIELD_BREAK.value(), SoundSource.PLAYERS, 1.0F, (entity.getRandom().nextFloat() - entity.getRandom().nextFloat()) * 0.3F + 1.0F);
+		entity.setAttached(TFDataAttachments.FORTIFICATION_SHIELDS, this);
 	}
 
 	public static void addShieldBreakParticles(DamageSource src, LivingEntity entity) {
@@ -109,7 +109,7 @@ public class FortificationShieldAttachment {
 				double x = sizeRange * offset.z * horizontal;
 				double y = sizeRange * (entity.getRandom().nextDouble() - 0.5D);
 				double z = sizeRange * offset.x * -horizontal;
-				particlePacket.queueParticle(TFParticleType.SHIELD_BREAK.get(), false, false, pos.x + x, pos.y + y, pos.z + z, x * 0.5D, y * 0.5D, z * 0.5D);
+				particlePacket.queueParticle(TFParticleType.SHIELD_BREAK, false, false, pos.x + x, pos.y + y, pos.z + z, x * 0.5D, y * 0.5D, z * 0.5D);
 			}
 		} else {
 			pos = entity.position().add(0.0D, entity.getBbHeight() * 0.65D, 0.0D);
@@ -117,7 +117,7 @@ public class FortificationShieldAttachment {
 				double x = (entity.getRandom().nextDouble() - 0.5D);
 				double y = (entity.getRandom().nextDouble() - 0.5D) * 0.25D;
 				double z = (entity.getRandom().nextDouble() - 0.5D);
-				particlePacket.queueParticle(TFParticleType.SHIELD_BREAK.get(), false, false, pos.x + x, pos.y + y, pos.z + z, x * 0.33D, y * 0.33D, z * 0.33D);
+				particlePacket.queueParticle(TFParticleType.SHIELD_BREAK, false, false, pos.x + x, pos.y + y, pos.z + z, x * 0.33D, y * 0.33D, z * 0.33D);
 			}
 		}
 
@@ -132,7 +132,7 @@ public class FortificationShieldAttachment {
 		} else {
 			this.permanentShields = Math.clamp(amount, 0, 115);
 		}
-		entity.setData(TFDataAttachments.FORTIFICATION_SHIELDS, this);
+		entity.setAttached(TFDataAttachments.FORTIFICATION_SHIELDS, this);
 	}
 
 	public void addShields(LivingEntity entity, int amount, boolean temp) {
@@ -145,7 +145,7 @@ public class FortificationShieldAttachment {
 		} else {
 			this.permanentShields = Math.clamp(this.permanentShields + amount, 0, 115);
 		}
-		entity.setData(TFDataAttachments.FORTIFICATION_SHIELDS, this);
+		entity.setAttached(TFDataAttachments.FORTIFICATION_SHIELDS, this);
 	}
 
 	private void resetTimer() {

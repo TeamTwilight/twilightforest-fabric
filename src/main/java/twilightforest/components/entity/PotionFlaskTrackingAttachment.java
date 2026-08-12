@@ -47,7 +47,7 @@ public class PotionFlaskTrackingAttachment {
 		this.lastUsedPotion = potion;
 
 		if (player.isAlive()) {
-			TFAdvancements.DRINK_FROM_FLASK.get().trigger(player, this.dosesDrank, Mth.floor((float) (player.level().getGameTime() - this.lastTimeStarted) / 20L), this.lastUsedPotion);
+			TFAdvancements.DRINK_FROM_FLASK.trigger(player, this.dosesDrank, Mth.floor((float) (player.level().getGameTime() - this.lastTimeStarted) / 20L), this.lastUsedPotion);
 		}
 	}
 

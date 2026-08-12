@@ -25,7 +25,7 @@ public class MultiplayerInclusivityAttachment {
 
 	public void grantGroupAdvancement(LivingEntity boss) {
 		for (ServerPlayer player : this.getQualifiedPlayers()) {
-			TFAdvancements.HURT_BOSS.get().trigger(player, boss);
+			TFAdvancements.HURT_BOSS.trigger(player, boss);
 		}
 	}
 }
