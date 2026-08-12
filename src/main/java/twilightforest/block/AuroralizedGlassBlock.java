@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import carminite.block.IBeaconColoredBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.TransparentBlock;
@@ -7,7 +8,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.util.ColorUtil;
 import twilightforest.util.SimplexNoiseHelper;
 
-public class AuroralizedGlassBlock extends TransparentBlock {
+public class AuroralizedGlassBlock extends TransparentBlock implements IBeaconColoredBlock {
 
 	public AuroralizedGlassBlock(Properties properties) {
 		super(properties);

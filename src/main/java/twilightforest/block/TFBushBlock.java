@@ -26,8 +26,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -170,21 +168,6 @@ public abstract class TFBushBlock extends Block implements SnowLoggable {
 			return;
 		}
 		super.spawnDestroyParticles(level, player, pos, state);
-	}
-
-	@Override
-	public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, ItemStack toolStack, boolean willHarvest, FluidState fluid) {
-		if (!player.isSecondaryUseActive() && state.getValue(SNOW_LAYERS) > MIN_SNOW_LAYERS) {
-			this.handleBreakingLogic(level, pos, state, player, null);
-			return false;
-		}
-		return super.onDestroyedByPlayer(state, level, pos, player, toolStack, willHarvest, fluid);
-	}
-
-	@Nullable
-	@Override
-	public PushReaction getPistonPushReaction(BlockState state) {
-		return state.getValue(AGE) < 2 ? PushReaction.DESTROY : null;
 	}
 
 	@Override

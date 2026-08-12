@@ -4,6 +4,8 @@
   "package": "twilightforest.asm.mixin",
   "compatibilityLevel": "JAVA_25",
   "mixins": [
+    "ServerPlayerGameModeMixin",
+    "WalkNodeEvaluatorMixin",
     "enums.DamageEffectsMixin",
     "enums.GrassColorModifierMixin",
     "enums.RarityMixin"

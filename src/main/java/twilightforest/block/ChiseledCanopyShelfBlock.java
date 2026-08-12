@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import carminite.block.IFlammableBlock;
 import carminite.network.PacketDistributor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -29,7 +30,7 @@ import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFSounds;
 import twilightforest.network.ParticlePacket;
 
-public class ChiseledCanopyShelfBlock extends ChiseledBookShelfBlock {
+public class ChiseledCanopyShelfBlock extends ChiseledBookShelfBlock implements IFlammableBlock {
 	public static final BooleanProperty SPAWNER = BooleanProperty.create("spawner");
 
 	public ChiseledCanopyShelfBlock(Properties properties) {
@@ -59,7 +60,7 @@ public class ChiseledCanopyShelfBlock extends ChiseledBookShelfBlock {
 			}
 			return level.destroyBlock(pos, false);
 		}
-		return super.onCaughtFire(state, level, pos, face, igniter);
+		return IFlammableBlock.onCaughtFireVanilla(state, level, pos, face, igniter);
 	}
 
 	@Override

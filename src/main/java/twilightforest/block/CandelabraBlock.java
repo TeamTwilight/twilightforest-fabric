@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import carminite.block.IRedstoneConnectableBlock;
 import com.google.common.collect.Iterables;
 import com.mojang.serialization.MapCodec;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
@@ -56,7 +57,7 @@ import java.util.List;
 import java.util.Optional;
 
 @SuppressWarnings("deprecation")
-public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, SimpleWaterloggedBlock {
+public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, SimpleWaterloggedBlock, IRedstoneConnectableBlock {
 
 	public static final BooleanProperty ON_WALL = BooleanProperty.create("on_wall");
 	public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;

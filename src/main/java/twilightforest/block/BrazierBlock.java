@@ -1,7 +1,12 @@
 package twilightforest.block;
 
-import carminite.transfer.transaction.Transaction;
 import com.mojang.serialization.MapCodec;
+import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -34,11 +39,6 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.fluids.FluidType;
-import net.neoforged.neoforge.transfer.access.ItemAccess;
-import net.neoforged.neoforge.transfer.fluid.FluidResource;
-import net.neoforged.neoforge.transfer.fluid.FluidUtil;
 import org.jspecify.annotations.Nullable;
 import twilightforest.block.entity.BrazierBlockEntity;
 import twilightforest.enums.BrazierLight;
@@ -158,24 +158,27 @@ public class BrazierBlock extends BaseEntityBlock {
 				player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
 				return InteractionResult.SUCCESS;
 			}
-
 			if (state.getValue(LIGHT).isLit()) {
-				if (FluidUtil.getFirstStackContained(stack).is(Fluids.WATER)) {
-					ItemAccess access = ItemAccess.forPlayerInteraction(player, hand);
-					ResourceHandler<FluidResource> handler = access.oneByOne().getCapability(Capabilities.Fluid.ITEM);
-					try (var tx = Transaction.openRoot()) {
-						if (handler != null && handler.extract(handler.getResource(0), FluidType.BUCKET_VOLUME, tx) == FluidType.BUCKET_VOLUME) {
+				ContainerItemContext context = ContainerItemContext.forPlayerInteraction(player, hand);
+				Storage<FluidVariant> storage = context.find(FluidStorage.ITEM);
+
+				if (storage != null) {
+					FluidVariant water = FluidVariant.of(Fluids.WATER);
+
+					try (Transaction transaction = Transaction.openOuter()) {
+						long extracted = storage.extract(water, FluidConstants.BUCKET, transaction);
+						if (extracted == FluidConstants.BUCKET) {
 							level.setBlock(pos, state.setValue(LIGHT, BrazierLight.OFF), 11);
 							level.setBlock(pos.below(), level.getBlockState(pos.below()).setValue(LIGHT, BrazierLight.OFF), 11);
 							level.playSound(null, pos, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS);
 							player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
-							tx.commit();
+							transaction.commit();
 							return InteractionResult.SUCCESS;
-						} else {
-							return InteractionResult.FAIL;
 						}
 					}
 				}
+
+				return InteractionResult.FAIL;
 			}
 		}
 
