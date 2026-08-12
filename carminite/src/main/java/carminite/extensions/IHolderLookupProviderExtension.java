@@ -13,11 +13,11 @@ public interface IHolderLookupProviderExtension {
 		return (HolderLookup.Provider) this;
 	}
 
-	default <T> Holder<T> holderOrThrow(ResourceKey<T> key) {
+	default <T> Holder<T> carminite$holderOrThrow(ResourceKey<T> key) {
 		return this.self().lookupOrThrow(key.registryKey()).getOrThrow(key);
 	}
 
-	default <T> Optional<Holder.Reference<T>> holder(ResourceKey<T> key) {
+	default <T> Optional<Holder.Reference<T>> carminite$holder(ResourceKey<T> key) {
 		Optional<? extends HolderLookup.RegistryLookup<T>> registry = this.self().lookup(key.registryKey());
 		return registry.flatMap(tRegistryLookup -> tRegistryLookup.get(key));
 	}

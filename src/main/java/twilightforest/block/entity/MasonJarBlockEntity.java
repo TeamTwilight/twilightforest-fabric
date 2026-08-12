@@ -1,6 +1,9 @@
 package twilightforest.block.entity;
 
 import carminite.network.PacketDistributor;
+import carminite.transfer.item.ItemResource;
+import carminite.transfer.item.ItemStacksResourceHandler;
+import carminite.transfer.transaction.ITransactionContext;
 import carminite.util.ServerLifecycleHooks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentGetter;
@@ -10,7 +13,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.ReloadableServerRegistries;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.ChunkPos;
@@ -23,10 +25,6 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.world.AuxiliaryLightManager;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
-import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.network.SetMasonJarItemPacket;
 
@@ -120,10 +118,6 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 		super.setChanged();
 		if (this.level != null) {
 			BlockPos pos = this.getBlockPos();
-			AuxiliaryLightManager lightManager = this.level.getAuxLightManager(pos);
-			if (lightManager != null) {
-				lightManager.setLightAt(pos, this.item.getItem().getItem() instanceof BlockItem blockItem ? blockItem.getBlock().defaultBlockState().getLightEmission() : 0);
-			}
 			this.level.getLightEngine().checkBlock(pos);
 		}
 		if (this.level instanceof ServerLevel serverLevel) {
@@ -164,11 +158,11 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 
 		@Override
 		public boolean isValid(int index, ItemResource resource) {
-			return resource.toStack().canFitInsideContainerItems();
+			return resource.toStack().getItem().canFitInsideContainerItems();
 		}
 
 		@Override
-		public int extract(int index, ItemResource resource, int amount, TransactionContext transaction) {
+		public int extract(int index, ItemResource resource, int amount, ITransactionContext transaction) {
 			int extracted = super.extract(index, resource, amount, transaction);
 			if (extracted > 0) {
 				this.jarEntity.wobble(WobbleStyle.NEGATIVE);
@@ -178,7 +172,7 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 		}
 
 		@Override
-		public int insert(int index, ItemResource resource, int amount, TransactionContext transaction) {
+		public int insert(int index, ItemResource resource, int amount, ITransactionContext transaction) {
 			int inserted = super.insert(index, resource, amount, transaction);
 			if (inserted > 0) {
 				this.jarEntity.wobble(WobbleStyle.POSITIVE);

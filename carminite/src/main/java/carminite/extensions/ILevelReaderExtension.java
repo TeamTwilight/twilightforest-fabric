@@ -14,15 +14,15 @@ public interface ILevelReaderExtension {
 		return (LevelReader) this;
 	}
 
-	default boolean isAreaLoaded(BlockPos center, int range) {
+	default boolean carminite$isAreaLoaded(BlockPos center, int range) {
 		return self().hasChunksAt(center.offset(-range, -range, -range), center.offset(range, range, range));
 	}
 
-	default <T> Holder<T> holderOrThrow(ResourceKey<T> key) {
-		return this.self().registryAccess().holderOrThrow(key);
+	default <T> Holder<T> carminite$holderOrThrow(ResourceKey<T> key) {
+		return this.self().registryAccess().carminite$holderOrThrow(key);
 	}
 
-	default <T> Optional<Holder.Reference<T>> holder(ResourceKey<T> key) {
-		return this.self().registryAccess().holder(key);
+	default <T> Optional<Holder.Reference<T>> carminite$holder(ResourceKey<T> key) {
+		return this.self().registryAccess().carminite$holder(key);
 	}
 }
