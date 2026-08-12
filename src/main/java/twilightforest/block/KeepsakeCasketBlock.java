@@ -54,17 +54,17 @@ public class KeepsakeCasketBlock extends SkullChestBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.KEEPSAKE_CASKET.get(), SkullChestBlockEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.KEEPSAKE_CASKET, SkullChestBlockEntity::tick);
 	}
 
 	@Override
 	protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		boolean flag = false;
 		if (state.getValue(BlockLoggingEnum.MULTILOGGED).getBlock() == Blocks.AIR || state.getValue(BlockLoggingEnum.MULTILOGGED).getFluid() != Fluids.EMPTY) {
-			if (stack.is(TFItems.CHARM_OF_KEEPING_3.get()) && state.getValue(BREAKAGE) > 0) {
+			if (stack.is(TFItems.CHARM_OF_KEEPING_3) && state.getValue(BREAKAGE) > 0) {
 				stack.consume(1, player);
 				level.setBlockAndUpdate(pos, state.setValue(BREAKAGE, state.getValue(BREAKAGE) - 1));
-				level.playSound(null, pos, TFSounds.CASKET_REPAIR.get(), SoundSource.BLOCKS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
+				level.playSound(null, pos, TFSounds.CASKET_REPAIR.value(), SoundSource.BLOCKS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
 				flag = true;
 			} else {
 				if (level.isClientSide()) {
@@ -102,12 +102,12 @@ public class KeepsakeCasketBlock extends SkullChestBlock {
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, Player player) {
+	protected ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData) {
 		if (state.getValue(BREAKAGE) > 0) {
 			ItemStack itemstack = new ItemStack(this);
-			itemstack.applyComponents(DataComponentPatch.builder().set(TFDataComponents.CASKET_DAMAGE.get(), state.getValue(BREAKAGE)).build());
+			itemstack.applyComponents(DataComponentPatch.builder().set(TFDataComponents.CASKET_DAMAGE, state.getValue(BREAKAGE)).build());
 			return itemstack;
 		}
-		return super.getCloneItemStack(level, pos, state, includeData, player);
+		return super.getCloneItemStack(level, pos, state, includeData);
 	}
 }

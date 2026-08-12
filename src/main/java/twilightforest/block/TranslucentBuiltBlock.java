@@ -29,7 +29,7 @@ public class TranslucentBuiltBlock extends Block {
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		if (state.getValue(ACTIVE)) {
 			level.removeBlock(pos, false);
-			level.playSound(null, pos, TFSounds.BUILDER_REPLACE.get(), SoundSource.BLOCKS, 0.3F, 0.5F);
+			level.playSound(null, pos, TFSounds.BUILDER_REPLACE.value(), SoundSource.BLOCKS, 0.3F, 0.5F);
 
 			for (Direction e : Direction.values()) {
 				BuilderBlock.activateBuiltBlocks(level, pos.relative(e));

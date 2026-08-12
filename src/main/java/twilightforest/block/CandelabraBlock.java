@@ -2,6 +2,7 @@ package twilightforest.block;
 
 import com.google.common.collect.Iterables;
 import com.mojang.serialization.MapCodec;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.RegistryAccess;
@@ -20,7 +21,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
@@ -42,9 +43,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.ItemAbilities;
-import net.neoforged.neoforge.common.ItemAbility;
-import net.neoforged.neoforge.common.Tags;
 import org.jspecify.annotations.Nullable;
 import twilightforest.block.entity.CandelabraBlockEntity;
 import twilightforest.components.item.CandelabraData;
@@ -79,7 +77,11 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 	public static final MapCodec<CandelabraBlock> CODEC = simpleCodec(CandelabraBlock::new);
 
 	public CandelabraBlock(Properties properties) {
-		super(properties);
+		super(properties.lightLevel(state -> switch (state.getValue(LIGHTING)) {
+			case DIM, OMINOUS -> 2 * getCandleCount(state);
+			case NORMAL -> 5 * getCandleCount(state);
+			default -> 0;
+		}));
 		BlockState state = this.getStateDefinition().any().setValue(LIGHTING, Lighting.NONE).setValue(FACING, Direction.NORTH).setValue(ON_WALL, false).setValue(LIGHTING, Lighting.NONE).setValue(WATERLOGGED, false);
 
 		for (BooleanProperty booleanproperty : CANDLES) {
@@ -104,16 +106,6 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 	@Override
 	protected MapCodec<? extends BaseEntityBlock> codec() {
 		return CODEC;
-	}
-
-	@Override
-	public int getLightEmission(BlockState state, BlockGetter getter, BlockPos pos) {
-		int candleCount = getCandleCount(state);
-		return switch (state.getValue(LIGHTING)) {
-			case DIM, OMINOUS -> 2 * candleCount;
-			case NORMAL -> 5 * candleCount;
-			default -> 0;
-		};
 	}
 
 	@Override
@@ -142,17 +134,6 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 		} else {
 			return state.getValue(FACING).getAxis() == Direction.Axis.X ? CANDLES_X : CANDLES_Z;
 		}
-	}
-
-	@Nullable
-	@Override
-	public BlockState getToolModifiedState(BlockState state, UseOnContext context, ItemAbility itemAbility, boolean simulate) {
-		if (ItemAbilities.FIRESTARTER_LIGHT == itemAbility) {
-			if (this.canBeLit(state)) {
-				return state.setValue(LIGHTING, Lighting.NORMAL);
-			}
-		}
-		return super.getToolModifiedState(state, context, itemAbility, simulate);
 	}
 
 	@Override
@@ -185,19 +166,19 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 				}
 				return InteractionResult.CONSUME;
 			}
-		} else if (stack.is(Tags.Items.DUSTS_REDSTONE) && state.getValue(LIGHTING) == Lighting.NORMAL) {
+		} else if (stack.is(ConventionalItemTags.REDSTONE_DUSTS) && state.getValue(LIGHTING) == Lighting.NORMAL) {
 			level.setBlockAndUpdate(pos, state.setValue(LIGHTING, Lighting.DIM));
 			stack.consume(1, player);
-			level.playSound(null, pos, TFSounds.CANDELABRA_LIGHT.get(), SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.1F + 0.9F);
+			level.playSound(null, pos, TFSounds.CANDELABRA_LIGHT.value(), SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.1F + 0.9F);
 			if (level.isClientSide()) {
-				this.eruptFlameParticles(TFParticleType.DIM_FLAME.get(), level, pos, state);
+				this.eruptFlameParticles(TFParticleType.DIM_FLAME, level, pos, state);
 			}
 			return InteractionResult.SUCCESS;
 		} else if ((stack.is(TFItemTags.SCEPTERS) || stack.is(TFItems.EXANIMATE_ESSENCE)) && state.getValue(LIGHTING) == Lighting.NORMAL) {
 			level.setBlockAndUpdate(pos, state.setValue(LIGHTING, Lighting.OMINOUS));
-			level.playSound(null, pos, TFSounds.CANDELABRA_OMINOUS.get(), SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.1F + 0.9F);
+			level.playSound(null, pos, TFSounds.CANDELABRA_OMINOUS.value(), SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.1F + 0.9F);
 			if (level.isClientSide()) {
-				this.eruptFlameParticles(TFParticleType.OMINOUS_FLAME.get(), level, pos, state);
+				this.eruptFlameParticles(TFParticleType.OMINOUS_FLAME, level, pos, state);
 			}
 			return InteractionResult.SUCCESS;
 		}
@@ -364,7 +345,7 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 			BlockEntity blockEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
 			if (blockEntity instanceof CandelabraBlockEntity candelabra) {
 				RegistryAccess access = blockEntity.getLevel().registryAccess();
-				if (builder.getOptionalParameter(LootContextParams.TOOL) != null && builder.getParameter(LootContextParams.TOOL).getEnchantmentLevel(access.holderOrThrow(Enchantments.SILK_TOUCH)) > 0) {
+				if (builder.getOptionalParameter(LootContextParams.TOOL) != null && EnchantmentHelper.getItemEnchantmentLevel(access.carminite$holderOrThrow(Enchantments.SILK_TOUCH), builder.getParameter(LootContextParams.TOOL)) > 0) {
 					ItemStack newStack = new ItemStack(this);
 					newStack.applyComponents(candelabra.collectComponents());
 					drops.remove(base.get());
@@ -431,12 +412,12 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, Player player) {
+	protected ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData) {
 		if (level.getBlockEntity(pos) instanceof CandelabraBlockEntity candelabra && candelabra.getCandles() != CandelabraData.EMPTY) {
 			ItemStack itemstack = new ItemStack(this);
 			itemstack.applyComponents(candelabra.collectComponents());
 			return itemstack;
 		}
-		return super.getCloneItemStack(level, pos, state, includeData, player);
+		return super.getCloneItemStack(level, pos, state, includeData);
 	}
 }

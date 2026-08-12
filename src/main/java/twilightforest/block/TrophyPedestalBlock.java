@@ -131,13 +131,13 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 	private void doPedestalEffect(Level level, BlockPos pos, BlockState state) {
 		level.setBlockAndUpdate(pos, state.setValue(ACTIVE, true));
 		removeNearbyShields(level, pos);
-		level.playSound(null, pos, TFSounds.PEDESTAL_ACTIVATE.get(), SoundSource.BLOCKS, 4.0F, 0.1F);
+		level.playSound(null, pos, TFSounds.PEDESTAL_ACTIVATE.value(), SoundSource.BLOCKS, 4.0F, 0.1F);
 	}
 
 	private void rewardNearbyPlayers(Level level, BlockPos pos) {
 		for (ServerPlayer player : level.getEntitiesOfClass(ServerPlayer.class, new AABB(pos).inflate(16.0D))) {
-			TFAdvancements.PLACED_TROPHY_ON_PEDESTAL.get().trigger(player);
-			player.awardStat(TFStats.TROPHY_PEDESTALS_ACTIVATED.get());
+			TFAdvancements.PLACED_TROPHY_ON_PEDESTAL.trigger(player);
+			player.awardStat(TFStats.TROPHY_PEDESTALS_ACTIVATED);
 		}
 	}
 
@@ -145,7 +145,7 @@ public class TrophyPedestalBlock extends Block implements SimpleWaterloggedBlock
 		for (int sx = -5; sx <= 5; sx++)
 			for (int sy = -5; sy <= 5; sy++)
 				for (int sz = -5; sz <= 5; sz++)
-					if (level.getBlockState(pos.offset(sx, sy, sz)).getBlock() == TFBlocks.STRONGHOLD_SHIELD.get()) {
+					if (level.getBlockState(pos.offset(sx, sy, sz)).getBlock() == TFBlocks.STRONGHOLD_SHIELD) {
 						level.destroyBlock(pos.offset(sx, sy, sz), false);
 					}
 	}

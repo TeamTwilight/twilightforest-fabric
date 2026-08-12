@@ -54,11 +54,11 @@ public class GhastTrapBlock extends BaseEntityBlock {
 
 		if (!state.getValue(ACTIVE) && isInactiveTrapCharged(level, pos) && level.hasNeighborSignal(pos)) {
 			for (ServerPlayer player : level.getEntitiesOfClass(ServerPlayer.class, new AABB(pos).inflate(6.0D))) {
-				TFAdvancements.ACTIVATED_GHAST_TRAP.get().trigger(player);
+				TFAdvancements.ACTIVATED_GHAST_TRAP.trigger(player);
 			}
 
 			level.setBlockAndUpdate(pos, state.setValue(ACTIVE, true));
-			level.playSound(null, pos, TFSounds.JET_START.get(), SoundSource.BLOCKS, 0.3F, 0.6F);
+			level.playSound(null, pos, TFSounds.JET_START.value(), SoundSource.BLOCKS, 0.3F, 0.6F);
 			level.blockEvent(pos, this, ACTIVATE_EVENT, 0);
 		}
 	}
@@ -100,6 +100,6 @@ public class GhastTrapBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.GHAST_TRAP.get(), GhastTrapBlockEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.GHAST_TRAP, GhastTrapBlockEntity::tick);
 	}
 }

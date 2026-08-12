@@ -148,7 +148,7 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 	@Override
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
 		if (level.isClientSide() && rand.nextInt(5) == 0) {
-			if (Minecraft.getInstance().player != null && Minecraft.getInstance().player.isHolding(TFItems.MAGIC_BEANS.get())) {
+			if (Minecraft.getInstance().player != null && Minecraft.getInstance().player.isHolding(TFItems.MAGIC_BEANS)) {
 				for (int i = 0; i < 2; i++) {
 					level.addParticle(ParticleTypes.HAPPY_VILLAGER, pos.getX() + rand.nextDouble(), pos.getY() + 1.25D, pos.getZ() + rand.nextDouble(), 0.0D, 0.0D, 0.0D);
 				}

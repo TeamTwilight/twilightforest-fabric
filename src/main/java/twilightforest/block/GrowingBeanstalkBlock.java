@@ -53,6 +53,6 @@ public class GrowingBeanstalkBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.BEANSTALK_GROWER.get(), GrowingBeanstalkBlockEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.BEANSTALK_GROWER, GrowingBeanstalkBlockEntity::tick);
 	}
 }

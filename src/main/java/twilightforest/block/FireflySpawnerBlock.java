@@ -52,20 +52,20 @@ public class FireflySpawnerBlock extends AbstractParticleSpawnerBlock implements
 			double dx = pos.getX() + ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.5F);
 			double dy = pos.getY() + 0.4F + ((rand.nextFloat() - rand.nextFloat()) * 0.3F);
 			double dz = pos.getZ() + ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.5F);
-			level.addParticle(TFParticleType.FIREFLY.get(), dx, dy, dz, 0, 0, 0);
+			level.addParticle(TFParticleType.FIREFLY, dx, dy, dz, 0, 0, 0);
 		}
 	}
 
 	@Override
 	protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-		if (stack.getItem() == TFBlocks.FIREFLY.get().asItem() && !player.isShiftKeyDown() && state.getValue(RADIUS) < 10) {
+		if (stack.getItem() == TFBlocks.FIREFLY.asItem() && !player.isShiftKeyDown() && state.getValue(RADIUS) < 10) {
 			level.setBlockAndUpdate(pos, state.setValue(RADIUS, state.getValue(RADIUS) + 1));
 			stack.consume(1, player);
 			player.sendOverlayMessage(Component.translatable("misc.twilightforest.firefly_spawner_radius", state.getValue(RADIUS) + 1));
 			return InteractionResult.SUCCESS;
 		} else if (player.isShiftKeyDown() && state.getValue(RADIUS) > 1) {
 			level.setBlockAndUpdate(pos, state.setValue(RADIUS, state.getValue(RADIUS) - 1));
-			ItemEntity bug = new ItemEntity(level, pos.getX() + 0.5D, pos.getY() + 1, pos.getZ() + 0.5D, new ItemStack(TFBlocks.FIREFLY.get()));
+			ItemEntity bug = new ItemEntity(level, pos.getX() + 0.5D, pos.getY() + 1, pos.getZ() + 0.5D, new ItemStack(TFBlocks.FIREFLY));
 			level.addFreshEntity(bug);
 			player.sendOverlayMessage(Component.translatable("misc.twilightforest.firefly_spawner_radius", state.getValue(RADIUS) - 1));
 			return InteractionResult.SUCCESS;
@@ -75,7 +75,7 @@ public class FireflySpawnerBlock extends AbstractParticleSpawnerBlock implements
 
 	@Override
 	public ParticleOptions getParticlesToSpawn() {
-		return TFParticleType.PARTICLE_SPAWNER_FIREFLY.get();
+		return TFParticleType.PARTICLE_SPAWNER_FIREFLY;
 	}
 
 	@Override

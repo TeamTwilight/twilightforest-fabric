@@ -90,7 +90,7 @@ public class DryingRackBlock extends BaseEntityBlock implements SimpleWaterlogge
 		if (rack.getTheItem().isEmpty() && !playerStack.isEmpty()) {
 			rack.setTheItem(player.hasInfiniteMaterials() ? playerStack.copyWithCount(1) : playerStack.split(1));
 			if (!level.isClientSide()) {
-				level.playSound(null, pos, TFSounds.DRYING_RACK_ADD_ITEM.get(), SoundSource.BLOCKS, 1.0F, 0.75F + level.getRandom().nextFloat() * 0.5F);
+				level.playSound(null, pos, TFSounds.DRYING_RACK_ADD_ITEM.value(), SoundSource.BLOCKS, 1.0F, 0.75F + level.getRandom().nextFloat() * 0.5F);
 				level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
 			}
 		} else {
@@ -98,7 +98,7 @@ public class DryingRackBlock extends BaseEntityBlock implements SimpleWaterlogge
 				ItemStack item = rack.takeTheItem();
 				if (!item.isEmpty()) {
 					InventoryUtil.giveItemToPlayer(player, item);
-					level.playSound(null, pos, TFSounds.DRYING_RACK_REMOVE_ITEM.get(), SoundSource.BLOCKS, 0.75F, 0.75F + level.getRandom().nextFloat() * 0.5F);
+					level.playSound(null, pos, TFSounds.DRYING_RACK_REMOVE_ITEM.value(), SoundSource.BLOCKS, 0.75F, 0.75F + level.getRandom().nextFloat() * 0.5F);
 					level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
 				} else return InteractionResult.CONSUME;
 			} else if (rack.getTheItem().isEmpty()) {
@@ -121,7 +121,7 @@ public class DryingRackBlock extends BaseEntityBlock implements SimpleWaterlogge
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
 		if (level.getBlockEntity(pos) instanceof DryingRackBlockEntity rack && rack.isDrying() && random.nextInt(5) == 0) {
 			Direction dir = state.getValue(FACING);
-			ParticleUtils.spawnParticleOnFace(level, pos, dir, TFParticleType.DRYING_RACK.get(), Vec3.ZERO, 0.3F);
+			ParticleUtils.spawnParticleOnFace(level, pos, dir, TFParticleType.DRYING_RACK, Vec3.ZERO, 0.3F);
 		}
 	}
 
@@ -133,7 +133,7 @@ public class DryingRackBlock extends BaseEntityBlock implements SimpleWaterlogge
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-		return createTickerHelper(blockEntityType, TFBlockEntities.DRYING_RACK.get(), DryingRackBlockEntity::tick);
+		return createTickerHelper(blockEntityType, TFBlockEntities.DRYING_RACK, DryingRackBlockEntity::tick);
 	}
 
 	@Override

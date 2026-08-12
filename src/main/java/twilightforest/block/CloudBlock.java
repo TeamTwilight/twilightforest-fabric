@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import carminite.network.PacketDistributor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -19,7 +20,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jspecify.annotations.Nullable;
 import twilightforest.config.TFConfig;
@@ -56,7 +56,7 @@ public class CloudBlock extends Block {
 		if (blockpos1.getX() != pos.getX()) x = Mth.clamp(x, pos.getX(), (double) pos.getX() + 1.0D);
 		if (blockpos1.getZ() != pos.getZ()) z = Mth.clamp(z, pos.getZ(), (double) pos.getZ() + 1.0D);
 
-		level.addParticle(TFParticleType.CLOUD_PUFF.get(), x, y, z, deltaMovement.x * -0.5D, 0.015D * jumpMultiplier, deltaMovement.z * -0.5D);
+		level.addParticle(TFParticleType.CLOUD_PUFF, x, y, z, deltaMovement.x * -0.5D, 0.015D * jumpMultiplier, deltaMovement.z * -0.5D);
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public class CloudBlock extends Block {
 	 */
 	@Override
 	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-		if (!level.isAreaLoaded(pos, 1) || TFConfig.commonCloudBlockPrecipitationDistance == 0) return;
+		if (!level.carminite$isAreaLoaded(pos, 1) || TFConfig.commonCloudBlockPrecipitationDistance == 0) return;
 
 		Pair<Biome.Precipitation, Float> pair = this.getCurrentPrecipitation(pos, level, level.getRainLevel(1.0F));
 		if (pair.getRight() > 0.0F) {
@@ -148,7 +148,7 @@ public class CloudBlock extends Block {
 			double xSpeed = xSpd * 0.0035D * maxI;
 			double zSpeed = zSpd * 0.0035D * maxI;
 
-			particlePacket.queueParticle(TFParticleType.CLOUD_PUFF.get(), false, false, x, y, z, xSpeed, ySpeed, zSpeed);
+			particlePacket.queueParticle(TFParticleType.CLOUD_PUFF, false, false, x, y, z, xSpeed, ySpeed, zSpeed);
 		}
 
 		PacketDistributor.sendToPlayersTrackingChunk(level, ChunkPos.containing(pos), particlePacket);

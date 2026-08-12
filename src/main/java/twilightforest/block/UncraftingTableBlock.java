@@ -43,7 +43,7 @@ public class UncraftingTableBlock extends Block {
 			return InteractionResult.SUCCESS;
 		} else {
 			player.openMenu(state.getMenuProvider(level, pos));
-			player.awardStat(TFStats.UNCRAFTING_TABLE_INTERACTIONS.get());
+			player.awardStat(TFStats.UNCRAFTING_TABLE_INTERACTIONS);
 			return InteractionResult.CONSUME;
 		}
 	}
@@ -54,7 +54,7 @@ public class UncraftingTableBlock extends Block {
 			boolean flag = level.hasNeighborSignal(pos);
 			if (flag != state.getValue(POWERED)) {
 				if (flag && level.getBlockState(pos.below()).is(Blocks.AMETHYST_BLOCK)) {
-					level.playSound(null, pos, TFSounds.UNCRAFTING_TABLE_ACTIVATE.get(), SoundSource.BLOCKS, 0.5F, 1.0F);
+					level.playSound(null, pos, TFSounds.UNCRAFTING_TABLE_ACTIVATE.value(), SoundSource.BLOCKS, 0.5F, 1.0F);
 				}
 				level.setBlockAndUpdate(pos, state.setValue(POWERED, flag));
 			}

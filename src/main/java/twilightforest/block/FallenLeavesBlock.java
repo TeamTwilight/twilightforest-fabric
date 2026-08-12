@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import carminite.network.PacketDistributor;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -27,7 +28,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFParticleType;
 import twilightforest.network.SpawnFallenLeafFromPacket;
@@ -132,7 +132,7 @@ public class FallenLeavesBlock extends TFPlantBlock {
 					return;
 			}
 
-			level.addParticle(ColorParticleOption.create(TFParticleType.FALLEN_LEAF.get(), level.getClientLeafTintColor(pos)), pos.getX() + random.nextFloat(), pos.getY() + dist - 0.25F, pos.getZ() + random.nextFloat(), 0.0D, 0.0D, 0.0D);
+			level.addParticle(ColorParticleOption.create(TFParticleType.FALLEN_LEAF, level.getClientLeafTintColor(pos)), pos.getX() + random.nextFloat(), pos.getY() + dist - 0.25F, pos.getZ() + random.nextFloat(), 0.0D, 0.0D, 0.0D);
 		}
 	}
 
@@ -144,7 +144,7 @@ public class FallenLeavesBlock extends TFPlantBlock {
 		}
 		if (entity instanceof LivingEntity && (entity.getDeltaMovement().x() != 0 || entity.getDeltaMovement().z() != 0) && level.getRandom().nextBoolean()) {
 			if (level.isClientSide()) {
-				level.addParticle(ColorParticleOption.create(TFParticleType.FALLEN_LEAF.get(), level.getClientLeafTintColor(pos)),
+				level.addParticle(ColorParticleOption.create(TFParticleType.FALLEN_LEAF, level.getClientLeafTintColor(pos)),
 					pos.getX() + level.getRandom().nextFloat(),
 					pos.getY() + ((2F / 16F) * (state.getValue(LAYERS) - 1)),
 					pos.getZ() + level.getRandom().nextFloat(),

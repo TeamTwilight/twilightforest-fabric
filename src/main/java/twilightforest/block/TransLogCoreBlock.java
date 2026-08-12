@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import carminite.network.PacketDistributor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.QuartPos;
@@ -14,7 +15,6 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.PalettedContainer;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFParticleType;
@@ -41,7 +41,7 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 	@Override
 	void performTreeEffect(ServerLevel level, BlockPos pos, RandomSource rand) {
 		ResourceKey<Biome> target = TFBiomes.ENCHANTED_FOREST;
-		Holder<Biome> biome = level.registryAccess().holderOrThrow(target);
+		Holder<Biome> biome = level.registryAccess().carminite$holderOrThrow(target);
 		int range = TFConfig.transformationCoreRange;
 		for (int i = 0; i < 16; i++) {
 			BlockPos dPos = WorldUtil.randomOffset(rand, pos, range, 0, range);
@@ -77,7 +77,7 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 			for (int j = 0; j < 9; j++) {
 				float angle = rand.nextFloat() * 360.0F;
 				Vec3 offset = new Vec3(Math.cos(angle), 0.0D, Math.sin(angle)).scale(2.0D);
-				particlePacket.queueParticle(TFParticleType.TRANSFORMATION_PARTICLE.get(), false, false, xyz.add(offset), Vec3.ZERO.subtract(offset));
+				particlePacket.queueParticle(TFParticleType.TRANSFORMATION_PARTICLE, false, false, xyz.add(offset), Vec3.ZERO.subtract(offset));
 			}
 			PacketDistributor.sendToPlayersNear(level, null, xyz.x(), xyz.y(), xyz.z(), 64.0D, particlePacket);
 			break;
@@ -86,6 +86,6 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 
 	@Override
 	protected void playSound(Level level, BlockPos pos, RandomSource rand) {
-		level.playSound(null, pos, TFSounds.TRANSFORMATION_CORE.get(), SoundSource.BLOCKS, 0.1F, rand.nextFloat() * 2.0F);
+		level.playSound(null, pos, TFSounds.TRANSFORMATION_CORE.value(), SoundSource.BLOCKS, 0.1F, rand.nextFloat() * 2.0F);
 	}
 }

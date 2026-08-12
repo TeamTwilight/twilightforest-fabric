@@ -68,17 +68,17 @@ public class Experiment115Block extends Block {
 		int bitesTaken = state.getValue(BITES_TAKEN);
 
 		if (!player.isSecondaryUseActive()) {
-			if (stack.is(TFItems.EXPERIMENT_115.get())) {
+			if (stack.is(TFItems.EXPERIMENT_115)) {
 				if (bitesTaken == 0) return InteractionResult.FAIL;
 				level.setBlockAndUpdate(pos, state.setValue(BITES_TAKEN, bitesTaken - 1));
-				level.playSound(null, pos, state.getSoundType(level, pos, player).getPlaceSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
+				level.playSound(null, pos, state.getSoundType().getPlaceSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
 				stack.consume(1, player);
 				if (player instanceof ServerPlayer)
 					CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer) player, pos, stack);
 				return InteractionResult.SUCCESS;
 			} else if (!state.getValue(REGENERATE) && bitesTaken == 0 && stack.is(Items.REDSTONE)) {
 				level.setBlockAndUpdate(pos, state.setValue(REGENERATE, true));
-				level.playSound(null, pos, state.getSoundType(level, pos, player).getPlaceSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
+				level.playSound(null, pos, state.getSoundType().getPlaceSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
 				stack.consume(1, player);
 				if (player instanceof ServerPlayer) {
 					player.awardStat(Stats.ITEM_USED.get(Items.REDSTONE));
@@ -94,7 +94,7 @@ public class Experiment115Block extends Block {
 				}
 				player.playSound(SoundEvents.ITEM_PICKUP, 0.5F, 1.0F);
 				if (!player.isCreative()) {
-					InventoryUtil.giveItemToPlayer(player, new ItemStack(TFItems.EXPERIMENT_115.get()));
+					InventoryUtil.giveItemToPlayer(player, new ItemStack(TFItems.EXPERIMENT_115));
 				}
 				return InteractionResult.SUCCESS;
 			}
@@ -104,7 +104,7 @@ public class Experiment115Block extends Block {
 
 	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-		ItemStack experStack = new ItemStack(TFItems.EXPERIMENT_115.get());
+		ItemStack experStack = new ItemStack(TFItems.EXPERIMENT_115);
 		FoodProperties props = experStack.get(DataComponents.FOOD);
 		Consumable consumable = experStack.getOrDefault(DataComponents.CONSUMABLE, Consumables.DEFAULT_FOOD);
 		if (props != null && consumable.canConsume(player, experStack.copy())) {
@@ -121,7 +121,7 @@ public class Experiment115Block extends Block {
 			if (player instanceof ServerPlayer) {
 				CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer) player, experStack);
 				player.awardStat(Stats.ITEM_USED.get(experStack.getItem()));
-				player.awardStat(TFStats.E115_SLICES_EATEN.get());
+				player.awardStat(TFStats.E115_SLICES_EATEN);
 
 			}
 

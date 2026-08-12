@@ -7,6 +7,7 @@ TODO
 ## Add these to Fabric convention tags
 - Gold Ingot to ConventionalItemTags.GOLD_INGOTS
 - Ores to ConventionalBlocktags.ORES and ConventionalItemTags.ORES
+- Redstone Dust to ConventionalItemtags.REDSTONE_DUSTS
 
 ## ICondition for Uncrafting Table
 - Replace the UncraftingTableCondition usages with ResourceCondition from Fabric

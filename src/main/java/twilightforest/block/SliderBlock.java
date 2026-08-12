@@ -90,7 +90,7 @@ public class SliderBlock extends RotatedPillarBlock implements SimpleWaterlogged
 			//TODO calls for a creakstart sound effect, but it doesnt exist in the game files
 			//world.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, TFSounds.SLIDER, SoundCategory.BLOCKS, 0.75F, 1.5F);
 
-			SlideBlock slideBlock = new SlideBlock(TFEntities.SLIDER.get(), level, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, state);
+			SlideBlock slideBlock = new SlideBlock(TFEntities.SLIDER, level, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, state);
 			level.addFreshEntity(slideBlock);
 		}
 

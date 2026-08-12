@@ -27,6 +27,6 @@ public class TransformationLeavesBlock extends LeavesBlock {
 
 	@Override
 	protected void spawnFallingLeavesParticle(Level level, BlockPos pos, RandomSource random) {
-		ParticleUtils.spawnParticlesOnBlockFace(level, pos, TFParticleType.LEAF_RUNE.get(), ConstantInt.of(1), Direction.DOWN, () -> Vec3.ZERO, 0.5F);
+		ParticleUtils.spawnParticlesOnBlockFace(level, pos, TFParticleType.LEAF_RUNE, ConstantInt.of(1), Direction.DOWN, () -> Vec3.ZERO, 0.5F);
 	}
 }

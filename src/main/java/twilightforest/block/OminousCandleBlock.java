@@ -36,7 +36,6 @@ import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.registries.DeferredBlock;
 import twilightforest.block.entity.OminousCandleBlockEntity;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFParticleType;
@@ -56,7 +55,7 @@ public class OminousCandleBlock extends BaseEntityBlock {
 	private static final VoxelShape FOUR_AABB = Block.box(5.0, 0.0, 5.0, 11.0, 6.0, 10.0);
 	public static final IntegerProperty CANDLES = BlockStateProperties.CANDLES;
 
-	public static final HashMap<Block, DeferredBlock<OminousCandleBlock>> CANDLE_MAP = Util.make(new HashMap<>(), map -> {
+	public static final HashMap<Block, OminousCandleBlock> CANDLE_MAP = Util.make(new HashMap<>(), map -> {
 		map.put(Blocks.CANDLE, TFBlocks.OMINOUS_CANDLE);
 		map.put(Blocks.WHITE_CANDLE, TFBlocks.OMINOUS_WHITE_CANDLE);
 		map.put(Blocks.ORANGE_CANDLE, TFBlocks.OMINOUS_ORANGE_CANDLE);
@@ -138,7 +137,7 @@ public class OminousCandleBlock extends BaseEntityBlock {
 			}
 		}
 
-		level.addParticle(TFParticleType.OMINOUS_FLAME.get(), offset.x, offset.y, offset.z, 0.0, 0.0, 0.0);
+		level.addParticle(TFParticleType.OMINOUS_FLAME, offset.x, offset.y, offset.z, 0.0, 0.0, 0.0);
 	}
 
 	@Override
@@ -168,7 +167,7 @@ public class OminousCandleBlock extends BaseEntityBlock {
 
 				BlockState newState = level.getBlockState(pos);
 
-				SoundType soundtype = newState.getSoundType(level, pos, player);
+				SoundType soundtype = newState.getSoundType();
 				level.playSound(
 					player,
 					pos,
@@ -190,7 +189,7 @@ public class OminousCandleBlock extends BaseEntityBlock {
 		Vec3 start = Vec3.atLowerCornerOf(pos);
 		for (Vec2 vec2 : CANDLE_OFFSETS.get(state.getValue(CANDLES).intValue())) {
 			for (int j = 0; j < 5; j++) {
-				level.addParticle(TFParticleType.OMINOUS_FLAME.get(), start.x + vec2.x, start.y + 0.5D, start.z + vec2.y, (level.getRandom().nextDouble() - 0.5D) * 0.05D, 0.015F, (level.getRandom().nextDouble() - 0.5D) * 0.05D);
+				level.addParticle(TFParticleType.OMINOUS_FLAME, start.x + vec2.x, start.y + 0.5D, start.z + vec2.y, (level.getRandom().nextDouble() - 0.5D) * 0.05D, 0.015F, (level.getRandom().nextDouble() - 0.5D) * 0.05D);
 			}
 		}
 	}
@@ -201,7 +200,7 @@ public class OminousCandleBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, Player player) {
+	protected ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData) {
 		return new ItemStack(this.candle);
 	}
 

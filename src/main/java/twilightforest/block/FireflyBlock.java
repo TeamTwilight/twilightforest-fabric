@@ -37,7 +37,7 @@ public class FireflyBlock extends CritterBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.FIREFLY.get(), FireflyBlockEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.FIREFLY, FireflyBlockEntity::tick);
 	}
 
 	@Override

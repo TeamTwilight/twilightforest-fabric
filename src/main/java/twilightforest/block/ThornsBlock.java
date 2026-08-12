@@ -60,9 +60,9 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 	@Override
 	public boolean canConnectTo(Direction.Axis thisAxis, Direction facing, BlockState facingState, boolean solidSide) {
 		return (facingState.getBlock() instanceof ThornsBlock
-			|| facingState.getBlock().equals(TFBlocks.THORN_ROSE.get())
-			|| facingState.getBlock().equals(TFBlocks.THORN_LEAVES.get())
-			|| facingState.getBlock().equals(TFBlocks.WEATHERED_DEADROCK.get()));
+			|| facingState.getBlock().equals(TFBlocks.THORN_ROSE)
+			|| facingState.getBlock().equals(TFBlocks.THORN_LEAVES)
+			|| facingState.getBlock().equals(TFBlocks.WEATHERED_DEADROCK));
 	}
 
 	@Override
@@ -149,7 +149,7 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 			BlockPos dPos = pos.relative(dir, i);
 
 			if (level.isEmptyBlock(dPos)) {
-				level.setBlock(dPos, TFBlocks.GREEN_THORNS.get().defaultBlockState().setValue(AXIS, dir.getAxis()), Block.UPDATE_CLIENTS);
+				level.setBlock(dPos, TFBlocks.GREEN_THORNS.defaultBlockState().setValue(AXIS, dir.getAxis()), Block.UPDATE_CLIENTS);
 			} else {
 				break;
 			}

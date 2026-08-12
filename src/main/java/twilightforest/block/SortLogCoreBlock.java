@@ -1,5 +1,9 @@
 package twilightforest.block;
 
+import carminite.network.PacketDistributor;
+import carminite.transfer.IResourceHandler;
+import carminite.transfer.item.ItemResource;
+import carminite.transfer.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -9,11 +13,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFParticleType;
 import twilightforest.network.ParticlePacket;
@@ -28,7 +28,7 @@ import java.util.Map;
 
 public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
-	private final BlockCapabilityDirectionalCache<ResourceHandler<ItemResource>> capabilityCache = new BlockCapabilityDirectionalCache<>();
+	private final BlockCapabilityDirectionalCache<IResourceHandler<ItemResource>> capabilityCache = new BlockCapabilityDirectionalCache<>();
 
 	public SortLogCoreBlock(Properties properties) {
 		super(properties);
@@ -42,8 +42,8 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 	//TODO fuckkkkkkkkk
 	@Override
 	void performTreeEffect(ServerLevel level, BlockPos pos, RandomSource rand) {
-		Map<List<ResourceHandler<ItemResource>>, Vec3> inputMap = new HashMap<>();
-		Map<ResourceHandler<ItemResource>, Vec3> outputMap = new HashMap<>();
+		Map<List<IResourceHandler<ItemResource>>, Vec3> inputMap = new HashMap<>();
+		Map<IResourceHandler<ItemResource>, Vec3> outputMap = new HashMap<>();
 
 		for (BlockPos blockPos : WorldUtil.getAllAround(pos, TFConfig.sortingCoreRange)) { // Get every itemHandler from every block in the area
 			if (!blockPos.equals(pos)) {
@@ -51,9 +51,9 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 				if (blockEntity != null) {
 					// Put it in the input if its within 2 blocks
 					if (Math.abs(blockPos.getX() - pos.getX()) <= 2 && Math.abs(blockPos.getY() - pos.getY()) <= 2 && Math.abs(blockPos.getZ() - pos.getZ()) <= 2) {
-						List<ResourceHandler<ItemResource>> handlers = new ArrayList<>();
+						List<IResourceHandler<ItemResource>> handlers = new ArrayList<>();
 						for (Direction side : Direction.values()) {
-							ResourceHandler<ItemResource> handler = this.capabilityCache.get(Capabilities.Item.BLOCK, level, blockPos, side);
+							IResourceHandler<ItemResource> handler = this.capabilityCache.get(Capabilities.Item.BLOCK, level, blockPos, side);
 							if (handler != null) handlers.add(handler);
 						}
 						if (!handlers.isEmpty()) {
@@ -61,7 +61,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 						}
 					} else { // Output if its outside that range
 						for (Direction side : Direction.values()) {
-							ResourceHandler<ItemResource> handler = this.capabilityCache.get(Capabilities.Item.BLOCK, level, blockPos, side);
+							IResourceHandler<ItemResource> handler = this.capabilityCache.get(Capabilities.Item.BLOCK, level, blockPos, side);
 							if (handler != null) outputMap.put(handler, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
 						}
 					}
@@ -72,9 +72,9 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 		List<Entity> alreadyUsedForInput = new ArrayList<>(); // Keep track of entities we already have for inputs, so we can skip over them when looking for outputs
 
 		level.getEntities((Entity) null, new AABB(pos).inflate(2), entity -> entity.isAlive() && entity.is(TFEntityTypeTags.SORTABLE_ENTITIES)).forEach(entity -> {
-			List<ResourceHandler<ItemResource>> handlers = new ArrayList<>();
+			List<IResourceHandler<ItemResource>> handlers = new ArrayList<>();
 			for (Direction side : Direction.values()) {
-				ResourceHandler<ItemResource> handler = entity.getCapability(Capabilities.Item.ENTITY_AUTOMATION, side);
+				IResourceHandler<ItemResource> handler = entity.getCapability(Capabilities.Item.ENTITY_AUTOMATION, side);
 				if (handler != null) handlers.add(handler);
 			}
 			if (!handlers.isEmpty()) {
@@ -87,24 +87,24 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
 		level.getEntities((Entity) null, new AABB(pos).inflate(16), entity -> entity.isAlive() && !alreadyUsedForInput.contains(entity) && entity.is(TFEntityTypeTags.SORTABLE_ENTITIES)).forEach(entity -> {
 			for (Direction side : Direction.values()) {
-				ResourceHandler<ItemResource> handler = entity.getCapability(Capabilities.Item.ENTITY_AUTOMATION, side);
+				IResourceHandler<ItemResource> handler = entity.getCapability(Capabilities.Item.ENTITY_AUTOMATION, side);
 				if (handler != null) outputMap.put(handler, entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D));
 			}
 		});
 
 		if (outputMap.isEmpty()) return; // No output
 
-		for (Map.Entry<List<ResourceHandler<ItemResource>>, Vec3> inputHandlers : inputMap.entrySet()) {
+		for (Map.Entry<List<IResourceHandler<ItemResource>>, Vec3> inputHandlers : inputMap.entrySet()) {
 			boolean transferred = false;
-			for (ResourceHandler<ItemResource> inputIItemHandler : inputHandlers.getKey()) {
+			for (IResourceHandler<ItemResource> inputIItemHandler : inputHandlers.getKey()) {
 				for (int i = 0; i < inputIItemHandler.size(); i++) {
 					ItemResource itemResource = inputIItemHandler.getResource(i);
 					if (itemResource.isEmpty()) continue;
 					try (Transaction tx = Transaction.openRoot()) {
 						if (inputIItemHandler.extract(i, itemResource, 1, tx) == 0) continue;
-						Map<ResourceHandler<ItemResource>, Integer> outputCounts = new HashMap<>();
+						Map<IResourceHandler<ItemResource>, Integer> outputCounts = new HashMap<>();
 
-						for (ResourceHandler<ItemResource> outputHandler : outputMap.keySet()) {
+						for (IResourceHandler<ItemResource> outputHandler : outputMap.keySet()) {
 							int count = 0;
 							for (int j = 0; j < outputHandler.size(); j++) {
 								if (itemResource.equals(outputHandler.getResource(j))) count += outputHandler.getAmountAsInt(j);
@@ -112,12 +112,12 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 							if (count > 0) outputCounts.put(outputHandler, count);
 						}
 
-						List<ResourceHandler<ItemResource>> sortedOutputs = outputCounts.entrySet().stream()
-							.sorted(Map.Entry.<ResourceHandler<ItemResource>, Integer>comparingByValue().reversed())
+						List<IResourceHandler<ItemResource>> sortedOutputs = outputCounts.entrySet().stream()
+							.sorted(Map.Entry.<IResourceHandler<ItemResource>, Integer>comparingByValue().reversed())
 							.map(Map.Entry::getKey)
 							.toList();
 
-						for (ResourceHandler<ItemResource> outputHandler : sortedOutputs) {
+						for (IResourceHandler<ItemResource> outputHandler : sortedOutputs) {
 							if (ResourceHandlerUtil.insertStacking(outputHandler, itemResource, 1, tx) == 1) {
 								tx.commit();
 								transferred = true;
@@ -129,7 +129,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 								double x = diff.x - 0.25D + rand.nextDouble() * 0.5D;
 								double y = diff.y - 1.75D + rand.nextDouble() * 0.5D;
 								double z = diff.z - 0.25D + rand.nextDouble() * 0.5D;
-								particlePacket.queueParticle(TFParticleType.SORTING_PARTICLE.get(), false, false, xyz, new Vec3(x, y, z).scale(1D / diff.length()));
+								particlePacket.queueParticle(TFParticleType.SORTING_PARTICLE, false, false, xyz, new Vec3(x, y, z).scale(1D / diff.length()));
 								PacketDistributor.sendToPlayersNear(level, null, xyz.x(), xyz.y(), xyz.z(), 64.0D, particlePacket);
 								break;
 							}

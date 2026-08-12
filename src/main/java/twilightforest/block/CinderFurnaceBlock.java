@@ -45,7 +45,7 @@ public class CinderFurnaceBlock extends AbstractFurnaceBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return !level.isClientSide() ? createTickerHelper(type, TFBlockEntities.CINDER_FURNACE.get(), CinderFurnaceBlockEntity::serverTick) : null;
+		return !level.isClientSide() ? createTickerHelper(type, TFBlockEntities.CINDER_FURNACE, CinderFurnaceBlockEntity::serverTick) : null;
 	}
 
 	//[VanillaCopy] FurnaceBlock.animateTick

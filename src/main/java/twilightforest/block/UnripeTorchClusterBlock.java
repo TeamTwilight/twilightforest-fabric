@@ -17,7 +17,7 @@ public class UnripeTorchClusterBlock extends TrollRootBlock {
 	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		if (level.getMaxLocalRawBrightness(pos) >= RIPEN_THRESHOLD) {
 			// ripen!
-			level.setBlockAndUpdate(pos, TFBlocks.TROLLBER.get().defaultBlockState());
+			level.setBlockAndUpdate(pos, TFBlocks.TROLLBER.defaultBlockState());
 		}
 	}
 }

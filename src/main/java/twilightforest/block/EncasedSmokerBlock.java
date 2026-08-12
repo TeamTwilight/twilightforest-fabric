@@ -33,12 +33,12 @@ public class EncasedSmokerBlock extends TFSmokerBlock {
 
 		if (!state.getValue(ACTIVE) && powered) {
 			level.setBlock(pos, state.setValue(ACTIVE, true), Block.UPDATE_ALL);
-			level.playSound(null, pos, TFSounds.SMOKER_START.get(), SoundSource.BLOCKS, 0.3F, 0.6F);
+			level.playSound(null, pos, TFSounds.SMOKER_START.value(), SoundSource.BLOCKS, 0.3F, 0.6F);
 		}
 
 		if (state.getValue(ACTIVE) && !powered) {
 			level.setBlock(pos, state.setValue(ACTIVE, false), Block.UPDATE_ALL);
-			level.playSound(null, pos, TFSounds.SMOKER_START.get(), SoundSource.BLOCKS, 0.3F, 0.6F);
+			level.playSound(null, pos, TFSounds.SMOKER_START.value(), SoundSource.BLOCKS, 0.3F, 0.6F);
 		}
 	}
 }

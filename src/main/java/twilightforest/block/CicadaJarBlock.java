@@ -36,7 +36,7 @@ public class CicadaJarBlock extends JarBlock {
 			ItemEntity cicada = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(TFBlocks.CICADA));
 			level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 			cicada.spawnAtLocation(sl, cicada.getItem());
-			cicada.spawnAtLocation(sl, Util.make(new ItemStack(TFBlocks.MASON_JAR.get()), jar -> jar.set(TFDataComponents.JAR_LID.get(), new JarLid(jarBE.lid))));
+			cicada.spawnAtLocation(sl, Util.make(new ItemStack(TFBlocks.MASON_JAR), jar -> jar.set(TFDataComponents.JAR_LID, new JarLid(jarBE.lid))));
 			level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
 			return InteractionResult.SUCCESS;
 		}
@@ -52,7 +52,7 @@ public class CicadaJarBlock extends JarBlock {
 	public void destroy(LevelAccessor accessor, BlockPos pos, BlockState state) {
 		super.destroy(accessor, pos, state);
 		if (accessor.isClientSide())
-			Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.get().location(), SoundSource.BLOCKS);
+			Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.value().location(), SoundSource.BLOCKS);
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class CicadaJarBlock extends JarBlock {
 		double dz = pos.getZ() + ((random.nextFloat() - random.nextFloat()) * 0.2F + 0.5F);
 		level.addParticle(ParticleTypes.NOTE, dx, dy, dz, 0, 0, 0);
 		if (level.getRandom().nextInt(75) == 0 && !TFConfig.silentCicadas) {
-			level.playLocalSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, TFSounds.CICADA.get(), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+			level.playLocalSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, TFSounds.CICADA.value(), SoundSource.BLOCKS, 1.0F, 1.0F, false);
 		}
 	}
 }

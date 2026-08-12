@@ -1,10 +1,9 @@
 package twilightforest.util;
 
 import net.minecraft.core.Direction;
-import tamaized.beanification.Component;
 
-@Component
 public class DirectionUtil {
+	public static final DirectionUtil INSTANCE = new DirectionUtil();
 
 	public Direction horizontalOrElse(Direction horizontal, Direction orElse) {
 		return horizontal.getAxis().isHorizontal() ? horizontal : horizontalOrElse(orElse, Direction.NORTH);

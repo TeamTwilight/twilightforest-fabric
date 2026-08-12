@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import carminite.network.PacketDistributor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -19,7 +20,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
@@ -84,7 +84,7 @@ public class CastleDoorBlock extends Block {
 		if (state.getValue(VANISHED) || state.getValue(ACTIVE)) return InteractionResult.FAIL;
 
 		if (isBlockLocked(level, pos)) {
-			level.playSound(null, pos, TFSounds.DOOR_ACTIVATED.get(), SoundSource.BLOCKS, 1.0F, 0.3F);
+			level.playSound(null, pos, TFSounds.DOOR_ACTIVATED.value(), SoundSource.BLOCKS, 1.0F, 0.3F);
 			return InteractionResult.PASS;
 		} else {
 			changeToActiveBlock(level, pos, state);
@@ -126,11 +126,11 @@ public class CastleDoorBlock extends Block {
 	}
 
 	private void playVanishSound(Level level, BlockPos pos) {
-		level.playSound(null, pos, TFSounds.DOOR_VANISH.get(), SoundSource.BLOCKS, 0.125f, level.getRandom().nextFloat() * 0.25F + 1.75F);
+		level.playSound(null, pos, TFSounds.DOOR_VANISH.value(), SoundSource.BLOCKS, 0.125f, level.getRandom().nextFloat() * 0.25F + 1.75F);
 	}
 
 	private void playReappearSound(Level level, BlockPos pos) {
-		level.playSound(null, pos, TFSounds.DOOR_REAPPEAR.get(), SoundSource.BLOCKS, 0.125f, level.getRandom().nextFloat() * 0.25F + 1.25F);
+		level.playSound(null, pos, TFSounds.DOOR_REAPPEAR.value(), SoundSource.BLOCKS, 0.125f, level.getRandom().nextFloat() * 0.25F + 1.25F);
 	}
 
 	/**
@@ -151,7 +151,7 @@ public class CastleDoorBlock extends Block {
 			for (int dx = 0; dx < 4; ++dx) {
 				for (int dy = 0; dy < 4; ++dy) {
 					for (int dz = 0; dz < 4; ++dz) {
-						particlePacket.queueParticle(TFParticleType.ANNIHILATE.get(), false, false,
+						particlePacket.queueParticle(TFParticleType.ANNIHILATE, false, false,
 							pos.getX() + (dx + 0.5D) / 4,
 							pos.getY() + (dy + 0.5D) / 4,
 							pos.getZ() + (dz + 0.5D) / 4,

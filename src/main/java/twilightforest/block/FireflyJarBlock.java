@@ -41,7 +41,7 @@ public class FireflyJarBlock extends JarBlock {
 			ItemEntity firefly = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(TFBlocks.FIREFLY));
 			level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 			firefly.spawnAtLocation(sl, firefly.getItem());
-			firefly.spawnAtLocation(sl, Util.make(new ItemStack(TFBlocks.MASON_JAR.get()), jar -> jar.set(TFDataComponents.JAR_LID.get(), new JarLid(jarBE.lid))));
+			firefly.spawnAtLocation(sl, Util.make(new ItemStack(TFBlocks.MASON_JAR), jar -> jar.set(TFDataComponents.JAR_LID, new JarLid(jarBE.lid))));
 			level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
 			return InteractionResult.SUCCESS;
 		}
@@ -54,7 +54,7 @@ public class FireflyJarBlock extends JarBlock {
 			double dx = pos.getX() + ((random.nextFloat() - random.nextFloat()) * 0.2F + 0.5F);
 			double dy = pos.getY() + 0.4F + ((random.nextFloat() - random.nextFloat()) * 0.3F);
 			double dz = pos.getZ() + ((random.nextFloat() - random.nextFloat()) * 0.2F + 0.5F);
-			level.addParticle(TFParticleType.FIREFLY.get(), dx, dy, dz, 0, 0, 0);
+			level.addParticle(TFParticleType.FIREFLY, dx, dy, dz, 0, 0, 0);
 		}
 	}
 }

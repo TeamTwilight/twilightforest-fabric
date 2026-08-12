@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import carminite.network.PacketDistributor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -22,7 +23,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jspecify.annotations.Nullable;
 import twilightforest.block.entity.bookshelf.ChiseledCanopyShelfBlockEntity;
 import twilightforest.init.TFBlockEntities;
@@ -70,7 +70,7 @@ public class ChiseledCanopyShelfBlock extends ChiseledBookShelfBlock {
 			if (shelf.isEmpty()) {
 				return InteractionResult.CONSUME;
 			}
-			level.playSound(null, pos, TFSounds.BOOKSHELF_CONVERTS.get(), SoundSource.BLOCKS, 0.35F, 0.6F + level.getRandom().nextFloat() * 0.4F);
+			level.playSound(null, pos, TFSounds.BOOKSHELF_CONVERTS.value(), SoundSource.BLOCKS, 0.35F, 0.6F + level.getRandom().nextFloat() * 0.4F);
 			return InteractionResult.SUCCESS;
 		}
 		if (state.getValue(SPAWNER)) return InteractionResult.FAIL;
@@ -86,7 +86,7 @@ public class ChiseledCanopyShelfBlock extends ChiseledBookShelfBlock {
 	@Override
 	public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity entity, ItemStack stack) {
 		if (level instanceof ServerLevel serverLevel && state.getValue(SPAWNER)) {
-			level.playSound(null, pos, TFSounds.DEATH_TOME_DEATH.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+			level.playSound(null, pos, TFSounds.DEATH_TOME_DEATH.value(), SoundSource.BLOCKS, 1.0F, 1.0F);
 			ParticlePacket particlePacket = new ParticlePacket();
 			for (int i = 0; i < 20; ++i) {
 				particlePacket.queueParticle(ParticleTypes.POOF, false, false,
@@ -108,6 +108,6 @@ public class ChiseledCanopyShelfBlock extends ChiseledBookShelfBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.CHISELED_CANOPY_BOOKSHELF.get(), ChiseledCanopyShelfBlockEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.CHISELED_CANOPY_BOOKSHELF, ChiseledCanopyShelfBlockEntity::tick);
 	}
 }

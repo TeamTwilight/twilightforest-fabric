@@ -1,7 +1,6 @@
 package twilightforest.block;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -15,7 +14,7 @@ public class HardenedDarkLeavesBlock extends Block {
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, Player player) {
-		return new ItemStack(TFBlocks.DARK_LEAVES.get());
+	protected ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData) {
+		return new ItemStack(TFBlocks.DARK_LEAVES);
 	}
 }

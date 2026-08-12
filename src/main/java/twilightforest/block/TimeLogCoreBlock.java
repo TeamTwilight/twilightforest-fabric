@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import carminite.network.PacketDistributor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -11,7 +12,6 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
@@ -66,7 +66,7 @@ public class TimeLogCoreBlock extends SpecialMagicLogBlock {
 					Vec3 xyz = Vec3.atCenterOf(dPos);
 					ParticlePacket particlePacket = new ParticlePacket();
 					double yOffset = state.getOcclusionShape().max(Direction.Axis.Y);
-					particlePacket.queueParticle(TFParticleType.LOG_CORE_PARTICLE.get(), false, false, xyz.add(0.0, yOffset - 0.5, 0.0), new Vec3(0.953, 0.698, 0.0));
+					particlePacket.queueParticle(TFParticleType.LOG_CORE_PARTICLE, false, false, xyz.add(0.0, yOffset - 0.5, 0.0), new Vec3(0.953, 0.698, 0.0));
 					PacketDistributor.sendToPlayersNear(level, null, xyz.x(), xyz.y(), xyz.z(), 64.0D, particlePacket);
 				}
 			}
@@ -75,6 +75,6 @@ public class TimeLogCoreBlock extends SpecialMagicLogBlock {
 
 	@Override
 	protected void playSound(Level level, BlockPos pos, RandomSource rand) {
-		level.playSound(null, pos, TFSounds.TIME_CORE.get(), SoundSource.BLOCKS, 0.35F, 0.5F);
+		level.playSound(null, pos, TFSounds.TIME_CORE.value(), SoundSource.BLOCKS, 0.35F, 0.5F);
 	}
 }

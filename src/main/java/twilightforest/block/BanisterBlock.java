@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -31,7 +32,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.ItemAbilities;
 import org.jspecify.annotations.Nullable;
 import twilightforest.enums.BanisterShape;
 import twilightforest.tags.TFBlockTags;
@@ -213,7 +213,7 @@ public class BanisterBlock extends HorizontalDirectionalBlock implements SimpleW
 
 	@Override
 	protected InteractionResult useItemOn(ItemStack held, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-		if (held.canPerformAction(ItemAbilities.AXE_WAX_OFF)) {
+		if (held.is(ItemTags.AXES)) {
 			BlockState newState = state.cycle(SHAPE);
 			BlockState belowState = level.getBlockState(pos.below());
 

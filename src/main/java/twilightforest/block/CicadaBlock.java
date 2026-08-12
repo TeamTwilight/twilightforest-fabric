@@ -40,7 +40,7 @@ public class CicadaBlock extends CritterBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.CICADA.get(), CicadaBlockEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.CICADA, CicadaBlockEntity::tick);
 	}
 
 	@Override
@@ -52,6 +52,6 @@ public class CicadaBlock extends CritterBlock {
 	public void destroy(LevelAccessor accessor, BlockPos pos, BlockState state) {
 		super.destroy(accessor, pos, state);
 		if (accessor.isClientSide())
-			Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.get().location(), SoundSource.NEUTRAL);
+			Minecraft.getInstance().getSoundManager().stop(TFSounds.CICADA.value().location(), SoundSource.NEUTRAL);
 	}
 }

@@ -45,11 +45,11 @@ public class TrollRootBlock extends Block {
 	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult result) {
 		if (state.is(TFBlocks.TROLLBER)) {
-			level.setBlock(pos, TFBlocks.TROLLVIDR.get().defaultBlockState(), Block.UPDATE_CLIENTS);
-			level.playSound(null, pos, TFSounds.PICKED_TORCHBERRIES.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
-			ItemEntity torchberries = new ItemEntity(level, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F, new ItemStack(TFItems.TORCHBERRIES.get()));
+			level.setBlock(pos, TFBlocks.TROLLVIDR.defaultBlockState(), Block.UPDATE_CLIENTS);
+			level.playSound(null, pos, TFSounds.PICKED_TORCHBERRIES.value(), SoundSource.BLOCKS, 1.0F, 1.0F);
+			ItemEntity torchberries = new ItemEntity(level, pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F, new ItemStack(TFItems.TORCHBERRIES));
 			level.addFreshEntity(torchberries);
-			if (player instanceof ServerPlayer) player.awardStat(TFStats.TORCHBERRIES_HARVESTED.get());
+			if (player instanceof ServerPlayer) player.awardStat(TFStats.TORCHBERRIES_HARVESTED);
 			return InteractionResult.SUCCESS;
 		}
 		return super.useWithoutItem(state, level, pos, player, result);

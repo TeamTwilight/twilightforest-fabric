@@ -11,6 +11,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -19,7 +20,6 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.ItemAbilities;
 import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFParticleType;
 
@@ -36,7 +36,7 @@ public interface LightableBlock {
 			this.extinguish(player, state, level, pos);
 			return InteractionResult.SUCCESS;
 		} else if (this.canBeLit(state)) {
-			if (stack.canPerformAction(ItemAbilities.FIRESTARTER_LIGHT)) {
+			if (stack.is(Items.FLINT_AND_STEEL) || stack.is(Items.FIRE_CHARGE)) {
 				return InteractionResult.SUCCESS;
 			}
 		}
@@ -70,8 +70,8 @@ public interface LightableBlock {
 		}
 
 		ParticleOptions particle = switch (lighting) {
-			case DIM -> TFParticleType.DIM_FLAME.get();
-			case OMINOUS -> TFParticleType.OMINOUS_FLAME.get();
+			case DIM -> TFParticleType.DIM_FLAME;
+			case OMINOUS -> TFParticleType.OMINOUS_FLAME;
 			default -> ParticleTypes.SMALL_FLAME;
 		};
 

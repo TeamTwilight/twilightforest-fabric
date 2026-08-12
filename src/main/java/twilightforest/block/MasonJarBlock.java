@@ -1,8 +1,11 @@
 package twilightforest.block;
 
+import carminite.transfer.item.ItemResource;
+import carminite.transfer.transaction.Transaction;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
@@ -13,7 +16,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -28,9 +30,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.common.world.AuxiliaryLightManager;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
 import twilightforest.block.entity.MasonJarBlockEntity;
 import twilightforest.init.TFSounds;
 
@@ -83,7 +82,7 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 			return;
 		}
 
-		int maxAmount = Math.min(Item.ABSOLUTE_MAX_STACK_SIZE, resource.getItem().getMaxStackSize(resource.toStack()));
+		int maxAmount = Math.min(Item.ABSOLUTE_MAX_STACK_SIZE, resource.toStack().getOrDefault(DataComponents.MAX_STACK_SIZE, 1));
 
 		try (Transaction transaction = Transaction.openRoot()) {
 			int countExtracted = handler.extract(SLOT, resource, maxAmount, transaction);
@@ -95,7 +94,7 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 			transaction.commit();
 			server.sendBlockUpdated(pos, jar.getBlockState(), jar.getBlockState(), Block.UPDATE_ALL);
 			player.setItemInHand(hand, preview);
-			server.playSound(null, pos, TFSounds.JAR_REMOVE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+			server.playSound(null, pos, TFSounds.JAR_REMOVE.value(), SoundSource.BLOCKS, 1.0F, 1.0F);
 			server.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
 		}
 	}
@@ -124,13 +123,13 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 			remainder.shrink(inserted);
 			player.setItemInHand(hand, player.hasInfiniteMaterials() ? before : remainder);
 			float filledRatio = (float) inserted / (float) before.getMaxStackSize();
-			server.playSound(null, pos, TFSounds.JAR_INSERT.get(), SoundSource.BLOCKS, 1.0F, 0.7F + 0.5F * filledRatio);
+			server.playSound(null, pos, TFSounds.JAR_INSERT.value(), SoundSource.BLOCKS, 1.0F, 0.7F + 0.5F * filledRatio);
 			server.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
 		}
 	}
 
 	private static void wiggle(ServerLevel server, BlockPos pos, MasonJarBlockEntity jar) {
-		server.playSound(null, pos, TFSounds.JAR_WIGGLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+		server.playSound(null, pos, TFSounds.JAR_WIGGLE.value(), SoundSource.BLOCKS, 1.0F, 1.0F);
 		jar.wobble(DecoratedPotBlockEntity.WobbleStyle.NEGATIVE);
 	}
 
@@ -147,18 +146,6 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 	@Override
 	protected boolean hasAnalogOutputSignal(BlockState state) {
 		return true;
-	}
-
-	@Override
-	public boolean hasDynamicLightEmission(BlockState state) {
-		return true;
-	}
-
-	@Override
-	public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
-		AuxiliaryLightManager lightManager = level.getAuxLightManager(pos);
-		if (lightManager != null) return lightManager.getLightAt(pos);
-		return super.getLightEmission(state, level, pos);
 	}
 
 	@Override

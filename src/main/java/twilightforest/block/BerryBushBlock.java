@@ -5,6 +5,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -14,7 +15,6 @@ import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.neoforged.neoforge.common.ItemAbilities;
 import twilightforest.tags.TFBlockTags;
 
 import java.util.stream.IntStream;
@@ -36,7 +36,7 @@ public class BerryBushBlock extends TFBushBlock implements BonemealableBlock {
 
 	@Override
 	public float getDestroyProgress(BlockState state, Player player, BlockGetter getter, BlockPos pos) {
-		return player.getMainHandItem().canPerformAction(ItemAbilities.SHEARS_DIG) ? 0.2F : super.getDestroyProgress(state, player, getter, pos);
+		return player.getMainHandItem().is(Items.SHEARS) ? 0.2F : super.getDestroyProgress(state, player, getter, pos);
 	}
 
 	@Override

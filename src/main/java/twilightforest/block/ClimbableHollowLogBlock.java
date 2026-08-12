@@ -4,7 +4,6 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -15,6 +14,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -34,14 +34,13 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.ItemAbilities;
 import twilightforest.enums.HollowLogVariants;
 
 public class ClimbableHollowLogBlock extends HorizontalDirectionalBlock implements WaterloggedBlock {
 
 	public static final EnumProperty<HollowLogVariants.Climbable> VARIANT = EnumProperty.create("variant", HollowLogVariants.Climbable.class);
 	public static final MapCodec<ClimbableHollowLogBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			BuiltInRegistries.BLOCK.holderByNameCodec().fieldOf("vertical_log").forGetter(o -> o.vertical),
+			BuiltInRegistries.BLOCK.byNameCodec().fieldOf("vertical_log").forGetter(o -> o.vertical),
 			propertiesCodec())
 		.apply(instance, ClimbableHollowLogBlock::new)
 	);
@@ -62,9 +61,9 @@ public class ClimbableHollowLogBlock extends HorizontalDirectionalBlock implemen
 	private static final VoxelShape COLLISION_SHAPE_EAST = Shapes.or(COLLISION_SHAPE, LADDER_EAST);
 	private static final VoxelShape COLLISION_SHAPE_WEST = Shapes.or(COLLISION_SHAPE, LADDER_WEST);
 
-	private final Holder<Block> vertical;
+	private final Block vertical;
 
-	public ClimbableHollowLogBlock(Holder<Block> vertical, Properties properties) {
+	public ClimbableHollowLogBlock(Block vertical, Properties properties) {
 		super(properties);
 		this.vertical = vertical;
 
@@ -110,7 +109,7 @@ public class ClimbableHollowLogBlock extends HorizontalDirectionalBlock implemen
 	@Override
 	public BlockState setWaterlog(BlockState prior, boolean doWater) {
 		return switch (prior.getValue(VARIANT)) {
-			case VINE -> doWater ? this.vertical.value().defaultBlockState().setValue(VerticalHollowLogBlock.WATERLOGGED, true) : prior;
+			case VINE -> doWater ? this.vertical.defaultBlockState().setValue(VerticalHollowLogBlock.WATERLOGGED, true) : prior;
 			case LADDER -> prior.setValue(VARIANT, HollowLogVariants.Climbable.LADDER_WATERLOGGED);
 			case LADDER_WATERLOGGED -> prior.setValue(VARIANT, HollowLogVariants.Climbable.LADDER);
 		};
@@ -134,9 +133,9 @@ public class ClimbableHollowLogBlock extends HorizontalDirectionalBlock implemen
 	protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (!isInside(hit, pos)) return super.useItemOn(stack, state, level, pos, player, hand, hit);
 
-		if (stack.canPerformAction(ItemAbilities.SHEARS_HARVEST)) {
+		if (stack.is(Items.SHEARS)) {
 			HollowLogVariants.Climbable variant = state.getValue(VARIANT);
-			level.setBlock(pos, this.vertical.value().defaultBlockState().setValue(VerticalHollowLogBlock.WATERLOGGED, variant == HollowLogVariants.Climbable.LADDER_WATERLOGGED), Block.UPDATE_ALL);
+			level.setBlock(pos, this.vertical.defaultBlockState().setValue(VerticalHollowLogBlock.WATERLOGGED, variant == HollowLogVariants.Climbable.LADDER_WATERLOGGED), Block.UPDATE_ALL);
 			level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
 			if (!player.isCreative()) {
 				stack.hurtAndBreak(1, player, hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);

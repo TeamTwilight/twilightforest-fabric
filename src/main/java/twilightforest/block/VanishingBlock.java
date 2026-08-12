@@ -60,7 +60,7 @@ public class VanishingBlock extends Block {
 		for (int iter = 0; !queue.isEmpty() && iter < limit; iter++) {
 			BlockPos cur = queue.pop();
 			BlockState state = getter.getBlockState(cur);
-			if (state.getBlock() == TFBlocks.LOCKED_VANISHING_BLOCK.get() && state.getValue(LockedVanishingBlock.LOCKED)) {
+			if (state.getBlock() == TFBlocks.LOCKED_VANISHING_BLOCK && state.getValue(LockedVanishingBlock.LOCKED)) {
 				return true;
 			}
 
@@ -102,7 +102,7 @@ public class VanishingBlock extends Block {
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
 		if (!this.isVanished(state) && !state.getValue(ACTIVE)) {
 			if (areBlocksLocked(level, pos)) {
-				level.playSound(null, pos, TFSounds.LOCKED_VANISHING_BLOCK.get(), SoundSource.BLOCKS, 1.0F, 0.3F);
+				level.playSound(null, pos, TFSounds.LOCKED_VANISHING_BLOCK, SoundSource.BLOCKS, 1.0F, 0.3F);
 			} else {
 				this.activate(level, pos);
 			}
@@ -142,9 +142,9 @@ public class VanishingBlock extends Block {
 		if (this.isVanished(state)) {
 			if (state.getValue(ACTIVE)) {
 				level.setBlockAndUpdate(pos, state.setValue(VANISHED, false).setValue(ACTIVE, false));
-				level.playSound(null, pos, TFSounds.REAPPEAR_BLOCK.get(), SoundSource.BLOCKS, 0.3F, 0.3F);
+				level.playSound(null, pos, TFSounds.REAPPEAR_BLOCK.value(), SoundSource.BLOCKS, 0.3F, 0.3F);
 			} else {
-				level.playSound(null, pos, TFSounds.REAPPEAR_POOF.get(), SoundSource.BLOCKS, 0.3F, 0.5F);
+				level.playSound(null, pos, TFSounds.REAPPEAR_POOF, SoundSource.BLOCKS, 0.3F, 0.5F);
 				level.setBlockAndUpdate(pos, state.setValue(ACTIVE, true));
 				level.scheduleTick(pos, this, 15);
 			}
@@ -157,7 +157,7 @@ public class VanishingBlock extends Block {
 					level.removeBlock(pos, false);
 				}
 
-				level.playSound(null, pos, state.getBlock() == TFBlocks.REAPPEARING_BLOCK.get() ? TFSounds.REAPPEAR_POOF.get() : TFSounds.VANISHING_BLOCK.get(), SoundSource.BLOCKS, 0.3F, 0.5F);
+				level.playSound(null, pos, state.getBlock() == TFBlocks.REAPPEARING_BLOCK ? TFSounds.REAPPEAR_POOF.value() : TFSounds.VANISHING_BLOCK.value(), SoundSource.BLOCKS, 0.3F, 0.5F);
 
 				for (Direction e : Direction.values()) {
 					this.activate(level, pos.relative(e));

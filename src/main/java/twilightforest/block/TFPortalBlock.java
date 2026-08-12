@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import carminite.network.PacketDistributor;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.BlockPos;
@@ -36,8 +37,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.event.EventHooks;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.jspecify.annotations.Nullable;
 import twilightforest.config.TFConfig;
@@ -174,7 +173,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 
 				for (Map.Entry<BlockPos, Boolean> checkedPos : blocksChecked.entrySet()) {
 					if (checkedPos.getValue()) {
-						level.setBlock(checkedPos.getKey(), TFBlocks.TWILIGHT_PORTAL.get().defaultBlockState(), Block.UPDATE_CLIENTS);
+						level.setBlock(checkedPos.getKey(), TFBlocks.TWILIGHT_PORTAL.defaultBlockState(), Block.UPDATE_CLIENTS);
 					}
 				}
 
@@ -219,7 +218,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 					if (!TFPortalBlock.isPlayerNotifiedOfRequirement(player)) {
 						// .doesPlayerHaveRequiredAdvancement null-checks already, so we can skip null-checking the `requirement`
 						DisplayInfo info = requirement.value().display().orElse(null);
-						PacketDistributor.sendToPlayer(player, info == null ? new MissingAdvancementToastPacket(Component.translatable("twilightforest.ui.advancement.no_title"), new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get())) : new MissingAdvancementToastPacket(info.getTitle(), info.getIcon().create()));
+						PacketDistributor.sendToPlayer(player, info == null ? new MissingAdvancementToastPacket(Component.translatable("twilightforest.ui.advancement.no_title"), new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE)) : new MissingAdvancementToastPacket(info.getTitle(), info.getIcon().create()));
 						TFPortalBlock.playerNotifiedOfRequirement(player);
 					}
 
@@ -229,7 +228,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 
 			if (entity.canUsePortal(false)) {
 				entity.setAsInsidePortal(this, entity.blockPosition());
-				entity.getData(TFDataAttachments.TF_PORTAL_COOLDOWN).setInPortal(true);
+				entity.getAttached(TFDataAttachments.TF_PORTAL_COOLDOWN).setInPortal(true);
 			}
 		}
 	}
@@ -241,7 +240,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 		if (state.getValue(DISALLOW_RETURN) && random < 80) return;
 
 		if (random == 0) {
-			level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, TFSounds.PORTAL_WHOOSH.get(), SoundSource.BLOCKS, 0.5F, rand.nextFloat() * 0.4F + 0.8F, false);
+			level.playLocalSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, TFSounds.PORTAL_WHOOSH.value(), SoundSource.BLOCKS, 0.5F, rand.nextFloat() * 0.4F + 0.8F, false);
 		}
 
 		for (int i = 0; i < 4; ++i) {
@@ -271,8 +270,8 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 		if (!(entity instanceof Player player))
 			return 0;
 		return player.getAbilities().invulnerable
-			? level.getGameRules().get(TFGameRules.TF_PORTAL_CREATIVE_DELAY.get())
-			: level.getGameRules().get(TFGameRules.TF_PORTAL_DEFAULT_DELAY.get());
+			? level.getGameRules().get(TFGameRules.TF_PORTAL_CREATIVE_DELAY)
+			: level.getGameRules().get(TFGameRules.TF_PORTAL_DEFAULT_DELAY);
 	}
 
 	@Nullable

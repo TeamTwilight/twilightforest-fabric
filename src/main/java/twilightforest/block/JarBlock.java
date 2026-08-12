@@ -91,10 +91,10 @@ public class JarBlock extends BaseEntityBlock implements SimpleWaterloggedBlock 
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, Player player) {
+	protected ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData) {
 		return level.getBlockEntity(pos) instanceof JarBlockEntity jarBlockEntity
 			? jarBlockEntity.getJarAsItem()
-			: super.getCloneItemStack(level, pos, state, includeData, player);
+			: super.getCloneItemStack(level, pos, state, includeData);
 	}
 
 	@Override
@@ -119,7 +119,7 @@ public class JarBlock extends BaseEntityBlock implements SimpleWaterloggedBlock 
 			if (lid != jarBlockEntity.lid && JarBlockEntity.REGISTERED_LOG_LIDS.get(lid) instanceof BooleanSupplier check && check.getAsBoolean())  {
 				jarBlockEntity.lid = lid;
 				if (level instanceof ServerLevel serverLevel) {
-					serverLevel.playSound(null, pos, TFSounds.JAR_LID_SWAP.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+					serverLevel.playSound(null, pos, TFSounds.JAR_LID_SWAP.value(), SoundSource.BLOCKS, 1.0F, 1.0F);
 					jarBlockEntity.wobble(DecoratedPotBlockEntity.WobbleStyle.POSITIVE);
 					jarBlockEntity.setChanged();
 				}
@@ -133,7 +133,7 @@ public class JarBlock extends BaseEntityBlock implements SimpleWaterloggedBlock 
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
 		if (level.getBlockEntity(pos) instanceof JarBlockEntity blockEntity && player.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && player.getItemInHand(InteractionHand.OFF_HAND).isEmpty()) {
 			if (level instanceof ServerLevel serverLevel) {
-				serverLevel.playSound(null, pos, TFSounds.JAR_WIGGLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+				serverLevel.playSound(null, pos, TFSounds.JAR_WIGGLE.value(), SoundSource.BLOCKS, 1.0F, 1.0F);
 				blockEntity.wobble(DecoratedPotBlockEntity.WobbleStyle.NEGATIVE);
 			}
 			return InteractionResult.SUCCESS;

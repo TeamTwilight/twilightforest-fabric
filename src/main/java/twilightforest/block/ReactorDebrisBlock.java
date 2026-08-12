@@ -61,7 +61,7 @@ public class ReactorDebrisBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return createTickerHelper(type, TFBlockEntities.REACTOR_DEBRIS.get(), ReactorDebrisBlockEntity::tick);
+		return createTickerHelper(type, TFBlockEntities.REACTOR_DEBRIS, ReactorDebrisBlockEntity::tick);
 	}
 
 	@Nullable
