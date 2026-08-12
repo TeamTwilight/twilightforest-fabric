@@ -9,7 +9,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFStructureProcessors;
 import twilightforest.tags.TFBlockTags;
 
@@ -20,20 +20,19 @@ public final class SoftReplaceProcessor extends StructureProcessor {
 	private SoftReplaceProcessor() {
 	}
 
-	@Nullable
 	@Override
-	public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos offset, BlockPos piecePos, StructureTemplate.StructureBlockInfo originalInfo, StructureTemplate.StructureBlockInfo modifiedInfo, StructurePlaceSettings placeSettings, @Nullable StructureTemplate template) {
-		BlockState blockAt = level.getBlockState(modifiedInfo.pos());
+	public StructureTemplate.@Nullable StructureBlockInfo processBlock(LevelReader level, BlockPos targetPosition, BlockPos referencePos, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo processedBlockInfo, StructurePlaceSettings settings) {
+		BlockState blockAt = level.getBlockState(processedBlockInfo.pos());
 
 		boolean isReplaceableAt = blockAt.canBeReplaced() || blockAt.is(TFBlockTags.WORLDGEN_REPLACEABLES);
 
 		if (isReplaceableAt) {
-			return modifiedInfo;
+			return processedBlockInfo;
 		}
 
 		// Replace partial blocks such as slabs or fences, if the replacement is a solid block
-		if (!this.isFullBlock(blockAt) && this.isFullBlock(modifiedInfo.state())) {
-			return modifiedInfo;
+		if (!this.isFullBlock(blockAt) && this.isFullBlock(processedBlockInfo.state())) {
+			return processedBlockInfo;
 		}
 
 		return null;
@@ -47,6 +46,6 @@ public final class SoftReplaceProcessor extends StructureProcessor {
 
 	@Override
 	protected StructureProcessorType<?> getType() {
-		return TFStructureProcessors.SOFT_REPLACE.value();
+		return TFStructureProcessors.SOFT_REPLACE;
 	}
 }

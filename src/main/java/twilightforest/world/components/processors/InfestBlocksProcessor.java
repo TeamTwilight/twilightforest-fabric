@@ -13,7 +13,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFStructureProcessors;
 
 import java.util.HashMap;
@@ -38,22 +37,22 @@ public final class InfestBlocksProcessor extends StructureProcessor {
 	}
 
 	@Override
-	public StructureTemplate.StructureBlockInfo process(LevelReader worldReaderIn, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo originalBlock, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
-		RandomSource random = settings.getRandom(modifiedBlockInfo.pos().below(-10));
+	public StructureTemplate.StructureBlockInfo processBlock(LevelReader level, BlockPos targetPosition, BlockPos referencePos, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo processedBlockInfo, StructurePlaceSettings settings) {
+		RandomSource random = settings.getRandom(processedBlockInfo.pos().below(-10));
 
 		// We use nextBoolean in other processors so this lets us re-seed deterministically
 		random.setSeed(random.nextLong() * 2);
 
-		var replacement = CONVERSIONS.get().get(modifiedBlockInfo.state().getBlock());
+		var replacement = CONVERSIONS.get().get(processedBlockInfo.state().getBlock());
 
 		if (replacement == null || random.nextFloat() > 1/12f)
-			return modifiedBlockInfo;
+			return processedBlockInfo;
 
-		return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), replacement, null);
+		return new StructureTemplate.StructureBlockInfo(processedBlockInfo.pos(), replacement, null);
 	}
 
 	@Override
 	protected StructureProcessorType<?> getType() {
-		return TFStructureProcessors.INFEST_BLOCKS.get();
+		return TFStructureProcessors.INFEST_BLOCKS;
 	}
 }

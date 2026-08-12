@@ -71,7 +71,7 @@ public class EnchantedForestVinesFeature extends Feature<NoneFeatureConfiguratio
 	}
 
 	private void setVine(WorldGenLevel world, RandomSource random, BlockPos pos) {
-		if (random.nextInt(rarity) > 0 || !world.getBlockState(pos).isEmpty() || !isSuitableBiome(world, pos))
+		if (random.nextInt(rarity) > 0 || !(world.getBlockState(pos).is(Blocks.AIR) || world.getBlockState(pos).is(Blocks.CAVE_AIR) || world.getBlockState(pos).is(Blocks.VOID_AIR)) || !isSuitableBiome(world, pos))
 			return;
 
 		BlockState state = Blocks.VINE.defaultBlockState();
@@ -80,7 +80,7 @@ public class EnchantedForestVinesFeature extends Feature<NoneFeatureConfiguratio
 
 		for (Direction dir : Direction.values()) {
 			BlockPos relativePos = pos.relative(dir);
-			if (dir != Direction.DOWN && VineBlock.isAcceptableNeighbour(world, relativePos, dir) && !world.getBlockState(relativePos).is(TFBlocks.RAINBOW_OAK_LEAVES.get())) {
+			if (dir != Direction.DOWN && VineBlock.isAcceptableNeighbour(world, relativePos, dir) && !world.getBlockState(relativePos).is(TFBlocks.RAINBOW_OAK_LEAVES)) {
 				if (!isTree(world.getBlockState(relativePos)))
 					isTree = false;
 
@@ -97,7 +97,7 @@ public class EnchantedForestVinesFeature extends Feature<NoneFeatureConfiguratio
 	}
 
 	private boolean isSuitableBiome(WorldGenLevel world, BlockPos pos) {
-		return Objects.requireNonNull(world.getBiome(pos).getKey()).identifier().getPath().equals("enchanted_forest");
+		return Objects.requireNonNull(world.getBiome(pos).unwrapKey().orElseThrow()).identifier().getPath().equals("enchanted_forest");
 	}
 
 	private boolean isTree(BlockState state) {

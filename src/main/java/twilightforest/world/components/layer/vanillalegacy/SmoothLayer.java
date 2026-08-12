@@ -46,7 +46,7 @@ public enum SmoothLayer implements CastleTransformer {
 
 		@Override
 		public BiomeLayerType getType() {
-			return BiomeLayerTypes.SMOOTH.get();
+			return BiomeLayerTypes.SMOOTH;
 		}
 	}
 }

@@ -11,7 +11,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFStructureProcessors;
 import twilightforest.init.custom.WoodPalettes;
 import twilightforest.util.woods.WoodPalette;
@@ -30,20 +29,20 @@ public final class WoodMultiPaletteSwizzle extends StructureProcessor {
 	}
 
 	@Override
-	public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos offset, BlockPos piecePos, StructureTemplate.StructureBlockInfo originalInfo, StructureTemplate.StructureBlockInfo modifiedInfo, StructurePlaceSettings placeSettings, @Nullable StructureTemplate template) {
+	public StructureTemplate.StructureBlockInfo processBlock(LevelReader level, BlockPos targetPosition, BlockPos referencePos, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo processedBlockInfo, StructurePlaceSettings settings) {
 		for (Pair<Holder<WoodPalette>, Holder<WoodPalette>> palettePair : this.palettes) {
-			StructureTemplate.StructureBlockInfo newInfo = palettePair.getSecond().value().modifyBlockWithType(palettePair.getFirst().value(), modifiedInfo);
+			StructureTemplate.StructureBlockInfo newInfo = palettePair.getSecond().value().modifyBlockWithType(palettePair.getFirst().value(), processedBlockInfo);
 
-			if (newInfo != modifiedInfo) {
+			if (newInfo != processedBlockInfo) {
 				return newInfo;
 			}
 		}
 
-		return modifiedInfo;
+		return processedBlockInfo;
 	}
 
 	@Override
 	protected StructureProcessorType<?> getType() {
-		return TFStructureProcessors.PLANK_MULTISWIZZLE.get();
+		return TFStructureProcessors.PLANK_MULTISWIZZLE;
 	}
 }

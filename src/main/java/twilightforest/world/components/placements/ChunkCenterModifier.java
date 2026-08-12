@@ -25,6 +25,6 @@ public class ChunkCenterModifier extends PlacementModifier {
 
 	@Override
 	public PlacementModifierType<?> type() {
-		return TFFeatureModifiers.CHUNK_CENTERER.get();
+		return TFFeatureModifiers.CHUNK_CENTERER;
 	}
 }

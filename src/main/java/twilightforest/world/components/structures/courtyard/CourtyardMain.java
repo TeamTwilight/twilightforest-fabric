@@ -17,7 +17,6 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockRotProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import tamaized.beanification.Autowired;
 import twilightforest.TFMain;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
@@ -38,16 +37,15 @@ public class CourtyardMain extends StructureMazeGenerator {
 
 	public static final Identifier CENTER_POOL = TFMain.prefix("courtyard/center");
 
-	@Autowired
-	private static StructureTemplateDefinitions structureTemplateDefinitions;
+	private static final StructureTemplateDefinitions structureTemplateDefinitions = StructureTemplateDefinitions.INSTANCE;
 
 	public CourtyardMain(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(ctx.structureTemplateManager(), TFStructurePieceTypes.TFNCMn.get(), nbt);
+		super(ctx.structureTemplateManager(), TFStructurePieceTypes.TFNCMn, nbt);
 	}
 
 	@SuppressWarnings("this-escape")
 	public CourtyardMain(RandomSource rand, int i, int x, int y, int z, StructureTemplateManager structureManager) {
-		super(TFStructurePieceTypes.TFNCMn.get(), rand, i, ROW_OF_CELLS, ROW_OF_CELLS, x, y, z, structureManager);
+		super(TFStructurePieceTypes.TFNCMn, rand, i, ROW_OF_CELLS, ROW_OF_CELLS, x, y, z, structureManager);
 
 		this.setOrientation(Direction.NORTH);
 

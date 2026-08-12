@@ -22,11 +22,11 @@ import twilightforest.world.components.structures.TFStructureComponentOld;
 public class DarkTowerBossTrapComponent extends DarkTowerWingComponent {
 
 	public DarkTowerBossTrapComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFDTBT.get(), nbt);
+		super(TFStructurePieceTypes.TFDTBT, nbt);
 	}
 
 	protected DarkTowerBossTrapComponent(int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(TFStructurePieceTypes.TFDTBT.get(), i, x, y, z, pSize, pHeight, direction);
+		super(TFStructurePieceTypes.TFDTBT, i, x, y, z, pSize, pHeight, direction);
 
 		// no spawns
 		this.spawnListIndex = -1;
@@ -93,7 +93,7 @@ public class DarkTowerBossTrapComponent extends DarkTowerWingComponent {
 		this.generateBox(world, sbb, 1, 1, 1, size / 2, 1, size - 2, Blocks.AIR.defaultBlockState(), Blocks.AIR.defaultBlockState(), false);
 
 		// add boss trap
-		this.placeBlock(world, TFBlocks.GHAST_TRAP.get().defaultBlockState(), 5, 1, 5, sbb);
+		this.placeBlock(world, TFBlocks.GHAST_TRAP.defaultBlockState(), 5, 1, 5, sbb);
 		this.placeBlock(world, Blocks.REDSTONE_WIRE.defaultBlockState(), 5, 1, 6, sbb);
 		this.placeBlock(world, Blocks.REDSTONE_WIRE.defaultBlockState(), 5, 1, 7, sbb);
 		this.placeBlock(world, Blocks.REDSTONE_WIRE.defaultBlockState(), 5, 1, 8, sbb);

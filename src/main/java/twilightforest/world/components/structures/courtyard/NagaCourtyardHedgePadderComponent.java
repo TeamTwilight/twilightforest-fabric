@@ -9,10 +9,10 @@ import twilightforest.init.TFStructurePieceTypes;
 
 public class NagaCourtyardHedgePadderComponent extends NagaCourtyardHedgeAbstractComponent {
 	public NagaCourtyardHedgePadderComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(ctx, TFStructurePieceTypes.TFNCPd.get(), nbt, TFMain.prefix("courtyard/hedge_between"), TFMain.prefix("courtyard/hedge_between_big"));
+		super(ctx, TFStructurePieceTypes.TFNCPd, nbt, TFMain.prefix("courtyard/hedge_between"), TFMain.prefix("courtyard/hedge_between_big"));
 	}
 
 	public NagaCourtyardHedgePadderComponent(StructureTemplateManager manager, int i, int x, int y, int z, Rotation rotation) {
-		super(manager, TFStructurePieceTypes.TFNCPd.get(), i, x, y, z, rotation, TFMain.prefix("courtyard/hedge_between"), TFMain.prefix("courtyard/hedge_between_big"));
+		super(manager, TFStructurePieceTypes.TFNCPd, i, x, y, z, rotation, TFMain.prefix("courtyard/hedge_between"), TFMain.prefix("courtyard/hedge_between_big"));
 	}
 }

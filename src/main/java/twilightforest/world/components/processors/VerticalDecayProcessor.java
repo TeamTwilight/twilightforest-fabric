@@ -10,7 +10,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.block.BanisterBlock;
 import twilightforest.init.TFStructureProcessors;
 
@@ -31,21 +31,20 @@ public class VerticalDecayProcessor extends StructureProcessor {
 		this.decayChance = decayChance;
 	}
 
-	@Nullable
 	@Override
-	public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos offset, BlockPos piecePos, StructureTemplate.StructureBlockInfo originalInfo, StructureTemplate.StructureBlockInfo modifiedInfo, StructurePlaceSettings placeSettings, @Nullable StructureTemplate template) {
-		Block block = modifiedInfo.state().getBlock();
+	public StructureTemplate.@Nullable StructureBlockInfo processBlock(LevelReader level, BlockPos targetPosition, BlockPos referencePos, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo processedBlockInfo, StructurePlaceSettings settings) {
+		Block block = processedBlockInfo.state().getBlock();
 		if (this.decayBlocks.contains(block)) {
 			// Banister Blocks should use RNG from below block pos, to match the absence of block below itself
 			int lookDown = block instanceof BanisterBlock ? -1 : 0;
-			BlockPos randomAt = modifiedInfo.pos().atY(modifiedInfo.pos().getY() + lookDown);
+			BlockPos randomAt = processedBlockInfo.pos().atY(processedBlockInfo.pos().getY() + lookDown);
 
-			if (placeSettings.getRandom(randomAt).nextFloat() < this.decayChance) {
+			if (settings.getRandom(randomAt).nextFloat() < this.decayChance) {
 				return null;
 			}
 		}
 
-		return modifiedInfo;
+		return processedBlockInfo;
 	}
 
 	public List<Block> getDecayBlocks() {
@@ -54,6 +53,6 @@ public class VerticalDecayProcessor extends StructureProcessor {
 
 	@Override
 	protected StructureProcessorType<VerticalDecayProcessor> getType() {
-		return TFStructureProcessors.VERTICAL_DECAY.value();
+		return TFStructureProcessors.VERTICAL_DECAY;
 	}
 }

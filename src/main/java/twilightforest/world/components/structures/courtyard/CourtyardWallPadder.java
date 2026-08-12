@@ -15,7 +15,7 @@ import twilightforest.world.components.structures.TwilightDoubleTemplateStructur
 
 public class CourtyardWallPadder extends TwilightDoubleTemplateStructurePiece {
 	public CourtyardWallPadder(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFNCWP.get(),
+		super(TFStructurePieceTypes.TFNCWP,
 			nbt,
 			ctx,
 			readSettings(nbt).addProcessor(CourtyardMain.WALL_INTEGRITY_PROCESSOR).addProcessor(SmoothStoneVariants.INSTANCE).addProcessor(NagastoneVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE).addProcessor(CobbleVariants.INSTANCE),
@@ -24,7 +24,7 @@ public class CourtyardWallPadder extends TwilightDoubleTemplateStructurePiece {
 	}
 
 	public CourtyardWallPadder(int i, int x, int y, int z, Rotation rotation, StructureTemplateManager structureManager) {
-		super(TFStructurePieceTypes.TFNCWP.get(),
+		super(TFStructurePieceTypes.TFNCWP,
 			i,
 			structureManager,
 			TFMain.prefix("courtyard/courtyard_wall_padding"),

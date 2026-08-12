@@ -11,11 +11,11 @@ import twilightforest.init.TFStructurePieceTypes;
 public class DarkTowerMainBridgeComponent extends DarkTowerBridgeComponent {
 
 	public DarkTowerMainBridgeComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFDTMB.get(), nbt);
+		super(TFStructurePieceTypes.TFDTMB, nbt);
 	}
 
 	protected DarkTowerMainBridgeComponent(int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(TFStructurePieceTypes.TFDTMB.get(), i, x, y, z, 15, pHeight, direction);
+		super(TFStructurePieceTypes.TFDTMB, i, x, y, z, 15, pHeight, direction);
 	}
 
 	@Override

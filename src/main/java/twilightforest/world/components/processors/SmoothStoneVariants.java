@@ -9,7 +9,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFStructureProcessors;
 import twilightforest.util.features.FeaturePlacers;
 
@@ -21,23 +21,23 @@ public class SmoothStoneVariants extends StructureProcessor {
 	}
 
 	@Override
-	public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos origin, BlockPos centerBottom, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
-		RandomSource random = settings.getRandom(modifiedBlockInfo.pos());
+	public StructureTemplate.@Nullable StructureBlockInfo processBlock(LevelReader level, BlockPos targetPosition, BlockPos referencePos, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo processedBlockInfo, StructurePlaceSettings settings) {
+		RandomSource random = settings.getRandom(processedBlockInfo.pos());
 
 		// We use nextBoolean in other processors so this lets us re-seed deterministically
 		random.setSeed(random.nextLong() * 4);
 
-		if (modifiedBlockInfo.state().is(Blocks.SMOOTH_STONE_SLAB) && random.nextBoolean())
-			return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), FeaturePlacers.transferAllStateKeys(modifiedBlockInfo.state(), Blocks.COBBLESTONE_SLAB), null);
+		if (processedBlockInfo.state().is(Blocks.SMOOTH_STONE_SLAB) && random.nextBoolean())
+			return new StructureTemplate.StructureBlockInfo(processedBlockInfo.pos(), FeaturePlacers.transferAllStateKeys(processedBlockInfo.state(), Blocks.COBBLESTONE_SLAB), null);
 
-		if (modifiedBlockInfo.state().is(Blocks.SMOOTH_STONE) && random.nextBoolean())
-			return new StructureTemplate.StructureBlockInfo(modifiedBlockInfo.pos(), Blocks.COBBLESTONE.defaultBlockState(), null);
+		if (processedBlockInfo.state().is(Blocks.SMOOTH_STONE) && random.nextBoolean())
+			return new StructureTemplate.StructureBlockInfo(processedBlockInfo.pos(), Blocks.COBBLESTONE.defaultBlockState(), null);
 
-		return modifiedBlockInfo;
+		return processedBlockInfo;
 	}
 
 	@Override
 	protected StructureProcessorType<?> getType() {
-		return TFStructureProcessors.SMOOTH_STONE_VARIANTS.get();
+		return TFStructureProcessors.SMOOTH_STONE_VARIANTS;
 	}
 }

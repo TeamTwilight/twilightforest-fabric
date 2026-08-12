@@ -63,7 +63,7 @@ public record CompanionBiomesLayer(List<Pair<ResourceKey<Biome>, ResourceKey<Bio
 
 		@Override
 		public BiomeLayerType getType() {
-			return BiomeLayerTypes.COMPANION_BIOMES.get();
+			return BiomeLayerTypes.COMPANION_BIOMES;
 		}
 
 		public long salt() {

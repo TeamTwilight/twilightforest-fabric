@@ -3,7 +3,9 @@
   "minVersion": "0.8",
   "package": "carminite.mixin",
   "compatibilityLevel": "JAVA_25",
-  "mixins": [],
+  "mixins": [
+    "BeardifierMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   },

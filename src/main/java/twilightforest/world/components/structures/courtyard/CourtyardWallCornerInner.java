@@ -15,7 +15,7 @@ import twilightforest.world.components.structures.TwilightDoubleTemplateStructur
 
 public class CourtyardWallCornerInner extends TwilightDoubleTemplateStructurePiece {
 	public CourtyardWallCornerInner(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFNCWA.get(),
+		super(TFStructurePieceTypes.TFNCWA,
 			nbt,
 			ctx,
 			readSettings(nbt).addProcessor(CourtyardMain.WALL_INTEGRITY_PROCESSOR).addProcessor(SmoothStoneVariants.INSTANCE).addProcessor(NagastoneVariants.INSTANCE).addProcessor(StoneBricksVariants.INSTANCE).addProcessor(CobbleVariants.INSTANCE),
@@ -24,7 +24,7 @@ public class CourtyardWallCornerInner extends TwilightDoubleTemplateStructurePie
 	}
 
 	public CourtyardWallCornerInner(int i, int x, int y, int z, Rotation rotation, StructureTemplateManager structureManager) {
-		super(TFStructurePieceTypes.TFNCWA.get(),
+		super(TFStructurePieceTypes.TFNCWA,
 			i,
 			structureManager,
 			TFMain.prefix("courtyard/courtyard_wall_corner_inner"),

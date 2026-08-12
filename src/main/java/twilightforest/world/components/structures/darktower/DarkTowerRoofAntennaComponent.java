@@ -15,11 +15,11 @@ import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 public class DarkTowerRoofAntennaComponent extends DarkTowerRoofComponent {
 
 	public DarkTowerRoofAntennaComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFDTRA.get(), nbt);
+		super(TFStructurePieceTypes.TFDTRA, nbt);
 	}
 
 	public DarkTowerRoofAntennaComponent(int i, TowerWingComponent wing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFDTRA.get(), i, wing, x, y, z);
+		super(TFStructurePieceTypes.TFDTRA, i, wing, x, y, z);
 	}
 
 	/**

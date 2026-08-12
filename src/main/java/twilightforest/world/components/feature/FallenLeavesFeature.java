@@ -21,7 +21,7 @@ public class FallenLeavesFeature extends Feature<NoneFeatureConfiguration> {
 		super(config);
 	}
 
-	private final BlockState state = TFBlocks.FALLEN_LEAVES.get().defaultBlockState();
+	private final BlockState state = TFBlocks.FALLEN_LEAVES.defaultBlockState();
 
 	@Override
 	public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {

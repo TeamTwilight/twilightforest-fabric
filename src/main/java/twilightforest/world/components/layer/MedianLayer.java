@@ -84,7 +84,7 @@ public enum MedianLayer implements AreaTransformer1 {
 
 		@Override
 		public BiomeLayerType getType() {
-			return BiomeLayerTypes.MEDIAN.get();
+			return BiomeLayerTypes.MEDIAN;
 		}
 	}
 }

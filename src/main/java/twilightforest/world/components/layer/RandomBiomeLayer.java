@@ -75,7 +75,7 @@ public class RandomBiomeLayer implements AreaTransformer0 {
 
 		@Override
 		public BiomeLayerType getType() {
-			return BiomeLayerTypes.RANDOM_BIOMES.get();
+			return BiomeLayerTypes.RANDOM_BIOMES;
 		}
 
 		public long salt() {

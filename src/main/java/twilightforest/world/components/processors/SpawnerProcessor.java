@@ -21,7 +21,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructureProcessors;
 
@@ -67,12 +67,11 @@ public class SpawnerProcessor extends StructureProcessor {
 		this.entityWidthMax = entityWidthMax.isEmpty() ? Optional.empty() : entityWidthMax.get() <= 0 ? Optional.empty() : entityWidthMax;
 	}
 
-	@Nullable
 	@Override
-	public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos offset, BlockPos piecePos, StructureTemplate.StructureBlockInfo originalInfo, StructureTemplate.StructureBlockInfo modifiedInfo, StructurePlaceSettings placeSettings, @Nullable StructureTemplate template) {
-		CompoundTag nbtInfo = modifiedInfo.nbt();
+	public StructureTemplate.@Nullable StructureBlockInfo processBlock(LevelReader level, BlockPos targetPosition, BlockPos referencePos, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo processedBlockInfo, StructurePlaceSettings settings) {
+		CompoundTag nbtInfo = processedBlockInfo.nbt();
 
-		if (nbtInfo != null && (modifiedInfo.state().is(Blocks.SPAWNER) || modifiedInfo.state().is(TFBlocks.SINISTER_SPAWNER))) {
+		if (nbtInfo != null && (processedBlockInfo.state().is(Blocks.SPAWNER) || processedBlockInfo.state().is(TFBlocks.SINISTER_SPAWNER))) {
 			if (this.range.isPresent()) {
 				nbtInfo.putShort("SpawnRange", this.range.get());
 			}
@@ -81,7 +80,7 @@ public class SpawnerProcessor extends StructureProcessor {
 			}
 
 			if (!nbtInfo.contains("SpawnData") || nbtInfo.getList("SpawnData").isEmpty()) {
-				Optional<SpawnData> randomSpawn = this.entities.getRandom(placeSettings.getRandom(modifiedInfo.pos()));
+				Optional<SpawnData> randomSpawn = this.entities.getRandom(settings.getRandom(processedBlockInfo.pos()));
 
 				if (randomSpawn.isPresent()) {
 					SpawnData spawn = randomSpawn.get();
@@ -116,7 +115,7 @@ public class SpawnerProcessor extends StructureProcessor {
 			}
 		}
 
-		return modifiedInfo;
+		return processedBlockInfo;
 	}
 
 	public float rescaleToFitWidth(float entityWidth) {
@@ -129,7 +128,7 @@ public class SpawnerProcessor extends StructureProcessor {
 
 	@Override
 	protected StructureProcessorType<?> getType() {
-		return TFStructureProcessors.SPAWNER_PROCESSOR.value();
+		return TFStructureProcessors.SPAWNER_PROCESSOR;
 	}
 
 	private Optional<Short> serializeRange() {

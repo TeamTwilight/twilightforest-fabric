@@ -12,7 +12,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import org.jetbrains.annotations.Nullable;
 import twilightforest.TFMain;
 import twilightforest.init.TFStructureProcessors;
 import twilightforest.util.BoundingBoxUtils;
@@ -32,19 +31,18 @@ public final class BoxCuttingProcessor extends StructureProcessor {
 		this.cutouts = cutouts;
 	}
 
-	@Nullable
 	@Override
-	public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos origin, BlockPos centerBottom, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo modifiedBlockInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
+	public StructureTemplate.@org.jspecify.annotations.Nullable StructureBlockInfo processBlock(LevelReader level, BlockPos targetPosition, BlockPos referencePos, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo processedBlockInfo, StructurePlaceSettings settings) {
 		for (BoundingBox cutout : this.cutouts)
-			if (cutout.isInside(modifiedBlockInfo.pos()))
+			if (cutout.isInside(processedBlockInfo.pos()))
 				return null;
 
-		return modifiedBlockInfo;
+		return processedBlockInfo;
 	}
 
 	@Override
 	protected StructureProcessorType<?> getType() {
-		return TFStructureProcessors.BOX_CUTTING_PROCESSOR.get();
+		return TFStructureProcessors.BOX_CUTTING_PROCESSOR;
 	}
 
 	public static BoxCuttingProcessor fromNBT(ListTag tag) {

@@ -131,7 +131,7 @@ public class SmallFallenLogFeature extends Feature<HollowLogConfig> {
 		if (level.getBlockState(pos.below(2)).is(BlockTags.SNOW)) {
 			return Blocks.AIR.defaultBlockState();
 		}
-		return level.getBlockState(pos).is(Blocks.WATER) ? Blocks.SEAGRASS.defaultBlockState() : TFBlocks.MOSS_PATCH.get().defaultBlockState();
+		return level.getBlockState(pos).is(Blocks.WATER) ? Blocks.SEAGRASS.defaultBlockState() : TFBlocks.MOSS_PATCH.defaultBlockState();
 	}
 
 	private BlockState hollowOrNormal(WorldGenLevel level, boolean shouldBeHollow, BlockState hollow, BlockState normal) {

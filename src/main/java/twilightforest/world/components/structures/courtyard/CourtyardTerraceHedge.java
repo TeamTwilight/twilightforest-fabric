@@ -24,13 +24,13 @@ public class CourtyardTerraceHedge extends CourtyardTerrace {
 	private StructureTemplate templateBig;
 
 	public CourtyardTerraceHedge(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFNCHe.value(), ctx, nbt);
+		super(TFStructurePieceTypes.TFNCHe, ctx, nbt);
 
 		this.templateBig = ctx.structureTemplateManager().getOrCreate(this.hedgeBig);
 	}
 
 	public CourtyardTerraceHedge(int i, int x, int y, int z, Rotation rotation, StructureTemplateManager structureManager) {
-		super(TFStructurePieceTypes.TFNCHe.value(), i, x, y, z, rotation, structureManager, TFMain.prefix("courtyard/terrace_hedge"));
+		super(TFStructurePieceTypes.TFNCHe, i, x, y, z, rotation, structureManager, TFMain.prefix("courtyard/terrace_hedge"));
 
 		this.templateBig = structureManager.getOrCreate(this.hedgeBig);
 	}

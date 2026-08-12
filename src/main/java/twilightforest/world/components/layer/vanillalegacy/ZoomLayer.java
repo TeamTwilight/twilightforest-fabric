@@ -108,7 +108,7 @@ public enum ZoomLayer implements AreaTransformer1 {
 
 		@Override
 		public BiomeLayerType getType() {
-			return BiomeLayerTypes.ZOOM.get();
+			return BiomeLayerTypes.ZOOM;
 		}
 	}
 }

@@ -15,11 +15,11 @@ import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 public class DarkTowerRoofCactusComponent extends DarkTowerRoofComponent {
 
 	public DarkTowerRoofCactusComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFDTRC.get(), nbt);
+		super(TFStructurePieceTypes.TFDTRC, nbt);
 	}
 
 	public DarkTowerRoofCactusComponent(int i, TowerWingComponent wing, int x, int y, int z) {
-		super(TFStructurePieceTypes.TFDTRC.get(), i, wing, x, y, z);
+		super(TFStructurePieceTypes.TFDTRC, i, wing, x, y, z);
 	}
 
 	@Override

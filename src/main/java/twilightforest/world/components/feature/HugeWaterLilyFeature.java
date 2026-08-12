@@ -37,7 +37,7 @@ public class HugeWaterLilyFeature extends Feature<NoneFeatureConfiguration> {
 			);
 
 			if (shouldPlacePadAt(world, pos_)) {
-				world.setBlock(pos_, TFBlocks.HUGE_WATER_LILY.get().defaultBlockState(), Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
+				world.setBlock(pos_, TFBlocks.HUGE_WATER_LILY.defaultBlockState(), Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
 			}
 		}
 

@@ -104,7 +104,7 @@ public record KeyBiomesLayer(List<ResourceKey<Biome>> keyBiomes) implements Area
 
 		@Override
 		public BiomeLayerType getType() {
-			return BiomeLayerTypes.KEY_BIOMES.get();
+			return BiomeLayerTypes.KEY_BIOMES;
 		}
 
 		public long salt() {

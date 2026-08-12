@@ -8,7 +8,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFStructureProcessors;
 
 import java.util.Arrays;
@@ -27,18 +27,17 @@ public class UpdateMarkingProcessor extends StructureProcessor {
 		this.blocksToMarkUpdate = blocksToMarkUpdate;
 	}
 
-	@Nullable
 	@Override
-	public StructureTemplate.StructureBlockInfo process(LevelReader level, BlockPos offset, BlockPos piecePos, StructureTemplate.StructureBlockInfo originalInfo, StructureTemplate.StructureBlockInfo modifiedInfo, StructurePlaceSettings placeSettings, @Nullable StructureTemplate template) {
-		if (this.blocksToMarkUpdate.contains(modifiedInfo.state().getBlock())) {
-			level.getChunk(modifiedInfo.pos()).markPosForPostprocessing(modifiedInfo.pos());
+	public StructureTemplate.@Nullable StructureBlockInfo processBlock(LevelReader level, BlockPos targetPosition, BlockPos referencePos, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo processedBlockInfo, StructurePlaceSettings settings) {
+		if (this.blocksToMarkUpdate.contains(processedBlockInfo.state().getBlock())) {
+			level.getChunk(processedBlockInfo.pos()).markPosForPostprocessing(processedBlockInfo.pos());
 		}
 
-		return modifiedInfo;
+		return processedBlockInfo;
 	}
 
 	@Override
 	protected StructureProcessorType<?> getType() {
-		return TFStructureProcessors.UPDATE_MARKING_PROCESSOR.value();
+		return TFStructureProcessors.UPDATE_MARKING_PROCESSOR;
 	}
 }

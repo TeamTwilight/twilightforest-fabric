@@ -11,7 +11,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFStructureProcessors;
 
 import java.util.HashSet;
@@ -33,34 +33,33 @@ public final class CourtyardTerraceTemplateProcessor extends StructureProcessor 
 	private CourtyardTerraceTemplateProcessor() {
 	}
 
-	@Nullable
 	@Override
-	public StructureTemplate.StructureBlockInfo process(LevelReader world, BlockPos pos, BlockPos piecepos, StructureTemplate.StructureBlockInfo oldinfo, StructureTemplate.StructureBlockInfo newInfo, StructurePlaceSettings settings, @Nullable StructureTemplate template) {
-		BlockState newState = newInfo.state();
+	public StructureTemplate.@Nullable StructureBlockInfo processBlock(LevelReader level, BlockPos targetPosition, BlockPos referencePos, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo processedBlockInfo, StructurePlaceSettings settings) {
+		BlockState newState = processedBlockInfo.state();
 
 		if (newState.getBlock() == Blocks.SANDSTONE_SLAB) {
-			BlockState stateAt = world.getBlockState(newInfo.pos());
+			BlockState stateAt = level.getBlockState(processedBlockInfo.pos());
 
 			if (newState == Blocks.SANDSTONE_SLAB.defaultBlockState().setValue(SlabBlock.TYPE, SlabType.DOUBLE)) {
 				if (BLOCKS_REPLACE_TO_SLAB.contains(stateAt))
-					return new StructureTemplate.StructureBlockInfo(newInfo.pos(), Blocks.STONE_BRICK_SLAB.defaultBlockState(), null);
+					return new StructureTemplate.StructureBlockInfo(processedBlockInfo.pos(), Blocks.STONE_BRICK_SLAB.defaultBlockState(), null);
 				else if (stateAt.is(Blocks.AIR)) // Do not skip Cave Air blocks
 					return null;
 				else
-					return new StructureTemplate.StructureBlockInfo(newInfo.pos(), Blocks.STONE_BRICKS.defaultBlockState(), null);
+					return new StructureTemplate.StructureBlockInfo(processedBlockInfo.pos(), Blocks.STONE_BRICKS.defaultBlockState(), null);
 			}
 
 			if (stateAt.isAir())
 				return null;
 			else
-				return new StructureTemplate.StructureBlockInfo(newInfo.pos(), Blocks.STONE_BRICK_SLAB.defaultBlockState(), null);
+				return new StructureTemplate.StructureBlockInfo(processedBlockInfo.pos(), Blocks.STONE_BRICK_SLAB.defaultBlockState(), null);
 		}
 
-		return newInfo;
+		return processedBlockInfo;
 	}
 
 	@Override
 	public StructureProcessorType<?> getType() {
-		return TFStructureProcessors.COURTYARD_TERRACE.get();
+		return TFStructureProcessors.COURTYARD_TERRACE;
 	}
 }

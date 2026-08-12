@@ -70,7 +70,7 @@ public class UndergroundPlantFeature extends Feature<BlockStateConfiguration> {
 			BlockState state = ctx.config().state;
 			Optional<StructureStart> structureStart = LandmarkUtil.locateNearestLandmarkStart(world, SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
 			if (state.is(TFBlocks.TROLLVIDR) && random.nextInt(10) == 0)
-				state = TFBlocks.UNRIPE_TROLLBER.get().defaultBlockState();
+				state = TFBlocks.UNRIPE_TROLLBER.defaultBlockState();
 			if (state.canSurvive(world, pos) && (spawnInStructure || structureStart.isEmpty() || !structureStart.get().getBoundingBox().isInside(pos))) {
 				world.setBlock(pos, state, Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
 				placed++;

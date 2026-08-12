@@ -20,11 +20,11 @@ import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 public class DarkTowerBalconyComponent extends TowerWingComponent {
 
 	public DarkTowerBalconyComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(TFStructurePieceTypes.TFDTBal.get(), nbt);
+		super(TFStructurePieceTypes.TFDTBal, nbt);
 	}
 
 	protected DarkTowerBalconyComponent(int i, int x, int y, int z, Direction direction) {
-		super(TFStructurePieceTypes.TFDTBal.get(), i, x, y, z, 5, 5, direction);
+		super(TFStructurePieceTypes.TFDTBal, i, x, y, z, 5, 5, direction);
 	}
 
 	@Override

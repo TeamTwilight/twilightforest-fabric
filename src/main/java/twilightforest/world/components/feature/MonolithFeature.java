@@ -90,7 +90,7 @@ public class MonolithFeature extends Feature<NoneFeatureConfiguration> {
 			dPos = world.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, dPos);
 
 			if (dPos.getY() > 0) {
-				Raven raven = TFEntities.RAVEN.get().create(world.getLevel(), EntitySpawnReason.STRUCTURE);
+				Raven raven = TFEntities.RAVEN.create(world.getLevel(), EntitySpawnReason.STRUCTURE);
 				raven.snapTo(dPos, rand.nextFloat() * 360.0F, 0.0F);
 
 				world.addFreshEntity(raven);

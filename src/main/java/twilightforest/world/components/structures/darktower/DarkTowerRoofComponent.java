@@ -20,7 +20,7 @@ import twilightforest.world.components.structures.lichtower.TowerWingComponent;
 public class DarkTowerRoofComponent extends TowerRoofComponent {
 
 	public DarkTowerRoofComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		this(TFStructurePieceTypes.TFDTRooS.get(), nbt);
+		this(TFStructurePieceTypes.TFDTRooS, nbt);
 	}
 
 	public DarkTowerRoofComponent(StructurePieceType piece, CompoundTag nbt) {

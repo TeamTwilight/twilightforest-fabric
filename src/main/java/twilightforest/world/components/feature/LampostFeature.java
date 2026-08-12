@@ -47,7 +47,7 @@ public class LampostFeature extends Feature<BlockStateConfiguration> {
 
 		// generate lamp
 		for (int dy = 0; dy < height; dy++) {
-			world.setBlock(pos.above(dy), TFBlocks.CANOPY_FENCE.get().defaultBlockState(), Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
+			world.setBlock(pos.above(dy), TFBlocks.CANOPY_FENCE.defaultBlockState(), Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
 		}
 		world.setBlock(pos.above(height), config.state.rotate(ROTATIONS[rand.nextInt(ROTATIONS.length)]), Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_CLIENTS);
 		return true;

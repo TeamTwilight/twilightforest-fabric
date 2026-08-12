@@ -5,13 +5,13 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
+import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
 import twilightforest.TFMain;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceReloadListener<JsonElement> {
+public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceReloadListener<JsonElement> implements IdentifiableResourceReloadListener {
 	protected final Gson gson;
 	private final Codec<T> codec;
 
@@ -79,12 +79,6 @@ public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceR
 
 	protected void afterApply(ResourceManager manager, ProfilerFiller profiler) {}
 
-	/**
-	 * Intentionally not subscribed, it is on the subclasses to opt into subscription
-	 */
-	public final void registerListener(AddServerReloadListenersEvent event) {
-		event.addListener(TFMain.prefix(this.getListenerName()), this);
-	}
-
-	public abstract String getListenerName();
+	@Override
+	public abstract Identifier getFabricId();
 }

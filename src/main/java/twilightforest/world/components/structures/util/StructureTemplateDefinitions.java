@@ -11,15 +11,16 @@ import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import org.jetbrains.annotations.Nullable;
-import tamaized.beanification.Component;
+import twilightforest.TFMain;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Component
 public final class StructureTemplateDefinitions extends CodecResourceReloadListener<StructureTemplateDefinition> {
+
+	public static final StructureTemplateDefinitions INSTANCE = new StructureTemplateDefinitions();
 
 	private final Map<Identifier, Map<Identifier, TemplatePoolInstance>> rawTemplatePools = new HashMap<>();
 	private final Map<Identifier, WeightedList<TemplatePoolEntry>> templatePools = new HashMap<>();
@@ -59,6 +60,11 @@ public final class StructureTemplateDefinitions extends CodecResourceReloadListe
 		}
 
 		this.rawTemplatePools.clear();
+	}
+
+	@Override
+	public Identifier getFabricId() {
+		return TFMain.prefix(this.getName());
 	}
 
 	private Optional<TemplatePoolEntry> getRandomEntry(RandomSource random, Identifier templatePoolId) {
@@ -119,11 +125,6 @@ public final class StructureTemplateDefinitions extends CodecResourceReloadListe
 		if (placeContext == null)
 			return null;
 		return TwilightJigsawPiece.defaultForTemplate(genDepth, generationContext.structureTemplateManager(), templateEntry.templateId, templateEntry.instance.adjustContextForTerrain(placeContext, generationContext, parentProjectsTerrain), templateEntry.instance, templateEntry.instance.chooseRandomProcessors(random));
-	}
-
-	@Override
-	public String getListenerName() {
-		return "template_definitions";
 	}
 
 	private record TemplatePoolEntry(Identifier templateId, TemplatePoolInstance instance) {}

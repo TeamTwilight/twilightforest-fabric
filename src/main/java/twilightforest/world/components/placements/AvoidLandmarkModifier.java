@@ -155,7 +155,7 @@ public class AvoidLandmarkModifier extends PlacementModifier {
 
 	@Override
 	public PlacementModifierType<?> type() {
-		return TFFeatureModifiers.NO_STRUCTURE.get();
+		return TFFeatureModifiers.NO_STRUCTURE;
 	}
 
 	private static DataResult<AvoidLandmarkModifier> validate(AvoidLandmarkModifier config) {
