@@ -22,7 +22,7 @@ public class CrumbleDispenseBehavior extends DefaultDispenseItemBehavior {
 		BlockPos pos = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
 		BlockState state = level.getBlockState(pos);
 		if (!(stack.getMaxDamage() == stack.getDamageValue() + 1)) {
-			var resultBlock = state.typeHolder().getData(TFDataMaps.CRUMBLE_HORN);
+			var resultBlock = TFDataMaps.CRUMBLE_HORN.get(state.typeHolder());
 			if (resultBlock != null) {
 				if (resultBlock.result() == Blocks.AIR) {
 					level.destroyBlock(pos, true);

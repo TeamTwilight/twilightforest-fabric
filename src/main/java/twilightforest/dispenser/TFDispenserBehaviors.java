@@ -18,7 +18,7 @@ import twilightforest.init.TFSounds;
 public class TFDispenserBehaviors {
 
 	public static void init() {
-		DispenserBlock.registerBehavior(TFItems.MOONWORM_QUEEN.get(), new DamageableStackDispenseBehavior() {
+		DispenserBlock.registerBehavior(TFItems.MOONWORM_QUEEN, new DamageableStackDispenseBehavior() {
 			@Override
 			protected Projectile getProjectileEntity(Level level, Position position, ItemStack stack) {
 				return new MoonwormShot(level, position.x(), position.y(), position.z());
@@ -31,34 +31,34 @@ public class TFDispenserBehaviors {
 
 			@Override
 			protected SoundEvent getFiredSound() {
-				return TFSounds.MOONWORM_SQUISH.get();
+				return TFSounds.MOONWORM_SQUISH.value();
 			}
 		});
 
 		DispenseItemBehavior idispenseitembehavior = EquipmentDispenseItemBehavior.INSTANCE;
-		DispenserBlock.registerBehavior(TFBlocks.NAGA_TROPHY.get().asItem(), idispenseitembehavior);
-		DispenserBlock.registerBehavior(TFBlocks.LICH_TROPHY.get().asItem(), idispenseitembehavior);
-		DispenserBlock.registerBehavior(TFBlocks.MINOSHROOM_TROPHY.get().asItem(), idispenseitembehavior);
-		DispenserBlock.registerBehavior(TFBlocks.HYDRA_TROPHY.get().asItem(), idispenseitembehavior);
-		DispenserBlock.registerBehavior(TFBlocks.KNIGHT_PHANTOM_TROPHY.get().asItem(), idispenseitembehavior);
-		DispenserBlock.registerBehavior(TFBlocks.UR_GHAST_TROPHY.get().asItem(), idispenseitembehavior);
-		DispenserBlock.registerBehavior(TFBlocks.ALPHA_YETI_TROPHY.get().asItem(), idispenseitembehavior);
-		DispenserBlock.registerBehavior(TFBlocks.SNOW_QUEEN_TROPHY.get().asItem(), idispenseitembehavior);
-		DispenserBlock.registerBehavior(TFBlocks.QUEST_RAM_TROPHY.get().asItem(), idispenseitembehavior);
-		DispenserBlock.registerBehavior(TFBlocks.CREEPER_SKULL_CANDLE.get().asItem(), idispenseitembehavior);
-		DispenserBlock.registerBehavior(TFBlocks.PLAYER_SKULL_CANDLE.get().asItem(), idispenseitembehavior);
-		DispenserBlock.registerBehavior(TFBlocks.SKELETON_SKULL_CANDLE.get().asItem(), idispenseitembehavior);
-		DispenserBlock.registerBehavior(TFBlocks.WITHER_SKELE_SKULL_CANDLE.get().asItem(), idispenseitembehavior);
-		DispenserBlock.registerBehavior(TFBlocks.ZOMBIE_SKULL_CANDLE.get().asItem(), idispenseitembehavior);
-		DispenserBlock.registerBehavior(TFBlocks.CICADA.get().asItem(), idispenseitembehavior);
-		DispenserBlock.registerBehavior(TFBlocks.FIREFLY.get().asItem(), idispenseitembehavior);
-		DispenserBlock.registerBehavior(TFBlocks.MOONWORM.get().asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.NAGA_TROPHY.asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.LICH_TROPHY.asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.MINOSHROOM_TROPHY.asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.HYDRA_TROPHY.asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.KNIGHT_PHANTOM_TROPHY.asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.UR_GHAST_TROPHY.asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.ALPHA_YETI_TROPHY.asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.SNOW_QUEEN_TROPHY.asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.QUEST_RAM_TROPHY.asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.CREEPER_SKULL_CANDLE.asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.PLAYER_SKULL_CANDLE.asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.SKELETON_SKULL_CANDLE.asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.WITHER_SKELE_SKULL_CANDLE.asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.ZOMBIE_SKULL_CANDLE.asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.CICADA.asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.FIREFLY.asItem(), idispenseitembehavior);
+		DispenserBlock.registerBehavior(TFBlocks.MOONWORM.asItem(), idispenseitembehavior);
 
-		DispenserBlock.registerBehavior(TFItems.PEACOCK_FEATHER_FAN.get().asItem(), new FeatherFanDispenseBehavior());
-		DispenserBlock.registerBehavior(TFItems.CRUMBLE_HORN.get().asItem(), new CrumbleDispenseBehavior());
-		DispenserBlock.registerBehavior(TFItems.TRANSFORMATION_POWDER.get().asItem(), new TransformationDispenseBehavior());
+		DispenserBlock.registerBehavior(TFItems.PEACOCK_FEATHER_FAN.asItem(), new FeatherFanDispenseBehavior());
+		DispenserBlock.registerBehavior(TFItems.CRUMBLE_HORN.asItem(), new CrumbleDispenseBehavior());
+		DispenserBlock.registerBehavior(TFItems.TRANSFORMATION_POWDER.asItem(), new TransformationDispenseBehavior());
 
-		DispenserBlock.registerBehavior(TFItems.TWILIGHT_SCEPTER.get(), new DamageableStackDispenseBehavior() {
+		DispenserBlock.registerBehavior(TFItems.TWILIGHT_SCEPTER, new DamageableStackDispenseBehavior() {
 			@Override
 			protected Projectile getProjectileEntity(Level level, Position position, ItemStack stack) {
 				return new TwilightWandBolt(level, position.x(), position.y(), position.z());
@@ -71,7 +71,7 @@ public class TFDispenserBehaviors {
 
 			@Override
 			protected SoundEvent getFiredSound() {
-				return TFSounds.TWILIGHT_SCEPTER_USE.get();
+				return TFSounds.TWILIGHT_SCEPTER_USE.value();
 			}
 
 			@Override
@@ -80,7 +80,7 @@ public class TFDispenserBehaviors {
 			}
 		});
 
-		DispenserBlock.registerProjectileBehavior(TFItems.ICE_BOMB.get());
+		DispenserBlock.registerProjectileBehavior(TFItems.ICE_BOMB);
 
 		//handling tags should be a thing smh
 		DispenserBlock.registerBehavior(Items.CANDLE, new CandleDispenseBehavior());
