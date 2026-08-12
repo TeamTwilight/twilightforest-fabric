@@ -35,7 +35,7 @@ public class UncraftItemTrigger extends SimpleCriterionTrigger<UncraftItemTrigge
 			.apply(instance, UncraftItemTrigger.TriggerInstance::new));
 
 		public static Criterion<UncraftItemTrigger.TriggerInstance> uncraftedItem(ItemPredicate predicate) {
-			return TFAdvancements.UNCRAFT_ITEM.get().createCriterion(new UncraftItemTrigger.TriggerInstance(Optional.empty(), Optional.of(predicate)));
+			return TFAdvancements.UNCRAFT_ITEM.createCriterion(new UncraftItemTrigger.TriggerInstance(Optional.empty(), Optional.of(predicate)));
 		}
 
 		public static Criterion<UncraftItemTrigger.TriggerInstance> uncraftedItem(HolderGetter<Item> getter, ItemLike item) {

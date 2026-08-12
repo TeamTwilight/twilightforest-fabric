@@ -33,7 +33,7 @@ public class StructureClearedTrigger extends SimpleCriterionTrigger<StructureCle
 			.apply(instance, StructureClearedTrigger.TriggerInstance::new));
 
 		public static Criterion<StructureClearedTrigger.TriggerInstance> clearedStructure(ResourceKey<Structure> structure) {
-			return TFAdvancements.STRUCTURE_CLEARED.get().createCriterion(new StructureClearedTrigger.TriggerInstance(Optional.empty(), structure));
+			return TFAdvancements.STRUCTURE_CLEARED.createCriterion(new StructureClearedTrigger.TriggerInstance(Optional.empty(), structure));
 		}
 
 		boolean test(ResourceKey<Structure> structure) {

@@ -37,7 +37,7 @@ public class HurtBossTrigger extends SimpleCriterionTrigger<HurtBossTrigger.Trig
 		}
 
 		public static Criterion<HurtBossTrigger.TriggerInstance> hurtBoss(EntityPredicate.Builder hurt) {
-			return TFAdvancements.HURT_BOSS.get().createCriterion(new TriggerInstance(Optional.empty(), Optional.of(EntityPredicate.wrap(hurt.build()))));
+			return TFAdvancements.HURT_BOSS.createCriterion(new TriggerInstance(Optional.empty(), Optional.of(EntityPredicate.wrap(hurt.build()))));
 		}
 	}
 }

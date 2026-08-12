@@ -33,7 +33,7 @@ public class KillBugTrigger extends SimpleCriterionTrigger<KillBugTrigger.Trigge
 			.apply(instance, KillBugTrigger.TriggerInstance::new));
 
 		public static Criterion<TriggerInstance> killBug(Block bug) {
-			return TFAdvancements.KILL_BUG.get().createCriterion(new TriggerInstance(Optional.empty(), Optional.of(bug)));
+			return TFAdvancements.KILL_BUG.createCriterion(new TriggerInstance(Optional.empty(), Optional.of(bug)));
 		}
 
 		public boolean matches(BlockState bug) {

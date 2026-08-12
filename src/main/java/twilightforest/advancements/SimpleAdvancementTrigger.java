@@ -29,31 +29,31 @@ public class SimpleAdvancementTrigger extends SimpleCriterionTrigger<SimpleAdvan
 			.apply(instance, SimpleAdvancementTrigger.TriggerInstance::new));
 
 		public static Criterion<SimpleAdvancementTrigger.TriggerInstance> makeTFPortal() {
-			return TFAdvancements.MADE_TF_PORTAL.get().createCriterion(new TriggerInstance(Optional.empty()));
+			return TFAdvancements.MADE_TF_PORTAL.createCriterion(new TriggerInstance(Optional.empty()));
 		}
 
 		public static Criterion<SimpleAdvancementTrigger.TriggerInstance> eatHydraChop() {
-			return TFAdvancements.CONSUME_HYDRA_CHOP.get().createCriterion(new TriggerInstance(Optional.empty()));
+			return TFAdvancements.CONSUME_HYDRA_CHOP.createCriterion(new TriggerInstance(Optional.empty()));
 		}
 
 		public static Criterion<SimpleAdvancementTrigger.TriggerInstance> completeQuestRam() {
-			return TFAdvancements.QUEST_RAM_COMPLETED.get().createCriterion(new TriggerInstance(Optional.empty()));
+			return TFAdvancements.QUEST_RAM_COMPLETED.createCriterion(new TriggerInstance(Optional.empty()));
 		}
 
 		public static Criterion<SimpleAdvancementTrigger.TriggerInstance> activateGhastTrap() {
-			return TFAdvancements.ACTIVATED_GHAST_TRAP.get().createCriterion(new TriggerInstance(Optional.empty()));
+			return TFAdvancements.ACTIVATED_GHAST_TRAP.createCriterion(new TriggerInstance(Optional.empty()));
 		}
 
 		public static Criterion<SimpleAdvancementTrigger.TriggerInstance> killAllPhantoms() {
-			return TFAdvancements.KILL_ALL_PHANTOMS.get().createCriterion(new TriggerInstance(Optional.empty()));
+			return TFAdvancements.KILL_ALL_PHANTOMS.createCriterion(new TriggerInstance(Optional.empty()));
 		}
 
 		public static Criterion<SimpleAdvancementTrigger.TriggerInstance> activatedPedestal() {
-			return TFAdvancements.PLACED_TROPHY_ON_PEDESTAL.get().createCriterion(new TriggerInstance(Optional.empty()));
+			return TFAdvancements.PLACED_TROPHY_ON_PEDESTAL.createCriterion(new TriggerInstance(Optional.empty()));
 		}
 
 		public static Criterion<SimpleAdvancementTrigger.TriggerInstance> brokenSword() {
-			return TFAdvancements.BROKE_GLASS_SWORD.get().createCriterion(new TriggerInstance(Optional.empty()));
+			return TFAdvancements.BROKE_GLASS_SWORD.createCriterion(new TriggerInstance(Optional.empty()));
 		}
 	}
 }

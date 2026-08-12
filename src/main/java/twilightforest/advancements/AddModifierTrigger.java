@@ -31,11 +31,11 @@ public class AddModifierTrigger extends SimpleCriterionTrigger<AddModifierTrigge
 			.apply(instance, AddModifierTrigger.TriggerInstance::new));
 
 		public static Criterion<AddModifierTrigger.TriggerInstance> addedAnyModifier() {
-			return TFAdvancements.ADD_MODIFIER.get().createCriterion(new AddModifierTrigger.TriggerInstance(Optional.empty(), Optional.empty()));
+			return TFAdvancements.ADD_MODIFIER.createCriterion(new AddModifierTrigger.TriggerInstance(Optional.empty(), Optional.empty()));
 		}
 
 		public static Criterion<AddModifierTrigger.TriggerInstance> addedModifier(Identifier modifier) {
-			return TFAdvancements.ADD_MODIFIER.get().createCriterion(new AddModifierTrigger.TriggerInstance(Optional.empty(), Optional.of(modifier)));
+			return TFAdvancements.ADD_MODIFIER.createCriterion(new AddModifierTrigger.TriggerInstance(Optional.empty(), Optional.of(modifier)));
 		}
 
 		boolean test(Identifier modifier) {

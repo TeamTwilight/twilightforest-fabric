@@ -11,22 +11,16 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.alchemy.Potion;
-import tamaized.beanification.Autowired;
-import tamaized.beanification.Component;
-import tamaized.beanification.Configurable;
 import twilightforest.init.TFAdvancements;
 import twilightforest.util.HolderMatcher;
 
 import java.util.Optional;
 
-@Configurable
 public class DrinkFromFlaskTrigger extends SimpleCriterionTrigger<DrinkFromFlaskTrigger.TriggerInstance> {
 
-	@Autowired
-	private TriggerInstance.DrinkFromFlaskTriggerInstanceFactory factory;
+	private final TriggerInstance.DrinkFromFlaskTriggerInstanceFactory factory = TriggerInstance.DrinkFromFlaskTriggerInstanceFactory.INSTANCE;
 
-	@Autowired
-	private HolderMatcher holderMatcher;
+	private final HolderMatcher holderMatcher = HolderMatcher.INSTANCE;
 
 	public Codec<DrinkFromFlaskTrigger.TriggerInstance> codec() {
 		return factory.CODEC;
@@ -42,8 +36,8 @@ public class DrinkFromFlaskTrigger extends SimpleCriterionTrigger<DrinkFromFlask
 			return this.doses().matches(doses) && this.seconds().matches(seconds) && parent.holderMatcher.match(this.potion(), potion);
 		}
 
-		@Component
 		public static class DrinkFromFlaskTriggerInstanceFactory {
+			public static final DrinkFromFlaskTriggerInstanceFactory INSTANCE = new DrinkFromFlaskTriggerInstanceFactory();
 
 			public final Codec<DrinkFromFlaskTrigger.TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 					EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(DrinkFromFlaskTrigger.TriggerInstance::player),
@@ -53,11 +47,11 @@ public class DrinkFromFlaskTrigger extends SimpleCriterionTrigger<DrinkFromFlask
 				.apply(instance, DrinkFromFlaskTrigger.TriggerInstance::new));
 
 			public Criterion<DrinkFromFlaskTrigger.TriggerInstance> drankPotion(int doses, MinMaxBounds.Ints seconds, Holder<Potion> potion) {
-				return TFAdvancements.DRINK_FROM_FLASK.get().createCriterion(new TriggerInstance(Optional.empty(), MinMaxBounds.Ints.exactly(doses), seconds, potion));
+				return TFAdvancements.DRINK_FROM_FLASK.createCriterion(new TriggerInstance(Optional.empty(), MinMaxBounds.Ints.exactly(doses), seconds, potion));
 			}
 
 			public Criterion<DrinkFromFlaskTrigger.TriggerInstance> drankPotion(MinMaxBounds.Ints doses, MinMaxBounds.Ints seconds, Holder<Potion> potion) {
-				return TFAdvancements.DRINK_FROM_FLASK.get().createCriterion(new TriggerInstance(Optional.empty(), doses, seconds, potion));
+				return TFAdvancements.DRINK_FROM_FLASK.createCriterion(new TriggerInstance(Optional.empty(), doses, seconds, potion));
 			}
 		}
 
