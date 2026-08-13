@@ -42,6 +42,7 @@
     "ReloadableResourceManagerMixin",
     "ServerEntityMixin",
     "ServerLevelMixin",
+    "ServerPlayerGameModeMixin",
     "SlimeBlockMixin",
     "SnowyDirtBlockMixin",
     "StructureStartMixin",

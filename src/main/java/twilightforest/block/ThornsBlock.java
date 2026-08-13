@@ -99,51 +99,35 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 		super.stepOn(level, pos, state, entity);
 	}
 
-	// NOTE: onDestroyedByPlayer is NeoForge-specific. No equivalent in vanilla/Fabric 1.21.1.
-	/*
-	@Override
-	public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
-		if (!player.getAbilities().instabuild) {
-			if (!level.isClientSide()) {
-				// grow more
-				this.doThornBurst(level, pos, state);
-			}
-			return false;
-		} else {
-			return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
-		}
-	}
-	*/
-
 	/**
 	 * Grow thorns out of both the ends, then maybe in another direction too
 	 */
-	private void doThornBurst(Level level, BlockPos pos, BlockState state) {
+	public static void doThornBurst(Level level, BlockPos pos, BlockState state) {
 		switch (state.getValue(AXIS)) {
 			case Y -> {
-				this.growThorns(level, pos, Direction.UP);
-				this.growThorns(level, pos, Direction.DOWN);
+				growThorns(level, pos, Direction.UP);
+				growThorns(level, pos, Direction.DOWN);
 			}
 			case X -> {
-				this.growThorns(level, pos, Direction.EAST);
-				this.growThorns(level, pos, Direction.WEST);
+				growThorns(level, pos, Direction.EAST);
+				growThorns(level, pos, Direction.WEST);
 			}
 			case Z -> {
-				this.growThorns(level, pos, Direction.NORTH);
-				this.growThorns(level, pos, Direction.SOUTH);
+				growThorns(level, pos, Direction.NORTH);
+				growThorns(level, pos, Direction.SOUTH);
 			}
 		}
 
 		// also try three random directions
-		this.growThorns(level, pos, Direction.getRandom(level.getRandom()));
-		this.growThorns(level, pos, Direction.getRandom(level.getRandom()));
-		this.growThorns(level, pos, Direction.getRandom(level.getRandom()));
+		growThorns(level, pos, Direction.getRandom(level.getRandom()));
+		growThorns(level, pos, Direction.getRandom(level.getRandom()));
+		growThorns(level, pos, Direction.getRandom(level.getRandom()));
 	}
 
 	/**
 	 * grow several green thorns in the specified direction
 	 */
-	private void growThorns(Level level, BlockPos pos, Direction dir) {
+	public static void growThorns(Level level, BlockPos pos, Direction dir) {
 		int length = 1 + level.getRandom().nextInt(3);
 
 		for (int i = 1; i < length; i++) {
