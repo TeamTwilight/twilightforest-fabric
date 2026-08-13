@@ -30,10 +30,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.IBreathAttacker;
 import twilightforest.entity.TFPart;
@@ -303,7 +303,7 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 	}
 
 	public void destroyBlocksInAABB(ServerLevel server, AABB box) {
-		if (EventHooks.canEntityGrief(server, this)) {
+		if (server.getGameRules().get(GameRules.MOB_GRIEFING)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 				BlockState state = this.level().getBlockState(pos);
 				if (state.is(BlockTags.ICE)) {

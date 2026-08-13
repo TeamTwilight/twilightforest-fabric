@@ -1,22 +1,33 @@
 package carminite.event;
 
+import carminite.event.impl.ICancellableEvent;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LightningBolt;
 
 public final class EntityStruckByLightningEvent {
-	public static final Event<Struck> EVENT = EventFactory.createArrayBacked(Struck.class, callbacks -> (entity, lightning) -> {
+	public static final Event<Struck> EVENT = EventFactory.createArrayBacked(Struck.class, callbacks -> event -> {
 		for (Struck callback : callbacks) {
-			if (callback.onEntityStruckByLightning(entity, lightning)) {
-				return true;
-			}
+			callback.onEntityStruckByLightning(event);
 		}
-		return false;
 	});
 
 	@FunctionalInterface
 	public interface Struck {
-		boolean onEntityStruckByLightning(Entity entity, LightningBolt lightning);
+		void onEntityStruckByLightning(EntityStruckByLightningEventImpl event);
+	}
+
+	public static class EntityStruckByLightningEventImpl extends EntityEvent implements ICancellableEvent {
+		private final LightningBolt lightning;
+
+		public EntityStruckByLightningEventImpl(Entity entity, LightningBolt lightning) {
+			super(entity);
+			this.lightning = lightning;
+		}
+
+		public LightningBolt getLightning() {
+			return lightning;
+		}
 	}
 }

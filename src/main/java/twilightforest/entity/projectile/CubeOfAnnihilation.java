@@ -1,5 +1,6 @@
 package twilightforest.entity.projectile;
 
+import carminite.event.hooks.CommonHooks;
 import carminite.network.PacketDistributor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -99,7 +100,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 			BlockState state = this.level().getBlockState(pos);
 			if (!state.isAir()) {
 				if (this.getOwner() instanceof ServerPlayer player) {
-					if (!NeoForge.EVENT_BUS.post(new BlockEvent.BreakEvent(this.level(), pos, state, player)).isCanceled()) {
+					if (!CommonHooks.fireBlockBreak(level(), player.gameMode(), player, pos, state).isCanceled()) {
 						if (this.canAnnihilate(pos, state, player.gameMode.getGameModeForPlayer().isBlockPlacingRestricted())) {
 							this.level().removeBlock(pos, false);
 							this.playSound(TFSounds.BLOCK_ANNIHILATED.value(), 0.125f, this.random.nextFloat() * 0.25F + 0.75F);

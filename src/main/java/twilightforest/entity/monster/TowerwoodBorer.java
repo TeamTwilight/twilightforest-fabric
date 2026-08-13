@@ -20,7 +20,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.neoforged.neoforge.event.EventHooks;
+import net.minecraft.world.level.gamerules.GameRules;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 
@@ -124,7 +124,7 @@ public class TowerwoodBorer extends Monster {
 				RandomSource random = this.mob.getRandom();
 
 				if (this.mob.level() instanceof ServerLevel server) {
-					if (random.nextInt(10) == 0 && EventHooks.canEntityGrief(server, this.mob)) {
+					if (random.nextInt(10) == 0 && server.getGameRules().get(GameRules.MOB_GRIEFING)) {
 						this.facing = Direction.getRandom(random);
 						BlockPos blockpos = BlockPos.containing(this.mob.getX(), this.mob.getY() + 0.5D, this.mob.getZ()).relative(this.facing);
 						BlockState state = this.mob.level().getBlockState(blockpos);
@@ -209,7 +209,7 @@ public class TowerwoodBorer extends Monster {
 							// TF - Change block check
 							if (state.is(TFBlocks.INFESTED_TOWERWOOD)) {
 								if (world instanceof ServerLevel server) {
-									if (EventHooks.canEntityGrief(server, this.borer)) {
+									if (server.getGameRules().get(GameRules.MOB_GRIEFING)) {
 										world.destroyBlock(offsetPos, true);
 										this.borer.gameEvent(GameEvent.BLOCK_DESTROY);
 									} else {

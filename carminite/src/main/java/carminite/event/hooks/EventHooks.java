@@ -6,6 +6,8 @@ import net.minecraft.world.entity.LightningBolt;
 
 public class EventHooks {
 	public static boolean onEntityStruckByLightning(Entity entity, LightningBolt bolt) {
-		return EntityStruckByLightningEvent.EVENT.invoker().onEntityStruckByLightning(entity, bolt);
+		var event = new EntityStruckByLightningEvent.EntityStruckByLightningEventImpl(entity, bolt);
+		EntityStruckByLightningEvent.EVENT.invoker().onEntityStruckByLightning(event);
+		return event.isCanceled();
 	}
 }

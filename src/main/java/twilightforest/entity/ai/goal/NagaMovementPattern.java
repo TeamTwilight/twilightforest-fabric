@@ -6,7 +6,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.neoforged.neoforge.event.EventHooks;
+import net.minecraft.world.level.gamerules.GameRules;
 import twilightforest.entity.boss.Naga;
 import twilightforest.init.TFSounds;
 import twilightforest.util.entities.EntityUtil;
@@ -177,7 +177,7 @@ public class NagaMovementPattern extends Goal {
 	}
 
 	private void crumbleBelowTarget(int range) {
-		if (!EventHooks.canEntityGrief(getServerLevel(this.naga), this.naga) || naga.getTarget() == null) return;
+		if (!getServerLevel(this.naga).getGameRules().get(GameRules.MOB_GRIEFING) || naga.getTarget() == null) return;
 
 		int floor = (int) this.naga.getBoundingBox().minY;
 		int targetY = (int) this.naga.getTarget().getBoundingBox().minY;

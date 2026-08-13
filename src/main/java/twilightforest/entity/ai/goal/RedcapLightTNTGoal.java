@@ -2,15 +2,13 @@ package twilightforest.entity.ai.goal;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.entity.monster.Redcap;
 
 import java.util.EnumSet;
@@ -30,7 +28,7 @@ public class RedcapLightTNTGoal extends RedcapBaseGoal {
 
 	@Override
 	public boolean canUse() {
-		if (!EventHooks.canEntityGrief(getServerLevel(this.redcap), this.redcap)) {
+		if (!getServerLevel(this.redcap).getGameRules().get(GameRules.MOB_GRIEFING)) {
 			return false;
 		}
 

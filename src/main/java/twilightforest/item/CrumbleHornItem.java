@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import carminite.event.hooks.CommonHooks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -16,6 +17,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.init.TFDataMaps;
@@ -96,8 +98,8 @@ public class CrumbleHornItem extends Item {
 
 		if (state.isAir() || crumbleMap == null) return false;
 
-		if (living instanceof Player) {
-			if (NeoForge.EVENT_BUS.post(new BlockEvent.BreakEvent(serverLevel, pos, state, (Player) living)).isCanceled())
+		if (living instanceof Player player) {
+			if (CommonHooks.fireBlockBreak(serverLevel, player.gameMode(), player, pos, state).isCanceled())
 				return false;
 		}
 
@@ -113,7 +115,7 @@ public class CrumbleHornItem extends Item {
 						}
 						return true;
 					}
-				} else if (EventHooks.canEntityGrief(serverLevel, living)) {
+				} else if (serverLevel.getGameRules().get(GameRules.MOB_GRIEFING)) {
 					serverLevel.destroyBlock(pos, true);
 					return true;
 				}

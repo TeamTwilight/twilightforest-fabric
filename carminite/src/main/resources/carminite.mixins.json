@@ -13,6 +13,7 @@
     "MinecartSpawner$1Mixin",
     "PistonStructureResolverMixin",
     "RedStoneWireBlockMixin",
+    "ServerPlayerGameModeMixin",
     "SpawnerBlockEntity$1Mixin",
     "TrialSpawnerMixin"
   ],
