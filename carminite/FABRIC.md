@@ -3,6 +3,7 @@ TODO
 
 ## Main Init
 - ResourceConditions.register(UncraftingTableCondition.TYPE);
+- Register client-side MapData cache clearing event by calling MapDatamanger.init()
 
 ## Add these to Fabric convention tags
 - Gold Ingot to ConventionalItemTags.GOLD_INGOTS

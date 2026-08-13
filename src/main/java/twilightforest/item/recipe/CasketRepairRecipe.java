@@ -36,7 +36,7 @@ public class CasketRepairRecipe extends CustomRecipe {
 				if (stackInQuestion.is(TFItems.KEEPSAKE_CASKET) && stackInQuestion.getOrDefault(TFDataComponents.CASKET_DAMAGE, 0) > 0) {
 					if (casket) return false;
 					casket = true;
-				} else if (stackInQuestion.is(TFItems.CHARM_OF_KEEPING_3.get())) {
+				} else if (stackInQuestion.is(TFItems.CHARM_OF_KEEPING_3)) {
 					if (charm) return false;
 					charm = true;
 				} else {

@@ -44,7 +44,7 @@ public class DryingRecipe extends SingleItemRecipe {
 
 	@Override
 	public RecipeType<? extends SingleItemRecipe> getType() {
-		return TFRecipes.DRYING_RECIPE.get();
+		return TFRecipes.DRYING_RECIPE;
 	}
 
 	// Consider adding a category in the future

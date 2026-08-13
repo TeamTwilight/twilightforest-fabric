@@ -1,7 +1,5 @@
 package twilightforest.item.travellers_gear.modifiers;
 
-
-import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -12,7 +10,6 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 
 public abstract class TooltipStringInterpolator {
 	// pattern to find ${var}
@@ -54,7 +51,6 @@ public abstract class TooltipStringInterpolator {
 			.findFirst();
 		if (mapping.isEmpty())
 			return "Nonexistent key";
-		InputConstants.Key key = mapping.get().getKey();
-		return mapping.get().getKeyModifier().getCombinedName(key, key::getDisplayName).getString();
+		return mapping.get().getTranslatedKeyMessage().getString();
 	}
 }

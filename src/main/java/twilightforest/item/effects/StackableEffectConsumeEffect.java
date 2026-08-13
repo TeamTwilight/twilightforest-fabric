@@ -41,7 +41,7 @@ public class StackableEffectConsumeEffect implements ConsumeEffect {
 
 	@Override
 	public Type<? extends ConsumeEffect> getType() {
-		return TFConsumeEffects.STACKABLE_EFFECTS.get();
+		return TFConsumeEffects.STACKABLE_EFFECTS;
 	}
 
 	@Override

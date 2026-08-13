@@ -36,7 +36,7 @@ public class EssenceRepairRecipe extends CustomRecipe {
 				if (stackInQuestion.is(TFItemTags.SCEPTERS) && stackInQuestion.isDamaged()) {
 					if (scepter) return false;
 					scepter = true;
-				} else if (stackInQuestion.is(TFItems.EXANIMATE_ESSENCE.get())) {
+				} else if (stackInQuestion.is(TFItems.EXANIMATE_ESSENCE)) {
 					if (essence) return false;
 					essence = true;
 				} else {

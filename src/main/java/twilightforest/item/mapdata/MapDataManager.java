@@ -1,8 +1,8 @@
 package twilightforest.item.mapdata;
 
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.maps.MapId;
-import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import org.jspecify.annotations.Nullable;
 
 import java.util.HashMap;
@@ -47,8 +47,10 @@ public final class MapDataManager {
 		MAZE_MAP_CLIENT_DATA.put(id, data);
 	}
 
-	public static void clearCache(ClientPlayerNetworkEvent.LoggingOut event) {
-		MAGIC_MAP_CLIENT_DATA.clear();
-		MAZE_MAP_CLIENT_DATA.clear();
+	public static void init() {
+		ClientPlayConnectionEvents.DISCONNECT.register((_, _) -> {
+			MAGIC_MAP_CLIENT_DATA.clear();
+			MAZE_MAP_CLIENT_DATA.clear();
+		});
 	}
 }

@@ -9,11 +9,11 @@ import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import org.apache.commons.lang3.StringUtils;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifiable;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 
-import javax.annotation.Nullable;
 import java.util.stream.StreamSupport;
 
 public abstract class TravellersGearModifierRecipe extends CustomRecipe {

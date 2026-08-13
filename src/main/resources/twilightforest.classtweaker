@@ -241,8 +241,13 @@ accessible method net/minecraft/client/multiplayer/ClientLevel getSkyFlashTime (
 # TFMagicMapData & TFMazeMapData (avoids a VanillaCopy for a helper method)
 accessible method net/minecraft/world/level/saveddata/maps/MapItemSavedData getFrameKey (I)Ljava/lang/String;
 
-#CountTemplateCommand (replaces reflection)
+# CountTemplateCommand (replaces reflection)
 accessible method net/minecraft/world/level/levelgen/structure/TemplateStructurePiece makeTemplateLocation ()Lnet/minecraft/resources/Identifier;
+
+# TFMagicMapData & TFMazeMapData
+accessible method net/minecraft/world/level/saveddata/maps/MapItemSavedData addDecoration (Lnet/minecraft/core/Holder;Lnet/minecraft/world/level/LevelAccessor;Ljava/lang/String;DDDLnet/minecraft/network/chat/Component;)V
+mutable field net/minecraft/world/level/saveddata/maps/MapItemSavedData centerX I
+mutable field net/minecraft/world/level/saveddata/maps/MapItemSavedData centerZ I
 
 # Enum Extensions
 extend-enum net/minecraft/world/damagesource/DamageEffects TWILIGHTFOREST_PINCH

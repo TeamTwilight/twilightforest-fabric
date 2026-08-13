@@ -1,5 +1,7 @@
 package twilightforest.item.recipe.travellers;
 
+import carminite.util.NonNullListUtil;
+import carminite.util.RecipeMatcher;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
@@ -11,7 +13,6 @@ import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.util.RecipeMatcher;
 import twilightforest.TFRegistries;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 
@@ -21,7 +22,7 @@ import java.util.List;
 public class TravellersGearModifierShapelessRecipe extends TravellersGearModifierRecipe {
 	public static final MapCodec<TravellersGearModifierShapelessRecipe> MAP_CODEC = RecordCodecBuilder.mapCodec(instance ->
 		instance.group(
-			NonNullList.codecOf(Ingredient.CODEC)
+			NonNullListUtil.codecOf(Ingredient.CODEC)
 				.fieldOf("ingredients")
 				.forGetter(recipe -> recipe.ingredients),
 			RegistryFixedCodec.create(TFRegistries.Keys.TRAVELLERS_MODIFIERS)

@@ -74,7 +74,7 @@ public class UncraftingRecipe extends ShapedRecipe {
 	// Or this...
 	@Override
 	public RecipeType<CraftingRecipe> getType() {
-		return (RecipeType<CraftingRecipe>) (RecipeType<?>) TFRecipes.UNCRAFTING_RECIPE.get();
+		return (RecipeType<CraftingRecipe>) (RecipeType<?>) TFRecipes.UNCRAFTING_RECIPE;
 	}
 
 	public Ingredient getInput() {
