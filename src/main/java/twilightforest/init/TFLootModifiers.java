@@ -2,8 +2,6 @@ package twilightforest.init;
 
 import com.mojang.serialization.MapCodec;
 import twilightforest.TFMain;
-import twilightforest.loot.modifiers.FieryToolSmeltingModifier;
-import twilightforest.loot.modifiers.GiantToolGroupingModifier;
 
 // TODO: [Fabric] Port to mixin
 public class TFLootModifiers {

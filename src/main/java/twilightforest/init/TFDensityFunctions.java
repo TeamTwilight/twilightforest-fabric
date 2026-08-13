@@ -169,4 +169,8 @@ public class TFDensityFunctions {
 
 		context.register(SKYLIGHT_TERRAIN, finalDensity.clamp(-0.1, 0.5));
 	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing density function types...");
+	}
 }

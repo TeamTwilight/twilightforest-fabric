@@ -712,4 +712,8 @@ public class TFBlocks {
 	private static boolean noSpawning(BlockState pState, BlockGetter pLevel, BlockPos pPos, EntityType<?> pValue) {
 		return false;
 	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing blocks...");
+	}
 }

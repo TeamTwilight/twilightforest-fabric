@@ -86,4 +86,8 @@ public class TFBlockEntities {
 	private static <T extends BlockEntity> BlockEntityType<T> register(String name, FabricBlockEntityTypeBuilder.Factory<? extends T> entityFactory, Block... blocks) {
 		return Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, TFMain.prefix(name), FabricBlockEntityTypeBuilder.<T>create(entityFactory, blocks).build());
 	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing block entities...");
+	}
 }

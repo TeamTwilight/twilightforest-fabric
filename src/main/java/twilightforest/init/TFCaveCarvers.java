@@ -99,4 +99,8 @@ public class TFCaveCarvers {
 			UniformFloat.of(-0.9F, -0.65F)
 		)));
 	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing carvers...");
+	}
 }

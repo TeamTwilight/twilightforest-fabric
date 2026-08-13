@@ -17,4 +17,8 @@ public class TFConsumeEffects {
 			type
 		);
 	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing consume effects...");
+	}
 }

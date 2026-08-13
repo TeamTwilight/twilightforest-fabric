@@ -46,4 +46,8 @@ public class TFRecipes {
 			}
 		});
 	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing recipe types...");
+	}
 }

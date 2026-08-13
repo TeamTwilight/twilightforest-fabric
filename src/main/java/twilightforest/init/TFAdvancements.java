@@ -29,4 +29,8 @@ public class TFAdvancements {
 			trigger
 		);
 	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing advancements...");
+	}
 }

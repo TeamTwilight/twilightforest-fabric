@@ -236,4 +236,8 @@ public class TFStructurePieceTypes {
 			structurePieceType
 		);
 	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing structure piece types...");
+	}
 }

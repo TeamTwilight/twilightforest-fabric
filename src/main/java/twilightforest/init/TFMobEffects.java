@@ -18,4 +18,8 @@ public class TFMobEffects {
 			effect
 		);
 	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing mob effects...");
+	}
 }

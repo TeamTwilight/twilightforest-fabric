@@ -50,4 +50,8 @@ public class TFLoot {
 			codec
 		);
 	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing loot...");
+	}
 }

@@ -120,4 +120,8 @@ public class TFDataComponents {
 				.build()
 		);
 	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing data components...");
+	}
 }

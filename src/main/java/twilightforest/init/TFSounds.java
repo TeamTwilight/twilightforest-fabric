@@ -351,4 +351,8 @@ public final class TFSounds {
 			SoundEvent.createVariableRangeEvent(TFMain.prefix(sound))
 		);
 	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing sound events...");
+	}
 }

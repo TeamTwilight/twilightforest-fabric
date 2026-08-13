@@ -84,4 +84,7 @@ public class TemplateMarkerHandlers {
 		));
 	}
 
+	public static void init() {
+		TFMain.LOGGER.info("Initializing template marker handler types...");
+	}
 }

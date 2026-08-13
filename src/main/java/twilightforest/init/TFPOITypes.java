@@ -17,4 +17,8 @@ public class TFPOITypes {
 			type
 		);
 	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing poi types...");
+	}
 }

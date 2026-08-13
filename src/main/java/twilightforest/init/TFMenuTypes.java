@@ -19,4 +19,8 @@ public class TFMenuTypes {
 			type
 		);
 	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing menu types...");
+	}
 }

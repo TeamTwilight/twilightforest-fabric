@@ -30,4 +30,8 @@ public class TFMapDecorations {
 			new MapDecorationType(TFMain.prefix(name), true, -1, false, true)
 		);
 	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing map decoration types...");
+	}
 }

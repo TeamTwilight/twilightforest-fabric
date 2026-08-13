@@ -393,4 +393,8 @@ public class TFItems {
 			new SpawnEggItem(new Item.Properties().spawnEgg(type))
 		);
 	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing items...");
+	}
 }

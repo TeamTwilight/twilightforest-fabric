@@ -30,4 +30,8 @@ public class TFGameRules {
 			new GameRule<>(category, GameRuleType.INT, IntegerArgumentType.integer(min, Integer.MAX_VALUE), GameRuleTypeVisitor::visitInteger, Codec.INT, i -> i, defaultValue, FeatureFlagSet.of())
 		);
 	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing game rules...");
+	}
 }

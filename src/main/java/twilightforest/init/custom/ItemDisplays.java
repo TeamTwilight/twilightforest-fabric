@@ -28,4 +28,8 @@ public class ItemDisplays {
 			type
 		);
 	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing item display types...");
+	}
 }

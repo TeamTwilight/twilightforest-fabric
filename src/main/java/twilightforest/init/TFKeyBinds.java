@@ -26,4 +26,8 @@ public abstract class TFKeyBinds {
 	private static String addPrefix(String s) {
 		return "key." + TFMain.ID + "." + s;
 	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing keybinds...");
+	}
 }

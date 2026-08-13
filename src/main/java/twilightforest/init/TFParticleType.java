@@ -78,4 +78,8 @@ public class TFParticleType {
 			particleType
 		);
 	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing particle types...");
+	}
 }

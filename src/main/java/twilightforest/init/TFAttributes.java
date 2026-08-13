@@ -20,4 +20,8 @@ public class TFAttributes {
 			attribute
 		);
 	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing attributes...");
+	}
 }

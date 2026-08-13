@@ -20,4 +20,8 @@ public class TFStructurePlacementTypes {
 			factory
 		);
 	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing structure placement types...");
+	}
 }

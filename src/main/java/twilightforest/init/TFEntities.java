@@ -163,4 +163,8 @@ public class TFEntities {
 	private static ResourceKey<EntityType<?>> createIDFor(String name) {
 		return ResourceKey.create(Registries.ENTITY_TYPE, TFMain.prefix(name));
 	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing entity types...");
+	}
 }

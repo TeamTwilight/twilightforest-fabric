@@ -23,4 +23,8 @@ public class TravellersModifierTypes {
 			codec
 		);
 	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing travellers modifier types...");
+	}
 }

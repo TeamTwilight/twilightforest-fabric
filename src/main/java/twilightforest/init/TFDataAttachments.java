@@ -45,4 +45,8 @@ public class TFDataAttachments {
 	public static final AttachmentType<Integer> SIDESTEP_VALIDATOR_LAST_CHECK = AttachmentRegistry.create(TFMain.prefix("sidestep_validator_last_check"), b -> b.initializer(() -> 0).persistent(Codec.INT));
 	public static final AttachmentType<Boolean> IS_GRADUALLY_GLIDING = AttachmentRegistry.create(TFMain.prefix("is_gradually_gliding"), b -> b.initializer(() -> false).persistent(Codec.BOOL).syncWith(ByteBufCodecs.BOOL, AttachmentSyncPredicate.all()));
 	public static final AttachmentType<SlimySolesAttachment> SLIMY_SOLES_BOUNCE_INFO = AttachmentRegistry.create(TFMain.prefix("slimy_soles_bounce_info"), b -> b.initializer(SlimySolesAttachment::new).persistent(SlimySolesAttachment.CODEC.codec()));
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing attachment types...");
+	}
 }

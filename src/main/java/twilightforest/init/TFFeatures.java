@@ -69,4 +69,8 @@ public class TFFeatures {
 			feature
 		);
 	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing features...");
+	}
 }

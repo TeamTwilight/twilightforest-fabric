@@ -78,4 +78,8 @@ public final class ChunkBlanketProcessors {
 			modifierIterator.next().processChunk(worldGenRegion, worldGenRegion.getRandom().fork(), biomeGetter, chunkAccess);
 		}
 	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing chunk blanket types...");
+	}
 }

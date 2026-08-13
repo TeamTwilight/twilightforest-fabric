@@ -102,4 +102,8 @@ public final class Enforcements {
 
 	private Enforcements() {
 	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing enforcements...");
+	}
 }

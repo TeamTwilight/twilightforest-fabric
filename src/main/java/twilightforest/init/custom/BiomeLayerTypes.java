@@ -30,4 +30,8 @@ public class BiomeLayerTypes {
 			type
 		);
 	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing biome layer types...");
+	}
 }

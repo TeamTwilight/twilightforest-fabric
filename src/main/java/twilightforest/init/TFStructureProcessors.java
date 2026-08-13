@@ -45,4 +45,8 @@ public class TFStructureProcessors {
 			processor
 		);
 	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing structure processor types...");
+	}
 }

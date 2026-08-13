@@ -22,4 +22,8 @@ public class TFEnchantmentEffects {
 			codec
 		);
 	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing enchantment effects...");
+	}
 }

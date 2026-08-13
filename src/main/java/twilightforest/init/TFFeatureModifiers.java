@@ -63,4 +63,8 @@ public final class TFFeatureModifiers {
 			type
 		);
 	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing feature modifiers...");
+	}
 }

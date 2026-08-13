@@ -37,4 +37,8 @@ public class TFStructureTypes {
 			factory
 		);
 	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing structure types...");
+	}
 }

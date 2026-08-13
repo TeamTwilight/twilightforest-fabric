@@ -16,6 +16,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
+import twilightforest.TFMain;
 import twilightforest.TFRegistries;
 import twilightforest.block.AbstractSkullCandleBlock;
 import twilightforest.components.item.SkullCandles;
@@ -767,5 +768,9 @@ public class TFCreativeTabs {
 					output.accept(itemstack);
 				});
 		});
+	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing creative tabs...");
 	}
 }

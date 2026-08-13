@@ -37,6 +37,7 @@ public class TFStats {
 	}
 
 	public static void init() {
+		TFMain.LOGGER.info("Initializing stats...");
 		STAT_SETUP.forEach(Runnable::run);
 	}
 }
