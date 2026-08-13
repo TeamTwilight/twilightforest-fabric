@@ -23,3 +23,6 @@ TODO
 
 # Transfer
 - Create NeoForge transfer shim for Fabric
+
+# Uberous Soil
+- Add Uberous Soil to the proper Block tags in order to have it support crops

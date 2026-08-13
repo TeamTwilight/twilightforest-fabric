@@ -6,10 +6,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.InsideBlockEffectApplier;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -25,11 +22,9 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.tags.TFItemTags;
@@ -79,12 +74,6 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 		return shape;
 	}
 
-	@Nullable
-	@Override
-	public PathType getBlockPathType(BlockState state, BlockGetter getter, BlockPos pos, @Nullable Mob entity) {
-		return PathType.DAMAGING;
-	}
-
 	@Override
 	protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier, boolean isPrecise) {
 		if ((!(entity instanceof ItemEntity item) || !item.getItem().is(TFItemTags.IMMUNE_TO_THORNS)) && level instanceof ServerLevel sl) {
@@ -99,61 +88,6 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 		}
 
 		super.stepOn(level, pos, state, entity);
-	}
-
-	@Override
-	public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, ItemStack toolStack, boolean willHarvest, FluidState fluid) {
-		if (!player.isCreative()) {
-			if (!level.isClientSide()) {
-				// grow more
-				this.doThornBurst(level, pos, state);
-			}
-			return false;
-		} else {
-			return super.onDestroyedByPlayer(state, level, pos, player, toolStack, willHarvest, fluid);
-		}
-	}
-
-	/**
-	 * Grow thorns out of both the ends, then maybe in another direction too
-	 */
-	private void doThornBurst(Level level, BlockPos pos, BlockState state) {
-		switch (state.getValue(AXIS)) {
-			case Y -> {
-				this.growThorns(level, pos, Direction.UP);
-				this.growThorns(level, pos, Direction.DOWN);
-			}
-			case X -> {
-				this.growThorns(level, pos, Direction.EAST);
-				this.growThorns(level, pos, Direction.WEST);
-			}
-			case Z -> {
-				this.growThorns(level, pos, Direction.NORTH);
-				this.growThorns(level, pos, Direction.SOUTH);
-			}
-		}
-
-		// also try three random directions
-		this.growThorns(level, pos, Direction.getRandom(level.getRandom()));
-		this.growThorns(level, pos, Direction.getRandom(level.getRandom()));
-		this.growThorns(level, pos, Direction.getRandom(level.getRandom()));
-	}
-
-	/**
-	 * grow several green thorns in the specified direction
-	 */
-	private void growThorns(Level level, BlockPos pos, Direction dir) {
-		int length = 1 + level.getRandom().nextInt(3);
-
-		for (int i = 1; i < length; i++) {
-			BlockPos dPos = pos.relative(dir, i);
-
-			if (level.isEmptyBlock(dPos)) {
-				level.setBlock(dPos, TFBlocks.GREEN_THORNS.defaultBlockState().setValue(AXIS, dir.getAxis()), Block.UPDATE_CLIENTS);
-			} else {
-				break;
-			}
-		}
 	}
 
 	@Override

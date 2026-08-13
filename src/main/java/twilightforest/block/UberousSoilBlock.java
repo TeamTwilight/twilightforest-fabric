@@ -9,10 +9,6 @@ import net.minecraft.server.TickTask;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.TriState;
-import net.minecraft.world.item.BoneMealItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -22,8 +18,6 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.util.FakePlayer;
-import net.neoforged.neoforge.common.util.FakePlayerFactory;
 import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
@@ -51,13 +45,6 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
 		BlockState state = ctx.getLevel().getBlockState(ctx.getClickedPos().above());
 		return state.isSolid() && !(state.getBlock() instanceof BonemealableBlock && !state.is(this)) ? Blocks.DIRT.defaultBlockState() : super.getStateForPlacement(ctx);
-	}
-
-	@Override
-	public TriState canSustainPlant(BlockState state, BlockGetter level, BlockPos soilPosition, Direction facing, BlockState plant) {
-		if (facing.getAxis() != Direction.Axis.Y) return TriState.FALSE;
-		if (plant.is(BlockTags.CROPS)) return TriState.TRUE;
-		return super.canSustainPlant(state, level, soilPosition, facing, plant);
 	}
 
 	@Override
@@ -112,11 +99,10 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 
 		if (level instanceof ServerLevel serverLevel) {
 			MinecraftServer server = serverLevel.getServer();
-			FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(serverLevel);
 			server.schedule(new TickTask(server.getTickCount(), () -> {
 				//We need to use a tick task so that plants that grow into tall variants don't just break upon growth
 				for (int i = 0; i < 15; i++)
-					BoneMealItem.applyBonemeal(new ItemStack(Items.BONE_MEAL), serverLevel, fromPos, fakePlayer);
+					growCrop(serverLevel, fromPos);
 			}));
 		}
 
@@ -129,9 +115,8 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 
 		if (level instanceof ServerLevel serverLevel) {
 			MinecraftServer server = serverLevel.getServer();
-			FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(serverLevel);
 			server.schedule(new TickTask(server.getTickCount(), () -> {
-				for (int i = 0; i < 15; i++) BoneMealItem.applyBonemeal(new ItemStack(Items.BONE_MEAL), serverLevel, fromPos, fakePlayer);
+				for (int i = 0; i < 15; i++) growCrop(serverLevel, fromPos);
 			}));
 
 			level.levelEvent(LevelEvent.PARTICLES_AND_SOUND_PLANT_GROWTH, fromPos, 15); // Bonemeal particles
@@ -230,5 +215,14 @@ public class UberousSoilBlock extends Block implements BonemealableBlock {
 	public void spreadTo(ServerLevel level, BlockPos pos) {
 		level.setBlockAndUpdate(pos, this.defaultBlockState());
 		if (!level.getBlockState(pos.above()).isAir()) level.scheduleTick(pos, this, 1);
+	}
+
+	private static void growCrop(ServerLevel level, BlockPos pos) {
+		BlockState state = level.getBlockState(pos);
+
+		if (state.getBlock() instanceof BonemealableBlock block && block.isValidBonemealTarget(level, pos, state)
+			&& block.isBonemealSuccess(level, level.getRandom(), pos, state)) {
+			block.performBonemeal(level, level.getRandom(), pos, state);
+		}
 	}
 }

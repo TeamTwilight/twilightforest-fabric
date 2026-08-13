@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import carminite.block.ISpecialExplosionBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -7,7 +8,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
@@ -41,7 +41,7 @@ import java.util.Set;
  * @see ReappearingBlock, It is only separated from this class because vanilla does
  * not like having blockstate properties be conditionally registered.
  */
-public class VanishingBlock extends Block {
+public class VanishingBlock extends Block implements ISpecialExplosionBlock {
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 	public static final BooleanProperty VANISHED = BooleanProperty.create("vanished");
 	private static final VoxelShape VANISHED_SHAPE = box(6, 6, 6, 10, 10, 10);
@@ -102,7 +102,7 @@ public class VanishingBlock extends Block {
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
 		if (!this.isVanished(state) && !state.getValue(ACTIVE)) {
 			if (areBlocksLocked(level, pos)) {
-				level.playSound(null, pos, TFSounds.LOCKED_VANISHING_BLOCK, SoundSource.BLOCKS, 1.0F, 0.3F);
+				level.playSound(null, pos, TFSounds.LOCKED_VANISHING_BLOCK.value(), SoundSource.BLOCKS, 1.0F, 0.3F);
 			} else {
 				this.activate(level, pos);
 			}
@@ -114,12 +114,7 @@ public class VanishingBlock extends Block {
 
 	@Override
 	public float getExplosionResistance(BlockState state, BlockGetter getter, BlockPos pos, Explosion explosion) {
-		return !state.getValue(ACTIVE) ? 6000F : super.getExplosionResistance(state, getter, pos, explosion);
-	}
-
-	@Override
-	public boolean canEntityDestroy(BlockState state, BlockGetter getter, BlockPos pos, Entity entity) {
-		return !state.getValue(ACTIVE) ? !areBlocksLocked(getter, pos) : super.canEntityDestroy(state, getter, pos, entity);
+		return !state.getValue(ACTIVE) ? 6000F : super.getExplosionResistance();
 	}
 
 	@Override
@@ -144,7 +139,7 @@ public class VanishingBlock extends Block {
 				level.setBlockAndUpdate(pos, state.setValue(VANISHED, false).setValue(ACTIVE, false));
 				level.playSound(null, pos, TFSounds.REAPPEAR_BLOCK.value(), SoundSource.BLOCKS, 0.3F, 0.3F);
 			} else {
-				level.playSound(null, pos, TFSounds.REAPPEAR_POOF, SoundSource.BLOCKS, 0.3F, 0.5F);
+				level.playSound(null, pos, TFSounds.REAPPEAR_POOF.value(), SoundSource.BLOCKS, 0.3F, 0.5F);
 				level.setBlockAndUpdate(pos, state.setValue(ACTIVE, true));
 				level.scheduleTick(pos, this, 15);
 			}

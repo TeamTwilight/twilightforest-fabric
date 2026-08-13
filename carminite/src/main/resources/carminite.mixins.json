@@ -6,8 +6,10 @@
   "mixins": [
     "BeardifierMixin",
     "EntityMixin",
+    "ExplosionDamageCalculatorMixin",
     "FireBlockMixin",
     "ItemMixin",
+    "LightningBoltMixin",
     "LivingEntityMixin",
     "MinecartSpawner$1Mixin",
     "PistonStructureResolverMixin",

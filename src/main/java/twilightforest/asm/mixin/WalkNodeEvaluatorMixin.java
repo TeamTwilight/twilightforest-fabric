@@ -48,5 +48,13 @@ public class WalkNodeEvaluatorMixin {
 		if (block instanceof OreBerryBushBlock) {
 			cir.setReturnValue(PathType.DAMAGING);
 		}
+
+		if (block instanceof BurntThornsBlock) {
+			cir.setReturnValue(null);
+		}
+
+		if (block instanceof ThornsBlock) {
+			cir.setReturnValue(PathType.DAMAGING);
+		}
 	}
 }
