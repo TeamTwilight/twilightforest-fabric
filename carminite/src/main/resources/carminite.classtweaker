@@ -6,5 +6,3 @@ transitive-inject-interface net/minecraft/core/HolderLookup$Provider carminite/e
 transitive-inject-interface net/minecraft/world/level/LevelReader carminite/extensions/ILevelReaderExtension
 transitive-inject-interface net/minecraft/world/level/BaseSpawner carminite/extensions/IOwnedSpawner
 transitive-inject-interface net/minecraft/world/level/block/state/BlockState carminite/extensions/IBlockStateExtension
-
-transitive-inject-interface net/minecraft/world/item/Item carminite/transfer/asm/IItemResourceExtension
