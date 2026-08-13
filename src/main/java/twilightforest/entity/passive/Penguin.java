@@ -43,7 +43,7 @@ public class Penguin extends Bird {
 
 	@Override
 	public Animal getBreedOffspring(ServerLevel level, AgeableMob ageableMob) {
-		return TFEntities.PENGUIN.get().create(level, EntitySpawnReason.BREEDING);
+		return TFEntities.PENGUIN.create(level, EntitySpawnReason.BREEDING);
 	}
 
 	@Override
@@ -54,17 +54,17 @@ public class Penguin extends Bird {
 	@Nullable
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.PENGUIN_AMBIENT.get();
+		return TFSounds.PENGUIN_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.PENGUIN_HURT.get();
+		return TFSounds.PENGUIN_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.PENGUIN_DEATH.get();
+		return TFSounds.PENGUIN_DEATH.value();
 	}
 
 	public static AttributeSupplier.Builder registerAttributes() {

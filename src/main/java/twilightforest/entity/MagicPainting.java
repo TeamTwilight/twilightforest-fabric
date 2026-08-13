@@ -16,7 +16,6 @@ import net.minecraft.server.level.ServerEntity;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -26,6 +25,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TFRegistries;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFDataSerializers;
@@ -33,13 +33,12 @@ import twilightforest.init.TFEntities;
 import twilightforest.init.TFItems;
 import twilightforest.init.custom.MagicPaintingVariants;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class MagicPainting extends HangingEntity {
-	private static final EntityDataAccessor<Holder<MagicPaintingVariant>> MAGIC_PAINTING_VARIANT = SynchedEntityData.defineId(MagicPainting.class, TFDataSerializers.MAGIC_PAINTING_VARIANT.value());
+	private static final EntityDataAccessor<Holder<MagicPaintingVariant>> MAGIC_PAINTING_VARIANT = SynchedEntityData.defineId(MagicPainting.class, TFDataSerializers.MAGIC_PAINTING_VARIANT);
 
 	private Direction direction;
 
@@ -48,7 +47,7 @@ public class MagicPainting extends HangingEntity {
 	}
 
 	private MagicPainting(Level level, BlockPos pos) {
-		super(TFEntities.MAGIC_PAINTING.get(), level, pos);
+		super(TFEntities.MAGIC_PAINTING, level, pos);
 	}
 
 	@Override
@@ -200,7 +199,7 @@ public class MagicPainting extends HangingEntity {
 
 	@Override
 	public ItemStack getPickResult() {
-		ItemStack itemStack = new ItemStack(TFItems.MAGIC_PAINTING.get());
+		ItemStack itemStack = new ItemStack(TFItems.MAGIC_PAINTING);
 		itemStack.set(TFDataComponents.MAGIC_PAINTING_VARIANT, this.getVariant());
 		return itemStack;
 	}

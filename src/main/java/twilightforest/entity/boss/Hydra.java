@@ -1,5 +1,6 @@
 package twilightforest.entity.boss;
 
+import carminite.entity.PartEntity;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -30,7 +31,6 @@ import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.TFPart;
@@ -57,7 +57,7 @@ public class Hydra extends BaseTFBoss {
 	private static final int SECONDARY_FLAME_CHANCE = 10;
 	private static final int SECONDARY_MORTAR_CHANCE = 16;
 
-	private static final EntityDataAccessor<List<String>> HEAD_NAMES = SynchedEntityData.defineId(Hydra.class, TFDataSerializers.STRING_LIST.get());
+	private static final EntityDataAccessor<List<String>> HEAD_NAMES = SynchedEntityData.defineId(Hydra.class, TFDataSerializers.STRING_LIST);
 	public final HydraHeadContainer[] hc = new HydraHeadContainer[MAX_HEADS];
 
 	private final HydraPart[] partArray;
@@ -682,17 +682,17 @@ public class Hydra extends BaseTFBoss {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.HYDRA_GROWL.get();
+		return TFSounds.HYDRA_GROWL.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.HYDRA_HURT.get();
+		return TFSounds.HYDRA_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.HYDRA_DEATH.get();
+		return TFSounds.HYDRA_DEATH.value();
 	}
 
 	@Override
@@ -728,12 +728,12 @@ public class Hydra extends BaseTFBoss {
 
 	@Override
 	public Block getDeathContainer(RandomSource random) {
-		return TFBlocks.MANGROVE_CHEST.get();
+		return TFBlocks.MANGROVE_CHEST;
 	}
 
 	@Override
 	public Block getBossSpawner() {
-		return TFBlocks.HYDRA_BOSS_SPAWNER.get();
+		return TFBlocks.HYDRA_BOSS_SPAWNER;
 	}
 
 	@Override

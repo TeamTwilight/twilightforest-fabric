@@ -119,22 +119,22 @@ public class HostileWolf extends Monster {
 	}
 
 	protected SoundEvent getTargetSound() {
-		return TFSounds.HOSTILE_WOLF_TARGET.get();
+		return TFSounds.HOSTILE_WOLF_TARGET.value();
 	}
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.HOSTILE_WOLF_AMBIENT.get();
+		return TFSounds.HOSTILE_WOLF_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.HOSTILE_WOLF_HURT.get();
+		return TFSounds.HOSTILE_WOLF_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.HOSTILE_WOLF_DEATH.get();
+		return TFSounds.HOSTILE_WOLF_DEATH.value();
 	}
 
 	@Override

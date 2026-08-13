@@ -50,22 +50,22 @@ public class MistWolf extends HostileWolf {
 
 	@Override
 	protected SoundEvent getTargetSound() {
-		return TFSounds.MIST_WOLF_TARGET.get();
+		return TFSounds.MIST_WOLF_TARGET.value();
 	}
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.MIST_WOLF_AMBIENT.get();
+		return TFSounds.MIST_WOLF_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return TFSounds.MIST_WOLF_HURT.get();
+		return TFSounds.MIST_WOLF_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.MIST_WOLF_DEATH.get();
+		return TFSounds.MIST_WOLF_DEATH.value();
 	}
 
 	@Override

@@ -27,12 +27,12 @@ public class TwilightWandBolt extends TFThrowable {
 	}
 
 	public TwilightWandBolt(Level world, LivingEntity thrower) {
-		super(TFEntities.WAND_BOLT.get(), world, thrower, new ItemStack(Items.ENDER_PEARL));
+		super(TFEntities.WAND_BOLT, world, thrower, new ItemStack(Items.ENDER_PEARL));
 		this.shootFromRotation(thrower, thrower.getXRot(), thrower.getYRot(), 0, 1.5F, 1.0F);
 	}
 
 	public TwilightWandBolt(Level worldIn, double x, double y, double z) {
-		super(TFEntities.WAND_BOLT.get(), worldIn, x, y, z, new ItemStack(Items.ENDER_PEARL));
+		super(TFEntities.WAND_BOLT, worldIn, x, y, z, new ItemStack(Items.ENDER_PEARL));
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class TwilightWandBolt extends TFThrowable {
 			float s2 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.80F;  // color
 			float s3 = ((this.random.nextFloat() * 0.5F) + 0.5F) * 0.69F;  // color
 
-			this.level().addParticle(ColorParticleOption.create(TFParticleType.MAGIC_EFFECT.get(), s1, s2, s3), dx, dy, dz, 0.0D, 0.0D, 0.0D);
+			this.level().addParticle(ColorParticleOption.create(TFParticleType.MAGIC_EFFECT, s1, s2, s3), dx, dy, dz, 0.0D, 0.0D, 0.0D);
 		}
 	}
 
@@ -69,7 +69,7 @@ public class TwilightWandBolt extends TFThrowable {
 	public void handleEntityEvent(byte id) {
 		if (id == EntityEvent.DEATH) {
 			for (int i = 0; i < 8; i++) {
-				this.level().addParticle(TFParticleType.TWILIGHT_ORB.get(), this.getX(), this.getY(), this.getZ(), this.random.nextGaussian() * 0.05D, random.nextDouble() * 0.2D, random.nextGaussian() * 0.05D);
+				this.level().addParticle(TFParticleType.TWILIGHT_ORB, this.getX(), this.getY(), this.getZ(), this.random.nextGaussian() * 0.05D, random.nextDouble() * 0.2D, random.nextGaussian() * 0.05D);
 			}
 		} else {
 			super.handleEntityEvent(id);
@@ -84,7 +84,7 @@ public class TwilightWandBolt extends TFThrowable {
 			if (hit instanceof LivingEntity) {
 				hit.hurt(TFDamageTypes.getIndirectEntityDamageSource(this.level(), TFDamageTypes.TWILIGHT_SCEPTER, this, this.getOwner()), 6);
 			}
-			this.level().playSound(null, hit.blockPosition(), TFSounds.TWILIGHT_SCEPTER_HIT.get(), this.getOwner() != null ? this.getOwner().getSoundSource() : SoundSource.PLAYERS);
+			this.level().playSound(null, hit.blockPosition(), TFSounds.TWILIGHT_SCEPTER_HIT.value(), this.getOwner() != null ? this.getOwner().getSoundSource() : SoundSource.PLAYERS);
 			this.level().broadcastEntityEvent(this, (byte) 3);
 			this.discard();
 		}

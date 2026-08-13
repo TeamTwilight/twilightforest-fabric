@@ -1,5 +1,6 @@
 package twilightforest.entity.projectile;
 
+import carminite.network.PacketDistributor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
@@ -20,9 +21,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.*;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.level.BlockEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
@@ -104,7 +102,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 					if (!NeoForge.EVENT_BUS.post(new BlockEvent.BreakEvent(this.level(), pos, state, player)).isCanceled()) {
 						if (this.canAnnihilate(pos, state, player.gameMode.getGameModeForPlayer().isBlockPlacingRestricted())) {
 							this.level().removeBlock(pos, false);
-							this.playSound(TFSounds.BLOCK_ANNIHILATED.get(), 0.125f, this.random.nextFloat() * 0.25F + 0.75F);
+							this.playSound(TFSounds.BLOCK_ANNIHILATED.value(), 0.125f, this.random.nextFloat() * 0.25F + 0.75F);
 							this.annihilateParticles(this.level(), pos);
 							this.gameEvent(GameEvent.BLOCK_DESTROY);
 						} else {
@@ -132,7 +130,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 			for (int dx = 0; dx < 3; dx++) {
 				for (int dy = 0; dy < 3; dy++) {
 					for (int dz = 0; dz < 3; dz++) {
-						particlePacket.queueParticle(TFParticleType.ANNIHILATE.get(), false, false,
+						particlePacket.queueParticle(TFParticleType.ANNIHILATE, false, false,
 							pos.getX() + (dx + 0.5D) / 4,
 							pos.getY() + (dy + 0.5D) / 4,
 							pos.getZ() + (dz + 0.5D) / 4,
@@ -197,7 +195,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 	public void remove(RemovalReason reason) {
 		super.remove(reason);
 		LivingEntity thrower = (LivingEntity) this.getOwner();
-		if (thrower != null && thrower.getUseItem().is(TFItems.CUBE_OF_ANNIHILATION.get())) {
+		if (thrower != null && thrower.getUseItem().is(TFItems.CUBE_OF_ANNIHILATION)) {
 			thrower.stopUsingItem();
 		}
 	}

@@ -65,24 +65,24 @@ public class Deer extends Animal {
 		if (stack.is(TFItems.SHIKA_SENBEI)) {
 			if (!this.level().isClientSide())
 				this.heal(4.0F);
-			this.level().playSound(null, getX(), getY(), getZ(), TFSounds.DEER_EAT.get(), this.getSoundSource(), 1, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
+			this.level().playSound(null, getX(), getY(), getZ(), TFSounds.DEER_EAT.value(), this.getSoundSource(), 1, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
 		}
 		super.usePlayerItem(player, hand, stack);
 	}
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.DEER_AMBIENT.get();
+		return TFSounds.DEER_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.DEER_HURT.get();
+		return TFSounds.DEER_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.DEER_DEATH.get();
+		return TFSounds.DEER_DEATH.value();
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class Deer extends Animal {
 
 	@Override
 	public Deer getBreedOffspring(ServerLevel level, AgeableMob mate) {
-		return TFEntities.DEER.get().create(level, EntitySpawnReason.BREEDING);
+		return TFEntities.DEER.create(level, EntitySpawnReason.BREEDING);
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package twilightforest.entity.boss;
 
+import carminite.entity.PartEntity;
+import carminite.network.PacketDistributor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -41,9 +43,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.event.EventHooks;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFMain;
 import twilightforest.entity.TFPart;
@@ -324,17 +324,17 @@ public class Naga extends BaseTFBoss {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.NAGA_HISS.get();
+		return TFSounds.NAGA_HISS.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.NAGA_HURT.get();
+		return TFSounds.NAGA_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.NAGA_HURT.get();
+		return TFSounds.NAGA_HURT.value();
 	}
 
 	@Override
@@ -536,12 +536,12 @@ public class Naga extends BaseTFBoss {
 
 	@Override
 	public Block getDeathContainer(RandomSource random) {
-		return random.nextBoolean() ? TFBlocks.TWILIGHT_OAK_CHEST.get() : TFBlocks.CANOPY_CHEST.get();
+		return random.nextBoolean() ? TFBlocks.TWILIGHT_OAK_CHEST : TFBlocks.CANOPY_CHEST;
 	}
 
 	@Override
 	public Block getBossSpawner() {
-		return TFBlocks.NAGA_BOSS_SPAWNER.get();
+		return TFBlocks.NAGA_BOSS_SPAWNER;
 	}
 
 	@Override

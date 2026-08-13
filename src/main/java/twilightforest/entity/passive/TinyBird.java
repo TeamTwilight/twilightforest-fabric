@@ -31,7 +31,7 @@ import twilightforest.tags.TFItemTags;
 
 public class TinyBird extends FlyingBird {
 
-	private static final EntityDataAccessor<Holder<TinyBirdVariant>> VARIANT = SynchedEntityData.defineId(TinyBird.class, TFDataSerializers.TINY_BIRD_VARIANT.get());
+	private static final EntityDataAccessor<Holder<TinyBirdVariant>> VARIANT = SynchedEntityData.defineId(TinyBird.class, TFDataSerializers.TINY_BIRD_VARIANT);
 
 	public TinyBird(EntityType<? extends TinyBird> type, Level level) {
 		super(type, level);
@@ -86,17 +86,17 @@ public class TinyBird extends FlyingBird {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return this.getRandom().nextInt(20) == 0 ? TFSounds.TINY_BIRD_SONG.get() : TFSounds.TINY_BIRD_CHIRP.get();
+		return this.getRandom().nextInt(20) == 0 ? TFSounds.TINY_BIRD_SONG.value() : TFSounds.TINY_BIRD_CHIRP.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.TINY_BIRD_HURT.get();
+		return TFSounds.TINY_BIRD_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.TINY_BIRD_HURT.get();
+		return TFSounds.TINY_BIRD_HURT.value();
 	}
 
 	@Override

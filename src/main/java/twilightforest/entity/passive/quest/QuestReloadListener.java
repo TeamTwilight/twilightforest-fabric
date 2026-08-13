@@ -10,7 +10,6 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.profiling.ProfilerFiller;
 import twilightforest.TFMain;
-import tamaized.beanification.Autowired;
 import twilightforest.entity.passive.quest.ram.QuestingRamContext;
 import twilightforest.entity.passive.quest.ram.QuestingRamCurrentContext;
 
@@ -18,8 +17,7 @@ import java.util.Map;
 
 public class QuestReloadListener extends SimpleJsonResourceReloadListener<JsonElement> {
 
-	@Autowired
-	private static QuestingRamCurrentContext questingRamCurrentContext;
+	private static final QuestingRamCurrentContext questingRamCurrentContext = QuestingRamCurrentContext.INSTANCE;
 
 	public QuestReloadListener() {
 		super(ExtraCodecs.JSON, FileToIdConverter.json("twilight/quests"));

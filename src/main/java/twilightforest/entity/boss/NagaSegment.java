@@ -75,7 +75,7 @@ public class NagaSegment extends TFPart<Naga> {
 			if (this.deathCounter <= 0) {
 				Naga naga = this.getParent();
 				naga.makePoofAt(this.position());
-				naga.playSound(TFSounds.NAGA_HURT.get(), 0.25F, (naga.getVoicePitch() * 0.75F) + (0.5F * naga.getRandom().nextFloat()));
+				naga.playSound(TFSounds.NAGA_HURT.value(), 0.25F, (naga.getVoicePitch() * 0.75F) + (0.5F * naga.getRandom().nextFloat()));
 				naga.deathTime = 0;
 				this.deactivate();
 			}

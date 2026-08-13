@@ -45,7 +45,7 @@ public class MosquitoSwarm extends Monster {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.MOSQUITO.get();
+		return TFSounds.MOSQUITO.value();
 	}
 
 	@Override

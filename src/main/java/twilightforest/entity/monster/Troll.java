@@ -114,7 +114,7 @@ public class Troll extends Monster implements RangedAttackMob {
 
 					if (this.rock != null) {
 						this.setHasRock(true);
-						this.playSound(TFSounds.TROLL_GRABS_ROCK.get());
+						this.playSound(TFSounds.TROLL_GRABS_ROCK.value());
 						ThrownBlock block = new ThrownBlock(level, this.rock);
 						block.startRiding(this);
 						level.addFreshEntity(block);
@@ -196,17 +196,17 @@ public class Troll extends Monster implements RangedAttackMob {
 	@Nullable
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.TROLL_AMBIENT.get();
+		return TFSounds.TROLL_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.TROLL_HURT.get();
+		return TFSounds.TROLL_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.TROLL_DEATH.get();
+		return TFSounds.TROLL_DEATH.value();
 	}
 
 	@Override
@@ -226,8 +226,8 @@ public class Troll extends Monster implements RangedAttackMob {
 	}
 
 	private void ripenBer(int offset, BlockPos pos) {
-		if (this.level().getBlockState(pos).getBlock() == TFBlocks.UNRIPE_TROLLBER.get() && this.getRandom().nextBoolean() && (Math.abs(pos.getX() + pos.getY() + pos.getZ()) % 5 == offset)) {
-			this.level().setBlockAndUpdate(pos, TFBlocks.TROLLBER.get().defaultBlockState());
+		if (this.level().getBlockState(pos).getBlock() == TFBlocks.UNRIPE_TROLLBER && this.getRandom().nextBoolean() && (Math.abs(pos.getX() + pos.getY() + pos.getZ()) % 5 == offset)) {
+			this.level().setBlockAndUpdate(pos, TFBlocks.TROLLBER.defaultBlockState());
 			this.level().levelEvent(LevelEvent.PARTICLES_MOBBLOCK_SPAWN, pos, 0);
 		}
 	}
@@ -243,7 +243,7 @@ public class Troll extends Monster implements RangedAttackMob {
 			double d3 = Mth.sqrt((float) (d0 * d0 + d2 * d2));
 			blocc.shoot(d0, d1 + d3 * 0.2D, d2, 1.6F, 4 - this.level().getDifficulty().getId());
 
-			this.playSound(TFSounds.TROLL_THROWS_ROCK.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+			this.playSound(TFSounds.TROLL_THROWS_ROCK.value(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
 			this.gameEvent(GameEvent.PROJECTILE_SHOOT);
 			this.level().addFreshEntity(blocc);
 			this.setHasRock(false);

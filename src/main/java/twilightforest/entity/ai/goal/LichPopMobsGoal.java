@@ -68,8 +68,8 @@ public class LichPopMobsGoal extends Goal {
 					this.lich.level().playSound(null, mob.blockPosition(), deathSound, SoundSource.HOSTILE, 1.0F, mob.getVoicePitch());
 				}
 				//funny pop sound
-				this.lich.playSound(TFSounds.LICH_POP_MOB.get(), 3.0F, 0.4F + this.lich.getRandom().nextFloat() * 0.2F);
-				mob.playSound(TFSounds.LICH_POP_MOB.get(), 3.0F, 0.4F + this.lich.getRandom().nextFloat() * 0.2F);
+				this.lich.playSound(TFSounds.LICH_POP_MOB.value(), 3.0F, 0.4F + this.lich.getRandom().nextFloat() * 0.2F);
+				mob.playSound(TFSounds.LICH_POP_MOB.value(), 3.0F, 0.4F + this.lich.getRandom().nextFloat() * 0.2F);
 				// make trail so it's clear that we did it
 				this.lich.makeMagicTrail(mob.getEyePosition(), this.lich.getEyePosition(), 1.0F, 0.5F, 0.5F);
 				//heal a little health

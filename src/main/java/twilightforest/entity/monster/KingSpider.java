@@ -32,22 +32,22 @@ public class KingSpider extends Spider {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.KING_SPIDER_AMBIENT.get();
+		return TFSounds.KING_SPIDER_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.KING_SPIDER_HURT.get();
+		return TFSounds.KING_SPIDER_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.KING_SPIDER_DEATH.get();
+		return TFSounds.KING_SPIDER_DEATH.value();
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState blockIn) {
-		this.playSound(TFSounds.KING_SPIDER_STEP.get(), 0.15F, 1.0F);
+		this.playSound(TFSounds.KING_SPIDER_STEP.value(), 0.15F, 1.0F);
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class KingSpider extends Spider {
 
 		// will always have a druid riding the spider or whatever is riding the spider
 		if (this.level() instanceof ServerLevel server) {
-			SkeletonDruid druid = TFEntities.SKELETON_DRUID.get().create(server, EntitySpawnReason.JOCKEY);
+			SkeletonDruid druid = TFEntities.SKELETON_DRUID.create(server, EntitySpawnReason.JOCKEY);
 			if (druid != null) {
 				druid.snapTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
 				druid.finalizeSpawn(accessor, difficulty, EntitySpawnReason.JOCKEY, null);

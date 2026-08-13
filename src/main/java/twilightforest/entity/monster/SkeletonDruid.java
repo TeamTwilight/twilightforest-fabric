@@ -55,24 +55,23 @@ public class SkeletonDruid extends AbstractSkeleton {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.SKELETON_DRUID_AMBIENT.get();
+		return TFSounds.SKELETON_DRUID_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.SKELETON_DRUID_HURT.get();
+		return TFSounds.SKELETON_DRUID_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.SKELETON_DRUID_DEATH.get();
+		return TFSounds.SKELETON_DRUID_DEATH.value();
 	}
 
 	@Override
 	protected SoundEvent getStepSound() {
-		return TFSounds.SKELETON_DRUID_STEP.get();
+		return TFSounds.SKELETON_DRUID_STEP.value();
 	}
-
 
 	@Override
 	public void reassessWeaponGoal() {
@@ -102,7 +101,7 @@ public class SkeletonDruid extends AbstractSkeleton {
 	public void performRangedAttack(LivingEntity attackTarget, float extraDamage) {
 		if (this.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof HoeItem) {
 			NatureBolt natureBolt = new NatureBolt(this.level(), this);
-			playSound(TFSounds.SKELETON_DRUID_SHOOT.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+			playSound(TFSounds.SKELETON_DRUID_SHOOT.value(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
 
 			double tx = attackTarget.getX() - this.getX();
 			double ty = attackTarget.getY() + attackTarget.getEyeHeight() - 2.7D - this.getY();
@@ -144,7 +143,7 @@ public class SkeletonDruid extends AbstractSkeleton {
 
 	private static final AttributeModifier SPEED_MODIFIER_BABY = new AttributeModifier(TFMain.prefix("baby_speed_boost"), 0.5D, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
 	private static final EntityDataAccessor<Boolean> DATA_BABY_ID = SynchedEntityData.defineId(SkeletonDruid.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDimensions BABY_DIMENSIONS = TFEntities.SKELETON_DRUID.get().getDimensions().scale(0.5F).withEyeHeight(0.93F);
+	private static final EntityDimensions BABY_DIMENSIONS = TFEntities.SKELETON_DRUID.getDimensions().scale(0.5F).withEyeHeight(0.93F);
 
 	@Override
 	public boolean isBaby() {

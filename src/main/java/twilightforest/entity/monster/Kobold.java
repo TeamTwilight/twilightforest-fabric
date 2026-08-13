@@ -1,5 +1,6 @@
 package twilightforest.entity.monster;
 
+import carminite.network.PacketDistributor;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
@@ -29,7 +30,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.entity.ai.goal.FlockToSameKindGoal;
 import twilightforest.entity.ai.goal.PanicOnFlockDeathGoal;
 import twilightforest.init.TFSounds;
@@ -84,17 +84,17 @@ public class Kobold extends Monster {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.KOBOLD_AMBIENT.get();
+		return TFSounds.KOBOLD_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.KOBOLD_HURT.get();
+		return TFSounds.KOBOLD_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.KOBOLD_DEATH.get();
+		return TFSounds.KOBOLD_DEATH.value();
 	}
 
 	public boolean isPanicked() {

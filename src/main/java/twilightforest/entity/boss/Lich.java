@@ -1,5 +1,6 @@
 package twilightforest.entity.boss;
 
+import carminite.network.PacketDistributor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.particles.ColorParticleOption;
@@ -54,7 +55,6 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.LightableBlock;
 import twilightforest.block.OminousCandleBlock;
@@ -110,7 +110,7 @@ public class Lich extends BaseTFBoss {
 	}
 
 	public Lich(Level level, Lich otherLich) {
-		this(TFEntities.LICH.get(), level);
+		this(TFEntities.LICH, level);
 		this.setMasterUUID(otherLich.getUUID());
 		this.getBossBar().setVisible(false);
 		this.setRestrictionPoint(otherLich.getRestrictionPoint());
@@ -122,8 +122,8 @@ public class Lich extends BaseTFBoss {
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, EntitySpawnReason spawnType, @Nullable SpawnGroupData spawnGroupData) {
 		SpawnGroupData data = super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
 		if (!this.isShadowClone()) {
-			this.setItemInHand(InteractionHand.MAIN_HAND, TFItems.FORTIFICATION_SCEPTER.toStack());
-			this.playSound(TFSounds.SHIELD_ADD.get(), 1.5F, this.getVoicePitch());
+			this.setItemInHand(InteractionHand.MAIN_HAND, TFItems.FORTIFICATION_SCEPTER.getDefaultInstance());
+			this.playSound(TFSounds.SHIELD_ADD.value(), 1.5F, this.getVoicePitch());
 			this.swing(InteractionHand.MAIN_HAND);
 		}
 		return data;
@@ -266,7 +266,7 @@ public class Lich extends BaseTFBoss {
 			this.setTeleportInvisibility(tpInvisibility - 1);
 			if (tpInvisibility - 1 <= 0) {
 				this.lichTeleportParticles(true);
-				this.playSound(TFSounds.LICH_TELEPORT.get(), 1.125F, 1.125F);
+				this.playSound(TFSounds.LICH_TELEPORT.value(), 1.125F, 1.125F);
 			}
 			return;
 		}
@@ -274,7 +274,7 @@ public class Lich extends BaseTFBoss {
 		if (this.isDeadOrDying()) return;
 
 		if (this.getPhase() == 3) {
-			this.level().addParticle(TFParticleType.ANGRY_LICH.get(),
+			this.level().addParticle(TFParticleType.ANGRY_LICH,
 				this.getRandomX(0.65f),
 				this.getEyeY() + 0.25D + this.getRandom().nextFloat() * 0.5D,
 				this.getRandomZ(0.65f),
@@ -311,7 +311,7 @@ public class Lich extends BaseTFBoss {
 				blu = 0.00F * sparkle;
 			}
 
-			this.level().addParticle(ColorParticleOption.create(TFParticleType.MAGIC_EFFECT.get(), red, grn, blu), dx + (this.getRandom().nextGaussian() * 0.025), dy + (this.getRandom().nextGaussian() * 0.025), dz + (this.getRandom().nextGaussian() * 0.025), 0.0F, 0.0F, 0.0F);
+			this.level().addParticle(ColorParticleOption.create(TFParticleType.MAGIC_EFFECT, red, grn, blu), dx + (this.getRandom().nextGaussian() * 0.025), dy + (this.getRandom().nextGaussian() * 0.025), dz + (this.getRandom().nextGaussian() * 0.025), 0.0F, 0.0F, 0.0F);
 		}
 	}
 
@@ -337,8 +337,8 @@ public class Lich extends BaseTFBoss {
 			this.popCooldown--;
 		}
 
-		if (this.getScepterTimeLeft() == 0 && this.getPopCooldown() < 30 && this.getItemInHand(InteractionHand.MAIN_HAND).is(TFItems.LIFEDRAIN_SCEPTER.get())) {
-			this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(this.getPhase() == 2 ? TFItems.ZOMBIE_SCEPTER.get() : Items.GOLDEN_SWORD));
+		if (this.getScepterTimeLeft() == 0 && this.getPopCooldown() < 30 && this.getItemInHand(InteractionHand.MAIN_HAND).is(TFItems.LIFEDRAIN_SCEPTER)) {
+			this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(this.getPhase() == 2 ? TFItems.ZOMBIE_SCEPTER : Items.GOLDEN_SWORD));
 		}
 
 		if (this.getScepterTimeLeft() > 0) {
@@ -362,7 +362,7 @@ public class Lich extends BaseTFBoss {
 		}
 
 		if (this.isShadowClone() && !src.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
-			this.playSound(TFSounds.LICH_CLONE_HURT.get(), 1.0F, this.getVoicePitch() * 2.0F);
+			this.playSound(TFSounds.LICH_CLONE_HURT.value(), 1.0F, this.getVoicePitch() * 2.0F);
 			return false;
 		}
 
@@ -382,11 +382,11 @@ public class Lich extends BaseTFBoss {
 					if (!this.level().isClientSide()) FortificationShieldAttachment.addShieldBreakParticles(src, this);
 					if (newShieldStrength < 6) volume += 0.25F * (6 - newShieldStrength);
 					if (newShieldStrength == 0) volume += 0.5F;
-					this.playSound(TFSounds.SHIELD_BREAK.get(), volume, this.getVoicePitch() * 1.25F);
+					this.playSound(TFSounds.SHIELD_BREAK.value(), volume, this.getVoicePitch() * 1.25F);
 					this.gameEvent(GameEvent.ENTITY_DAMAGE);
 				}
 			} else {
-				this.playSound(TFSounds.SHIELD_BLOCK.get(), 0.75F, this.getVoicePitch() * 1.75F);
+				this.playSound(TFSounds.SHIELD_BLOCK.value(), 0.75F, this.getVoicePitch() * 1.75F);
 				this.gameEvent(GameEvent.ENTITY_DAMAGE);
 				if (src.getEntity() instanceof LivingEntity living) {
 					this.setLastHurtByMob(living);
@@ -413,7 +413,7 @@ public class Lich extends BaseTFBoss {
 			this.despawnClones();
 			if (this.getShieldStrength() > 0) {
 				this.setShieldStrength(0);
-				this.playSound(TFSounds.SHIELD_BREAK.get(), 1.2F, this.getVoicePitch() * 2.0F);
+				this.playSound(TFSounds.SHIELD_BREAK.value(), 1.2F, this.getVoicePitch() * 2.0F);
 			}
 		}
 	}
@@ -436,7 +436,7 @@ public class Lich extends BaseTFBoss {
 
 		float pitch = (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.2F + 1.0F;
 		if (projectile instanceof LichBomb) pitch *= 0.85F;
-		this.playSound(TFSounds.LICH_SHOOT.get(), this.getSoundVolume(), pitch);
+		this.playSound(TFSounds.LICH_SHOOT.value(), this.getSoundVolume(), pitch);
 
 		projectile.snapTo(sx, sy, sz, this.getYRot(), this.getXRot());
 		projectile.shoot(tx, ty, tz, 0.5F, 1.0F);
@@ -566,7 +566,7 @@ public class Lich extends BaseTFBoss {
 	public void teleportHome() {
 		if (this.getRestrictionPoint() != null) {
 			BlockPos pos = this.getRestrictionPoint().pos();
-			if (this.level().getBlockState(pos.below(2)).isAir()) this.level().setBlockAndUpdate(pos.below(2), TFBlocks.BOLD_STONE_PILLAR.get().defaultBlockState()); // Ensure there's something to stand on, so we don't teleport infinitely
+			if (this.level().getBlockState(pos.below(2)).isAir()) this.level().setBlockAndUpdate(pos.below(2), TFBlocks.BOLD_STONE_PILLAR.defaultBlockState()); // Ensure there's something to stand on, so we don't teleport infinitely
 			if (this.level().getBlockState(pos.below()).isAir()) pos = pos.below();
 			this.teleportToNoChecks(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D);
 		}
@@ -651,7 +651,7 @@ public class Lich extends BaseTFBoss {
 		// change position
 		this.teleportTo(destX, destY, destZ);
 
-		this.playSound(TFSounds.LICH_TELEPORT.get(), 0.75F, 0.75F);
+		this.playSound(TFSounds.LICH_TELEPORT.value(), 0.75F, 0.75F);
 		this.gameEvent(GameEvent.TELEPORT);
 		if (this.level() instanceof ServerLevel serverLevel) serverLevel.broadcastEntityEvent(this, (byte)46);
 		this.setTeleportInvisibility(20);
@@ -679,7 +679,7 @@ public class Lich extends BaseTFBoss {
 			if (appear) {
 				for(int j = 0; j < 64; ++j) {
 					Vec3 pos = this.position().add(0.0D, this.getBbHeight() * 0.5D, 0.0D);
-					ParticleOptions options = this.isShadowClone() ? ParticleTypes.SMOKE : TFParticleType.OMINOUS_FLAME.get();
+					ParticleOptions options = this.isShadowClone() ? ParticleTypes.SMOKE : TFParticleType.OMINOUS_FLAME;
 					double x = this.getX(this.random.nextDouble() * this.random.nextDouble() * (this.random.nextBoolean() ? 1.0D : -1.0D));
 					double y =  this.getY(this.random.nextDouble());
 					double z = this.getZ(this.random.nextDouble() * this.random.nextDouble() * (this.random.nextBoolean() ? 1.0D : -1.0D));
@@ -710,7 +710,7 @@ public class Lich extends BaseTFBoss {
 						double tx = source.x() + (target.x() - source.x()) * trailFactor + this.getRandom().nextGaussian() * 0.005D;
 						double ty = source.y() + 0.2D + (target.y() - source.y()) * trailFactor + this.getRandom().nextGaussian() * 0.005D;
 						double tz = source.z() + (target.z() - source.z()) * trailFactor + this.getRandom().nextGaussian() * 0.005D;
-						packet.queueParticle(ColorParticleOption.create(TFParticleType.MAGIC_EFFECT.get(), red, green, blue), false, false, tx, ty, tz, 0.0D, 0.0D, 0.0D);
+						packet.queueParticle(ColorParticleOption.create(TFParticleType.MAGIC_EFFECT, red, green, blue), false, false, tx, ty, tz, 0.0D, 0.0D, 0.0D);
 					}
 
 					PacketDistributor.sendToPlayersTrackingEntity(this, packet);
@@ -740,11 +740,11 @@ public class Lich extends BaseTFBoss {
 			if (this.random.nextInt(Math.max(40 - tick, 2)) == 1 || done) {
 				BlockState state = this.level().getBlockState(pos);
 				if (state.getBlock() instanceof AbstractCandleBlock candleBlock && OminousCandleBlock.CANDLE_MAP.containsKey(candleBlock) && state.getValue(CandleBlock.LIT)) {
-					this.level().setBlockAndUpdate(pos, OminousCandleBlock.CANDLE_MAP.get(candleBlock).get().defaultBlockState().setValue(OminousCandleBlock.CANDLES, state.getValue(CandleBlock.CANDLES)));
-					this.level().playSound(null, pos, TFSounds.OMINOUS_FIRE.get(), SoundSource.BLOCKS, 0.5F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 0.75F);
+					this.level().setBlockAndUpdate(pos, OminousCandleBlock.CANDLE_MAP.get(candleBlock).defaultBlockState().setValue(OminousCandleBlock.CANDLES, state.getValue(CandleBlock.CANDLES)));
+					this.level().playSound(null, pos, TFSounds.OMINOUS_FIRE.value(), SoundSource.BLOCKS, 0.5F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 0.75F);
 				} else if (state.getBlock() instanceof LightableBlock && state.getValue(LightableBlock.LIGHTING) == LightableBlock.Lighting.NORMAL) {
 					this.level().setBlockAndUpdate(pos, state.setValue(LightableBlock.LIGHTING, LightableBlock.Lighting.OMINOUS));
-					this.level().playSound(null, pos, TFSounds.CANDELABRA_OMINOUS.get(), SoundSource.BLOCKS, 0.5F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 0.75F);
+					this.level().playSound(null, pos, TFSounds.CANDELABRA_OMINOUS.value(), SoundSource.BLOCKS, 0.5F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 0.75F);
 				}
 			}
 		}
@@ -814,7 +814,7 @@ public class Lich extends BaseTFBoss {
 
 	public void setScepterTime() {
 		this.heldScepterTime = 20 + this.getRandom().nextInt(20);
-		this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(TFItems.LIFEDRAIN_SCEPTER.get()));
+		this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(TFItems.LIFEDRAIN_SCEPTER));
 	}
 
 	public void resetScepterTime() {
@@ -873,17 +873,17 @@ public class Lich extends BaseTFBoss {
 	@Nullable
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return this.isShadowClone() ? null : TFSounds.LICH_AMBIENT.get();
+		return this.isShadowClone() ? null : TFSounds.LICH_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.LICH_HURT.get();
+		return TFSounds.LICH_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return this.deathTime > 1 || this.isShadowClone() ? TFSounds.LICH_DEATH.get() : TFSounds.LICH_HURT.get();
+		return this.deathTime > 1 || this.isShadowClone() ? TFSounds.LICH_DEATH.value() : TFSounds.LICH_HURT.value();
 	}
 
 	@Override
@@ -918,12 +918,12 @@ public class Lich extends BaseTFBoss {
 
 	@Override
 	public Block getDeathContainer(RandomSource random) {
-		return getRandom().nextBoolean() ? TFBlocks.CANOPY_CHEST.get() : TFBlocks.TWILIGHT_OAK_CHEST.get();
+		return getRandom().nextBoolean() ? TFBlocks.CANOPY_CHEST : TFBlocks.TWILIGHT_OAK_CHEST;
 	}
 
 	@Override
 	public Block getBossSpawner() {
-		return TFBlocks.LICH_BOSS_SPAWNER.get();
+		return TFBlocks.LICH_BOSS_SPAWNER;
 	}
 
 	@Override
@@ -1018,7 +1018,7 @@ public class Lich extends BaseTFBoss {
 			for (double i = 0.0D; i < 1.0D; i += 0.2D) {
 				double x = Math.sin((powFactor + i) * Math.PI * 2.0D) * expandFactor * 1.75D;
 				double z = Math.cos((powFactor + i) * Math.PI * 2.0D) * expandFactor * 1.75D;
-				this.level().addParticle(TFParticleType.OMINOUS_FLAME.get(), false, false, particlePos.x() + x, particlePos.y() - 0.25D, particlePos.z() + z, 0.0D, 0.0D, 0.0D);
+				this.level().addParticle(TFParticleType.OMINOUS_FLAME, false, false, particlePos.x() + x, particlePos.y() - 0.25D, particlePos.z() + z, 0.0D, 0.0D, 0.0D);
 			}
 		}
 
@@ -1087,7 +1087,7 @@ public class Lich extends BaseTFBoss {
 			return (proj, entity, random) -> {
 				proj.setDeltaMovement(this.getDeltaMovement().add(0.5D - this.getRandom().nextDouble(), 0.75D, 0.5D - this.getRandom().nextDouble()).multiply(0.75D, 1.5D, 0.75D));
 				proj.setOwner(this);
-				this.playSound(TFSounds.SHIELD_BLOCK.get(), 0.5F, this.getVoicePitch() * 1.5F);
+				this.playSound(TFSounds.SHIELD_BLOCK.value(), 0.5F, this.getVoicePitch() * 1.5F);
 				this.swing(InteractionHand.MAIN_HAND);
 			};
 		}

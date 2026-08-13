@@ -32,7 +32,7 @@ public class SnowQueenIceShield extends TFPart<SnowQueen> {
 			return true;
 		}
 
-		this.playSound(TFSounds.SNOW_QUEEN_BREAK.get(), 1.0F, ((this.random.nextFloat() - this.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+		this.playSound(TFSounds.SNOW_QUEEN_BREAK.value(), 1.0F, ((this.random.nextFloat() - this.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 		return false;
 	}
 

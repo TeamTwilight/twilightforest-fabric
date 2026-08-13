@@ -35,7 +35,7 @@ public class LichShadowsGoal extends Goal {
 
 	@Override
 	public void start() {
-		this.lich.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.TWILIGHT_SCEPTER.get()));
+		this.lich.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.TWILIGHT_SCEPTER));
 	}
 
 	@Override
@@ -111,7 +111,7 @@ public class LichShadowsGoal extends Goal {
 
 			newClone.setTarget(targetedEntity);
 			newClone.setAttackCooldown(60 + this.lich.getRandom().nextInt(3) - this.lich.getRandom().nextInt(3));
-			newClone.setItemInHand(InteractionHand.MAIN_HAND, TFItems.TWILIGHT_SCEPTER.toStack());
+			newClone.setItemInHand(InteractionHand.MAIN_HAND, TFItems.TWILIGHT_SCEPTER.getDefaultInstance());
 			newClone.setTeleportInvisibility(this.lich.getTeleportInvisibility());
 			this.lich.addClone(newClone.getUUID());
 		}

@@ -40,16 +40,16 @@ public class IceBomb extends TFThrowable {
 	}
 
 	public IceBomb(Level level, LivingEntity thrower, ItemStack stack) {
-		super(TFEntities.THROWN_ICE.get(), level, thrower, stack);
+		super(TFEntities.THROWN_ICE, level, thrower, stack);
 	}
 
 	public IceBomb(Level level, Position pos, ItemStack stack) {
-		super(TFEntities.THROWN_ICE.get(), level, pos.x(), pos.y(), pos.z(), stack);
+		super(TFEntities.THROWN_ICE, level, pos.x(), pos.y(), pos.z(), stack);
 	}
 
 	@Override
 	protected Item getDefaultItem() {
-		return TFItems.ICE_BOMB.get();
+		return TFItems.ICE_BOMB;
 	}
 
 	@Override
@@ -121,7 +121,7 @@ public class IceBomb extends TFThrowable {
 				this.discard();
 			}
 		} else {
-			this.makeTrail(TFParticleType.SNOW_GUARDIAN.get(), this.getOwner() instanceof AlphaYeti ? 2 : 5);
+			this.makeTrail(TFParticleType.SNOW_GUARDIAN, this.getOwner() instanceof AlphaYeti ? 2 : 5);
 		}
 	}
 
@@ -142,7 +142,7 @@ public class IceBomb extends TFThrowable {
 				double dy = this.getY() + (this.random.nextFloat() - this.random.nextFloat()) * 3.5F;
 				double dz = this.getZ() + (this.random.nextFloat() - this.random.nextFloat()) * 3.5F;
 
-				this.level().addParticle(TFParticleType.SNOW_GUARDIAN.get(), dx, dy, dz, 0, 0, 0);
+				this.level().addParticle(TFParticleType.SNOW_GUARDIAN, dx, dy, dz, 0, 0, 0);
 			}
 		} else {
 			if (this.zoneTimer == 99) this.doTerrainEffects(3);

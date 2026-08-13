@@ -92,7 +92,7 @@ public abstract class FlyingBird extends Bird {
 			if (this.isSpooked() || this.isInWater() || !this.level().getBlockState(this.blockPosition().below()).getFluidState().isEmpty() || (this.getRandom().nextInt(200) == 0 && !this.isLandableBlock(this.blockPosition().below()))) {
 				this.setIsBirdLanded(false);
 				if (!flag) {
-					this.playSound(TFSounds.TINY_BIRD_TAKEOFF.get(), 0.05F, this.getVoicePitch());
+					this.playSound(TFSounds.TINY_BIRD_TAKEOFF.value(), 0.05F, this.getVoicePitch());
 				}
 			}
 		} else {

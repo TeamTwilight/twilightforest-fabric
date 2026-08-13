@@ -65,17 +65,17 @@ public class TowerwoodBorer extends Monster {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.TOWERWOOD_BORER_AMBIENT.get();
+		return TFSounds.TOWERWOOD_BORER_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.TOWERWOOD_BORER_HURT.get();
+		return TFSounds.TOWERWOOD_BORER_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.TOWERWOOD_BORER_DEATH.get();
+		return TFSounds.TOWERWOOD_BORER_DEATH.value();
 	}
 
 	// [VanillaCopy] Silverfish.hurt
@@ -94,7 +94,7 @@ public class TowerwoodBorer extends Monster {
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState block) {
-		this.playSound(TFSounds.TOWERWOOD_BORER_STEP.get(), 0.15F, 1.0F);
+		this.playSound(TFSounds.TOWERWOOD_BORER_STEP.value(), 0.15F, 1.0F);
 	}
 
 	@Override
@@ -160,7 +160,7 @@ public class TowerwoodBorer extends Monster {
 				// TF - add a random chance to dig. This should prevent them from instantly digging away
 				if (state.is(TFBlocks.TOWERWOOD) && this.mob.getRandom().nextInt(5) == 0) {
 					// TF - Change block type
-					level.setBlock(blockpos, TFBlocks.INFESTED_TOWERWOOD.get().defaultBlockState(), Block.UPDATE_ALL);
+					level.setBlock(blockpos, TFBlocks.INFESTED_TOWERWOOD.defaultBlockState(), Block.UPDATE_ALL);
 					this.mob.spawnAnim();
 					this.mob.discard();
 				}
@@ -214,7 +214,7 @@ public class TowerwoodBorer extends Monster {
 										this.borer.gameEvent(GameEvent.BLOCK_DESTROY);
 									} else {
 										// TF - reset to normal tower wood
-										world.setBlock(offsetPos, TFBlocks.TOWERWOOD.get().defaultBlockState(), Block.UPDATE_ALL);
+										world.setBlock(offsetPos, TFBlocks.TOWERWOOD.defaultBlockState(), Block.UPDATE_ALL);
 									}
 								}
 

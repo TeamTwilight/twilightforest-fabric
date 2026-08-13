@@ -104,32 +104,32 @@ public class WinterWolf extends HostileWolf implements IBreathAttacker {
 			dy *= velocity;
 			dz *= velocity;
 
-			this.level().addParticle(TFParticleType.SNOW.get(), px, py, pz, dx, dy, dz);
+			this.level().addParticle(TFParticleType.SNOW, px, py, pz, dx, dy, dz);
 		}
 	}
 
 	@Override
 	protected SoundEvent getTargetSound() {
-		return TFSounds.WINTER_WOLF_TARGET.get();
+		return TFSounds.WINTER_WOLF_TARGET.value();
 	}
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.WINTER_WOLF_AMBIENT.get();
+		return TFSounds.WINTER_WOLF_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return TFSounds.WINTER_WOLF_HURT.get();
+		return TFSounds.WINTER_WOLF_HURT.value();
 	}
 
 	private void playBreathSound() {
-		playSound(TFSounds.WINTER_WOLF_SHOOT.get(), this.getRandom().nextFloat() * 0.5F, this.getRandom().nextFloat() * 0.5F);
+		playSound(TFSounds.WINTER_WOLF_SHOOT.value(), this.getRandom().nextFloat() * 0.5F, this.getRandom().nextFloat() * 0.5F);
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.WINTER_WOLF_DEATH.get();
+		return TFSounds.WINTER_WOLF_DEATH.value();
 	}
 
 	@Override

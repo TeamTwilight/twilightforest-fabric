@@ -80,7 +80,7 @@ public class GroundAttackGoal extends Goal {
 
 		if (this.attackTick-- <= 0) {
 			this.attacker.setGroundAttackCharge(false);
-			this.attacker.playSound(TFSounds.MINOSHROOM_SLAM.get(), 2.0F, 1.0F + this.attacker.getRandom().nextFloat() * 0.1F);
+			this.attacker.playSound(TFSounds.MINOSHROOM_SLAM.value(), 2.0F, 1.0F + this.attacker.getRandom().nextFloat() * 0.1F);
 			this.attacker.gameEvent(GameEvent.HIT_GROUND);
 
 			AABB selection = new AABB(this.attacker.blockPosition().getX() - 7.5F, this.attacker.blockPosition().getY(), this.attacker.blockPosition().getZ() - 7.5F, this.attacker.blockPosition().getX() + 7.5F, this.attacker.blockPosition().getY() + 3.0F, this.attacker.blockPosition().getZ() + 7.5F);

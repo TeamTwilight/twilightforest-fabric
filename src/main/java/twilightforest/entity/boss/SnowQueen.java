@@ -1,5 +1,6 @@
 package twilightforest.entity.boss;
 
+import carminite.entity.PartEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -32,7 +33,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.IBreathAttacker;
@@ -117,17 +117,17 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.SNOW_QUEEN_AMBIENT.get();
+		return TFSounds.SNOW_QUEEN_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.SNOW_QUEEN_HURT.get();
+		return TFSounds.SNOW_QUEEN_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.SNOW_QUEEN_DEATH.get();
+		return TFSounds.SNOW_QUEEN_DEATH.value();
 	}
 
 	@Override
@@ -145,7 +145,7 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 			float py = this.getEyeHeight() + (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.5F;
 			float pz = (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.3F;
 
-			this.level().addParticle(TFParticleType.SNOW_GUARDIAN.get(), this.xOld + px, this.yOld + py, this.zOld + pz, 0.0D, 0.0D, 0.0D);
+			this.level().addParticle(TFParticleType.SNOW_GUARDIAN, this.xOld + px, this.yOld + py, this.zOld + pz, 0.0D, 0.0D, 0.0D);
 		}
 
 		// during drop phase, all the ice blocks should make particles
@@ -155,7 +155,7 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 				float py = (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.5F;
 				float pz = (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.5F;
 
-				this.level().addParticle(TFParticleType.SNOW_WARNING.get(), ice.xOld + px, ice.yOld + py, ice.zOld + pz, 0.0D, 0.0D, 0.0D);
+				this.level().addParticle(TFParticleType.SNOW_WARNING, ice.xOld + px, ice.yOld + py, ice.zOld + pz, 0.0D, 0.0D, 0.0D);
 			}
 		}
 
@@ -184,7 +184,7 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 				dy *= velocity;
 				dz *= velocity;
 
-				this.level().addParticle(TFParticleType.ICE_BEAM.get(), px, py, pz, dx, dy, dz);
+				this.level().addParticle(TFParticleType.ICE_BEAM, px, py, pz, dx, dy, dz);
 			}
 		}
 	}
@@ -246,14 +246,14 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 			if (collided instanceof LivingEntity && this.doHurtTarget(server, collided)) {
 				Vec3 motion = collided.getDeltaMovement();
 				collided.setDeltaMovement(motion.x(), motion.y() + 0.4, motion.z());
-				this.playSound(TFSounds.SNOW_QUEEN_ATTACK.get(), 1.0F, 1.0F);
+				this.playSound(TFSounds.SNOW_QUEEN_ATTACK.value(), 1.0F, 1.0F);
 			}
 		}
 	}
 
 	@Override
 	public boolean doHurtTarget(ServerLevel server, Entity entity) {
-		DamageSource source = this.getCurrentPhase() == Phase.DROP ? TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.SQUISH, this, TFEntities.SNOW_QUEEN.get()) : this.level().damageSources().mobAttack(this);
+		DamageSource source = this.getCurrentPhase() == Phase.DROP ? TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.SQUISH, this, TFEntities.SNOW_QUEEN) : this.level().damageSources().mobAttack(this);
 		return EntityUtil.properlyApplyCustomDamageSource(server, this, entity, source, null);
 	}
 
@@ -394,7 +394,7 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 
 	@Override
 	public void doBreathAttack(ServerLevel server, Entity target) {
-		target.hurtServer(server, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.CHILLING_BREATH, this, TFEntities.SNOW_QUEEN.get()), BREATH_DAMAGE);
+		target.hurtServer(server, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.CHILLING_BREATH, this, TFEntities.SNOW_QUEEN), BREATH_DAMAGE);
 		// TODO: slow target?
 	}
 
@@ -430,12 +430,12 @@ public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
 
 	@Override
 	public Block getDeathContainer(RandomSource random) {
-		return TFBlocks.TWILIGHT_OAK_CHEST.get();
+		return TFBlocks.TWILIGHT_OAK_CHEST;
 	}
 
 	@Override
 	public Block getBossSpawner() {
-		return TFBlocks.SNOW_QUEEN_BOSS_SPAWNER.get();
+		return TFBlocks.SNOW_QUEEN_BOSS_SPAWNER;
 	}
 
 	@Override

@@ -42,17 +42,17 @@ public class StableIceCore extends BaseIceMob implements RangedAttackMob {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.ICE_CORE_AMBIENT.get();
+		return TFSounds.ICE_CORE_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.ICE_CORE_HURT.get();
+		return TFSounds.ICE_CORE_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.ICE_CORE_DEATH.get();
+		return TFSounds.ICE_CORE_DEATH.value();
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class StableIceCore extends BaseIceMob implements RangedAttackMob {
 		//accuracy of a normal difficulty skeleton
 		snowball.shoot(d1, d2 + f, d3, 1.6F, 6.0F);
 
-		this.playSound(TFSounds.ICE_CORE_SHOOT.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+		this.playSound(TFSounds.ICE_CORE_SHOOT.value(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
 		this.level().addFreshEntity(snowball);
 	}
 }

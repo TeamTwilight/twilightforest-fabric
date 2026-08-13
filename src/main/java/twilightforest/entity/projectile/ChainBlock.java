@@ -1,5 +1,6 @@
 package twilightforest.entity.projectile;
 
+import carminite.entity.PartEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
@@ -29,7 +30,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
-import net.neoforged.neoforge.entity.PartEntity;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFDataAttachments;
@@ -142,7 +142,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 
 			if (damage > 0.0F) {
 				if (result.getEntity().hurtServer((ServerLevel) level, source, damage)) {
-					this.playSound(TFSounds.BLOCK_AND_CHAIN_HIT.get(), 1.0f, this.random.nextFloat());
+					this.playSound(TFSounds.BLOCK_AND_CHAIN_HIT.value(), 1.0f, this.random.nextFloat());
 					// age when we hit a monster so that we go back to the player faster
 					this.hitEntity = true;
 					this.setIsReturning(true);
@@ -163,7 +163,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 			BlockState state = level.getBlockState(pos);
 			if (!state.isAir()) {
 				boolean restrictedPlaceMode = this.getOwner() instanceof ServerPlayer player && player.gameMode.getGameModeForPlayer().isBlockPlacingRestricted();
-				if (!canBreakBlockAt(level, pos, state, this.stack, restrictedPlaceMode) || this.getData(TFDataAttachments.SMASH_BLOCKS).getBlocksSmashed() >= 12) {
+				if (!canBreakBlockAt(level, pos, state, this.stack, restrictedPlaceMode) || this.getAttached(TFDataAttachments.SMASH_BLOCKS).getBlocksSmashed() >= 12) {
 					this.bounce(result.getDirection());
 				}
 
@@ -184,7 +184,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 
 	public void bounce(Direction direction) {
 		if (!this.isReturning() && !this.hitEntity) {
-			this.playSound(TFSounds.BLOCK_AND_CHAIN_COLLIDE.get(), 0.125F, this.random.nextFloat());
+			this.playSound(TFSounds.BLOCK_AND_CHAIN_COLLIDE.value(), 0.125F, this.random.nextFloat());
 			this.gameEvent(GameEvent.HIT_GROUND);
 		}
 
@@ -267,8 +267,8 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 				if (this.isReturning()) {
 					// despawn if close enough
 					if (distToPlayer < 2F) {
-						if (this.stack != null && this.getOwner() instanceof LivingEntity living && living.getData(TFDataAttachments.SMASH_BLOCKS).getBlocksSmashed() > 0) {
-							this.stack.hurtAndBreak(Math.min(living.getData(TFDataAttachments.SMASH_BLOCKS).getBlocksSmashed(), 3), living, this.getHand());
+						if (this.stack != null && this.getOwner() instanceof LivingEntity living && living.getAttached(TFDataAttachments.SMASH_BLOCKS).getBlocksSmashed() > 0) {
+							this.stack.hurtAndBreak(Math.min(living.getAttached(TFDataAttachments.SMASH_BLOCKS).getBlocksSmashed(), 3), living, this.getHand());
 						}
 						this.discard();
 					}
@@ -300,7 +300,7 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 	public void remove(RemovalReason reason) {
 		super.remove(reason);
 		LivingEntity thrower = (LivingEntity) this.getOwner();
-		if (thrower != null && thrower.getUseItem().is(TFItems.BLOCK_AND_CHAIN.get())) {
+		if (thrower != null && thrower.getUseItem().is(TFItems.BLOCK_AND_CHAIN)) {
 			thrower.stopUsingItem();
 		}
 	}

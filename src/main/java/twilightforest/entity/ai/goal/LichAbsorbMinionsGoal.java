@@ -62,8 +62,8 @@ public class LichAbsorbMinionsGoal extends Goal {
 				this.lich.level().playSound(null, minion.blockPosition(), deathSound, SoundSource.HOSTILE, 1.0F, minion.getVoicePitch());
 			}
 			//funny pop sound
-			this.lich.playSound(TFSounds.LICH_POP_MOB.get(), 3.0F, 0.4F + this.lich.getRandom().nextFloat() * 0.2F);
-			minion.playSound(TFSounds.LICH_POP_MOB.get(), 3.0F, 0.4F + this.lich.getRandom().nextFloat() * 0.2F);
+			this.lich.playSound(TFSounds.LICH_POP_MOB.value(), 3.0F, 0.4F + this.lich.getRandom().nextFloat() * 0.2F);
+			minion.playSound(TFSounds.LICH_POP_MOB.value(), 3.0F, 0.4F + this.lich.getRandom().nextFloat() * 0.2F);
 			// make trail so it's clear that we did it
 			this.lich.makeMagicTrail(minion.getEyePosition(), this.lich.getEyePosition(), 1.0F, 0.5F, 0.5F);
 			//heal some health

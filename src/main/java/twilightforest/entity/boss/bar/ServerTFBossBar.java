@@ -1,6 +1,7 @@
 package twilightforest.entity.boss.bar;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
 import twilightforest.network.TFBossBarPacket;
@@ -22,7 +23,7 @@ public class ServerTFBossBar extends ServerBossEvent {
 	@Override
 	public void addPlayer(ServerPlayer player) {
 		if (this.players.add(player) && this.visible) {
-			player.connection.send(new TFBossBarPacket.AddTFBossBarPacket(this));
+			player.connection.send(new ClientboundCustomPayloadPacket(new TFBossBarPacket.AddTFBossBarPacket(this)));
 		}
 	}
 
@@ -36,6 +37,6 @@ public class ServerTFBossBar extends ServerBossEvent {
 			this.overlay = overlay;
 			change = true;
 		}
-		if (change) this.players.forEach(serverPlayer -> serverPlayer.connection.send(new TFBossBarPacket.UpdateTFBossBarStylePacket(this, allowLerp)));
+		if (change) this.players.forEach(serverPlayer -> serverPlayer.connection.send(new ClientboundCustomPayloadPacket(new TFBossBarPacket.UpdateTFBossBarStylePacket(this, allowLerp))));
 	}
 }

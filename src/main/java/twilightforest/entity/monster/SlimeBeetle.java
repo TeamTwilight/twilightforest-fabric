@@ -50,28 +50,28 @@ public class SlimeBeetle extends Monster implements RangedAttackMob {
 	@Nullable
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.SLIME_BEETLE_AMBIENT.get();
+		return TFSounds.SLIME_BEETLE_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.SLIME_BEETLE_HURT.get();
+		return TFSounds.SLIME_BEETLE_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.SLIME_BEETLE_DEATH.get();
+		return TFSounds.SLIME_BEETLE_DEATH.value();
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState state) {
-		playSound(TFSounds.SLIME_BEETLE_STEP.get(), 0.15F, 1.0F);
+		playSound(TFSounds.SLIME_BEETLE_STEP.value(), 0.15F, 1.0F);
 	}
 
 	@Override
 	public void performRangedAttack(LivingEntity target, float distanceFactor) {
-		ThrowableProjectile projectile = new SlimeProjectile(TFEntities.SLIME_BLOB.get(), this.level(), this);
-		playSound(TFSounds.SLIME_BEETLE_SQUISH.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+		ThrowableProjectile projectile = new SlimeProjectile(TFEntities.SLIME_BLOB, this.level(), this);
+		playSound(TFSounds.SLIME_BEETLE_SQUISH.value(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
 		double tx = target.getX() - this.getX();
 		double ty = target.getY() + target.getEyeHeight() - 1.1D - projectile.getY();
 		double tz = target.getZ() - this.getZ();

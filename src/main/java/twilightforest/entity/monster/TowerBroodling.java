@@ -28,27 +28,27 @@ public class TowerBroodling extends SwarmSpider {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.CARMINITE_BROODLING_AMBIENT.get();
+		return TFSounds.CARMINITE_BROODLING_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.CARMINITE_BROODLING_HURT.get();
+		return TFSounds.CARMINITE_BROODLING_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.CARMINITE_BROODLING_DEATH.get();
+		return TFSounds.CARMINITE_BROODLING_DEATH.value();
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState state) {
-		this.playSound(TFSounds.CARMINITE_BROODLING_STEP.get(), 0.15F, 1.0F);
+		this.playSound(TFSounds.CARMINITE_BROODLING_STEP.value(), 0.15F, 1.0F);
 	}
 
 	@Override
 	public EntityType<? extends SwarmSpider> getReinforcementType() {
-		return TFEntities.CARMINITE_BROODLING.get();
+		return TFEntities.CARMINITE_BROODLING;
 	}
 
 	//no skeleton druid jockeys for us

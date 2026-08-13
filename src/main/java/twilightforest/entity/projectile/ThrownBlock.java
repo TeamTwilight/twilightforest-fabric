@@ -36,7 +36,7 @@ public class ThrownBlock extends TFThrowable {
 	}
 
 	public ThrownBlock(Level world, @Nullable BlockState state) {
-		super(TFEntities.THROWN_BLOCK.get(), world);
+		super(TFEntities.THROWN_BLOCK, world);
 		if (state != null) {
 			this.state = state;
 		}

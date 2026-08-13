@@ -29,7 +29,7 @@ public abstract class BaseIceMob extends Monster {
 				float py = this.getEyeHeight() + (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.5F;
 				float pz = (this.getRandom().nextFloat() - this.getRandom().nextFloat()) * 0.3F;
 
-				this.level().addParticle(TFParticleType.SNOW_GUARDIAN.get(), this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);
+				this.level().addParticle(TFParticleType.SNOW_GUARDIAN, this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);
 //				if (this.level().getBiome(this.blockPosition()).is(BiomeTags.SNOW_GOLEM_MELTS)) {
 //					if (this.random.nextInt(4) == 0) this.level().addParticle(ParticleTypes.CLOUD, this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0.1F, 0);
 //					if (this.random.nextBoolean()) this.level().addParticle(ParticleTypes.FALLING_WATER, this.xOld + px, this.yOld + py, this.zOld + pz, 0, 0, 0);

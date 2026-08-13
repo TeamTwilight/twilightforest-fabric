@@ -77,7 +77,7 @@ public class Minotaur extends Monster implements ITFCharger {
 		float additionalDiff = difficulty.getEffectiveDifficulty() + 1;
 		int result = (int) (random / additionalDiff);
 		if (result == 0)
-			this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.GOLDEN_MINOTAUR_AXE.get()));
+			this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.GOLDEN_MINOTAUR_AXE));
 		else
 			this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.GOLDEN_AXE));
 	}
@@ -94,7 +94,7 @@ public class Minotaur extends Monster implements ITFCharger {
 
 	@Override
 	public boolean doHurtTarget(ServerLevel server, Entity entity) {
-		return EntityUtil.properlyApplyCustomDamageSource(server, this, entity, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.AXING, this), TFSounds.MINOTAUR_ATTACK.get());
+		return EntityUtil.properlyApplyCustomDamageSource(server, this, entity, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.AXING, this), TFSounds.MINOTAUR_ATTACK.value());
 	}
 
 	@Override
@@ -108,22 +108,22 @@ public class Minotaur extends Monster implements ITFCharger {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.MINOTAUR_AMBIENT.get();
+		return TFSounds.MINOTAUR_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.MINOTAUR_HURT.get();
+		return TFSounds.MINOTAUR_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.MINOTAUR_DEATH.get();
+		return TFSounds.MINOTAUR_DEATH.value();
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState state) {
-		playSound(TFSounds.MINOTAUR_STEP.get(), 0.15F, 0.8F);
+		playSound(TFSounds.MINOTAUR_STEP.value(), 0.15F, 0.8F);
 	}
 
 	@Override

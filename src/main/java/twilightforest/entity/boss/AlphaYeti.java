@@ -73,13 +73,13 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 			protected void checkAndPerformAttack(LivingEntity victim) {
 				super.checkAndPerformAttack(victim);
 				if (!AlphaYeti.this.getPassengers().isEmpty())
-					AlphaYeti.this.playSound(TFSounds.ALPHA_YETI_GRAB.get(), 4.0F, 0.75F + AlphaYeti.this.getRandom().nextFloat() * 0.25F);
+					AlphaYeti.this.playSound(TFSounds.ALPHA_YETI_GRAB.value(), 4.0F, 0.75F + AlphaYeti.this.getRandom().nextFloat() * 0.25F);
 			}
 
 			@Override
 			public void stop() {
 				if (!AlphaYeti.this.getPassengers().isEmpty())
-					AlphaYeti.this.playSound(TFSounds.ALPHA_YETI_THROW.get(), 4.0F, 0.75F + AlphaYeti.this.getRandom().nextFloat() * 0.25F);
+					AlphaYeti.this.playSound(TFSounds.ALPHA_YETI_THROW.value(), 4.0F, 0.75F + AlphaYeti.this.getRandom().nextFloat() * 0.25F);
 				super.stop();
 			}
 		});
@@ -153,13 +153,13 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 		double py = hgt % 5.0F;
 		double pz = 3.0F * Math.sin(rotation);
 
-		this.level().addParticle(TFParticleType.SNOW.get(), this.xOld + px, this.yOld + py, this.zOld + pz, 0.0F, 0.0F, 0.0F);
+		this.level().addParticle(TFParticleType.SNOW, this.xOld + px, this.yOld + py, this.zOld + pz, 0.0F, 0.0F, 0.0F);
 	}
 
 	@Override
 	public void setTarget(@Nullable LivingEntity entity) {
 		if (entity != null && entity != this.getTarget())
-			this.playSound(TFSounds.ALPHA_YETI_ALERT.get(), 4.0F, 0.5F + this.getRandom().nextFloat() * 0.5F);
+			this.playSound(TFSounds.ALPHA_YETI_ALERT.value(), 4.0F, 0.5F + this.getRandom().nextFloat() * 0.5F);
 		super.setTarget(entity);
 	}
 
@@ -181,17 +181,17 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 	@Nullable
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.ALPHA_YETI_GROWL.get();
+		return TFSounds.ALPHA_YETI_GROWL.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.ALPHA_YETI_HURT.get();
+		return TFSounds.ALPHA_YETI_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.ALPHA_YETI_DEATH.get();
+		return TFSounds.ALPHA_YETI_DEATH.value();
 	}
 
 	@Override
@@ -260,7 +260,7 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 	@Override
 	public void performRangedAttack(LivingEntity target, float distanceFactor) {
 		if (!this.canRampage()) {
-			IceBomb ice = new IceBomb(this.level(), this, new ItemStack(TFItems.ICE_BOMB.get()));
+			IceBomb ice = new IceBomb(this.level(), this, new ItemStack(TFItems.ICE_BOMB));
 
 			// [VanillaCopy] Part of Skeleton.performRangedAttack
 			double d0 = target.getX() - this.getX();
@@ -269,7 +269,7 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 			double d3 = Mth.sqrt((float) (d0 * d0 + d2 * d2));
 			ice.shoot(d0, d1 + d3 * 0.2D, d2, 1.6F, 14 - this.level().getDifficulty().getId() * 4);
 
-			this.playSound(TFSounds.ALPHA_YETI_ICE.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+			this.playSound(TFSounds.ALPHA_YETI_ICE.value(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
 			this.gameEvent(GameEvent.PROJECTILE_SHOOT);
 			this.level().addFreshEntity(ice);
 		}
@@ -299,7 +299,7 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 	@Override
 	public boolean causeFallDamage(double distance, float multiplier, DamageSource source) {
 		if (this.level() instanceof ServerLevel server && this.isRampaging()) {
-			this.playSound(TFSounds.ALPHA_YETI_ICE.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+			this.playSound(TFSounds.ALPHA_YETI_ICE.value(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
 			this.hitNearbyEntities(server);
 		}
 
@@ -326,12 +326,12 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 
 	@Override
 	public Block getDeathContainer(RandomSource random) {
-		return TFBlocks.CANOPY_CHEST.get();
+		return TFBlocks.CANOPY_CHEST;
 	}
 
 	@Override
 	public Block getBossSpawner() {
-		return TFBlocks.ALPHA_YETI_BOSS_SPAWNER.get();
+		return TFBlocks.ALPHA_YETI_BOSS_SPAWNER;
 	}
 
 	@Override

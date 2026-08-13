@@ -45,13 +45,13 @@ public class UrGhastAttackGoal extends Goal {
 			this.ghast.getLookControl().setLookAt(target, 10.0F, this.ghast.getMaxHeadXRot());
 
 			if (this.attackTimer == 10) {
-				this.ghast.playSound(TFSounds.UR_GHAST_WARN.get(), 10.0F, this.ghast.getVoicePitch());
+				this.ghast.playSound(TFSounds.UR_GHAST_WARN.value(), 10.0F, this.ghast.getVoicePitch());
 			}
 
 			if (this.attackTimer == 20) {
 				if (!this.ghast.isInTantrum()) {
 					// TF - call custom method
-					this.ghast.playSound(TFSounds.UR_GHAST_SHOOT.get(), 10.0F, this.ghast.getVoicePitch());
+					this.ghast.playSound(TFSounds.UR_GHAST_SHOOT.value(), 10.0F, this.ghast.getVoicePitch());
 					this.spitFireball();
 					this.prevAttackTimer = this.attackTimer;
 				}

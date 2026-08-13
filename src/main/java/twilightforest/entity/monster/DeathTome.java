@@ -241,22 +241,22 @@ public class DeathTome extends Monster implements RangedAttackMob {
 	@Nullable
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.DEATH_TOME_AMBIENT.get();
+		return TFSounds.DEATH_TOME_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.DEATH_TOME_HURT.get();
+		return TFSounds.DEATH_TOME_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.DEATH_TOME_DEATH.get();
+		return TFSounds.DEATH_TOME_DEATH.value();
 	}
 
 	@Override
 	public void performRangedAttack(LivingEntity target, float distanceFactor) {
-		ThrowableProjectile projectile = new TomeBolt(TFEntities.TOME_BOLT.get(), this.level(), this);
+		ThrowableProjectile projectile = new TomeBolt(TFEntities.TOME_BOLT, this.level(), this);
 		double tx = target.getX() - this.getX();
 		double ty = target.getY() + target.getEyeHeight() - 1.1D - projectile.getY();
 		double tz = target.getZ() - this.getZ();

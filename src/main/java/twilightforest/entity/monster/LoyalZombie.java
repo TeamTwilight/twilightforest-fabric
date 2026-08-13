@@ -47,7 +47,7 @@ public class LoyalZombie extends TamableAnimal {
 	private static final EntityDataAccessor<Boolean> DATA_BABY_ID = SynchedEntityData.defineId(LoyalZombie.class, EntityDataSerializers.BOOLEAN);
 	private static final Identifier SPEED_MODIFIER_BABY_ID = Identifier.withDefaultNamespace("baby");
 	private static final AttributeModifier SPEED_MODIFIER_BABY = new AttributeModifier(SPEED_MODIFIER_BABY_ID, 0.5, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
-	private static final EntityDimensions BABY_DIMENSIONS = TFEntities.LOYAL_ZOMBIE.get().getDimensions().scale(0.5F).withEyeHeight(0.93F);
+	private static final EntityDimensions BABY_DIMENSIONS = TFEntities.LOYAL_ZOMBIE.getDimensions().scale(0.5F).withEyeHeight(0.93F);
 
 	public LoyalZombie(EntityType<? extends LoyalZombie> type, Level level) {
 		super(type, level);
@@ -165,22 +165,22 @@ public class LoyalZombie extends TamableAnimal {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.LOYAL_ZOMBIE_AMBIENT.get();
+		return TFSounds.LOYAL_ZOMBIE_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.LOYAL_ZOMBIE_HURT.get();
+		return TFSounds.LOYAL_ZOMBIE_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.LOYAL_ZOMBIE_DEATH.get();
+		return TFSounds.LOYAL_ZOMBIE_DEATH.value();
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState state) {
-		playSound(TFSounds.LOYAL_ZOMBIE_STEP.get(), 0.15F, 1.0F);
+		playSound(TFSounds.LOYAL_ZOMBIE_STEP.value(), 0.15F, 1.0F);
 	}
 
 	@Override

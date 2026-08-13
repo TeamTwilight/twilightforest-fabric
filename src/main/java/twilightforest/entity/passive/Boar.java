@@ -48,27 +48,27 @@ public class Boar extends Animal {
 
 	@Override
 	public Boar getBreedOffspring(ServerLevel world, AgeableMob ageableMob) {
-		return TFEntities.BOAR.get().create(world, EntitySpawnReason.BREEDING);
+		return TFEntities.BOAR.create(world, EntitySpawnReason.BREEDING);
 	}
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.BOAR_AMBIENT.get();
+		return TFSounds.BOAR_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.BOAR_HURT.get();
+		return TFSounds.BOAR_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.BOAR_DEATH.get();
+		return TFSounds.BOAR_DEATH.value();
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState state) {
-		this.playSound(TFSounds.BOAR_STEP.get(), 0.15F, 1.0F);
+		this.playSound(TFSounds.BOAR_STEP.value(), 0.15F, 1.0F);
 	}
 
 	@Override

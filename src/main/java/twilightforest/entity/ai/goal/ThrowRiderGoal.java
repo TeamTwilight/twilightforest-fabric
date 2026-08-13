@@ -1,5 +1,7 @@
 package twilightforest.entity.ai.goal;
 
+import carminite.network.PacketDistributor;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalEntityTypeTags;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -8,8 +10,6 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.components.entity.YetiThrowAttachment;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.TFDataAttachments;
@@ -30,8 +30,8 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 	public boolean canUse() {
 		return this.mob.getPassengers().isEmpty() &&
 			this.mob.getTarget() != null &&
-			!this.mob.getTarget().is(Tags.EntityTypes.BOSSES) &&
-			this.mob.getTarget().getData(TFDataAttachments.YETI_THROWING).getThrowCooldown() <= 0 &&
+			!this.mob.getTarget().is(ConventionalEntityTypeTags.BOSSES) &&
+			this.mob.getTarget().getAttached(TFDataAttachments.YETI_THROWING).getThrowCooldown() <= 0 &&
 			super.canUse();
 	}
 
@@ -80,7 +80,7 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 			Vec3 throwVec = new Vec3(this.mob.getLookAngle().x() * 2.0D, 0.9, this.mob.getLookAngle().z() * 2.0D);
 
 			if (rider instanceof Player player) {
-				var attachment = player.getData(TFDataAttachments.YETI_THROWING);
+				var attachment = player.getAttached(TFDataAttachments.YETI_THROWING);
 				attachment.setThrown(player, true, this.mob);
 				// Make it so other yetis won't try to pick us up for a bit, 10 seconds seems fair
 				attachment.setThrowVector(throwVec);

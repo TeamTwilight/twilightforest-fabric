@@ -33,12 +33,12 @@ public class SeekerArrow extends TFArrow {
 	}
 
 	public SeekerArrow(Level world, LivingEntity shooter, ItemStack stack, ItemStack weapon) {
-		super(TFEntities.SEEKER_ARROW.get(), world, shooter, stack, weapon);
+		super(TFEntities.SEEKER_ARROW, world, shooter, stack, weapon);
 		this.setBaseDamage(1.0D);
 	}
 
 	public SeekerArrow(AbstractArrow parentArrow, ItemStack stack, ItemStack weapon) {
-		super(TFEntities.SEEKER_ARROW.get(), parentArrow, stack, weapon);
+		super(TFEntities.SEEKER_ARROW, parentArrow, stack, weapon);
 		this.setBaseDamage(1.0D);
 	}
 

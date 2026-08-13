@@ -144,27 +144,27 @@ public class Minoshroom extends BaseTFBoss implements ITFCharger {
 
 	@Override
 	public boolean doHurtTarget(ServerLevel server, Entity entity) {
-		return EntityUtil.properlyApplyCustomDamageSource(server, this, entity, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.AXING, this), TFSounds.MINOSHROOM_ATTACK.get());
+		return EntityUtil.properlyApplyCustomDamageSource(server, this, entity, TFDamageTypes.getEntityDamageSource(this.level(), TFDamageTypes.AXING, this), TFSounds.MINOSHROOM_ATTACK.value());
 	}
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.MINOSHROOM_AMBIENT.get();
+		return TFSounds.MINOSHROOM_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.MINOSHROOM_HURT.get();
+		return TFSounds.MINOSHROOM_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.MINOSHROOM_DEATH.get();
+		return TFSounds.MINOSHROOM_DEATH.value();
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState state) {
-		this.playSound(TFSounds.MINOSHROOM_STEP.get(), 0.15F, 0.8F);
+		this.playSound(TFSounds.MINOSHROOM_STEP.value(), 0.15F, 0.8F);
 	}
 
 	@Override
@@ -183,7 +183,7 @@ public class Minoshroom extends BaseTFBoss implements ITFCharger {
 	@Override
 	protected void populateDefaultEquipmentSlots(RandomSource source, DifficultyInstance difficulty) {
 		super.populateDefaultEquipmentSlots(source, difficulty);
-		this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.DIAMOND_MINOTAUR_AXE.get()));
+		this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(TFItems.DIAMOND_MINOTAUR_AXE));
 	}
 
 	@Override
@@ -198,12 +198,12 @@ public class Minoshroom extends BaseTFBoss implements ITFCharger {
 
 	@Override
 	public Block getDeathContainer(RandomSource random) {
-		return TFBlocks.MANGROVE_CHEST.get();
+		return TFBlocks.MANGROVE_CHEST;
 	}
 
 	@Override
 	public Block getBossSpawner() {
-		return TFBlocks.MINOSHROOM_BOSS_SPAWNER.get();
+		return TFBlocks.MINOSHROOM_BOSS_SPAWNER;
 	}
 
 	@Override

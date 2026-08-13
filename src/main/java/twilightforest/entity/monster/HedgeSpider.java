@@ -56,22 +56,22 @@ public class HedgeSpider extends Spider {
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return TFSounds.HEDGE_SPIDER_AMBIENT.get();
+		return TFSounds.HEDGE_SPIDER_AMBIENT.value();
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return TFSounds.HEDGE_SPIDER_HURT.get();
+		return TFSounds.HEDGE_SPIDER_HURT.value();
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return TFSounds.HEDGE_SPIDER_DEATH.get();
+		return TFSounds.HEDGE_SPIDER_DEATH.value();
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState state) {
-		this.playSound(TFSounds.HEDGE_SPIDER_STEP.get(), 0.15F, 1.0F);
+		this.playSound(TFSounds.HEDGE_SPIDER_STEP.value(), 0.15F, 1.0F);
 	}
 
 	public static boolean canSpawn(EntityType<HedgeSpider> type, ServerLevelAccessor accessor, EntitySpawnReason reason, BlockPos pos, RandomSource random) {
