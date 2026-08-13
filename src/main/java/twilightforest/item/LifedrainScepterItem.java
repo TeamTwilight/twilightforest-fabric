@@ -1,5 +1,7 @@
 package twilightforest.item;
 
+import carminite.network.PacketDistributor;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalEntityTypeTags;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ItemParticleOption;
@@ -26,8 +28,6 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFItems;
@@ -135,13 +135,13 @@ public class LifedrainScepterItem extends ScepterItem {
 			if (pointedEntity instanceof LivingEntity target && !(target instanceof ArmorStand) && target.isPickable()) {
 				if (!target.isDeadOrDying()) {
 					PacketDistributor.sendToPlayersTrackingEntityAndSelf(living, new LifedrainParticlePacket(living.getId(), target.getEyePosition()));
-					level.playSound(null, living.blockPosition(), TFSounds.LIFE_SCEPTER_DRAIN.get(), SoundSource.PLAYERS);
+					level.playSound(null, living.blockPosition(), TFSounds.LIFE_SCEPTER_DRAIN.value(), SoundSource.PLAYERS);
 				}
 
 				DamageSource damageSource = TFDamageTypes.getEntityDamageSource(level, TFDamageTypes.LIFEDRAIN, living);
 				if (target.hurtServer(serverLevel, damageSource, 1)) {
 					// make it explode
-					if (target.getHealth() <= 1 && !target.is(Tags.EntityTypes.BOSSES)) {
+					if (target.getHealth() <= 1 && !target.is(ConventionalEntityTypeTags.BOSSES)) {
 						if (!target.is(TFEntityTypeTags.LIFEDRAIN_DROPS_NO_FLESH) && living instanceof Player player) {
 							LootParams ctx = new LootParams.Builder(serverLevel)
 								.withParameter(LootContextParams.THIS_ENTITY, target)
@@ -204,7 +204,7 @@ public class LifedrainScepterItem extends ScepterItem {
 			float r = 1.0F;
 			float g = 0.5F;
 			float b = 0.5F;
-			level.addParticle(ColorParticleOption.create(TFParticleType.MAGIC_EFFECT.get(), r, g, b), particlePos.x(), particlePos.y(), particlePos.z(), 0.0D, 0.0D, 0.0D);
+			level.addParticle(ColorParticleOption.create(TFParticleType.MAGIC_EFFECT, r, g, b), particlePos.x(), particlePos.y(), particlePos.z(), 0.0D, 0.0D, 0.0D);
 		}
 	}
 

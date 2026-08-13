@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import carminite.network.PacketDistributor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -17,7 +18,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
 import twilightforest.network.ParticlePacket;
@@ -79,7 +79,7 @@ public class OreMagnetItem extends Item {
 
 			if (moved > 0) {
 				stack.hurtAndBreak(moved, living, living.getUsedItemHand());
-				level.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.MAGNET_GRAB.get(), living.getSoundSource(), 1.0F, 1.0F);
+				level.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.MAGNET_GRAB.value(), living.getSoundSource(), 1.0F, 1.0F);
 				return true;
 			}
 		}
@@ -158,7 +158,7 @@ public class OreMagnetItem extends Item {
 								ParticlePacket particlePacket = new ParticlePacket();
 								for (int i = 0; i < 16; i++) {
 									Vec3 offset = new Vec3((level.getRandom().nextDouble() - 0.5D) * 1.25D, (level.getRandom().nextDouble() - 0.5D) * 1.25D, (level.getRandom().nextDouble() - 0.5D) * 1.25D);
-									particlePacket.queueParticle(TFParticleType.LOG_CORE_PARTICLE.get(), false, false, xyz.add(offset), new Vec3(0.8, 0.9, 0.2));
+									particlePacket.queueParticle(TFParticleType.LOG_CORE_PARTICLE, false, false, xyz.add(offset), new Vec3(0.8, 0.9, 0.2));
 								}
 								PacketDistributor.sendToPlayer(serverplayer, particlePacket);
 							}

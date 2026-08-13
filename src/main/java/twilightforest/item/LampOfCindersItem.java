@@ -42,7 +42,7 @@ public class LampOfCindersItem extends Item {
 		if (this.burnBlock(world, pos)) {
 			if (player instanceof ServerPlayer serverPlayer) CriteriaTriggers.PLACED_BLOCK.trigger(serverPlayer, pos, player.getItemInHand(context.getHand()));
 
-			if (player != null) player.playSound(TFSounds.LAMP_BURN.get(), 0.5F, 1.5F);
+			if (player != null) player.playSound(TFSounds.LAMP_BURN.value(), 0.5F, 1.5F);
 
 			// spawn flame particles
 			for (int i = 0; i < 10; i++) {
@@ -60,7 +60,7 @@ public class LampOfCindersItem extends Item {
 	private boolean burnBlock(Level level, BlockPos pos) {
 		BlockState state = level.getBlockState(pos);
 		if (state.is(TFBlocks.BROWN_THORNS) || state.is(TFBlocks.GREEN_THORNS)) {
-			level.setBlockAndUpdate(pos, TFBlocks.BURNT_THORNS.get().withPropertiesOf(state));
+			level.setBlockAndUpdate(pos, TFBlocks.BURNT_THORNS.withPropertiesOf(state));
 			return true;
 		} else return false;
 	}
@@ -81,7 +81,7 @@ public class LampOfCindersItem extends Item {
 		boolean burned = false;
 
 		if (!level.isClientSide()) {
-			level.playSound(null, user.blockPosition(), TFSounds.LAMP_BURN.get(), user.getSoundSource(), 1.5F, 0.8F);
+			level.playSound(null, user.blockPosition(), TFSounds.LAMP_BURN.value(), user.getSoundSource(), 1.5F, 0.8F);
 
 			// set nearby thorns to burnt
 			for (int dx = -range; dx <= range; dx++) {

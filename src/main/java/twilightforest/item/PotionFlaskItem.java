@@ -63,7 +63,7 @@ public class PotionFlaskItem extends Item {
 				}
 
 				this.changeAndConsumeFlask(stack, player, flask -> flask.update(TFDataComponents.POTION_FLASK_CONTENTS, flaskContents, component -> component.tryAddDose(potionContents)));
-				player.playSound(TFSounds.FLASK_FILL.get(), (flaskContents.doses() + 1) * 0.25F, player.level().getRandom().nextFloat() * 0.1F + 0.9F);
+				player.playSound(TFSounds.FLASK_FILL.value(), (flaskContents.doses() + 1) * 0.25F, player.level().getRandom().nextFloat() * 0.1F + 0.9F);
 				return true;
 			}
 		}
@@ -84,7 +84,7 @@ public class PotionFlaskItem extends Item {
 				}
 
 				this.changeAndConsumeFlask(stack, player, flask -> flask.update(TFDataComponents.POTION_FLASK_CONTENTS, flaskContents, component -> component.tryAddDose(potionContents)));
-				player.playSound(TFSounds.FLASK_FILL.get(), (flaskContents.doses() + 1) * 0.25F, player.level().getRandom().nextFloat() * 0.1F + 0.9F);
+				player.playSound(TFSounds.FLASK_FILL.value(), (flaskContents.doses() + 1) * 0.25F, player.level().getRandom().nextFloat() * 0.1F + 0.9F);
 				return true;
 			}
 		}
@@ -133,7 +133,7 @@ public class PotionFlaskItem extends Item {
 					}
 				}
 				if (!player.isCreative() && !player.isSpectator() && player instanceof ServerPlayer serverPlayer) {
-					flaskContents.potion().potion().ifPresent(potion -> player.getData(TFDataAttachments.FLASK_DOSES).trackDrink(potion, serverPlayer));
+					flaskContents.potion().potion().ifPresent(potion -> player.getAttached(TFDataAttachments.FLASK_DOSES).trackDrink(potion, serverPlayer));
 				}
 
 				player.awardStat(Stats.ITEM_USED.get(this));
@@ -144,9 +144,9 @@ public class PotionFlaskItem extends Item {
 							if (component.breakable()) {
 								if (component.breakage() >= DOSES) {
 									flask.shrink(1);
-									level.playSound(null, player, TFSounds.BRITTLE_FLASK_BREAK.get(), player.getSoundSource(), 1.5F, 0.7F);
+									level.playSound(null, player, TFSounds.BRITTLE_FLASK_BREAK.value(), player.getSoundSource(), 1.5F, 0.7F);
 								} else {
-									level.playSound(null, player, TFSounds.BRITTLE_FLASK_CRACK.get(), player.getSoundSource(), 1.5F, 2.0F);
+									level.playSound(null, player, TFSounds.BRITTLE_FLASK_CRACK.value(), player.getSoundSource(), 1.5F, 2.0F);
 								}
 							}
 							return component;

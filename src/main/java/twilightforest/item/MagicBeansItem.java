@@ -30,8 +30,8 @@ public class MagicBeansItem extends Item {
 		int maxY = Math.max(pos.getY() + 100, 175);
 		if (pos.getY() < maxY && level.getBlockState(pos).is(TFBlocks.UBEROUS_SOIL) && level.getBlockState(pos.above()).isAir()) {
 			if (!level.isClientSide()) {
-				level.setBlockAndUpdate(pos.above(), TFBlocks.BEANSTALK_GROWER.get().defaultBlockState());
-				level.playSound(null, pos, TFSounds.BEANSTALK_GROWTH.get(), SoundSource.BLOCKS, 4.0F, 1.0F);
+				level.setBlockAndUpdate(pos.above(), TFBlocks.BEANSTALK_GROWER.defaultBlockState());
+				level.playSound(null, pos, TFSounds.BEANSTALK_GROWTH.value(), SoundSource.BLOCKS, 4.0F, 1.0F);
 				if (player instanceof ServerPlayer sp) {
 					player.awardStat(Stats.ITEM_USED.get(this));
 					CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(sp, pos, stack);

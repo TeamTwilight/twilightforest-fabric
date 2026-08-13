@@ -27,7 +27,7 @@ public class ExanimateEssenceItem extends Item {
 		BlockState state = level.getBlockState(blockpos);
 		if (state.getBlock() instanceof CandleBlock candleBlock && OminousCandleBlock.CANDLE_MAP.containsKey(candleBlock) && state.getValue(CandleBlock.LIT)) {
 			this.playSound(level, blockpos);
-			level.setBlockAndUpdate(blockpos, OminousCandleBlock.CANDLE_MAP.get(candleBlock).get().defaultBlockState().setValue(OminousCandleBlock.CANDLES, state.getValue(CandleBlock.CANDLES)));
+			level.setBlockAndUpdate(blockpos, OminousCandleBlock.CANDLE_MAP.get(candleBlock).defaultBlockState().setValue(OminousCandleBlock.CANDLES, state.getValue(CandleBlock.CANDLES)));
 			level.gameEvent(context.getPlayer(), GameEvent.BLOCK_PLACE, blockpos);
 			OminousCandleBlock.eruptFlameParticles(level, blockpos, level.getBlockState(blockpos));
 			flag = true;
@@ -35,9 +35,9 @@ public class ExanimateEssenceItem extends Item {
 			blockpos = blockpos.relative(context.getClickedFace());
 			state = level.getBlockState(blockpos);
 
-			if (state.canBeReplaced() && TFBlocks.OMINOUS_FIRE.get().canSurvive(TFBlocks.OMINOUS_FIRE.get().defaultBlockState(), level, blockpos)) {
+			if (state.canBeReplaced() && TFBlocks.OMINOUS_FIRE.canSurvive(TFBlocks.OMINOUS_FIRE.defaultBlockState(), level, blockpos)) {
 				this.playSound(level, blockpos);
-				level.setBlockAndUpdate(blockpos, TFBlocks.OMINOUS_FIRE.get().defaultBlockState());
+				level.setBlockAndUpdate(blockpos, TFBlocks.OMINOUS_FIRE.defaultBlockState());
 				level.gameEvent(context.getPlayer(), GameEvent.BLOCK_PLACE, blockpos);
 				flag = true;
 			}
@@ -54,7 +54,7 @@ public class ExanimateEssenceItem extends Item {
 	private void playSound(Level level, BlockPos pos) {
 		RandomSource randomsource = level.getRandom();
 		level.playSound(
-			null, pos, TFSounds.OMINOUS_FIRE.get(), SoundSource.BLOCKS, 1.5F, (randomsource.nextFloat() - randomsource.nextFloat()) * 0.2F + 0.75F
+			null, pos, TFSounds.OMINOUS_FIRE.value(), SoundSource.BLOCKS, 1.5F, (randomsource.nextFloat() - randomsource.nextFloat()) * 0.2F + 0.75F
 		);
 	}
 }

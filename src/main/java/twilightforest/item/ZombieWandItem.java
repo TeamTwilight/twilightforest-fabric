@@ -31,7 +31,7 @@ public class ZombieWandItem extends ScepterItem {
 			BlockHitResult result = getPlayerPOVHitResult(level, player, ClipContext.Fluid.NONE);
 
 			if (result.getType() != HitResult.Type.MISS) {
-				LoyalZombie zombie = TFEntities.LOYAL_ZOMBIE.get().create(level, EntitySpawnReason.SPAWN_ITEM_USE);
+				LoyalZombie zombie = TFEntities.LOYAL_ZOMBIE.create(level, EntitySpawnReason.SPAWN_ITEM_USE);
 				zombie.snapTo(result.getLocation());
 				if (!level.noCollision(zombie, zombie.getBoundingBox())) {
 					return InteractionResult.PASS;
@@ -49,7 +49,7 @@ public class ZombieWandItem extends ScepterItem {
 				if (!player.isCreative()) {
 					stack.hurtWithoutBreaking(1, player);
 				}
-				zombie.playSound(TFSounds.ZOMBIE_SCEPTER_USE.get(), 1.0F, 1.0F);
+				zombie.playSound(TFSounds.ZOMBIE_SCEPTER_USE.value(), 1.0F, 1.0F);
 			}
 		}
 		return InteractionResult.SUCCESS;

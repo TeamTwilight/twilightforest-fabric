@@ -25,7 +25,7 @@ public class IceBombItem extends Item implements ProjectileItem {
 	@Override
 	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		ItemStack itemStack = player.getItemInHand(hand);
-		level.playSound(null, player.blockPosition(), TFSounds.ICE_BOMB_FIRED.get(), SoundSource.PLAYERS, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
+		level.playSound(null, player.blockPosition(), TFSounds.ICE_BOMB_FIRED.value(), SoundSource.PLAYERS, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
 		if (level instanceof ServerLevel serverLevel) {
 			Projectile.spawnProjectileFromRotation(IceBomb::new, serverLevel, itemStack, player, -5.0F, 1.25F, 1.0F);
 		}

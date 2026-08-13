@@ -39,7 +39,7 @@ public class CubeOfAnnihilationItem extends Item {
 			return InteractionResult.PASS;
 
 		if (!level.isClientSide()) {
-			CubeOfAnnihilation launchedCube = new CubeOfAnnihilation(TFEntities.CUBE_OF_ANNIHILATION.get(), level, player, stack);
+			CubeOfAnnihilation launchedCube = new CubeOfAnnihilation(TFEntities.CUBE_OF_ANNIHILATION, level, player, stack);
 			level.addFreshEntity(launchedCube);
 			stack.set(TFDataComponents.THROWN_PROJECTILE, launchedCube.getUUID());
 		}

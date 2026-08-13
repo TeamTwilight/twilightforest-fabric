@@ -27,7 +27,7 @@ public class JarItem extends BlockItem {
 
 	@Override
 	public ItemStack getDefaultInstance() {
-		return Util.make(super.getDefaultInstance(), stack -> stack.set(TFDataComponents.JAR_LID.get(), new JarLid(this.getBlock().getDefaultLid())));
+		return Util.make(super.getDefaultInstance(), stack -> stack.set(TFDataComponents.JAR_LID, new JarLid(this.getBlock().getDefaultLid())));
 	}
 
 	@Override

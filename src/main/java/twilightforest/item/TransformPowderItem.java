@@ -52,7 +52,7 @@ public class TransformPowderItem extends Item {
 		//dont transform tamed animals that have other owners
 		if (target instanceof OwnableEntity ownable && ownable.getOwner() != user) return false;
 
-		var datamap = target.getType().builtInRegistryHolder().getData(TFDataMaps.TRANSFORMATION_POWDER);
+		var datamap = TFDataMaps.TRANSFORMATION_POWDER.get(target.typeHolder());
 
 		if (datamap != null) {
 			boolean flag = EntityUtil.convertEntity(target, datamap.result());

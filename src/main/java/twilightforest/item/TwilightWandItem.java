@@ -18,7 +18,7 @@ public class TwilightWandItem extends ScepterItem {
 
 	@Override
 	public InteractionResult performScepterAction(Level level, ItemStack stack, Player player, InteractionHand hand) {
-		player.playSound(TFSounds.TWILIGHT_SCEPTER_USE.get(), 1.0F, (level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.2F + 1.0F);
+		player.playSound(TFSounds.TWILIGHT_SCEPTER_USE.value(), 1.0F, (level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.2F + 1.0F);
 
 		if (!level.isClientSide()) {
 			level.addFreshEntity(new TwilightWandBolt(level, player));

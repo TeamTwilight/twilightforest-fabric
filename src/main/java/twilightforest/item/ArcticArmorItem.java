@@ -33,7 +33,7 @@ public class ArcticArmorItem extends Item {
 
 	@Override
 	public boolean canWalkOnPowderedSnow(ItemStack stack, LivingEntity wearer) {
-		return stack.is(TFItems.ARCTIC_BOOTS.get());
+		return stack.is(TFItems.ARCTIC_BOOTS);
 	}
 
 	public static final class ArmorRender extends TFSimpleArmorRenderer {

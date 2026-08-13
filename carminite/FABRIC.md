@@ -10,6 +10,7 @@ TODO
 - Gold Ingot to ConventionalItemTags.GOLD_INGOTS
 - Ores to ConventionalBlocktags.ORES and ConventionalItemTags.ORES
 - Redstone Dust to ConventionalItemtags.REDSTONE_DUSTS
+- Bosses to ConventionalEntityTypeTags.BOSSES
 
 ## ICondition for Uncrafting Table
 - Replace the UncraftingTableCondition usages with ResourceCondition from Fabric

@@ -18,9 +18,6 @@ import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.EventHooks;
-import net.neoforged.neoforge.event.level.BlockEvent;
 import twilightforest.init.TFDataMaps;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
@@ -35,7 +32,7 @@ public class CrumbleHornItem extends Item {
 	@Override
 	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		player.startUsingItem(hand);
-		player.playSound(TFSounds.QUEST_RAM_AMBIENT.get(), 1.0F, 0.8F);
+		player.playSound(TFSounds.QUEST_RAM_AMBIENT.value(), 1.0F, 0.8F);
 		return InteractionResult.CONSUME;
 	}
 
@@ -43,7 +40,7 @@ public class CrumbleHornItem extends Item {
 	public void onUseTick(Level level, LivingEntity living, ItemStack stack, int count) {
 		if (count > 10 && count % 5 == 0 && level instanceof ServerLevel serverLevel) {
 			this.doCrumble(serverLevel, living, stack);
-			serverLevel.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.QUEST_RAM_AMBIENT.get(), living.getSoundSource(), 1.0F, 0.8F);
+			serverLevel.playSound(null, living.getX(), living.getY(), living.getZ(), TFSounds.QUEST_RAM_AMBIENT.value(), living.getSoundSource(), 1.0F, 0.8F);
 		}
 	}
 
@@ -84,7 +81,7 @@ public class CrumbleHornItem extends Item {
 		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 			if (this.crumbleBlock(serverLevel, living, pos)) {
 				if (living instanceof ServerPlayer player) {
-					player.awardStat(TFStats.BLOCKS_CRUMBLED.get());
+					player.awardStat(TFStats.BLOCKS_CRUMBLED);
 				}
 				stack.hurtAndBreak(1, living,living.getUsedItemHand());
 				if (stack.getDamageValue() >= stack.getMaxDamage()) break;
@@ -95,7 +92,7 @@ public class CrumbleHornItem extends Item {
 	private boolean crumbleBlock(ServerLevel serverLevel, LivingEntity living, BlockPos pos) {
 		BlockState state = serverLevel.getBlockState(pos);
 		Block block = state.getBlock();
-		var crumbleMap = block.builtInRegistryHolder().getData(TFDataMaps.CRUMBLE_HORN);
+		var crumbleMap = TFDataMaps.CRUMBLE_HORN.get(block.builtInRegistryHolder());
 
 		if (state.isAir() || crumbleMap == null) return false;
 

@@ -17,12 +17,12 @@ public class FortificationWandItem extends ScepterItem {
 	@Override
 	public InteractionResult performScepterAction(Level level, ItemStack stack, Player player, InteractionHand hand) {
 		if (!level.isClientSide()) {
-			player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).setShields(player, 5, true);
+			player.getAttached(TFDataAttachments.FORTIFICATION_SHIELDS).setShields(player, 5, true);
 			if (!player.isCreative()) {
 				stack.hurtWithoutBreaking(1, player);
 			}
 		}
-		player.playSound(TFSounds.SHIELD_ADD.get(), 1.0F, (player.getRandom().nextFloat() - player.getRandom().nextFloat()) * 0.2F + 1.0F);
+		player.playSound(TFSounds.SHIELD_ADD.value(), 1.0F, (player.getRandom().nextFloat() - player.getRandom().nextFloat()) * 0.2F + 1.0F);
 
 		if (!player.isCreative()) {
 			player.getCooldowns().addCooldown(stack, 1200);

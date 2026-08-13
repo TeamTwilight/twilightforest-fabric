@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import carminite.util.ServerLifecycleHooks;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -14,9 +15,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.component.Tool;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.jspecify.annotations.Nullable;
 import twilightforest.entity.projectile.ChainBlock;
 import twilightforest.init.TFDataComponents;
@@ -51,10 +52,10 @@ public class ChainBlockItem extends Item {
 		if (stack.get(TFDataComponents.THROWN_PROJECTILE) != null || !level.getWorldBorder().isWithinBounds(player.blockPosition()))
 			return InteractionResult.PASS;
 
-		player.playSound(TFSounds.BLOCK_AND_CHAIN_FIRED.get(), 0.5F, 1.0F / (level.getRandom().nextFloat() * 0.4F + 1.2F));
+		player.playSound(TFSounds.BLOCK_AND_CHAIN_FIRED.value(), 0.5F, 1.0F / (level.getRandom().nextFloat() * 0.4F + 1.2F));
 
 		if (!level.isClientSide()) {
-			ChainBlock launchedBlock = new ChainBlock(TFEntities.CHAIN_BLOCK.get(), level, player, hand, stack);
+			ChainBlock launchedBlock = new ChainBlock(TFEntities.CHAIN_BLOCK, level, player, hand, stack);
 			level.addFreshEntity(launchedBlock);
 			stack.set(TFDataComponents.THROWN_PROJECTILE, launchedBlock.getUUID());
 		}
@@ -94,7 +95,7 @@ public class ChainBlockItem extends Item {
 		if (stack.get(TFDataComponents.THROWN_PROJECTILE) == null || !state.is(TFBlockTags.MINEABLE_WITH_BLOCK_AND_CHAIN)) return false;
 		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
 		if (server != null) {
-			int destruction = stack.getEnchantmentLevel(server.registryAccess().holderOrThrow(TFEnchantments.DESTRUCTION));
+			int destruction = EnchantmentHelper.getItemEnchantmentLevel(server.registryAccess().carminite$holderOrThrow(TFEnchantments.DESTRUCTION), stack);
 			if (destruction > 0) return this.canHarvest(server.registryAccess(), state, destruction);
 		}
 		return false;

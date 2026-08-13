@@ -97,7 +97,7 @@ public class OreMeterItem extends Item {
 			stack.set(TFDataComponents.ORE_SCANNING, data);
 		}
 
-		level.playSound(player, player.blockPosition(), TFSounds.ORE_METER_CRACKLE.get(), SoundSource.PLAYERS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
+		level.playSound(player, player.blockPosition(), TFSounds.ORE_METER_CRACKLE.value(), SoundSource.PLAYERS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
 
 		return InteractionResult.PASS;
 	}
@@ -128,7 +128,7 @@ public class OreMeterItem extends Item {
 			if (state.is(TFBlockTags.ORE_METER_TARGETABLE)) {
 				stack.set(TFDataComponents.ORE_FILTER, state.getBlock());
 				context.getPlayer().sendOverlayMessage(Component.translatable("misc.twilightforest.ore_meter_set_block", Component.translatable(state.getBlock().getDescriptionId())));
-				context.getLevel().playSound(context.getPlayer(), context.getPlayer().blockPosition(), TFSounds.ORE_METER_TARGET_BLOCK.get(), SoundSource.PLAYERS, 0.5F, context.getLevel().getRandom().nextFloat() * 0.1F + 0.9F);
+				context.getLevel().playSound(context.getPlayer(), context.getPlayer().blockPosition(), TFSounds.ORE_METER_TARGET_BLOCK.value(), SoundSource.PLAYERS, 0.5F, context.getLevel().getRandom().nextFloat() * 0.1F + 0.9F);
 				return InteractionResult.SUCCESS;
 			}
 		}

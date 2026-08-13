@@ -17,7 +17,7 @@ public class HydraChopItem extends Item {
 	public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity living) {
 		// if the player is at zero food, achievements
 		if (living instanceof ServerPlayer player && player.getFoodData().getFoodLevel() <= 0) {
-			TFAdvancements.CONSUME_HYDRA_CHOP.get().trigger(player);
+			TFAdvancements.CONSUME_HYDRA_CHOP.trigger(player);
 		}
 		// then normal effects
 		return super.finishUsingItem(stack, level, living);

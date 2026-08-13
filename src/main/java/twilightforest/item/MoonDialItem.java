@@ -25,7 +25,7 @@ public class MoonDialItem extends Item {
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
 		BlockPos pos = Minecraft.getInstance().player != null ? Minecraft.getInstance().player.blockPosition() : BlockPos.ZERO;
-		builder.accept(getMoonPhase(context.level(), pos).withStyle(ChatFormatting.GRAY));
+		builder.accept(getMoonPhase(Minecraft.getInstance().level, pos).withStyle(ChatFormatting.GRAY));
 	}
 
 	public static MutableComponent getMoonPhase(@Nullable Level level, BlockPos pos) {
