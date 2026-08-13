@@ -1,6 +1,5 @@
 package twilightforest.item;
 
-import net.minecraft.core.Holder;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -15,11 +14,11 @@ public class HollowLogItem extends BlockItem {
 	private final Block verticalLog;
 	private final Block climbable;
 
-	public HollowLogItem(Holder<Block> horizontalLog, Holder<Block> verticalLog, Holder<Block> climbable, Properties properties) {
-		super(verticalLog.value(), properties);
-		this.horizontalLog = horizontalLog.value();
-		this.verticalLog = verticalLog.value();
-		this.climbable = climbable.value();
+	public HollowLogItem(Block horizontalLog, Block verticalLog, Block climbable, Properties properties) {
+		super(verticalLog, properties);
+		this.horizontalLog = horizontalLog;
+		this.verticalLog = verticalLog;
+		this.climbable = climbable;
 	}
 
 	@Nullable
