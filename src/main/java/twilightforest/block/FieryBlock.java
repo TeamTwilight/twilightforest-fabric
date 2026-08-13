@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import carminite.block.IFireSourceBlock;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,7 +18,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFItems;
 
-public class FieryBlock extends Block {
+public class FieryBlock extends Block implements IFireSourceBlock {
 	public FieryBlock(Properties properties) {
 		super(properties);
 	}

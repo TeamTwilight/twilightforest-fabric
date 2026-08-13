@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import carminite.block.ISpecialScaffoldingBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -23,7 +24,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class RopeBlock extends Block implements SimpleWaterloggedBlock {
+public class RopeBlock extends Block implements SimpleWaterloggedBlock, ISpecialScaffoldingBlock {
 	public static final BooleanProperty X = BooleanProperty.create("x");
 	public static final BooleanProperty Y = BooleanProperty.create("y");
 	public static final BooleanProperty Z = BooleanProperty.create("z");

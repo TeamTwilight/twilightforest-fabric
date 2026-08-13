@@ -9,7 +9,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -209,11 +208,6 @@ public class SkullChestBlock extends BaseEntityBlock implements BlockLoggingEnum
 	@Override
 	public FluidState getFluidState(BlockState state) {
 		return state.getValue(BlockLoggingEnum.MULTILOGGED).getFluid().defaultFluidState();
-	}
-
-	@Override
-	public boolean canEntityDestroy(BlockState state, BlockGetter getter, BlockPos pos, Entity entity) {
-		return false;
 	}
 
 	@Override

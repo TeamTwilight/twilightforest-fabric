@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import carminite.block.ISpecialLandingEffectsBlock;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -19,7 +20,7 @@ import org.jspecify.annotations.Nullable;
 import twilightforest.block.entity.ReactorDebrisBlockEntity;
 import twilightforest.init.TFBlockEntities;
 
-public class ReactorDebrisBlock extends BaseEntityBlock {
+public class ReactorDebrisBlock extends BaseEntityBlock implements ISpecialLandingEffectsBlock {
 
 	public static final MapCodec<ReactorDebrisBlock> CODEC = simpleCodec(ReactorDebrisBlock::new);
 

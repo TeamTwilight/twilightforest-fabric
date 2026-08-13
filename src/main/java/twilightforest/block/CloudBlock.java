@@ -1,5 +1,7 @@
 package twilightforest.block;
 
+import carminite.block.ISpecialLandingEffectsBlock;
+import carminite.block.ISpecialRunningEffectsBlock;
 import carminite.network.PacketDistributor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -26,7 +28,7 @@ import twilightforest.config.TFConfig;
 import twilightforest.init.TFParticleType;
 import twilightforest.network.ParticlePacket;
 
-public class CloudBlock extends Block {
+public class CloudBlock extends Block implements ISpecialLandingEffectsBlock, ISpecialRunningEffectsBlock {
 
 	protected final Biome.@Nullable Precipitation precipitation;
 

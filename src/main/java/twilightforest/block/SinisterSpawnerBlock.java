@@ -6,14 +6,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -60,11 +59,6 @@ public class SinisterSpawnerBlock extends BaseEntityBlock {
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
 		return createTickerHelper(blockEntityType, TFBlockEntities.SINISTER_SPAWNER, level.isClientSide() ? SinisterSpawnerBlockEntity::clientTick : SinisterSpawnerBlockEntity::serverTick);
-	}
-
-	@Override
-	public int getExpDrop(BlockState state, LevelAccessor level, BlockPos pos, @Nullable BlockEntity blockEntity, @Nullable Entity breaker, ItemStack tool) {
-		return 15 + level.getRandom().nextInt(15) + level.getRandom().nextInt(15);
 	}
 
 	//TODO
@@ -147,5 +141,15 @@ public class SinisterSpawnerBlock extends BaseEntityBlock {
 		}
 
 		return drops;
+	}
+
+	@Override
+	protected void spawnAfterBreak(BlockState state, ServerLevel level, BlockPos pos, ItemStack tool, boolean dropExperience) {
+		super.spawnAfterBreak(state, level, pos, tool, dropExperience);
+		if (dropExperience) {
+			this.popExperience(level, pos,
+				15 + level.getRandom().nextInt(15) + level.getRandom().nextInt(15)
+			);
+		}
 	}
 }

@@ -1,34 +1,31 @@
 package twilightforest.block;
 
 import carminite.network.PacketDistributor;
-import carminite.transfer.IResourceHandler;
-import carminite.transfer.item.ItemResource;
-import carminite.transfer.transaction.Transaction;
+import net.fabricmc.fabric.api.transfer.v1.item.ContainerStorage;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
+import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.transfer.ResourceHandlerUtil;
+import org.jspecify.annotations.Nullable;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFParticleType;
 import twilightforest.network.ParticlePacket;
 import twilightforest.tags.TFEntityTypeTags;
-import twilightforest.util.BlockCapabilityDirectionalCache;
 import twilightforest.util.WorldUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SortLogCoreBlock extends SpecialMagicLogBlock {
-
-	private final BlockCapabilityDirectionalCache<IResourceHandler<ItemResource>> capabilityCache = new BlockCapabilityDirectionalCache<>();
 
 	public SortLogCoreBlock(Properties properties) {
 		super(properties);
@@ -39,106 +36,170 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 		return !TFConfig.disableSortingCore;
 	}
 
-	//TODO fuckkkkkkkkk
 	@Override
 	void performTreeEffect(ServerLevel level, BlockPos pos, RandomSource rand) {
-		Map<List<IResourceHandler<ItemResource>>, Vec3> inputMap = new HashMap<>();
-		Map<IResourceHandler<ItemResource>, Vec3> outputMap = new HashMap<>();
+		Map<List<Storage<ItemVariant>>, Vec3> inputMap = new HashMap<>();
+		Map<Storage<ItemVariant>, Vec3> outputMap = new HashMap<>();
 
-		for (BlockPos blockPos : WorldUtil.getAllAround(pos, TFConfig.sortingCoreRange)) { // Get every itemHandler from every block in the area
-			if (!blockPos.equals(pos)) {
-				BlockEntity blockEntity = level.getBlockEntity(blockPos);
-				if (blockEntity != null) {
-					// Put it in the input if its within 2 blocks
-					if (Math.abs(blockPos.getX() - pos.getX()) <= 2 && Math.abs(blockPos.getY() - pos.getY()) <= 2 && Math.abs(blockPos.getZ() - pos.getZ()) <= 2) {
-						List<IResourceHandler<ItemResource>> handlers = new ArrayList<>();
-						for (Direction side : Direction.values()) {
-							IResourceHandler<ItemResource> handler = this.capabilityCache.get(Capabilities.Item.BLOCK, level, blockPos, side);
-							if (handler != null) handlers.add(handler);
-						}
-						if (!handlers.isEmpty()) {
-							inputMap.put(handlers, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
-						}
-					} else { // Output if its outside that range
-						for (Direction side : Direction.values()) {
-							IResourceHandler<ItemResource> handler = this.capabilityCache.get(Capabilities.Item.BLOCK, level, blockPos, side);
-							if (handler != null) outputMap.put(handler, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
-						}
+		for (BlockPos blockPos : WorldUtil.getAllAround(pos, TFConfig.sortingCoreRange)) {
+			if (blockPos.equals(pos)) {
+				continue;
+			}
+
+			BlockEntity blockEntity = level.getBlockEntity(blockPos);
+			if (blockEntity == null) {
+				continue;
+			}
+
+			Vec3 storagePos = Vec3.upFromBottomCenterOf(blockPos, 1.9D);
+
+			if (Math.abs(blockPos.getX() - pos.getX()) <= 2
+				&& Math.abs(blockPos.getY() - pos.getY()) <= 2
+				&& Math.abs(blockPos.getZ() - pos.getZ()) <= 2) {
+
+				List<Storage<ItemVariant>> storages = new ArrayList<>(6);
+
+				for (Direction side : Direction.values()) {
+					Storage<ItemVariant> storage = ItemStorage.SIDED.find(level, blockPos, side);
+					if (storage != null) {
+						storages.add(storage);
+					}
+				}
+
+				if (!storages.isEmpty()) {
+					inputMap.put(storages, storagePos);
+				}
+			} else {
+				for (Direction side : Direction.values()) {
+					Storage<ItemVariant> storage = ItemStorage.SIDED.find(level, blockPos, side);
+					if (storage != null) {
+						outputMap.put(storage, storagePos);
 					}
 				}
 			}
 		}
 
-		List<Entity> alreadyUsedForInput = new ArrayList<>(); // Keep track of entities we already have for inputs, so we can skip over them when looking for outputs
+		List<Entity> alreadyUsedForInput = new ArrayList<>();
 
 		level.getEntities((Entity) null, new AABB(pos).inflate(2), entity -> entity.isAlive() && entity.is(TFEntityTypeTags.SORTABLE_ENTITIES)).forEach(entity -> {
-			List<IResourceHandler<ItemResource>> handlers = new ArrayList<>();
-			for (Direction side : Direction.values()) {
-				IResourceHandler<ItemResource> handler = entity.getCapability(Capabilities.Item.ENTITY_AUTOMATION, side);
-				if (handler != null) handlers.add(handler);
-			}
-			if (!handlers.isEmpty()) {
-				inputMap.put(handlers, entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D));
+			Storage<ItemVariant> storage = getEntityStorage(entity);
+
+			if (storage != null) {
+				inputMap.put(List.of(storage), entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D));
 				alreadyUsedForInput.add(entity);
 			}
 		});
 
-		if (inputMap.isEmpty()) return; // No input
+		if (inputMap.isEmpty()) {
+			return;
+		}
 
 		level.getEntities((Entity) null, new AABB(pos).inflate(16), entity -> entity.isAlive() && !alreadyUsedForInput.contains(entity) && entity.is(TFEntityTypeTags.SORTABLE_ENTITIES)).forEach(entity -> {
-			for (Direction side : Direction.values()) {
-				IResourceHandler<ItemResource> handler = entity.getCapability(Capabilities.Item.ENTITY_AUTOMATION, side);
-				if (handler != null) outputMap.put(handler, entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D));
+			Storage<ItemVariant> storage = getEntityStorage(entity);
+
+			if (storage != null) {
+				outputMap.put(storage, entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D));
 			}
 		});
 
-		if (outputMap.isEmpty()) return; // No output
+		if (outputMap.isEmpty()) {
+			return;
+		}
 
-		for (Map.Entry<List<IResourceHandler<ItemResource>>, Vec3> inputHandlers : inputMap.entrySet()) {
+		for (Map.Entry<List<Storage<ItemVariant>>, Vec3> inputEntry : inputMap.entrySet()) {
 			boolean transferred = false;
-			for (IResourceHandler<ItemResource> inputIItemHandler : inputHandlers.getKey()) {
-				for (int i = 0; i < inputIItemHandler.size(); i++) {
-					ItemResource itemResource = inputIItemHandler.getResource(i);
-					if (itemResource.isEmpty()) continue;
-					try (Transaction tx = Transaction.openRoot()) {
-						if (inputIItemHandler.extract(i, itemResource, 1, tx) == 0) continue;
-						Map<IResourceHandler<ItemResource>, Integer> outputCounts = new HashMap<>();
 
-						for (IResourceHandler<ItemResource> outputHandler : outputMap.keySet()) {
-							int count = 0;
-							for (int j = 0; j < outputHandler.size(); j++) {
-								if (itemResource.equals(outputHandler.getResource(j))) count += outputHandler.getAmountAsInt(j);
-							}
-							if (count > 0) outputCounts.put(outputHandler, count);
+			for (Storage<ItemVariant> inputStorage : inputEntry.getKey()) {
+				for (Iterator<StorageView<ItemVariant>> it = inputStorage.nonEmptyIterator(); it.hasNext(); ) {
+					StorageView<ItemVariant> inputView = it.next();
+					ItemVariant itemVariant = inputView.getResource();
+
+					if (itemVariant.isBlank()) {
+						continue;
+					}
+
+					try (Transaction tx = Transaction.openOuter()) {
+						if (inputView.extract(itemVariant, 1, tx) != 1) {
+							continue;
 						}
 
-						List<IResourceHandler<ItemResource>> sortedOutputs = outputCounts.entrySet().stream()
-							.sorted(Map.Entry.<IResourceHandler<ItemResource>, Integer>comparingByValue().reversed())
+						Map<Storage<ItemVariant>, Long> outputCounts = new HashMap<>();
+
+						for (Storage<ItemVariant> outputStorage : outputMap.keySet()) {
+							long count = 0;
+
+							for (Iterator<StorageView<ItemVariant>> iter = outputStorage.nonEmptyIterator(); iter.hasNext(); ) {
+								StorageView<ItemVariant> outputView = iter.next();
+								if (itemVariant.equals(outputView.getResource())) {
+									count += outputView.getAmount();
+								}
+							}
+
+							if (count > 0) {
+								outputCounts.put(outputStorage, count);
+							}
+						}
+
+						List<Storage<ItemVariant>> sortedOutputs = outputCounts.entrySet()
+							.stream()
+							.sorted(Map.Entry.<Storage<ItemVariant>, Long>comparingByValue().reversed())
 							.map(Map.Entry::getKey)
 							.toList();
 
-						for (IResourceHandler<ItemResource> outputHandler : sortedOutputs) {
-							if (ResourceHandlerUtil.insertStacking(outputHandler, itemResource, 1, tx) == 1) {
+						for (Storage<ItemVariant> outputStorage : sortedOutputs) {
+							if (outputStorage.insert(itemVariant, 1, tx) == 1) {
 								tx.commit();
 								transferred = true;
 
-								Vec3 xyz = outputMap.get(outputHandler);
-								Vec3 diff = inputHandlers.getValue().subtract(xyz);
+								Vec3 xyz = outputMap.get(outputStorage);
+								Vec3 diff = inputEntry.getValue().subtract(xyz);
 
 								ParticlePacket particlePacket = new ParticlePacket();
+
 								double x = diff.x - 0.25D + rand.nextDouble() * 0.5D;
 								double y = diff.y - 1.75D + rand.nextDouble() * 0.5D;
 								double z = diff.z - 0.25D + rand.nextDouble() * 0.5D;
-								particlePacket.queueParticle(TFParticleType.SORTING_PARTICLE, false, false, xyz, new Vec3(x, y, z).scale(1D / diff.length()));
-								PacketDistributor.sendToPlayersNear(level, null, xyz.x(), xyz.y(), xyz.z(), 64.0D, particlePacket);
+
+								particlePacket.queueParticle(
+									TFParticleType.SORTING_PARTICLE,
+									false,
+									false,
+									xyz,
+									new Vec3(x, y, z).scale(1D / diff.length())
+								);
+
+								PacketDistributor.sendToPlayersNear(
+									level,
+									null,
+									xyz.x(),
+									xyz.y(),
+									xyz.z(),
+									64.0D,
+									particlePacket
+								);
+
 								break;
 							}
 						}
 					}
-					if (transferred) break;// If we transferred the item from this Entry already, we break, since all IItemHandlers in one entry come from the same source
+
+					if (transferred) {
+						break;
+					}
 				}
-				if (transferred) break; // Again, since we only transfer once per source, break
+
+				if (transferred) {
+					break;
+				}
 			}
 		}
+	}
+
+	private static @Nullable Storage<ItemVariant> getEntityStorage(Entity entity) {
+		if (entity instanceof Container container) {
+			return ContainerStorage.of(container, null);
+		}
+
+		return null;
 	}
 }

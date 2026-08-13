@@ -1,10 +1,11 @@
 package twilightforest.block;
 
+import carminite.block.ISpecialStickyBlock;
 import net.minecraft.world.level.block.SlimeBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.init.TFBlocks;
 
-public class MazeSlimeBlock extends SlimeBlock {
+public class MazeSlimeBlock extends SlimeBlock implements ISpecialStickyBlock {
 	public MazeSlimeBlock(Properties properties) {
 		super(properties);
 	}
