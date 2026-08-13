@@ -4,6 +4,7 @@ TODO
 ## Main Init
 - ResourceConditions.register(UncraftingTableCondition.TYPE);
 - Register client-side MapData cache clearing event by calling MapDatamanger.init()
+- Register MasonJar BE storage
 
 ## Add these to Fabric convention tags
 - Gold Ingot to ConventionalItemTags.GOLD_INGOTS
@@ -21,9 +22,6 @@ TODO
 
 # PartEntity
 - Port system to Fabric
-
-# Transfer
-- Create NeoForge transfer shim for Fabric
 
 # Uberous Soil
 - Add Uberous Soil to the proper Block tags in order to have it support crops
