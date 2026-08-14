@@ -1,10 +1,12 @@
 package twilightforest.item;
 
+import carminite.item.ICustomArrowItem;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
+import twilightforest.init.TFDataAttachments;
 
-public class EnderBowItem extends BowItem {
+public class EnderBowItem extends BowItem implements ICustomArrowItem {
 	public static final String KEY = "twilightforest:ender";
 
 	public EnderBowItem(Properties properties) {
@@ -13,7 +15,7 @@ public class EnderBowItem extends BowItem {
 
 	@Override
 	public AbstractArrow customArrow(AbstractArrow arrow, ItemStack projectileStack, ItemStack weaponStack) {
-		arrow.getPersistentData().putBoolean(KEY, true);
+		arrow.setAttached(TFDataAttachments.ENDER_ARROW, true);
 		return arrow;
 	}
 }

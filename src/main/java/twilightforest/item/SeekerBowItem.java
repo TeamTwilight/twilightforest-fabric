@@ -1,11 +1,12 @@
 package twilightforest.item;
 
+import carminite.item.ICustomArrowItem;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import twilightforest.entity.projectile.SeekerArrow;
 
-public class SeekerBowItem extends BowItem {
+public class SeekerBowItem extends BowItem implements ICustomArrowItem {
 
 	public SeekerBowItem(Properties properties) {
 		super(properties);

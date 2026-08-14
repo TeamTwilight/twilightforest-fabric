@@ -46,6 +46,9 @@ public class TFDataAttachments {
 	public static final AttachmentType<Boolean> IS_GRADUALLY_GLIDING = AttachmentRegistry.create(TFMain.prefix("is_gradually_gliding"), b -> b.initializer(() -> false).persistent(Codec.BOOL).syncWith(ByteBufCodecs.BOOL, AttachmentSyncPredicate.all()));
 	public static final AttachmentType<SlimySolesAttachment> SLIMY_SOLES_BOUNCE_INFO = AttachmentRegistry.create(TFMain.prefix("slimy_soles_bounce_info"), b -> b.initializer(SlimySolesAttachment::new).persistent(SlimySolesAttachment.CODEC.codec()));
 
+	// Added specifically for Fabric
+	public static final AttachmentType<Boolean> ENDER_ARROW = AttachmentRegistry.create(TFMain.prefix("is_ender_arrow"), b -> b.initializer(() -> false).persistent(Codec.BOOL));
+
 	public static void init() {
 		TFMain.LOGGER.info("Initializing attachment types...");
 	}
