@@ -1,4 +1,4 @@
-package carminite.event.impl;
+package carminite.event.internal;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;

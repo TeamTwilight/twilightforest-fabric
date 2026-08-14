@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import carminite.item.IContinuousUseItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -31,7 +32,7 @@ import twilightforest.tags.TFBlockTags;
 
 import java.util.function.Consumer;
 
-public class OreMeterItem extends Item {
+public class OreMeterItem extends Item implements IContinuousUseItem {
 	public static final int MAX_CHUNK_SEARCH_RANGE = 2;
 	public static final int LOAD_TIME = 50;
 

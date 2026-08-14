@@ -1,4 +1,4 @@
-package carminite.event.hooks;
+package carminite.hooks;
 
 import carminite.event.EntityStruckByLightningEvent;
 import net.minecraft.world.entity.Entity;

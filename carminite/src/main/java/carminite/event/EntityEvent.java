@@ -1,6 +1,6 @@
 package carminite.event;
 
-import carminite.event.impl.CarminiteEvent;
+import carminite.event.internal.CarminiteEvent;
 import net.minecraft.world.entity.Entity;
 
 public abstract class EntityEvent extends CarminiteEvent {

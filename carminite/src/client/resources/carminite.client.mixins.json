@@ -4,7 +4,8 @@
   "package": "carminite.client.mixin",
   "compatibilityLevel": "JAVA_25",
   "client": [
-    "MultiPlayerGameModeMixin"
+    "MultiPlayerGameModeMixin",
+    "ItemInHandRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

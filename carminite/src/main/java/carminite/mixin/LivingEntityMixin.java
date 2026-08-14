@@ -2,6 +2,7 @@ package carminite.mixin;
 
 import carminite.block.ISpecialLandingEffectsBlock;
 import carminite.block.ISpecialScaffoldingBlock;
+import carminite.item.IContinuousUseItem;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -9,13 +10,25 @@ import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(LivingEntity.class)
-public class LivingEntityMixin {
+public abstract class LivingEntityMixin {
+
+	@Shadow
+	protected ItemStack useItem;
+
+	@Shadow
+	public abstract ItemStack getItemInHand(InteractionHand hand);
+
+	@Shadow
+	public abstract InteractionHand getUsedItemHand();
 
 	@WrapOperation(
 		method = "checkFallDamage(DZLnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)V",
@@ -56,11 +69,30 @@ public class LivingEntityMixin {
 			target = "Lnet/minecraft/world/level/block/state/BlockState;is(Ljava/lang/Object;)Z"
 		)
 	)
-	private boolean customScaffoldingMovement(boolean original) {
+	private boolean carminite$customScaffoldingMovement(boolean original) {
 		LivingEntity livingEntity = (LivingEntity) (Object) this;
 		BlockState state = livingEntity.getInBlockState();
 		if (state.getBlock() instanceof ISpecialScaffoldingBlock specialScaffoldingBlock) {
 			return specialScaffoldingBlock.isScaffolding(state, livingEntity.level(), livingEntity.blockPosition(), livingEntity);
+		}
+		return original;
+	}
+
+	@ModifyExpressionValue(
+		method = "updatingUsingItem",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/world/item/ItemStack;isSameItem(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemStack;)Z"
+		)
+	)
+	public boolean carminite$canContinueUsing(boolean original) {
+		if (this.useItem.getItem() instanceof IContinuousUseItem continuousUseItem) {
+			ItemStack to = this.getItemInHand(this.getUsedItemHand());
+			if (!this.useItem.isEmpty() && !to.isEmpty())
+			{
+				return continuousUseItem.canContinueUsing(this.useItem, to);
+			}
+			return false;
 		}
 		return original;
 	}

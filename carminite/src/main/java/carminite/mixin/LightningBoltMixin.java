@@ -1,6 +1,6 @@
 package carminite.mixin;
 
-import carminite.event.hooks.EventHooks;
+import carminite.hooks.EventHooks;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;

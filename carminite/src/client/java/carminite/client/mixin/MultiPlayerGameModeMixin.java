@@ -1,6 +1,6 @@
 package carminite.client.mixin;
 
-import carminite.event.hooks.CommonHooks;
+import carminite.hooks.CommonHooks;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;

@@ -1,6 +1,7 @@
 package twilightforest.item;
 
-import carminite.event.hooks.CommonHooks;
+import carminite.hooks.CommonHooks;
+import carminite.item.IContinuousUseItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -25,7 +26,7 @@ import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
 import twilightforest.util.WorldUtil;
 
-public class CrumbleHornItem extends Item {
+public class CrumbleHornItem extends Item implements IContinuousUseItem {
 
 	public CrumbleHornItem(Properties properties) {
 		super(properties);

@@ -1,6 +1,6 @@
 package twilightforest.block;
 
-import carminite.event.hooks.EventHooks;
+import carminite.hooks.EventHooks;
 import carminite.network.PacketDistributor;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.DisplayInfo;

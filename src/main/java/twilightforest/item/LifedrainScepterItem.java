@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import carminite.item.IContinuousUseItem;
 import carminite.network.PacketDistributor;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalEntityTypeTags;
 import net.minecraft.client.Minecraft;
@@ -42,7 +43,7 @@ import twilightforest.util.entities.EntityUtil;
 import java.util.List;
 import java.util.Optional;
 
-public class LifedrainScepterItem extends ScepterItem {
+public class LifedrainScepterItem extends ScepterItem implements IContinuousUseItem {
 
 	public LifedrainScepterItem(Properties properties) {
 		super(properties);

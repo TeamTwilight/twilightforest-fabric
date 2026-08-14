@@ -1,4 +1,4 @@
-package carminite.client.network.impl;
+package carminite.client.network.internal;
 
 import carminite.network.IPayloadContext;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;

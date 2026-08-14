@@ -1,4 +1,4 @@
-package carminite.event.hooks;
+package carminite.hooks;
 
 import carminite.event.BreakBlockEvent;
 import net.minecraft.core.BlockPos;

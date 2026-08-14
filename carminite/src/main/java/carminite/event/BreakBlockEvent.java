@@ -1,6 +1,6 @@
 package carminite.event;
 
-import carminite.event.impl.ICancellableEvent;
+import carminite.event.internal.ICancellableEvent;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.core.BlockPos;

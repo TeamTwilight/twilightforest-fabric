@@ -1,6 +1,6 @@
 package carminite.event;
 
-import carminite.event.impl.CarminiteEvent;
+import carminite.event.internal.CarminiteEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;

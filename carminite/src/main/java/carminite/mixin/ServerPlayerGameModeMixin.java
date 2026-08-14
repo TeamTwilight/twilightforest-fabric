@@ -1,6 +1,6 @@
 package carminite.mixin;
 
-import carminite.event.hooks.CommonHooks;
+import carminite.hooks.CommonHooks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
