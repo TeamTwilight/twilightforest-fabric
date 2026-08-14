@@ -33,4 +33,12 @@ public class EventHooks {
 			return -1;
 		return event.getCharge();
 	}
+
+	public static void onStartEntityTracking(Entity entity, Player player) {
+		PlayerEvent.START_TRACKING.invoker().onStartEntityTracking(new PlayerEvent.StartTrackingImpl(player, entity));
+	}
+
+	public static void onStopEntityTracking(Entity entity, Player player) {
+		PlayerEvent.STOP_TRACKING.invoker().onStopEntityTracking(new PlayerEvent.StopTrackingImpl(player, entity));
+	}
 }

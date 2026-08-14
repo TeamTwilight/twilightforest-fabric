@@ -9,3 +9,4 @@ transitive-inject-interface net/minecraft/world/level/BaseSpawner carminite/exte
 transitive-inject-interface net/minecraft/world/level/block/state/BlockState carminite/extensions/IBlockStateExtension
 transitive-inject-interface net/minecraft/world/level/block/Block carminite/extensions/IBlockExtension
 transitive-inject-interface net/minecraft/world/item/Item carminite/extensions/IItemExtension
+transitive-inject-interface net/minecraft/world/entity/Entity carminite/extensions/IEntityExtension

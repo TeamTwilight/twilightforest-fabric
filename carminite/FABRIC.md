@@ -26,3 +26,9 @@ TODO
 
 # Uberous Soil
 - Add Uberous Soil to the proper Block tags in order to have it support crops
+
+# Hostile mounts
+- Create marker interface for hostile mounts and add a listener at the end of entity ticks
+
+# ChainBlock
+- Try to move away from IEntityWithComplexSpawn to a native Fabric API or direct mixins

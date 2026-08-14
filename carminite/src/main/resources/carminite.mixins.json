@@ -6,7 +6,9 @@
   "mixins": [
     "AbstractSkeletonMixin",
     "BeardifierMixin",
+    "BlockableEventLoopAccessor",
     "BowItemMixin",
+    "BundlePacketMixin",
     "EntityMixin",
     "ExplosionDamageCalculatorMixin",
     "FireBlockMixin",
@@ -20,6 +22,7 @@
     "PlayerMixin",
     "ProjectileWeaponItemMixin",
     "RedStoneWireBlockMixin",
+    "ServerEntityMixin",
     "ServerLevelMixin",
     "ServerPlayerGameModeMixin",
     "SpawnerBlockEntity$1Mixin",
