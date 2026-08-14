@@ -1,5 +1,6 @@
 package twilightforest.entity.boss;
 
+import carminite.entity.IMultiPartEntity;
 import carminite.entity.PartEntity;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
@@ -44,7 +45,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @SuppressWarnings("this-escape")
-public class Hydra extends BaseTFBoss {
+public class Hydra extends BaseTFBoss implements IMultiPartEntity {
 
 	private static final int TICKS_BEFORE_HEALING = 1000;
 	private static final int HEAD_RESPAWN_TICKS = 140;

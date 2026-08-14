@@ -1,5 +1,6 @@
 package twilightforest.entity.boss;
 
+import carminite.entity.IMultiPartEntity;
 import carminite.entity.PartEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -47,7 +48,7 @@ import twilightforest.util.WorldUtil;
 
 import java.util.List;
 
-public class SnowQueen extends BaseTFBoss implements IBreathAttacker {
+public class SnowQueen extends BaseTFBoss implements IBreathAttacker, IMultiPartEntity {
 
 	private static final int MAX_SUMMONS = 6;
 	private static final EntityDataAccessor<Boolean> BEAM_FLAG = SynchedEntityData.defineId(SnowQueen.class, EntityDataSerializers.BOOLEAN);

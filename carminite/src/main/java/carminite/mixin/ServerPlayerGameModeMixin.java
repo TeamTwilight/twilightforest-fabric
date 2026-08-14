@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ServerPlayerGameMode.class)
-public abstract class ServerPlayerGameModeMixin {
+public class ServerPlayerGameModeMixin {
 
 	@Shadow
 	protected ServerLevel level;

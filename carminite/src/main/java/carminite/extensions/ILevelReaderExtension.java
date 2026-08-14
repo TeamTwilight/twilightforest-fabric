@@ -6,9 +6,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.LevelReader;
 
-/**
- * Injected into LevelReader in twilightforest.classtweaker
- */
 public interface ILevelReaderExtension {
 	private LevelReader self() {
 		return (LevelReader) this;

@@ -1,18 +1,18 @@
 package twilightforest.util.multiparts;
 
+import carminite.entity.IMultiPartEntity;
+import carminite.network.PacketDistributor;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.world.entity.Entity;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
-import tamaized.beanification.Component;
 import twilightforest.client.BakedMultiPartRenderers;
 import twilightforest.entity.TFPart;
 import twilightforest.network.UpdateTFMultipartPacket;
 
 import java.util.Iterator;
 
-@Component
 public class MultipartEntityUtil {
+	public static final MultipartEntityUtil INSTANCE = new MultipartEntityUtil();
 
 	public Iterator<Entity> injectTFPartEntities(Iterator<Entity> iter) {
 		return new MultipartEntityIteratorWrapper(iter);
@@ -26,7 +26,7 @@ public class MultipartEntityUtil {
 	}
 
 	public Entity sendDirtyMultipartEntityData(Entity entity) {
-		if (entity.isMultipartEntity())
+		if (entity instanceof IMultiPartEntity)
 			PacketDistributor.sendToPlayersTrackingEntity(entity, new UpdateTFMultipartPacket(entity));
 		return entity;
 	}

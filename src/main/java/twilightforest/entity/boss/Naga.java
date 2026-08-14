@@ -1,5 +1,6 @@
 package twilightforest.entity.boss;
 
+import carminite.entity.IMultiPartEntity;
 import carminite.entity.PartEntity;
 import carminite.network.PacketDistributor;
 import net.minecraft.core.BlockPos;
@@ -61,7 +62,7 @@ import twilightforest.util.entities.EntityUtil;
 import java.util.Objects;
 import java.util.UUID;
 
-public class Naga extends BaseTFBoss {
+public class Naga extends BaseTFBoss implements IMultiPartEntity {
 	private static final int DEATH_ANIMATION_DURATION = 24;
 	private static final int DEATH_PARTICLES_DURATION = 100;
 

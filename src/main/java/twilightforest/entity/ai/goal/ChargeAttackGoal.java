@@ -1,15 +1,14 @@
 package twilightforest.entity.ai.goal;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.entity.ITFCharger;
 import twilightforest.entity.boss.Minoshroom;
 import twilightforest.util.entities.EntityUtil;
@@ -98,7 +97,7 @@ public class ChargeAttackGoal extends Goal {
 				}
 			}
 		} else if (this.canBreak) {
-			if (!this.charger.level().isClientSide() && EventHooks.canEntityGrief(getServerLevel(this.charger), this.charger)) {
+			if (!this.charger.level().isClientSide() && getServerLevel(this.charger).getGameRules().get(GameRules.MOB_GRIEFING)) {
 
 				AABB bb = this.charger.getBoundingBox();
 				int minx = Mth.floor(bb.minX - 0.75D);

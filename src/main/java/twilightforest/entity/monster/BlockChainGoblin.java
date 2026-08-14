@@ -1,5 +1,6 @@
 package twilightforest.entity.monster;
 
+import carminite.entity.IMultiPartEntity;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -32,7 +33,7 @@ import twilightforest.util.entities.EntityUtil;
 
 import java.util.List;
 
-public class BlockChainGoblin extends Monster {
+public class BlockChainGoblin extends Monster implements IMultiPartEntity {
 	//this is here but its never been used
 	//private static final UUID MODIFIER_UUID = UUID.fromString("5CD17E52-A79A-43D3-A529-90FDE04B181E");
 	//private static final AttributeModifier MODIFIER = new AttributeModifier(MODIFIER_UUID, "speedPenalty", -0.25D, AttributeModifier.Operation.ADDITION);

@@ -5,9 +5,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceKey;
 
-/**
- * Injected into HolderLookup.Provider in twilightforest.classtweaker
- */
 public interface IHolderLookupProviderExtension {
 	private HolderLookup.Provider self() {
 		return (HolderLookup.Provider) this;

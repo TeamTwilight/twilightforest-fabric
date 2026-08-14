@@ -10,6 +10,7 @@
     "ExplosionDamageCalculatorMixin",
     "FireBlockMixin",
     "IllusionerMixin",
+    "LevelMixin",
     "LightningBoltMixin",
     "LivingEntityMixin",
     "MapItemMixin",
@@ -17,6 +18,7 @@
     "PistonStructureResolverMixin",
     "ProjectileWeaponItemMixin",
     "RedStoneWireBlockMixin",
+    "ServerLevelMixin",
     "ServerPlayerGameModeMixin",
     "SpawnerBlockEntity$1Mixin",
     "TrialSpawnerMixin"
