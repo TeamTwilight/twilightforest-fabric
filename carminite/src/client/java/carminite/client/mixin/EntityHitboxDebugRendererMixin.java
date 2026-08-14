@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class EntityHitboxDebugRendererMixin {
 
 	@Inject(
-		method = "showHitboxes",
+		method = "showHitboxes(Lnet/minecraft/world/entity/Entity;FZ)V",
 		at = @At("TAIL")
 	)
 	private void carminite$renderMultipartHitboxes(

@@ -6,6 +6,7 @@
   "mixins": [
     "AbstractSkeletonMixin",
     "BeardifierMixin",
+    "BowItemMixin",
     "EntityMixin",
     "ExplosionDamageCalculatorMixin",
     "FireBlockMixin",

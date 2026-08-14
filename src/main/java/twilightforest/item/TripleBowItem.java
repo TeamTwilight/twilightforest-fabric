@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import carminite.hooks.EventHooks;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;

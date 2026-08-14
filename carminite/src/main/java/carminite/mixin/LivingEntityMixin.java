@@ -79,7 +79,7 @@ public abstract class LivingEntityMixin {
 	}
 
 	@ModifyExpressionValue(
-		method = "updatingUsingItem",
+		method = "updatingUsingItem()V",
 		at = @At(
 			value = "INVOKE",
 			target = "Lnet/minecraft/world/item/ItemStack;isSameItem(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemStack;)Z"

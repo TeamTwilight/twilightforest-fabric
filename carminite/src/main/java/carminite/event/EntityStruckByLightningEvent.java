@@ -6,7 +6,7 @@ import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LightningBolt;
 
-public final class EntityStruckByLightningEvent {
+public class EntityStruckByLightningEvent {
 	public static final Event<Struck> EVENT = EventFactory.createArrayBacked(Struck.class, callbacks -> event -> {
 		for (Struck callback : callbacks) {
 			callback.onEntityStruckByLightning(event);

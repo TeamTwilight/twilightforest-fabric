@@ -18,7 +18,7 @@ import java.util.Optional;
 public class ExplosionDamageCalculatorMixin {
 
 	@Inject(
-		method = "getBlockExplosionResistance",
+		method = "getBlockExplosionResistance(Lnet/minecraft/world/level/Explosion;Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/material/FluidState;)Ljava/util/Optional;",
 		at = @At("HEAD"),
 		cancellable = true
 	)
