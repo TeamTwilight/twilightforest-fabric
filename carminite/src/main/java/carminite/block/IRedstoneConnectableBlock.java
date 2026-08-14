@@ -9,9 +9,6 @@ import net.minecraft.world.level.block.RepeaterBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
-/**
- * Injected into Block in twilightforest.classtweaker
- */
 public interface IRedstoneConnectableBlock {
 	default boolean canConnectRedstone(BlockState state, BlockGetter level, BlockPos pos, @Nullable Direction direction) {
 		if (state.is(Blocks.REDSTONE_WIRE)) {

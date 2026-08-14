@@ -16,6 +16,7 @@
     "MapItemMixin",
     "MinecartSpawner$1Mixin",
     "PistonStructureResolverMixin",
+    "PlayerMixin",
     "ProjectileWeaponItemMixin",
     "RedStoneWireBlockMixin",
     "ServerLevelMixin",

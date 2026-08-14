@@ -14,9 +14,6 @@ public interface IFlammableBlock {
 		return true;
 	}
 
-	/**
-	 * Helper method for mods which also handles vanilla
-	 */
 	static boolean onCaughtFireVanilla(BlockState state, Level level, BlockPos pos, @Nullable Direction direction, @Nullable LivingEntity igniter) {
 		if (state.getBlock() instanceof IFlammableBlock flammableBlock) {
 			return flammableBlock.onCaughtFire(state, level, pos, direction, igniter);

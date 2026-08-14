@@ -107,7 +107,7 @@ public class CrumbleHornItem extends Item implements IContinuousUseItem {
 		if (crumbleMap.result() == Blocks.AIR) {
 			if (serverLevel.getRandom().nextFloat() < crumbleMap.chanceToCrumble()) {
 				if (living instanceof Player player) {
-					if (block.canHarvestBlock(state, serverLevel, pos, player)) {
+					if (block.carminite$canHarvestBlock(state, serverLevel, pos, player)) {
 						serverLevel.removeBlock(pos, false);
 						block.playerDestroy(serverLevel, player, pos, state, serverLevel.getBlockEntity(pos), ItemStack.EMPTY);
 						serverLevel.levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, pos, Block.getId(state));
