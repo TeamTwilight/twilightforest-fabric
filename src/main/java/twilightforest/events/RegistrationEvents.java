@@ -2,10 +2,7 @@ package twilightforest.events;
 
 import com.google.common.collect.Maps;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.animal.Animal;
@@ -33,9 +30,6 @@ import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
-import net.neoforged.neoforge.registries.DataPackRegistryEvent;
-import net.neoforged.neoforge.registries.NewRegistryEvent;
-import net.neoforged.neoforge.registries.RegisterEvent;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.neoforged.neoforge.transfer.item.ItemResource;
@@ -45,36 +39,23 @@ import tamaized.beanification.Autowired;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
 import twilightforest.TFMain;
-import twilightforest.TFRegistries;
 import twilightforest.block.ChiseledCanopyShelfBlock;
 import twilightforest.block.entity.DryingRackBlockEntity;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.command.TFCommand;
-import twilightforest.config.ConfigSetup;
 import twilightforest.dispenser.TFDispenserBehaviors;
-import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.entity.RovingCube;
 import twilightforest.entity.boss.*;
 import twilightforest.entity.monster.*;
 import twilightforest.entity.passive.*;
 import twilightforest.entity.passive.quest.QuestReloadListener;
 import twilightforest.init.*;
-import twilightforest.init.custom.BiomeLayerStack;
-import twilightforest.init.custom.ChunkBlanketProcessors;
-import twilightforest.init.custom.TemplateMarkerHandlers;
 import twilightforest.init.custom.TravellersModifiersManager;
-import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 import twilightforest.loot.modifiers.GiantToolGroupingModifier;
 import twilightforest.network.*;
 import twilightforest.util.HolidayEvent;
-import twilightforest.util.Restriction;
-import twilightforest.util.woods.WoodPalette;
-import twilightforest.world.components.biomesources.TFBiomeProvider;
-import twilightforest.world.components.layer.BiomeDensitySource;
 import twilightforest.world.components.speleothem.StalactiteReloadListener;
-import twilightforest.world.components.structures.StructureSpeleothemConfig;
 import twilightforest.world.components.structures.util.StructureTemplateDefinitions;
-import twilightforest.world.components.structures.util.TemplateMarkerHandlerList;
 
 @Component
 public class RegistrationEvents {
@@ -91,27 +72,19 @@ public class RegistrationEvents {
 	@PostConstruct
 	private void setup(IEventBus bus) {
 		bus.addListener(this::init);
-		bus.addListener(this::sendIMCs);
-		bus.addListener(this::setupPackets);
 		bus.addListener(this::createDataMaps);
-		bus.addListener(this::registerExtraStuff);
 		bus.addListener(this::createNewRegistries);
 		bus.addListener(this::addBlockEntityTypes);
-		bus.addListener(this::setRegistriesForDatapack);
 		bus.addListener(this::registerGenericItemHandlers);
 		bus.addListener(this::addEntityAttributes);
 		bus.addListener(this::registerSpawnPlacements);
 		bus.addListener(TFCreativeTabs::addToTabs);
-
-		bus.addListener(ConfigSetup::loadConfigs);
-		bus.addListener(ConfigSetup::reloadConfigs);
 
 		NeoForge.EVENT_BUS.addListener(this::registerCommands);
 		NeoForge.EVENT_BUS.addListener(AddServerReloadListenersEvent.class, event -> event.addListener(TFMain.prefix("quest"), new QuestReloadListener()));
 		NeoForge.EVENT_BUS.addListener(AddServerReloadListenersEvent.class, event -> event.addListener(TFMain.prefix("travellers_cache"), TravellersModifiersManager.CacheInvalidationReloadListener.INSTANCE));
 		NeoForge.EVENT_BUS.addListener(StalactiteReloadListener.INSTANCE::registerListener);
 		NeoForge.EVENT_BUS.addListener(this.structureTemplateDefinitions::registerListener);
-		NeoForge.EVENT_BUS.addListener(ConfigSetup::syncUncraftingConfig);
 	}
 
 	private void registerGenericItemHandlers(RegisterCapabilitiesEvent event) {
@@ -164,36 +137,6 @@ public class RegistrationEvents {
 			TFBlocks.TRANSFORMATION_SIGN.get(), TFBlocks.TRANSFORMATION_WALL_SIGN.get(),
 			TFBlocks.MINING_SIGN.get(), TFBlocks.MINING_WALL_SIGN.get(),
 			TFBlocks.SORTING_SIGN.get(), TFBlocks.SORTING_WALL_SIGN.get());
-	}
-
-	public void createNewRegistries(NewRegistryEvent event) {
-		event.register(TFRegistries.BIOME_LAYER_TYPE);
-		event.register(TFRegistries.ENFORCEMENT);
-		event.register(TFRegistries.CHUNK_BLANKET_TYPES);
-		event.register(TFRegistries.TEMPLATE_MARKER_HANDLER_TYPES);
-		event.register(TFRegistries.ITEM_DISPLAY_TYPE);
-		event.register(TFRegistries.TRAVELLERS_MODIFIER_TYPE);
-	}
-
-	public void setRegistriesForDatapack(DataPackRegistryEvent.NewRegistry event) {
-		event.dataPackRegistry(TFRegistries.Keys.WOOD_PALETTES, WoodPalette.CODEC);
-		event.dataPackRegistry(TFRegistries.Keys.BIOME_STACK, BiomeLayerStack.DISPATCH_CODEC);
-		event.dataPackRegistry(TFRegistries.Keys.BIOME_TERRAIN_DATA, BiomeDensitySource.CODEC);
-		event.dataPackRegistry(TFRegistries.Keys.RESTRICTIONS, Restriction.CODEC, Restriction.CODEC);
-		event.dataPackRegistry(TFRegistries.Keys.MAGIC_PAINTINGS, MagicPaintingVariant.CODEC, MagicPaintingVariant.CODEC);
-		event.dataPackRegistry(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS, StructureSpeleothemConfig.CODEC);
-		event.dataPackRegistry(TFRegistries.Keys.CHUNK_BLANKET_PROCESSORS, ChunkBlanketProcessors.DISPATCH_CODEC);
-		event.dataPackRegistry(TFRegistries.Keys.TEMPLATE_MARKER_HANDLER, TemplateMarkerHandlers.DISPATCH_CODEC);
-		event.dataPackRegistry(TFRegistries.Keys.TEMPLATE_MARKER_HANDLER_LIST, TemplateMarkerHandlerList.CODEC);
-		event.dataPackRegistry(TFRegistries.Keys.DWARF_RABBIT_VARIANT, DwarfRabbitVariant.DIRECT_CODEC, DwarfRabbitVariant.DIRECT_CODEC);
-		event.dataPackRegistry(TFRegistries.Keys.TINY_BIRD_VARIANT, TinyBirdVariant.DIRECT_CODEC, TinyBirdVariant.DIRECT_CODEC);
-		event.dataPackRegistry(TFRegistries.Keys.TRAVELLERS_MODIFIERS, TravellersModifier.CODEC, TravellersModifier.CODEC);
-	}
-
-	public void registerExtraStuff(RegisterEvent evt) {
-		if (evt.getRegistryKey().equals(Registries.BIOME_SOURCE)) {
-			Registry.register(BuiltInRegistries.BIOME_SOURCE, TFMain.prefix("twilight_biomes"), TFBiomeProvider.TF_CODEC);
-		}
 	}
 
 	public void createDataMaps(RegisterDataMapTypesEvent event) {

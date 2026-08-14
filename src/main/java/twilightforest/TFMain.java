@@ -2,16 +2,34 @@ package twilightforest;
 
 import com.google.common.reflect.Reflection;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
+import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import twilightforest.config.ConfigSetup;
+import twilightforest.entity.MagicPaintingVariant;
+import twilightforest.entity.passive.DwarfRabbitVariant;
+import twilightforest.entity.passive.TinyBirdVariant;
 import twilightforest.init.*;
 import twilightforest.init.custom.*;
+import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
+import twilightforest.item.travellers_gear.modifiers.display.ItemDisplayType;
 import twilightforest.network.*;
+import twilightforest.util.Enforcement;
+import twilightforest.util.Restriction;
 import twilightforest.util.TFRemapper;
+import twilightforest.util.woods.WoodPalette;
+import twilightforest.world.components.biomesources.TFBiomeProvider;
+import twilightforest.world.components.chunkblanketing.ChunkBlanketType;
+import twilightforest.world.components.layer.BiomeDensitySource;
+import twilightforest.world.components.structures.StructureSpeleothemConfig;
+import twilightforest.world.components.structures.markerhandler.TemplateMarkerHandlerType;
+import twilightforest.world.components.structures.util.TemplateMarkerHandlerList;
 
 import java.util.Locale;
 
@@ -72,6 +90,10 @@ public final class TFMain implements ModInitializer {
 		TFRemapper.addRegistryAliases();
 
 		registerPackets();
+		registerCustomRegistries();
+		registerDynamicRegistries();
+		registerBiomeSource();
+		registerConfig();
 	}
 
 	public static void registerPackets() {
@@ -116,6 +138,43 @@ public final class TFMain implements ModInitializer {
 		ServerPlayNetworking.registerGlobalReceiver(CycleMapSlotPacket.TYPE, CycleMapSlotPacket::handle);
 		ServerPlayNetworking.registerGlobalReceiver(UncraftingGuiPacket.TYPE, UncraftingGuiPacket::handle);
 		ServerPlayNetworking.registerGlobalReceiver(WipeOreMeterPacket.TYPE, WipeOreMeterPacket::handle);
+	}
+
+	public static void registerCustomRegistries() {
+		FabricRegistryBuilder.create(TFRegistries.Keys.ENFORCEMENT).buildAndRegister();
+		FabricRegistryBuilder.create(TFRegistries.Keys.CHUNK_BLANKET_TYPE).buildAndRegister();
+		FabricRegistryBuilder.create(TFRegistries.Keys.TEMPLATE_MARKER_HANDLER_TYPE).buildAndRegister();
+		FabricRegistryBuilder.create(TFRegistries.Keys.ITEM_DISPLAY_TYPE).buildAndRegister();
+		FabricRegistryBuilder.create(TFRegistries.Keys.TRAVELLERS_MODIFIER_TYPE).buildAndRegister();
+	}
+
+	public static void registerDynamicRegistries() {
+		DynamicRegistries.registerSynced(TFRegistries.Keys.WOOD_PALETTES, WoodPalette.CODEC);
+		DynamicRegistries.registerSynced(TFRegistries.Keys.BIOME_STACK, BiomeLayerStack.DISPATCH_CODEC);
+		DynamicRegistries.register(TFRegistries.Keys.BIOME_TERRAIN_DATA, BiomeDensitySource.CODEC);
+		DynamicRegistries.registerSynced(TFRegistries.Keys.RESTRICTIONS, Restriction.CODEC);
+		DynamicRegistries.registerSynced(TFRegistries.Keys.MAGIC_PAINTINGS, MagicPaintingVariant.CODEC);
+		DynamicRegistries.registerSynced(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS, StructureSpeleothemConfig.CODEC);
+		DynamicRegistries.register(TFRegistries.Keys.CHUNK_BLANKET_PROCESSORS, ChunkBlanketProcessors.DISPATCH_CODEC);
+		DynamicRegistries.registerSynced(TFRegistries.Keys.TEMPLATE_MARKER_HANDLER, TemplateMarkerHandlers.DISPATCH_CODEC);
+		DynamicRegistries.registerSynced(TFRegistries.Keys.TEMPLATE_MARKER_HANDLER_LIST, TemplateMarkerHandlerList.CODEC);
+		DynamicRegistries.registerSynced(TFRegistries.Keys.DWARF_RABBIT_VARIANT, DwarfRabbitVariant.DIRECT_CODEC);
+		DynamicRegistries.registerSynced(TFRegistries.Keys.TINY_BIRD_VARIANT, TinyBirdVariant.DIRECT_CODEC);
+		DynamicRegistries.registerSynced(TFRegistries.Keys.TRAVELLERS_MODIFIERS, TravellersModifier.CODEC);
+	}
+
+	public static void registerBiomeSource() {
+		Registry.register(
+			BuiltInRegistries.BIOME_SOURCE,
+			TFMain.prefix("twilight_biomes"),
+			TFBiomeProvider.TF_CODEC
+		);
+	}
+
+	public static void registerConfig() {
+		ConfigSetup.loadConfigs();
+		ConfigSetup.reloadConfigs();
+		ConfigSetup.syncUncraftingConfig();
 	}
 
 	public static Identifier prefix(String name) {
