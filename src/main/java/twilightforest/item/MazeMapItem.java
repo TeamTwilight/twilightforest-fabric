@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import carminite.item.ICustomMapItem;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multiset;
@@ -34,7 +35,7 @@ import twilightforest.util.datamaps.OreMapOreColor;
 import java.util.Optional;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
-public class MazeMapItem extends MapItem {
+public class MazeMapItem extends MapItem implements ICustomMapItem {
 
 	public static final String STR_ID = "mazemap";
 	private static final int YSEARCH = 3;
@@ -69,7 +70,7 @@ public class MazeMapItem extends MapItem {
 
 	@Nullable
 	@Override
-	protected TFMazeMapData getCustomMapData(ItemStack stack, Level level) {
+	public TFMazeMapData getCustomMapData(ItemStack stack, Level level) {
 		TFMazeMapData mapdata = getData(stack, level);
 		if (mapdata == null && level instanceof ServerLevel serverLevel) {
 			BlockPos pos = serverLevel.getRespawnData().pos();

@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import carminite.item.ICustomMapItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -37,7 +38,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
-public class MagicMapItem extends MapItem {
+public class MagicMapItem extends MapItem implements ICustomMapItem {
 
 	public static final String STR_ID = "magicmap";
 
@@ -74,7 +75,7 @@ public class MagicMapItem extends MapItem {
 
 	@Nullable
 	@Override
-	protected TFMagicMapData getCustomMapData(ItemStack stack, Level level) {
+	public TFMagicMapData getCustomMapData(ItemStack stack, Level level) {
 		TFMagicMapData mapdata = getData(stack, level);
 		if (mapdata == null && level instanceof ServerLevel serverLevel) {
 			BlockPos sharedSpawnPos = level.getRespawnData().pos();

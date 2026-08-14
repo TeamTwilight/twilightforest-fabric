@@ -12,6 +12,7 @@
     "IllusionerMixin",
     "LightningBoltMixin",
     "LivingEntityMixin",
+    "MapItemMixin",
     "MinecartSpawner$1Mixin",
     "PistonStructureResolverMixin",
     "ProjectileWeaponItemMixin",
