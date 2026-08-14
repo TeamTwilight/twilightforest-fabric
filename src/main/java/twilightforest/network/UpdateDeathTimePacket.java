@@ -1,6 +1,6 @@
 package twilightforest.network;
 
-import carminite.network.IPayloadContext;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -28,12 +28,10 @@ public record UpdateDeathTimePacket(int entityID, int deathTime) implements Cust
 		return TYPE;
 	}
 
-	public static void handle(UpdateDeathTimePacket message, IPayloadContext ctx) {
-		ctx.enqueueWork(() -> {
-			ClientLevel level = Minecraft.getInstance().level;
-			if (level != null && Minecraft.getInstance().level.getEntity(message.entityID) instanceof LivingEntity living) {
-                living.deathTime = message.deathTime();
-            }
-		});
+	public static void handle(UpdateDeathTimePacket message, ClientPlayNetworking.Context ctx) {
+		ClientLevel level = ctx.client().level;
+		if (level != null && Minecraft.getInstance().level.getEntity(message.entityID) instanceof LivingEntity living) {
+			living.deathTime = message.deathTime();
+		}
 	}
 }

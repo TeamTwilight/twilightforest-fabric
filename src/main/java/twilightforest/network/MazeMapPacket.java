@@ -1,6 +1,6 @@
 package twilightforest.network;
 
-import carminite.network.IPayloadContext;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -32,42 +32,32 @@ public record MazeMapPacket(ClientboundMapItemDataPacket inner, boolean ore, int
 		return TYPE;
 	}
 
-	@SuppressWarnings("Convert2Lambda")
-	public static void handle(MazeMapPacket message, IPayloadContext ctx) {
-		//ensure this is only done on clients as this uses client only code
-		if (ctx.flow().isClientbound()) {
-			ctx.enqueueWork(new Runnable() {
-				@Override
-				public void run() {
-					if (!(ctx.player().level() instanceof ClientLevel clientLevel)) return;
+	public static void handle(MazeMapPacket message, ClientPlayNetworking.Context ctx) {
+		ClientLevel clientLevel = ctx.client().level;
+		MapId mapId = message.inner.mapId();
+		TFMazeMapData mapdata = MapDataManager.getClientMazeMapData(mapId);
+		if (mapdata == null) {
+			mapdata = new TFMazeMapData(
+				0, 0,
+				message.inner().scale(),
+				false,
+				false,
+				message.inner().locked(),
+				clientLevel.dimension()
+			);
+			MapDataManager.saveClientMazeMapData(mapId, mapdata);
+		}
 
-					MapId mapId = message.inner.mapId();
-					TFMazeMapData mapdata = MapDataManager.getClientMazeMapData(mapId);
-					if (mapdata == null) {
-						mapdata = new TFMazeMapData(
-							0, 0,
-							message.inner().scale(),
-							false,
-							false,
-							message.inner().locked(),
-							clientLevel.dimension()
-						);
-						MapDataManager.saveClientMazeMapData(mapId, mapdata);
-					}
+		mapdata.ore = message.ore();
+		mapdata.yCenter = message.yCenter();
+		message.inner().applyToMap(mapdata);
 
-					mapdata.ore = message.ore();
-					mapdata.yCenter = message.yCenter();
-					message.inner().applyToMap(mapdata);
+		MapItemSavedData saved = clientLevel.getMapData(message.inner().mapId());
 
-					MapItemSavedData saved = clientLevel.getMapData(message.inner().mapId());
-
-					if (saved != null) {
-						saved.addClientSideDecorations(
-							StreamSupport.stream(mapdata.getDecorations().spliterator(), false).toList()
-						);
-					}
-				}
-			});
+		if (saved != null) {
+			saved.addClientSideDecorations(
+				StreamSupport.stream(mapdata.getDecorations().spliterator(), false).toList()
+			);
 		}
 	}
 }

@@ -24,7 +24,6 @@ import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.IBlockCapabilityProvider;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
@@ -34,8 +33,6 @@ import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
-import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
-import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
@@ -205,43 +202,6 @@ public class RegistrationEvents {
 		event.register(TFDataMaps.OMINOUS_FIRE);
 		event.register(TFDataMaps.MAGIC_MAP_BIOME_COLOR);
 		event.register(TFDataMaps.ORE_MAP_ORE_COLOR);
-	}
-
-	public void sendIMCs(InterModEnqueueEvent event) {
-		//if (ModList.get().isLoaded("theoneprobe")) InterModComms.sendTo("theoneprobe", "getTheOneProbe", TopCompat::new);
-	}
-
-	public void setupPackets(RegisterPayloadHandlersEvent event) {
-		PayloadRegistrar registrar = event.registrar(TFMain.ID).versioned("1.0.0").optional();
-		registrar.playToClient(AreaProtectionPacket.TYPE, AreaProtectionPacket.STREAM_CODEC, AreaProtectionPacket::handle);
-		registrar.playToClient(CreateMovingCicadaSoundPacket.TYPE, CreateMovingCicadaSoundPacket.STREAM_CODEC, CreateMovingCicadaSoundPacket::handle);
-		registrar.playToClient(EnforceProgressionStatusPacket.TYPE, EnforceProgressionStatusPacket.STREAM_CODEC, EnforceProgressionStatusPacket::handle);
-		registrar.playToClient(MagicMapPacket.TYPE, MagicMapPacket.STREAM_CODEC, MagicMapPacket::handle);
-		registrar.playToClient(MazeMapPacket.TYPE, MazeMapPacket.STREAM_CODEC, MazeMapPacket::handle);
-		registrar.playToClient(MissingAdvancementToastPacket.TYPE, MissingAdvancementToastPacket.STREAM_CODEC, MissingAdvancementToastPacket::handle);
-		registrar.playToClient(MovePlayerPacket.TYPE, MovePlayerPacket.STREAM_CODEC, MovePlayerPacket::handle);
-		registrar.playToClient(ParticlePacket.TYPE, ParticlePacket.STREAM_CODEC, ParticlePacket::handle);
-		registrar.playBidirectional(GogglesZoomPacket.TYPE, GogglesZoomPacket.STREAM_CODEC, GogglesZoomPacket::handle);
-		registrar.playBidirectional(GradualGlidePacket.TYPE, GradualGlidePacket.STREAM_CODEC, GradualGlidePacket::handle);
-		registrar.playToServer(PerformDoubleJumpPacket.TYPE, PerformDoubleJumpPacket.STREAM_CODEC, PerformDoubleJumpPacket::handle);
-		registrar.playToServer(SwapHotbarPacket.TYPE, SwapHotbarPacket.STREAM_CODEC, SwapHotbarPacket::handle);
-		registrar.playToServer(PerformSidestepPacket.TYPE, PerformSidestepPacket.STREAM_CODEC, PerformSidestepPacket::handle);
-		registrar.playToServer(CycleMapSlotPacket.TYPE, CycleMapSlotPacket.STREAM_CODEC, CycleMapSlotPacket::handle);
-		registrar.playToClient(SpawnCharmPacket.TYPE, SpawnCharmPacket.STREAM_CODEC, SpawnCharmPacket::handle);
-		registrar.playToClient(SpawnFallenLeafFromPacket.TYPE, SpawnFallenLeafFromPacket.STREAM_CODEC, SpawnFallenLeafFromPacket::handle);
-		registrar.playToClient(StructureProtectionPacket.TYPE, StructureProtectionPacket.STREAM_CODEC, StructureProtectionPacket::handle);
-		registrar.playToClient(SyncUncraftingTableConfigPacket.TYPE, SyncUncraftingTableConfigPacket.STREAM_CODEC, SyncUncraftingTableConfigPacket::handle);
-		registrar.playToServer(UncraftingGuiPacket.TYPE, UncraftingGuiPacket.STREAM_CODEC, UncraftingGuiPacket::handle);
-		registrar.playToClient(UpdateTFMultipartPacket.TYPE, UpdateTFMultipartPacket.STREAM_CODEC, UpdateTFMultipartPacket::handle);
-		registrar.playToClient(UpdateThrownPacket.TYPE, UpdateThrownPacket.STREAM_CODEC, UpdateThrownPacket::handle);
-		registrar.playToServer(WipeOreMeterPacket.TYPE, WipeOreMeterPacket.STREAM_CODEC, WipeOreMeterPacket::handle);
-		registrar.playToClient(LifedrainParticlePacket.TYPE, LifedrainParticlePacket.STREAM_CODEC, LifedrainParticlePacket::handle);
-		registrar.playToClient(UpdateDeathTimePacket.TYPE, UpdateDeathTimePacket.STREAM_CODEC, UpdateDeathTimePacket::handle);
-		registrar.playToClient(TFBossBarPacket.AddTFBossBarPacket.TYPE, TFBossBarPacket.AddTFBossBarPacket.STREAM_CODEC, TFBossBarPacket.AddTFBossBarPacket::handle);
-		registrar.playToClient(TFBossBarPacket.UpdateTFBossBarStylePacket.TYPE, TFBossBarPacket.UpdateTFBossBarStylePacket.STREAM_CODEC, TFBossBarPacket.UpdateTFBossBarStylePacket::handle);
-		registrar.playToClient(SetMasonJarItemPacket.TYPE, SetMasonJarItemPacket.STREAM_CODEC, SetMasonJarItemPacket::handle);
-		registrar.playToClient(SyncQuestsPacket.TYPE, SyncQuestsPacket.STREAM_CODEC, SyncQuestsPacket::handle);
-		registrar.playToClient(TravellersWingsStatePacket.TYPE, TravellersWingsStatePacket.STREAM_CODEC, TravellersWingsStatePacket::handle);
 	}
 
 	public void init(FMLCommonSetupEvent evt) {

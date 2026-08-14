@@ -1,6 +1,6 @@
 package twilightforest.network;
 
-import carminite.network.IPayloadContext;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -24,16 +24,7 @@ public record MissingAdvancementToastPacket(Component title, ItemStack icon) imp
 		return TYPE;
 	}
 
-	@SuppressWarnings("Convert2Lambda")
-	public static void handle(MissingAdvancementToastPacket packet, IPayloadContext ctx) {
-		//ensure this is only done on clients as this uses client only code
-		if (ctx.flow().isClientbound()) {
-			ctx.enqueueWork(new Runnable() {
-				@Override
-				public void run() {
-					Minecraft.getInstance().getToastManager().addToast(new MissingAdvancementToast(packet.title(), packet.icon()));
-				}
-			});
-		}
+	public static void handle(MissingAdvancementToastPacket packet, ClientPlayNetworking.Context ctx) {
+		Minecraft.getInstance().getToastManager().addToast(new MissingAdvancementToast(packet.title(), packet.icon()));
 	}
 }

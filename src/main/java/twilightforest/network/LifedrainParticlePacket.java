@@ -1,6 +1,6 @@
 package twilightforest.network;
 
-import carminite.network.IPayloadContext;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -31,18 +31,10 @@ public record LifedrainParticlePacket(int entityID, Vec3 victimPos) implements C
 		return TYPE;
 	}
 
-	@SuppressWarnings("Convert2Lambda")
-	public static void handle(LifedrainParticlePacket packet, IPayloadContext ctx) {
-		if (ctx.flow().isClientbound()) {
-			ctx.enqueueWork(new Runnable() {
-				@Override
-				public void run() {
-					Entity entity = ctx.player().level().getEntity(packet.entityID());
-					if (entity instanceof LivingEntity living) {
-						LifedrainScepterItem.makeRedMagicTrail(living.level(), living, packet.victimPos());
-					}
-				}
-			});
+	public static void handle(LifedrainParticlePacket packet, ClientPlayNetworking.Context ctx) {
+		Entity entity = ctx.client().level.getEntity(packet.entityID());
+		if (entity instanceof LivingEntity living) {
+			LifedrainScepterItem.makeRedMagicTrail(living.level(), living, packet.victimPos());
 		}
 	}
 }

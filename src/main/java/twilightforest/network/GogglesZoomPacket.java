@@ -1,7 +1,8 @@
 package twilightforest.network;
 
-import carminite.network.IPayloadContext;
 import carminite.network.PacketDistributor;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -26,23 +27,23 @@ public record GogglesZoomPacket(boolean isUsingZoom, UUID playerUUID) implements
 		registryFriendlyByteBuf.writeUUID(playerUUID);
 	}
 
-	public static void handle(GogglesZoomPacket packet, IPayloadContext ctx) {
-		ctx.enqueueWork(() -> {
-			Player player = ctx.player().level().getPlayerByUUID(packet.playerUUID);
-			if (player == null)
-				return;
-			if (player.level().isClientSide()) {
-				player.setAttached(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER, packet.isUsingZoom);
-				return;
-			}
+	public static void handleServer(GogglesZoomPacket packet, ServerPlayNetworking.Context ctx) {
+		Player player = ctx.player().level().getPlayerByUUID(packet.playerUUID);
+		if (player == null)
+			return;
+		boolean canChangeZoomState = TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.ZOOM_ABILITY);
+		if (canChangeZoomState) {
+			player.setAttached(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER, packet.isUsingZoom);
+			player.playSound(packet.isUsingZoom ? TFSounds.GOGGLES_ZOOM_IN.value() : TFSounds.GOGGLES_ZOOM_OUT.value());
+			PacketDistributor.sendToPlayersTrackingEntity(player, new GogglesZoomPacket(packet.isUsingZoom, player.getUUID()));
+		}
+	}
 
-			boolean canChangeZoomState = TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.ZOOM_ABILITY);
-			if (canChangeZoomState) {
-				player.setAttached(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER, packet.isUsingZoom);
-				player.playSound(packet.isUsingZoom ? TFSounds.GOGGLES_ZOOM_IN.value() : TFSounds.GOGGLES_ZOOM_OUT.value());
-				PacketDistributor.sendToPlayersTrackingEntity(player, new GogglesZoomPacket(packet.isUsingZoom, player.getUUID()));
-			}
-		});
+	public static void handleClient(GogglesZoomPacket packet, ClientPlayNetworking.Context ctx) {
+		Player player = ctx.client().level.getPlayerByUUID(packet.playerUUID);
+		if (player == null)
+			return;
+		player.setAttached(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER, packet.isUsingZoom);
 	}
 
 	@Override

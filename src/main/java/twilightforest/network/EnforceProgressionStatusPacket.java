@@ -1,6 +1,6 @@
 package twilightforest.network;
 
-import carminite.network.IPayloadContext;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -27,11 +27,9 @@ public record EnforceProgressionStatusPacket(boolean enforce) implements CustomP
 		return TYPE;
 	}
 
-	public static void handle(EnforceProgressionStatusPacket message, IPayloadContext ctx) {
+	public static void handle(EnforceProgressionStatusPacket message, ClientPlayNetworking.Context ctx) {
 		boolean enforce = message.enforce;
-		ctx.enqueueWork(() -> {
-			TFWeatherRenderer.setProgressionEnforced(enforce);
-			LockedBiomeToastHandler.setProgressionEnforced(enforce);
-		});
+		TFWeatherRenderer.setProgressionEnforced(enforce);
+		LockedBiomeToastHandler.setProgressionEnforced(enforce);
 	}
 }

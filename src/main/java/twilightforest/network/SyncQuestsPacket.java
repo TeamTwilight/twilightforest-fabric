@@ -1,6 +1,6 @@
 package twilightforest.network;
 
-import carminite.network.IPayloadContext;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -24,7 +24,7 @@ public record SyncQuestsPacket(QuestingRamContext ram) implements CustomPacketPa
 		return TYPE;
 	}
 
-	public static void handle(SyncQuestsPacket packet, IPayloadContext context) {
-		context.enqueueWork(() -> questingRamCurrentContext.setContext(packet.ram()));
+	public static void handle(SyncQuestsPacket packet, ClientPlayNetworking.Context context) {
+		questingRamCurrentContext.setContext(packet.ram());
 	}
 }

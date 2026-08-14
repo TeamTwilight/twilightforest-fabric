@@ -1,6 +1,6 @@
 package twilightforest.network;
 
-import carminite.network.IPayloadContext;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -24,10 +24,8 @@ public record PerformDoubleJumpPacket() implements CustomPacketPayload {
 		return TYPE;
 	}
 
-	public static void handle(PerformDoubleJumpPacket message, IPayloadContext ctx) {
-		ctx.enqueueWork(() -> {
-			if (!TravellersGearLogic.performDoubleJump(ctx.player()))
-				TravellersGearLogic.handleDoubleJumpAbuse(ctx.player());
-		});
+	public static void handle(PerformDoubleJumpPacket message, ServerPlayNetworking.Context ctx) {
+		if (!TravellersGearLogic.performDoubleJump(ctx.player()))
+			TravellersGearLogic.handleDoubleJumpAbuse(ctx.player());
 	}
 }

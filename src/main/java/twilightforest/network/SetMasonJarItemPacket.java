@@ -1,6 +1,6 @@
 package twilightforest.network;
 
-import carminite.network.IPayloadContext;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -37,19 +37,12 @@ public record SetMasonJarItemPacket(BlockPos pos, boolean empty, ItemStack stack
 		return TYPE;
 	}
 
-	@SuppressWarnings("Convert2Lambda")
-	public static void handle(SetMasonJarItemPacket packet, IPayloadContext ctx) {
-		if (ctx.flow().isClientbound()) {
-			ctx.enqueueWork(new Runnable() {
-				@Override
-				public void run() {
-					if (ctx.player().level() instanceof ClientLevel level && level.getBlockEntity(packet.pos()) instanceof MasonJarBlockEntity blockEntity) {
-						blockEntity.getItemHandler().setItem(packet.stack());
-						blockEntity.setItemRotation(packet.rotation());
-						blockEntity.setChanged();
-					}
-				}
-			});
+	public static void handle(SetMasonJarItemPacket packet, ClientPlayNetworking.Context ctx) {
+		ClientLevel clientLevel = ctx.client().level;
+		if (clientLevel.getBlockEntity(packet.pos()) instanceof MasonJarBlockEntity blockEntity) {
+			blockEntity.getItemHandler().setItem(packet.stack());
+			blockEntity.setItemRotation(packet.rotation());
+			blockEntity.setChanged();
 		}
 	}
 }

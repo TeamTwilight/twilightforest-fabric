@@ -1,6 +1,6 @@
 package twilightforest.network;
 
-import carminite.network.IPayloadContext;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -42,20 +42,18 @@ public class TravellersWingsStatePacket implements CustomPacketPayload {
 		this.sidestepTimer = buf.readInt();
 	}
 
-	public static void handle(TravellersWingsStatePacket message, IPayloadContext ctx) {
-		ctx.enqueueWork(() -> {
-			Player player = ctx.player();
-			if (player != null && player.level() != null) {
-				Entity entity = player.level().getEntity(message.entityId);
-				if (entity instanceof LivingEntity livingEntity) {
-					TravellersWingsAttachment attachment = livingEntity.getAttached(TFDataAttachments.TRAVELLERS_WINGS);
-					attachment.state = message.state;
-					attachment.sidestepLeft = message.sidestepLeft;
-					attachment.doubleJumpTimer = message.doubleJumpTimer;
-					attachment.sidestepTimer = message.sidestepTimer;
-				}
+	public static void handle(TravellersWingsStatePacket message, ClientPlayNetworking.Context ctx) {
+		Player player = ctx.player();
+		if (player != null && player.level() != null) {
+			Entity entity = player.level().getEntity(message.entityId);
+			if (entity instanceof LivingEntity livingEntity) {
+				TravellersWingsAttachment attachment = livingEntity.getAttached(TFDataAttachments.TRAVELLERS_WINGS);
+				attachment.state = message.state;
+				attachment.sidestepLeft = message.sidestepLeft;
+				attachment.doubleJumpTimer = message.doubleJumpTimer;
+				attachment.sidestepTimer = message.sidestepTimer;
 			}
-		});
+		}
 	}
 
 	public void write(RegistryFriendlyByteBuf buf) {

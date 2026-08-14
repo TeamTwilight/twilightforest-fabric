@@ -1,6 +1,6 @@
 package twilightforest.network;
 
-import carminite.network.IPayloadContext;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -29,13 +29,11 @@ public record WipeOreMeterPacket(InteractionHand hand) implements CustomPacketPa
 		return TYPE;
 	}
 
-	public static void handle(WipeOreMeterPacket message, IPayloadContext ctx) {
-		ctx.enqueueWork(() -> {
-			ItemStack heldStack = ctx.player().getItemInHand(message.hand());
-			if (heldStack.is(TFItems.ORE_METER)) {
-				heldStack.remove(TFDataComponents.ORE_DATA);
-				heldStack.remove(TFDataComponents.ORE_FILTER);
-			}
-		});
+	public static void handle(WipeOreMeterPacket message, ServerPlayNetworking.Context ctx) {
+		ItemStack heldStack = ctx.player().getItemInHand(message.hand());
+		if (heldStack.is(TFItems.ORE_METER)) {
+			heldStack.remove(TFDataComponents.ORE_DATA);
+			heldStack.remove(TFDataComponents.ORE_FILTER);
+		}
 	}
 }

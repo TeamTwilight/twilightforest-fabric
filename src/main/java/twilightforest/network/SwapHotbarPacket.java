@@ -1,6 +1,6 @@
 package twilightforest.network;
 
-import carminite.network.IPayloadContext;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -22,12 +22,10 @@ public class SwapHotbarPacket implements CustomPacketPayload {
 		return TYPE;
 	}
 
-	public static void handle(SwapHotbarPacket message, IPayloadContext ctx) {
-		ctx.enqueueWork(() -> {
-			Player player = ctx.player();
-			TravellersArmorBeltItem.travellersTrySwapHotbar(player);
-			if (player instanceof ServerPlayer serverPlayer)
-				serverPlayer.broadcastToPlayer(serverPlayer);
-		});
+	public static void handle(SwapHotbarPacket message, ServerPlayNetworking.Context ctx) {
+		Player player = ctx.player();
+		TravellersArmorBeltItem.travellersTrySwapHotbar(player);
+		if (player instanceof ServerPlayer serverPlayer)
+			serverPlayer.broadcastToPlayer(serverPlayer);
 	}
 }

@@ -1,7 +1,7 @@
 package twilightforest.network;
 
-import carminite.network.IPayloadContext;
 import com.mojang.datafixers.util.Pair;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -32,13 +32,11 @@ public record StructureProtectionPacket(Optional<List<Pair<BoundingBox, Boolean>
 		return TYPE;
 	}
 
-	public static void handle(StructureProtectionPacket message, IPayloadContext ctx) {
+	public static void handle(StructureProtectionPacket message, ClientPlayNetworking.Context ctx) {
 		CustomWeatherEffectRenderer info = CustomEnvironmentEffectsRendererManager.getCustomWeatherEffectRenderer(TFDimension.DIMENSION_RENDERER);
 
 		if (info instanceof TwilightForestRenderInfo) {
-			ctx.enqueueWork(() ->
-				TFWeatherRenderer.setProtectedBoxes(message.boxes().orElse(null))
-			);
+			TFWeatherRenderer.setProtectedBoxes(message.boxes().orElse(null));
 		}
 	}
 }

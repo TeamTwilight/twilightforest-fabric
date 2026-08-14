@@ -1,6 +1,6 @@
 package twilightforest.network;
 
-import carminite.network.IPayloadContext;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -80,17 +80,9 @@ public abstract class TFBossBarPacket implements CustomPacketPayload {
 			return TYPE;
 		}
 
-		@SuppressWarnings("Convert2Lambda")
-		public static void handle(AddTFBossBarPacket packet, IPayloadContext ctx) {
-			if (ctx.flow().isClientbound()) {
-				ctx.enqueueWork(new Runnable() {
-					@Override
-					public void run() {
-						Minecraft minecraft = Minecraft.getInstance();
-						minecraft.gui.getBossOverlay().events.put(packet.id, new ClientTFBossBar(packet.id, packet.name, packet.progress, packet.color, packet.overlay, packet.darkenScreen, packet.playMusic, packet.createWorldFog));
-					}
-				});
-			}
+		public static void handle(AddTFBossBarPacket packet, ClientPlayNetworking.Context ctx) {
+			Minecraft minecraft = Minecraft.getInstance();
+			minecraft.gui.getBossOverlay().events.put(packet.id, new ClientTFBossBar(packet.id, packet.name, packet.progress, packet.color, packet.overlay, packet.darkenScreen, packet.playMusic, packet.createWorldFog));
 		}
 	}
 
@@ -129,20 +121,12 @@ public abstract class TFBossBarPacket implements CustomPacketPayload {
 			return TYPE;
 		}
 
-		@SuppressWarnings("Convert2Lambda")
-		public static void handle(UpdateTFBossBarStylePacket packet, IPayloadContext ctx) {
-			if (ctx.flow().isClientbound()) {
-				ctx.enqueueWork(new Runnable() {
-					@Override
-					public void run() {
-						Minecraft minecraft = Minecraft.getInstance();
-						if (minecraft.gui.getBossOverlay().events.get(packet.id) instanceof ClientTFBossBar bossEvent) {
-							bossEvent.setBarColor(packet.color);
-							bossEvent.setOverlay(packet.overlay);
-							if (!packet.allowLerp) bossEvent.setSetTime(bossEvent.getSetTime() - 200L); // Boss bars lerp over 100 milliseconds, we sometimes don't want that
-						}
-					}
-				});
+		public static void handle(UpdateTFBossBarStylePacket packet, ClientPlayNetworking.Context ctx) {
+			Minecraft minecraft = Minecraft.getInstance();
+			if (minecraft.gui.getBossOverlay().events.get(packet.id) instanceof ClientTFBossBar bossEvent) {
+				bossEvent.setBarColor(packet.color);
+				bossEvent.setOverlay(packet.overlay);
+				if (!packet.allowLerp) bossEvent.setSetTime(bossEvent.getSetTime() - 200L); // Boss bars lerp over 100 milliseconds, we sometimes don't want that
 			}
 		}
 	}

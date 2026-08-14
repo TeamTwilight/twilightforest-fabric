@@ -1,6 +1,6 @@
 package twilightforest.network;
 
-import carminite.network.IPayloadContext;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -27,7 +27,7 @@ public record MovePlayerPacket(double motionX, double motionY, double motionZ) i
 		return TYPE;
 	}
 
-	public static void handle(MovePlayerPacket message, IPayloadContext ctx) {
-		ctx.enqueueWork(() -> ctx.player().push(message.motionX(), message.motionY(), message.motionZ()));
+	public static void handle(MovePlayerPacket message, ClientPlayNetworking.Context ctx) {
+		ctx.player().push(message.motionX(), message.motionY(), message.motionZ());
 	}
 }

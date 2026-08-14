@@ -1,6 +1,6 @@
 package twilightforest.network;
 
-import carminite.network.IPayloadContext;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -44,18 +44,16 @@ public record SyncUncraftingTableConfigPacket(
 		return TYPE;
 	}
 
-	public static void handle(SyncUncraftingTableConfigPacket message, IPayloadContext ctx) {
-		ctx.enqueueWork(() -> {
-			TFConfig.uncraftingXpCostMultiplier = message.uncraftingMultiplier();
-			TFConfig.repairingXpCostMultiplier = message.repairingMultiplier();
-			TFConfig.allowShapelessUncrafting = message.allowShapeless();
-			TFConfig.disableIngredientSwitching = message.disableIngredientSwitching();
-			TFConfig.disableUncraftingOnly = message.disabledUncrafting();
-			TFConfig.disableEntireTable = message.disabledTable();
-			TFConfig.disableUncraftingRecipes = message.disabledRecipes();
-			TFConfig.reverseRecipeBlacklist = message.flipRecipeList();
-			TFConfig.blacklistedUncraftingModIds = message.disabledModids();
-			TFConfig.flipUncraftingModIdList = message.flipModidList();
-		});
+	public static void handle(SyncUncraftingTableConfigPacket message, ClientPlayNetworking.Context ctx) {
+		TFConfig.uncraftingXpCostMultiplier = message.uncraftingMultiplier();
+		TFConfig.repairingXpCostMultiplier = message.repairingMultiplier();
+		TFConfig.allowShapelessUncrafting = message.allowShapeless();
+		TFConfig.disableIngredientSwitching = message.disableIngredientSwitching();
+		TFConfig.disableUncraftingOnly = message.disabledUncrafting();
+		TFConfig.disableEntireTable = message.disabledTable();
+		TFConfig.disableUncraftingRecipes = message.disabledRecipes();
+		TFConfig.reverseRecipeBlacklist = message.flipRecipeList();
+		TFConfig.blacklistedUncraftingModIds = message.disabledModids();
+		TFConfig.flipUncraftingModIdList = message.flipModidList();
 	}
 }

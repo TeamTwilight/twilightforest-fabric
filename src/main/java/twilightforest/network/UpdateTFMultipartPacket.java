@@ -2,7 +2,7 @@ package twilightforest.network;
 
 import carminite.entity.IMultiPartEntity;
 import carminite.entity.PartEntity;
-import carminite.network.IPayloadContext;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -50,30 +50,28 @@ public record UpdateTFMultipartPacket(int entityId, @Nullable Entity entity, @Nu
 		return TYPE;
 	}
 
-	public static void handle(UpdateTFMultipartPacket message, IPayloadContext ctx) {
-		ctx.enqueueWork(() -> {
-			int eId = message.entity != null && message.entityId <= 0 ? message.entity.getId() : message.entityId; // Account for Singleplayer
-			Entity ent = ctx.player().level().getEntity(eId);
-			if (ent instanceof IMultiPartEntity multiPartEntity && multiPartEntity.isMultipartEntity()) {
-				PartEntity<?>[] parts = multiPartEntity.getParts();
-				if (parts == null)
-					return;
-				for (PartEntity<?> part : parts) {
-					if (part instanceof TFPart<?> tfPart) {
-						if (message.data == null && message.entity instanceof IMultiPartEntity messageMultiPartEntity) // Account for Singleplayer
-							Arrays.stream(messageMultiPartEntity.getParts())
-								.filter(p -> p instanceof TFPart<?> && p.getId() == part.getId())
-								.map(p -> (TFPart<?>) p)
-								.findFirst().ifPresent(p -> tfPart.readData(p.writeData()));
-						else if (message.data != null) {
-							PartDataHolder data = message.data.get(tfPart.getId());
-							if (data != null)
-								tfPart.readData(data);
-						}
+	public static void handle(UpdateTFMultipartPacket message, ClientPlayNetworking.Context ctx) {
+		int eId = message.entity != null && message.entityId <= 0 ? message.entity.getId() : message.entityId; // Account for Singleplayer
+		Entity ent = ctx.client().level.getEntity(eId);
+		if (ent instanceof IMultiPartEntity multiPartEntity && multiPartEntity.isMultipartEntity()) {
+			PartEntity<?>[] parts = multiPartEntity.getParts();
+			if (parts == null)
+				return;
+			for (PartEntity<?> part : parts) {
+				if (part instanceof TFPart<?> tfPart) {
+					if (message.data == null && message.entity instanceof IMultiPartEntity messageMultiPartEntity) // Account for Singleplayer
+						Arrays.stream(messageMultiPartEntity.getParts())
+							.filter(p -> p instanceof TFPart<?> && p.getId() == part.getId())
+							.map(p -> (TFPart<?>) p)
+							.findFirst().ifPresent(p -> tfPart.readData(p.writeData()));
+					else if (message.data != null) {
+						PartDataHolder data = message.data.get(tfPart.getId());
+						if (data != null)
+							tfPart.readData(data);
 					}
 				}
 			}
-		});
+		}
 	}
 
 	public record PartDataHolder(double x, double y, double z,

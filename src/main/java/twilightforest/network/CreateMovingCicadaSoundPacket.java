@@ -1,6 +1,6 @@
 package twilightforest.network;
 
-import carminite.network.IPayloadContext;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -29,18 +29,10 @@ public record CreateMovingCicadaSoundPacket(int entityID) implements CustomPacke
 		return TYPE;
 	}
 
-	@SuppressWarnings("Convert2Lambda")
-	public static void handle(CreateMovingCicadaSoundPacket message, IPayloadContext ctx) {
-		if (ctx.flow().isClientbound()) {
-			ctx.enqueueWork(new Runnable() {
-				@Override
-				public void run() {
-					Entity entity = ctx.player().level().getEntity(message.entityID());
-					if (entity instanceof LivingEntity living) {
-						Minecraft.getInstance().getSoundManager().queueTickingSound(new MovingCicadaSoundInstance(living));
-					}
-				}
-			});
+	public static void handle(CreateMovingCicadaSoundPacket message, ClientPlayNetworking.Context ctx) {
+		Entity entity = ctx.client().level.getEntity(message.entityID());
+		if (entity instanceof LivingEntity living) {
+			Minecraft.getInstance().getSoundManager().queueTickingSound(new MovingCicadaSoundInstance(living));
 		}
 	}
 }
