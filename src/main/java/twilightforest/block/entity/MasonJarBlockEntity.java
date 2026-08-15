@@ -1,6 +1,7 @@
 package twilightforest.block.entity;
 
 import carminite.network.PacketDistributor;
+import carminite.util.ServerLifecycleHooks;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.base.SingleStackStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
@@ -8,6 +9,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.ReloadableServerRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
@@ -15,10 +19,17 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.Vec3;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.network.SetMasonJarItemPacket;
 
 import java.util.List;
+import java.util.Optional;
 
 import static net.minecraft.world.level.block.entity.DecoratedPotBlockEntity.WobbleStyle;
 
@@ -51,6 +62,36 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 		super.loadAdditional(input);
 		this.itemStack = input.read(TAG_ITEM, ItemStack.CODEC).orElse(ItemStack.EMPTY);
 		this.itemRotation = input.getIntOr(TAG_ANGLE, 0);
+	}
+
+	public boolean fillFromLootTable(ResourceKey<LootTable> lootTableKey, long seed, ServerLevel level) {
+		MinecraftServer currentServer = ServerLifecycleHooks.getCurrentServer();
+		return this.fillFromLootTable(lootTableKey, seed, level, currentServer.reloadableRegistries());
+	}
+
+	public boolean fillFromLootTable(ResourceKey<LootTable> lootTableKey, long seed, ServerLevel serverLevel, ReloadableServerRegistries.Holder holder) {
+		LootTable lootTable = holder.getLootTable(lootTableKey);
+
+		if (lootTable == LootTable.EMPTY) return false;
+
+		LootParams params = new LootParams.Builder(serverLevel).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(this.getBlockPos())).create(LootContextParamSets.CHEST);
+		lootTable.getRandomItems(new LootContext.Builder(params).withOptionalRandomSeed(seed).create(Optional.of(lootTableKey.identifier())), this::acceptLootTable);
+		return true;
+	}
+
+	private void acceptLootTable(ItemStack stack) {
+		ItemStack contained = this.item.getItem();
+
+		if (contained.isEmpty()) {
+			this.item.setItem(stack);
+		} else if (ItemStack.isSameItemSameComponents(contained, stack)) {
+			contained.setCount(Math.min(
+				contained.getCount() + stack.getCount(),
+				contained.getMaxStackSize()
+			));
+
+			this.item.setItem(contained);
+		}
 	}
 
 	public void setFromItem(ItemStack stack) {
