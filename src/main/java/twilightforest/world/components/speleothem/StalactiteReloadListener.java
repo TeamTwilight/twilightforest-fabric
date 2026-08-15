@@ -8,7 +8,6 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
-import org.jspecify.annotations.NonNull;
 import twilightforest.TFMain;
 import twilightforest.world.components.structures.util.CodecResourceReloadListener;
 
@@ -17,8 +16,6 @@ import java.io.Reader;
 import java.util.*;
 
 public class StalactiteReloadListener extends CodecResourceReloadListener<SpeleothemVarietyConfig> {
-	public final static StalactiteReloadListener INSTANCE = new StalactiteReloadListener();
-
 	public static final String STALACTITE_DIRECTORY = "twilight/stalactites";
 
 	public static final Map<String, SpeleothemVarietyConfig> HILL_CONFIGS = new HashMap<>();
@@ -52,11 +49,6 @@ public class StalactiteReloadListener extends CodecResourceReloadListener<Speleo
 		this.populateList(manager, config, config.baseStalactites(), STALACTITES_PER_HILL);
 		this.populateList(manager, config, config.oreStalactites(), ORE_STALACTITES_PER_HILL);
 		this.populateList(manager, config, config.stalagmites(), STALAGMITES_PER_HILL);
-	}
-
-	@Override
-	public @NonNull Identifier getFabricId() {
-		return TFMain.prefix(this.getName());
 	}
 
 	private void populateList(ResourceManager manager, SpeleothemVarietyConfig config, List<Identifier> rawEntries, Map<String, List<Stalactite>> stalactiteDict) {

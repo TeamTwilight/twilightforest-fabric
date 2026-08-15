@@ -6,7 +6,7 @@ import carminite.entity.PartEntity;
 import carminite.util.ServerLifecycleHooks;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
-import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackType;
 import org.slf4j.Logger;
@@ -24,7 +24,7 @@ public class Carminite implements ModInitializer {
 	public void onInitialize() {
 		ServerLifecycleHooks.init();
 
-		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(DataMapReloadListener.INSTANCE);
+		ResourceLoader.get(PackType.SERVER_DATA).registerReloadListener(prefix("data_map"), new DataMapReloadListener());
 
 		ServerEntityEvents.ENTITY_LOAD.register((entity, world) -> {
 			if (entity instanceof IMultiPartEntity partEntity && partEntity.isMultipartEntity()) {

@@ -11,7 +11,6 @@ import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFMain;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
 
@@ -60,11 +59,6 @@ public final class StructureTemplateDefinitions extends CodecResourceReloadListe
 		}
 
 		this.rawTemplatePools.clear();
-	}
-
-	@Override
-	public Identifier getFabricId() {
-		return TFMain.prefix(this.getName());
 	}
 
 	private Optional<TemplatePoolEntry> getRandomEntry(RandomSource random, Identifier templatePoolId) {

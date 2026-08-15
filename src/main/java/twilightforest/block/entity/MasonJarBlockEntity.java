@@ -101,12 +101,10 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 			this.jarEntity = jarEntity;
 		}
 
-		// Preserves the old API.
 		public ItemStack getItem() {
 			return this.getStack().copy();
 		}
 
-		// Preserves the old API.
 		public void setItem(ItemStack stack) {
 			this.setStack(stack.copy());
 		}

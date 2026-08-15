@@ -249,6 +249,10 @@ accessible method net/minecraft/world/level/saveddata/maps/MapItemSavedData addD
 mutable field net/minecraft/world/level/saveddata/maps/MapItemSavedData centerX I
 mutable field net/minecraft/world/level/saveddata/maps/MapItemSavedData centerZ I
 
+# TFMain
+accessible method net/minecraft/core/cauldron/CauldronInteraction$Dispatcher put (Lnet/minecraft/world/item/Item;Lnet/minecraft/core/cauldron/CauldronInteraction;)V
+accessible method net/minecraft/core/cauldron/CauldronInteractions dyedItemIteration (Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/world/InteractionResult;
+
 # Enum Extensions
 extend-enum net/minecraft/world/damagesource/DamageEffects TWILIGHTFOREST_PINCH
 extend-enum net/minecraft/world/item/Rarity TWILIGHTFOREST_TWILIGHT

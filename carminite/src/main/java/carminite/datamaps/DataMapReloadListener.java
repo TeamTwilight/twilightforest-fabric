@@ -4,23 +4,17 @@ import carminite.Carminite;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
-import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.util.GsonHelper;
 
 import java.io.Reader;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-public final class DataMapReloadListener implements SimpleSynchronousResourceReloadListener {
-	public static final DataMapReloadListener INSTANCE = new DataMapReloadListener();
-
-	@Override
-	public Identifier getFabricId() {
-		return Carminite.prefix(this.getName());
-	}
+public final class DataMapReloadListener implements ResourceManagerReloadListener {
 
 	@Override
 	public void onResourceManagerReload(ResourceManager manager) {
@@ -33,7 +27,7 @@ public final class DataMapReloadListener implements SimpleSynchronousResourceRel
 		String registryPath = map.registryKey().identifier().getPath();
 		String dir = "data_maps/" + registryPath + "/" + map.id().getPath();
 
-		Map<Identifier, T> result = new HashMap<>();
+		Map<Identifier, T> result = new LinkedHashMap<>();
 
 		for (Resource resource : manager.getResourceStack(map.id().withPath(dir + ".json"))) {
 			try (Reader reader = resource.openAsReader()) {

@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
-import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -19,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceReloadListener<JsonElement> implements IdentifiableResourceReloadListener {
+public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceReloadListener<JsonElement> {
 	protected final Gson gson;
 	private final Codec<T> codec;
 
@@ -78,7 +77,4 @@ public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceR
 	protected abstract void forLocation(ResourceManager manager, Identifier location, T element);
 
 	protected void afterApply(ResourceManager manager, ProfilerFiller profiler) {}
-
-	@Override
-	public abstract Identifier getFabricId();
 }

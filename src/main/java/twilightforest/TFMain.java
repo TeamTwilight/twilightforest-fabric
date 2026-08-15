@@ -10,12 +10,18 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.fabricmc.fabric.api.registry.StrippableBlockRegistry;
+import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
+import net.fabricmc.fabric.api.transfer.v1.item.ContainerStorage;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
 import net.minecraft.core.Registry;
+import net.minecraft.core.cauldron.CauldronInteractions;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.core.dispenser.EquipmentDispenseItemBehavior;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacementTypes;
@@ -31,9 +37,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.levelgen.Heightmap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import twilightforest.block.ChiseledCanopyShelfBlock;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.command.TFCommand;
 import twilightforest.config.ConfigSetup;
@@ -43,6 +51,7 @@ import twilightforest.entity.RovingCube;
 import twilightforest.entity.boss.*;
 import twilightforest.entity.monster.*;
 import twilightforest.entity.passive.*;
+import twilightforest.entity.passive.quest.QuestReloadListener;
 import twilightforest.entity.projectile.MoonwormShot;
 import twilightforest.entity.projectile.TwilightWandBolt;
 import twilightforest.init.*;
@@ -55,7 +64,9 @@ import twilightforest.util.TFRemapper;
 import twilightforest.util.woods.WoodPalette;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.layer.BiomeDensitySource;
+import twilightforest.world.components.speleothem.StalactiteReloadListener;
 import twilightforest.world.components.structures.StructureSpeleothemConfig;
+import twilightforest.world.components.structures.util.StructureTemplateDefinitions;
 import twilightforest.world.components.structures.util.TemplateMarkerHandlerList;
 
 import java.util.Locale;
@@ -128,6 +139,10 @@ public final class TFMain implements ModInitializer {
 		registerCommands();
 		registerEntityAttributes();
 		registerSpawnPlacements();
+		registerValidBlockEntityTypes();
+		registerReloadListeners();
+		registerCauldronInteractions();
+		registerItemStorage();
 	}
 
 	private static void registerPackets() {
@@ -154,7 +169,6 @@ public final class TFMain implements ModInitializer {
 		PayloadTypeRegistry.clientboundPlay().register(SetMasonJarItemPacket.TYPE, SetMasonJarItemPacket.STREAM_CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(SyncQuestsPacket.TYPE, SyncQuestsPacket.STREAM_CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(TravellersWingsStatePacket.TYPE, TravellersWingsStatePacket.STREAM_CODEC);
-
 		PayloadTypeRegistry.serverboundPlay().register(GogglesZoomPacket.TYPE, GogglesZoomPacket.STREAM_CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(GradualGlidePacket.TYPE, GradualGlidePacket.STREAM_CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(PerformDoubleJumpPacket.TYPE, PerformDoubleJumpPacket.STREAM_CODEC);
@@ -163,7 +177,6 @@ public final class TFMain implements ModInitializer {
 		PayloadTypeRegistry.serverboundPlay().register(CycleMapSlotPacket.TYPE, CycleMapSlotPacket.STREAM_CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(UncraftingGuiPacket.TYPE, UncraftingGuiPacket.STREAM_CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(WipeOreMeterPacket.TYPE, WipeOreMeterPacket.STREAM_CODEC);
-
 		ServerPlayNetworking.registerGlobalReceiver(GogglesZoomPacket.TYPE, GogglesZoomPacket::handleServer);
 		ServerPlayNetworking.registerGlobalReceiver(GradualGlidePacket.TYPE, GradualGlidePacket::handleServer);
 		ServerPlayNetworking.registerGlobalReceiver(PerformDoubleJumpPacket.TYPE, PerformDoubleJumpPacket::handle);
@@ -664,6 +677,65 @@ public final class TFMain implements ModInitializer {
 		SpawnPlacements.register(TFEntities.ADHERENT, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
 		SpawnPlacements.register(TFEntities.ROVING_CUBE, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
 		SpawnPlacements.register(TFEntities.RISING_ZOMBIE, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
+	}
+
+	private static void registerValidBlockEntityTypes() {
+		BlockEntityType.HANGING_SIGN.addValidBlock(TFBlocks.TWILIGHT_OAK_HANGING_SIGN);
+		BlockEntityType.HANGING_SIGN.addValidBlock(TFBlocks.TWILIGHT_OAK_WALL_HANGING_SIGN);
+		BlockEntityType.HANGING_SIGN.addValidBlock(TFBlocks.CANOPY_HANGING_SIGN);
+		BlockEntityType.HANGING_SIGN.addValidBlock(TFBlocks.CANOPY_WALL_HANGING_SIGN);
+		BlockEntityType.HANGING_SIGN.addValidBlock(TFBlocks.MANGROVE_HANGING_SIGN);
+		BlockEntityType.HANGING_SIGN.addValidBlock(TFBlocks.MANGROVE_WALL_HANGING_SIGN);
+		BlockEntityType.HANGING_SIGN.addValidBlock(TFBlocks.DARK_HANGING_SIGN);
+		BlockEntityType.HANGING_SIGN.addValidBlock(TFBlocks.DARK_WALL_HANGING_SIGN);
+		BlockEntityType.HANGING_SIGN.addValidBlock(TFBlocks.TIME_HANGING_SIGN);
+		BlockEntityType.HANGING_SIGN.addValidBlock(TFBlocks.TIME_WALL_HANGING_SIGN);
+		BlockEntityType.HANGING_SIGN.addValidBlock(TFBlocks.TRANSFORMATION_HANGING_SIGN);
+		BlockEntityType.HANGING_SIGN.addValidBlock(TFBlocks.TRANSFORMATION_WALL_HANGING_SIGN);
+		BlockEntityType.HANGING_SIGN.addValidBlock(TFBlocks.MINING_HANGING_SIGN);
+		BlockEntityType.HANGING_SIGN.addValidBlock(TFBlocks.MINING_WALL_HANGING_SIGN);
+		BlockEntityType.HANGING_SIGN.addValidBlock(TFBlocks.SORTING_HANGING_SIGN);
+		BlockEntityType.HANGING_SIGN.addValidBlock(TFBlocks.SORTING_WALL_HANGING_SIGN);
+		BlockEntityType.SIGN.addValidBlock(TFBlocks.TWILIGHT_OAK_SIGN);
+		BlockEntityType.SIGN.addValidBlock(TFBlocks.TWILIGHT_WALL_SIGN);
+		BlockEntityType.SIGN.addValidBlock(TFBlocks.CANOPY_SIGN);
+		BlockEntityType.SIGN.addValidBlock(TFBlocks.CANOPY_WALL_SIGN);
+		BlockEntityType.SIGN.addValidBlock(TFBlocks.MANGROVE_SIGN);
+		BlockEntityType.SIGN.addValidBlock(TFBlocks.MANGROVE_WALL_SIGN);
+		BlockEntityType.SIGN.addValidBlock(TFBlocks.DARK_SIGN);
+		BlockEntityType.SIGN.addValidBlock(TFBlocks.DARK_WALL_SIGN);
+		BlockEntityType.SIGN.addValidBlock(TFBlocks.TIME_SIGN);
+		BlockEntityType.SIGN.addValidBlock(TFBlocks.TIME_WALL_SIGN);
+		BlockEntityType.SIGN.addValidBlock(TFBlocks.TRANSFORMATION_SIGN);
+		BlockEntityType.SIGN.addValidBlock(TFBlocks.TRANSFORMATION_WALL_SIGN);
+		BlockEntityType.SIGN.addValidBlock(TFBlocks.MINING_SIGN);
+		BlockEntityType.SIGN.addValidBlock(TFBlocks.MINING_WALL_SIGN);
+		BlockEntityType.SIGN.addValidBlock(TFBlocks.SORTING_SIGN);
+		BlockEntityType.SIGN.addValidBlock(TFBlocks.SORTING_WALL_SIGN);
+	}
+
+	private static void registerReloadListeners() {
+		ResourceLoader.get(PackType.SERVER_DATA).registerReloadListener(TFMain.prefix("quest"), new QuestReloadListener());
+		ResourceLoader.get(PackType.SERVER_DATA).registerReloadListener(TFMain.prefix("stalactite"), new StalactiteReloadListener());
+		ResourceLoader.get(PackType.SERVER_DATA).registerReloadListener(TFMain.prefix("structure_template_definitions"), StructureTemplateDefinitions.INSTANCE);
+	}
+
+	private static void registerCauldronInteractions() {
+		CauldronInteractions.WATER.put(TFItems.ARCTIC_HELMET, CauldronInteractions::dyedItemIteration);
+		CauldronInteractions.WATER.put(TFItems.ARCTIC_CHESTPLATE, CauldronInteractions::dyedItemIteration);
+		CauldronInteractions.WATER.put(TFItems.ARCTIC_LEGGINGS, CauldronInteractions::dyedItemIteration);
+		CauldronInteractions.WATER.put(TFItems.ARCTIC_BOOTS, CauldronInteractions::dyedItemIteration);
+	}
+
+	private static void registerItemStorage() {
+		ItemStorage.SIDED.registerForBlockEntity(
+			(masonJar, side) -> side == Direction.UP ? masonJar.getItemHandler() : null,
+			TFBlockEntities.MASON_JAR
+		);
+		ItemStorage.SIDED.registerForBlockEntity(
+			(entity, side) -> entity.getBlockState().getValue(ChiseledCanopyShelfBlock.SPAWNER) ? null : ContainerStorage.of(entity, side),
+			TFBlockEntities.CHISELED_CANOPY_BOOKSHELF
+		);
 	}
 
 	public static Identifier prefix(String name) {
