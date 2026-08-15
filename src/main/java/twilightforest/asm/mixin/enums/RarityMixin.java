@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(Rarity.class)
 public enum RarityMixin {
-	TWILIGHTFOREST_TWILIGHT(-1, "twilight", ChatFormatting.DARK_GREEN)
+	TWILIGHTFOREST_TWILIGHT(-1, "twilightforest:twilight", ChatFormatting.DARK_GREEN)
 	;
 
 	@Shadow

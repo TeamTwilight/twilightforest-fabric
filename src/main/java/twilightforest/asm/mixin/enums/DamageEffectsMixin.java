@@ -8,7 +8,7 @@ import twilightforest.init.TFSounds;
 
 @Mixin(DamageEffects.class)
 public enum DamageEffectsMixin {
-	TWILIGHTFOREST_PINCH("pinch", TFSounds.PINCH_BEETLE_ATTACK.value())
+	TWILIGHTFOREST_PINCH("twilightforest:pinch", TFSounds.PINCH_BEETLE_ATTACK.value())
 	;
 
 	@Shadow

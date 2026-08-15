@@ -264,5 +264,6 @@ extend-enum net/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifi
 extend-enum net/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier TWILIGHTFOREST_DARK_FOREST
 extend-enum net/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier TWILIGHTFOREST_DARK_FOREST_CENTER
 extend-enum net/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier TWILIGHTFOREST_SPOOKY_FOREST
+extend-enum net/minecraft/world/item/ItemDisplayContext TWILIGHTFOREST_JARRED
 
 # TODO: Validate and fix this file later on in Fabric development

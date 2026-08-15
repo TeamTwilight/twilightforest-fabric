@@ -9,6 +9,7 @@
     "WalkNodeEvaluatorMixin",
     "enums.DamageEffectsMixin",
     "enums.GrassColorModifierMixin",
+    "enums.ItemDisplayContextMixin",
     "enums.RarityMixin"
   ],
   "client": [],
