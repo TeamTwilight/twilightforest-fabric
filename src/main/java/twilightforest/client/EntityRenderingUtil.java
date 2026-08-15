@@ -1,6 +1,9 @@
 package twilightforest.client;
 
 import com.mojang.math.Axis;
+import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.ModContainer;
+import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -14,9 +17,6 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.ModList;
-import net.neoforged.neoforgespi.language.IModInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -154,9 +154,9 @@ public class EntityRenderingUtil {
 	}
 
 	public static String getModIdForTooltip(String modId) {
-		return ModList.get().getModContainerById(modId)
-				.map(ModContainer::getModInfo)
-				.map(IModInfo::getDisplayName)
-				.orElseGet(() -> StringUtils.capitalize(modId));
+		return FabricLoader.getInstance().getModContainer(modId)
+			.map(ModContainer::getMetadata)
+			.map(ModMetadata::getName)
+			.orElseGet(() -> StringUtils.capitalize(modId));
 	}
 }

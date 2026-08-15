@@ -82,7 +82,7 @@ public final class LandmarkUtil {
 			twilightStart.setConquered(conquered, level);
 
 			for (ServerPlayer player : level.getEntitiesOfClass(ServerPlayer.class, new AABB(pos.pos()).inflate(32.0F))) {
-				TFAdvancements.STRUCTURE_CLEARED.get().trigger(player, structureKey);
+				TFAdvancements.STRUCTURE_CLEARED.trigger(player, structureKey);
 			}
 		}
 	}
@@ -125,7 +125,7 @@ public final class LandmarkUtil {
 	}
 
 	public static boolean isProgressionEnforced(ServerLevel level) {
-		return level.getGameRules().get(TFGameRules.ENFORCED_PROGRESSION_RULE.get());
+		return level.getGameRules().get(TFGameRules.ENFORCED_PROGRESSION_RULE);
 	}
 
 	private LandmarkUtil() {
