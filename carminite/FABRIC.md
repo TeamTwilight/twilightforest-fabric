@@ -4,7 +4,6 @@ TODO
 ## Main Init
 - ResourceConditions.register(UncraftingTableCondition.TYPE);
 - Register client-side MapData cache clearing event by calling MapDatamanger.init()
-- Register MasonJar BE storage
 
 ## Add these to Fabric convention tags
 - Gold Ingot to ConventionalItemTags.GOLD_INGOTS
@@ -20,9 +19,6 @@ TODO
 
 # TwilightForestRenderInfo
 - Port implementation and usages to Fabric alternatives
-
-# PartEntity
-- Port system to Fabric
 
 # Uberous Soil
 - Add Uberous Soil to the proper Block tags in order to have it support crops
