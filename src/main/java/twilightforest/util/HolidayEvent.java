@@ -1,12 +1,10 @@
 package twilightforest.util;
 
-import tamaized.beanification.Component;
-
 import java.time.Month;
 import java.time.MonthDay;
 
-@Component
 public class HolidayEvent {
+	public static final HolidayEvent INSTANCE = new HolidayEvent();
 
 	public boolean isHalloweenWeek() {
 		MonthDay now = MonthDay.now();

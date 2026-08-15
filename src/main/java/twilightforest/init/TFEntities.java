@@ -25,7 +25,6 @@ import java.util.function.Supplier;
 
 public class TFEntities {
 
-	public static final Map<EntityType<?>, Supplier<AttributeSupplier.Builder>> ATTRIBUTES = new HashMap<>();
 	public static final Map<EntityType<?>, SpawnPlacements.SpawnPredicate<?>> SPAWN_PREDICATES = new HashMap<>();
 
 	public static final EntityType<Adherent> ADHERENT = registerWithAttributes("adherent", EntityType.Builder.of(Adherent::new, MobCategory.MONSTER).sized(0.8F, 2.2F).clientTrackingRange(8), Adherent::registerAttributes);
@@ -141,7 +140,6 @@ public class TFEntities {
 			TFMain.prefix(name),
 			builder.build(createIDFor(name))
 		);
-		ATTRIBUTES.put(ret, attributes);
 		return ret;
 	}
 
@@ -151,7 +149,6 @@ public class TFEntities {
 			TFMain.prefix(name),
 			builder.build(createIDFor(name))
 		);
-		ATTRIBUTES.put(ret, attributes);
 
 		if (predicate != null) {
 			SPAWN_PREDICATES.put(ret, predicate);
