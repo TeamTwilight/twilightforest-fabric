@@ -40,14 +40,6 @@ subprojects {
 	version = project(":").version
 }
 
-fabricApi {
-	configureDataGeneration {
-		modId = "twilightforest"
-		outputDirectory = file("src/generated/resources")
-		client = true
-	}
-}
-
 loom {
 	accessWidenerPath = file("src/main/resources/twilightforest.classtweaker")
 	enableTransitiveAccessWideners = true
@@ -55,20 +47,13 @@ loom {
 	interfaceInjection {
 		enableDependencyInterfaceInjection = true
 	}
+}
 
-	runs {
-		client {
-			client()
-			configName = "Fabric Client"
-			runDir = "run"
-			programArgs "--username", (secrets.getProperty("username") ?: "Dev")
-		}
-
-		server {
-			server()
-			configName = "Fabric Server"
-			runDir = "run"
-		}
+fabricApi {
+	configureDataGeneration {
+		modId = "twilightforest-data"
+		client = true
+		createSourceSet = true
 	}
 }
 
@@ -79,21 +64,6 @@ sourceSets {
 			exclude '.cache'
 		}
 	}
-
-	data {
-		compileClasspath += main.compileClasspath + main.output
-
-		java {
-			srcDirs = ['src/main/java', 'src/data/java']
-		}
-		resources {
-			srcDirs = ['src/main/resources']
-		}
-	}
-}
-
-configurations {
-	dataImplementation.extendsFrom implementation
 }
 
 repositories {
@@ -167,17 +137,6 @@ tasks.register('sourceJar', Jar) {
 	archiveClassifier = 'sources'
 }
 
-tasks.register('dataJar', Jar) {
-	dependsOn 'classes'
-	from sourceSets.data.output
-	archiveClassifier = 'data'
-}
-
-tasks.register('dataSourceJar', Jar) {
-	from sourceSets.data.allSource
-	archiveClassifier = 'data-sources'
-}
-
 def mavenUser = System.getenv("MAVEN_USER") ?: secrets.getProperty("maven_username")
 def mavenToken = System.getenv("MAVEN_PASS") ?: secrets.getProperty("maven_password")
 
@@ -186,8 +145,6 @@ publishing {
 		create('mavenJava', MavenPublication) {
 			artifact jar
 			artifact sourceJar
-			artifact dataJar
-			artifact dataSourceJar
 
 			groupId = 'team-twilight'
 			artifactId = project.mod_id
