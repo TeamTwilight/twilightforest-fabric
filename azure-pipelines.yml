@@ -39,21 +39,21 @@ steps:
 
   - task: Cache@2
     inputs:
-      key: 'gradle | "$(Agent.OS)" | build.gradle | settings.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
+      key: 'gradle | "$(Agent.OS)" | build.gradle | settings.gradle | gradle.properties | src/main/resources/twilightforest.accesswidener'
       path: $(GRADLE_USER_HOME)
     displayName: Restore Gradle Cache
     condition: eq(variables.SKIP_BUILD, 'false')
 
   - task: Cache@2
     inputs:
-      key: 'gradleLocal | "$(Agent.OS)" | build.gradle | settings.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
+      key: 'gradleLocal | "$(Agent.OS)" | build.gradle | settings.gradle | gradle.properties | src/main/resources/twilightforest.accesswidener'
       path: .gradle
     displayName: Restore Project Level Gradle Cache
     condition: eq(variables.SKIP_BUILD, 'false')
 
   - task: Cache@2
     inputs:
-      key: 'gradleBuildTmpLocal | "$(Agent.OS)" | build.gradle | settings.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
+      key: 'gradleBuildTmpLocal | "$(Agent.OS)" | build.gradle | settings.gradle | gradle.properties | src/main/resources/twilightforest.accesswidener'
       path: build/tmp
     displayName: Restore Project Level build/tmp Cache
     condition: eq(variables.SKIP_BUILD, 'false')
@@ -78,7 +78,7 @@ steps:
       gradleWrapperFile: 'gradlew'
       gradleOptions: '-Xmx3072m'
       javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '21'
+      jdkVersionOption: '25'
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
@@ -89,7 +89,7 @@ steps:
     displayName: Copy Release build to artifact staging
     inputs:
       sourceFolder: './build/libs/'
-      contents: 'twilightforest-*-universal.jar'
+      contents: 'twilightforest-*.jar'
       targetFolder: $(build.artifactStagingDirectory)
     condition: and(and(succeeded(), eq(variables['CreateArtifacts'], 'True')), eq(variables.SKIP_BUILD, 'false'))
 
@@ -104,7 +104,7 @@ steps:
   - powershell: |
       $rawpath = "pipelineartifact://teamtwilight/projectId/1ef09d39-06cf-41fa-ad98-7258b70c2a72/buildId/$($Env:BUILD_BUILDID)/artifactName/Release"
       $path = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($rawpath))
-      $jar = "twilightforest-$($env:JAVAPROPS_MINECRAFT_VERSION)-$($env:JAVAPROPS_MOD_VERSION).$($env:REVISION)-universal.jar"
+      $jar = "twilightforest-fabric-$($env:JAVAPROPS_MINECRAFT_VERSION)-$($env:JAVAPROPS_MOD_VERSION).$($env:REVISION).jar"
       $downloadUrl = "https://artprodcus3.artifacts.visualstudio.com/Abaabfa6c-deea-4587-ba05-c308c2597b7a/1ef09d39-06cf-41fa-ad98-7258b70c2a72/_apis/artifact/$($path)0/content?format=file&subPath=%2F$($jar)"
       $jobResult = (Get-Culture).TextInfo.ToTitleCase(${env:agent.jobstatus})
       $Colour = 65280
@@ -131,8 +131,12 @@ steps:
                   value = "$($env:JAVAPROPS_MOD_VERSION).$($env:REVISION)"
               },
               [Ordered]@{
-                  name = "NeoForge Version"
-                  value = "$($env:JAVAPROPS_NEO_VERSION)"
+                  name = "Fabric API Version"
+                  value = "$($env:JAVAPROPS_FABRIC_API_VERSION)"
+              },
+              [Ordered]@{
+                  name = "Fabric Loader  Version"
+                  value = "$($env:JAVAPROPS_LOADER_VERSION)"
               },
               [Ordered]@{
                   name = "Commit"
@@ -175,7 +179,7 @@ steps:
       gradleWrapperFile: 'gradlew'
       gradleOptions: '-Xmx3072m'
       javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '21'
+      jdkVersionOption: '25'
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
