@@ -73,7 +73,6 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
 
 	// Bundled dependencies
-	// FIXME: Bundle the fat Porting Lib jar once it is published(cuts TF JAR size in half)
 	def portingLibModules = [
 		"attributes",
 		"base",
@@ -112,7 +111,7 @@ dependencies {
 		include(modImplementation "io.github.fabricators_of_create.Porting-Lib:${module}:${porting_lib_version}+${minecraft_version}")
 	}
 
-	// More stable than Porting Lib config
+	// More stable config screen compared to Porting Lib
 	include(modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forge_config_api_port_version}")
 
 	// Compat mods
@@ -176,6 +175,49 @@ jar {
 			'Implementation-Vendor'   : "TeamTwilight",
 			'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
 		])
+	}
+}
+
+// Temporary fix for Porting Lib's duplicated JiJ dependencies
+tasks.named("remapJar") {
+	doLast {
+		def jar = archiveFile.get().asFile
+		def tempDir = file("${buildDir}/strip-mixinextras")
+
+		delete(tempDir)
+		tempDir.mkdirs()
+
+		copy {
+			from zipTree(jar)
+			into tempDir
+		}
+
+		fileTree(tempDir).matching {
+			include "META-INF/jars/*.jar"
+		}.files.each { nestedJar ->
+			def nestedTemp = file("${nestedJar}.tmp")
+
+			ant.zip(destfile: nestedTemp) {
+				zipfileset(src: nestedJar) {
+					exclude(name: "META-INF/jars/mixinextras*.jar")
+					exclude(name: "META-INF/jars/Fabric-ASM*.jar")
+				}
+			}
+
+			nestedJar.delete()
+			nestedTemp.renameTo(nestedJar)
+		}
+
+		def output = file("${jar}.tmp")
+
+		ant.zip(destfile: output) {
+			zipfileset(dir: tempDir)
+		}
+
+		jar.delete()
+		output.renameTo(jar)
+
+		delete(tempDir)
 	}
 }
 
