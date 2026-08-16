@@ -3,7 +3,7 @@ plugins {
 	id 'maven-publish'
 }
 
-version = project.mod_version
+version = (hasProperty("CIRevision") ? CIRevision : project.mod_version)
 group = project.group_name
 
 java {
