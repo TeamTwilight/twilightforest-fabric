@@ -30,7 +30,7 @@
       "twilightforest.TFMain"
     ],
     "client": [
-      "twilightforest.client.TFClient"
+      "twilightforest.TFClient"
     ],
     "fabric-datagen": [
       "twilightforest.datagen.TFData"
