@@ -23,14 +23,14 @@ public class ChestBoatMixin {
 		ChestBoat self = (ChestBoat) (Object) this;
 		Boat.Type type = self.getVariant(); // sic - uses inner class import via parent
 
-		Item boatItem = getTFChestBoatItem(type);
+		Item boatItem = twilightforest$getTFChestBoatItem(type);
 		if (boatItem != null) {
 			cir.setReturnValue(boatItem);
 		}
 	}
 
 	@Unique
-	private static Item getTFChestBoatItem(Boat.Type type) { // sic
+	private static Item twilightforest$getTFChestBoatItem(Boat.Type type) { // sic
 		if (type == TFBoatTypes.TWILIGHT_OAK) return TFItems.TWILIGHT_OAK_CHEST_BOAT.get();
 		if (type == TFBoatTypes.CANOPY) return TFItems.CANOPY_CHEST_BOAT.get();
 		if (type == TFBoatTypes.MANGROVE_TYPE) return TFItems.MANGROVE_CHEST_BOAT.get();

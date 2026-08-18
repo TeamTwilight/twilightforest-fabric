@@ -1,6 +1,7 @@
 package twilightforest.mixin;
 
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
@@ -32,8 +33,8 @@ public class BlockEntityMixin {
 		BlockState blockState,
 		CallbackInfo ci
 	) {
-		String blockName = BuiltInRegistries.BLOCK.getKey(blockState.getBlock()).toString();
-		if (blockName.startsWith("twilightforest:") && (blockName.endsWith("_chest") || blockName.endsWith("_trapped_chest"))) {
+		ResourceLocation blockKey = BuiltInRegistries.BLOCK.getKey(blockState.getBlock());
+		if (blockKey.getNamespace().equals("twilightforest") && (blockKey.getPath().endsWith("_chest") || blockKey.getPath().endsWith("_trapped_chest"))) {
 			// Set blockState before cancelling to keep chest BE in sync
 			this.blockState = blockState;
 			ci.cancel();

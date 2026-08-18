@@ -38,14 +38,14 @@ public class MobMixin {
 			if (TFConfig.multiplayerFightAdjuster.adjustsHealth()) {
 				List<ServerPlayer> nearbyPlayers = level.getEntitiesOfClass(ServerPlayer.class, self.getBoundingBox().inflate(32, 10, 32), player -> EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.ENTITY_STILL_ALIVE).test(player));
 				if (nearbyPlayers.size() > 1 && self.getAttribute(Attributes.MAX_HEALTH) != null) {
-					self.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(TwilightForestMod.prefix("group_health_boost"), getHealthBasedOnDifficulty(difficulty.getDifficulty()) * (nearbyPlayers.size() - 1), AttributeModifier.Operation.ADD_VALUE));
+					self.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(TwilightForestMod.prefix("group_health_boost"), twilightforest$getHealthBasedOnDifficulty(difficulty.getDifficulty()) * (nearbyPlayers.size() - 1), AttributeModifier.Operation.ADD_VALUE));
 				}
 			}
 		}
 	}
 
 	@Unique
-	private static double getHealthBasedOnDifficulty(Difficulty difficulty) {
+	private static double twilightforest$getHealthBasedOnDifficulty(Difficulty difficulty) {
 		return switch (difficulty) {
 			case EASY -> 20.0D;
 			case NORMAL -> 40.0D;

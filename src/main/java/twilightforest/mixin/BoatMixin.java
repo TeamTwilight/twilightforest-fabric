@@ -31,7 +31,7 @@ public class BoatMixin {
 		boolean hasChest = self.getType() == EntityType.CHEST_BOAT;
 
 		// Check if this is a TF custom boat type and return the appropriate item
-		Item boatItem = getTFBoatItem(type, hasChest);
+		Item boatItem = twilightforest$getTFBoatItem(type, hasChest);
 		if (boatItem != null) {
 			cir.setReturnValue(boatItem);
 		}
@@ -41,7 +41,7 @@ public class BoatMixin {
 	 * Returns the TF boat item for the given type, or null if not a TF type.
 	 */
 	@Unique
-	private static Item getTFBoatItem(Boat.Type type, boolean hasChest) {
+	private static Item twilightforest$getTFBoatItem(Boat.Type type, boolean hasChest) {
 		if (type == TFBoatTypes.TWILIGHT_OAK) {
 			return hasChest ? TFItems.TWILIGHT_OAK_CHEST_BOAT.get() : TFItems.TWILIGHT_OAK_BOAT.get();
 		}

@@ -26,7 +26,7 @@ public class BoatRendererMixin implements CustomBoatModel {
 	@Override
 	public Pair<ResourceLocation, ListModel<Boat>> getModelWithLocation(Boat boat) {
 		Boat.Type type = boat.getVariant();
-		String name = getTFTextureName(type);
+		String name = twilightforest$getTFTextureName(type);
 		if (name == null) {
 			return boatResources.get(type);
 		}
@@ -42,7 +42,7 @@ public class BoatRendererMixin implements CustomBoatModel {
 	}
 
 	@Unique
-	private static String getTFTextureName(Boat.Type type) {
+	private static String twilightforest$getTFTextureName(Boat.Type type) {
 		if (type == TFBoatTypes.TWILIGHT_OAK) return "twilight_oak";
 		if (type == TFBoatTypes.CANOPY) return "canopy";
 		if (type == TFBoatTypes.MANGROVE_TYPE) return "mangrove";

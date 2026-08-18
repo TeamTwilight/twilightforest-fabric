@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import twilightforest.TwilightForestMod;
 import twilightforest.asmhooks.BlockHooks;
 
 @Mixin(SlimeBlock.class)
@@ -27,7 +28,7 @@ public class SlimeBlockMixin {
 		BlockState state,
 		Entity entity,
 		CallbackInfo ci,
-		@Share("twilightforest$velocity") LocalRef<Vec3> velocityRef
+		@Share(value = "velocity", namespace = TwilightForestMod.ID) LocalRef<Vec3> velocityRef
 	) {
 		velocityRef.set(entity.getDeltaMovement());
 	}
@@ -42,7 +43,7 @@ public class SlimeBlockMixin {
 		BlockState state,
 		Entity entity,
 		CallbackInfo ci,
-		@Share("twilightforest$velocity") LocalRef<Vec3> velocityRef
+		@Share(value = "velocity", namespace = TwilightForestMod.ID) LocalRef<Vec3> velocityRef
 	) {
 		Vec3 original = velocityRef.get();
 		BlockHooks.restoreStepOnVelocity(entity, original);

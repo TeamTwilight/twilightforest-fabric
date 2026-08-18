@@ -1,5 +1,6 @@
 package twilightforest.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.phys.Vec3;
@@ -7,28 +8,25 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import twilightforest.asmhooks.EntityHooks;
 
 @Mixin(Entity.class)
 public class EntityMixin {
 
-	@Inject(
+	@ModifyReturnValue(
 		method = "getBlockJumpFactor",
-		at = @At("RETURN"),
-		cancellable = true
+		at = @At("RETURN")
 	)
-	private void twilightforest$resetBlockJumpFactor(CallbackInfoReturnable<Float> cir) {
-		cir.setReturnValue(EntityHooks.resetFactorWithUnrestrained(cir.getReturnValue(), (Entity) (Object) this));
+	private float twilightforest$resetBlockJumpFactor(float original) {
+		return EntityHooks.resetFactorWithUnrestrained(original, (Entity) (Object) this);
 	}
 
-	@Inject(
+	@ModifyReturnValue(
 		method = "getBlockSpeedFactor",
-		at = @At("RETURN"),
-		cancellable = true
+		at = @At("RETURN")
 	)
-	private void twilightforest$resetBlockSpeedFactor(CallbackInfoReturnable<Float> cir) {
-		cir.setReturnValue(EntityHooks.resetFactorWithUnrestrained(cir.getReturnValue(), (Entity) (Object) this));
+	private float twilightforest$resetBlockSpeedFactor(float original) {
+		return EntityHooks.resetFactorWithUnrestrained(original, (Entity) (Object) this);
 	}
 
 	@Inject(

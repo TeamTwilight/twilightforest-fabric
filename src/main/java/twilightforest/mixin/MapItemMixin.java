@@ -35,7 +35,7 @@ public class MapItemMixin {
 	) {
 		if (mapId == null) return;
 
-		MapItemSavedData data = getTFMapData(level, mapId.id());
+		MapItemSavedData data = twilightforest$getTFMapData(level, mapId.id());
 		if (data != null) {
 			cir.setReturnValue(data);
 		}
@@ -43,7 +43,7 @@ public class MapItemMixin {
 
 	@Unique
 	@Nullable
-	private static MapItemSavedData getTFMapData(Level level, int id) {
+	private static MapItemSavedData twilightforest$getTFMapData(Level level, int id) {
 		TFMagicMapData magicData = TFMagicMapData.getMagicMapData(level, MagicMapItem.getMapName(id));
 		if (magicData != null) {
 			return magicData;

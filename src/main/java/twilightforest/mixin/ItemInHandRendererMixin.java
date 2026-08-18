@@ -59,18 +59,18 @@ public class ItemInHandRendererMixin {
 			return;
 
 		ItemStack handStack = player.getMainHandItem();
-		if (isOreMeter(handStack) && isOreMeter(this.mainHandItem)) {
+		if (twilightforest$isOreMeter(handStack) && twilightforest$isOreMeter(this.mainHandItem)) {
 			this.mainHandItem = handStack;
 		}
 
 		ItemStack offHandStack = player.getOffhandItem();
-		if (isOreMeter(offHandStack) && isOreMeter(this.offHandItem)) {
+		if (twilightforest$isOreMeter(offHandStack) && twilightforest$isOreMeter(this.offHandItem)) {
 			this.offHandItem = offHandStack;
 		}
 	}
 
 	@Unique
-	private static boolean isOreMeter(ItemStack stack) {
+	private static boolean twilightforest$isOreMeter(ItemStack stack) {
 		return !stack.isEmpty() && stack.getItem() instanceof OreMeterItem;
 	}
 }
