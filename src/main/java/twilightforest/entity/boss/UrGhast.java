@@ -31,6 +31,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import twilightforest.TwilightForestMod;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.entity.ai.control.NoClipMoveControl;
 import twilightforest.entity.ai.goal.UrGhastAttackGoal;
@@ -46,7 +47,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class UrGhast extends BaseTFBoss {
 	private static final Vec3 DYING_DECENT = new Vec3(0.0D, -0.03D, 0.0D);
@@ -226,6 +226,7 @@ public class UrGhast extends BaseTFBoss {
 
 		for (int i = 0; i < numSpawns; i++) {
 			BlockPos spawnCoord = ghastSpawns.get(i);
+			TwilightForestMod.LOGGER.info("Ur-Ghast spawning minion ghasts at trap {}", spawnCoord);
 			this.spawnMinionGhastsAt(level, spawnCoord.getX(), spawnCoord.getY(), spawnCoord.getZ());
 		}
 	}
@@ -348,33 +349,46 @@ public class UrGhast extends BaseTFBoss {
 		PoiManager poimanager = level.getPoiManager();
 		BlockPos scanCenter = this.getLogicalScanPoint();
 		int radius = this.getHomeRadius();
-		Stream<PoiRecord> stream = poimanager.getInRange(type ->
+
+		List<BlockPos> traps = new ArrayList<>();
+
+		// POI scan. Validate the block type as well: stale/duplicate POI records can point at
+		// positions that no longer (or never did) contain a Ghast Trap block, which would make
+		// minion ghasts spawn in the middle of nowhere.
+		poimanager.getInRange(type ->
 				type.is(TFPOITypes.GHAST_TRAP.getKey()),
 			scanCenter,
 			radius,
-			PoiManager.Occupancy.ANY);
-		List<BlockPos> traps = stream.map(PoiRecord::getPos)
+			PoiManager.Occupancy.ANY)
+			.map(PoiRecord::getPos)
+			.map(BlockPos::immutable)
+			.filter(trapPos -> level.getBlockState(trapPos).is(TFBlocks.GHAST_TRAP.get()))
 			.filter(trapPos -> level.canSeeSky(trapPos.above()))
-			.sorted(Comparator.comparingDouble(trapPos -> trapPos.distSqr(scanCenter)))
+			.forEach(traps::add);
+
+		// Direct block scan. Always run it (not only when the POI scan is empty) so that every
+		// real Ghast Trap inside the scan radius is found, even if some POI records are missing
+		// or invalid. NOTE: betweenClosedStream() reuses a single MutableBlockPos, so the stream
+		// elements must be copied (BlockPos::immutable) before storing them.
+		int minY = Math.max(level.getMinBuildHeight(), scanCenter.getY() - radius);
+		int maxY = Math.min(level.getMaxBuildHeight(), scanCenter.getY() + radius);
+		BlockPos.betweenClosedStream(
+				scanCenter.offset(-radius, 0, -radius).atY(minY),
+				scanCenter.offset(radius, 0, radius).atY(maxY)
+			)
+			.map(BlockPos::immutable)
+			.filter(pos -> level.getBlockState(pos).is(TFBlocks.GHAST_TRAP.get()))
+			.filter(pos -> level.canSeeSky(pos.above()))
+			.forEach(traps::add);
+
+		List<BlockPos> result = traps.stream()
+			.distinct()
+			.sorted(Comparator.comparingDouble(pos -> pos.distSqr(scanCenter)))
 			.collect(Collectors.toList());
 
-		// Fallback: if POI scan found nothing, scan blocks directly.
-		// On Fabric, WorldGenRegion.setBlock() during structure generation does not
-		// trigger POI updates, so Ghast Trap POI records may never be created.
-		if (traps.isEmpty()) {
-			int minY = Math.max(level.getMinBuildHeight(), scanCenter.getY() - radius);
-			int maxY = Math.min(level.getMaxBuildHeight(), scanCenter.getY() + radius);
-			traps = BlockPos.betweenClosedStream(
-					scanCenter.offset(-radius, 0, -radius).atY(minY),
-					scanCenter.offset(radius, 0, radius).atY(maxY)
-				)
-				.filter(pos -> level.getBlockState(pos).is(TFBlocks.GHAST_TRAP.get()))
-				.filter(pos -> level.canSeeSky(pos.above()))
-				.sorted(Comparator.comparingDouble(pos -> pos.distSqr(scanCenter)))
-				.collect(Collectors.toList());
-		}
+		TwilightForestMod.LOGGER.info("Ur-Ghast scanForTraps: center = {} (restriction = {}), found {} trap(s): {}", scanCenter, this.getRestrictionPoint(), result.size(), result);
 
-		return traps;
+		return result;
 	}
 
 	private void doTantrumDamageEffects() {
