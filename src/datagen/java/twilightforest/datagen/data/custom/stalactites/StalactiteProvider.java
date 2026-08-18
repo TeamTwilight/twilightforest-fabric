@@ -10,10 +10,10 @@ import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
-import twilightforest.TFMain;
-import twilightforest.world.components.spelothem.SpeleothemVarietyConfig;
-import twilightforest.world.components.spelothem.Stalactite;
-import twilightforest.world.components.spelothem.StalactiteReloadListener;
+import twilightforest.TwilightForestMod;
+import twilightforest.world.components.speleothem.SpeleothemVarietyConfig;
+import twilightforest.world.components.speleothem.Stalactite;
+import twilightforest.world.components.speleothem.StalactiteReloadListener;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -53,11 +53,11 @@ public abstract class StalactiteProvider implements DataProvider {
 
 		map.forEach((identifier, stalactite) -> {
 			Path path = this.entryPath.json(identifier);
-			futuresBuilder.add(DataProvider.saveStable(output, Stalactite.CODEC.encodeStart(JsonOps.INSTANCE, stalactite).resultOrPartial(TFMain.LOGGER::error).orElseThrow(), path));
+			futuresBuilder.add(DataProvider.saveStable(output, Stalactite.CODEC.encodeStart(JsonOps.INSTANCE, stalactite).resultOrPartial(TwilightForestMod.LOGGER::error).orElseThrow(), path));
 		});
 		configs.forEach(hillConfig -> {
 			Path hillPath = this.generator.getOutputFolder().resolve(String.format("data/%s/%s/%s.json", this.modid, StalactiteReloadListener.STALACTITE_DIRECTORY, hillConfig.type()));
-			futuresBuilder.add(DataProvider.saveStable(output, SpeleothemVarietyConfig.CODEC.encodeStart(JsonOps.INSTANCE, hillConfig).resultOrPartial(TFMain.LOGGER::error).orElseThrow(), hillPath));
+			futuresBuilder.add(DataProvider.saveStable(output, SpeleothemVarietyConfig.CODEC.encodeStart(JsonOps.INSTANCE, hillConfig).resultOrPartial(TwilightForestMod.LOGGER::error).orElseThrow(), hillPath));
 		});
 		return CompletableFuture.allOf(futuresBuilder.build().toArray(CompletableFuture[]::new));
 	}
