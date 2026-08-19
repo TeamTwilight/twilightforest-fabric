@@ -3,33 +3,30 @@ package twilightforest.asm.mixin;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerPlayerGameMode;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import twilightforest.block.*;
+import twilightforest.fabric.hooks.CommonHooks;
 import twilightforest.init.TFBlocks;
-
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.Set;
 
 @Mixin(ServerPlayerGameMode.class)
 public class ServerPlayerGameModeMixin {
 
 	@Shadow
 	protected ServerLevel level;
+
+	@Shadow
+	private GameType gameModeForPlayer;
 
 	@Shadow
 	@Final
@@ -68,7 +65,7 @@ public class ServerPlayerGameModeMixin {
 		}
 
 		if (block instanceof VanishingBlock) {
-			cir.setReturnValue(state.getValue(VanishingBlock.ACTIVE) || !areBlocksLocked(state, pos));
+			cir.setReturnValue(state.getValue(VanishingBlock.ACTIVE) || !VanishingBlock.areBlocksLocked(state, pos));
 		}
 	}
 
@@ -93,7 +90,7 @@ public class ServerPlayerGameModeMixin {
 			level.setBlock(pos, level.getFluidState(pos).createLegacyBlock(), level.isClientSide() ? Block.UPDATE_ALL_IMMEDIATE : Block.UPDATE_ALL);
 		} else if (state.getBlock() instanceof ThornsBlock && !player.isCreative()) {
 			if (!level.isClientSide()) {
-				this.doThornBurst(level, pos, state);
+				ThornsBlock.doThornBurst(level, pos, state);
 			}
 			return false;
 		}
@@ -101,75 +98,23 @@ public class ServerPlayerGameModeMixin {
 		return original.call(level, pos, b);
 	}
 
-	@Unique
-	private static boolean areBlocksLocked(BlockState state, BlockPos start) {
-		int limit = 512;
-		Deque<BlockPos> queue = new ArrayDeque<>();
-		Set<BlockPos> checked = new HashSet<>();
-		queue.offer(start);
-
-		for (int iter = 0; !queue.isEmpty() && iter < limit; iter++) {
-			BlockPos cur = queue.pop();
-			if (state.getBlock() == TFBlocks.LOCKED_VANISHING_BLOCK && state.getValue(LockedVanishingBlock.LOCKED)) {
-				return true;
-			}
-
-			checked.add(cur);
-
-			if (state.getBlock() instanceof VanishingBlock) {
-				for (Direction facing : Direction.values()) {
-					BlockPos neighbor = cur.relative(facing);
-					if (!checked.contains(neighbor)) {
-						queue.offer(neighbor);
-					}
-				}
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * Grow thorns out of both the ends, then maybe in another direction too
-	 */
-	@Unique
-	private void doThornBurst(Level level, BlockPos pos, BlockState state) {
-		switch (state.getValue(ThornsBlock.AXIS)) {
-			case Y -> {
-				this.growThorns(level, pos, Direction.UP);
-				this.growThorns(level, pos, Direction.DOWN);
-			}
-			case X -> {
-				this.growThorns(level, pos, Direction.EAST);
-				this.growThorns(level, pos, Direction.WEST);
-			}
-			case Z -> {
-				this.growThorns(level, pos, Direction.NORTH);
-				this.growThorns(level, pos, Direction.SOUTH);
-			}
-		}
-
-		// also try three random directions
-		this.growThorns(level, pos, Direction.getRandom(level.getRandom()));
-		this.growThorns(level, pos, Direction.getRandom(level.getRandom()));
-		this.growThorns(level, pos, Direction.getRandom(level.getRandom()));
-	}
-
-	/**
-	 * grow several green thorns in the specified direction
-	 */
-	@Unique
-	private void growThorns(Level level, BlockPos pos, Direction dir) {
-		int length = 1 + level.getRandom().nextInt(3);
-
-		for (int i = 1; i < length; i++) {
-			BlockPos dPos = pos.relative(dir, i);
-
-			if (level.isEmptyBlock(dPos)) {
-				level.setBlock(dPos, TFBlocks.GREEN_THORNS.defaultBlockState().setValue(ThornsBlock.AXIS, dir.getAxis()), Block.UPDATE_CLIENTS);
-			} else {
-				break;
-			}
+	@Inject(
+		method = "destroyBlock(Lnet/minecraft/core/BlockPos;)Z",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/server/level/ServerLevel;getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;",
+			shift = At.Shift.AFTER
+		),
+		cancellable = true
+	)
+	private void twilightforest$fireBreakBlockEvent(
+		BlockPos pos,
+		CallbackInfoReturnable<Boolean> cir
+	) {
+		BlockState state = this.level.getBlockState(pos);
+		var event = CommonHooks.fireBlockBreak(this.level, this.gameModeForPlayer, this.player, pos, state);
+		if (event.isCanceled()) {
+			cir.setReturnValue(false);
 		}
 	}
 }

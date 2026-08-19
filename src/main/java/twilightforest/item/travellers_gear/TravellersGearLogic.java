@@ -1,7 +1,7 @@
 package twilightforest.item.travellers_gear;
 
-import carminite.network.PacketDistributor;
-import carminite.util.ServerLifecycleHooks;
+import twilightforest.fabric.network.PacketDistributor;
+import twilightforest.fabric.util.ServerLifecycleHooks;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;

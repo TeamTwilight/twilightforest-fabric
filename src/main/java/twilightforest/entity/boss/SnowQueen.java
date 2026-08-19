@@ -1,7 +1,7 @@
 package twilightforest.entity.boss;
 
-import carminite.entity.IMultiPartEntity;
-import carminite.entity.PartEntity;
+import twilightforest.fabric.entity.IMultiPartEntity;
+import twilightforest.fabric.entity.PartEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;

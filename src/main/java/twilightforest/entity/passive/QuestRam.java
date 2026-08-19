@@ -1,6 +1,6 @@
 package twilightforest.entity.passive;
 
-import carminite.network.PacketDistributor;
+import twilightforest.fabric.network.PacketDistributor;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;

@@ -1,6 +1,6 @@
 package twilightforest.block.entity.bookshelf;
 
-import carminite.extensions.IOwnedSpawner;
+import twilightforest.fabric.interfaces.extension.IOwnedSpawner;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

@@ -1,7 +1,7 @@
 package twilightforest.entity.projectile;
 
-import carminite.hooks.CommonHooks;
-import carminite.network.PacketDistributor;
+import twilightforest.fabric.hooks.CommonHooks;
+import twilightforest.fabric.network.PacketDistributor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;

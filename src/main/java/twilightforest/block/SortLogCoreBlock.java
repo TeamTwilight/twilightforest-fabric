@@ -1,6 +1,6 @@
 package twilightforest.block;
 
-import carminite.network.PacketDistributor;
+import twilightforest.fabric.network.PacketDistributor;
 import net.fabricmc.fabric.api.transfer.v1.item.ContainerStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;

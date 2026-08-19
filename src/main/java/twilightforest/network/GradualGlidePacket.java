@@ -1,6 +1,6 @@
 package twilightforest.network;
 
-import carminite.network.PacketDistributor;
+import twilightforest.fabric.network.PacketDistributor;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.RegistryFriendlyByteBuf;

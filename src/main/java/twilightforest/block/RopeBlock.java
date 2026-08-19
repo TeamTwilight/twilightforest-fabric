@@ -1,6 +1,6 @@
 package twilightforest.block;
 
-import carminite.block.ISpecialScaffoldingBlock;
+import twilightforest.fabric.interfaces.marker.ISpecialScaffoldingBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;

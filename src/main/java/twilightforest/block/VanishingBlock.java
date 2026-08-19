@@ -1,6 +1,5 @@
 package twilightforest.block;
 
-import carminite.block.ISpecialExplosionBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -22,6 +21,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
+import twilightforest.fabric.interfaces.marker.ISpecialExplosionBlock;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 
@@ -51,7 +51,7 @@ public class VanishingBlock extends Block implements ISpecialExplosionBlock {
 		this.registerDefaultState(this.getStateDefinition().any().setValue(ACTIVE, false));
 	}
 
-	private static boolean areBlocksLocked(BlockGetter getter, BlockPos start) {
+	public static boolean areBlocksLocked(BlockState state, BlockPos start) {
 		int limit = 512;
 		Deque<BlockPos> queue = new ArrayDeque<>();
 		Set<BlockPos> checked = new HashSet<>();
@@ -59,7 +59,6 @@ public class VanishingBlock extends Block implements ISpecialExplosionBlock {
 
 		for (int iter = 0; !queue.isEmpty() && iter < limit; iter++) {
 			BlockPos cur = queue.pop();
-			BlockState state = getter.getBlockState(cur);
 			if (state.getBlock() == TFBlocks.LOCKED_VANISHING_BLOCK && state.getValue(LockedVanishingBlock.LOCKED)) {
 				return true;
 			}
@@ -101,7 +100,7 @@ public class VanishingBlock extends Block implements ISpecialExplosionBlock {
 	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
 		if (!this.isVanished(state) && !state.getValue(ACTIVE)) {
-			if (areBlocksLocked(level, pos)) {
+			if (areBlocksLocked(state, pos)) {
 				level.playSound(null, pos, TFSounds.LOCKED_VANISHING_BLOCK.value(), SoundSource.BLOCKS, 1.0F, 0.3F);
 			} else {
 				this.activate(level, pos);
@@ -114,7 +113,7 @@ public class VanishingBlock extends Block implements ISpecialExplosionBlock {
 
 	@Override
 	public float getExplosionResistance(BlockState state, BlockGetter getter, BlockPos pos, Explosion explosion) {
-		return !state.getValue(ACTIVE) ? 6000F : super.getExplosionResistance();
+		return !state.getValue(ACTIVE) ? 6000F : ISpecialExplosionBlock.super.getExplosionResistance(state, getter, pos, explosion);
 	}
 
 	@Override
@@ -123,7 +122,7 @@ public class VanishingBlock extends Block implements ISpecialExplosionBlock {
 			return;
 		}
 
-		if (!this.isVanished(state) && !state.getValue(ACTIVE) && level.hasNeighborSignal(pos) && !areBlocksLocked(level, pos)) {
+		if (!this.isVanished(state) && !state.getValue(ACTIVE) && level.hasNeighborSignal(pos) && !areBlocksLocked(state, pos)) {
 			this.activate(level, pos);
 		}
 	}

@@ -1,6 +1,6 @@
 package twilightforest.block;
 
-import carminite.block.ISpecialLandingEffectsBlock;
+import twilightforest.fabric.interfaces.marker.ISpecialLandingEffectsBlock;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;

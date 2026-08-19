@@ -1,7 +1,7 @@
 package twilightforest.config;
 
-import carminite.network.PacketDistributor;
-import carminite.util.ServerLifecycleHooks;
+import twilightforest.fabric.network.PacketDistributor;
+import twilightforest.fabric.util.ServerLifecycleHooks;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.yggdrasil.ProfileResult;

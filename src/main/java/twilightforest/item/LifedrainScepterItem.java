@@ -1,7 +1,7 @@
 package twilightforest.item;
 
-import carminite.item.IContinuousUseItem;
-import carminite.network.PacketDistributor;
+import twilightforest.fabric.interfaces.marker.IContinuousUseItem;
+import twilightforest.fabric.network.PacketDistributor;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalEntityTypeTags;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ColorParticleOption;

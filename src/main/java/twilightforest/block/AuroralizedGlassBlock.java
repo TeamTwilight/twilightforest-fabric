@@ -1,6 +1,6 @@
 package twilightforest.block;
 
-import carminite.block.IBeaconColoredBlock;
+import twilightforest.fabric.interfaces.marker.IBeaconColoredBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.TransparentBlock;

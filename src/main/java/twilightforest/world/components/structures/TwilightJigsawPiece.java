@@ -1,6 +1,6 @@
 package twilightforest.world.components.structures;
 
-import carminite.world.IPieceBeardifierModifier;
+import twilightforest.fabric.world.IPieceBeardifierModifier;
 import com.mojang.serialization.DynamicOps;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;

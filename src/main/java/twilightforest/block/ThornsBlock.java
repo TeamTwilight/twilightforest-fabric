@@ -6,7 +6,10 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.InsideBlockEffectApplier;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -22,9 +25,11 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.tags.TFItemTags;
@@ -88,6 +93,48 @@ public class ThornsBlock extends ConnectableRotatedPillarBlock implements Simple
 		}
 
 		super.stepOn(level, pos, state, entity);
+	}
+
+	/**
+	 * Grow thorns out of both the ends, then maybe in another direction too
+	 */
+	public static void doThornBurst(Level level, BlockPos pos, BlockState state) {
+		switch (state.getValue(AXIS)) {
+			case Y -> {
+				growThorns(level, pos, Direction.UP);
+				growThorns(level, pos, Direction.DOWN);
+			}
+			case X -> {
+				growThorns(level, pos, Direction.EAST);
+				growThorns(level, pos, Direction.WEST);
+			}
+			case Z -> {
+				growThorns(level, pos, Direction.NORTH);
+				growThorns(level, pos, Direction.SOUTH);
+			}
+		}
+
+		// also try three random directions
+		growThorns(level, pos, Direction.getRandom(level.getRandom()));
+		growThorns(level, pos, Direction.getRandom(level.getRandom()));
+		growThorns(level, pos, Direction.getRandom(level.getRandom()));
+	}
+
+	/**
+	 * grow several green thorns in the specified direction
+	 */
+	public static void growThorns(Level level, BlockPos pos, Direction dir) {
+		int length = 1 + level.getRandom().nextInt(3);
+
+		for (int i = 1; i < length; i++) {
+			BlockPos dPos = pos.relative(dir, i);
+
+			if (level.isEmptyBlock(dPos)) {
+				level.setBlock(dPos, TFBlocks.GREEN_THORNS.defaultBlockState().setValue(AXIS, dir.getAxis()), Block.UPDATE_CLIENTS);
+			} else {
+				break;
+			}
+		}
 	}
 
 	@Override

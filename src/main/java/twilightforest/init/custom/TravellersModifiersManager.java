@@ -79,7 +79,7 @@ public class TravellersModifiersManager {
 		context.register(ALL_NIGHT_GOGGLES_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.HEAD, TFDataComponents.ALL_NIGHT_GOGGLES, Unit.INSTANCE, componentText(ALL_NIGHT_GOGGLES_MODIFIER)));
 		context.register(ITEM_DISPLAY_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.HEAD, TFDataComponents.ITEM_DISPLAY, ItemDisplayContents.EMPTY, componentText(ITEM_DISPLAY_MODIFIER)));
 
-		context.register(SWIFT_SWIM_ABILITY, new TravellersEntryModifier(EquipmentSlotGroup.CHEST, List.of(new ItemAttributeModifiers.Entry(Attributes.WATER_MOVEMENT_EFFICIENCY, TFAttributeModifiers.TRAVELLERS_SWIFT_SWIM, EquipmentSlotGroup.CHEST)), TFDataComponents.SWIFT_SWIM, true));
+		context.register(SWIFT_SWIM_ABILITY, new TravellersEntryModifier(EquipmentSlotGroup.CHEST, List.of(new ItemAttributeModifiers.Entry(Attributes.WATER_MOVEMENT_EFFICIENCY, TFAttributeModifiers.TRAVELLERS_SWIFT_SWIM, EquipmentSlotGroup.CHEST)), () -> TFDataComponents.SWIFT_SWIM, true));
 		context.register(STEALTH_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.CHEST, TFDataComponents.STEALTH_CROUCHING, Unit.INSTANCE, componentText(STEALTH_MODIFIER)));
 		context.register(ARROW_MAGNETISM_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.CHEST, TFDataComponents.ARROW_MAGNETISM, Unit.INSTANCE, componentText(ARROW_MAGNETISM_MODIFIER)));
 		context.register(EFFICIENT_EATER_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.CHEST, TFDataComponents.EFFICIENT_EATER, 2F, componentText(EFFICIENT_EATER_MODIFIER)));
@@ -95,7 +95,7 @@ public class TravellersModifiersManager {
 		context.register(DOUBLE_JUMP_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.LEGS, TFDataComponents.DOUBLE_JUMP, Unit.INSTANCE, componentText(DOUBLE_JUMP_MODIFIER)));
 		context.register(SIDESTEP_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.LEGS, TFDataComponents.SIDESTEP_COOLDOWN, 2 * 20L, componentText(SIDESTEP_MODIFIER, Component.keybind("key.left"), Component.keybind("key.right"))));
 
-		context.register(STEP_UP_ABILITY, new TravellersEntryModifier(EquipmentSlotGroup.FEET, List.of(new ItemAttributeModifiers.Entry(Attributes.STEP_HEIGHT, TFAttributeModifiers.TRAVELLERS_HIGH_STEP, EquipmentSlotGroup.FEET)), TFDataComponents.HIGH_STEP, true));
+		context.register(STEP_UP_ABILITY, new TravellersEntryModifier(EquipmentSlotGroup.FEET, List.of(new ItemAttributeModifiers.Entry(Attributes.STEP_HEIGHT, TFAttributeModifiers.TRAVELLERS_HIGH_STEP, EquipmentSlotGroup.FEET)), () -> TFDataComponents.HIGH_STEP, true));
 		context.register(STRAIGHT_AHEAD_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.FEET, TFDataComponents.STRAIGHT_AHEAD_MULTIPLIER, 1.4, componentText(STRAIGHT_AHEAD_MODIFIER)));
 		context.register(SLIMY_SOLES_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.FEET, TFDataComponents.SLIMY_SOLES_COEFFICIENT, 0.5F, componentText(SLIMY_SOLES_MODIFIER)));
 		context.register(UNRESTRAINED_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.FEET, TFDataComponents.UNRESTRAINED, Unit.INSTANCE, componentText(UNRESTRAINED_MODIFIER)));
@@ -185,7 +185,7 @@ public class TravellersModifiersManager {
 	}
 
 	public static Optional<Holder.Reference<TravellersModifier>> lookupHolder(HolderLookup.Provider registries, ResourceKey<TravellersModifier> key) {
-		Optional<Holder.Reference<TravellersModifier>> holder = registries.carminite$holder(key);
+		Optional<Holder.Reference<TravellersModifier>> holder = registries.twilightforest$holder(key);
 
 		if (holder.isEmpty()) {
 			TFMain.LOGGER.warn("Travellers modifier {} is not present in the registry", key.identifier());

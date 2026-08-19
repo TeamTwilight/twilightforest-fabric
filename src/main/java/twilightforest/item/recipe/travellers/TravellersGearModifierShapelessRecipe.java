@@ -1,7 +1,7 @@
 package twilightforest.item.recipe.travellers;
 
-import carminite.util.NonNullListUtil;
-import carminite.util.RecipeMatcher;
+import twilightforest.fabric.util.NonNullListUtil;
+import twilightforest.fabric.util.RecipeMatcher;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;

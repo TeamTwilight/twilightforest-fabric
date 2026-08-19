@@ -1,7 +1,7 @@
 package twilightforest.block.entity;
 
-import carminite.network.PacketDistributor;
-import carminite.util.ServerLifecycleHooks;
+import twilightforest.fabric.network.PacketDistributor;
+import twilightforest.fabric.util.ServerLifecycleHooks;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.base.SingleStackStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;

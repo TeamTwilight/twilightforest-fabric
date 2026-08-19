@@ -1,6 +1,6 @@
 package twilightforest.world.components.structures.finalcastle;
 
-import carminite.util.ServerLifecycleHooks;
+import twilightforest.fabric.util.ServerLifecycleHooks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;

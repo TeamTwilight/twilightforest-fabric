@@ -1,6 +1,6 @@
 package twilightforest.util;
 
-import carminite.util.ServerLifecycleHooks;
+import twilightforest.fabric.util.ServerLifecycleHooks;
 import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntComparators;

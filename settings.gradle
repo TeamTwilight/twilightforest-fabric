@@ -14,5 +14,3 @@ plugins {
 }
 
 rootProject.name = "twilightforest-fabric"
-
-include(":carminite")

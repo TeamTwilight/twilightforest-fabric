@@ -3,6 +3,7 @@ package twilightforest;
 import com.google.common.reflect.Reflection;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
@@ -54,6 +55,10 @@ import twilightforest.entity.passive.*;
 import twilightforest.entity.passive.quest.QuestReloadListener;
 import twilightforest.entity.projectile.MoonwormShot;
 import twilightforest.entity.projectile.TwilightWandBolt;
+import twilightforest.fabric.datamaps.DataMapReloadListener;
+import twilightforest.fabric.entity.IMultiPartEntity;
+import twilightforest.fabric.entity.PartEntity;
+import twilightforest.fabric.util.ServerLifecycleHooks;
 import twilightforest.init.*;
 import twilightforest.init.custom.*;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
@@ -83,6 +88,7 @@ public final class TFMain implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		ServerLifecycleHooks.init();
 		Reflection.initialize(ConfigSetup.class);
 
 		TFKeyBinds.init();
@@ -127,6 +133,7 @@ public final class TFMain implements ModInitializer {
 
 		TFRemapper.addRegistryAliases();
 
+		registerServerMultipartEvents();
 		registerPackets();
 		registerCustomRegistries();
 		registerDynamicRegistries();
@@ -143,6 +150,29 @@ public final class TFMain implements ModInitializer {
 		registerReloadListeners();
 		registerCauldronInteractions();
 		registerItemStorage();
+	}
+
+	private static void registerServerMultipartEvents() {
+		ServerEntityEvents.ENTITY_LOAD.register((entity, world) -> {
+			if (entity instanceof IMultiPartEntity partEntity && partEntity.isMultipartEntity()) {
+				PartEntity<?>[] parts = partEntity.getParts();
+				if (parts != null) {
+					for (PartEntity<?> part : parts) {
+						world.twilightforest$getPartEntityMap().put(part.getId(), part);
+					}
+				}
+			}
+		});
+		ServerEntityEvents.ENTITY_UNLOAD.register((entity, world) -> {
+			if (entity instanceof IMultiPartEntity partEntity && partEntity.isMultipartEntity()) {
+				PartEntity<?>[] parts = partEntity.getParts();
+				if (parts != null) {
+					for (PartEntity<?> part : parts) {
+						world.twilightforest$getPartEntityMap().remove(part.getId());
+					}
+				}
+			}
+		});
 	}
 
 	private static void registerPackets() {
@@ -715,9 +745,10 @@ public final class TFMain implements ModInitializer {
 	}
 
 	private static void registerReloadListeners() {
-		ResourceLoader.get(PackType.SERVER_DATA).registerReloadListener(TFMain.prefix("quest"), new QuestReloadListener());
-		ResourceLoader.get(PackType.SERVER_DATA).registerReloadListener(TFMain.prefix("stalactite"), new StalactiteReloadListener());
-		ResourceLoader.get(PackType.SERVER_DATA).registerReloadListener(TFMain.prefix("structure_template_definitions"), StructureTemplateDefinitions.INSTANCE);
+		ResourceLoader.get(PackType.SERVER_DATA).registerReloadListener(prefix("data_map"), new DataMapReloadListener());
+		ResourceLoader.get(PackType.SERVER_DATA).registerReloadListener(prefix("quest"), new QuestReloadListener());
+		ResourceLoader.get(PackType.SERVER_DATA).registerReloadListener(prefix("stalactite"), new StalactiteReloadListener());
+		ResourceLoader.get(PackType.SERVER_DATA).registerReloadListener(prefix("structure_template_definitions"), StructureTemplateDefinitions.INSTANCE);
 	}
 
 	private static void registerCauldronInteractions() {

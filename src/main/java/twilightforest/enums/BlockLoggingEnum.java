@@ -108,7 +108,7 @@ public enum BlockLoggingEnum implements StringRepresentable {
 		}
 
 		@Override
-		default Optional<SoundEvent> carminite$getPickupSound(BlockState state) {
+		default Optional<SoundEvent> twilightforest$getPickupSound(BlockState state) {
 			return state.getValue(MULTILOGGED).fluid.getPickupSound();
 		}
 	}

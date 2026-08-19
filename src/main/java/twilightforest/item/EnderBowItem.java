@@ -1,6 +1,6 @@
 package twilightforest.item;
 
-import carminite.item.ICustomArrowItem;
+import twilightforest.fabric.interfaces.marker.ICustomArrowItem;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;

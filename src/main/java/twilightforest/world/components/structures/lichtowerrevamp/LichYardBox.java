@@ -1,6 +1,6 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
-import carminite.world.IPieceBeardifierModifier;
+import twilightforest.fabric.world.IPieceBeardifierModifier;
 import com.google.common.collect.Streams;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

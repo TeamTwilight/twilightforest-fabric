@@ -41,7 +41,7 @@ public abstract class SinisterSpawnerLogic extends BaseSpawner {
 	private final Set<ParticleOptions> particleOptions = new HashSet<>();
 
 	public void setChanged() {
-		Either<BlockEntity, Entity> owner = this.carminite$getOwner();
+		Either<BlockEntity, Entity> owner = this.twilightforest$getOwner();
 		if (owner != null) {
 			owner.ifLeft(blockEntity -> {
 				blockEntity.setChanged();

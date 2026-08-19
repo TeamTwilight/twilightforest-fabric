@@ -1,6 +1,6 @@
 package twilightforest.entity.ai.goal;
 
-import carminite.entity.IMultiPartEntity;
+import twilightforest.fabric.entity.IMultiPartEntity;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
