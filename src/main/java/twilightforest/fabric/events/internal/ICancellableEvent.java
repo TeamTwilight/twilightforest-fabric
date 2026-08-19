@@ -7,11 +7,11 @@ public interface ICancellableEvent {
 
 	@MustBeInvokedByOverriders
 	default void setCanceled(boolean canceled) {
-		((TFEvent) this).isCanceled = canceled;
+		((TFEvent<?>) this).isCanceled = canceled;
 	}
 
 	@ApiStatus.NonExtendable
 	default boolean isCanceled() {
-		return ((TFEvent) this).isCanceled;
+		return ((TFEvent<?>) this).isCanceled;
 	}
 }

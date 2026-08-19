@@ -1,6 +1,5 @@
 package twilightforest.fabric.hooks;
 
-import twilightforest.fabric.events.BreakBlockEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
 import net.minecraft.server.level.ServerPlayer;
@@ -10,9 +9,10 @@ import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.GameMasterBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import twilightforest.fabric.events.neo.BreakBlockEvent;
 
 public class CommonHooks {
-	public static BreakBlockEvent.BreakBlockEventImpl fireBlockBreak(Level level, GameType gameType, Player player, BlockPos pos, BlockState state) {
+	public static BreakBlockEvent fireBlockBreak(Level level, GameType gameType, Player player, BlockPos pos, BlockState state) {
 		boolean preCancelEvent = false;
 
 		ItemStack itemstack = player.getMainHandItem();
@@ -28,9 +28,9 @@ public class CommonHooks {
 			preCancelEvent = true;
 		}
 
-		var event = new BreakBlockEvent.BreakBlockEventImpl(level, pos, state, player);
+		var event = new BreakBlockEvent(level, pos, state, player);
 		event.setCanceled(preCancelEvent);
-		BreakBlockEvent.EVENT.invoker().fireBlockBreak(event);
+		event = event.post();
 
 		if (event.isCanceled() && event.shouldNotifyClient() && player instanceof ServerPlayer sp) {
 			sp.connection.send(new ClientboundBlockUpdatePacket(pos, state));

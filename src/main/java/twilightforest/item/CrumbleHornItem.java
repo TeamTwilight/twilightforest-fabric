@@ -1,6 +1,6 @@
 package twilightforest.item;
 
-import twilightforest.fabric.hooks.CommonHooks;
+import twilightforest.fabric.events.neo.BreakBlockEvent;
 import twilightforest.fabric.interfaces.marker.IContinuousUseItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -95,12 +95,12 @@ public class CrumbleHornItem extends Item implements IContinuousUseItem {
 	private boolean crumbleBlock(ServerLevel serverLevel, LivingEntity living, BlockPos pos) {
 		BlockState state = serverLevel.getBlockState(pos);
 		Block block = state.getBlock();
-		var crumbleMap = TFDataMaps.CRUMBLE_HORN.get(block.builtInRegistryHolder());
+		var crumbleMap = TFDataMaps.CRUMBLE_HORN.get(block.defaultBlockState().typeHolder());
 
 		if (state.isAir() || crumbleMap == null) return false;
 
-		if (living instanceof Player player) {
-			if (CommonHooks.fireBlockBreak(serverLevel, player.gameMode(), player, pos, state).isCanceled())
+		if (living instanceof Player) {
+			if (new BreakBlockEvent(serverLevel, pos, state, (Player) living).post().isCanceled())
 				return false;
 		}
 

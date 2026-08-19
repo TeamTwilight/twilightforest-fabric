@@ -1,4 +1,4 @@
-package twilightforest.fabric.events;
+package twilightforest.fabric.events.neo;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelAccessor;

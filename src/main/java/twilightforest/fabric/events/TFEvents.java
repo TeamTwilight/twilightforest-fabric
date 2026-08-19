@@ -1,0 +1,76 @@
+package twilightforest.fabric.events;
+
+import net.fabricmc.fabric.api.event.Event;
+import net.fabricmc.fabric.api.event.EventFactory;
+import twilightforest.fabric.events.neo.ArrowLooseEvent;
+import twilightforest.fabric.events.neo.BreakBlockEvent;
+import twilightforest.fabric.events.neo.EntityStruckByLightningEvent;
+import twilightforest.fabric.events.neo.PlayerEvent;
+
+public final class TFEvents {
+	public static final Event<BreakBlock> BREAK_BLOCK = EventFactory.createArrayBacked(BreakBlock.class, callbacks -> event -> {
+		for (BreakBlock callback : callbacks) {
+			callback.fireBlockBreak(event);
+		}
+	});
+
+	@FunctionalInterface
+	public interface BreakBlock {
+		void fireBlockBreak(BreakBlockEvent event);
+	}
+
+	public static final Event<LightningStruck> ENTITY_STRUCK_BY_LIGHTNING = EventFactory.createArrayBacked(LightningStruck.class, callbacks -> event -> {
+		for (LightningStruck callback : callbacks) {
+			callback.onEntityStruckByLightning(event);
+		}
+	});
+
+	@FunctionalInterface
+	public interface LightningStruck {
+		void onEntityStruckByLightning(EntityStruckByLightningEvent event);
+	}
+
+	public static final Event<HarvestCheck> HARVEST_CHECK = EventFactory.createArrayBacked(HarvestCheck.class, callbacks -> event -> {
+		for (HarvestCheck callback : callbacks) {
+			callback.doPlayerHarvestCheck(event);
+		}
+	});
+
+	@FunctionalInterface
+	public interface HarvestCheck {
+		void doPlayerHarvestCheck(PlayerEvent.HarvestCheck event);
+	}
+
+	public static final Event<StartTracking> START_TRACKING = EventFactory.createArrayBacked(StartTracking.class, callbacks -> event -> {
+		for (StartTracking callback : callbacks) {
+			callback.onStartEntityTracking(event);
+		}
+	});
+
+	@FunctionalInterface
+	public interface StartTracking {
+		void onStartEntityTracking(PlayerEvent.StartTracking event);
+	}
+
+	public static final Event<StopTracking> STOP_TRACKING = EventFactory.createArrayBacked(StopTracking.class, callbacks -> event -> {
+		for (StopTracking callback : callbacks) {
+			callback.onStopEntityTracking(event);
+		}
+	});
+
+	@FunctionalInterface
+	public interface StopTracking {
+		void onStopEntityTracking(PlayerEvent.StopTracking event);
+	}
+
+	public static final Event<ArrowLoose> ARROW_LOOSE = EventFactory.createArrayBacked(ArrowLoose.class, callbacks -> event -> {
+		for (ArrowLoose callback : callbacks) {
+			callback.onArrowLoose(event);
+		}
+	});
+
+	@FunctionalInterface
+	public interface ArrowLoose {
+		void onArrowLoose(ArrowLooseEvent event);
+	}
+}
