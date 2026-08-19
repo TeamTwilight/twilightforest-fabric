@@ -8,7 +8,6 @@
     "AxeItemMixin",
     "BeardifierMixin",
     "BiomeMixin",
-    "BlockEntityMixin",
     "BlockEntityTypeMixin",
     "BoatMixin",
     "BoatTypeAccessor",
