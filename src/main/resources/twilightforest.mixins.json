@@ -54,7 +54,6 @@
     "BoatRendererMixin",
     "BossHealthOverlayMixin",
     "CapeLayerMixin",
-    "CompositeModel$BakedMixin",
     "ElytraLayerMixin",
     "EntityRenderDispatcherMixin",
     "GuiMixin",
