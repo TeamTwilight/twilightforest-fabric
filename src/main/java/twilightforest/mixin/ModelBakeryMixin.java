@@ -25,7 +25,7 @@ public abstract class ModelBakeryMixin {
 			shift = At.Shift.AFTER
 		)
 	)
-	public void addStuff(CallbackInfo ci) {
+	public void twilightforest$addStuff(CallbackInfo ci) {
 		loadSpecialItemModelAndDependencies(ModelResourceLocation.inventory(ResourceLocation.fromNamespaceAndPath(TwilightForestMod.ID, "giant_sword_gui")));
 		loadSpecialItemModelAndDependencies(ModelResourceLocation.inventory(ResourceLocation.fromNamespaceAndPath(TwilightForestMod.ID, "giant_pickaxe_gui")));
 	}

@@ -28,7 +28,7 @@ public class LocateCommandMixin {
 		)
 	)
 	private static RequiredArgumentBuilder<CommandSourceStack, ?> twilightforest$enableCrossNamespaceStructureSuggestions(RequiredArgumentBuilder<CommandSourceStack, ?> original) {
-		if (!"structure".equals(getArgumentName(original))) {
+		if (!"structure".equals(twilightforest$getArgumentName(original))) {
 			return original;
 		}
 
@@ -36,7 +36,7 @@ public class LocateCommandMixin {
 	}
 
 	@Unique
-	private static String getArgumentName(RequiredArgumentBuilder<?, ?> builder) {
+	private static String twilightforest$getArgumentName(RequiredArgumentBuilder<?, ?> builder) {
 		try {
 			Field nameField = RequiredArgumentBuilder.class.getDeclaredField("name");
 			nameField.setAccessible(true);

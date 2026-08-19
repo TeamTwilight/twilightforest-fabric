@@ -1,39 +1,30 @@
 package twilightforest.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import twilightforest.asmhooks.DamageSourceHooks;
 
 @Mixin(DamageSources.class)
 public class DamageSourcesMixin {
 
-	@Inject(
+	@ModifyReturnValue(
 		method = "mobAttack",
-		at = @At("RETURN"),
-		cancellable = true
+		at = @At("RETURN")
 	)
-	private void twilightforest$customMobAttackDamage(
-		LivingEntity mob,
-		CallbackInfoReturnable<DamageSource> cir
-	) {
-		cir.setReturnValue(DamageSourceHooks.getCustomDamageSource(cir.getReturnValue(), mob));
+	private DamageSource twilightforest$customMobAttackDamage(DamageSource original, LivingEntity mob) {
+		return DamageSourceHooks.getCustomDamageSource(original, mob);
 	}
 
-	@Inject(
+	@ModifyReturnValue(
 		method = "playerAttack",
-		at = @At("RETURN"),
-		cancellable = true
+		at = @At("RETURN")
 	)
-	private void twilightforest$customPlayerAttackDamage(
-		Player player,
-		CallbackInfoReturnable<DamageSource> cir
-	) {
-		cir.setReturnValue(DamageSourceHooks.getCustomDamageSource(cir.getReturnValue(), player));
+	private DamageSource twilightforest$customPlayerAttackDamage(DamageSource original, Player player) {
+		return DamageSourceHooks.getCustomDamageSource(original, player);
 	}
 }

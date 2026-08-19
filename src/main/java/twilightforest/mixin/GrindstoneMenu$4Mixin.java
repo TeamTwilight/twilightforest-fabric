@@ -46,12 +46,12 @@ public class GrindstoneMenu$4Mixin {
 		ItemStack top = accessor.twilightforest$repairSlots().getItem(0);
 		ItemStack bottom = accessor.twilightforest$repairSlots().getItem(1);
 
-		extractItemsFromSwapHotbarModifier(player, top, bottom);
+		twilightforest$extractItemsFromSwapHotbarModifier(player, top, bottom);
 	}
 
 	@Unique
-	private static void extractItemsFromSwapHotbarModifier(Player player, ItemStack top, ItemStack bottom) {
-		returnModifierItems(
+	private static void twilightforest$extractItemsFromSwapHotbarModifier(Player player, ItemStack top, ItemStack bottom) {
+		twilightforest$returnModifierItems(
 			player,
 			top,
 			bottom,
@@ -60,7 +60,7 @@ public class GrindstoneMenu$4Mixin {
 			ItemContainerContents::nonEmptyStream
 		);
 
-		returnModifierItems(
+		twilightforest$returnModifierItems(
 			player,
 			top,
 			bottom,
@@ -71,8 +71,8 @@ public class GrindstoneMenu$4Mixin {
 	}
 
 	@Unique
-	private static <T> void returnModifierItems(Player player, ItemStack top, ItemStack bottom, ResourceKey<TravellersModifier> modifierKey, DataComponentType<T> componentType, Function<T, Stream<ItemStack>> itemStreamExtractor) {
-		getUniqueTravellersGear(top, bottom, stack ->
+	private static <T> void twilightforest$returnModifierItems(Player player, ItemStack top, ItemStack bottom, ResourceKey<TravellersModifier> modifierKey, DataComponentType<T> componentType, Function<T, Stream<ItemStack>> itemStreamExtractor) {
+		twilightforest$getUniqueTravellersGear(top, bottom, stack ->
 			TravellersModifiersManager.hasTravellersModifier(
 				player.registryAccess(),
 				stack,
@@ -89,7 +89,7 @@ public class GrindstoneMenu$4Mixin {
 	}
 
 	@Unique
-	private static Optional<ItemStack> getUniqueTravellersGear(ItemStack top, ItemStack bottom, Predicate<ItemStack> predicate) {
+	private static Optional<ItemStack> twilightforest$getUniqueTravellersGear(ItemStack top, ItemStack bottom, Predicate<ItemStack> predicate) {
 		List<ItemStack> travellersItemStacks = Stream.of(top, bottom)
 			.filter(stack -> stack.has(TFDataComponents.IS_TRAVELLERS_GEAR.get()))
 			.filter(predicate)

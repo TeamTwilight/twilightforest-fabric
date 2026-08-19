@@ -9,6 +9,8 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.ComposterBlock;
+import net.minecraft.world.level.block.SignBlock;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.compat.trinkets.TrinketsCompat;
@@ -21,6 +23,7 @@ import twilightforest.mixin.ParrotAccessor;
 import twilightforest.util.TFBoatTypes;
 import twilightforest.util.TFRemapper;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -112,6 +115,8 @@ public final class TwilightForestMod implements ModInitializer {
 		// Register grass color modifiers for client-side rendering (must be called at mod init, not just datapack bootstrap)
 		TFBiomes.registerGrassColorModifiers();
 
+		addSupportedBlockEntities();
+
 		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
 			LOGGER.info("Trinkets detected, loading compat");
 			TrinketsCompat.init();
@@ -157,6 +162,32 @@ public final class TwilightForestMod implements ModInitializer {
 		RegistrationEvents.init();
 		ToolEvents.init();
 		TravellersGearEvents.init();
+	}
+
+	private void addSupportedBlockEntities() {
+		for (SignBlock signBlock : List.of(TFBlocks.TWILIGHT_OAK_HANGING_SIGN.get(), TFBlocks.TWILIGHT_OAK_WALL_HANGING_SIGN.get(),
+			TFBlocks.CANOPY_HANGING_SIGN.get(), TFBlocks.CANOPY_WALL_HANGING_SIGN.get(),
+			TFBlocks.MANGROVE_HANGING_SIGN.get(), TFBlocks.MANGROVE_WALL_HANGING_SIGN.get(),
+			TFBlocks.DARK_HANGING_SIGN.get(), TFBlocks.DARK_WALL_HANGING_SIGN.get(),
+			TFBlocks.TIME_HANGING_SIGN.get(), TFBlocks.TIME_WALL_HANGING_SIGN.get(),
+			TFBlocks.TRANSFORMATION_HANGING_SIGN.get(), TFBlocks.TRANSFORMATION_WALL_HANGING_SIGN.get(),
+			TFBlocks.MINING_HANGING_SIGN.get(), TFBlocks.MINING_WALL_HANGING_SIGN.get(),
+			TFBlocks.SORTING_HANGING_SIGN.get(), TFBlocks.SORTING_WALL_HANGING_SIGN.get())
+		) {
+			BlockEntityType.HANGING_SIGN.addSupportedBlock(signBlock);
+		}
+
+		for (SignBlock signBlock : List.of(TFBlocks.TWILIGHT_OAK_SIGN.get(), TFBlocks.TWILIGHT_WALL_SIGN.get(),
+			TFBlocks.CANOPY_SIGN.get(), TFBlocks.CANOPY_WALL_SIGN.get(),
+			TFBlocks.MANGROVE_SIGN.get(), TFBlocks.MANGROVE_WALL_SIGN.get(),
+			TFBlocks.DARK_SIGN.get(), TFBlocks.DARK_WALL_SIGN.get(),
+			TFBlocks.TIME_SIGN.get(), TFBlocks.TIME_WALL_SIGN.get(),
+			TFBlocks.TRANSFORMATION_SIGN.get(), TFBlocks.TRANSFORMATION_WALL_SIGN.get(),
+			TFBlocks.MINING_SIGN.get(), TFBlocks.MINING_WALL_SIGN.get(),
+			TFBlocks.SORTING_SIGN.get(), TFBlocks.SORTING_WALL_SIGN.get())
+		) {
+			BlockEntityType.SIGN.addSupportedBlock(signBlock);
+		}
 	}
 
 	private void registerCompostables() {

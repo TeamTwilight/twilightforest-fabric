@@ -36,16 +36,12 @@ public class LivingEntityMixin {
 	@Shadow
 	protected float lastHurt;
 
-	@Inject(
+	@ModifyReturnValue(
 		method = "getVisibilityPercent",
-		at = @At("RETURN"),
-		cancellable = true
+		at = @At("RETURN")
 	)
-	private void twilightforest$modifyArmorVisibility(
-		Entity lookingEntity,
-		CallbackInfoReturnable<Double> cir
-	) {
-		cir.setReturnValue(ArmorHooks.modifyArmorVisibility(cir.getReturnValue(), (LivingEntity) (Object) this));
+	private double twilightforest$modifyArmorVisibility(double original, Entity lookingEntity) {
+		return ArmorHooks.modifyArmorVisibility(original, (LivingEntity) (Object) this);
 	}
 
 	@ModifyReturnValue(

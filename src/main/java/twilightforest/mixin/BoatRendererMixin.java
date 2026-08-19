@@ -19,6 +19,18 @@ import java.util.Map;
 @Mixin(BoatRenderer.class)
 public class BoatRendererMixin implements CustomBoatModel {
 
+	@Unique
+	private static final Map<Boat.Type, String> TWILIGHTFOREST_BOAT_TEXTURES = Map.of(
+		TFBoatTypes.TWILIGHT_OAK, "twilight_oak",
+		TFBoatTypes.CANOPY, "canopy",
+		TFBoatTypes.MANGROVE_TYPE, "mangrove",
+		TFBoatTypes.DARK, "dark",
+		TFBoatTypes.TIME, "time",
+		TFBoatTypes.TRANSFORMATION, "transformation",
+		TFBoatTypes.MINING, "mining",
+		TFBoatTypes.SORTING, "sorting"
+	);
+
 	@Shadow
 	@Final
 	private Map<Boat.Type, Pair<ResourceLocation, ListModel<Boat>>> boatResources;
@@ -26,7 +38,7 @@ public class BoatRendererMixin implements CustomBoatModel {
 	@Override
 	public Pair<ResourceLocation, ListModel<Boat>> getModelWithLocation(Boat boat) {
 		Boat.Type type = boat.getVariant();
-		String name = getTFTextureName(type);
+		String name = TWILIGHTFOREST_BOAT_TEXTURES.get(type);
 		if (name == null) {
 			return boatResources.get(type);
 		}
@@ -39,18 +51,5 @@ public class BoatRendererMixin implements CustomBoatModel {
 			TwilightForestMod.prefix("textures/entity/" + (chest ? "chest_boat" : "boat") + "/" + name + ".png"),
 			oakPair.getSecond()
 		);
-	}
-
-	@Unique
-	private static String getTFTextureName(Boat.Type type) {
-		if (type == TFBoatTypes.TWILIGHT_OAK) return "twilight_oak";
-		if (type == TFBoatTypes.CANOPY) return "canopy";
-		if (type == TFBoatTypes.MANGROVE_TYPE) return "mangrove";
-		if (type == TFBoatTypes.DARK) return "dark";
-		if (type == TFBoatTypes.TIME) return "time";
-		if (type == TFBoatTypes.TRANSFORMATION) return "transformation";
-		if (type == TFBoatTypes.MINING) return "mining";
-		if (type == TFBoatTypes.SORTING) return "sorting";
-		return null;
 	}
 }

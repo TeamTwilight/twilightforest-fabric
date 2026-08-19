@@ -21,7 +21,7 @@ public class NoiseBasedChunkGeneratorMixin {
 			target = "Lnet/minecraft/world/level/levelgen/Beardifier;forStructuresInChunk(Lnet/minecraft/world/level/StructureManager;Lnet/minecraft/world/level/ChunkPos;)Lnet/minecraft/world/level/levelgen/Beardifier;"
 		)
 	)
-	private Beardifier tf$gatherCustomTerrain(
+	private Beardifier twilightforest$gatherCustomTerrain(
 		Beardifier original,
 		@Local(argsOnly = true) StructureManager structureManager,
 		@Local(argsOnly = true) ChunkAccess chunk

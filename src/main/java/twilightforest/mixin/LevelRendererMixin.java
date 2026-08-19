@@ -24,13 +24,11 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.joml.Matrix4f;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import twilightforest.asmhooks.MultipartHooks;
 import twilightforest.block.GiantBlock;
@@ -53,10 +51,6 @@ public abstract class LevelRendererMixin {
 	@Shadow
 	private ClientLevel level;
 
-	@Shadow
-	@Final
-	private EntityRenderDispatcher entityRenderDispatcher;
-
 	@WrapOperation(
 		method = "renderLevel",
 		at = @At(
@@ -75,7 +69,7 @@ public abstract class LevelRendererMixin {
 		return () -> resolvedIterator;
 	}
 
-	@Redirect(
+	@WrapOperation(
 		method = "renderEntity",
 		at = @At(
 			value = "INVOKE",
@@ -93,7 +87,8 @@ public abstract class LevelRendererMixin {
 		float partialTicks,
 		PoseStack poseStack,
 		MultiBufferSource buffer,
-		int packedLight
+		int packedLight,
+		Operation<Void> original
 	) {
 		if (entity instanceof TFPart<?> part) {
 			EntityRenderer renderer = BakedMultiPartRenderers.lookup(part.renderer());
@@ -106,7 +101,7 @@ public abstract class LevelRendererMixin {
 				return;
 			}
 		}
-		this.entityRenderDispatcher.render(entity, x, y, z, rotationYaw, partialTicks, poseStack, buffer, packedLight);
+		original.call(dispatcher, entity, x, y, z, rotationYaw, partialTicks, poseStack, buffer, packedLight);
 	}
 
 	@Inject(

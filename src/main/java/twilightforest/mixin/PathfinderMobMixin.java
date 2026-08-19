@@ -1,21 +1,19 @@
 package twilightforest.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.world.entity.PathfinderMob;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import twilightforest.asmhooks.EntityHooks;
 
 @Mixin(PathfinderMob.class)
 public class PathfinderMobMixin {
 
-	@Inject(
+	@ModifyReturnValue(
 		method = "shouldStayCloseToLeashHolder",
-		at = @At("RETURN"),
-		cancellable = true
+		at = @At("RETURN")
 	)
-	private void twilightforest$overrideStayCloseToHolder(CallbackInfoReturnable<Boolean> cir) {
-		cir.setReturnValue(EntityHooks.overrideStayCloseToHolder(cir.getReturnValue(), (PathfinderMob) (Object) this));
+	private boolean twilightforest$overrideStayCloseToHolder(boolean original) {
+		return EntityHooks.overrideStayCloseToHolder(original, (PathfinderMob) (Object) this);
 	}
 }
