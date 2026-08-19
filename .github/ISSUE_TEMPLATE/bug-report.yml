@@ -4,9 +4,16 @@ labels: [bug]
 body:
   - type: input
     attributes:
-      label: NeoForge Version
-      description: What version of NeoForge are you running? This can be found on the installation jar you have downloaded, in the Mod Options menu, or the profile's version. Please note "latest" is NOT a version. *Fabric issues are not accepted as the Fabric version is no longer maintained.*
-      placeholder: "Example: 20.2.0"
+      label: Fabric Loader Version
+      description: What version of Fabric loader are you running? This can be found on the installation jar you have downloaded, in the client logs, or the profile's version. Please note "latest" is NOT a version.
+      placeholder: "Example: 0.17.0"
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Fabric API Version
+      description: What version of Fabric API are you running? This can be found on in the client logs, or in your mods folder. Please note "latest" is NOT a version.
+      placeholder: "Example: 0.116.14+1.21.1"
     validations:
       required: true
   - type: input
