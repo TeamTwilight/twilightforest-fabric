@@ -46,6 +46,7 @@
     "SnowyDirtBlockMixin",
     "StructureStartMixin",
     "UtilMixin",
+    "WalkNodeEvaluatorMixin",
     "WoodTypeAccessor",
     "WrittenBookItemMixin"
   ],
@@ -65,8 +66,7 @@
     "MinecraftMixin",
     "ModelBakeryMixin",
     "ShaderInstanceMixin",
-    "SplashRendererMixin",
-    "WalkNodeEvaluatorMixin"
+    "SplashRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

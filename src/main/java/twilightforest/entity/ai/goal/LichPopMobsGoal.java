@@ -44,12 +44,14 @@ public class LichPopMobsGoal extends Goal {
 
 	@Override
 	public boolean canUse() {
-		return !this.lich.isShadowClone() &&
+		boolean result = !this.lich.isShadowClone() &&
 			this.lich.getHealth() < this.lich.getMaxHealth() &&
 			this.lich.getPopCooldown() == 0 &&
 			!this.lich.level().getEntitiesOfClass(Mob.class,
 				this.lich.getBoundingBox().inflate(32.0D, 16.0D, 32.0D),
 				e -> e.getType().is(EntityTagGenerator.LICH_POPPABLES) && this.lich.hasLineOfSight(e)).isEmpty();
+		// Phase 3 is the melee phase; absorbing nearby mobs would stall the Lich's melee AI
+		return result && this.lich.getPhase() < 3;
 	}
 
 	@Override

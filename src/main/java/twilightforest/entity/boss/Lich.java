@@ -1055,11 +1055,7 @@ public class Lich extends BaseTFBoss {
 		int phase = this.getPhase();
 		if (phase == 1) this.getBossBar().setProgress((float) (this.getShieldStrength()) / (float) (this.getAttributeValue(TFAttributes.SHIELD_STRENGTH)));
 		else this.getBossBar().setProgress(this.getHealth() / this.getMaxHealth());
-		if (phase != this.previousPhase) {
-			this.getBossBar().setColor(getBossBarNamedColor());
-			this.getBossBar().setOverlay(this.getBossBarOverlay());
-			this.getBossBar().setDarkenScreen(this.previousPhase != 1);
-		}
+		if (phase != this.previousPhase) this.getBossBar().updateStyle(this.getBossBarColor(), this.getBossBarOverlay(), this.previousPhase != 1);
 		this.previousPhase = phase;
 	}
 
@@ -1073,11 +1069,6 @@ public class Lich extends BaseTFBoss {
 	public int getBossBarColor() {
 		if (this.getShieldStrength() > 0) return 0xFFD800;
 		return this.getPhase() == 2 ? 0xBE23FF : 0xFF0000;
-	}
-
-	private BossEvent.BossBarColor getBossBarNamedColor() {
-		if (this.getShieldStrength() > 0) return BossEvent.BossBarColor.YELLOW;
-		return this.getPhase() == 2 ? BossEvent.BossBarColor.PURPLE : BossEvent.BossBarColor.RED;
 	}
 
 	@Override
