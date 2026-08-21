@@ -85,7 +85,7 @@ public abstract class LivingEntityMixin {
 			target = "Lnet/minecraft/world/item/ItemStack;isSameItem(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemStack;)Z"
 		)
 	)
-	public boolean twilightforest$canContinueUsing(boolean original) {
+	private boolean twilightforest$canContinueUsing(boolean original) {
 		if (this.useItem.getItem() instanceof IContinuousUseItem continuousUseItem) {
 			ItemStack to = this.getItemInHand(this.getUsedItemHand());
 			if (!this.useItem.isEmpty() && !to.isEmpty())
