@@ -2,6 +2,8 @@ package twilightforest.asm.mixin;
 
 import com.llamalad7.mixinextras.expression.Definition;
 import com.llamalad7.mixinextras.expression.Expression;import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
@@ -10,6 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import twilightforest.fabric.hooks.EventHooks;
 import twilightforest.fabric.interfaces.marker.ISpecialRunningEffectsBlock;
 
 @Mixin(Entity.class)
@@ -43,5 +46,22 @@ public class EntityMixin {
 		return original
 			&& !(blockState.getBlock() instanceof ISpecialRunningEffectsBlock specialRunningEffectsBlock
 			&& specialRunningEffectsBlock.addRunningEffects(blockState, this.level, pos, (Entity) (Object) this));
+	}
+
+	@WrapOperation(
+		method = "rideTick()V",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/world/entity/Entity;tick()V"
+		)
+	)
+	private void twilightforest$entityTick(
+		Entity instance,
+		Operation<Void> original
+	) {
+		if (!EventHooks.fireEntityTickPre(instance).isCanceled()) {
+			original.call(instance);
+			EventHooks.fireEntityTickPost(instance);
+		}
 	}
 }

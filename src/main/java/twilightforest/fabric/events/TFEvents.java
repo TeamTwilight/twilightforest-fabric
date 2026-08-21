@@ -2,10 +2,7 @@ package twilightforest.fabric.events;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import twilightforest.fabric.events.neo.ArrowLooseEvent;
-import twilightforest.fabric.events.neo.BreakBlockEvent;
-import twilightforest.fabric.events.neo.EntityStruckByLightningEvent;
-import twilightforest.fabric.events.neo.PlayerEvent;
+import twilightforest.fabric.events.neo.*;
 
 public final class TFEvents {
 	public static final Event<BreakBlock> BREAK_BLOCK = EventFactory.createArrayBacked(BreakBlock.class, callbacks -> event -> {
@@ -72,5 +69,27 @@ public final class TFEvents {
 	@FunctionalInterface
 	public interface ArrowLoose {
 		void onArrowLoose(ArrowLooseEvent event);
+	}
+
+	public static final Event<EntityTickPre> ENTITY_TICK_PRE = EventFactory.createArrayBacked(EntityTickPre.class, callbacks -> event -> {
+		for (EntityTickPre callback : callbacks) {
+			callback.fireEntityTickPre(event);
+		}
+	});
+
+	@FunctionalInterface
+	public interface EntityTickPre {
+		void fireEntityTickPre(EntityTickEvent.Pre event);
+	}
+
+	public static final Event<EntityTickPost> ENTITY_TICK_POST = EventFactory.createArrayBacked(EntityTickPost.class, callbacks -> event -> {
+		for (EntityTickPost callback : callbacks) {
+			callback.fireEntityTickPost(event);
+		}
+	});
+
+	@FunctionalInterface
+	public interface EntityTickPost {
+		void fireEntityTickPost(EntityTickEvent.Post event);
 	}
 }

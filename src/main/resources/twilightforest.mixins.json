@@ -32,6 +32,7 @@
     "enums.RarityMixin"
   ],
   "client": [
+    "ClientLevelMixin",
     "EntityHitboxDebugRendererMixin",
     "ItemInHandRendererMixin",
     "MultiPlayerGameModeMixin"
