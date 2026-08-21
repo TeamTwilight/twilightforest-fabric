@@ -1,9 +1,6 @@
 package twilightforest.fabric.hooks;
 
-import twilightforest.fabric.events.neo.ArrowLooseEvent;
-import twilightforest.fabric.events.neo.EntityStruckByLightningEvent;
-import twilightforest.fabric.events.neo.EntityTickEvent;
-import twilightforest.fabric.events.neo.PlayerEvent;
+import twilightforest.fabric.events.neo.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LightningBolt;
@@ -44,5 +41,13 @@ public class EventHooks {
 
 	public static void fireEntityTickPost(Entity entity) {
 		new EntityTickEvent.Post(entity).post();
+	}
+
+	public static void firePlayerTickPre(Player player) {
+		new PlayerTickEvent.Pre(player).post();
+	}
+
+	public static void firePlayerTickPost(Player player) {
+		new PlayerTickEvent.Post(player).post();
 	}
 }

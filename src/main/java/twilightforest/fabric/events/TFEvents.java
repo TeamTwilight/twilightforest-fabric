@@ -92,4 +92,26 @@ public final class TFEvents {
 	public interface EntityTickPost {
 		void fireEntityTickPost(EntityTickEvent.Post event);
 	}
+
+	public static final Event<PlayerTickPre> PLAYER_TICK_PRE = EventFactory.createArrayBacked(PlayerTickPre.class, callbacks -> event -> {
+		for (PlayerTickPre callback : callbacks) {
+			callback.firePlayerTickPre(event);
+		}
+	});
+
+	@FunctionalInterface
+	public interface PlayerTickPre {
+		void firePlayerTickPre(PlayerTickEvent.Pre event);
+	}
+
+	public static final Event<PlayerTickPost> PLAYER_TICK_POST = EventFactory.createArrayBacked(PlayerTickPost.class, callbacks -> event -> {
+		for (PlayerTickPost callback : callbacks) {
+			callback.firePlayerTickPost(event);
+		}
+	});
+
+	@FunctionalInterface
+	public interface PlayerTickPost {
+		void firePlayerTickPost(PlayerTickEvent.Post event);
+	}
 }
