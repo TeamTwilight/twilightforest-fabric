@@ -346,35 +346,15 @@ public class UrGhast extends BaseTFBoss {
 
 	private List<BlockPos> scanForTraps(ServerLevel level) {
 		PoiManager poimanager = level.getPoiManager();
-		BlockPos scanCenter = this.getLogicalScanPoint();
-		int radius = this.getHomeRadius();
 		Stream<PoiRecord> stream = poimanager.getInRange(type ->
-				type.is(TFPOITypes.GHAST_TRAP.getKey()),
-			scanCenter,
-			radius,
+				type.is(TFPOITypes.GHAST_TRAP_KEY),
+			this.getLogicalScanPoint(),
+			this.getHomeRadius(),
 			PoiManager.Occupancy.ANY);
-		List<BlockPos> traps = stream.map(PoiRecord::getPos)
+		return stream.map(PoiRecord::getPos)
 			.filter(trapPos -> level.canSeeSky(trapPos.above()))
-			.sorted(Comparator.comparingDouble(trapPos -> trapPos.distSqr(scanCenter)))
+			.sorted(Comparator.comparingDouble(trapPos -> trapPos.distSqr(this.getLogicalScanPoint())))
 			.collect(Collectors.toList());
-
-		// Fallback: if POI scan found nothing, scan blocks directly.
-		// On Fabric, WorldGenRegion.setBlock() during structure generation does not
-		// trigger POI updates, so Ghast Trap POI records may never be created.
-		if (traps.isEmpty()) {
-			int minY = Math.max(level.getMinBuildHeight(), scanCenter.getY() - radius);
-			int maxY = Math.min(level.getMaxBuildHeight(), scanCenter.getY() + radius);
-			traps = BlockPos.betweenClosedStream(
-					scanCenter.offset(-radius, 0, -radius).atY(minY),
-					scanCenter.offset(radius, 0, radius).atY(maxY)
-				)
-				.filter(pos -> level.getBlockState(pos).is(TFBlocks.GHAST_TRAP.get()))
-				.filter(pos -> level.canSeeSky(pos.above()))
-				.sorted(Comparator.comparingDouble(pos -> pos.distSqr(scanCenter)))
-				.collect(Collectors.toList());
-		}
-
-		return traps;
 	}
 
 	private void doTantrumDamageEffects() {
@@ -584,13 +564,6 @@ public class UrGhast extends BaseTFBoss {
 			}
 		}
 	}
-
-	/*
-	@Override
-	public void makePoofParticles() {
-
-	}
-	*/
 
 	@Override
 	public int getBossBarColor() {
