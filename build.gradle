@@ -74,11 +74,8 @@ dependencies {
 
 	// Bundled dependencies
 	def portingLibModules = [
-		"attributes",
 		"base",
 		"blocks",
-		"brewing",
-		"chunk_loading",
 		"client_events",
 		"client_extensions",
 		"common",
@@ -86,7 +83,6 @@ dependencies {
 		"core",
 		"data",
 		"entity",
-		"entity_data_serializers",
 		"fluids",
 		"gametest",
 		"gui_utils",
@@ -98,8 +94,6 @@ dependencies {
 		"model_data",
 		"model_loader",
 		"models",
-		"obj_loader",
-		"recipe_book_categories",
 		"registry",
 		"render_types",
 		"resources",
