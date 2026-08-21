@@ -165,8 +165,13 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 			TFBlocks.MINING_LEAVES.asItem(),
 			TFBlocks.SORTING_LEAVES.asItem(),
 			TFBlocks.THORN_LEAVES.asItem(),
-			TFBlocks.BEANSTALK_LEAVES.asItem(),
-			TFBlocks.HARDENED_DARK_LEAVES.asItem()
+			TFBlocks.BEANSTALK_LEAVES.asItem()
+			// NOTE: HARDENED_DARK_LEAVES is intentionally excluded here: it has no item form
+			// (it is a decorative Dark Tower block whose drops are DARK_LEAVES), so asItem()
+			// returns Items.AIR. Adding it would put minecraft:air into the minecraft:leaves
+			// item tag, which makes any recipe ingredient using that tag resolve to an empty
+			// ItemStack and crash with "Empty ItemStack not allowed" when the recipe list is
+			// synced to clients (e.g. VanillaBackport's leaf_litter smelting recipe).
 		);
 
 		getOrCreateTagBuilder(ItemTags.PLANKS).add(
