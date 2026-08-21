@@ -165,8 +165,7 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 			TFBlocks.MINING_LEAVES.asItem(),
 			TFBlocks.SORTING_LEAVES.asItem(),
 			TFBlocks.THORN_LEAVES.asItem(),
-			TFBlocks.BEANSTALK_LEAVES.asItem(),
-			TFBlocks.HARDENED_DARK_LEAVES.asItem()
+			TFBlocks.BEANSTALK_LEAVES.asItem()
 		);
 
 		getOrCreateTagBuilder(ItemTags.PLANKS).add(
