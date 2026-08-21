@@ -1,4 +1,4 @@
-// 1.21.1	2026-08-21T10:14:56.924183726	The Twilight Forest/Languages: en_us for mod: twilightforest
+// 1.21.1	2026-08-21T17:55:13.469763723	The Twilight Forest/Languages: en_us for mod: twilightforest
 0f9755ab2e0e083481322efd3379bac0a2dfe82f assets/twilightforest/tips/magic_saplings.json
 9e38a0524fcfe8fa3e76e439c61ecfb889a65b48 assets/twilightforest/tips/minoshroom.json
 763dc1764641e62954420ef3330610c63690f964 assets/twilightforest/tips/block_and_chain.json
@@ -19,8 +19,8 @@ e21bd375606478bc5eea422080d9e34e831c572b assets/twilightforest/tips/ice_core.jso
 df16f3766193b17fe1dad801be7c6eec3a7e05b5 assets/twilightforest/tips/mazebreaker.json
 a2ca4db7bffb98bb8eeada81d2c75c81edcb98b3 assets/twilightforest/tips/hollow_log.json
 aee6e09d09612532e2467b0a9dce83b9d87dec69 assets/twilightforest/tips/towerwood.json
-dee1c181a95e14a0cac40fcdfeb5e07ff9785db2 assets/twilightforest/tips/casket_logging.json
 caa537d278fb4c0d01e8ba9ff9db8772e00351f3 assets/twilightforest/tips/arctic_armor.json
+dee1c181a95e14a0cac40fcdfeb5e07ff9785db2 assets/twilightforest/tips/casket_logging.json
 9d1ae7a5f963c3ff8c744c7840bcaaac693fd8a3 assets/twilightforest/tips/lich_scepters.json
 6a654cd4f1ffd4224bba788121d6fd1625b77e32 assets/twilightforest/tips/sorting_tree.json
 add89cc400dfc462a04db94ab86a7ef1e4b4f9d1 assets/twilightforest/lang/en_us.json
@@ -28,8 +28,8 @@ e30b5607cb56ccf03a8d6114e3e1204b5c355c35 assets/twilightforest/tips/ghast_trap.j
 f9dc29b5bd0b34b270bddd6f153916937cdd7cea assets/twilightforest/tips/pocket_watch.json
 a9f0789153cdc0264756400e1ace52b6554a292c assets/twilightforest/tips/netherite_axe.json
 4f5daf5e1ed3db102f181620c196f54f487127c3 assets/twilightforest/tips/phantom_armor.json
-ff65dcc2db3921976d87f7e387aad31161e924e2 assets/twilightforest/tips/music_disc.json
 5656019bfa4a6d576164f9ee85e73a7b6d88ba2f assets/twilightforest/tips/key_biomes.json
+ff65dcc2db3921976d87f7e387aad31161e924e2 assets/twilightforest/tips/music_disc.json
 0e3d7eacda437ec5db579c424ff870a316db8586 assets/twilightforest/tips/fiery_pickaxe.json
 35362151aac080215585342e083473206cb973bf assets/twilightforest/tips/magic_map.json
 e09acba8643fe59fc7b3e2aa47e2dd68ba7d16aa assets/twilightforest/tips/feather_fan.json
@@ -79,8 +79,8 @@ fabdbe163dac163e787794a02448070e94a136bd assets/twilightforest/tips/twilight_por
 74674c3e567c9c102fef512c85a9074a6dfe4076 assets/twilightforest/tips/ore_meter.json
 b3f4c268ae557aca01c867f47a6f4d70d53bd3d6 assets/twilightforest/tips/hydra_mortars.json
 0e1b5f12dafbbfb2b32bb518c7a8ac93aef157b5 assets/twilightforest/tips/vanishing_block.json
-290d92478e01b33bcaa8da66553918f007e698df assets/twilightforest/tips/moonworm_queen.json
 7b8dff50b13a2a7f5f17e3d3fba445d8764667b6 assets/twilightforest/tips/transformation_tree.json
+290d92478e01b33bcaa8da66553918f007e698df assets/twilightforest/tips/moonworm_queen.json
 3841c660e3b9f636449a1bdcae5313d74618d457 assets/twilightforest/tips/magic_beans.json
 3819bb80af6b75559de3760fbdf9ec583144a499 assets/twilightforest/tips/hollow_oak_sapling.json
 6aee7802b01f24203a9849173d20c2cd4c13de0b assets/twilightforest/tips/worldgen_features.json

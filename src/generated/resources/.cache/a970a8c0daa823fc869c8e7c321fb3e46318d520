@@ -1,4 +1,4 @@
-// 1.21.1	2026-08-21T10:14:56.925499083	The Twilight Forest/TwilightForest Item and BlockItem models
+// 1.21.1	2026-08-21T17:55:13.471095386	The Twilight Forest/TwilightForest Item and BlockItem models
 bba78dadde8a3bc92ae2498605229a078696bd73 assets/twilightforest/models/item/fiery_chestplate_emerald_trim.json
 5549b76b299fb9018b5a73bd118c408fabea442a assets/twilightforest/models/item/hollow_spruce_log.json
 346191ba71f08a63339da23f2cfd8a838ca42d19 assets/twilightforest/models/item/twisted_stone.json
@@ -925,8 +925,8 @@ b6e8ec88121fda2b4275279b64276d0926e290a9 assets/twilightforest/models/item/hydra
 20a8fdbc589a0750bbfd6463807c036a2ce195e2 assets/twilightforest/models/item/phantom_helmet_iron_trim.json
 dc471213d4a31a58dde6b71648125bb882d34032 assets/twilightforest/models/item/yeti_chestplate_redstone_trim.json
 006deaa5fecfed0ffefcb3525cd0d8c8b9c96e29 assets/twilightforest/models/item/phantom_chestplate_lapis_trim.json
-5837aeaab46df9335e09c8a687fc7c58bf40c7f8 assets/twilightforest/models/item/hollow_mining_log.json
 882239ff95160a2d007fecce2730b768b2f44263 assets/twilightforest/models/item/knightmetal_chestplate_gold_trim.json
+5837aeaab46df9335e09c8a687fc7c58bf40c7f8 assets/twilightforest/models/item/hollow_mining_log.json
 e0db935b8745ed1f00b12dc41b4ac26b5877f436 assets/twilightforest/models/item/steeleaf_leggings_lapis_trim.json
 86bf8040ff6d5a4e5a8ed5e880166e8615c7f6a3 assets/twilightforest/models/item/yeti_boots_emerald_trim.json
 078ab20544f6fcb04f5e89368dcdb4d0e3ff05ce assets/twilightforest/models/item/knightmetal_boots_emerald_trim.json

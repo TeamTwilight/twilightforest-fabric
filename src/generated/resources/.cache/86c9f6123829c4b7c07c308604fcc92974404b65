@@ -1,18 +1,18 @@
-// 1.21.1	2026-08-21T10:14:56.915117872	The Twilight Forest/Twilight Forest Entity Tags
+// 1.21.1	2026-08-21T17:55:13.455362575	The Twilight Forest/Twilight Forest Entity Tags
 4cc81785a3c2c7f11c11bac6cf2ad3c0d89c9ad5 data/minecraft/tags/entity_type/frog_food.json
 38bf80bb5d608168d87dbbc33e3314fd1d0135d9 data/twilightforest/tags/entity_type/bosses.json
 016d3165a6f228f7416cec2923bf9b8bed8979fa data/minecraft/tags/entity_type/redirectable_projectile.json
 7e37d5f14228bd5903b7d4c85c407f06d291ad53 data/minecraft/tags/entity_type/impact_projectiles.json
-97ff9312c2bcde14cf20a5eec42f4dedc8dc8e6f data/twilightforest/tags/entity_type/lich_poppables.json
 bfe454dfc8b286c9a748229c8338e4e382fb5348 data/twilightforest/tags/entity_type/dont_kill_bugs.json
 0865b5410d11831c91b4a4164d890df4852489ff data/c/tags/entity_type/bosses.json
+1c3908b01247e277a5a4507a4b26837d5c222ff0 data/twilightforest/tags/entity_type/lich_poppables.json
 c5eb251bcb3f4e958ddcb4f254b0d3563e7d28e7 data/twilightforest/tags/entity_type/multiplayer_inclusive_entities.json
 b245cf42cd9f43c4d13a1796cd914ba558e068bb data/minecraft/tags/entity_type/arthropod.json
 d0db54edeabbabca99c42c3c4953efe760b18c03 data/minecraft/tags/entity_type/undead.json
 9e5f68b2faa6d767538d0f4264a7145d32a2bdda data/minecraft/tags/entity_type/freeze_hurts_extra_types.json
 783d0f4b0afa2163ebc4d44da8d1d56939023582 data/twilightforest/tags/entity_type/lich_deflects_phase_2.json
-05818cb02398f00d3d7129f8fa26858a295e069f data/minecraft/tags/entity_type/skeletons.json
 4c421f0abf08155c163118250eff7f5a24617998 data/minecraft/tags/entity_type/zombies.json
+05818cb02398f00d3d7129f8fa26858a295e069f data/minecraft/tags/entity_type/skeletons.json
 96a1f9f2c5c062278d532397563660cb0c4982a7 data/minecraft/tags/entity_type/arrows.json
 20a1f4f56dc7667b8bc729dfd372c2e9f5d7ad1e data/twilightforest/tags/entity_type/lifedrain_drops_no_flesh.json
 e5bff3b10b54d6af46050743b454bd8cce4993e0 data/minecraft/tags/entity_type/fall_damage_immune.json

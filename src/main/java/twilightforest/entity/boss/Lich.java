@@ -52,7 +52,6 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.block.LightableBlock;
 import twilightforest.block.OminousCandleBlock;
@@ -63,6 +62,7 @@ import twilightforest.entity.ai.goal.*;
 import twilightforest.entity.monster.LichMinion;
 import twilightforest.entity.projectile.LichBomb;
 import twilightforest.init.*;
+import twilightforest.network.PacketDistributor;
 import twilightforest.network.ParticlePacket;
 import twilightforest.util.entities.EntityUtil;
 
@@ -475,7 +475,7 @@ public class Lich extends BaseTFBoss {
 
 					PacketDistributor.sendToPlayersTrackingEntity(this, particlePacket);
 
-					clone.remove(RemovalReason.DISCARDED);
+					clone.remove(Entity.RemovalReason.DISCARDED);
 				}
 			}
 		}
@@ -577,8 +577,8 @@ public class Lich extends BaseTFBoss {
 			if (this.teleportToSightOfEntity(target)) {
 				for (Lich clone : this.getAllClones()) {
 					clone.setTarget(target);
-                    clone.teleportToSightOfEntity(target);
-                }
+					clone.teleportToSightOfEntity(target);
+				}
 				if (lichShadowsGoal != null) lichShadowsGoal.checkAndSpawnClones(target);
 				return true;
 			}
@@ -1055,11 +1055,7 @@ public class Lich extends BaseTFBoss {
 		int phase = this.getPhase();
 		if (phase == 1) this.getBossBar().setProgress((float) (this.getShieldStrength()) / (float) (this.getAttributeValue(TFAttributes.SHIELD_STRENGTH)));
 		else this.getBossBar().setProgress(this.getHealth() / this.getMaxHealth());
-		if (phase != this.previousPhase) {
-			this.getBossBar().setColor(getBossBarNamedColor());
-			this.getBossBar().setOverlay(this.getBossBarOverlay());
-			this.getBossBar().setDarkenScreen(this.previousPhase != 1);
-		}
+		if (phase != this.previousPhase) this.getBossBar().updateStyle(this.getBossBarColor(), this.getBossBarOverlay(), this.previousPhase != 1);
 		this.previousPhase = phase;
 	}
 
@@ -1073,11 +1069,6 @@ public class Lich extends BaseTFBoss {
 	public int getBossBarColor() {
 		if (this.getShieldStrength() > 0) return 0xFFD800;
 		return this.getPhase() == 2 ? 0xBE23FF : 0xFF0000;
-	}
-
-	private BossEvent.BossBarColor getBossBarNamedColor() {
-		if (this.getShieldStrength() > 0) return BossEvent.BossBarColor.YELLOW;
-		return this.getPhase() == 2 ? BossEvent.BossBarColor.PURPLE : BossEvent.BossBarColor.RED;
 	}
 
 	@Override

@@ -114,9 +114,8 @@ public class EntityTagGenerator extends FabricTagProvider.EntityTypeTagProvider 
 
 		getOrCreateTagBuilder(LICH_POPPABLES)
 			.addTag(EntityTypeTags.SKELETONS)
-			.add(EntityType.ZOMBIE, EntityType.ENDERMAN, EntityType.SPIDER, EntityType.CREEPER, TFEntities.SWARM_SPIDER.get());
-			// .remove() 在 vanilla tag builders 中不可用，已注释掉
-			// .remove(Tags.EntityTypes.BOSSES);
+			.add(EntityType.ZOMBIE, EntityType.ENDERMAN, EntityType.SPIDER, EntityType.CREEPER, TFEntities.SWARM_SPIDER.get())
+			.removeTag(Tags.EntityTypes.BOSSES);
 
 		getOrCreateTagBuilder(LIFEDRAIN_DROPS_NO_FLESH).addTag(EntityTypeTags.SKELETONS).addTag(EntityTypeTags.FROG_FOOD).add(
 			EntityType.BLAZE,
