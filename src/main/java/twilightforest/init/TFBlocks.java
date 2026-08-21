@@ -627,14 +627,14 @@ public class TFBlocks {
 	public static final DeferredBlock<ChestBlock> MINING_CHEST = register("mining_chest", () -> new ChestBlock(BlockBehaviour.Properties.ofFullCopy(MINING_PLANKS.get()).strength(2.5F), () -> BlockEntityType.CHEST));
 	public static final DeferredBlock<ChestBlock> SORTING_CHEST = register("sorting_chest", () -> new ChestBlock(BlockBehaviour.Properties.ofFullCopy(SORTING_PLANKS.get()).strength(2.5F), () -> BlockEntityType.CHEST));
 
-	public static final DeferredBlock<TFTrappedChestBlock> TWILIGHT_OAK_TRAPPED_CHEST = register("twilight_oak_trapped_chest", () -> new TFTrappedChestBlock(BlockBehaviour.Properties.ofFullCopy(TWILIGHT_OAK_PLANKS.get()).strength(2.5F)));
-	public static final DeferredBlock<TFTrappedChestBlock> CANOPY_TRAPPED_CHEST = register("canopy_trapped_chest", () -> new TFTrappedChestBlock(BlockBehaviour.Properties.ofFullCopy(CANOPY_PLANKS.get()).strength(2.5F)));
-	public static final DeferredBlock<TFTrappedChestBlock> MANGROVE_TRAPPED_CHEST = register("mangrove_trapped_chest", () -> new TFTrappedChestBlock(BlockBehaviour.Properties.ofFullCopy(MANGROVE_PLANKS.get()).strength(2.5F)));
-	public static final DeferredBlock<TFTrappedChestBlock> DARK_TRAPPED_CHEST = register("dark_trapped_chest", () -> new TFTrappedChestBlock(BlockBehaviour.Properties.ofFullCopy(DARK_PLANKS.get()).strength(2.5F)));
-	public static final DeferredBlock<TFTrappedChestBlock> TIME_TRAPPED_CHEST = register("time_trapped_chest", () -> new TFTrappedChestBlock(BlockBehaviour.Properties.ofFullCopy(TIME_PLANKS.get()).strength(2.5F)));
-	public static final DeferredBlock<TFTrappedChestBlock> TRANSFORMATION_TRAPPED_CHEST = register("transformation_trapped_chest", () -> new TFTrappedChestBlock(BlockBehaviour.Properties.ofFullCopy(TRANSFORMATION_PLANKS.get()).strength(2.5F)));
-	public static final DeferredBlock<TFTrappedChestBlock> MINING_TRAPPED_CHEST = register("mining_trapped_chest", () -> new TFTrappedChestBlock(BlockBehaviour.Properties.ofFullCopy(MINING_PLANKS.get()).strength(2.5F)));
-	public static final DeferredBlock<TFTrappedChestBlock> SORTING_TRAPPED_CHEST = register("sorting_trapped_chest", () -> new TFTrappedChestBlock(BlockBehaviour.Properties.ofFullCopy(SORTING_PLANKS.get()).strength(2.5F)));
+	public static final DeferredBlock<TrappedChestBlock> TWILIGHT_OAK_TRAPPED_CHEST = register("twilight_oak_trapped_chest", () -> new TrappedChestBlock(BlockBehaviour.Properties.ofFullCopy(TWILIGHT_OAK_PLANKS.get()).strength(2.5F)));
+	public static final DeferredBlock<TrappedChestBlock> CANOPY_TRAPPED_CHEST = register("canopy_trapped_chest", () -> new TrappedChestBlock(BlockBehaviour.Properties.ofFullCopy(CANOPY_PLANKS.get()).strength(2.5F)));
+	public static final DeferredBlock<TrappedChestBlock> MANGROVE_TRAPPED_CHEST = register("mangrove_trapped_chest", () -> new TrappedChestBlock(BlockBehaviour.Properties.ofFullCopy(MANGROVE_PLANKS.get()).strength(2.5F)));
+	public static final DeferredBlock<TrappedChestBlock> DARK_TRAPPED_CHEST = register("dark_trapped_chest", () -> new TrappedChestBlock(BlockBehaviour.Properties.ofFullCopy(DARK_PLANKS.get()).strength(2.5F)));
+	public static final DeferredBlock<TrappedChestBlock> TIME_TRAPPED_CHEST = register("time_trapped_chest", () -> new TrappedChestBlock(BlockBehaviour.Properties.ofFullCopy(TIME_PLANKS.get()).strength(2.5F)));
+	public static final DeferredBlock<TrappedChestBlock> TRANSFORMATION_TRAPPED_CHEST = register("transformation_trapped_chest", () -> new TrappedChestBlock(BlockBehaviour.Properties.ofFullCopy(TRANSFORMATION_PLANKS.get()).strength(2.5F)));
+	public static final DeferredBlock<TrappedChestBlock> MINING_TRAPPED_CHEST = register("mining_trapped_chest", () -> new TrappedChestBlock(BlockBehaviour.Properties.ofFullCopy(MINING_PLANKS.get()).strength(2.5F)));
+	public static final DeferredBlock<TrappedChestBlock> SORTING_TRAPPED_CHEST = register("sorting_trapped_chest", () -> new TrappedChestBlock(BlockBehaviour.Properties.ofFullCopy(SORTING_PLANKS.get()).strength(2.5F)));
 
 	//Flower Pots
 	public static final DeferredBlock<FlowerPotBlock> POTTED_TWILIGHT_OAK_SAPLING = BLOCKS.register("potted_twilight_oak_sapling", () -> new FlowerPotBlock(TWILIGHT_OAK_SAPLING.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.FLOWER_POT)));
