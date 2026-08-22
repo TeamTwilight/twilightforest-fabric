@@ -1,5 +1,6 @@
 package twilightforest.fabric.hooks;
 
+import net.minecraft.server.level.ServerPlayer;
 import twilightforest.fabric.events.neo.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
@@ -49,5 +50,17 @@ public class EventHooks {
 
 	public static void firePlayerTickPost(Player player) {
 		new PlayerTickEvent.Post(player).post();
+	}
+
+	public static void firePlayerLoggedIn(Player player) {
+		new PlayerEvent.PlayerLoggedInEvent(player).post();
+	}
+
+	public static void firePlayerLoggedOut(Player player) {
+		new PlayerEvent.PlayerLoggedOutEvent(player).post();
+	}
+
+	public static void firePlayerRespawnEvent(ServerPlayer player, boolean fromEndFight) {
+		new PlayerEvent.PlayerRespawnEvent(player, fromEndFight).post();
 	}
 }

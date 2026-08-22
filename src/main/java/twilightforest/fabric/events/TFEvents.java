@@ -114,4 +114,37 @@ public final class TFEvents {
 	public interface PlayerTickPost {
 		void firePlayerTickPost(PlayerTickEvent.Post event);
 	}
+
+	public static final Event<PlayerLoggedIn> PLAYER_LOGGED_IN = EventFactory.createArrayBacked(PlayerLoggedIn.class, callbacks -> event -> {
+		for (PlayerLoggedIn callback : callbacks) {
+			callback.firePlayerLoggedIn(event);
+		}
+	});
+
+	@FunctionalInterface
+	public interface PlayerLoggedIn {
+		void firePlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event);
+	}
+
+	public static final Event<PlayerLoggedOut> PLAYER_LOGGED_OUT = EventFactory.createArrayBacked(PlayerLoggedOut.class, callbacks -> event -> {
+		for (PlayerLoggedOut callback : callbacks) {
+			callback.firePlayerLoggedOut(event);
+		}
+	});
+
+	@FunctionalInterface
+	public interface PlayerLoggedOut {
+		void firePlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event);
+	}
+
+	public static final Event<PlayerRespawn> PLAYER_RESPAWN = EventFactory.createArrayBacked(PlayerRespawn.class, callbacks -> event -> {
+		for (PlayerRespawn callback : callbacks) {
+			callback.firePlayerRespawnEvent(event);
+		}
+	});
+
+	@FunctionalInterface
+	public interface PlayerRespawn{
+		void firePlayerRespawnEvent(PlayerEvent.PlayerRespawnEvent event);
+	}
 }

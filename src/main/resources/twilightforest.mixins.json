@@ -18,6 +18,7 @@
     "MinecartSpawner$1Mixin",
     "PistonBaseBlockMixin",
     "PistonStructureResolverMixin",
+    "PlayerListMixin",
     "PlayerMixin",
     "ProjectileWeaponItemMixin",
     "RedStoneWireBlockMixin",
