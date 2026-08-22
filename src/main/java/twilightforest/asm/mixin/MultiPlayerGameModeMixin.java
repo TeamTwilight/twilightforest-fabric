@@ -1,12 +1,17 @@
 package twilightforest.asm.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -51,5 +56,27 @@ public class MultiPlayerGameModeMixin {
 	)
 	private boolean twilightforest$ignoreCanDestroyBlock(boolean original) {
 		return true;
+	}
+
+	@Inject(
+		method = "performUseItemOn(Lnet/minecraft/client/player/LocalPlayer;Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/phys/BlockHitResult;)Lnet/minecraft/world/InteractionResult;",
+		at = @At(
+			value = "INVOKE",
+			target = "Lnet/minecraft/client/player/LocalPlayer;getItemInHand(Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/world/item/ItemStack;",
+			shift = At.Shift.AFTER
+		),
+		cancellable = true
+	)
+	private void twilightforest$rightClickBlock(
+		LocalPlayer player,
+		InteractionHand hand,
+		BlockHitResult blockHit,
+		CallbackInfoReturnable<InteractionResult> cir,
+		@Local(name = "pos") BlockPos pos
+	) {
+		var event = CommonHooks.onRightClickBlock(player, hand, pos, blockHit);
+		if (event.isCanceled()) {
+			cir.setReturnValue(event.getCancellationResult());
+		}
 	}
 }

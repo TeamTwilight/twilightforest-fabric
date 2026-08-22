@@ -38,6 +38,7 @@
     "ClientLevelMixin",
     "EntityHitboxDebugRendererMixin",
     "ItemInHandRendererMixin",
+    "MinecraftMixin",
     "MultiPlayerGameModeMixin"
   ],
   "injectors": {

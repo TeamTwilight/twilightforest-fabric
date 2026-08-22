@@ -169,4 +169,26 @@ public final class TFEvents {
 	public interface AdvancementEarned {
 		void onAdvancementEarnedEvent(AdvancementEvent.AdvancementEarnEvent event);
 	}
+
+	public static final Event<RightClickBlock> RIGHT_CLICK_BLOCK = EventFactory.createArrayBacked(RightClickBlock.class, callbacks -> event -> {
+		for (RightClickBlock callback : callbacks) {
+			callback.onRightClickBlock(event);
+		}
+	});
+
+	@FunctionalInterface
+	public interface RightClickBlock {
+		void onRightClickBlock(PlayerInteractEvent.RightClickBlock event);
+	}
+
+	public static final Event<LeftClickEmpty> LEFT_CLICK_EMPTY = EventFactory.createArrayBacked(LeftClickEmpty.class, callbacks -> event -> {
+		for (LeftClickEmpty callback : callbacks) {
+			callback.onEmptyLeftClick(event);
+		}
+	});
+
+	@FunctionalInterface
+	public interface LeftClickEmpty {
+		void onEmptyLeftClick(PlayerInteractEvent.LeftClickEmpty event);
+	}
 }
