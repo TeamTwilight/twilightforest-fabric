@@ -24,6 +24,7 @@
     "RedStoneWireBlockMixin",
     "ServerLevelMixin",
     "ServerPlayerGameModeMixin",
+    "ServerPlayerMixin",
     "SpawnerBlockEntity$1Mixin",
     "TrialSpawnerMixin",
     "WalkNodeEvaluatorMixin",

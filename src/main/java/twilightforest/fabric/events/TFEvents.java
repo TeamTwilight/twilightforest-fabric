@@ -147,4 +147,15 @@ public final class TFEvents {
 	public interface PlayerRespawn{
 		void firePlayerRespawnEvent(PlayerEvent.PlayerRespawnEvent event);
 	}
+
+	public static final Event<LivingDeath> LIVING_DEATH = EventFactory.createArrayBacked(LivingDeath.class, callbacks -> event -> {
+		for (LivingDeath callback : callbacks) {
+			callback.onLivingDeath(event);
+		}
+	});
+
+	@FunctionalInterface
+	public interface LivingDeath {
+		void onLivingDeath(LivingDeathEvent event);
+	}
 }
