@@ -2,6 +2,8 @@ package twilightforest.fabric.hooks;
 
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.ApiStatus;
 import twilightforest.fabric.events.neo.*;
 import net.minecraft.core.BlockPos;
@@ -69,5 +71,9 @@ public class EventHooks {
 	@ApiStatus.Internal
 	public static void onAdvancementEarnedEvent(Player player, AdvancementHolder earned) {
 		new AdvancementEvent.AdvancementEarnEvent(player, earned).post();
+	}
+
+	public static boolean onProjectileImpact(Projectile projectile, HitResult ray) {
+		return new ProjectileImpactEvent(projectile, ray).post().isCanceled();
 	}
 }

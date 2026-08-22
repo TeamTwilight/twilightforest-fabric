@@ -191,4 +191,15 @@ public final class TFEvents {
 	public interface LeftClickEmpty {
 		void onEmptyLeftClick(PlayerInteractEvent.LeftClickEmpty event);
 	}
+
+	public static final Event<ProjectileImpact> PROJECTILE_IMPACT = EventFactory.createArrayBacked(ProjectileImpact.class, callbacks -> event -> {
+		for (ProjectileImpact callback : callbacks) {
+			callback.onProjectileImpact(event);
+		}
+	});
+
+	@FunctionalInterface
+	public interface ProjectileImpact {
+		void onProjectileImpact(ProjectileImpactEvent event);
+	}
 }
