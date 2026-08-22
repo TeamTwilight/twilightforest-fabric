@@ -1,6 +1,8 @@
 package twilightforest.fabric.hooks;
 
+import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.server.level.ServerPlayer;
+import org.jetbrains.annotations.ApiStatus;
 import twilightforest.fabric.events.neo.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
@@ -62,5 +64,10 @@ public class EventHooks {
 
 	public static void firePlayerRespawnEvent(ServerPlayer player, boolean fromEndFight) {
 		new PlayerEvent.PlayerRespawnEvent(player, fromEndFight).post();
+	}
+
+	@ApiStatus.Internal
+	public static void onAdvancementEarnedEvent(Player player, AdvancementHolder earned) {
+		new AdvancementEvent.AdvancementEarnEvent(player, earned).post();
 	}
 }

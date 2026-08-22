@@ -158,4 +158,15 @@ public final class TFEvents {
 	public interface LivingDeath {
 		void onLivingDeath(LivingDeathEvent event);
 	}
+
+	public static final Event<AdvancementEarned> ADVANCEMENT_EARNED = EventFactory.createArrayBacked(AdvancementEarned.class, callbacks -> event -> {
+		for (AdvancementEarned callback : callbacks) {
+			callback.onAdvancementEarnedEvent(event);
+		}
+	});
+
+	@FunctionalInterface
+	public interface AdvancementEarned {
+		void onAdvancementEarnedEvent(AdvancementEvent.AdvancementEarnEvent event);
+	}
 }
