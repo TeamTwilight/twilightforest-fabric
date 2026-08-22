@@ -2,6 +2,7 @@ package twilightforest.asm.mixin;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -48,6 +49,20 @@ public class PlayerMixin implements IPlayerExtension {
 		CallbackInfo ci
 	) {
 		if (CommonHooks.onLivingDeath((LivingEntity) (Object) this, source)) {
+			ci.cancel();
+		}
+	}
+
+	@Inject(
+		method = "attack(Lnet/minecraft/world/entity/Entity;)V",
+		at = @At("HEAD"),
+		cancellable = true
+	)
+	private void twilightforest$attackEntity(
+		Entity entity,
+		CallbackInfo ci
+	) {
+		if (!CommonHooks.onPlayerAttackTarget((Player) (Object) this, entity)) {
 			ci.cancel();
 		}
 	}

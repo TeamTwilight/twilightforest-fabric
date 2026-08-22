@@ -5,6 +5,7 @@ import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -13,10 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.GameMasterBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import twilightforest.fabric.events.neo.BreakBlockEvent;
-import twilightforest.fabric.events.neo.LivingDeathEvent;
-import twilightforest.fabric.events.neo.LivingEvent;
-import twilightforest.fabric.events.neo.PlayerInteractEvent;
+import twilightforest.fabric.events.neo.*;
 
 public class CommonHooks {
 	public static BreakBlockEvent fireBlockBreak(Level level, GameType gameType, Player player, BlockPos pos, BlockState state) {
@@ -62,5 +60,12 @@ public class CommonHooks {
 
 	public static void onLivingJump(LivingEntity entity) {
 		new LivingEvent.LivingJumpEvent(entity).post();
+	}
+
+	public static boolean onPlayerAttackTarget(Player player, Entity target) {
+		if (new AttackEntityEvent(player, target).post().isCanceled())
+			return false;
+		ItemStack stack = player.getMainHandItem();
+		return stack.isEmpty() || !stack.getItem().twilightforest$onLeftClickEntity(stack, player, target);
 	}
 }

@@ -213,4 +213,15 @@ public final class TFEvents {
 	public interface LivingJump {
 		void onLivingJump(LivingEvent.LivingJumpEvent event);
 	}
+
+	public static final Event<AttackEntity> ATTACK_ENTITY = EventFactory.createArrayBacked(AttackEntity.class, callbacks -> event -> {
+		for (AttackEntity callback : callbacks) {
+			callback.onPlayerAttackTarget(event);
+		}
+	});
+
+	@FunctionalInterface
+	public interface AttackEntity {
+		void onPlayerAttackTarget(AttackEntityEvent event);
+	}
 }
