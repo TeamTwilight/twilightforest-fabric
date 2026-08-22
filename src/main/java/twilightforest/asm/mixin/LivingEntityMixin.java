@@ -12,6 +12,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -117,5 +118,18 @@ public abstract class LivingEntityMixin {
 		if (CommonHooks.onLivingDeath((LivingEntity) (Object) this, source)) {
 			ci.cancel();
 		}
+	}
+
+	@Inject(
+		method = "jumpFromGround()V",
+		at = @At(
+			value = "FIELD",
+			target = "Lnet/minecraft/world/entity/LivingEntity;needsSync:Z",
+			shift = At.Shift.AFTER,
+			opcode = Opcodes.PUTFIELD
+		)
+	)
+	private void twilightforest$livingJump(CallbackInfo ci) {
+		CommonHooks.onLivingJump((LivingEntity) (Object) this);
 	}
 }

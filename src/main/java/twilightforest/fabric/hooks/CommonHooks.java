@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import twilightforest.fabric.events.neo.BreakBlockEvent;
 import twilightforest.fabric.events.neo.LivingDeathEvent;
+import twilightforest.fabric.events.neo.LivingEvent;
 import twilightforest.fabric.events.neo.PlayerInteractEvent;
 
 public class CommonHooks {
@@ -57,5 +58,9 @@ public class CommonHooks {
 
 	public static void onEmptyLeftClick(Player player) {
 		new PlayerInteractEvent.LeftClickEmpty(player).post();
+	}
+
+	public static void onLivingJump(LivingEntity entity) {
+		new LivingEvent.LivingJumpEvent(entity).post();
 	}
 }

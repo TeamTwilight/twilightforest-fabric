@@ -202,4 +202,15 @@ public final class TFEvents {
 	public interface ProjectileImpact {
 		void onProjectileImpact(ProjectileImpactEvent event);
 	}
+
+	public static final Event<LivingJump> LIVING_JUMP = EventFactory.createArrayBacked(LivingJump.class, callbacks -> event -> {
+		for (LivingJump callback : callbacks) {
+			callback.onLivingJump(event);
+		}
+	});
+
+	@FunctionalInterface
+	public interface LivingJump {
+		void onLivingJump(LivingEvent.LivingJumpEvent event);
+	}
 }
