@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import carminite.interfaces.markers.ISpecialExplosionBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -21,7 +22,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
-import twilightforest.fabric.interfaces.marker.ISpecialExplosionBlock;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFSounds;
 

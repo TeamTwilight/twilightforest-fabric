@@ -1,8 +1,8 @@
 package twilightforest.block;
 
-import twilightforest.fabric.interfaces.marker.ISpecialLandingEffectsBlock;
-import twilightforest.fabric.interfaces.marker.ISpecialRunningEffectsBlock;
-import twilightforest.fabric.network.PacketDistributor;
+import carminite.interfaces.markers.ISpecialLandingEffectsBlock;
+import carminite.interfaces.markers.ISpecialRunningEffectsBlock;
+import carminite.network.PacketDistributor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -94,7 +94,7 @@ public class CloudBlock extends Block implements ISpecialLandingEffectsBlock, IS
 	 */
 	@Override
 	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-		if (!level.twilightforest$isAreaLoaded(pos, 1) || TFConfig.commonCloudBlockPrecipitationDistance == 0) return;
+		if (!level.carminite$isAreaLoaded(pos, 1) || TFConfig.commonCloudBlockPrecipitationDistance == 0) return;
 
 		Pair<Biome.Precipitation, Float> pair = this.getCurrentPrecipitation(pos, level, level.getRainLevel(1.0F));
 		if (pair.getRight() > 0.0F) {

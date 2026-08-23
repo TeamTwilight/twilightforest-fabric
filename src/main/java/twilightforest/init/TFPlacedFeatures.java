@@ -1,6 +1,6 @@
 package twilightforest.init;
 
-import twilightforest.fabric.util.ConcatenatedListView;
+import carminite.util.ConcatenatedListView;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;

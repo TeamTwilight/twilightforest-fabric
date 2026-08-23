@@ -1,6 +1,6 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
-import twilightforest.fabric.world.IPieceBeardifierModifier;
+import carminite.interfaces.markers.IPieceBeardifierModifier;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;

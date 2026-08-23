@@ -1,6 +1,6 @@
 package twilightforest.item;
 
-import twilightforest.fabric.interfaces.marker.ICustomMapItem;
+import carminite.interfaces.markers.ICustomMapItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;

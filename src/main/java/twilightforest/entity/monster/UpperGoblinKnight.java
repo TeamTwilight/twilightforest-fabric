@@ -1,6 +1,6 @@
 package twilightforest.entity.monster;
 
-import twilightforest.fabric.network.PacketDistributor;
+import carminite.network.PacketDistributor;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;

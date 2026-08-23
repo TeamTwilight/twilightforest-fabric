@@ -1,7 +1,7 @@
 package twilightforest.block;
 
-import twilightforest.fabric.interfaces.marker.IFlammableBlock;
-import twilightforest.fabric.network.PacketDistributor;
+import carminite.interfaces.markers.IFlammableBlock;
+import carminite.network.PacketDistributor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;

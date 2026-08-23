@@ -1,6 +1,6 @@
 package twilightforest.config;
 
-import twilightforest.fabric.network.PacketDistributor;
+import carminite.network.PacketDistributor;
 import fuzs.forgeconfigapiport.fabric.api.v5.ConfigRegistry;
 import fuzs.forgeconfigapiport.fabric.api.v5.ModConfigEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;

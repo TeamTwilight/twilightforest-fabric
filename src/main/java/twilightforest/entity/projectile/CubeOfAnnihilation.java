@@ -1,7 +1,7 @@
 package twilightforest.entity.projectile;
 
-import twilightforest.fabric.hooks.CommonHooks;
-import twilightforest.fabric.network.PacketDistributor;
+import carminite.events.neoforge.BreakBlockEvent;
+import carminite.network.PacketDistributor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
@@ -100,7 +100,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 			BlockState state = this.level().getBlockState(pos);
 			if (!state.isAir()) {
 				if (this.getOwner() instanceof ServerPlayer player) {
-					if (!CommonHooks.fireBlockBreak(level(), player.gameMode(), player, pos, state).isCanceled()) {
+					if (!new BreakBlockEvent(this.level(), pos, state, player).post().isCanceled()) {
 						if (this.canAnnihilate(pos, state, player.gameMode.getGameModeForPlayer().isBlockPlacingRestricted())) {
 							this.level().removeBlock(pos, false);
 							this.playSound(TFSounds.BLOCK_ANNIHILATED.value(), 0.125f, this.random.nextFloat() * 0.25F + 0.75F);
@@ -116,6 +116,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 			}
 		}
 	}
+
 
 	private boolean canAnnihilate(BlockPos pos, BlockState state, boolean restrictedPlaceMode) {
 		// whitelist many castle blocks

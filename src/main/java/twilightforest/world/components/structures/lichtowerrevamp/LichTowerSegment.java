@@ -1,6 +1,6 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
-import twilightforest.fabric.world.IPieceBeardifierModifier;
+import carminite.interfaces.markers.IPieceBeardifierModifier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.FrontAndTop;
 import net.minecraft.nbt.CompoundTag;

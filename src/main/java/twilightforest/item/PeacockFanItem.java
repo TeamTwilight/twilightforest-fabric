@@ -1,7 +1,7 @@
 package twilightforest.item;
 
-import twilightforest.fabric.hooks.CommonHooks;
-import twilightforest.fabric.network.PacketDistributor;
+import carminite.events.neoforge.BreakBlockEvent;
+import carminite.network.PacketDistributor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -150,7 +150,7 @@ public class PeacockFanItem extends Item {
 		BlockState state = level.getBlockState(pos);
 		if (state.getBlock() instanceof FlowerBlock) {
 			if (level.getRandom().nextInt(3) == 0) {
-				if (!CommonHooks.fireBlockBreak(level, player.gameMode(), player, pos, state).isCanceled()) {
+				if (!new BreakBlockEvent(level, pos, state, player).post().isCanceled()) {
 					level.destroyBlock(pos, true);
 					cost++;
 				}

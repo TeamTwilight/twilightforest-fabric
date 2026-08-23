@@ -1,6 +1,6 @@
 package twilightforest.world.components.structures;
 
-import twilightforest.fabric.util.Lazy;
+import carminite.util.Lazy;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

@@ -1,6 +1,6 @@
 package twilightforest.item;
 
-import twilightforest.fabric.util.ServerLifecycleHooks;
+import carminite.util.ServerLifecycleHooks;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -95,7 +95,7 @@ public class ChainBlockItem extends Item {
 		if (stack.get(TFDataComponents.THROWN_PROJECTILE) == null || !state.is(TFBlockTags.MINEABLE_WITH_BLOCK_AND_CHAIN)) return false;
 		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
 		if (server != null) {
-			int destruction = EnchantmentHelper.getItemEnchantmentLevel(server.registryAccess().twilightforest$holderOrThrow(TFEnchantments.DESTRUCTION), stack);
+			int destruction = EnchantmentHelper.getItemEnchantmentLevel(server.registryAccess().carminite$holderOrThrow(TFEnchantments.DESTRUCTION), stack);
 			if (destruction > 0) return this.canHarvest(server.registryAccess(), state, destruction);
 		}
 		return false;

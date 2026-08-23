@@ -1,5 +1,6 @@
 package twilightforest.entity.projectile;
 
+import carminite.multipart.PartEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
@@ -30,7 +31,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.fabric.entity.PartEntity;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFItems;

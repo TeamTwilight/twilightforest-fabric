@@ -1,6 +1,6 @@
 package twilightforest.item;
 
-import twilightforest.fabric.network.PacketDistributor;
+import carminite.network.PacketDistributor;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;

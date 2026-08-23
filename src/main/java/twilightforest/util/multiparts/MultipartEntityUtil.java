@@ -1,7 +1,7 @@
 package twilightforest.util.multiparts;
 
-import twilightforest.fabric.entity.IMultiPartEntity;
-import twilightforest.fabric.network.PacketDistributor;
+import carminite.multipart.IMultiPartEntity;
+import carminite.network.PacketDistributor;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Nullable;

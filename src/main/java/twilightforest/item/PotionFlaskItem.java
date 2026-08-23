@@ -36,8 +36,8 @@ public class PotionFlaskItem extends Item {
 	}
 
 	@Override
-	public int twilightforest$getMaxStackSize(ItemStack stack) {
-		return stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY).potion().potion().isPresent() ? 1 : super.twilightforest$getMaxStackSize(stack);
+	public int carminite$getMaxStackSize(ItemStack stack) {
+		return stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY).potion().potion().isPresent() ? 1 : super.carminite$getMaxStackSize(stack);
 	}
 
 	@Override

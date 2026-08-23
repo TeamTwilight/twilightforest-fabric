@@ -28,7 +28,7 @@ import java.util.List;
 public class SinisterSpawnerBlockEntity extends BlockEntity implements Spawner {
 	private final SinisterSpawnerLogic spawner = new SinisterSpawnerLogic() {
 		@Override
-		public Either<BlockEntity, Entity> twilightforest$getOwner() {
+		public Either<BlockEntity, Entity> carminite$getOwner() {
 			return Either.left(SinisterSpawnerBlockEntity.this);
 		}
 	};

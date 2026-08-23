@@ -1,6 +1,6 @@
 package twilightforest.block;
 
-import twilightforest.fabric.interfaces.marker.IFireSourceBlock;
+import carminite.interfaces.markers.IFireSourceBlock;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

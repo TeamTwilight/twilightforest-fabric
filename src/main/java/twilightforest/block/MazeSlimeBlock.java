@@ -1,6 +1,6 @@
 package twilightforest.block;
 
-import twilightforest.fabric.interfaces.marker.ISpecialStickyBlock;
+import carminite.interfaces.markers.ISpecialStickyBlock;
 import net.minecraft.world.level.block.SlimeBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.init.TFBlocks;

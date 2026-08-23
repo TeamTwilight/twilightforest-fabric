@@ -1,6 +1,6 @@
 package twilightforest.item;
 
-import twilightforest.fabric.interfaces.marker.IContinuousUseItem;
+import carminite.interfaces.markers.IContinuousUseItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;

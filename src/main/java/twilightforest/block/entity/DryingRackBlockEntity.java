@@ -1,6 +1,6 @@
 package twilightforest.block.entity;
 
-import twilightforest.fabric.util.ServerLifecycleHooks;
+import carminite.util.ServerLifecycleHooks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;

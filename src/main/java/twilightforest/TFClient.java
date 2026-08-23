@@ -1,35 +1,14 @@
 package twilightforest;
 
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import twilightforest.fabric.entity.IMultiPartEntity;
-import twilightforest.fabric.entity.PartEntity;
 import twilightforest.network.*;
 
 public final class TFClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		registerClientMultipartEvents();
 		registerPackets();
-	}
-
-	private static void registerClientMultipartEvents() {
-		ClientEntityEvents.ENTITY_LOAD.register((entity, world) -> {
-			if (entity instanceof IMultiPartEntity partEntity && partEntity.isMultipartEntity()) {
-				for (PartEntity<?> part : partEntity.getParts()) {
-					world.twilightforest$getPartEntityMap().put(part.getId(), part);
-				}
-			}
-		});
-		ClientEntityEvents.ENTITY_UNLOAD.register((entity, world) -> {
-			if (entity instanceof IMultiPartEntity partEntity && partEntity.isMultipartEntity()) {
-				for (PartEntity<?> part : partEntity.getParts()) {
-					world.twilightforest$getPartEntityMap().remove(part.getId());
-				}
-			}
-		});
 	}
 
 	private static void registerPackets() {

@@ -1,7 +1,7 @@
 package twilightforest.block;
 
-import twilightforest.fabric.hooks.EventHooks;
-import twilightforest.fabric.network.PacketDistributor;
+import carminite.events.hooks.EventHooks;
+import carminite.network.PacketDistributor;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.BlockPos;

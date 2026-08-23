@@ -1,6 +1,6 @@
 package twilightforest.block;
 
-import twilightforest.fabric.network.PacketDistributor;
+import carminite.network.PacketDistributor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.QuartPos;
@@ -41,7 +41,7 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 	@Override
 	void performTreeEffect(ServerLevel level, BlockPos pos, RandomSource rand) {
 		ResourceKey<Biome> target = TFBiomes.ENCHANTED_FOREST;
-		Holder<Biome> biome = level.registryAccess().twilightforest$holderOrThrow(target);
+		Holder<Biome> biome = level.registryAccess().carminite$holderOrThrow(target);
 		int range = TFConfig.transformationCoreRange;
 		for (int i = 0; i < 16; i++) {
 			BlockPos dPos = WorldUtil.randomOffset(rand, pos, range, 0, range);

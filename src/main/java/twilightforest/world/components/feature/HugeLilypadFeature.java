@@ -42,7 +42,7 @@ public class HugeLilypadFeature extends Feature<NoneFeatureConfiguration> {
 				random.nextInt(8) - random.nextInt(8)
 			);
 
-			if (shouldPlacePadAt(world, dPos) && world.twilightforest$isAreaLoaded(dPos, 1)) {
+			if (shouldPlacePadAt(world, dPos) && world.carminite$isAreaLoaded(dPos, 1)) {
 				final Direction horizontal = Direction.from2DDataValue(random.nextInt(4));
 				final BlockState lilypad = TFBlocks.HUGE_LILY_PAD.defaultBlockState().setValue(FACING, horizontal);
 

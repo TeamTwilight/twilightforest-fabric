@@ -1,7 +1,7 @@
 package twilightforest.network;
 
-import twilightforest.fabric.entity.IMultiPartEntity;
-import twilightforest.fabric.entity.PartEntity;
+import carminite.multipart.IMultiPartEntity;
+import carminite.multipart.PartEntity;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;

@@ -1,6 +1,6 @@
 package twilightforest.item;
 
-import twilightforest.fabric.interfaces.marker.ICustomMapItem;
+import carminite.interfaces.markers.ICustomMapItem;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multiset;

@@ -44,7 +44,7 @@ public class ChiseledCanopyShelfBlockEntity extends ChiseledBookShelfBlockEntity
 		}
 
 		@Override
-		public Either<BlockEntity, Entity>twilightforest$getOwner() {
+		public @Nullable Either<BlockEntity, Entity> carminite$getOwner() {
 			return Either.left(ChiseledCanopyShelfBlockEntity.this);
 		}
 	};

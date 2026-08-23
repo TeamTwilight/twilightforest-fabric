@@ -1,6 +1,6 @@
 package twilightforest.entity.boss;
 
-import twilightforest.fabric.network.PacketDistributor;
+import carminite.network.PacketDistributor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.particles.ColorParticleOption;
@@ -476,7 +476,6 @@ public class Lich extends BaseTFBoss {
 						double z = clone.getZ((this.random.nextDouble() * this.random.nextDouble() * (this.random.nextBoolean() ? 1.0D : -1.0D)) * 1.5D);
 						particlePacket.queueParticle(ParticleTypes.SMOKE, false, false, x, y, z, 0.0D, 0.0D, 0.0D);
 					}
-
 					PacketDistributor.sendToPlayersTrackingEntity(this, particlePacket);
 
 					clone.remove(Entity.RemovalReason.DISCARDED);

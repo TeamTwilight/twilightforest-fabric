@@ -1,7 +1,7 @@
 package twilightforest.util.multiparts;
 
-import twilightforest.fabric.entity.IMultiPartEntity;
-import twilightforest.fabric.entity.PartEntity;
+import carminite.multipart.IMultiPartEntity;
+import carminite.multipart.PartEntity;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.TFPart;

@@ -1,6 +1,6 @@
 package twilightforest.init;
 
-import twilightforest.fabric.datamaps.SimpleDataMap;
+import carminite.datamap.SimpleDataMap;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.biome.Biome;

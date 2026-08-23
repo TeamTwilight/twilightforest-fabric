@@ -1,6 +1,6 @@
 package twilightforest.block;
 
-import twilightforest.fabric.interfaces.marker.IRedstoneConnectableBlock;
+import carminite.interfaces.markers.IRedstoneConnectableBlock;
 import com.google.common.collect.Iterables;
 import com.mojang.serialization.MapCodec;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
@@ -346,7 +346,7 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 			BlockEntity blockEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
 			if (blockEntity instanceof CandelabraBlockEntity candelabra) {
 				RegistryAccess access = blockEntity.getLevel().registryAccess();
-				if (builder.getOptionalParameter(LootContextParams.TOOL) != null && EnchantmentHelper.getItemEnchantmentLevel(access.twilightforest$holderOrThrow(Enchantments.SILK_TOUCH), builder.getParameter(LootContextParams.TOOL)) > 0) {
+				if (builder.getOptionalParameter(LootContextParams.TOOL) != null && EnchantmentHelper.getItemEnchantmentLevel(access.carminite$holderOrThrow(Enchantments.SILK_TOUCH), builder.getParameter(LootContextParams.TOOL)) > 0) {
 					ItemStack newStack = new ItemStack(this);
 					newStack.applyComponents(candelabra.collectComponents());
 					drops.remove(base.get());

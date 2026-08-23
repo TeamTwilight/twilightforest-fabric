@@ -1,7 +1,7 @@
 package twilightforest.entity;
 
-import twilightforest.fabric.entity.IMultiPartEntity;
-import twilightforest.fabric.entity.PartEntity;
+import carminite.multipart.IMultiPartEntity;
+import carminite.multipart.PartEntity;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;

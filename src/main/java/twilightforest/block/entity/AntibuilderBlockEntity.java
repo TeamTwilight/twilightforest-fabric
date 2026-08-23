@@ -50,7 +50,7 @@ public class AntibuilderBlockEntity extends BlockEntity {
 			} else {
 
 				// new plan, take a snapshot of the world when we are first activated, and then rapidly revert changes
-				if (te.blockData == null && level.twilightforest$isAreaLoaded(pos, AntibuilderBlockEntity.RADIUS)) {
+				if (te.blockData == null && level.carminite$isAreaLoaded(pos, AntibuilderBlockEntity.RADIUS)) {
 					te.captureBlockData(level, pos);
 					te.slowScan = true;
 				}

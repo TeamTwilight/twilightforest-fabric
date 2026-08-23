@@ -1,7 +1,7 @@
 package twilightforest.world.components.structures.lichtowerrevamp;
 
-import twilightforest.fabric.util.ServerLifecycleHooks;
-import twilightforest.fabric.world.IPieceBeardifierModifier;
+import carminite.interfaces.markers.IPieceBeardifierModifier;
+import carminite.util.ServerLifecycleHooks;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
