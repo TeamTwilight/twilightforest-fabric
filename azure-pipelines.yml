@@ -15,6 +15,9 @@ variables:
     revision: $[counter('release-number', 0)]
 
 steps:
+  - checkout: self
+    submodules: recursive
+
   - powershell: |
       $json = [Ordered]@{
           title = "Maven Publish Failed"
