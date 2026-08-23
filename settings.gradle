@@ -13,4 +13,6 @@ plugins {
 	id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
 }
 
+include(":carminite-lib")
+
 rootProject.name = "twilightforest-fabric"

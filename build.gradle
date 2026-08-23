@@ -42,6 +42,11 @@ subprojects {
 
 loom {
 	accessWidenerPath = file("src/main/resources/twilightforest.classtweaker")
+	enableTransitiveAccessWideners = true
+
+	interfaceInjection {
+		enableDependencyInterfaceInjection = true
+	}
 }
 
 fabricApi {
@@ -77,6 +82,9 @@ dependencies {
 
 	// NeoForge Compatibility
 	include(implementation "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forge_config_api_port_version}")
+
+	// Built-in library
+	implementation(include(project(":carminite-lib")))
 }
 
 processResources {
