@@ -14,10 +14,10 @@ import twilightforest.world.NoReturnTeleporter;
 import twilightforest.world.TFTeleporter;
 
 public class CapabilityEvents {
-	private void init() {
-		ServerPlayerEvents.AFTER_RESPAWN.register((_, newPlayer, _) -> {
-			spawnInTFIfNecessary(newPlayer);
-		});
+	public static final CapabilityEvents INSTANCE = new CapabilityEvents();
+
+	public static void init() {
+		ServerPlayerEvents.AFTER_RESPAWN.register((_, newPlayer, _) -> INSTANCE.spawnInTFIfNecessary(newPlayer));
 	}
 
 	private void spawnInTFIfNecessary(ServerPlayer newPlayer) {
