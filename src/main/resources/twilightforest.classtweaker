@@ -256,16 +256,6 @@ accessible method net/minecraft/core/cauldron/CauldronInteractions dyedItemItera
 # OminousFireDamageSource
 accessible method net/minecraft/world/damagesource/DamageSource <init> (Lnet/minecraft/core/Holder;Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/Vec3;)V
 
-# Interface Injections
-inject-interface net/minecraft/core/HolderLookup$Provider twilightforest/fabric/interfaces/extension/IHolderLookupProviderExtension
-inject-interface net/minecraft/world/level/Level twilightforest/fabric/interfaces/extension/ILevelExtension
-inject-interface net/minecraft/world/level/LevelReader twilightforest/fabric/interfaces/extension/ILevelReaderExtension
-inject-interface net/minecraft/world/level/BaseSpawner twilightforest/fabric/interfaces/extension/IOwnedSpawner
-inject-interface net/minecraft/world/level/block/state/BlockState twilightforest/fabric/interfaces/extension/IBlockStateExtension
-inject-interface net/minecraft/world/level/block/Block twilightforest/fabric/interfaces/extension/IBlockExtension
-inject-interface net/minecraft/world/item/Item twilightforest/fabric/interfaces/extension/IItemExtension
-inject-interface net/minecraft/world/level/block/BucketPickup twilightforest/fabric/interfaces/extension/IBucketPickupExtension
-
 # Enum Extensions
 extend-enum net/minecraft/world/damagesource/DamageEffects TWILIGHTFOREST_PINCH
 extend-enum net/minecraft/world/item/Rarity TWILIGHTFOREST_TWILIGHT
