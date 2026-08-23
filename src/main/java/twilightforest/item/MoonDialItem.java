@@ -1,6 +1,5 @@
 package twilightforest.item;
 
-import io.github.fabricators_of_create.porting_lib.core.util.ServerLifecycleHooks;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -9,6 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
+import twilightforest.asmhooks.Item$TooltipContext$2Duck;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -20,7 +20,8 @@ public class MoonDialItem extends Item {
 
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-		tooltip.add(getMoonPhase(ServerLifecycleHooks.getCurrentServer().overworld()).withStyle(ChatFormatting.GRAY));
+		Level level = context instanceof Item$TooltipContext$2Duck duck ? duck.twilightforest$getLevel() : null;
+		tooltip.add(getMoonPhase(level).withStyle(ChatFormatting.GRAY));
 	}
 
 	public static MutableComponent getMoonPhase(@Nullable Level level) {

@@ -45,6 +45,7 @@
     "SlimeBlockMixin",
     "SnowyDirtBlockMixin",
     "StructureStartMixin",
+    "Item$TooltipContext$2Accessor",
     "UtilMixin",
     "WalkNodeEvaluatorMixin",
     "WoodTypeAccessor",
