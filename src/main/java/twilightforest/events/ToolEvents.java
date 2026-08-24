@@ -1,6 +1,5 @@
 package twilightforest.events;
 
-import carminite.events.hooks.EventHooks;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.entity.event.v1.effect.ServerMobEffectEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
@@ -69,7 +68,7 @@ public class ToolEvents {
 	}
 
 	private boolean handleGiantPickaxeMining(Level level, Player player, BlockPos pos, BlockState state) {
-		if (player instanceof ServerPlayer serverPlayer && canHarvestWithGiantPick(player, state, pos)) {
+		if (player instanceof ServerPlayer serverPlayer && canHarvestWithGiantPick(player, state)) {
 			var attachment = serverPlayer.getAttached(TFDataAttachments.GIANT_PICKAXE_MINING);
 
 			if (shouldBreakGiantBlock(serverPlayer, attachment)) {
@@ -113,8 +112,9 @@ public class ToolEvents {
 		return true;
 	}
 
-	private static boolean canHarvestWithGiantPick(Player player, BlockState state, BlockPos pos) {
-		return player.getMainHandItem().getItem() instanceof GiantPickItem && EventHooks.doPlayerHarvestCheck(player, state, player.level(), pos);
+	private static boolean canHarvestWithGiantPick(Player player, BlockState state) {
+		return player.getMainHandItem().getItem() instanceof GiantPickItem
+			&& player.hasCorrectToolForDrops(state);
 	}
 
 	private static boolean shouldBreakGiantBlock(Player player, GiantPickaxeMiningAttachment attachment) {
