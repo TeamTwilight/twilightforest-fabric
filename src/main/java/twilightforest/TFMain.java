@@ -36,6 +36,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -54,6 +55,7 @@ import twilightforest.entity.passive.*;
 import twilightforest.entity.passive.quest.QuestReloadListener;
 import twilightforest.entity.projectile.MoonwormShot;
 import twilightforest.entity.projectile.TwilightWandBolt;
+import twilightforest.events.LootEvents;
 import twilightforest.init.*;
 import twilightforest.init.custom.*;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
@@ -132,6 +134,7 @@ public final class TFMain implements ModInitializer {
 		registerDynamicRegistries();
 		registerBiomeSource();
 		registerConfig();
+		registerGiantToolDropConversions();
 		registerJarLids();
 		registerStrippableBlocks();
 		registerFlammableBlocks();
@@ -222,6 +225,13 @@ public final class TFMain implements ModInitializer {
 		ConfigSetup.loadConfigs();
 		ConfigSetup.reloadConfigs();
 		ConfigSetup.syncUncraftingConfig();
+	}
+
+	private static void registerGiantToolDropConversions() {
+		LootEvents.GIANT_BLOCK_CONVERSIONS.put(Blocks.COBBLESTONE, TFBlocks.GIANT_COBBLESTONE.asItem());
+		LootEvents.GIANT_BLOCK_CONVERSIONS.put(Blocks.OAK_LOG, TFBlocks.GIANT_LOG.asItem());
+		LootEvents.GIANT_BLOCK_CONVERSIONS.put(Blocks.OAK_LEAVES, TFBlocks.GIANT_LEAVES.asItem());
+		LootEvents.GIANT_BLOCK_CONVERSIONS.put(Blocks.OBSIDIAN, TFBlocks.GIANT_OBSIDIAN.asItem());
 	}
 
 	private static void registerJarLids() {
