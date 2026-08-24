@@ -38,7 +38,7 @@ import twilightforest.network.CreateMovingCicadaSoundPacket;
 public class MiscEvents {
 	public static final MiscEvents INSTANCE = new MiscEvents();
 
-	private void init() {
+	public static void init() {
 		ServerEntityEvents.ENTITY_LOAD.register((entity, _) -> INSTANCE.addPrey(entity));
 		ServerEntityEvents.EQUIPMENT_CHANGE.register((livingEntity, equipmentSlot, _, currentStack) -> INSTANCE.updateCicadaSoundsOnHead(livingEntity, equipmentSlot, currentStack));
 		UseBlockCallback.EVENT.register(INSTANCE::addTomesToLecterns);

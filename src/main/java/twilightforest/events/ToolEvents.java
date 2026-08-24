@@ -38,7 +38,7 @@ import java.util.List;
 public class ToolEvents {
 	public static final ToolEvents INSTANCE = new ToolEvents();
 
-	private void init() {
+	public static void init() {
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, _) -> INSTANCE.fieryToolSetFire(entity, source));
 		PlayerBlockBreakEvents.BEFORE.register((_, player, _, state, _) -> INSTANCE.damageNonMazebreakerToolsMore(player, state));
 		ServerMobEffectEvents.ALLOW_ADD.register((effectInstance, entity, _) -> INSTANCE.preventFatigueWithPocketWatch(effectInstance, entity));

@@ -41,7 +41,7 @@ import java.util.*;
 public class ProgressionEvents {
 	public static final ProgressionEvents INSTANCE = new ProgressionEvents();
 
-	private void init() {
+	public static void init() {
 		GameRuleEvents.changeCallback(TFGameRules.ENFORCED_PROGRESSION_RULE).register(INSTANCE::gameRuleChanged);
 		PlayerBlockBreakEvents.BEFORE.register((level, player, pos, _, _) -> INSTANCE.preventLockedAreaBlockBreaking(level, player, pos));
 		UseBlockCallback.EVENT.register((player, level, _, hitResult) -> INSTANCE.preventLockedAreaBlockPlacing(player,level, hitResult));
