@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -34,6 +35,11 @@ public class LockedVanishingBlock extends VanishingBlock {
 	@Override
 	public float getExplosionResistance(BlockState state, BlockGetter getter, BlockPos pos, Explosion explosion) {
 		return state.getValue(LOCKED) ? 6000000.0F : super.getExplosionResistance(state, getter, pos, explosion);
+	}
+
+	@Override
+	public boolean carminite$canEntityDestroy(BlockState state, BlockGetter getter, BlockPos pos, Entity entity) {
+		return !state.getValue(LOCKED) && super.carminite$canEntityDestroy(state, getter, pos, entity);
 	}
 
 	@Override

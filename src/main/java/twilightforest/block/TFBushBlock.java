@@ -26,6 +26,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -168,6 +169,12 @@ public abstract class TFBushBlock extends Block implements SnowLoggable {
 			return;
 		}
 		super.spawnDestroyParticles(level, player, pos, state);
+	}
+
+	@Nullable
+	@Override
+	public PushReaction carminite$getPistonPushReaction(BlockState state) {
+		return state.getValue(AGE) < 2 ? PushReaction.DESTROY : null;
 	}
 
 	@Override

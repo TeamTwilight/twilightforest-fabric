@@ -3,6 +3,7 @@ package twilightforest.block;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -57,5 +58,10 @@ public class StrongholdShieldBlock extends DirectionalBlock {
 		} else {
 			return super.getDestroyProgress(state, player, getter, pos);
 		}
+	}
+
+	@Override
+	public boolean carminite$canEntityDestroy(BlockState state, BlockGetter getter, BlockPos pos, Entity entity) {
+		return false;
 	}
 }

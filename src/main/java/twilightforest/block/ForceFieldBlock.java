@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -64,6 +65,11 @@ public class ForceFieldBlock extends Block implements SimpleWaterloggedBlock {
 
 		return fullFaceOrSimilarForceField(getter, pos.offset(vec31), dir1, dir2) ||
 			fullFaceOrSimilarForceField(getter, pos.offset(vec32), dir2, dir1);
+	}
+
+	@Override
+	public boolean carminite$canEntityDestroy(BlockState state, BlockGetter getter, BlockPos pos, Entity entity) {
+		return false;
 	}
 
 	private static boolean fullFaceOrSimilarForceField(BlockGetter getter, BlockPos pos, Direction relative, Direction similar) {

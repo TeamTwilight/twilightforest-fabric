@@ -12,8 +12,6 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import twilightforest.block.*;
 import twilightforest.init.TFBlocks;
 
@@ -26,43 +24,6 @@ public class ServerPlayerGameModeMixin {
 	@Shadow
 	@Final
 	protected ServerPlayer player;
-
-	@Inject(
-		method = "destroyBlock(Lnet/minecraft/core/BlockPos;)Z",
-		at = @At("HEAD"),
-		cancellable = true
-	)
-	private void twilightforest$canEntityDestroy(
-		BlockPos pos,
-		CallbackInfoReturnable<Boolean> cir
-	) {
-		BlockState state = this.level.getBlockState(pos);
-		Block block = state.getBlock();
-
-		if (block instanceof BossSpawnerBlock) {
-			cir.setReturnValue(false);
-		}
-
-		if (block instanceof ForceFieldBlock) {
-			cir.setReturnValue(false);
-		}
-
-		if (block instanceof SkullChestBlock) {
-			cir.setReturnValue(false);
-		}
-
-		if (block instanceof StrongholdShieldBlock) {
-			cir.setReturnValue(false);
-		}
-
-		if (block instanceof LockedVanishingBlock) {
-			cir.setReturnValue(!state.getValue(LockedVanishingBlock.LOCKED));
-		}
-
-		if (block instanceof VanishingBlock) {
-			cir.setReturnValue(state.getValue(VanishingBlock.ACTIVE) || !VanishingBlock.areBlocksLocked(state, pos));
-		}
-	}
 
 	@WrapOperation(
 		method = "destroyBlock(Lnet/minecraft/core/BlockPos;)Z",

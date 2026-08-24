@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
@@ -51,7 +52,7 @@ public class VanishingBlock extends Block implements ISpecialExplosionBlock {
 		this.registerDefaultState(this.getStateDefinition().any().setValue(ACTIVE, false));
 	}
 
-	public static boolean areBlocksLocked(BlockState state, BlockPos start) {
+	private static boolean areBlocksLocked(BlockGetter getter, BlockPos start) {
 		int limit = 512;
 		Deque<BlockPos> queue = new ArrayDeque<>();
 		Set<BlockPos> checked = new HashSet<>();
@@ -59,6 +60,7 @@ public class VanishingBlock extends Block implements ISpecialExplosionBlock {
 
 		for (int iter = 0; !queue.isEmpty() && iter < limit; iter++) {
 			BlockPos cur = queue.pop();
+			BlockState state = getter.getBlockState(cur);
 			if (state.getBlock() == TFBlocks.LOCKED_VANISHING_BLOCK && state.getValue(LockedVanishingBlock.LOCKED)) {
 				return true;
 			}
@@ -100,7 +102,7 @@ public class VanishingBlock extends Block implements ISpecialExplosionBlock {
 	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
 		if (!this.isVanished(state) && !state.getValue(ACTIVE)) {
-			if (areBlocksLocked(state, pos)) {
+			if (areBlocksLocked(level, pos)) {
 				level.playSound(null, pos, TFSounds.LOCKED_VANISHING_BLOCK.value(), SoundSource.BLOCKS, 1.0F, 0.3F);
 			} else {
 				this.activate(level, pos);
@@ -117,12 +119,17 @@ public class VanishingBlock extends Block implements ISpecialExplosionBlock {
 	}
 
 	@Override
+	public boolean carminite$canEntityDestroy(BlockState state, BlockGetter getter, BlockPos pos, Entity entity) {
+		return !state.getValue(ACTIVE) ? !areBlocksLocked(getter, pos) : super.carminite$canEntityDestroy(state, getter, pos, entity);
+	}
+
+	@Override
 	protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, @Nullable Orientation orientation, boolean movedByPiston) {
 		if (level.isClientSide()) {
 			return;
 		}
 
-		if (!this.isVanished(state) && !state.getValue(ACTIVE) && level.hasNeighborSignal(pos) && !areBlocksLocked(state, pos)) {
+		if (!this.isVanished(state) && !state.getValue(ACTIVE) && level.hasNeighborSignal(pos) && !areBlocksLocked(level, pos)) {
 			this.activate(level, pos);
 		}
 	}
