@@ -24,6 +24,7 @@ public class CapabilityEvents {
 	public static void init() {
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(INSTANCE::absorbShieldHits);
 		ServerPlayerEvents.AFTER_RESPAWN.register((_, newPlayer, _) -> INSTANCE.spawnInTFIfNecessary(newPlayer));
+		ServerPlayerEvents.JOIN.register(INSTANCE::playerLogsIn);
 	}
 
 	private boolean absorbShieldHits(LivingEntity entity, DamageSource source, float amount) {
@@ -45,6 +46,13 @@ public class CapabilityEvents {
 		if (newPlayer.getRespawnConfig() == null) {
 			newSpawnInTwilightForest(newPlayer);
 		}
+	}
+
+	public void playerLogsIn(ServerPlayer player) {
+		if (player.level().isClientSide())
+			return;
+		if (!player.hasAttached(TFDataAttachments.BANISHED_TO_TWILIGHT_FOREST))
+			CapabilityEvents.newSpawnInTwilightForest(player);
 	}
 
 	public static void newSpawnInTwilightForest(ServerPlayer player) {
