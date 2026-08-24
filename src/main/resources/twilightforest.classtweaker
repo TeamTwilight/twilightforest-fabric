@@ -259,8 +259,11 @@ accessible method net/minecraft/world/damagesource/DamageSource <init> (Lnet/min
 # MiscEvents
 accessible field net/minecraft/world/entity/Mob targetSelector Lnet/minecraft/world/entity/ai/goal/GoalSelector;
 
-# TFPOiTypes
+# TFPoiTypes
 accessible method net/minecraft/world/entity/ai/village/poi/PoiTypes register (Lnet/minecraft/core/Registry;Lnet/minecraft/resources/ResourceKey;Ljava/util/Set;II)Lnet/minecraft/world/entity/ai/village/poi/PoiType;
+
+# FishingHookMixin
+accessible method net/minecraft/world/entity/projectile/Projectile onHit (Lnet/minecraft/world/phys/HitResult;)V
 
 # Enum Extensions
 extend-enum net/minecraft/world/damagesource/DamageEffects TWILIGHTFOREST_PINCH

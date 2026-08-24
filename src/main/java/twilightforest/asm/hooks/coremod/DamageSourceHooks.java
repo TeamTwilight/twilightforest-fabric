@@ -1,4 +1,4 @@
-package twilightforest.asm.hooks;
+package twilightforest.asm.hooks.coremod;
 
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;

@@ -1,4 +1,4 @@
-package twilightforest.asm.hooks;
+package twilightforest.asm.hooks.coremod;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;

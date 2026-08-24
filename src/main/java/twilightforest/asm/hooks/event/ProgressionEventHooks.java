@@ -1,13 +1,45 @@
-package twilightforest.asm.hooks;
+package twilightforest.asm.hooks.event;
 
+import carminite.network.PacketDistributor;
+import com.mojang.datafixers.util.Pair;
+import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SpellParticleOption;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.permissions.PermissionLevel;
 import net.minecraft.util.TriState;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import twilightforest.block.TFPortalBlock;
+import twilightforest.config.TFConfig;
+import twilightforest.events.ProgressionEvents;
+import twilightforest.init.TFAdvancements;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFDimension;
+import twilightforest.network.MissingAdvancementToastPacket;
+import twilightforest.network.StructureProtectionPacket;
+import twilightforest.tags.TFBlockTags;
+import twilightforest.tags.TFItemTags;
+import twilightforest.util.Enforcement;
+import twilightforest.util.PlayerHelper;
+import twilightforest.util.landmarks.LandmarkUtil;
+import twilightforest.world.components.structures.util.AdvancementLockedStructure;
 
-// TODO [Fabric] : Integrate these hooks into mixins once the project compiles and can be tested
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Random;
+
+// TODO [Fabric] : Integrate these hooks into mixins and validate each one of them once the project compiles
 public final class ProgressionEventHooks {
 	/*
 	private void preventLockedAreaMultiblocks(BlockEvent.EntityMultiPlaceEvent event) {
@@ -25,42 +57,42 @@ public final class ProgressionEventHooks {
 			}
 		}
 	}
+	*/
 
-	private void preventLockedAreaBlockInteracting(PlayerInteractEvent.RightClickBlock event) {
-		Player player = event.getEntity();
+	public static TriState preventLockedAreaBlockInteracting(Player player, BlockPos pos) {
 		Level level = player.level();
 
-		if (!level.isClientSide() && level instanceof ServerLevel serverLevel && isBlockProtectedFromInteraction(level, event.getPos()) && isAreaProtected(serverLevel, player, event.getPos())) {
-			event.setUseBlock(TriState.FALSE);
+		if (!level.isClientSide() && level instanceof ServerLevel serverLevel && isBlockProtectedFromInteraction(level, pos) && ProgressionEvents.isAreaProtected(serverLevel, player, pos)) {
+			return TriState.FALSE;
 		}
+
+		return TriState.DEFAULT;
 	}
 
-	private void performProtectionAndPortalChecks(PlayerTickEvent.Post event) {
-		Player eventPlayer = event.getEntity();
-
-		if (!(eventPlayer instanceof ServerPlayer player)) return;
-		ServerLevel level = player.level();
+	public static void performProtectionAndPortalChecks(Player player) {
+		if (!(player instanceof ServerPlayer serverPlayer)) return;
+		ServerLevel level = serverPlayer.level();
 
 		// check for portal creation, at least if it's not disabled
-		if (!TFConfig.disablePortalCreation && player.tickCount % (!TFConfig.checkPortalPlacement ? 100 : 20) == 0) {
+		if (!TFConfig.disablePortalCreation && serverPlayer.tickCount % (!TFConfig.checkPortalPlacement ? 100 : 20) == 0) {
 			// skip non admin players when the option is on
-			if (level.getServer().getProfilePermissions(player.nameAndId()).level().isEqualOrHigherThan(TFConfig.portalCreationPermission)) {
+			if (level.getServer().getProfilePermissions(serverPlayer.nameAndId()).level().isEqualOrHigherThan(TFConfig.portalCreationPermission)) {
 				// reduce range to 4.0 if config is set to admins/owners only
-				checkForPortalCreation(player, level, TFConfig.portalCreationPermission.isEqualOrHigherThan(PermissionLevel.ADMINS)  ? 4.0F : 32.0F);
+				checkForPortalCreation(serverPlayer, level, TFConfig.portalCreationPermission.isEqualOrHigherThan(PermissionLevel.ADMINS)  ? 4.0F : 32.0F);
 			}
 		}
 
 		// check the player for being in a forbidden progression area, only every 20 ticks
-		if (player.tickCount % 20 == 0 && LandmarkUtil.isProgressionEnforced(level) && !player.isCreative() && !player.isSpectator()) {
-			Enforcement.enforceBiomeProgression(player, level);
+		if (serverPlayer.tickCount % 20 == 0 && LandmarkUtil.isProgressionEnforced(level) && !serverPlayer.isCreative() && !serverPlayer.isSpectator()) {
+			Enforcement.enforceBiomeProgression(serverPlayer, level);
 		}
 
 		// check and send nearby forbidden structures, every 100 ticks or so
-		if (player.tickCount % 100 == 0 && LandmarkUtil.isProgressionEnforced(level)) {
-			if (player.isCreative() || player.isSpectator()) {
-				sendAllClearPacket(player);
+		if (serverPlayer.tickCount % 100 == 0 && LandmarkUtil.isProgressionEnforced(level)) {
+			if (serverPlayer.isCreative() || serverPlayer.isSpectator()) {
+				sendAllClearPacket(serverPlayer);
 			} else {
-				checkForLockedStructuresSendPacket(player, level);
+				checkForLockedStructuresSendPacket(serverPlayer, level);
 			}
 		}
 	}
@@ -71,7 +103,7 @@ public final class ProgressionEventHooks {
 		return LandmarkUtil.locateNearestLandmarkStart(world, chunkPlayer.x(), chunkPlayer.z()).map(structureStart -> {
 			if (structureStart.getStructure() instanceof AdvancementLockedStructure advancementLockedStructure && !advancementLockedStructure.doesPlayerHaveRequiredAdvancements(player)) {
 				List<Pair<BoundingBox, Boolean>> boundingBoxesData = structureStart.getPieces().stream()
-					.map(piece -> Pair.of(isPieceProtected(piece) ? piece.getBoundingBox().inflatedBy(4) : piece.getBoundingBox(), isPieceProtected(piece)))
+					.map(piece -> Pair.of(ProgressionEvents.isPieceProtected(piece) ? piece.getBoundingBox().inflatedBy(4) : piece.getBoundingBox(), ProgressionEvents.isPieceProtected(piece)))
 					.toList();
 
 				sendStructureProtectionPacket(player, boundingBoxesData);
@@ -111,7 +143,7 @@ public final class ProgressionEventHooks {
 					if (!TFPortalBlock.isPlayerNotifiedOfRequirement(player)) {
 						// .doesPlayerHaveRequiredAdvancement null-checks already, so we can skip null-checking the `requirement`
 						DisplayInfo info = requirement.value().display().orElse(null);
-						PacketDistributor.sendToPlayer(player, info == null ? new MissingAdvancementToastPacket(net.minecraft.network.chat.Component.translatable("twilightforest.ui.advancement.no_title"), new ItemStack(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.get())) : new MissingAdvancementToastPacket(info.getTitle(), info.getIcon()));
+						PacketDistributor.sendToPlayer(player, info == null ? new MissingAdvancementToastPacket(net.minecraft.network.chat.Component.translatable("twilightforest.ui.advancement.no_title"), new ItemStackTemplate(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.asItem())) : new MissingAdvancementToastPacket(info.getTitle(), info.getIcon()));
 
 						TFPortalBlock.playerNotifiedOfRequirement(player);
 					}
@@ -126,7 +158,7 @@ public final class ProgressionEventHooks {
 				double vy = rand.nextGaussian() * 0.02D;
 				double vz = rand.nextGaussian() * 0.02D;
 
-				level.addParticle(ParticleTypes.EFFECT, qualified.getX(), qualified.getY() + 0.2, qualified.getZ(), vx, vy, vz);
+				level.addParticle(SpellParticleOption.create(ParticleTypes.EFFECT, -1, 1.0F), qualified.getX(), qualified.getY() + 0.2, qualified.getZ(), vx, vy, vz);
 			}
 
 			if (TFBlocks.TWILIGHT_PORTAL.tryToCreatePortal(level, qualified.blockPosition(), qualified, player))
@@ -150,5 +182,4 @@ public final class ProgressionEventHooks {
 			PacketDistributor.sendToPlayer(sp, new StructureProtectionPacket(Optional.empty()));
 		}
 	}
-	 */
 }

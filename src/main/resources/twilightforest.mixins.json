@@ -8,9 +8,23 @@
     "enums.DamageEffectsMixin",
     "enums.GrassColorModifierMixin",
     "enums.ItemDisplayContextMixin",
-    "enums.RarityMixin"
+    "enums.RarityMixin",
+    "event.AbstractArrowMixin",
+    "event.AbstractHurtingProjectileMixin",
+    "event.EntityMixin",
+    "event.FireworkRocketEntityMixin",
+    "event.FishingHookMixin",
+    "event.LlamaSpitMixin",
+    "event.PlayerMixin",
+    "event.ServerLevelMixin",
+    "event.ServerPlayerGameModeMixin",
+    "event.ShulkerBulletMixin",
+    "event.ThrowableProjectileMixin"
   ],
-  "client": [],
+  "client": [
+    "event.ClientLevelMixin",
+    "event.MultiPlayerGameModeMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   },

@@ -1,15 +1,7 @@
-package twilightforest.asm.hooks;
+package twilightforest.asm.hooks.event;
 
-import net.minecraft.core.Holder;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.component.DataComponentType;
-import net.minecraft.core.component.DataComponents;
+import carminite.network.PacketDistributor;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -21,43 +13,31 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
-import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.components.entity.SlimySolesAttachment;
 import twilightforest.init.*;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.inventory.InventoryUtil;
 import twilightforest.item.travellers_gear.TravellersGearLogic;
-import twilightforest.item.travellers_gear.modifiers.InsertableTravellersModifier;
-import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 import twilightforest.network.GradualGlidePacket;
 import twilightforest.network.ParticlePacket;
 
-import java.util.*;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
-
-// TODO [Fabric] : Integrate these hooks into mixins once the project compiles and can be tested
+// TODO [Fabric] : Integrate these hooks into mixins and validate each one of them once the project compiles
 public final class TravellersGearEventHooks {
-	/*
-	private void magnetizeArrows(ProjectileImpactEvent event) {
-		Projectile projectile = event.getProjectile();
+	public static boolean magnetizeArrows(Projectile projectile, HitResult ray) {
 		Entity entity = projectile.getOwner();
-		if (!(entity instanceof LivingEntity livingEntity) || !event.getRayTraceResult().getType().equals(HitResult.Type.BLOCK) || projectile.tickCount >= 200)
-			return;
+		if (!(entity instanceof LivingEntity livingEntity) || !ray.getType().equals(HitResult.Type.BLOCK) || projectile.tickCount >= 200)
+			return false;
 
 		if (!TravellersModifiersManager.isModifierActive(livingEntity, TravellersModifiersManager.ARROW_MAGNETISM_MODIFIER)
 			|| !(projectile instanceof AbstractArrow arrow) || projectile.level().isClientSide())
-			return;
+			return false;
 
 		if (!(livingEntity instanceof Player player)) {
 			projectile.discard();
-			return;
+			return false;
 		}
 		AbstractArrow.Pickup pickup = arrow.pickup;
 		if (!player.hasInfiniteMaterials() && pickup.equals(AbstractArrow.Pickup.ALLOWED)) {
@@ -66,27 +46,25 @@ public final class TravellersGearEventHooks {
 		}
 		if (pickup.equals(AbstractArrow.Pickup.ALLOWED) || pickup.equals(AbstractArrow.Pickup.CREATIVE_ONLY) && player.isCreative())
 			projectile.discard();
+
+		return false;
 	}
 
-	private void performPerfectDodge(ProjectileImpactEvent event) {
-		HitResult rayResult = event.getRayTraceResult();
-		if (!(rayResult instanceof EntityHitResult entityHitResult) || !(entityHitResult.getEntity() instanceof LivingEntity livingEntity))
-			return;
+	public static boolean performPerfectDodge(Projectile projectile, HitResult ray) {
+		if (!(ray instanceof EntityHitResult entityHitResult) || !(entityHitResult.getEntity() instanceof LivingEntity livingEntity))
+			return false;
 		ItemStack chest = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
 		Float probability = chest.get(TFDataComponents.PERFECT_DODGE_PROBABILITY);
 		Level level = livingEntity.level();
 		if (!TravellersModifiersManager.isModifierActive(livingEntity, chest, TravellersModifiersManager.PERFECT_DODGE_MODIFIER) || probability == null)
-			return;
+			return false;
 		if (level.isClientSide()) {
-			event.setCanceled(true); // always cancel on the client side because the game sends a damage packet when it hits the player
-			return;
+			return true; // always cancel on the client side because the game sends a damage packet when it hits the player
 		}
 		if (probability <= level.getRandom().nextFloat())
-			return;
-		Entity projectile = event.getEntity();
+			return false;
 		Vec3 hitPosition = projectile.position().add(projectile.getDeltaMovement());
-		level.playSound(null, hitPosition.x(), hitPosition.y(), hitPosition.z(), TFSounds.PERFECT_DODGE.get(), livingEntity.getSoundSource(), 1.5F, livingEntity.getVoicePitch());
-		event.setCanceled(true);
+		level.playSound(null, hitPosition.x(), hitPosition.y(), hitPosition.z(), TFSounds.PERFECT_DODGE.value(), livingEntity.getSoundSource(), 1.5F, livingEntity.getVoicePitch());
 		ParticlePacket particlePacket = new ParticlePacket();
 		for (int particleNumber = 0; particleNumber < 20; particleNumber++) {
 			Vec3 particleVelocity = new Vec3(
@@ -94,12 +72,15 @@ public final class TravellersGearEventHooks {
 				(level.getRandom().nextDouble() - 0.5),
 				(level.getRandom().nextDouble() - 0.5)
 			);
-			ParticleOptions type = TFParticleType.PERFECT_DODGE.get();
+			ParticleOptions type = TFParticleType.PERFECT_DODGE;
 			particlePacket.queueParticle(type, false, false, hitPosition, particleVelocity);
 		}
 		PacketDistributor.sendToPlayersTrackingEntityAndSelf(livingEntity, particlePacket);
+
+		return true;
 	}
 
+	/*
 	private void reduceSlimySolesFallDamage(LivingFallEvent event) {
 		LivingEntity livingEntity = event.getEntity();
 		ItemStack boots = livingEntity.getItemBySlot(EquipmentSlot.FEET);
@@ -129,18 +110,18 @@ public final class TravellersGearEventHooks {
 		slimySolesAttachment.forceBounce = false;
 		livingEntity.setData(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO, slimySolesAttachment);
 	}
+	 */
 
-	private void tickMovementModifiers(PlayerTickEvent.Pre event) {
-		Player player = event.getEntity();
+	public static void tickMovementModifiers(Player player) {
 		Boolean hasDoubleJump = null;
 		if (!TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.DOUBLE_JUMP_MODIFIER))
 			hasDoubleJump = false;
 		else if (player.onGround() || player.isInLiquid() || player.onClimbable())
 			hasDoubleJump = true;
 
-		if (hasDoubleJump != null && hasDoubleJump != player.getData(TFDataAttachments.HAS_DOUBLE_JUMP)) {
-			player.setData(TFDataAttachments.HAS_DOUBLE_JUMP, hasDoubleJump);
-			player.setData(TFDataAttachments.DOUBLE_JUMP_VALIDATOR, 0);
+		if (hasDoubleJump != null && hasDoubleJump != player.getAttached(TFDataAttachments.HAS_DOUBLE_JUMP)) {
+			player.setAttached(TFDataAttachments.HAS_DOUBLE_JUMP, hasDoubleJump);
+			player.setAttached(TFDataAttachments.DOUBLE_JUMP_VALIDATOR, 0);
 			AttributeInstance instance = player.getAttribute(Attributes.SAFE_FALL_DISTANCE);
 			if (instance != null)
 				instance.removeModifier(TFAttributeModifiers.TRAVELLERS_DOUBLE_JUMP_SAFE_FALL_DISTANCE);
@@ -148,30 +129,29 @@ public final class TravellersGearEventHooks {
 
 		if (!player.level().isClientSide()) {
 			boolean modifierActive = TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.GRADUAL_GLIDE_MODIFIER);
-			if (!modifierActive && player.getData(TFDataAttachments.IS_GRADUALLY_GLIDING)) {
-				player.setData(TFDataAttachments.IS_GRADUALLY_GLIDING, false);
+			if (!modifierActive && player.getAttached(TFDataAttachments.IS_GRADUALLY_GLIDING)) {
+				player.setAttached(TFDataAttachments.IS_GRADUALLY_GLIDING, false);
 				PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, new GradualGlidePacket(false, player.getUUID()));
 			}
 		}
 
 		//reset double jump wing anim if on the ground
-		if (event.getEntity().level().isClientSide()) {
-			if (player.getData(TFDataAttachments.TRAVELLERS_WINGS_ANIM).doubleJump && player.onGround()) {
-				player.getData(TFDataAttachments.TRAVELLERS_WINGS_ANIM).doubleJump = false;
+		if (player.level().isClientSide()) {
+			if (player.getAttached(TFDataAttachments.TRAVELLERS_WINGS_ANIM).doubleJump && player.onGround()) {
+				player.getAttached(TFDataAttachments.TRAVELLERS_WINGS_ANIM).doubleJump = false;
 			}
 		}
 
 		TravellersGearLogic.travellersWingsSidestepCooldownSound(player);
 	}
 
-	private void performStealth(PlayerTickEvent.Post event) {
-		if (!event.getEntity().level().isClientSide()) {
-			TravellersGearLogic.travellersStealth(event.getEntity(), player1 -> player1.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 2, 0, false, false, false)));
+	public static void performStealth(Player player) {
+		if (!player.level().isClientSide()) {
+			TravellersGearLogic.travellersStealth(player, player1 -> player1.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 2, 0, false, false, false)));
 		}
 	}
 
-	private void disableHighStepWhileSneaking(PlayerTickEvent.Pre event) {
-		Player player = event.getEntity();
+	public static void disableHighStepWhileSneaking(Player player) {
 		if (!TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.STEP_UP_ABILITY))
 			return;
 		AttributeInstance attribute = player.getAttributes().getInstance(Attributes.STEP_HEIGHT);
@@ -186,8 +166,8 @@ public final class TravellersGearEventHooks {
 			attribute.addPermanentModifier(TFAttributeModifiers.TRAVELLERS_HIGH_STEP);
 	}
 
-	private void updateOtherModifiers(EntityTickEvent.Post event) {
-		if (!(event.getEntity() instanceof LivingEntity livingEntity)) return;
+	public static void updateOtherModifiers(Entity entity) {
+		if (!(entity instanceof LivingEntity livingEntity)) return;
 		TravellersGearLogic.travellersWingsGradualGlide(livingEntity);
 		TravellersGearLogic.travellersBootsUnrestrained(livingEntity);
 		TravellersGearLogic.travellersBootsSlimySolesBounce(livingEntity);
@@ -200,6 +180,7 @@ public final class TravellersGearEventHooks {
 		TravellersGearLogic.determineWingState(livingEntity);
 	}
 
+	/*
 	private void activateAndDeactivateTravellersModifiers(ItemAttributeModifierEvent event) {
 		if (ServerLifecycleHooks.getCurrentServer() == null)
 			return;

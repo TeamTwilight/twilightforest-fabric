@@ -84,7 +84,7 @@ public class ProgressionEvents {
 	 * Return if the area at the coordinates is considered protected for that player.
 	 * Currently, if we return true, we also send the area protection packet here.
 	 */
-	private static boolean isAreaProtected(ServerLevel level, Player player, BlockPos pos) {
+	public static boolean isAreaProtected(ServerLevel level, Player player, BlockPos pos) {
 		if (player.getAbilities().instabuild || player.isSpectator() ||
 			!LandmarkUtil.isProgressionEnforced(level) || player instanceof FakePlayer) {
 			return false;
@@ -126,7 +126,7 @@ public class ProgressionEvents {
 		return true;
 	}
 
-	private static boolean isPieceProtected(StructurePiece piece) {
+	public static boolean isPieceProtected(StructurePiece piece) {
 		return !(piece instanceof ProgressionPiece progressionPiece) || progressionPiece.isComponentProtected();
 	}
 

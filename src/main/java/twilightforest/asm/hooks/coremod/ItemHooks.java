@@ -1,4 +1,4 @@
-package twilightforest.asm.hooks;
+package twilightforest.asm.hooks.coremod;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;

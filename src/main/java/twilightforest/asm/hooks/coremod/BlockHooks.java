@@ -1,4 +1,4 @@
-package twilightforest.asm.hooks;
+package twilightforest.asm.hooks.coremod;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

@@ -1,43 +1,39 @@
-package twilightforest.asm.hooks;
+package twilightforest.asm.hooks.event;
 
-import net.minecraft.network.protocol.game.ClientboundAnimatePacket;
-import net.minecraft.server.level.ServerLevel;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalEntityTypeTags;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.EntityHitResult;
-import org.jetbrains.annotations.Nullable;
-import twilightforest.init.TFItems;
-import twilightforest.item.EnderBowItem;
-import twilightforest.item.MinotaurAxeItem;
+import net.minecraft.world.phys.HitResult;
+import twilightforest.init.TFDataAttachments;
 
-// TODO [Fabric] : Integrate these hooks into mixins once the project compiles and can be tested
+// TODO [Fabric] : Integrate these hooks into mixins and validate each one of them once the project compiles
 public final class ToolEventHooks {
 	/*
 	private static final int KNIGHTMETAL_BONUS_DAMAGE = 2;
 	private static final int MINOTAUR_AXE_BONUS_DAMAGE = 7;
+	*/
 
-	private void onEnderBowHit(ProjectileImpactEvent evt) {
-		Projectile arrow = evt.getProjectile();
-		if (arrow.getOwner() instanceof Player player
-			&& evt.getRayTraceResult() instanceof EntityHitResult result
+	public static boolean onEnderBowHit(Projectile projectile, HitResult ray) {
+		if (projectile.getOwner() instanceof Player player
+			&& ray instanceof EntityHitResult result
 			&& result.getEntity() instanceof LivingEntity living
-			&& arrow.getOwner() != result.getEntity() && !result.getEntity().is(Tags.EntityTypes.BOSSES)) {
+			&& projectile.getOwner() != result.getEntity() && !result.getEntity().is(ConventionalEntityTypeTags.BOSSES)) {
 
-			if (arrow.getPersistentData().contains(EnderBowItem.KEY)) {
+			if (projectile.hasAttached(TFDataAttachments.ENDER_ARROW)) {
 				double sourceX = player.getX(), sourceY = player.getY(), sourceZ = player.getZ();
 				float sourceYaw = player.getYRot(), sourcePitch = player.getXRot();
-				@Nullable Entity playerVehicle = player.getVehicle();
+				Entity playerVehicle = player.getVehicle();
 
 				player.setYRot(living.getYRot());
 				player.teleportTo(living.getX(), living.getY(), living.getZ());
 				player.invulnerableTime = 40;
 				player.level().broadcastEntityEvent(player, (byte) 46);
 				if (living.isPassenger() && living.getVehicle() != null) {
-					player.startRiding(living.getVehicle(), true);
+					player.startRiding(living.getVehicle(), true, true);
 					living.stopRiding();
 				}
 				player.playSound(SoundEvents.CHORUS_FRUIT_TELEPORT, 1.0F, 1.0F);
@@ -47,14 +43,17 @@ public final class ToolEventHooks {
 				living.teleportTo(sourceX, sourceY, sourceZ);
 				living.level().broadcastEntityEvent(player, (byte) 46);
 				if (playerVehicle != null) {
-					living.startRiding(playerVehicle, true);
+					living.startRiding(playerVehicle, true, true);
 					player.stopRiding();
 				}
 				living.playSound(SoundEvents.CHORUS_FRUIT_TELEPORT, 1.0F, 1.0F);
 			}
 		}
+
+		return false;
 	}
 
+	/*
 	private void doKnightmetalToolLogic(LivingIncomingDamageEvent event) {
 		if (!event.isCanceled()) {
 			LivingEntity target = event.getEntity();

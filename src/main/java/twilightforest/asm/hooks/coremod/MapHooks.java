@@ -1,4 +1,4 @@
-package twilightforest.asm.hooks;
+package twilightforest.asm.hooks.coremod;
 
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;

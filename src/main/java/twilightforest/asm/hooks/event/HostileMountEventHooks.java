@@ -1,10 +1,9 @@
-package twilightforest.asm.hooks;
+package twilightforest.asm.hooks.event;
 
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.Entity;
 import twilightforest.entity.IHostileMount;
 
-// TODO [Fabric] : Integrate these hooks into mixins once the project compiles and can be tested
+// TODO [Fabric] : Integrate these hooks into mixins and validate each one of them once the project compiles
 public final class HostileMountEventHooks {
 	/*
 	private void preventTeleportingOffHostileMounts(EntityTeleportEvent event) {
@@ -21,10 +20,10 @@ public final class HostileMountEventHooks {
 			isRidingUnfriendly(player) && !allowDismount && !player.getAbilities().invulnerable)
 			event.setCanceled(true);
 	}
+	*/
 
-	private void preventHostilMountCrouching(EntityTickEvent.Post event) {
-		if (event.getEntity() instanceof IHostileMount)
-			event.getEntity().getPassengers().forEach(e -> e.setShiftKeyDown(false));
+	public static void preventHostileMountCrouching(Entity entity) {
+		if (entity instanceof IHostileMount)
+			entity.getPassengers().forEach(e -> e.setShiftKeyDown(false));
 	}
-	 */
 }

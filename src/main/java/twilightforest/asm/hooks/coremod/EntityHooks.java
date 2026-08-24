@@ -1,4 +1,4 @@
-package twilightforest.asm.hooks;
+package twilightforest.asm.hooks.coremod;
 
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.Entity;
