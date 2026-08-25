@@ -18,7 +18,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.Items;
-import twilightforest.TFMain;
+import twilightforest.TwilightForestMod;
 import twilightforest.client.model.item.TravellersGearItemModel;
 import twilightforest.client.properties.*;
 import twilightforest.client.renderer.special.*;
@@ -62,7 +62,7 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateFlatItem(TFItems.MEEF_STROGANOFF.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.HYDRA_CHOP.get(), ModelTemplates.FLAT_ITEM);
 		this.itemModelOutput.accept(TFBlocks.EXPERIMENT_115.asItem(), ItemModelUtils.select(new Experiment115Type(), ItemModelUtils.plainModel(this.createFlatItemModel(TFBlocks.EXPERIMENT_115.asItem(), ModelTemplates.FLAT_ITEM)),
-			ItemModelUtils.when("think", ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(TFBlocks.EXPERIMENT_115.asItem(), "_think"), TextureMapping.layer0(new Material(TFMain.prefix("item/think115"))), this.modelOutput))),
+			ItemModelUtils.when("think", ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(TFBlocks.EXPERIMENT_115.asItem(), "_think"), TextureMapping.layer0(new Material(TwilightForestMod.prefix("item/think115"))), this.modelOutput))),
 			ItemModelUtils.when("full", ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(TFBlocks.EXPERIMENT_115.get(), "_8_8_regenerating")))));
 		this.generateFlatItem(TFItems.LIVEROOT.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.RAW_IRONWOOD.get(), ModelTemplates.FLAT_ITEM);
@@ -79,7 +79,7 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateFlatItem(TFItems.FIERY_INGOT.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.ARCTIC_FUR.get(), ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.ALPHA_YETI_FUR.get(), ModelTemplates.FLAT_ITEM);
-		Identifier empty = ModelTemplates.FLAT_ITEM.create(TFMain.prefix("item/potion_flask_empty"), TextureMapping.layer0(new Material(TFMain.prefix("block/blank"))), this.modelOutput);
+		Identifier empty = ModelTemplates.FLAT_ITEM.create(TwilightForestMod.prefix("item/potion_flask_empty"), TextureMapping.layer0(new Material(TwilightForestMod.prefix("block/blank"))), this.modelOutput);
 		this.generatePotionFlask(TFItems.BRITTLE_FLASK.get(), true, empty);
 		this.generatePotionFlask(TFItems.GREATER_FLASK.get(), false, empty);
 		this.generateTwoLayerItem(TFItems.EXANIMATE_ESSENCE.get(), "_flames", ModelTemplates.TWO_LAYERED_ITEM);
@@ -215,7 +215,7 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateFlatItem(TFItems.POCKET_WATCH.get(), ModelTemplates.FLAT_ITEM);
 		this.generateMoonDial(TFItems.MOON_DIAL.get());
 		this.generateBooleanDispatch(TFItems.CRUMBLE_HORN.get(), ItemModelUtils.isUsingItem(),
-			ItemModelUtils.plainModel(ModelTemplates.createItem(Identifier.withDefaultNamespace("tooting_goat_horn").toString(), TextureSlot.LAYER0).create(TFMain.prefix("tooting_crumble_horn"), TextureMapping.layer0(TFItems.CRUMBLE_HORN.get()), this.modelOutput)),
+			ItemModelUtils.plainModel(ModelTemplates.createItem(Identifier.withDefaultNamespace("tooting_goat_horn").toString(), TextureSlot.LAYER0).create(TwilightForestMod.prefix("tooting_crumble_horn"), TextureMapping.layer0(TFItems.CRUMBLE_HORN.get()), this.modelOutput)),
 			ItemModelUtils.plainModel(ModelTemplates.createItem(Identifier.withDefaultNamespace("goat_horn").toString(), TextureSlot.LAYER0).create(TFItems.CRUMBLE_HORN.get(), TextureMapping.layer0(TFItems.CRUMBLE_HORN.get()), this.modelOutput)));
 		this.generateFlatItem(TFItems.PEACOCK_FEATHER_FAN.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.itemModelOutput.accept(TFItems.MOONWORM_QUEEN.get(), ItemModelUtils.conditional(new MoonwormQueenPulse(),
@@ -266,10 +266,10 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateFlatItem(TFItems.TANNED_LEATHER.get(), ModelTemplates.FLAT_ITEM);
 		this.itemModelOutput.accept(TFItems.STALE_BREAD.get(), ItemModelUtils.plainModel(ModelTemplates.FLAT_HANDHELD_ITEM.create(TFItems.STALE_BREAD.get(), TextureMapping.layer0(Items.BREAD), this.modelOutput)));
 
-		this.generateTravellersGear(TFItems.TRAVELLERS_GOGGLES.get(), TFMain.prefix("travellers_modifiers/goggles"));
-		this.generateLayeredTravellersGear(TFItems.TRAVELLERS_VEST.get(), TFItems.TRAVELLERS_GLOVES.get(), new HasComponent(TFDataComponents.TRAVELLERS_HAS_GLOVES.get(), true), TFMain.prefix("travellers_modifiers/vest"));
-		this.generateTravellersGear(TFItems.TRAVELLERS_WINGS.get(), TFMain.prefix("travellers_modifiers/wings"));
-		this.generateTravellersGear(TFItems.TRAVELLERS_BOOTS.get(), TFMain.prefix("travellers_modifiers/boots"));
+		this.generateTravellersGear(TFItems.TRAVELLERS_GOGGLES.get(), TwilightForestMod.prefix("travellers_modifiers/goggles"));
+		this.generateLayeredTravellersGear(TFItems.TRAVELLERS_VEST.get(), TFItems.TRAVELLERS_GLOVES.get(), new HasComponent(TFDataComponents.TRAVELLERS_HAS_GLOVES.get(), true), TwilightForestMod.prefix("travellers_modifiers/vest"));
+		this.generateTravellersGear(TFItems.TRAVELLERS_WINGS.get(), TwilightForestMod.prefix("travellers_modifiers/wings"));
+		this.generateTravellersGear(TFItems.TRAVELLERS_BOOTS.get(), TwilightForestMod.prefix("travellers_modifiers/boots"));
 		this.generateFlatItem(TFItems.TRAVELLERS_BELT.get(), ModelTemplates.FLAT_ITEM);
 
 		this.generateSpawnEgg("alpha_yeti", 0xCDCDCD, 0x29486E);
@@ -324,17 +324,17 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateSpawnEgg("wraith", 0x505050, 0x838383);
 		this.generateSpawnEgg("yeti", 0xDEDEDE, 0x4675BB);
 
-		this.generateLayeredItem(TFMain.prefix("item/shield"), new Material(TFMain.prefix("item/lich_shield_frame")), new Material(TFMain.prefix("item/lich_shield_fill")));
+		this.generateLayeredItem(TwilightForestMod.prefix("item/shield"), new Material(TwilightForestMod.prefix("item/lich_shield_frame")), new Material(TwilightForestMod.prefix("item/lich_shield_fill")));
 	}
 
 	private void generateSpawnEgg(String entityName, int primary, int secondary) {
-		Item item = BuiltInRegistries.ITEM.getValue(TFMain.prefix(entityName + "_spawn_egg"));
-		Identifier model = this.generateLayeredItem(item, new Material(TFMain.prefix("item/spawn_egg_base")), new Material(TFMain.prefix("item/spawn_egg_overlay")));
+		Item item = BuiltInRegistries.ITEM.getValue(TwilightForestMod.prefix(entityName + "_spawn_egg"));
+		Identifier model = this.generateLayeredItem(item, new Material(TwilightForestMod.prefix("item/spawn_egg_base")), new Material(TwilightForestMod.prefix("item/spawn_egg_overlay")));
 		this.itemModelOutput.accept(item, ItemModelUtils.tintedModel(model, ItemModelUtils.constantTint(primary), ItemModelUtils.constantTint(secondary)));
 	}
 
 	public void generatePattern(Item item) {
-		this.itemModelOutput.accept(item, ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(item, TextureMapping.layer0(new Material(TFMain.prefix("item/tf_banner_pattern"))), this.modelOutput)));
+		this.itemModelOutput.accept(item, ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(item, TextureMapping.layer0(new Material(TwilightForestMod.prefix("item/tf_banner_pattern"))), this.modelOutput)));
 	}
 
 	public void generateGiantTool(Item tool, Item baseTool) {

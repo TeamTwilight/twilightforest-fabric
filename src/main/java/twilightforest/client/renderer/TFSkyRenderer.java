@@ -8,25 +8,28 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.textures.GpuTextureView;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.state.level.LevelRenderState;
 import net.minecraft.client.renderer.state.level.SkyRenderState;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.context.ContextKey;
 import net.neoforged.neoforge.client.event.ExtractLevelRenderStateEvent;
 import org.joml.*;
-import twilightforest.TFMain;
+import twilightforest.TwilightForestMod;
 
 import java.lang.Math;
+import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
 
 public class TFSkyRenderer implements AutoCloseable {
 
-	public static final ContextKey<Boolean> RENDER_DARK_DISC = new ContextKey<>(TFMain.prefix("render_dark_disc"));
+	public static final ContextKey<Boolean> RENDER_DARK_DISC = new ContextKey<>(TwilightForestMod.prefix("render_dark_disc"));
 	private final RenderSystem.AutoStorageIndexBuffer starIndices = RenderSystem.getSequentialBuffer(VertexFormat.Mode.QUADS);
 	private final GpuBuffer starBuffer;
 	private int starIndexCount;
@@ -89,8 +92,8 @@ public class TFSkyRenderer implements AutoCloseable {
 		GpuBufferSlice dynamicTransforms = RenderSystem.getDynamicUniforms()
 			.writeTransform(matrix, new Vector4f(1.0F, 1.0F, 1.0F, 1.0F), new Vector3f(), new Matrix4f());
 		try (RenderPass renderPass = RenderSystem.getDevice()
-				.createCommandEncoder()
-				.createRenderPass(() -> "Stars", colorTexture, OptionalInt.empty(), depthTexture, OptionalDouble.empty())) {
+			.createCommandEncoder()
+			.createRenderPass(() -> "Stars", colorTexture, OptionalInt.empty(), depthTexture, OptionalDouble.empty())) {
 			renderPass.setPipeline(renderPipeline);
 			RenderSystem.bindDefaultUniforms(renderPass);
 			renderPass.setUniform("DynamicTransforms", dynamicTransforms);
@@ -121,10 +124,10 @@ public class TFSkyRenderer implements AutoCloseable {
 					Vector3f vector3f = new Vector3f(f1, f2, f3).normalize(100.0F);
 					float f6 = (float)(random.nextDouble() * (float) Math.PI * 2.0);
 					Matrix3f matrix3f = new Matrix3f().rotateTowards(new Vector3f(vector3f).negate(), new Vector3f(0.0F, 1.0F, 0.0F)).rotateZ(-f6);
-					bufferBuilder.addVertex(vector3f.add(new Vector3f(f4, -f4, 0.0F).mul(matrix3f).add(vector3f)));
-					bufferBuilder.addVertex(vector3f.add(new Vector3f(f4, f4, 0.0F).mul(matrix3f).add(vector3f)));
-					bufferBuilder.addVertex(vector3f.add(new Vector3f(-f4, f4, 0.0F).mul(matrix3f).add(vector3f)));
-					bufferBuilder.addVertex(vector3f.add(new Vector3f(-f4, -f4, 0.0F).mul(matrix3f).add(vector3f)));
+					bufferBuilder.addVertex(new Vector3f(f4, -f4, 0.0F).mul(matrix3f).add(vector3f));
+					bufferBuilder.addVertex(new Vector3f(f4, f4, 0.0F).mul(matrix3f).add(vector3f));
+					bufferBuilder.addVertex(new Vector3f(-f4, f4, 0.0F).mul(matrix3f).add(vector3f));
+					bufferBuilder.addVertex(new Vector3f(-f4, -f4, 0.0F).mul(matrix3f).add(vector3f));
 				}
 			}
 

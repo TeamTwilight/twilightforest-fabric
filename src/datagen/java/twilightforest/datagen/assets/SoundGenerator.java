@@ -9,7 +9,7 @@ import net.minecraft.world.entity.animal.pig.PigSoundVariant;
 import net.minecraft.world.entity.animal.pig.PigSoundVariants;
 import net.minecraft.world.entity.animal.wolf.WolfSoundVariants;
 import net.neoforged.neoforge.common.data.SoundDefinition;
-import twilightforest.TFMain;
+import twilightforest.TwilightForestMod;
 import twilightforest.datagen.helpers.TFSoundProvider;
 import twilightforest.init.TFSounds;
 
@@ -400,14 +400,14 @@ public class SoundGenerator extends TFSoundProvider {
 		this.generateNewSoundWithSubtitle(TFSounds.JAR_WIGGLE, "random/jar/jar_wiggle", 3, "Jar wiggles");
 
 		this.add(TFSounds.MUSIC, SoundDefinition.definition().with(
-			SoundDefinition.Sound.sound(TFMain.prefix("music/superstitious"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F),
-			SoundDefinition.Sound.sound(TFMain.prefix("music/steps"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F),
-			SoundDefinition.Sound.sound(TFMain.prefix("music/radiance"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F),
-			SoundDefinition.Sound.sound(TFMain.prefix("music/home"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F),
-			SoundDefinition.Sound.sound(TFMain.prefix("music/wayfarer"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F),
-			SoundDefinition.Sound.sound(TFMain.prefix("music/findings"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F),
-			SoundDefinition.Sound.sound(TFMain.prefix("music/maker"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F),
-			SoundDefinition.Sound.sound(TFMain.prefix("music/thread"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F),
-			SoundDefinition.Sound.sound(TFMain.prefix("music/motion"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F)));
+			SoundDefinition.Sound.sound(TwilightForestMod.prefix("music/superstitious"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F),
+			SoundDefinition.Sound.sound(TwilightForestMod.prefix("music/steps"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F),
+			SoundDefinition.Sound.sound(TwilightForestMod.prefix("music/radiance"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F),
+			SoundDefinition.Sound.sound(TwilightForestMod.prefix("music/home"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F),
+			SoundDefinition.Sound.sound(TwilightForestMod.prefix("music/wayfarer"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F),
+			SoundDefinition.Sound.sound(TwilightForestMod.prefix("music/findings"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F),
+			SoundDefinition.Sound.sound(TwilightForestMod.prefix("music/maker"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F),
+			SoundDefinition.Sound.sound(TwilightForestMod.prefix("music/thread"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F),
+			SoundDefinition.Sound.sound(TwilightForestMod.prefix("music/motion"), SoundDefinition.SoundType.SOUND).stream().volume(0.5F)));
 	}
 }

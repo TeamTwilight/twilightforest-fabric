@@ -11,7 +11,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.neoforged.neoforge.common.Tags;
-import twilightforest.TFMain;
+import twilightforest.TwilightForestMod;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.tags.TFDamageTypeTags;
 
@@ -20,7 +20,7 @@ import java.util.concurrent.CompletableFuture;
 public class DamageTypeTagGenerator extends KeyTagProvider<DamageType> {
 
 	public DamageTypeTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> future) {
-		super(output, Registries.DAMAGE_TYPE, future, TFMain.ID);
+		super(output, Registries.DAMAGE_TYPE, future, TwilightForestMod.ID);
 	}
 
 	@Override

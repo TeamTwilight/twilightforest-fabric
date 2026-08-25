@@ -1,9 +1,12 @@
 package twilightforest.datagen.data.tags;
 
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.StructureTagsProvider;
-import twilightforest.TFMain;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.levelgen.structure.Structure;
+import twilightforest.TwilightForestMod;
 import twilightforest.init.TFStructures;
 import twilightforest.tags.TFStructureTags;
 
@@ -12,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
 public class StructureTagGenerator extends StructureTagsProvider {
 
 	public StructureTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
-		super(output, provider, TFMain.ID);
+		super(output, provider, TwilightForestMod.ID);
 	}
 
 	@Override

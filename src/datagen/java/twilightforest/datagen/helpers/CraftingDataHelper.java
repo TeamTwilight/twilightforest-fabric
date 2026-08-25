@@ -26,7 +26,7 @@ import net.minecraft.world.level.block.ChestBlock;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
-import twilightforest.TFMain;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.TFTrappedChestBlock;
 import twilightforest.tags.TFItemTags;
 import twilightforest.init.TFBlocks;
@@ -443,6 +443,6 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 	}
 
 	protected ResourceKey<Recipe<?>> createKey(String name) {
-		return ResourceKey.create(Registries.RECIPE, TFMain.prefix(name));
+		return ResourceKey.create(Registries.RECIPE, TwilightForestMod.prefix(name));
 	}
 }

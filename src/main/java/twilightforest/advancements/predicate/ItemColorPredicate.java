@@ -5,7 +5,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancements.criterion.SingleComponentItemPredicate;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.DyedItemColor;
 
 //TODO: Delete this
@@ -14,6 +13,7 @@ public record ItemColorPredicate(int color) implements SingleComponentItemPredic
 	public static final Codec<ItemColorPredicate> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			Codec.INT.optionalFieldOf("color", -1).forGetter(ItemColorPredicate::color))
 		.apply(instance, ItemColorPredicate::new));
+	public static final Type<ItemColorPredicate> TYPE = new ConcreteType<>(ItemColorPredicate.CODEC);
 
 	@Override
 	public DataComponentType<DyedItemColor> componentType() {

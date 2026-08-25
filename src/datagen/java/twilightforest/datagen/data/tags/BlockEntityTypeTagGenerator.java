@@ -6,7 +6,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.KeyTagProvider;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import twilightforest.TFMain;
+import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.tags.TFBlockEntityTypeTags;
 
@@ -15,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
 public class BlockEntityTypeTagGenerator extends KeyTagProvider<BlockEntityType<?>> {
 
 	public BlockEntityTypeTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
-		super(output, Registries.BLOCK_ENTITY_TYPE, provider, TFMain.ID);
+		super(output, Registries.BLOCK_ENTITY_TYPE, provider, TwilightForestMod.ID);
 	}
 
 	@Override

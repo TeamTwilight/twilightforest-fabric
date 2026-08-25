@@ -1,9 +1,15 @@
 package twilightforest.init;
 
-public class TFItemSubPredicates {
+import net.minecraft.core.Registry;
+import net.minecraft.core.component.predicates.DataComponentPredicate;
+import net.minecraft.core.registries.BuiltInRegistries;
+import twilightforest.TFMain;
+import twilightforest.advancements.predicate.ItemColorPredicate;
 
-	//TODO: These no longer exist. Check for their uses and port accordingly.
-//	public static final DeferredRegister<ItemSubPredicate.Type<?>> TYPES = DeferredRegister.create(Registries.ITEM_SUB_PREDICATE_TYPE, TwilightForestMod.ID);
-//
-//	public static final DeferredHolder<ItemSubPredicate.Type<?>, ItemSubPredicate.Type<ItemColorPredicate>> COLOR = TYPES.register("color", () -> new ItemSubPredicate.Type<>(ItemColorPredicate.CODEC));
+public class TFItemSubPredicates {
+	public static final DataComponentPredicate.Type<ItemColorPredicate> COLOR = Registry.register(BuiltInRegistries.DATA_COMPONENT_PREDICATE_TYPE, TFMain.prefix("color"), ItemColorPredicate.TYPE);
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing item sub predicates...");
+	}
 }

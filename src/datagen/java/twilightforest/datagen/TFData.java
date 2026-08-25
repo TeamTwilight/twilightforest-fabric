@@ -1,14 +1,16 @@
 package twilightforest.datagen;
 
-import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.minecraft.core.RegistrySetBuilder;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
+import tamaized.beanification.Autowired;
+import tamaized.beanification.Component;
+import tamaized.beanification.PostConstruct;
 import twilightforest.datagen.generator.AssetsGenerator;
 import twilightforest.datagen.generator.DataGenerator;
 
-public final class TFData implements DataGeneratorEntrypoint {
+@Component
+public class TFData {
 
-	/*
 	@Autowired
 	private AssetsGenerator assetsGenerator;
 
@@ -22,15 +24,5 @@ public final class TFData implements DataGeneratorEntrypoint {
 			this.assetsGenerator.generate(event);
 		});
 	}
-	 */
 
-	@Override
-	public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
-
-	}
-
-	@Override
-	public void buildRegistry(RegistrySetBuilder registryBuilder) {
-		DataGeneratorEntrypoint.super.buildRegistry(registryBuilder);
-	}
 }

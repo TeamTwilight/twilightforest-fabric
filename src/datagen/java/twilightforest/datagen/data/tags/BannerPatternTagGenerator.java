@@ -6,8 +6,9 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.data.tags.KeyTagProvider;
 import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.entity.BannerPattern;
-import twilightforest.TFMain;
+import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBannerPatterns;
 import twilightforest.tags.TFBannerPatternTags;
 
@@ -16,7 +17,7 @@ import java.util.concurrent.CompletableFuture;
 public class BannerPatternTagGenerator extends KeyTagProvider<BannerPattern> {
 
 	public BannerPatternTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
-		super(output, Registries.BANNER_PATTERN, provider, TFMain.ID);
+		super(output, Registries.BANNER_PATTERN, provider, TwilightForestMod.ID);
 	}
 
 	@Override

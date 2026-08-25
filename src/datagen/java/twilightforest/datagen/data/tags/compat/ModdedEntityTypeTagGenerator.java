@@ -3,7 +3,7 @@ package twilightforest.datagen.data.tags.compat;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
-import twilightforest.TFMain;
+import twilightforest.TwilightForestMod;
 import twilightforest.init.TFEntities;
 import twilightforest.tags.TFEntityTypeTags;
 
@@ -12,7 +12,7 @@ import java.util.concurrent.CompletableFuture;
 public class ModdedEntityTypeTagGenerator extends EntityTypeTagsProvider {
 
 	public ModdedEntityTypeTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
-		super(output, provider, TFMain.ID);
+		super(output, provider, TwilightForestMod.ID);
 	}
 
 	@Override

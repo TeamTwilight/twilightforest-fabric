@@ -43,6 +43,8 @@ import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.map.RegisterMapDecorationRenderersEvent;
+import net.neoforged.neoforge.client.model.standalone.SimpleUnbakedStandaloneModel;
+import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
 import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
 import tamaized.beanification.Component;
 import tamaized.beanification.PostConstruct;
@@ -96,9 +98,8 @@ public class ClientRegistrationEvents {
 		bus.addListener(this::bakeCustomModels);
 		bus.addListener(this::cacheJarLids);
 		bus.addListener(this::clientSetup);
-		bus.addListener(this::registerAdditionalModels);
+		bus.addListener(this::registerStandalone);
 		bus.addListener(this::registerClientReloadListeners);
-		bus.addListener(this::registerClientPayloadHandlers);
 		bus.addListener(this::registerAtlases);
 		bus.addListener(this::registerEntityRenderers);
 		bus.addListener(this::registerLayerDefinitions);
@@ -113,13 +114,14 @@ public class ClientRegistrationEvents {
 		bus.addListener(this::registerRangeProperties);
 		bus.addListener(this::registerSelectProperties);
 		bus.addListener(this::registerItemModels);
+		bus.addListener(this::registerCustomEnvironmentRenderers);
 
 		bus.addListener(RegisterKeyMappingsEvent.class, event -> TFKeyBinds.KEY_MAPPINGS.forEach(event::register));
 
 		bus.addListener(ColorHandler::registerBlockColors);
 		bus.addListener(ColorHandler::registerItemColors);
 
-		bus.addListener(TFShaders::registerShaders);
+//		bus.addListener(TFShaders::registerShaders);
 
 		bus.addListener(OverlayHandler::registerOverlays);
 
@@ -143,7 +145,7 @@ public class ClientRegistrationEvents {
 		event.register(TwilightForestMod.prefix("patch"), PatchModelLoader.INSTANCE);
 		event.register(TwilightForestMod.prefix("force_field"), ForceFieldModelLoader.INSTANCE);
 		event.register(TwilightForestMod.prefix("connected_texture_block"), ConnectedTextureModelLoader.INSTANCE);
-		event.register(TwilightForestMod.prefix("royal_rags"), RoyalRagsModelLoader.INSTANCE);
+//		event.register(TwilightForestMod.prefix("royal_rags"), RoyalRagsModelLoader.INSTANCE);
 	}
 
 	private void registerConditionalProperties(RegisterConditionalItemModelPropertyEvent event) {
@@ -161,10 +163,10 @@ public class ClientRegistrationEvents {
 	}
 
 	private void bakeCustomModels(ModelEvent.ModifyBakingResult event) {
-		BakedModel oldModel = event.getModels().get(ModelResourceLocation.inventory(TwilightForestMod.prefix("trollsteinn")));
-		models.put(ModelResourceLocation.inventory(TwilightForestMod.prefix("trollsteinn")), new TrollsteinnModel(oldModel));
+//		BakedModel oldModel = event.getModels().get(ModelResourceLocation.inventory(TwilightForestMod.prefix("trollsteinn")));
+//		models.put(ModelResourceLocation.inventory(TwilightForestMod.prefix("trollsteinn")), new TrollsteinnModel(oldModel));
 
-        BlockStateModel netherrackModel = event.getBakingResult().blockStateModels().get(Blocks.NETHERRACK.defaultBlockState());
+		BlockStateModel netherrackModel = event.getBakingResult().blockStateModels().get(Blocks.NETHERRACK.defaultBlockState());
 		event.getBakingResult().blockStateModels().put(TFBlocks.REACTOR_DEBRIS.get().defaultBlockState(), new ReactorDebrisModel(netherrackModel));
 	}
 
@@ -182,11 +184,31 @@ public class ClientRegistrationEvents {
 		event.register(TwilightForestMod.prefix("trophy"), TrophySpecialRenderer.Unbaked.MAP_CODEC);
 	}
 
+	private void registerStandalone(ModelEvent.RegisterStandalone event) {
+		Identifier trophy = TwilightForestMod.prefix("item/trophy");
+		Identifier trophy_minor = TwilightForestMod.prefix("item/trophy_minor");
+		Identifier trophy_quest = TwilightForestMod.prefix("item/trophy_quest");
+
+		event.register(new StandaloneModelKey<>(ShieldLayer.LOC::toDebugFileName), SimpleUnbakedStandaloneModel.simpleModelWrapper(ShieldLayer.LOC));
+		event.register(new StandaloneModelKey<>(trophy::toDebugFileName), SimpleUnbakedStandaloneModel.simpleModelWrapper(trophy));
+		event.register(new StandaloneModelKey<>(trophy_minor::toDebugFileName), SimpleUnbakedStandaloneModel.simpleModelWrapper(trophy_minor));
+		event.register(new StandaloneModelKey<>(trophy_quest::toDebugFileName), SimpleUnbakedStandaloneModel.simpleModelWrapper(trophy_quest));
+		event.register(new StandaloneModelKey<>(TrollsteinnModel.LIT_TROLLSTEINN::toDebugFileName), SimpleUnbakedStandaloneModel.simpleModelWrapper(TrollsteinnModel.LIT_TROLLSTEINN));
+
+		for (JarRenderer.LidResource lid : JarRenderer.LID_LOCATION_LIST.get()) {
+			Identifier location = lid.identifier();
+			String name = location.getPath();
+			if (lid.customPath() != null) name = lid.customPath();
+			Identifier modelKey = TwilightForestMod.prefix("block/lid/" + name);
+			event.register(new StandaloneModelKey<>(modelKey::toDebugFileName), SimpleUnbakedStandaloneModel.simpleModelWrapper(modelKey));
+		}
+	}
+
 	private void cacheJarLids(ModelEvent.BakingCompleted event) {
 		JarRenderer.LID_LOCATION_LIST.get().forEach((lid) -> {
 			String name = lid.identifier().getPath();
 			if (lid.customPath() != null) name = lid.customPath();
-			JarRenderer.LIDS.put(lid.lid(), event.getModels().get(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/lid/" + name))));
+//			JarRenderer.LIDS.put(lid.lid(), event.getModels().get(ModelResourceLocation.standalone(TwilightForestMod.prefix("block/lid/" + name))));
 		});
 	}
 
@@ -204,17 +226,12 @@ public class ClientRegistrationEvents {
 	}
 
 	private void registerAtlases(RegisterTextureAtlasesEvent event) {
-		event.register(new AtlasManager.AtlasConfig(MagicPaintingAtlasInfo.ATLAS_LOCATION, MagicPaintingAtlasInfo.ATLAS_INFO_LOCATION, false));
+		event.register(new AtlasManager.AtlasConfig(MagicPaintingAtlasInfo.ATLAS_LOCATION, MagicPaintingAtlasInfo.ATLAS_LOCATION, false));
 	}
 
 	private void registerClientReloadListeners(AddClientReloadListenersEvent event) {
 		event.addListener(TwilightForestMod.prefix("texture_generator"), TextureGeneratorReloadListener.INSTANCE);
 		event.addListener(TwilightForestMod.prefix("armor_cache"), new TFArmorRenderer.ResourceReloadListener());
-	}
-
-	private void registerClientPayloadHandlers(RegisterClientPayloadHandlersEvent event) {
-		event.register(GogglesZoomPacket.TYPE, GogglesZoomPacket::handle);
-		event.register(GradualGlidePacket.TYPE, GradualGlidePacket::handle);
 	}
 
 	private void registerScreens(RegisterMenuScreensEvent event) {
@@ -592,8 +609,8 @@ public class ClientRegistrationEvents {
 		BakedMultiPartRenderers.bakeMultiPartRenderers(event.getContext());
 		for (EntityType<?> type : event.getEntityTypes()) {
 			var renderer = event.getRenderer(type);
-			if (renderer instanceof LivingEntityRenderer living) {
-				attachRenderLayers(living);
+			if (renderer instanceof LivingEntityRenderer<?,?,?> living) {
+//				attachRenderLayers(living);
 			}
 		}
 
@@ -606,5 +623,10 @@ public class ClientRegistrationEvents {
 	private <T extends LivingEntityRenderState, M extends EntityModel<T>> void attachRenderLayers(LivingEntityRenderer<?, T, M> renderer) {
 		renderer.addLayer(new ShieldLayer<>(renderer));
 		renderer.addLayer(new IceLayer<>(renderer));
+	}
+
+	private void registerCustomEnvironmentRenderers(RegisterCustomEnvironmentEffectRendererEvent event) {
+		event.registerSkyboxRenderer(TwilightForestRenderInfo.SKY_RENDERER, new TwilightForestRenderInfo());
+		event.registerWeatherEffectRenderer(TwilightForestRenderInfo.WEATHER_RENDERER, new TwilightForestRenderInfo());
 	}
 }

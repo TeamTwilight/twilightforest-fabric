@@ -2,7 +2,7 @@ package twilightforest.datagen.data.custom.structuredefinitions;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import twilightforest.TFMain;
+import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.finalcastle.FinalCastleBellTower21Component;
 import twilightforest.world.components.structures.finalcastle.FinalCastleBossGazeboComponent;
 import twilightforest.world.components.structures.finalcastle.FinalCastleLargeTowerComponent;
@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class FinalCastleStructureDefinitionGenerator extends StructureTemplateDefinitionProvider {
 	public FinalCastleStructureDefinitionGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
-		super(output, lookupProvider, TFMain.ID, "Final Castle");
+		super(output, lookupProvider, TwilightForestMod.ID, "Final Castle");
 	}
 
 	@Override

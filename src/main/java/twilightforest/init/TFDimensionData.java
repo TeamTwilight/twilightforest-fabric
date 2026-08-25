@@ -16,8 +16,10 @@ import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.timeline.Timeline;
-import twilightforest.TFMain;
+import net.neoforged.neoforge.common.world.NeoForgeEnvironmentAttributes;
 import twilightforest.TFRegistries;
+import twilightforest.TwilightForestMod;
+import twilightforest.client.TwilightForestRenderInfo;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.layer.BiomeDensitySource;
@@ -33,10 +35,10 @@ public class TFDimensionData {
 	@Deprecated // FIXME Make private
 	public static final int SEALEVEL = 0;
 
-	public static final ResourceKey<DimensionType> TWILIGHT_DIM_TYPE = ResourceKey.create(Registries.DIMENSION_TYPE, TFMain.prefix("twilight_forest_type"));
+	public static final ResourceKey<DimensionType> TWILIGHT_DIM_TYPE = ResourceKey.create(Registries.DIMENSION_TYPE, TwilightForestMod.prefix("twilight_forest_type"));
 
-	public static final ResourceKey<NoiseGeneratorSettings> TWILIGHT_NOISE_GEN = ResourceKey.create(Registries.NOISE_SETTINGS, TFMain.prefix("twilight_noise_gen"));
-	public static final ResourceKey<NoiseGeneratorSettings> SKYLIGHT_NOISE_GEN = ResourceKey.create(Registries.NOISE_SETTINGS, TFMain.prefix("skylight_noise_gen"));
+	public static final ResourceKey<NoiseGeneratorSettings> TWILIGHT_NOISE_GEN = ResourceKey.create(Registries.NOISE_SETTINGS, TwilightForestMod.prefix("twilight_noise_gen"));
+	public static final ResourceKey<NoiseGeneratorSettings> SKYLIGHT_NOISE_GEN = ResourceKey.create(Registries.NOISE_SETTINGS, TwilightForestMod.prefix("skylight_noise_gen"));
 
 	public static final ResourceKey<LevelStem> TWILIGHT_LEVEL_STEM = ResourceKey.create(Registries.LEVEL_STEM, TFDimension.DIMENSION);
 
@@ -67,6 +69,8 @@ public class TFDimensionData {
 				.set(EnvironmentAttributes.CREAKING_ACTIVE, true)
 				.set(EnvironmentAttributes.EYEBLOSSOM_OPEN, TriState.TRUE)
 				.set(EnvironmentAttributes.STAR_BRIGHTNESS, 1.0F)
+				.set(NeoForgeEnvironmentAttributes.CUSTOM_SKYBOX, TwilightForestRenderInfo.SKY_RENDERER)
+				.set(NeoForgeEnvironmentAttributes.CUSTOM_WEATHER_EFFECTS, TwilightForestRenderInfo.WEATHER_RENDERER)
 				.build(),
 			timelines.getOrThrow(TimelineTags.UNIVERSAL), //timelines
 			Optional.empty() //clock

@@ -5,7 +5,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.world.level.block.Block;
-import twilightforest.TFMain;
+import twilightforest.TwilightForestMod;
 import twilightforest.init.TFBlocks;
 import twilightforest.tags.TFBlockTags;
 
@@ -14,7 +14,7 @@ import java.util.concurrent.CompletableFuture;
 public class ModdedBlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 
 	public ModdedBlockTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> future) {
-		super(output, Registries.BLOCK, future, block -> block.builtInRegistryHolder().key(), TFMain.ID);
+		super(output, Registries.BLOCK, future, block -> block.builtInRegistryHolder().key(), TwilightForestMod.ID);
 	}
 
 	@Override

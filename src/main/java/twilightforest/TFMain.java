@@ -104,7 +104,7 @@ public final class TFMain implements ModInitializer {
 		TFAttributes.init();
 		TFAdvancements.init();
 		TFMobEffects.init();
-		//TFItemSubPredicates.TYPES.register(bus); TODO: check comment
+		TFItemSubPredicates.init();
 		Enforcements.init();
 		TFCaveCarvers.init();
 		TFDataComponents.init();
@@ -112,7 +112,6 @@ public final class TFMain implements ModInitializer {
 		TFParticleType.init();
 		TravellersModifierTypes.init();
 		TFBlockEntities.init();
-		//TFLootModifiers.LOOT_MODIFIERS.register(bus); TODO: [Fabric] check comment
 		TFConsumeEffects.init();
 		TFStructureTypes.init();
 		BiomeLayerTypes.init();

@@ -2,14 +2,14 @@ package twilightforest.datagen.data.custom.structuredefinitions;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import twilightforest.TFMain;
+import twilightforest.TwilightForestMod;
 import twilightforest.world.components.structures.lichtowerrevamp.LichTowerPieces;
 
 import java.util.concurrent.CompletableFuture;
 
 public class LichTowerStructureDefinitionGenerator extends StructureTemplateDefinitionProvider {
 	public LichTowerStructureDefinitionGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
-		super(output, lookupProvider, TFMain.ID, "Lich Tower");
+		super(output, lookupProvider, TwilightForestMod.ID, "Lich Tower");
 	}
 
 	@Override

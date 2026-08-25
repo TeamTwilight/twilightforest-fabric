@@ -23,7 +23,7 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.neoforged.neoforge.common.util.Lazy;
-import twilightforest.TFMain;
+import twilightforest.TwilightForestMod;
 import twilightforest.advancements.*;
 import twilightforest.advancements.predicate.ItemColorPredicate;
 import tamaized.beanification.Autowired;
@@ -68,7 +68,7 @@ public class TFAdvancementGenerator implements AdvancementSubProvider {
 				TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE,
 				Component.translatable("advancement.twilightforest.root"),
 				Component.translatable("advancement.twilightforest.root.desc"),
-				TFMain.prefix("textures/block/mazestone_large_brick.png"),
+				TwilightForestMod.prefix("textures/block/mazestone_large_brick.png"),
 				AdvancementType.TASK,
 				true, false, false)
 			.requirements(AdvancementRequirements.Strategy.OR)
@@ -519,10 +519,10 @@ public class TFAdvancementGenerator implements AdvancementSubProvider {
 						Component.translatable("advancement.twilightforest.arctic_dyed"),
 						Component.translatable("advancement.twilightforest.arctic_dyed.desc"),
 						null, AdvancementType.TASK, true, true, false)
-				.addCriterion("helmet", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), TFItems.ARCTIC_HELMET.get()).withComponents(DataComponentMatchers.Builder.components().any(DataComponents.DYED_COLOR).build()).build()))
-				.addCriterion("chestplate", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), TFItems.ARCTIC_CHESTPLATE.get()).withComponents(DataComponentMatchers.Builder.components().any(DataComponents.DYED_COLOR).build()).build()))
-				.addCriterion("leggings", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), TFItems.ARCTIC_LEGGINGS.get()).withComponents(DataComponentMatchers.Builder.components().any(DataComponents.DYED_COLOR).build()).build()))
-				.addCriterion("boots", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), TFItems.ARCTIC_BOOTS.get()).withComponents(DataComponentMatchers.Builder.components().any(DataComponents.DYED_COLOR).build()).build()))
+			.addCriterion("helmet", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), TFItems.ARCTIC_HELMET.get()).withComponents(DataComponentMatchers.Builder.components().partial(TFItemSubPredicates.COLOR.get(), ItemColorPredicate.anyColor()).build())))
+			.addCriterion("chestplate", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), TFItems.ARCTIC_CHESTPLATE.get()).withComponents(DataComponentMatchers.Builder.components().partial(TFItemSubPredicates.COLOR.get(), ItemColorPredicate.anyColor()).build())))
+			.addCriterion("leggings", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), TFItems.ARCTIC_LEGGINGS.get()).withComponents(DataComponentMatchers.Builder.components().partial(TFItemSubPredicates.COLOR.get(), ItemColorPredicate.anyColor()).build())))
+			.addCriterion("boots", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(registries.lookupOrThrow(Registries.ITEM), TFItems.ARCTIC_BOOTS.get()).withComponents(DataComponentMatchers.Builder.components().partial(TFItemSubPredicates.COLOR.get(), ItemColorPredicate.anyColor()).build())))
 				.rewards(AdvancementRewards.Builder.experience(25))
 				.save(consumer, "twilightforest:arctic_armor_dyed");
 
@@ -581,6 +581,6 @@ public class TFAdvancementGenerator implements AdvancementSubProvider {
 	}
 
 	private Criterion<PlayerTrigger.TriggerInstance> advancementTrigger(String name) {
-		return CriteriaTriggers.TICK.createCriterion(new PlayerTrigger.TriggerInstance(Optional.of(ContextAwarePredicate.create(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().subPredicate(PlayerPredicate.Builder.player().checkAdvancementDone(TFMain.prefix(name), true).build())).build()))));
+		return CriteriaTriggers.TICK.createCriterion(new PlayerTrigger.TriggerInstance(Optional.of(ContextAwarePredicate.create(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().subPredicate(PlayerPredicate.Builder.player().checkAdvancementDone(TwilightForestMod.prefix(name), true).build())).build()))));
 	}
 }
