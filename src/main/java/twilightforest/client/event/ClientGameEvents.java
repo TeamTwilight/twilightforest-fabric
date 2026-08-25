@@ -123,7 +123,7 @@ public class ClientGameEvents {
 				RenderSystem.enableBlend();
 				RenderSystem.enableDepthTest();
 				RenderSystem.setShaderColor(1F, 1F, 1F, Mth.lerp(tickDelta, (float) lastAurora, (float) aurora) / 60F * 0.5F);
-				TFShaders.AURORA.invokeThenEndTesselator(
+				TFShaders.invokeAurora(
 					Minecraft.getInstance().level == null ? 0 : Math.abs((int) Minecraft.getInstance().level.getBiomeManager().biomeZoomSeed),
 					(float) pos.x(), (float) pos.y(), (float) pos.z(), buffer);
 				RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
