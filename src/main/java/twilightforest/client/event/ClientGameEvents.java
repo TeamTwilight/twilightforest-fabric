@@ -132,6 +132,10 @@ public class ClientGameEvents {
 
 			BugModelAnimationHelper.animate();
 
+			if (mc.player != null && HostileMountEvents.isRidingUnfriendly(mc.player)) {
+				mc.gui.setOverlayMessage(Component.empty(), false);
+			}
+
 			if (mc.level != null) {
 				if (mc.level.getSkyFlashTime() > 0) {
 					MagicPaintingRenderer.lastLightning = mc.level.getGameTime();
@@ -190,8 +194,7 @@ public class ClientGameEvents {
 		}
 	}
 
-	private static boolean renderGiantBlockOutlines(LevelRenderContext context, BlockOutlineRenderState outline) {
-		BlockPos pos = outline.pos();
+	private static boolean renderGiantBlockOutlines(LevelRenderContext context, BlockOutlineRenderState outline) {		BlockPos pos = outline.pos();
 		BlockState state = context.gameRenderer().getMainCamera().entity().level().getBlockState(pos);
 
 		if (state.getBlock() instanceof MiniatureStructureBlock) {
@@ -209,5 +212,15 @@ public class ClientGameEvents {
 			return false;
 		}
 		return true;
+	}
+
+	public static boolean shouldShakeCamera() {
+		return shakeIntensity > 0.0F && TFConfig.firstPersonEffects && !Minecraft.getInstance().isPaused() && Minecraft.getInstance().player != null;
+	}
+
+	public static float consumeShakeIntensity() {
+		float intensity = shakeIntensity;
+		shakeIntensity = 0.0F;
+		return intensity;
 	}
 }
