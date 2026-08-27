@@ -6,7 +6,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.entity.MagicPaintingVariant;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class MagicPaintingRenderState extends EntityRenderState {
 	public Direction direction = Direction.NORTH;
