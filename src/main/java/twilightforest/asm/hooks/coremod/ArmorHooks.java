@@ -8,15 +8,13 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import tamaized.beanification.Autowired;
 import twilightforest.init.TFDataComponents;
 import twilightforest.util.ArmorUtil;
 
 @SuppressWarnings({"JavadocReference", "unused"})
 public class ArmorHooks {
 
-	@Autowired
-	private static ArmorUtil armorUtil;
+	private static final ArmorUtil armorUtil = ArmorUtil.INSTANCE;
 
 	/**
 	 * {@link twilightforest.asm.transformers.armor.ArmorVisibilityRenderingTransformer}<p/>
