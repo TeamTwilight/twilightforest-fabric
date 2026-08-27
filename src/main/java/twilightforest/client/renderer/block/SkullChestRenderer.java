@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.entity.LidBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.block.SkullChestBlock;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.KeepsakeCasketModel;
@@ -23,7 +23,7 @@ import twilightforest.client.state.block.SkullChestRenderState;
 
 public class SkullChestRenderer<T extends BlockEntity & LidBlockEntity> implements BlockEntityRenderer<T, SkullChestRenderState> {
 
-	public static final Identifier SKULL_CHEST_TEXTURE = TwilightForestMod.getModelTexture("casket/skull_chest.png");
+	public static final Identifier SKULL_CHEST_TEXTURE = TFMain.getModelTexture("casket/skull_chest.png");
 
 	private final KeepsakeCasketModel model;
 

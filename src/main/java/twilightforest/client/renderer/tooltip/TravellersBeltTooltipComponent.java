@@ -5,8 +5,8 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
+import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.ItemContainerContents;
 import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
 
 import java.util.ArrayList;
@@ -18,11 +18,9 @@ public class TravellersBeltTooltipComponent implements ClientTooltipComponent {
 	private final List<ItemStack> contents = new ArrayList<>();
 
 	public TravellersBeltTooltipComponent(TravellersArmorBeltItem.Tooltip tooltip) {
-		ItemContainerContents contents = tooltip.contents();
-		for (int i = 0; i < 9; i++) {
-			ItemStack stack = contents.getSlots() <= i ? ItemStack.EMPTY : contents.getStackInSlot(i);
-			this.contents.add(stack);
-		}
+		NonNullList<ItemStack> slots = NonNullList.withSize(9, ItemStack.EMPTY);
+		tooltip.contents().copyInto(slots);
+		this.contents.addAll(slots);
 	}
 
 	@Override
