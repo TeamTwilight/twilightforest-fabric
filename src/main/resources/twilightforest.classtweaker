@@ -265,6 +265,9 @@ accessible method net/minecraft/world/entity/ai/village/poi/PoiTypes register (L
 # FishingHookMixin
 accessible method net/minecraft/world/entity/projectile/Projectile onHit (Lnet/minecraft/world/phys/HitResult;)V
 
+# ColorHandler (registers the Potion Flask item tint source codec)
+accessible field net/minecraft/client/color/item/ItemTintSources ID_MAPPER Lnet/minecraft/util/ExtraCodecs$LateBoundIdMapper;
+
 # Enum Extensions
 extend-enum net/minecraft/world/damagesource/DamageEffects TWILIGHTFOREST_PINCH
 extend-enum net/minecraft/world/item/Rarity TWILIGHTFOREST_TWILIGHT

@@ -6,13 +6,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.color.block.BlockTintSource;
 import net.minecraft.client.color.block.BlockTintSources;
+import net.minecraft.client.color.item.ItemTintSources;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
+import twilightforest.TFMain;
 import twilightforest.block.ClimbableHollowLogBlock;
+import twilightforest.client.properties.PotionFlaskTintSource;
 import twilightforest.enums.HollowLogVariants;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.ColorUtil;
@@ -285,7 +288,6 @@ public class ColorHandler {
 	}
 
 	public static void registerItemColors() {
-		// TODO [Fabric]: ItemTintSources uses a private static ID_MAPPER with no runtime registration API.
-		// Needs a mixin/accessor to register PotionFlaskTintSource.TYPE under the "potion_flask" id.
+		ItemTintSources.ID_MAPPER.put(TFMain.prefix("potion_flask"), PotionFlaskTintSource.TYPE);
 	}
 }

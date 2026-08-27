@@ -1,5 +1,6 @@
 package twilightforest.client.event;
 
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.entity.player.Player;
@@ -14,6 +15,10 @@ public class LockedBiomeToastHandler {
 	private static boolean shownToast = false;
 	private static int timeUntilToast = 60;
 	private static boolean progressionEnforced = true;
+
+	public static void init() {
+		ClientTickEvents.END_CLIENT_TICK.register(client -> tickLockedToastLogic());
+	}
 
 	public static void tickLockedToastLogic() {
 		Player player = Minecraft.getInstance().player;
