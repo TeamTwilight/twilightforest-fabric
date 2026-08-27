@@ -18,22 +18,22 @@ public class MultipartHooks {
 	private static final MultipartEntityUtil multipartEntityUtil = MultipartEntityUtil.INSTANCE;
 
 	/**
-	 * {@link twilightforest.asm.transformers.multipart.ResolveEntitiesForRendereringTransformer}<p/>
+	 * twilightforest.asm.transformers.multipart.ResolveEntitiesForRendereringTransformer<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.client.renderer.LevelRenderer#renderLevel(DeltaTracker, boolean, Camera, GameRenderer, LightTexture, Matrix4f, Matrix4f)}<br/>
-	 * [Targets: {@link net.minecraft.client.multiplayer.ClientLevel#entitiesForRendering}]
+	 * net.minecraft.client.renderer.LevelRenderer#renderLevel(DeltaTracker, boolean, Camera, GameRenderer, LightTexture, Matrix4f, Matrix4f)<br/>
+	 * [Targets: net.minecraft.client.multiplayer.ClientLevel#entitiesForRendering]
 	 */
 	public static Iterator<Entity> resolveEntitiesForRendering(Iterator<Entity> iter) {
 		return multipartEntityUtil.injectTFPartEntities(iter);
 	}
 
 	/**
-	 * {@link twilightforest.asm.transformers.multipart.ResolveEntityRendererTransformer}<p/>
+	 * twilightforest.asm.transformers.multipart.ResolveEntityRendererTransformer<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.client.renderer.entity.EntityRenderDispatcher#getRenderer(Entity)}<br/>
-	 * Targets: {@link net.minecraft.client.renderer.entity.EntityRenderDispatcher#renderers}
+	 * net.minecraft.client.renderer.entity.EntityRenderDispatcher#getRenderer(Entity)<br/>
+	 * Targets: net.minecraft.client.renderer.entity.EntityRenderDispatcher#renderers
 	 */
 	@Nullable
 	public static EntityRenderer<?, ?> resolveEntityRenderer(@Nullable EntityRenderer<?, ?> renderer, Entity entity) {
@@ -41,10 +41,10 @@ public class MultipartHooks {
 	}
 
 	/**
-	 * {@link SendDirtyEntityDataTransformer}<p/>
+	 * SendDirtyEntityDataTransformer<p/>
 	 *
 	 * Injection Point:<br/>
-	 * {@link net.minecraft.server.level.ServerEntity#sendDirtyEntityData}
+	 * net.minecraft.server.level.ServerEntity#sendDirtyEntityData
 	 */
 	public static Entity sendDirtyEntityData(Entity entity) {
 		return multipartEntityUtil.sendDirtyMultipartEntityData(entity);
