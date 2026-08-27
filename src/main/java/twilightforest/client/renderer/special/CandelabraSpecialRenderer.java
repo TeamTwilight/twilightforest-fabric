@@ -28,7 +28,7 @@ public record CandelabraSpecialRenderer() implements SpecialModelRenderer<List<B
 		for (int i = 0; i < stack.getOrDefault(TFDataComponents.CANDELABRA_DATA, CandelabraData.EMPTY).ordered().size(); i++) {
 			BlockModelRenderState state = new BlockModelRenderState();
 			BlockState candle = CandelabraData.getItem(stack.getOrDefault(TFDataComponents.CANDELABRA_DATA, CandelabraData.EMPTY).ordered(), i).orElse(Blocks.AIR).defaultBlockState();
-			Minecraft.getInstance().getBlockModelResolver().update(state, candle, BlockDisplayContext.create());
+			Minecraft.getInstance().blockModelResolver.update(state, candle, BlockDisplayContext.create());
 			models.add(state);
 		}
 
