@@ -1,7 +1,13 @@
 package twilightforest.client.renderer.entity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import twilightforest.TFMain;
 import twilightforest.client.model.TFModelLayers;
@@ -25,9 +31,27 @@ public class HelmetCrabRenderer extends MobRenderer<HelmetCrab, HelmetCrabRender
 	@Override
 	public void extractRenderState(HelmetCrab entity, HelmetCrabRenderState state, float partialTicks) {
 		super.extractRenderState(entity, state, partialTicks);
+		state.partialTick = partialTicks;
 		state.helmetRot = state.getHelmetRotation(entity, partialTicks);
 		state.id = entity.getId();
 		state.blue = entity.isBlue();
+	}
+
+	@Override
+	public void submit(HelmetCrabRenderState state, PoseStack stack, SubmitNodeCollector collector, CameraRenderState camera) {
+		// Model.renderToBuffer is final in 26.1, so render the helmet separately
+		// without the red damage overlay (as the old override did)
+		ModelPart helmet = this.model.getHelmet();
+		helmet.visible = false;
+		super.submit(state, stack, collector, camera);
+		helmet.visible = true;
+		RenderType renderType = this.model.renderType(this.getTextureLocation(state));
+		collector.submitCustomGeometry(stack, renderType, (pose, consumer) -> {
+			stack.pushPose();
+			stack.last().set(pose);
+			helmet.render(stack, consumer, state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor);
+			stack.popPose();
+		});
 	}
 
 	@Override

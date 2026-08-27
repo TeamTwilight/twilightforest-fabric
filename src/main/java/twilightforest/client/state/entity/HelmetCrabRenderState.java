@@ -6,6 +6,7 @@ import twilightforest.entity.monster.HelmetCrab;
 
 public class HelmetCrabRenderState extends LivingEntityRenderState {
 	public float helmetRot;
+	public float partialTick;
 	public int id;
 	public boolean blue;
 

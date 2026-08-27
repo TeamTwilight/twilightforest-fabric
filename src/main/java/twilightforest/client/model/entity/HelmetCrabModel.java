@@ -49,6 +49,10 @@ public class HelmetCrabModel extends EntityModel<HelmetCrabRenderState> {
 		this.leftLeg2 = this.crab.getChild("left_leg_2");
 	}
 
+	public ModelPart getHelmet() {
+		return this.helmet;
+	}
+
 	public static LayerDefinition create() {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
@@ -146,13 +150,6 @@ public class HelmetCrabModel extends EntityModel<HelmetCrabRenderState> {
 			PartPose.offsetAndRotation(3.0F, 1.0F, -2.0F, 0.0F, 0.2792527F, 0.1919862F));
 
 		return LayerDefinition.create(meshdefinition, 64, 32);
-	}
-
-	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, int color) {
-		this.crab.render(stack, consumer, light, overlay, color);
-		//no red overlay on the helmet
-		this.helmet.render(stack, consumer, light, OverlayTexture.NO_OVERLAY, color);
 	}
 
 	@Override
