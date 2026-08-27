@@ -2,6 +2,7 @@ package twilightforest.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -13,7 +14,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.Tags;
 import org.jspecify.annotations.Nullable;
 import twilightforest.block.DryingRackBlock;
 import twilightforest.block.entity.DryingRackBlockEntity;
@@ -57,7 +57,7 @@ public class DryingRackRenderer implements BlockEntityRenderer<DryingRackBlockEn
 		if (blockEntity.getTheItem().is(ItemTags.BANNERS)) {
 			state.renderOffset -= 0.4F;
 		}
-		if (blockEntity.getTheItem().is(Tags.Items.TOOLS_SHIELD)) {
+		if (blockEntity.getTheItem().is(ConventionalItemTags.SHIELD_TOOLS)) {
 			state.renderOffset -= 0.1F;
 		}
 	}

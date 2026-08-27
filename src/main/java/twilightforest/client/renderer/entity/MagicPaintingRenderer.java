@@ -32,7 +32,7 @@ import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.entity.MagicPaintingVariant.Layer.OpacityModifier;
 import twilightforest.entity.MagicPaintingVariant.Layer.Parallax;
 
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class MagicPaintingRenderer extends EntityRenderer<MagicPainting, MagicPaintingRenderState> {
 
