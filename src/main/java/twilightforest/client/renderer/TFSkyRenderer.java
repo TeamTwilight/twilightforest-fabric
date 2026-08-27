@@ -30,7 +30,7 @@ import java.util.OptionalInt;
 
 public class TFSkyRenderer implements AutoCloseable {
 
-	public static final RenderStateDataKey<Boolean> RENDER_DARK_DISC = RenderStateDataKey.create();
+	public static final RenderStateDataKey<Boolean> RENDER_DARK_DISC = RenderStateDataKey.create(() -> TFMain.prefix("render_dark_disc").toString());
 	private final RenderSystem.AutoStorageIndexBuffer starIndices = RenderSystem.getSequentialBuffer(VertexFormat.Mode.QUADS);
 	private final GpuBuffer starBuffer;
 	private int starIndexCount;
