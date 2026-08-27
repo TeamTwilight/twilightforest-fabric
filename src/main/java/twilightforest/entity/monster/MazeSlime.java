@@ -69,7 +69,6 @@ public class MazeSlime extends Slime {
 	@Override
 	public void tick() {
 		super.tick();
-		// [VanillaCopy] from super tick with own particles (was spawnCustomParticles in older versions)
 		int i = getSize();
 		for (int j = 0; j < i * 8; ++j) {
 			float f = this.getRandom().nextFloat() * ((float) Math.PI * 2F);
