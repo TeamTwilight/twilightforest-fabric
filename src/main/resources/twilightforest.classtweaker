@@ -276,6 +276,9 @@ extendable method net/minecraft/client/model/Model renderToBuffer (Lcom/mojang/b
 # EntityUtil (direct calls instead of NeoForge ObfuscationReflectionHelper)
 accessible method net/minecraft/world/entity/decoration/HangingEntity setDirection (Lnet/minecraft/core/Direction;)V
 
+# OverlayHandler
+accessible method net/minecraft/client/gui/Gui extractFood (Lnet/minecraft/client/gui/GuiGraphicsExtractor;Lnet/minecraft/world/entity/player/Player;II)V
+
 # Enum Extensions
 extend-enum net/minecraft/world/damagesource/DamageEffects TWILIGHTFOREST_PINCH
 extend-enum net/minecraft/world/item/Rarity TWILIGHTFOREST_TWILIGHT

@@ -2,6 +2,9 @@ package twilightforest.client.event;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudStatusBarHeightRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -16,12 +19,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameType;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
-import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
-import tamaized.beanification.Autowired;
+import twilightforest.TFMain;
 import twilightforest.client.overlay.ItemDisplayOverlay;
 import twilightforest.client.overlay.PortalOverlay;
 import twilightforest.components.item.OreScannerData;
@@ -39,16 +38,21 @@ import java.text.DecimalFormat;
 import java.util.*;
 
 public class OverlayHandler {
-	private static final Identifier QUESTING_RAM_CHECK_SPRITE = TwilightForestMod.prefix("questing_ram_check");
-	private static final Identifier QUESTING_RAM_X_SPRITE = TwilightForestMod.prefix("questing_ram_x");
-	private static final Identifier FORTIFICATION_SHIELD_SPRITE = TwilightForestMod.prefix("fortification_shield");
 	public static final Map<Long, OreMeterInfoCache> ORE_METER_STAT_CACHE = new HashMap<>();
+	public static final Identifier QUEST_RAM_INDICATOR = TFMain.prefix("quest_ram_indicator");
+	public static final Identifier HOSTILE_MOUNT_HUNGER_BAR = TFMain.prefix("hostile_mount_hunger_bar");
+	public static final Identifier ORE_METER_STATS = TFMain.prefix("ore_meter_stats");
+	public static final Identifier FORTIFICATION_SHIELD_COUNT = TFMain.prefix("fortification_shield_count");
+	public static final Identifier PORTAL_OVERLAY = TFMain.prefix("portal_overlay");
+	public static final Identifier ITEM_DISPLAY_OVERLAY = TFMain.prefix("item_display_overlay");
 
-	@Autowired(dist = Dist.CLIENT)
-	private static QuestingRamCurrentContext questingRamCurrentContext;
+	private static final Identifier QUESTING_RAM_CHECK_SPRITE = TFMain.prefix("questing_ram_check");
+	private static final Identifier QUESTING_RAM_X_SPRITE = TFMain.prefix("questing_ram_x");
+	private static final Identifier FORTIFICATION_SHIELD_SPRITE = TFMain.prefix("fortification_shield");
+	private static final QuestingRamCurrentContext questingRamCurrentContext = QuestingRamCurrentContext.INSTANCE;
 
-	protected static void registerOverlays(RegisterGuiLayersEvent event) {
-		event.registerAbove(VanillaGuiLayers.CROSSHAIR, TwilightForestMod.prefix("quest_ram_indicator"), (graphics, partialTicks) -> {
+	public static void init() {
+		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, QUEST_RAM_INDICATOR, (graphics, _) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			LocalPlayer player = minecraft.player;
 			Gui gui = minecraft.gui;
@@ -56,18 +60,18 @@ public class OverlayHandler {
 				renderIndicator(minecraft, graphics, gui, player, graphics.guiWidth(), graphics.guiHeight());
 			}
 		});
-		event.registerAbove(VanillaGuiLayers.VEHICLE_HEALTH, TwilightForestMod.prefix("hostile_mount_hunger_bar"), (graphics, partialTicks) -> {
+		HudElementRegistry.attachElementAfter(VanillaHudElements.MOUNT_HEALTH, HOSTILE_MOUNT_HUNGER_BAR, (graphics, _) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			LocalPlayer player = minecraft.player;
 			Gui gui = minecraft.gui;
 			if (!minecraft.options.hideGui && minecraft.gameMode.canHurtPlayer() && player != null && HostileMountEvents.isRidingUnfriendly(player)) {
 				int xPos = graphics.guiWidth() / 2 + 91;
-				int yPos = graphics.guiHeight() - gui.rightHeight;
+				int yPos = graphics.guiHeight() - HudStatusBarHeightRegistry.getHeight(HOSTILE_MOUNT_HUNGER_BAR);
 				gui.extractFood(graphics, player, yPos, xPos);
-				gui.rightHeight += 10;
 			}
 		});
-		event.registerAboveAll(TwilightForestMod.prefix("ore_meter_stats"), (graphics, partialTicks) -> {
+		HudStatusBarHeightRegistry.addRight(HOSTILE_MOUNT_HUNGER_BAR, _ -> 10);
+		HudElementRegistry.addLast(ORE_METER_STATS, (graphics, _) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			LocalPlayer player = minecraft.player;
 			Gui gui = minecraft.gui;
@@ -75,22 +79,20 @@ public class OverlayHandler {
 				renderOreMeterStats(graphics, player);
 			}
 		});
-
-		event.registerAbove(VanillaGuiLayers.ARMOR_LEVEL, TwilightForestMod.prefix("fortification_shield_count"), (graphics, partialTick) -> {
+		HudElementRegistry.attachElementAfter(VanillaHudElements.ARMOR_BAR, FORTIFICATION_SHIELD_COUNT, (graphics, _) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			LocalPlayer player = minecraft.player;
 			Gui gui = minecraft.gui;
-			if (player != null && !minecraft.options.hideGui && (minecraft.gameMode.canHurtPlayer() || TFConfig.showFortificationShieldIndicatorInCreative) && player.hasData(TFDataAttachments.FORTIFICATION_SHIELDS) && player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft() > 0 && TFConfig.showFortificationShieldIndicator) {
-				renderShieldCount(graphics, gui, graphics.guiWidth(), graphics.guiHeight(), player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft());
+			if (player != null && !minecraft.options.hideGui && (minecraft.gameMode.canHurtPlayer() || TFConfig.showFortificationShieldIndicatorInCreative) && player.hasAttached(TFDataAttachments.FORTIFICATION_SHIELDS) && player.getAttached(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft() > 0 && TFConfig.showFortificationShieldIndicator) {
+				renderShieldCount(graphics, gui, graphics.guiWidth(), graphics.guiHeight(), player.getAttached(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft());
 			}
 		});
-
-		event.registerAboveAll(TwilightForestMod.prefix("portal_overlay"), (graphics, partialTick) -> {
+		HudStatusBarHeightRegistry.addLeft(FORTIFICATION_SHIELD_COUNT, _ -> 10);
+		HudElementRegistry.addLast(PORTAL_OVERLAY, (graphics, _) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			PortalOverlay.render(graphics, minecraft, minecraft.player);
 		});
-
-		event.registerAboveAll(TwilightForestMod.prefix("item_display_overlay"), (graphics, partialTick) -> {
+		HudElementRegistry.addLast(ITEM_DISPLAY_OVERLAY, (graphics, _) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			Gui gui = minecraft.gui;
 			ItemDisplayOverlay.render(graphics, minecraft, minecraft.getWindow(), gui, getCameraPlayer());
@@ -119,14 +121,13 @@ public class OverlayHandler {
 
 	private static void renderShieldCount(GuiGraphicsExtractor graphics, Gui gui, int screenWidth, int screenHeight, int shieldCount) {
 		for (int i = 0; i < Math.min(shieldCount, 10); i++) {
-			graphics.blitSprite(RenderPipelines.GUI_TEXTURED, FORTIFICATION_SHIELD_SPRITE, screenWidth / 2 - 91 + (i * 8), screenHeight - gui.leftHeight, 9, 9);
+			graphics.blitSprite(RenderPipelines.GUI_TEXTURED, FORTIFICATION_SHIELD_SPRITE, screenWidth / 2 - 91 + (i * 8), screenHeight - HudStatusBarHeightRegistry.getHeight(FORTIFICATION_SHIELD_COUNT), 9, 9);
 		}
-		gui.leftHeight += 10;
 	}
 
 	private static void renderOreMeterStats(GuiGraphicsExtractor graphics, Player player) {
-		if (player.isHolding(TFItems.ORE_METER.get())) {
-			InteractionHand handToUse = player.getItemInHand(InteractionHand.MAIN_HAND).is(TFItems.ORE_METER.get()) ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
+		if (player.isHolding(TFItems.ORE_METER)) {
+			InteractionHand handToUse = player.getItemInHand(InteractionHand.MAIN_HAND).is(TFItems.ORE_METER) ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
 			ItemStack selectedMeter = player.getItemInHand(handToUse);
 			if (OreMeterItem.isLoading(selectedMeter)) {
 				int dots = (OreMeterItem.getLoadProgress(selectedMeter) / 5) % 3;
