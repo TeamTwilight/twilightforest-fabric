@@ -64,8 +64,7 @@ public class EntityUtil {
 		float hardness = state.getDestroySpeed(world, pos);
 		return hardness >= 0f && hardness < 50f && !state.isAir()
 			&& !(world.getBlockEntity(pos) instanceof Container)
-			&& state.getBlock().carminite$canEntityDestroy(state, world, pos, entity)
-			&& (/* rude type limit */!(entity instanceof LivingEntity));
+			&& state.getBlock().carminite$canEntityDestroy(state, world, pos, entity);
 	}
 
 	/**
