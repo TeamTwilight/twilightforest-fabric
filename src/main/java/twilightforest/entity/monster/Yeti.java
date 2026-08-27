@@ -142,6 +142,10 @@ public class Yeti extends Monster implements IHostileMount {
 		return new Vec3(0.0F, dimensions.height(), 0.4F);
 	}
 
+	public boolean canRiderInteract() {
+		return true;
+	}
+
 	public static boolean yetiSnowyForestSpawnHandler(EntityType<? extends Yeti> entityType, ServerLevelAccessor accessor, EntitySpawnReason reason, BlockPos pos, RandomSource random) {
 		if (accessor.getDifficulty() != Difficulty.PEACEFUL) {
 			if (accessor.getBiome(pos).is(TFBiomes.SNOWY_FOREST)) {
