@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
-import tamaized.beanification.Autowired;
 import twilightforest.block.CloudBlock;
 import twilightforest.block.SnowLoggable;
 import twilightforest.block.WroughtIronFenceBlock;
@@ -25,8 +24,7 @@ import twilightforest.init.custom.TravellersModifiersManager;
 @SuppressWarnings({"JavadocReference", "unused"})
 public class BlockHooks {
 
-	@Autowired
-	private static FoliageColorHandler foliageColorHandler;
+	private static final FoliageColorHandler foliageColorHandler = FoliageColorHandler.INSTANCE;
 
 	/**
 	 * {@link twilightforest.asm.transformers.cloud.IsRainingAtTransformer}<p/>
@@ -84,7 +82,7 @@ public class BlockHooks {
 	 * Targets: {@link BlockState#canSustainPlant(BlockGetter, BlockPos, Direction, BlockState)}
 	 */
 	public static TriState modifySoilDecisionForMushroomBlockSurvivability(TriState o, LevelReader level, BlockPos pos) {
-		if (!o.isDefault())
+		if (o != TriState.DEFAULT)
 			return o; // Short-circuit - We should not override non-default soil behaviour otherwise this would allow Mushrooms to survive on ALL blocks
 		for (int x = -1; x <= 1; x++) {
 			for (int z = -1; z <= 1; z++) {
