@@ -4,7 +4,13 @@
   "package": "twilightforest.asm.mixin",
   "compatibilityLevel": "JAVA_25",
   "mixins": [
+    "ClientInputAccessor",
+    "KeyMappingAccessor",
+    "KeyboardHandlerMixin",
+    "LocalPlayerInputMixin",
+    "MouseHandlerMixin",
     "ServerPlayerGameModeMixin",
+    "TravellersZoomFovMixin",
     "LivingEntityGetDeathSoundAccessor",
     "enums.DamageEffectsMixin",
     "enums.GrassColorModifierMixin",
