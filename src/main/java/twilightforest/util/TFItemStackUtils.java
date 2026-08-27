@@ -54,7 +54,7 @@ public class TFItemStackUtils {
 			if (blockItemStateProperties != null && blockItemStateProperties.properties().containsKey(KeepsakeCasketBlock.BREAKAGE.getName())) {
 				String propertyValueString = blockItemStateProperties.properties().get(KeepsakeCasketBlock.BREAKAGE.getName());
 
-				persistentTag.putInt(CharmEvents.CASKET_DAMAGE_TAG, propertyValueString.matches("[0-9]+") ? Integer.parseInt(propertyValueString) : 0);
+				persistentTag.putInt(CharmEvents.CASKET_DAMAGE_TAG, propertyValueString != null && propertyValueString.chars().allMatch(Character::isDigit) ? Integer.parseInt(propertyValueString) : 0);
 			} else if (stack.has(TFDataComponents.CASKET_DAMAGE)) {
 				persistentTag.putInt(CharmEvents.CASKET_DAMAGE_TAG, stack.getOrDefault(TFDataComponents.CASKET_DAMAGE, 0));
 			}
