@@ -96,6 +96,7 @@ accessible field net/minecraft/world/level/saveddata/maps/MapItemSavedData track
 
 # TFOverlays (partially determines if the quest ram indicator should render below the crosshair, and allows the food bar to be rendered when riding hostile mounts)
 accessible method net/minecraft/client/gui/Gui canRenderCrosshairForSpectator (Lnet/minecraft/world/phys/HitResult;)Z
+accessible method net/minecraft/client/gui/Gui extractFood (Lnet/minecraft/client/gui/GuiGraphicsExtractor;Lnet/minecraft/world/entity/player/Player;II)V
 
 # TFSkyRenderer (allows for rendering the sky)
 accessible field net/minecraft/client/renderer/LevelRenderer skyRenderer Lnet/minecraft/client/renderer/SkyRenderer;

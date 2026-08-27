@@ -2,6 +2,10 @@ package twilightforest.client.event;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentTarget;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudStatusBarHeightRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -10,18 +14,15 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameType;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
-import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
-import tamaized.beanification.Autowired;
+import twilightforest.TFMain;
 import twilightforest.client.overlay.ItemDisplayOverlay;
 import twilightforest.client.overlay.PortalOverlay;
 import twilightforest.components.item.OreScannerData;
@@ -39,16 +40,15 @@ import java.text.DecimalFormat;
 import java.util.*;
 
 public class OverlayHandler {
-	private static final Identifier QUESTING_RAM_CHECK_SPRITE = TwilightForestMod.prefix("questing_ram_check");
-	private static final Identifier QUESTING_RAM_X_SPRITE = TwilightForestMod.prefix("questing_ram_x");
-	private static final Identifier FORTIFICATION_SHIELD_SPRITE = TwilightForestMod.prefix("fortification_shield");
+	private static final Identifier QUESTING_RAM_CHECK_SPRITE = TFMain.prefix("questing_ram_check");
+	private static final Identifier QUESTING_RAM_X_SPRITE = TFMain.prefix("questing_ram_x");
+	private static final Identifier FORTIFICATION_SHIELD_SPRITE = TFMain.prefix("fortification_shield");
 	public static final Map<Long, OreMeterInfoCache> ORE_METER_STAT_CACHE = new HashMap<>();
 
-	@Autowired(dist = Dist.CLIENT)
-	private static QuestingRamCurrentContext questingRamCurrentContext;
+	private static final QuestingRamCurrentContext questingRamCurrentContext = QuestingRamCurrentContext.INSTANCE;
 
-	protected static void registerOverlays(RegisterGuiLayersEvent event) {
-		event.registerAbove(VanillaGuiLayers.CROSSHAIR, TwilightForestMod.prefix("quest_ram_indicator"), (graphics, partialTicks) -> {
+	public static void init() {
+		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, TFMain.prefix("quest_ram_indicator"), (graphics, delta) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			LocalPlayer player = minecraft.player;
 			Gui gui = minecraft.gui;
@@ -56,18 +56,18 @@ public class OverlayHandler {
 				renderIndicator(minecraft, graphics, gui, player, graphics.guiWidth(), graphics.guiHeight());
 			}
 		});
-		event.registerAbove(VanillaGuiLayers.VEHICLE_HEALTH, TwilightForestMod.prefix("hostile_mount_hunger_bar"), (graphics, partialTicks) -> {
+		HudElementRegistry.attachElementAfter(VanillaHudElements.MOUNT_HEALTH, TFMain.prefix("hostile_mount_hunger_bar"), (graphics, delta) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			LocalPlayer player = minecraft.player;
 			Gui gui = minecraft.gui;
 			if (!minecraft.options.hideGui && minecraft.gameMode.canHurtPlayer() && player != null && HostileMountEvents.isRidingUnfriendly(player)) {
 				int xPos = graphics.guiWidth() / 2 + 91;
-				int yPos = graphics.guiHeight() - gui.rightHeight;
+				int yPos = graphics.guiHeight() - HudStatusBarHeightRegistry.getHeight(TFMain.prefix("hostile_mount_hunger_bar"));
 				gui.extractFood(graphics, player, yPos, xPos);
-				gui.rightHeight += 10;
 			}
 		});
-		event.registerAboveAll(TwilightForestMod.prefix("ore_meter_stats"), (graphics, partialTicks) -> {
+		HudStatusBarHeightRegistry.addRight(TFMain.prefix("hostile_mount_hunger_bar"), player -> 10);
+		HudElementRegistry.addLast(TFMain.prefix("ore_meter_stats"), (graphics, delta) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			LocalPlayer player = minecraft.player;
 			Gui gui = minecraft.gui;
@@ -75,26 +75,21 @@ public class OverlayHandler {
 				renderOreMeterStats(graphics, player);
 			}
 		});
-
-		event.registerAbove(VanillaGuiLayers.ARMOR_LEVEL, TwilightForestMod.prefix("fortification_shield_count"), (graphics, partialTick) -> {
+		HudElementRegistry.attachElementAfter(VanillaHudElements.ARMOR_BAR, TFMain.prefix("fortification_shield_count"), (graphics, delta) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			LocalPlayer player = minecraft.player;
-			Gui gui = minecraft.gui;
-			if (player != null && !minecraft.options.hideGui && (minecraft.gameMode.canHurtPlayer() || TFConfig.showFortificationShieldIndicatorInCreative) && player.hasData(TFDataAttachments.FORTIFICATION_SHIELDS) && player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft() > 0 && TFConfig.showFortificationShieldIndicator) {
-				renderShieldCount(graphics, gui, graphics.guiWidth(), graphics.guiHeight(), player.getData(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft());
+			if (player != null && !minecraft.options.hideGui && (minecraft.gameMode.canHurtPlayer() || TFConfig.showFortificationShieldIndicatorInCreative) && ((AttachmentTarget) player).hasAttached(TFDataAttachments.FORTIFICATION_SHIELDS) && ((AttachmentTarget) player).getAttached(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft() > 0 && TFConfig.showFortificationShieldIndicator) {
+				renderShieldCount(graphics, graphics.guiWidth(), graphics.guiHeight(), ((AttachmentTarget) player).getAttached(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft());
 			}
 		});
-
-		event.registerAboveAll(TwilightForestMod.prefix("portal_overlay"), (graphics, partialTick) -> {
+		HudStatusBarHeightRegistry.addLeft(TFMain.prefix("fortification_shield_count"), player -> 10);
+		HudElementRegistry.addLast(TFMain.prefix("portal_overlay"), (graphics, delta) -> {
 			Minecraft minecraft = Minecraft.getInstance();
 			PortalOverlay.render(graphics, minecraft, minecraft.player);
 		});
 
-		event.registerAboveAll(TwilightForestMod.prefix("item_display_overlay"), (graphics, partialTick) -> {
-			Minecraft minecraft = Minecraft.getInstance();
-			Gui gui = minecraft.gui;
-			ItemDisplayOverlay.render(graphics, minecraft, minecraft.getWindow(), gui, getCameraPlayer());
-		});
+		// TODO [Fabric] item display overlay needs the ItemDisplayType renderers
+		// migrated from GuiGraphics to the extractor stage (GuiGraphicsExtractor#item)
 	}
 
 	private static void renderIndicator(Minecraft minecraft, GuiGraphicsExtractor graphics, Gui gui, Player player, int screenWidth, int screenHeight) {
@@ -117,16 +112,15 @@ public class OverlayHandler {
 		}
 	}
 
-	private static void renderShieldCount(GuiGraphicsExtractor graphics, Gui gui, int screenWidth, int screenHeight, int shieldCount) {
+	private static void renderShieldCount(GuiGraphicsExtractor graphics, int screenWidth, int screenHeight, int shieldCount) {
 		for (int i = 0; i < Math.min(shieldCount, 10); i++) {
-			graphics.blitSprite(RenderPipelines.GUI_TEXTURED, FORTIFICATION_SHIELD_SPRITE, screenWidth / 2 - 91 + (i * 8), screenHeight - gui.leftHeight, 9, 9);
+			graphics.blitSprite(RenderPipelines.GUI_TEXTURED, FORTIFICATION_SHIELD_SPRITE, screenWidth / 2 - 91 + (i * 8), screenHeight - HudStatusBarHeightRegistry.getHeight(TFMain.prefix("fortification_shield_count")), 9, 9);
 		}
-		gui.leftHeight += 10;
 	}
 
 	private static void renderOreMeterStats(GuiGraphicsExtractor graphics, Player player) {
-		if (player.isHolding(TFItems.ORE_METER.get())) {
-			InteractionHand handToUse = player.getItemInHand(InteractionHand.MAIN_HAND).is(TFItems.ORE_METER.get()) ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
+		if (player.isHolding(TFItems.ORE_METER)) {
+			InteractionHand handToUse = player.getItemInHand(InteractionHand.MAIN_HAND).is(TFItems.ORE_METER) ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
 			ItemStack selectedMeter = player.getItemInHand(handToUse);
 			if (OreMeterItem.isLoading(selectedMeter)) {
 				int dots = (OreMeterItem.getLoadProgress(selectedMeter) / 5) % 3;
@@ -159,163 +153,46 @@ public class OverlayHandler {
 
 	private static final DecimalFormat FORMAT = new DecimalFormat("0.000");
 
-	private static void initTooltips(long id, int range, OreScannerData data) {
-		ChunkPos pos = data.scannedChunk();
-		int totalScanned = data.totalScannedBlocks();
+	private static void initTooltips(long identifier, int oreRange, OreScannerData oreScannerData) {
+		ImmutableList.Builder<OreMeterInfoCache> builder = ImmutableList.builder();
 
-		List<Component> headerRowTexts = ImmutableList.of(
-			Component.translatable("misc.twilightforest.ore_meter_range", range, pos.x(), pos.z()),
-			Component.translatable("misc.twilightforest.ore_meter_total", totalScanned)
-		);
+		int y = 0;
+		List<Map.Entry<String, Integer>> ores = oreScannerData.counts().entrySet().stream()
+			.sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+			.toList();
 
-		ArrayList<ComponentColumn> columns = new ArrayList<>();
+		for (Map.Entry<String, Integer> ore : ores) {
+			String descriptionId = ore.getKey();
+			Identifier oreId = Identifier.parse(descriptionId.substring(descriptionId.indexOf('.') + 1));
+			ItemStack stack = new ItemStack(BuiltInRegistries.ITEM.getValue(oreId));
+			if (stack.isEmpty()) continue;
+			float percent = ore.getValue() / (float) (oreRange * oreRange * oreRange);
+			Component text = Component.translatable(stack.getItem().getDescriptionId()).append(": " + FORMAT.format(percent * 100F) + "%");
 
-		List<Pair<String, Integer>> scanData = data.counts().entrySet().stream()
-			.map(e -> Pair.of(e.getKey(), e.getValue())) // Convert Entries into Pairs
-			.sorted(Comparator.comparing(Pair::getSecond)) // Sort Pairs by second element (quantity)
-			.toList(); // Make sorted immutable list
-
-		if (TFConfig.prettifyOreMeterGui) {
-			ComponentColumn padding = ComponentColumn.padding(1);
-			List<Integer> counts = scanData.stream().map(Pair::getSecond).toList();
-
-			columns.add(nameColumn(scanData.stream().map(Pair::getFirst).toList()));
-			columns.add(padding);
-			columns.add(dashColumn(scanData.size()));
-			columns.add(padding);
-			columns.add(countColumn(counts));
-			columns.add(padding);
-			columns.add(ratioColumn(totalScanned, counts));
-		} else {
-			columns.add(withoutPrettyPrinting(totalScanned, scanData));
+			builder.add(new OreMeterInfoCache(stack, ore.getValue(), percent, text, y));
+			y += 20;
 		}
 
-		ORE_METER_STAT_CACHE.put(id, OreMeterInfoCache.build(headerRowTexts, columns));
+		ORE_METER_STAT_CACHE.put(identifier, new OreMeterInfoCache(builder.build()));
 	}
 
-	private static ComponentColumn withoutPrettyPrinting(int totalScanned, List<Pair<String, Integer>> entries) {
-		List<Component> tooltips = new ArrayList<>();
-
-		for (Pair<String, Integer> entry : entries) {
-			String percentage = FORMAT.format(entry.getSecond() * 100.0F / totalScanned);
-			Component formattedEntry = Component.translatable(entry.getFirst())
-				.append(Component.literal(" "))
-				.append(Component.translatable("misc.twilightforest.ore_meter_separator"))
-				.append(Component.literal(" " + entry.getSecond() + " "))
-				.append(Component.translatable("misc.twilightforest.ore_meter_ratio", percentage));
-
-			tooltips.add(formattedEntry);
-		}
-
-		return ComponentColumn.build(tooltips, ComponentAlignment.LEFT);
-	}
-
-	private static ComponentColumn nameColumn(List<String> oreNameKeys) {
-		ImmutableList.Builder<Component> toList = ImmutableList.builder();
-
-		toList.add(Component.translatable("misc.twilightforest.ore_meter_header_block").withStyle(ChatFormatting.GRAY));
-
-		for (String oreNameKey : oreNameKeys) {
-			MutableComponent translatable = Component.translatable(oreNameKey);
-			toList.add(translatable);
-		}
-
-		return ComponentColumn.build(toList.build(), ComponentAlignment.LEFT);
-	}
-
-	private static ComponentColumn dashColumn(int size) {
-		ImmutableList.Builder<Component> toList = ImmutableList.builder();
-
-		toList.add(Component.empty());
-
-		MutableComponent dash = Component.translatable("misc.twilightforest.ore_meter_separator");
-		for (int i = 0; i < size; i++)
-			toList.add(dash);
-
-		return ComponentColumn.build(toList.build(), ComponentAlignment.CENTER);
-	}
-
-	private static ComponentColumn countColumn(List<Integer> oreCounts) {
-		ImmutableList.Builder<Component> toList = ImmutableList.builder();
-
-		toList.add(Component.translatable("misc.twilightforest.ore_meter_header_count").withStyle(ChatFormatting.GRAY));
-
-		oreCounts.stream().mapToInt(count -> count).mapToObj(count -> Component.literal(String.valueOf(count))).forEach(toList::add);
-
-		return ComponentColumn.build(toList.build(), ComponentAlignment.RIGHT);
-	}
-
-	private static ComponentColumn ratioColumn(int totalScanned, List<Integer> oreCounts) {
-		ImmutableList.Builder<Component> toList = ImmutableList.builder();
-
-		toList.add(Component.translatable("misc.twilightforest.ore_meter_header_ratio").withStyle(ChatFormatting.GRAY));
-
-		for (int count : oreCounts) {
-			var percentage = FORMAT.format(count * 100.0F / totalScanned);
-			toList.add(Component.translatable("misc.twilightforest.ore_meter_ratio", percentage));
-		}
-
-		return ComponentColumn.build(toList.build(), ComponentAlignment.RIGHT);
-	}
-
-	public record ComponentColumn(List<? extends Component> textRows, int maxPixelWidth,
-								  ComponentAlignment textAlignment) {
-		public static ComponentColumn build(List<? extends Component> rowTexts, ComponentAlignment textAlignment) {
-			int maxColumnPixelWidth = rowTexts.stream().mapToInt(c -> Minecraft.getInstance().font.width(c)).max().orElse(0);
-			return new ComponentColumn(rowTexts, maxColumnPixelWidth, textAlignment);
-		}
-
-		public static ComponentColumn padding(int forcedExtraMaxWidthBySpaces) {
-			return new ComponentColumn(List.of(), forcedExtraMaxWidthBySpaces * Minecraft.getInstance().font.width(" "), ComponentAlignment.LEFT);
-		}
-
-		private int renderColumn(GuiGraphicsExtractor graphics, ComponentColumn column, int xOff, int yOff, int verticalTextPixelsAdvance) {
-			for (Component rowText : column.textRows) {
-				int textPixelWidth = Minecraft.getInstance().font.width(rowText);
-				int textXPos = xOff + this.textAlignment.getTextOffset(textPixelWidth, this.maxPixelWidth);
-				graphics.text(Minecraft.getInstance().font, rowText, textXPos, yOff, 0xff_ff_ff_00, false);
-				yOff += verticalTextPixelsAdvance;
-			}
-
-			return column.maxPixelWidth;
-		}
-	}
-
-	public record OreMeterInfoCache(int totalPixelWidth, int totalRowCount, List<Component> headerRows, List<ComponentColumn> textColumns) {
-		public static OreMeterInfoCache build(List<Component> headers, List<ComponentColumn> columns) {
-			// All these widths are measured in pixels, used for dealing with the font
-			int summedColumnMaxWidths = columns.stream().mapToInt(ComponentColumn::maxPixelWidth).sum();
-			int maxHeaderWidth = headers.stream().mapToInt(c -> Minecraft.getInstance().font.width(c)).max().orElse(0);
-
-			int maxPixelWidth = Math.max(summedColumnMaxWidths, maxHeaderWidth);
-
-			// Not measured in pixels, instead goes by element count - How many total rows of text will be shown in the GUI
-			int totalRowCount = headers.size() + columns.stream().mapToInt(column -> column.textRows.size()).max().orElse(0);
-
-			return new OreMeterInfoCache(maxPixelWidth, totalRowCount, ImmutableList.copyOf(headers), ImmutableList.copyOf(columns));
-		}
-
-		public void renderData(GuiGraphicsExtractor graphics) {
-			int verticalTextPixelsAdvance = Minecraft.getInstance().font.lineHeight + 1;
-
-			graphics.fill(0, 0, this.totalPixelWidth + 8, this.totalRowCount * verticalTextPixelsAdvance + 6, 0x9b_00_00_00);
-
-			int xOff = 4;
-			int yOff = 4;
-
-			for (Component headerRowText : this.headerRows) {
-				graphics.text(Minecraft.getInstance().font, headerRowText, xOff, yOff, 0xff_ff_ff_00, false);
-				yOff += verticalTextPixelsAdvance;
-			}
-
-			for (ComponentColumn column : this.textColumns) {
-				xOff += column.renderColumn(graphics, column, xOff, yOff, verticalTextPixelsAdvance);
-			}
-		}
-	}
-
+	// TODO old code that still needs to be ported, which relies on GuiGraphics
 	@Nullable
 	private static Player getCameraPlayer() {
-		return Minecraft.getInstance().getCameraEntity() instanceof Player player ? player : null;
+		return Minecraft.getInstance().player;
+	}
+
+	public record OreMeterInfoCache(ItemStack stack, int count, float percent, Component text, int offset) {
+		private OreMeterInfoCache(List<OreMeterInfoCache> infos) {
+			this(infos.get(0).stack(), infos.get(0).count(), infos.get(0).percent(), infos.get(0).text(), 0);
+		}
+
+		void renderData(GuiGraphicsExtractor graphics) {
+			int x = 10;
+			int y = 10 + offset;
+			graphics.fill(x, y, x + 110, y + 20, 0x8b000000);
+			graphics.item(stack, x + 3, y + 2);
+			graphics.text(Minecraft.getInstance().font, text, x + 25, y + 7, 0xffffff, true);
+		}
 	}
 }
