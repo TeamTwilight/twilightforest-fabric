@@ -2,6 +2,7 @@ package twilightforest.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import carminite.interfaces.markers.IExtendedBoundingBoxBlockEntityRenderer;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -11,16 +12,16 @@ import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BaseSpawner;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 import twilightforest.block.entity.spawner.SinisterSpawnerBlockEntity;
 
 // [VANILLA COPY] SpawnerRenderer (Type bound changed to CursedSpawnerEntity)
-public class SinisterSpawnerRenderer implements BlockEntityRenderer<SinisterSpawnerBlockEntity, SpawnerRenderState> {
+public class SinisterSpawnerRenderer implements BlockEntityRenderer<SinisterSpawnerBlockEntity, SpawnerRenderState>, IExtendedBoundingBoxBlockEntityRenderer {
     private final EntityRenderDispatcher entityRenderer;
 
     public SinisterSpawnerRenderer(BlockEntityRendererProvider.Context context) {
@@ -73,8 +74,8 @@ public class SinisterSpawnerRenderer implements BlockEntityRenderer<SinisterSpaw
 	}
 
 	@Override
-	public AABB getRenderBoundingBox(SinisterSpawnerBlockEntity entity) {
-		BlockPos pos = entity.getBlockPos();
+	public AABB getRenderBoundingBox(net.minecraft.world.level.block.entity.BlockEntity blockEntity) {
+		BlockPos pos = blockEntity.getBlockPos();
 		return new AABB(pos.getX() - 1.0D, pos.getY() - 1.0D, pos.getZ() - 1.0D, pos.getX() + 2.0D, pos.getY() + 2.0D, pos.getZ() + 2.0D);
 	}
 }
