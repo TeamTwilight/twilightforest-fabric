@@ -256,86 +256,82 @@ public class EntityUtil {
 		if (!(oldEntity.level() instanceof ServerLevel level)) return false;
 		var newEntity = newType.create(level, EntitySpawnReason.CONVERSION);
 		if (newEntity == null) return false;
-		boolean firedMobConversion = false;
-		// NeoForge's canLivingConvert event has no Fabric equivalent, so conversion always proceeds
-		{
-			var passengerSave = oldEntity.getPassengers();
-			if (oldEntity instanceof Mob mob && newEntity instanceof Mob newMob) {
-				newEntity = mob.convertTo((EntityType<? extends Mob>) newMob.getType(), ConversionParams.single(newMob, true, true), (ConversionParams.AfterConversion) _ -> {});
-				firedMobConversion = true;
-			} else {
-				newEntity.copyPosition(oldEntity);
-
-				if (newEntity instanceof Mob mob) {
-					if (oldEntity instanceof Mob oldMob) {
-						for (EquipmentSlot equipmentslot : EquipmentSlot.values()) {
-							ItemStack itemstack = oldEntity.getItemBySlot(equipmentslot).copyAndClear();
-							if (!itemstack.isEmpty()) {
-								mob.setItemSlot(equipmentslot, itemstack.copyAndClear());
-								mob.setDropChance(equipmentslot, oldMob.getDropChances().byEquipment(equipmentslot));
-							}
-						}
-					}
-					mob.finalizeSpawn(level, level.getCurrentDifficultyAt(oldEntity.blockPosition()), EntitySpawnReason.CONVERSION, null);
-				}
-
-				oldEntity.level().addFreshEntity(newEntity);
-				oldEntity.discard();
-			}
-			try {
-				UUID uuid = newEntity.getUUID();
-				ProblemReporter reporter = ProblemReporter.DISCARDING;
-				RegistryAccess provider = level.registryAccess();
-				TagValueOutput outputFactory = TagValueOutput.createWithContext(reporter, provider);
-
-				oldEntity.saveWithoutId(outputFactory);
-
-				CompoundTag copiedData = outputFactory.buildResult();
-				ValueInput inputFactory = TagValueInput.create(reporter, provider, copiedData);
-
-				newEntity.load(inputFactory);
-				newEntity.setUUID(uuid);
-
-				if (newEntity instanceof LivingEntity living) {
-					living.setHealth(living.getMaxHealth());
-				}
-			} catch (Exception e) {
-				TFMain.LOGGER.warn("Couldn't transform entity NBT data", e);
-			}
-
-			ItemStack saddleStack = oldEntity.getItemBySlot(EquipmentSlot.SADDLE);
-			if (!saddleStack.isEmpty() && saddleStack.is(Items.SADDLE)) {
-				if (!(newEntity instanceof LivingEntity newLiving) || !newLiving.canUseSlot(EquipmentSlot.SADDLE)) {
-					newEntity.spawnAtLocation(level, Items.SADDLE);
-				} else {
-					newLiving.setItemSlot(EquipmentSlot.SADDLE, saddleStack.copy());
-				}
-			}
+		var passengerSave = oldEntity.getPassengers();
+		if (oldEntity instanceof Mob mob && newEntity instanceof Mob newMob) {
+			newEntity = mob.convertTo((EntityType<? extends Mob>) newMob.getType(), ConversionParams.single(newMob, true, true), (ConversionParams.AfterConversion) _ -> {});
+		} else {
+			newEntity.copyPosition(oldEntity);
 
 			if (newEntity instanceof Mob mob) {
-				mob.spawnAnim();
-				mob.spawnAnim();
-
-				for (EquipmentSlot equipmentslot : EquipmentSlot.values()) {
-					ItemStack itemstack = mob.getItemBySlot(equipmentslot).copyAndClear();
-					mob.spawnAtLocation(level, itemstack);
+				if (oldEntity instanceof Mob oldMob) {
+					for (EquipmentSlot equipmentslot : EquipmentSlot.values()) {
+						ItemStack itemstack = oldEntity.getItemBySlot(equipmentslot).copyAndClear();
+						if (!itemstack.isEmpty()) {
+							mob.setItemSlot(equipmentslot, itemstack.copyAndClear());
+							mob.setDropChance(equipmentslot, oldMob.getDropChances().byEquipment(equipmentslot));
+						}
+					}
 				}
+
+				mob.finalizeSpawn(level, level.getCurrentDifficultyAt(oldEntity.blockPosition()), EntitySpawnReason.CONVERSION, null);
 			}
 
-			if (!passengerSave.isEmpty()) {
-				for (var entity : passengerSave) {
-					entity.startRiding(newEntity, true, false);
-				}
-			}
-
-			if (newEntity instanceof Mob mob && oldEntity instanceof Mob oldMob && !firedMobConversion) {
-				ServerLivingEntityEvents.MOB_CONVERSION.invoker().onConversion(oldMob, mob, ConversionParams.single(mob, true, true));
-			}
-
-			level.playSound(null, newEntity.blockPosition(), TFSounds.POWDER_USE.value(), newEntity.getSoundSource());
-			return true;
+			oldEntity.level().addFreshEntity(newEntity);
+			oldEntity.discard();
 		}
-		return false;
+		try {
+			UUID uuid = newEntity.getUUID();
+			ProblemReporter reporter = ProblemReporter.DISCARDING;
+			RegistryAccess provider = level.registryAccess();
+			TagValueOutput outputFactory = TagValueOutput.createWithContext(reporter, provider);
+
+			oldEntity.saveWithoutId(outputFactory);
+
+			CompoundTag copiedData = outputFactory.buildResult();
+			ValueInput inputFactory = TagValueInput.create(reporter, provider, copiedData);
+
+			newEntity.load(inputFactory);
+			newEntity.setUUID(uuid);
+
+			if (newEntity instanceof LivingEntity living) {
+				living.setHealth(living.getMaxHealth());
+			}
+		} catch (Exception e) {
+			TFMain.LOGGER.warn("Couldn't transform entity NBT data", e);
+		}
+
+		ItemStack saddleStack = oldEntity.getItemBySlot(EquipmentSlot.SADDLE);
+		if (!saddleStack.isEmpty() && saddleStack.is(Items.SADDLE)) {
+			if (!(newEntity instanceof LivingEntity newLiving) || !newLiving.canUseSlot(EquipmentSlot.SADDLE)) {
+				newEntity.spawnAtLocation(level, Items.SADDLE);
+			} else {
+				newLiving.setItemSlot(EquipmentSlot.SADDLE, saddleStack.copy());
+			}
+		}
+
+		if (newEntity instanceof Mob mob) {
+			mob.spawnAnim();
+			mob.spawnAnim();
+
+			for (EquipmentSlot equipmentslot : EquipmentSlot.values()) {
+				ItemStack itemstack = mob.getItemBySlot(equipmentslot).copyAndClear();
+				mob.spawnAtLocation(level, itemstack);
+			}
+		}
+
+		if (!passengerSave.isEmpty()) {
+			for (var entity : passengerSave) {
+				entity.startRiding(newEntity, true, false);
+			}
+		}
+
+		if (newEntity instanceof LivingEntity living) {
+			if (oldEntity instanceof Mob oldMob && living instanceof Mob newMob) {
+				ServerLivingEntityEvents.MOB_CONVERSION.invoker().onConversion(oldMob, newMob, ConversionParams.single(newMob, true, true));
+			}
+		}
+		level.playSound(null, newEntity.blockPosition(), TFSounds.POWDER_USE.value(), newEntity.getSoundSource());
+		return true;
 	}
 
 	@Nullable
