@@ -13,17 +13,16 @@ import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.context.ContextKey;
 import net.minecraft.world.level.block.Blocks;
-import twilightforest.TFMain;
+import net.fabricmc.fabric.api.client.rendering.v1.RenderStateDataKey;
 import twilightforest.client.model.entity.DeathTomeModel;
 import twilightforest.potions.FrostedEffect;
 
 public class IceLayer<S extends LivingEntityRenderState, M extends EntityModel<S>> extends RenderLayer<S, M> {
 	private final RandomSource random = RandomSource.create();
 
-	public static ContextKey<Double> FROST_COUNT_KEY = new ContextKey<>(TFMain.prefix("frost_count"));
-	public static ContextKey<Integer> FROST_ID_KEY = new ContextKey<>(TFMain.prefix("frost_id"));
+	public static final RenderStateDataKey<Double> FROST_COUNT_KEY = RenderStateDataKey.create(() -> "frost_count");
+	public static final RenderStateDataKey<Integer> FROST_ID_KEY = RenderStateDataKey.create(() -> "frost_id");
 
 	public IceLayer(RenderLayerParent<S, M> renderer) {
 		super(renderer);
@@ -31,9 +30,9 @@ public class IceLayer<S extends LivingEntityRenderState, M extends EntityModel<S
 
 	@Override
 	public void submit(PoseStack stack, SubmitNodeCollector submitNodeCollector, int light, S state, float netHeadYaw, float headPitch) {
-		Double count = state.getRenderData(FROST_COUNT_KEY);
+		Double count = state.getData(FROST_COUNT_KEY);
 		if (count == null || count <= 0.0D) return;
-		Integer id = state.getRenderData(FROST_ID_KEY);
+		Integer id = state.getData(FROST_ID_KEY);
 		if (id == null) return;
 
 		this.random.setSeed(id * id * 3121L + id * 45238971L);
