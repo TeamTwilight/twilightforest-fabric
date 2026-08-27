@@ -3,7 +3,6 @@ package twilightforest.client.event;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.client.event.ClientTickEvent;
 import twilightforest.client.LockedBiomeToast;
 import twilightforest.config.TFConfig;
 import twilightforest.util.Restriction;
@@ -16,7 +15,7 @@ public class LockedBiomeToastHandler {
 	private static int timeUntilToast = 60;
 	private static boolean progressionEnforced = true;
 
-	protected static void tickLockedToastLogic(ClientTickEvent.Post event) {
+	public static void tickLockedToastLogic() {
 		Player player = Minecraft.getInstance().player;
 		if (player == null || !(player.level() instanceof ClientLevel level))
 			return;
