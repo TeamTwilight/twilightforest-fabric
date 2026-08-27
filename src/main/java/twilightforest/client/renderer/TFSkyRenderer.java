@@ -19,6 +19,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.fabricmc.fabric.api.client.rendering.v1.RenderStateDataKey;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelExtractionContext;
+import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import org.joml.*;
 import twilightforest.TFMain;
 
@@ -36,6 +37,10 @@ public class TFSkyRenderer implements AutoCloseable {
 
 	public TFSkyRenderer() {
 		this.starBuffer = buildStars();
+	}
+
+	public static void init() {
+		LevelRenderEvents.END_EXTRACTION.register(TFSkyRenderer::extractLevelRender);
 	}
 
 	public static void extractLevelRender(LevelExtractionContext context) {
