@@ -270,6 +270,9 @@ accessible method net/minecraft/client/particle/HeartParticle <init> (Lnet/minec
 accessible method net/minecraft/client/particle/SpellParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDDLnet/minecraft/client/particle/SpriteSet;)V
 accessible method net/minecraft/client/particle/SuspendedTownParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDDLnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V
 
+# NoopModel and other TF models keep their renderToBuffer overrides (matching NeoForge)
+extendable method net/minecraft/client/model/Model renderToBuffer (Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;III)V
+
 # Enum Extensions
 extend-enum net/minecraft/world/damagesource/DamageEffects TWILIGHTFOREST_PINCH
 extend-enum net/minecraft/world/item/Rarity TWILIGHTFOREST_TWILIGHT
@@ -279,3 +282,4 @@ extend-enum net/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifi
 extend-enum net/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier TWILIGHTFOREST_DARK_FOREST_CENTER
 extend-enum net/minecraft/world/level/biome/BiomeSpecialEffects$GrassColorModifier TWILIGHTFOREST_SPOOKY_FOREST
 extend-enum net/minecraft/world/item/ItemDisplayContext TWILIGHTFOREST_JARRED
+
