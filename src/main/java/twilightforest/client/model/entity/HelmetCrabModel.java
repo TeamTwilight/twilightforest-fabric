@@ -53,6 +53,13 @@ public class HelmetCrabModel extends EntityModel<HelmetCrabRenderState> {
 		return this.helmet;
 	}
 
+	@Override
+	public void renderToBuffer(PoseStack stack, VertexConsumer consumer, int light, int overlay, int color) {
+		this.crab.render(stack, consumer, light, overlay, color);
+		//no red overlay on the helmet
+		this.helmet.render(stack, consumer, light, OverlayTexture.NO_OVERLAY, color);
+	}
+
 	public static LayerDefinition create() {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();

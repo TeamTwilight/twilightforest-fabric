@@ -272,6 +272,7 @@ accessible method net/minecraft/client/particle/SuspendedTownParticle <init> (Ln
 
 # NoopModel and other TF models keep their renderToBuffer overrides (matching NeoForge)
 extendable method net/minecraft/client/model/Model renderToBuffer (Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;III)V
+extendable method net/minecraft/client/model/Model renderToBuffer (Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;IIII)V
 
 # EntityUtil (direct calls instead of NeoForge ObfuscationReflectionHelper)
 accessible method net/minecraft/world/entity/decoration/HangingEntity setDirection (Lnet/minecraft/core/Direction;)V
