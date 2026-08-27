@@ -40,16 +40,11 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.fml.util.ObfuscationReflectionHelper;
-import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFMain;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.init.TFSounds;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -69,9 +64,7 @@ public class EntityUtil {
 		float hardness = state.getDestroySpeed(world, pos);
 		return hardness >= 0f && hardness < 50f && !state.isAir()
 			&& !(world.getBlockEntity(pos) instanceof Container)
-			&& state.getBlock().canEntityDestroy(state, world, pos, entity)
-			&& (/* rude type limit */!(entity instanceof LivingEntity)
-			|| EventHooks.onEntityDestroyBlock((LivingEntity) entity, pos, state));
+			&& (/* rude type limit */!(entity instanceof LivingEntity));
 	}
 
 	/**
@@ -93,37 +86,9 @@ public class EntityUtil {
 		return rayTrace(player, modifier == null ? range : modifier.applyAsDouble(range));
 	}
 
-	private static final MethodHandles.Lookup LOOKUP = MethodHandles.lookup();
-	private static final Method LivingEntity_getDeathSound = ObfuscationReflectionHelper.findMethod(LivingEntity.class, "getDeathSound");
-	private static final MethodHandle handle_LivingEntity_getDeathSound;
-	private static final Method HangingEntity_setDirection = ObfuscationReflectionHelper.findMethod(HangingEntity.class, "setDirection", Direction.class);
-	private static final MethodHandle handle_HangingEntity_setDirection;
-
-	static {
-		MethodHandle tmp_handle_LivingEntity_getDeathSound = null;
-		MethodHandle tmp_handle_HangingEntity_setDirection = null;
-
-		try {
-			tmp_handle_LivingEntity_getDeathSound = LOOKUP.unreflect(LivingEntity_getDeathSound);
-			tmp_handle_HangingEntity_setDirection = LOOKUP.unreflect(HangingEntity_setDirection);
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
-		handle_LivingEntity_getDeathSound = tmp_handle_LivingEntity_getDeathSound;
-		handle_HangingEntity_setDirection = tmp_handle_HangingEntity_setDirection;
-	}
-
 	@Nullable
 	public static SoundEvent getDeathSound(LivingEntity living) {
-		SoundEvent sound = null;
-		if (handle_LivingEntity_getDeathSound != null) {
-			try {
-				sound = (SoundEvent) handle_LivingEntity_getDeathSound.invokeExact(living);
-			} catch (Throwable e) {
-				// FAIL SILENTLY
-			}
-		}
-		return sound;
+		return living.getDeathSound();
 	}
 
 	public static void killLavaAround(Entity entity) {
@@ -188,13 +153,7 @@ public class EntityUtil {
 		Painting painting = createEntityIgnoreException(EntityType.PAINTING, world);
 
 		painting.setPos(pos.getX(), pos.getY(), pos.getZ());
-		try {
-			handle_HangingEntity_setDirection.invoke(painting, direction);
-		} catch (Throwable throwable) {
-			throwable.printStackTrace();
-
-			return false;
-		}
+		painting.setDirection(direction);
 		painting.setComponent(DataComponents.PAINTING_VARIANT, chosenPainting);
 
 		if (checkValidPaintingPosition(world, painting)) {
@@ -296,7 +255,8 @@ public class EntityUtil {
 		if (!(oldEntity.level() instanceof ServerLevel level)) return false;
 		var newEntity = newType.create(level, EntitySpawnReason.CONVERSION);
 		if (newEntity == null) return false;
-		if (!(newEntity instanceof LivingEntity living) || EventHooks.canLivingConvert(oldEntity, (EntityType<? extends LivingEntity>) living.getType(), timer -> {})) {
+		// NeoForge's canLivingConvert event has no Fabric equivalent, so conversion always proceeds
+		{
 			var passengerSave = oldEntity.getPassengers();
 			if (oldEntity instanceof Mob mob && newEntity instanceof Mob newMob) {
 				newEntity = mob.convertTo((EntityType<? extends Mob>) newMob.getType(), ConversionParams.single(newMob, true, true), (ConversionParams.AfterConversion) _ -> {});
@@ -313,8 +273,6 @@ public class EntityUtil {
 							}
 						}
 					}
-
-					EventHooks.finalizeMobSpawn(mob, level, level.getCurrentDifficultyAt(oldEntity.blockPosition()), EntitySpawnReason.CONVERSION, null);
 				}
 
 				oldEntity.level().addFreshEntity(newEntity);
@@ -366,8 +324,8 @@ public class EntityUtil {
 				}
 			}
 
-			if (newEntity instanceof LivingEntity living) EventHooks.onLivingConvert(oldEntity, living);
-			level.playSound(null, newEntity.blockPosition(), TFSounds.POWDER_USE.get(), newEntity.getSoundSource());
+			// NeoForge's onLivingConvert event has no Fabric equivalent
+			level.playSound(null, newEntity.blockPosition(), TFSounds.POWDER_USE.value(), newEntity.getSoundSource());
 			return true;
 		}
 		return false;
