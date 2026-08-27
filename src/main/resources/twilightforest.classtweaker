@@ -39,6 +39,9 @@ accessible field net/minecraft/world/level/levelgen/structure/pieces/StructurePi
 # EntityEvents (reduces frosted effect amplifier if entity is on fire)
 accessible field net/minecraft/world/effect/MobEffectInstance amplifier I
 
+# EntityEvents (extended enderman take-block goal for the twilight dimension)
+accessible class net/minecraft/world/entity/monster/EnderMan$EndermanTakeBlockGoal
+
 # Goblin Knights (adds breaking armor effects when goblin knight armor layers are broken)
 accessible method net/minecraft/world/entity/LivingEntity breakItem (Lnet/minecraft/world/item/ItemStack;)V
 
@@ -48,6 +51,8 @@ accessible class net/minecraft/world/entity/ai/control/MoveControl$Operation
 
 # HedgeSpider, SwarmSpider, and UrGhast (removes goals the mobs dont need)
 accessible field net/minecraft/world/entity/ai/goal/GoalSelector availableGoals Ljava/util/Set;
+accessible field net/minecraft/world/entity/Mob goalSelector Lnet/minecraft/world/entity/ai/goal/GoalSelector;
+accessible field net/minecraft/world/entity/Entity tags Ljava/util/Set;
 
 # IBossLootBuffer (shuffles and makes boss chests look natural)
 accessible method net/minecraft/world/level/storage/loot/LootTable shuffleAndSplitItems (Lit/unimi/dsi/fastutil/objects/ObjectArrayList;ILnet/minecraft/util/RandomSource;)V
