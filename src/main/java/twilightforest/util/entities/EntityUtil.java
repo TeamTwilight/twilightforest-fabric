@@ -88,7 +88,7 @@ public class EntityUtil {
 
 	@Nullable
 	public static SoundEvent getDeathSound(LivingEntity living) {
-		return living.getDeathSound();
+		return ((twilightforest.asm.mixin.coremod.LivingEntityGetDeathSoundAccessor) living).twilightforest$invokeGetDeathSound();
 	}
 
 	public static void killLavaAround(Entity entity) {

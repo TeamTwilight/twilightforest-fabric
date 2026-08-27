@@ -274,7 +274,6 @@ accessible method net/minecraft/client/particle/SuspendedTownParticle <init> (Ln
 extendable method net/minecraft/client/model/Model renderToBuffer (Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;III)V
 
 # EntityUtil (direct calls instead of NeoForge ObfuscationReflectionHelper)
-accessible method net/minecraft/world/entity/LivingEntity getDeathSound ()Lnet/minecraft/sounds/SoundEvent;
 accessible method net/minecraft/world/entity/decoration/HangingEntity setDirection (Lnet/minecraft/core/Direction;)V
 
 # Enum Extensions
