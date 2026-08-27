@@ -1,6 +1,5 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.Minecraft;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -41,7 +40,8 @@ public class MinoshroomRenderer extends HumanoidMobRenderer<Minoshroom, Minoshro
 	@Override
 	public void extractRenderState(Minoshroom entity, MinoshroomRenderState state, float partialTick) {
 		super.extractRenderState(entity, state, partialTick);
-		state.chargeAnim = Mth.lerp(partialTick, entity.prevClientSideChargeAnimation, entity.clientSideChargeAnimation) / 6.0F;
+		state.partialTick = partialTick;
+		state.chargeAnim = Mth.lerp(state.partialTick, entity.prevClientSideChargeAnimation, entity.clientSideChargeAnimation) / 6.0F;
 		this.blockModelResolver.update(state.mushroomModel, Blocks.BROWN_MUSHROOM.defaultBlockState(), BLOCK_DISPLAY_CONTEXT);
 
 	}

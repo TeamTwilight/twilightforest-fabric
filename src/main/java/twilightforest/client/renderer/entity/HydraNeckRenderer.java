@@ -1,6 +1,5 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.Minecraft;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -29,7 +28,7 @@ public class HydraNeckRenderer extends TFPartRenderer<HydraNeck, HydraNeckRender
 			} else if (yawDiff < -180) {
 				yawDiff += 360;
 			}
-			float yaw2 = state.yRotO + yawDiff * Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false);
+			float yaw2 = state.yRotO + yawDiff * state.partialTick;
 
 			stack.mulPose(Axis.YN.rotationDegrees(yaw2 + 180));
 			super.submit(state, stack, buffer, cameraRenderState);

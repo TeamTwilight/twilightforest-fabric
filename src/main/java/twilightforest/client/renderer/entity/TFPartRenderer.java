@@ -32,7 +32,7 @@ public abstract class TFPartRenderer<T extends TFPart<?>, S extends PartEntitySt
 	public void submit(S state, PoseStack stack, SubmitNodeCollector buffer, CameraRenderState cameraRenderState) {
 		stack.pushPose();
 
-		this.setupRotations(state, stack, Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false));
+		this.setupRotations(state, stack, state.partialTick);
 		stack.scale(-1.0F, -1.0F, 1.0F);
 		stack.translate(0.0D, -1.501F, 0.0D);
 		this.model.setupAnim(state);
@@ -93,6 +93,7 @@ public abstract class TFPartRenderer<T extends TFPart<?>, S extends PartEntitySt
 	@Override
 	public void extractRenderState(T entity, S state, float partialTick) {
 		super.extractRenderState(entity, state, partialTick);
+		state.partialTick = partialTick;
 		state.yRot = entity.getYRot();
 		state.yRotO = entity.yRotO;
 		state.xRot = entity.getXRot(partialTick);

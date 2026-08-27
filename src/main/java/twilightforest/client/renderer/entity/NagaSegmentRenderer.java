@@ -1,6 +1,5 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.Minecraft;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -30,7 +29,7 @@ public class NagaSegmentRenderer extends TFPartRenderer<NagaSegment, NagaSegment
 			} else if (yawDiff < -180) {
 				yawDiff += 360;
 			}
-			float yaw2 = state.yRotO + yawDiff * Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false);
+			float yaw2 = state.yRotO + yawDiff * state.partialTick;
 
 			stack.mulPose(Axis.YP.rotationDegrees(yaw2));
 			stack.mulPose(Axis.XP.rotationDegrees(state.xRot));

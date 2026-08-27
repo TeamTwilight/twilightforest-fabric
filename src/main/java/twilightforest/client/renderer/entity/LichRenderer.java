@@ -1,6 +1,5 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.Minecraft;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -67,9 +66,9 @@ public class LichRenderer extends HumanoidMobRenderer<Lich, LichRenderState, Lic
 
 		if (state.deathTime > 0) {
 			if (state.deathTime > Lich.DEATH_ANIMATION_POINT_A) {
-				poseStack.translate(0.0D, -1.8D * Math.pow(Math.min(((state.deathTime - Lich.DEATH_ANIMATION_POINT_A) + Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false)) / (float) (Lich.DEATH_ANIMATION_POINT_B - Lich.DEATH_ANIMATION_POINT_A), 1.0D), 3.0D), 0.0D);
+				poseStack.translate(0.0D, -1.8D * Math.pow(Math.min(((state.deathTime - Lich.DEATH_ANIMATION_POINT_A) + state.partialTick) / (float) (Lich.DEATH_ANIMATION_POINT_B - Lich.DEATH_ANIMATION_POINT_A), 1.0D), 3.0D), 0.0D);
 			} else {
-				float time = state.deathTime + Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false);
+				float time = state.deathTime + state.partialTick;
 				poseStack.translate(Math.sin(time * time) * 0.01D, 0.0D, Math.cos(time * time) * 0.01D);
 			}
 
@@ -91,6 +90,7 @@ public class LichRenderer extends HumanoidMobRenderer<Lich, LichRenderState, Lic
 	@Override
 	public void extractRenderState(Lich entity, LichRenderState state, float partialTick) {
 		super.extractRenderState(entity, state, partialTick);
+		state.partialTick = partialTick;
 		state.isShadowClone = entity.isShadowClone();
 	}
 
