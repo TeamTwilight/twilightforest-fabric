@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.LightCoordsUtil;
@@ -74,7 +75,7 @@ public class BrazierRenderer implements BlockEntityRenderer<BrazierBlockEntity, 
 	}
 
 	@Override
-	public AABB getRenderBoundingBox(net.minecraft.world.level.block.entity.BlockEntity blockEntity) {
+	public AABB getRenderBoundingBox(BlockEntity blockEntity) {
 		BlockPos pos = blockEntity.getBlockPos();
 		return new AABB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1.0, pos.getY() + 2.0, pos.getZ() + 1.0);
 	}

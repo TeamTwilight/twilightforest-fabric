@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -74,7 +75,7 @@ public class SinisterSpawnerRenderer implements BlockEntityRenderer<SinisterSpaw
 	}
 
 	@Override
-	public AABB getRenderBoundingBox(net.minecraft.world.level.block.entity.BlockEntity blockEntity) {
+	public AABB getRenderBoundingBox(BlockEntity blockEntity) {
 		BlockPos pos = blockEntity.getBlockPos();
 		return new AABB(pos.getX() - 1.0D, pos.getY() - 1.0D, pos.getZ() - 1.0D, pos.getX() + 2.0D, pos.getY() + 2.0D, pos.getZ() + 2.0D);
 	}
