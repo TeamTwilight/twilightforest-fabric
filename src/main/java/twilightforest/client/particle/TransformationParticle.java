@@ -6,7 +6,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.phys.AABB;
 
 public class TransformationParticle extends SingleQuadParticle {
 	private final double xStart;
@@ -90,8 +89,4 @@ public class TransformationParticle extends SingleQuadParticle {
 		}
 	}
 
-	@Override
-	public AABB getRenderBoundingBox(float partialTicks) {
-		return AABB.INFINITE;
-	}
 }
