@@ -7,8 +7,6 @@
     "ServerPlayerGameModeMixin",
     "LivingEntityGetDeathSoundAccessor",
     "PowderSnowBlockMixin",
-    "EntityCanRiderInteractMixin",
-    "EntityInteractMixin",
     "enums.DamageEffectsMixin",
     "enums.GrassColorModifierMixin",
     "enums.ItemDisplayContextMixin",
