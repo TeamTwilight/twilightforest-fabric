@@ -22,7 +22,6 @@ import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.neoforged.neoforge.event.EventHooks;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.BoundingBoxUtils;
@@ -45,7 +44,7 @@ public final class FeaturePlacers {
 
 		mob.setPersistenceRequired();
 		mob.snapTo(pos, 0.0F, 0.0F);
-		EventHooks.finalizeMobSpawn(mob, levelAccessor, levelAccessor.getCurrentDifficultyAt(pos), EntitySpawnReason.STRUCTURE, null);
+		mob.finalizeSpawn(levelAccessor, levelAccessor.getCurrentDifficultyAt(pos), EntitySpawnReason.STRUCTURE, null);
 		if (mob instanceof EnforcedHomePoint home) {
 			home.setRestrictionPoint(GlobalPos.of(levelAccessor.getLevel().dimension(), pos));
 		}
@@ -287,13 +286,13 @@ public final class FeaturePlacers {
 	public static void addFirefly(LevelAccessor world, BlockPos pos, int height, double angle) {
 		int iAngle = (int) (angle * 4.0);
 		if (iAngle == 0) {
-			setIfEmpty(world, pos.offset(1, height, 0), TFBlocks.FIREFLY.get().defaultBlockState().setValue(DirectionalBlock.FACING, Direction.EAST));
+			setIfEmpty(world, pos.offset(1, height, 0), TFBlocks.FIREFLY.defaultBlockState().setValue(DirectionalBlock.FACING, Direction.EAST));
 		} else if (iAngle == 1) {
-			setIfEmpty(world, pos.offset(-1, height, 0), TFBlocks.FIREFLY.get().defaultBlockState().setValue(DirectionalBlock.FACING, Direction.WEST));
+			setIfEmpty(world, pos.offset(-1, height, 0), TFBlocks.FIREFLY.defaultBlockState().setValue(DirectionalBlock.FACING, Direction.WEST));
 		} else if (iAngle == 2) {
-			setIfEmpty(world, pos.offset(0, height, 1), TFBlocks.FIREFLY.get().defaultBlockState().setValue(DirectionalBlock.FACING, Direction.SOUTH));
+			setIfEmpty(world, pos.offset(0, height, 1), TFBlocks.FIREFLY.defaultBlockState().setValue(DirectionalBlock.FACING, Direction.SOUTH));
 		} else if (iAngle == 3) {
-			setIfEmpty(world, pos.offset(0, height, -1), TFBlocks.FIREFLY.get().defaultBlockState().setValue(DirectionalBlock.FACING, Direction.NORTH));
+			setIfEmpty(world, pos.offset(0, height, -1), TFBlocks.FIREFLY.defaultBlockState().setValue(DirectionalBlock.FACING, Direction.NORTH));
 		}
 	}
 
