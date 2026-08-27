@@ -1,5 +1,6 @@
 package twilightforest.client.renderer.entity;
 
+import net.minecraft.client.Minecraft;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -49,7 +50,7 @@ public class UnstableIceCoreRenderer extends MobRenderer<UnstableIceCore, Living
 	@Override
 	protected float getWhiteOverlayProgress(LivingEntityRenderState state) {
 		if (state.deathTime > 0) {
-			float f2 = state.deathTime + state.partialTick;
+			float f2 = state.deathTime + Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false);
 
 			if ((int) (f2 / 2) % 2 == 0) {
 				return 0;
