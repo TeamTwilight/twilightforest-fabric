@@ -1,19 +1,18 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.Minecraft;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import twilightforest.TFMain;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.UnstableIceCoreModel;
+import twilightforest.client.state.entity.UnstableIceCoreRenderState;
 import twilightforest.entity.monster.UnstableIceCore;
 
-public class UnstableIceCoreRenderer extends MobRenderer<UnstableIceCore, LivingEntityRenderState, UnstableIceCoreModel> {
+public class UnstableIceCoreRenderer extends MobRenderer<UnstableIceCore, UnstableIceCoreRenderState, UnstableIceCoreModel> {
 
 	public static final Identifier TEXTURE = TFMain.getModelTexture("iceexploder.png");
 
@@ -22,7 +21,7 @@ public class UnstableIceCoreRenderer extends MobRenderer<UnstableIceCore, Living
 	}
 
 	@Override
-	protected void scale(LivingEntityRenderState state, PoseStack stack) {
+	protected void scale(UnstableIceCoreRenderState state, PoseStack stack) {
 		stack.translate(0.0F, Mth.sin(state.ageInTicks * 0.2F) * 0.15F, 0.0F);
 
 		// flash
@@ -43,14 +42,14 @@ public class UnstableIceCoreRenderer extends MobRenderer<UnstableIceCore, Living
 	}
 
 	@Override
-	protected void setupRotations(LivingEntityRenderState state, PoseStack stack, float yRot, float scale) {
+	protected void setupRotations(UnstableIceCoreRenderState state, PoseStack stack, float yRot, float scale) {
 		stack.mulPose(Axis.YP.rotationDegrees(180 - yRot));
 	}
 
 	@Override
-	protected float getWhiteOverlayProgress(LivingEntityRenderState state) {
+	protected float getWhiteOverlayProgress(UnstableIceCoreRenderState state) {
 		if (state.deathTime > 0) {
-			float f2 = state.deathTime + Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false);
+			float f2 = state.deathTime + state.partialTick;
 
 			if ((int) (f2 / 2) % 2 == 0) {
 				return 0;
@@ -76,14 +75,18 @@ public class UnstableIceCoreRenderer extends MobRenderer<UnstableIceCore, Living
 	}
 
 	@Override
-	public LivingEntityRenderState createRenderState() {
-		return new LivingEntityRenderState();
+	public void extractRenderState(UnstableIceCore entity, UnstableIceCoreRenderState state, float partialTick) {
+		super.extractRenderState(entity, state, partialTick);
+		state.partialTick = partialTick;
 	}
 
 	@Override
-	public Identifier getTextureLocation(LivingEntityRenderState state) {
+	public UnstableIceCoreRenderState createRenderState() {
+		return new UnstableIceCoreRenderState();
+	}
+
+	@Override
+	public Identifier getTextureLocation(UnstableIceCoreRenderState state) {
 		return TEXTURE;
 	}
 }
-
-
