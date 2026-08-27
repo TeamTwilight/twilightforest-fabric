@@ -5,7 +5,7 @@
   "compatibilityLevel": "JAVA_25",
   "mixins": [
     "ServerPlayerGameModeMixin",
-    "coremod.LivingEntityGetDeathSoundAccessor",
+    "LivingEntityGetDeathSoundAccessor",
     "enums.DamageEffectsMixin",
     "enums.GrassColorModifierMixin",
     "enums.ItemDisplayContextMixin",

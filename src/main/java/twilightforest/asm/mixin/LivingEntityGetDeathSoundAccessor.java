@@ -1,4 +1,4 @@
-package twilightforest.asm.mixin.coremod;
+package twilightforest.asm.mixin;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;

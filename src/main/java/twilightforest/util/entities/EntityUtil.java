@@ -88,7 +88,7 @@ public class EntityUtil {
 
 	@Nullable
 	public static SoundEvent getDeathSound(LivingEntity living) {
-		return ((twilightforest.asm.mixin.coremod.LivingEntityGetDeathSoundAccessor) living).twilightforest$invokeGetDeathSound();
+		return ((twilightforest.asm.mixin.LivingEntityGetDeathSoundAccessor) living).twilightforest$invokeGetDeathSound();
 	}
 
 	public static void killLavaAround(Entity entity) {
@@ -273,6 +273,8 @@ public class EntityUtil {
 							}
 						}
 					}
+					// vanilla conversion initialisation (NeoForge's finalizeMobSpawn hook removed)
+					mob.finalizeSpawn(level, level.getCurrentDifficultyAt(oldEntity.blockPosition()), EntitySpawnReason.CONVERSION, null);
 				}
 
 				oldEntity.level().addFreshEntity(newEntity);
