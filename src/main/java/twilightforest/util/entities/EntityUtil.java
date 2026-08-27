@@ -1,6 +1,7 @@
 package twilightforest.util.entities;
 
 import com.google.common.collect.Lists;
+import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -40,16 +41,11 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.fml.util.ObfuscationReflectionHelper;
-import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFMain;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.init.TFSounds;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -69,9 +65,7 @@ public class EntityUtil {
 		float hardness = state.getDestroySpeed(world, pos);
 		return hardness >= 0f && hardness < 50f && !state.isAir()
 			&& !(world.getBlockEntity(pos) instanceof Container)
-			&& state.getBlock().canEntityDestroy(state, world, pos, entity)
-			&& (/* rude type limit */!(entity instanceof LivingEntity)
-			|| EventHooks.onEntityDestroyBlock((LivingEntity) entity, pos, state));
+			&& state.getBlock().carminite$canEntityDestroy(state, world, pos, entity);
 	}
 
 	/**
@@ -93,37 +87,9 @@ public class EntityUtil {
 		return rayTrace(player, modifier == null ? range : modifier.applyAsDouble(range));
 	}
 
-	private static final MethodHandles.Lookup LOOKUP = MethodHandles.lookup();
-	private static final Method LivingEntity_getDeathSound = ObfuscationReflectionHelper.findMethod(LivingEntity.class, "getDeathSound");
-	private static final MethodHandle handle_LivingEntity_getDeathSound;
-	private static final Method HangingEntity_setDirection = ObfuscationReflectionHelper.findMethod(HangingEntity.class, "setDirection", Direction.class);
-	private static final MethodHandle handle_HangingEntity_setDirection;
-
-	static {
-		MethodHandle tmp_handle_LivingEntity_getDeathSound = null;
-		MethodHandle tmp_handle_HangingEntity_setDirection = null;
-
-		try {
-			tmp_handle_LivingEntity_getDeathSound = LOOKUP.unreflect(LivingEntity_getDeathSound);
-			tmp_handle_HangingEntity_setDirection = LOOKUP.unreflect(HangingEntity_setDirection);
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
-		handle_LivingEntity_getDeathSound = tmp_handle_LivingEntity_getDeathSound;
-		handle_HangingEntity_setDirection = tmp_handle_HangingEntity_setDirection;
-	}
-
 	@Nullable
 	public static SoundEvent getDeathSound(LivingEntity living) {
-		SoundEvent sound = null;
-		if (handle_LivingEntity_getDeathSound != null) {
-			try {
-				sound = (SoundEvent) handle_LivingEntity_getDeathSound.invokeExact(living);
-			} catch (Throwable e) {
-				// FAIL SILENTLY
-			}
-		}
-		return sound;
+		return ((twilightforest.asm.mixin.LivingEntityGetDeathSoundAccessor) living).twilightforest$invokeGetDeathSound();
 	}
 
 	public static void killLavaAround(Entity entity) {
@@ -188,13 +154,7 @@ public class EntityUtil {
 		Painting painting = createEntityIgnoreException(EntityType.PAINTING, world);
 
 		painting.setPos(pos.getX(), pos.getY(), pos.getZ());
-		try {
-			handle_HangingEntity_setDirection.invoke(painting, direction);
-		} catch (Throwable throwable) {
-			throwable.printStackTrace();
-
-			return false;
-		}
+		painting.setDirection(direction);
 		painting.setComponent(DataComponents.PAINTING_VARIANT, chosenPainting);
 
 		if (checkValidPaintingPosition(world, painting)) {
@@ -296,81 +256,82 @@ public class EntityUtil {
 		if (!(oldEntity.level() instanceof ServerLevel level)) return false;
 		var newEntity = newType.create(level, EntitySpawnReason.CONVERSION);
 		if (newEntity == null) return false;
-		if (!(newEntity instanceof LivingEntity living) || EventHooks.canLivingConvert(oldEntity, (EntityType<? extends LivingEntity>) living.getType(), timer -> {})) {
-			var passengerSave = oldEntity.getPassengers();
-			if (oldEntity instanceof Mob mob && newEntity instanceof Mob newMob) {
-				newEntity = mob.convertTo((EntityType<? extends Mob>) newMob.getType(), ConversionParams.single(newMob, true, true), (ConversionParams.AfterConversion) _ -> {});
-			} else {
-				newEntity.copyPosition(oldEntity);
-
-				if (newEntity instanceof Mob mob) {
-					if (oldEntity instanceof Mob oldMob) {
-						for (EquipmentSlot equipmentslot : EquipmentSlot.values()) {
-							ItemStack itemstack = oldEntity.getItemBySlot(equipmentslot).copyAndClear();
-							if (!itemstack.isEmpty()) {
-								mob.setItemSlot(equipmentslot, itemstack.copyAndClear());
-								mob.setDropChance(equipmentslot, oldMob.getDropChances().byEquipment(equipmentslot));
-							}
-						}
-					}
-
-					EventHooks.finalizeMobSpawn(mob, level, level.getCurrentDifficultyAt(oldEntity.blockPosition()), EntitySpawnReason.CONVERSION, null);
-				}
-
-				oldEntity.level().addFreshEntity(newEntity);
-				oldEntity.discard();
-			}
-			try {
-				UUID uuid = newEntity.getUUID();
-				ProblemReporter reporter = ProblemReporter.DISCARDING;
-				RegistryAccess provider = level.registryAccess();
-				TagValueOutput outputFactory = TagValueOutput.createWithContext(reporter, provider);
-
-				oldEntity.saveWithoutId(outputFactory);
-
-				CompoundTag copiedData = outputFactory.buildResult();
-				ValueInput inputFactory = TagValueInput.create(reporter, provider, copiedData);
-
-				newEntity.load(inputFactory);
-				newEntity.setUUID(uuid);
-
-				if (newEntity instanceof LivingEntity living) {
-					living.setHealth(living.getMaxHealth());
-				}
-			} catch (Exception e) {
-				TFMain.LOGGER.warn("Couldn't transform entity NBT data", e);
-			}
-
-			ItemStack saddleStack = oldEntity.getItemBySlot(EquipmentSlot.SADDLE);
-			if (!saddleStack.isEmpty() && saddleStack.is(Items.SADDLE)) {
-				if (!(newEntity instanceof LivingEntity newLiving) || !newLiving.canUseSlot(EquipmentSlot.SADDLE)) {
-					newEntity.spawnAtLocation(level, Items.SADDLE);
-				} else {
-					newLiving.setItemSlot(EquipmentSlot.SADDLE, saddleStack.copy());
-				}
-			}
+		var passengerSave = oldEntity.getPassengers();
+		if (oldEntity instanceof Mob mob && newEntity instanceof Mob newMob) {
+			newEntity = mob.convertTo((EntityType<? extends Mob>) newMob.getType(), ConversionParams.single(newMob, true, true), (ConversionParams.AfterConversion) _ -> {});
+		} else {
+			newEntity.copyPosition(oldEntity);
 
 			if (newEntity instanceof Mob mob) {
-				mob.spawnAnim();
-				mob.spawnAnim();
-
-				for (EquipmentSlot equipmentslot : EquipmentSlot.values()) {
-					ItemStack itemstack = mob.getItemBySlot(equipmentslot).copyAndClear();
-					mob.spawnAtLocation(level, itemstack);
+				if (oldEntity instanceof Mob oldMob) {
+					for (EquipmentSlot equipmentslot : EquipmentSlot.values()) {
+						ItemStack itemstack = oldEntity.getItemBySlot(equipmentslot).copyAndClear();
+						if (!itemstack.isEmpty()) {
+							mob.setItemSlot(equipmentslot, itemstack.copyAndClear());
+							mob.setDropChance(equipmentslot, oldMob.getDropChances().byEquipment(equipmentslot));
+						}
+					}
 				}
+
+				mob.finalizeSpawn(level, level.getCurrentDifficultyAt(oldEntity.blockPosition()), EntitySpawnReason.CONVERSION, null);
 			}
 
-			if (!passengerSave.isEmpty()) {
-				for (var entity : passengerSave) {
-					entity.startRiding(newEntity, true, false);
-				}
-			}
-
-			if (newEntity instanceof LivingEntity living) EventHooks.onLivingConvert(oldEntity, living);
-			level.playSound(null, newEntity.blockPosition(), TFSounds.POWDER_USE.get(), newEntity.getSoundSource());
-			return true;
+			oldEntity.level().addFreshEntity(newEntity);
+			oldEntity.discard();
 		}
-		return false;
+		try {
+			UUID uuid = newEntity.getUUID();
+			ProblemReporter reporter = ProblemReporter.DISCARDING;
+			RegistryAccess provider = level.registryAccess();
+			TagValueOutput outputFactory = TagValueOutput.createWithContext(reporter, provider);
+
+			oldEntity.saveWithoutId(outputFactory);
+
+			CompoundTag copiedData = outputFactory.buildResult();
+			ValueInput inputFactory = TagValueInput.create(reporter, provider, copiedData);
+
+			newEntity.load(inputFactory);
+			newEntity.setUUID(uuid);
+
+			if (newEntity instanceof LivingEntity living) {
+				living.setHealth(living.getMaxHealth());
+			}
+		} catch (Exception e) {
+			TFMain.LOGGER.warn("Couldn't transform entity NBT data", e);
+		}
+
+		ItemStack saddleStack = oldEntity.getItemBySlot(EquipmentSlot.SADDLE);
+		if (!saddleStack.isEmpty() && saddleStack.is(Items.SADDLE)) {
+			if (!(newEntity instanceof LivingEntity newLiving) || !newLiving.canUseSlot(EquipmentSlot.SADDLE)) {
+				newEntity.spawnAtLocation(level, Items.SADDLE);
+			} else {
+				newLiving.setItemSlot(EquipmentSlot.SADDLE, saddleStack.copy());
+			}
+		}
+
+		if (newEntity instanceof Mob mob) {
+			mob.spawnAnim();
+			mob.spawnAnim();
+
+			for (EquipmentSlot equipmentslot : EquipmentSlot.values()) {
+				ItemStack itemstack = mob.getItemBySlot(equipmentslot).copyAndClear();
+				mob.spawnAtLocation(level, itemstack);
+			}
+		}
+
+		if (!passengerSave.isEmpty()) {
+			for (var entity : passengerSave) {
+				entity.startRiding(newEntity, true, false);
+			}
+		}
+
+		if (newEntity instanceof LivingEntity living) {
+			if (oldEntity instanceof Mob oldMob && living instanceof Mob newMob) {
+				ServerLivingEntityEvents.MOB_CONVERSION.invoker().onConversion(oldMob, newMob, ConversionParams.single(newMob, true, true));
+			}
+		}
+		level.playSound(null, newEntity.blockPosition(), TFSounds.POWDER_USE.value(), newEntity.getSoundSource());
+		return true;
 	}
 
 	@Nullable
