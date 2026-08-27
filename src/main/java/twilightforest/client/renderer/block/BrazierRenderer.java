@@ -2,6 +2,7 @@ package twilightforest.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import carminite.interfaces.markers.IExtendedBoundingBoxBlockEntityRenderer;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.block.BlockModelResolver;
 import net.minecraft.client.renderer.block.model.BlockDisplayContext;
@@ -11,11 +12,12 @@ import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.Unit;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 import twilightforest.TFMain;
@@ -25,7 +27,7 @@ import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.block.BrazierModel;
 import twilightforest.client.state.block.BrazierRenderState;
 
-public class BrazierRenderer implements BlockEntityRenderer<BrazierBlockEntity, BrazierRenderState> {
+public class BrazierRenderer implements BlockEntityRenderer<BrazierBlockEntity, BrazierRenderState>, IExtendedBoundingBoxBlockEntityRenderer {
 
 	private final BlockModelResolver blockResolver;
 	private final BrazierModel model;
@@ -73,7 +75,7 @@ public class BrazierRenderer implements BlockEntityRenderer<BrazierBlockEntity, 
 	}
 
 	@Override
-	public AABB getRenderBoundingBox(BrazierBlockEntity blockEntity) {
+	public AABB getRenderBoundingBox(BlockEntity blockEntity) {
 		BlockPos pos = blockEntity.getBlockPos();
 		return new AABB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1.0, pos.getY() + 2.0, pos.getZ() + 1.0);
 	}
