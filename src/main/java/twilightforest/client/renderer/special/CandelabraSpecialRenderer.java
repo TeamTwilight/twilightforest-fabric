@@ -5,7 +5,6 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.block.BlockModelRenderState;
-import net.minecraft.client.renderer.block.BlockModelResolver;
 import net.minecraft.client.renderer.block.model.BlockDisplayContext;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.core.Direction;
@@ -29,7 +28,7 @@ public record CandelabraSpecialRenderer() implements SpecialModelRenderer<List<B
 		for (int i = 0; i < stack.getOrDefault(TFDataComponents.CANDELABRA_DATA, CandelabraData.EMPTY).ordered().size(); i++) {
 			BlockModelRenderState state = new BlockModelRenderState();
 			BlockState candle = CandelabraData.getItem(stack.getOrDefault(TFDataComponents.CANDELABRA_DATA, CandelabraData.EMPTY).ordered(), i).orElse(Blocks.AIR).defaultBlockState();
-			new BlockModelResolver(Minecraft.getInstance().getModelManager()).update(state, candle, BlockDisplayContext.create());
+			Minecraft.getInstance().blockModelResolver.update(state, candle, BlockDisplayContext.create());
 			models.add(state);
 		}
 
