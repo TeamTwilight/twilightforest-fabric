@@ -2,6 +2,7 @@ package twilightforest;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import twilightforest.client.event.TravellersClientEvents;
 import twilightforest.network.*;
 
 public final class TFClient implements ClientModInitializer {
@@ -9,6 +10,7 @@ public final class TFClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		registerPackets();
+		TravellersClientEvents.init();
 	}
 
 	private static void registerPackets() {
