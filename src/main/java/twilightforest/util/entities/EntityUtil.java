@@ -1,6 +1,7 @@
 package twilightforest.util.entities;
 
 import com.google.common.collect.Lists;
+import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -255,11 +256,13 @@ public class EntityUtil {
 		if (!(oldEntity.level() instanceof ServerLevel level)) return false;
 		var newEntity = newType.create(level, EntitySpawnReason.CONVERSION);
 		if (newEntity == null) return false;
+		boolean firedMobConversion = false;
 		// NeoForge's canLivingConvert event has no Fabric equivalent, so conversion always proceeds
 		{
 			var passengerSave = oldEntity.getPassengers();
 			if (oldEntity instanceof Mob mob && newEntity instanceof Mob newMob) {
 				newEntity = mob.convertTo((EntityType<? extends Mob>) newMob.getType(), ConversionParams.single(newMob, true, true), (ConversionParams.AfterConversion) _ -> {});
+				firedMobConversion = true;
 			} else {
 				newEntity.copyPosition(oldEntity);
 
@@ -323,6 +326,10 @@ public class EntityUtil {
 				for (var entity : passengerSave) {
 					entity.startRiding(newEntity, true, false);
 				}
+			}
+
+			if (newEntity instanceof Mob mob && oldEntity instanceof Mob oldMob && !firedMobConversion) {
+				ServerLivingEntityEvents.MOB_CONVERSION.invoker().onConversion(oldMob, mob, ConversionParams.single(mob, true, true));
 			}
 
 			level.playSound(null, newEntity.blockPosition(), TFSounds.POWDER_USE.value(), newEntity.getSoundSource());
