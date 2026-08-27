@@ -350,11 +350,11 @@ public class TFWeatherRenderer {
 	}
 
 	private static @Nullable TFWeatherRenderer.WeatherRenderType getRenderType(Restriction restriction) {
-		if (restriction.enforcement().equals(Enforcements.FROST.getKey())) return WeatherRenderType.BLIZZARD;
-		else if (restriction.enforcement().equals(Enforcements.HUNGER.getKey())) return WeatherRenderType.MOSQUITO;
-		else if (restriction.enforcement().equals(Enforcements.FIRE.getKey())) return WeatherRenderType.ASHES;
-		else if (restriction.enforcement().equals(Enforcements.DARKNESS.getKey())) return random.nextBoolean() ? WeatherRenderType.DARK_STREAM : null;
-		else if (restriction.enforcement().equals(Enforcements.ACID_RAIN.getKey())) return WeatherRenderType.BIG_RAIN;
+		if (restriction.enforcement().equals(Enforcements.FROST_KEY)) return WeatherRenderType.BLIZZARD;
+		else if (restriction.enforcement().equals(Enforcements.HUNGER_KEY)) return WeatherRenderType.MOSQUITO;
+		else if (restriction.enforcement().equals(Enforcements.FIRE_KEY)) return WeatherRenderType.ASHES;
+		else if (restriction.enforcement().equals(Enforcements.DARKNESS_KEY)) return random.nextBoolean() ? WeatherRenderType.DARK_STREAM : null;
+		else if (restriction.enforcement().equals(Enforcements.ACID_RAIN_KEY)) return WeatherRenderType.BIG_RAIN;
 		return null;
 	}
 
