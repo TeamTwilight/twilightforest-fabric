@@ -31,6 +31,10 @@ public class ReactorDebrisBlockEntity extends BlockEntity {
 		Identifier.withDefaultNamespace("block/obsidian"),
 	};
 	public static final Identifier DEFAULT_TEXTURE = TEXTURES[0];
+
+	public static Identifier getRandomTexture() {
+		return TEXTURES[RANDOM.nextInt(TEXTURES.length)];
+	}
 	private static final float Z_FIGHTING_MIN = 0.008F;
 	private static final float Z_FIGHTING_MAX = 1 - 0.008F;
 	private static final Random RANDOM = new Random();
