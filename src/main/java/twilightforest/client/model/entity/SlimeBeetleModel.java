@@ -148,18 +148,13 @@ public class SlimeBeetleModel extends EntityModel<LivingEntityRenderState> {
 		return LayerDefinition.create(meshdefinition, 64, 64);
 	}
 
-	@Override
-	public void renderToBuffer(PoseStack stack, VertexConsumer builder, int light, int overlay, int color) {
-		this.slime.visible = false;
-		super.renderToBuffer(stack, builder, light, overlay, color);
-	}
-
 	public void renderTail(PoseStack stack, VertexConsumer builder, int light, int overlay) {
 		this.tailBottom.render(stack, builder, light, overlay);
 	}
 
 	@Override
 	public void setupAnim(LivingEntityRenderState state) {
+		this.slime.visible = false;
 		this.head.yRot = state.yRot * Mth.DEG_TO_RAD;
 		this.head.xRot = state.xRot * Mth.DEG_TO_RAD;
 
