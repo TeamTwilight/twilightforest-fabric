@@ -273,7 +273,6 @@ public class EntityUtil {
 							}
 						}
 					}
-					// vanilla conversion initialisation (NeoForge's finalizeMobSpawn hook removed)
 					mob.finalizeSpawn(level, level.getCurrentDifficultyAt(oldEntity.blockPosition()), EntitySpawnReason.CONVERSION, null);
 				}
 
@@ -326,7 +325,6 @@ public class EntityUtil {
 				}
 			}
 
-			// NeoForge's onLivingConvert event has no Fabric equivalent
 			level.playSound(null, newEntity.blockPosition(), TFSounds.POWDER_USE.value(), newEntity.getSoundSource());
 			return true;
 		}
