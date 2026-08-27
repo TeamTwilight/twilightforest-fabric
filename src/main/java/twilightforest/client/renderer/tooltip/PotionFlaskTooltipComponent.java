@@ -10,7 +10,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
-import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import twilightforest.TFMain;
 import twilightforest.components.item.PotionFlaskComponent;
 import twilightforest.item.PotionFlaskItem;
