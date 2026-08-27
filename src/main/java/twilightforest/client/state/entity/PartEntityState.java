@@ -9,6 +9,7 @@ public class PartEntityState extends EntityRenderState {
 	public float yRot;
 	public float yRotO;
 	public float xRot;
+	public float partialTick;
 	public float deathTime;
 	public float walkAnimationPos;
 	public float walkAnimationSpeed;

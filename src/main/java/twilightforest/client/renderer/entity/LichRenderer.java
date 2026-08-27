@@ -90,6 +90,7 @@ public class LichRenderer extends HumanoidMobRenderer<Lich, LichRenderState, Lic
 	@Override
 	public void extractRenderState(Lich entity, LichRenderState state, float partialTick) {
 		super.extractRenderState(entity, state, partialTick);
+		state.partialTick = partialTick;
 		state.isShadowClone = entity.isShadowClone();
 	}
 
