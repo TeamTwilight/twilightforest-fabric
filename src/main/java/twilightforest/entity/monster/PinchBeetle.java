@@ -147,11 +147,6 @@ public class PinchBeetle extends Monster implements IHostileMount {
 	}
 
 	@Override
-	public boolean canRiderInteract() {
-		return true;
-	}
-
-	@Override
 	public EntityDimensions getDefaultDimensions(Pose pose) {
 
 		if (!this.getPassengers().isEmpty()) {

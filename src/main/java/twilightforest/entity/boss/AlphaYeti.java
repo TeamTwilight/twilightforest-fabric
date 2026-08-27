@@ -209,11 +209,6 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 		return new Vec3(0.0F, dimensions.height(), 0.4F);
 	}
 
-	@Override
-	public boolean canRiderInteract() {
-		return true;
-	}
-
 	public void destroyBlocksInAABB(ServerLevel server, AABB box) {
 		if (server.getGameRules().get(GameRules.MOB_GRIEFING)) {
 			for (BlockPos pos : WorldUtil.getAllInBB(box)) {

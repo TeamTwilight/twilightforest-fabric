@@ -67,8 +67,9 @@ public class MazeSlime extends Slime {
 	}
 
 	@Override
-	protected boolean spawnCustomParticles() {
-		// [VanillaCopy] from super tick with own particles
+	public void tick() {
+		super.tick();
+		// [VanillaCopy] from super tick with own particles (was spawnCustomParticles in older versions)
 		int i = getSize();
 		for (int j = 0; j < i * 8; ++j) {
 			float f = this.getRandom().nextFloat() * ((float) Math.PI * 2F);
@@ -80,7 +81,6 @@ public class MazeSlime extends Slime {
 			BlockState state = TFBlocks.MAZESTONE_BRICK.defaultBlockState();
 			this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, state), d0, this.getBoundingBox().minY, d1, 0.0D, 0.0D, 0.0D);
 		}
-		return true;
 	}
 
 	@Override
