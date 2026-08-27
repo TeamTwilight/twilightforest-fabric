@@ -32,7 +32,7 @@ public abstract class TFPartRenderer<T extends TFPart<?>, S extends PartEntitySt
 	public void submit(S state, PoseStack stack, SubmitNodeCollector buffer, CameraRenderState cameraRenderState) {
 		stack.pushPose();
 
-		this.setupRotations(state, stack, state.partialTick);
+		this.setupRotations(state, stack, Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false));
 		stack.scale(-1.0F, -1.0F, 1.0F);
 		stack.translate(0.0D, -1.501F, 0.0D);
 		this.model.setupAnim(state);
