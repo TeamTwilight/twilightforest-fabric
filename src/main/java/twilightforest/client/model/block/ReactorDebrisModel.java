@@ -24,10 +24,9 @@ public class ReactorDebrisModel implements BlockStateModel {
 
 	@Override
 	public Material.Baked particleMaterial() {
-		// 26.1's particleMaterial() has no level/pos context, so pick a random
-		// texture from the static set to preserve the randomized look
 		return ReactorDebrisRenderer.getSprite(ReactorDebrisBlockEntity.getRandomTexture());
 	}
+
 	@Override
 	public int materialFlags() {
 		return this.defaultModel.materialFlags();
