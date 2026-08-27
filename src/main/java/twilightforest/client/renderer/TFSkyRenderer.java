@@ -21,7 +21,6 @@ import net.fabricmc.fabric.api.client.rendering.v1.RenderStateDataKey;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelExtractionContext;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import org.joml.*;
-import twilightforest.TFMain;
 
 import java.lang.Math;
 import java.util.Optional;
@@ -30,7 +29,7 @@ import java.util.OptionalInt;
 
 public class TFSkyRenderer implements AutoCloseable {
 
-	public static final RenderStateDataKey<Boolean> RENDER_DARK_DISC = RenderStateDataKey.create(() -> TFMain.prefix("render_dark_disc").toString());
+	public static final RenderStateDataKey<Boolean> RENDER_DARK_DISC = RenderStateDataKey.create(() -> "render_dark_disc");
 	private final RenderSystem.AutoStorageIndexBuffer starIndices = RenderSystem.getSequentialBuffer(VertexFormat.Mode.QUADS);
 	private final GpuBuffer starBuffer;
 	private int starIndexCount;
