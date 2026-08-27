@@ -60,6 +60,18 @@ public class EntityHooks {
 		return prior && !mob.hasAttached(TFDataAttachments.LEASH_PATHFINDER_OVERRIDE);
 	}
 
+	// [Fabric] Kept (disabled) until the coremod/transformers are ported; the
+	// FluidType-based check has no 26.1 equivalent yet.
+//	public static BiPredicate<FluidType, Double> unrestrainedSwimPredicate(BiPredicate<FluidType, Double> o, LivingEntity livingEntity) {
+//		return (fluidType, height) -> {
+//			FluidState fs = livingEntity.level().getFluidState(livingEntity.blockPosition());
+//			boolean oResult = o.test(fluidType, height);
+//			if (fluidType != NeoForgeMod.WATER_TYPE.value())
+//				return oResult;
+//			return unrestrainedSprintingInWater(oResult, livingEntity);
+//		};
+//	}
+
 	/**
 	 * {@link twilightforest.asm.transformers.entity.UnrestrainedBlockSpeedAndJumpFactorTransformer} <p/>
 	 *
