@@ -17,10 +17,10 @@ import net.minecraft.client.renderer.state.level.SkyRenderState;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.context.ContextKey;
-import net.neoforged.neoforge.client.event.ExtractLevelRenderStateEvent;
+import net.fabricmc.fabric.api.client.rendering.v1.RenderStateDataKey;
+import net.fabricmc.fabric.api.client.rendering.v1.level.LevelExtractionContext;
+import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import org.joml.*;
-import twilightforest.TwilightForestMod;
 
 import java.lang.Math;
 import java.util.Optional;
@@ -29,7 +29,7 @@ import java.util.OptionalInt;
 
 public class TFSkyRenderer implements AutoCloseable {
 
-	public static final ContextKey<Boolean> RENDER_DARK_DISC = new ContextKey<>(TwilightForestMod.prefix("render_dark_disc"));
+	public static final RenderStateDataKey<Boolean> RENDER_DARK_DISC = RenderStateDataKey.create(() -> "render_dark_disc");
 	private final RenderSystem.AutoStorageIndexBuffer starIndices = RenderSystem.getSequentialBuffer(VertexFormat.Mode.QUADS);
 	private final GpuBuffer starBuffer;
 	private int starIndexCount;
@@ -38,8 +38,12 @@ public class TFSkyRenderer implements AutoCloseable {
 		this.starBuffer = buildStars();
 	}
 
-	public static void extractLevelRender(ExtractLevelRenderStateEvent event) {
-		event.getRenderState().setRenderData(RENDER_DARK_DISC, shouldDarkenSky(event.getLevel(), event.getDeltaTracker().getGameTimeDeltaTicks()));
+	public static void init() {
+		LevelRenderEvents.END_EXTRACTION.register(TFSkyRenderer::extractLevelRender);
+	}
+
+	public static void extractLevelRender(LevelExtractionContext context) {
+		context.levelState().setData(RENDER_DARK_DISC, shouldDarkenSky(context.level(), context.deltaTracker().getGameTimeDeltaTicks()));
 	}
 
 	// [VanillaCopy] LevelRenderer.addSkyPass's overworld branch, without sun/moon/sunrise/sunset, using our own stars at full brightness, and lowering void horizon threshold height from getHorizonHeight (63) to 0
@@ -69,7 +73,7 @@ public class TFSkyRenderer implements AutoCloseable {
 		renderStars(posestack);
 		posestack.popPose();
 		//TF: use custom height checks for the void sky as vanilla hardcodes to 63
-		if (Boolean.TRUE.equals(level.getRenderData(RENDER_DARK_DISC))) {
+		if (Boolean.TRUE.equals(level.getData(RENDER_DARK_DISC))) {
 			levelRenderer.skyRenderer.renderDarkDisc();
 		}
 
