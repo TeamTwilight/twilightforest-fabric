@@ -1,3 +1,4 @@
 [submodule "carminite-lib"]
 	path = carminite-lib
 	url = https://github.com/a6tumn/carminite-lib.git
+	branch = 26.1.2
