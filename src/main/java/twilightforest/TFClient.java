@@ -2,6 +2,11 @@ package twilightforest;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import twilightforest.client.event.ClientGameEvents;
+import twilightforest.client.event.CloudEvents;
+import twilightforest.client.event.LockedBiomeToastHandler;
+import twilightforest.client.renderer.TFSkyRenderer;
+import twilightforest.item.mapdata.MapDataManager;
 import twilightforest.network.*;
 
 public final class TFClient implements ClientModInitializer {
@@ -9,6 +14,12 @@ public final class TFClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		registerPackets();
+
+		CloudEvents.init();
+		LockedBiomeToastHandler.init();
+		TFSkyRenderer.init();
+		MapDataManager.init();
+		ClientGameEvents.init();
 	}
 
 	private static void registerPackets() {

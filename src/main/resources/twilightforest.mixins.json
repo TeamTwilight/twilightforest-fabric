@@ -4,6 +4,10 @@
   "package": "twilightforest.asm.mixin",
   "compatibilityLevel": "JAVA_25",
   "mixins": [
+    "AbstractClientPlayerFovMixin",
+    "BossHealthOverlayMixin",
+    "CameraShakeMixin",
+    "GuiVignetteMixin",
     "ServerPlayerGameModeMixin",
     "LivingEntityGetDeathSoundAccessor",
     "enums.DamageEffectsMixin",
