@@ -101,10 +101,10 @@ public class EntityEvents {
 		ServerEntityEvents.ENTITY_LOAD.register(EntityEvents::handleLeashPathingOverrides);
 		ServerEntityEvents.ENTITY_LOAD.register(EntityEvents::stopEndermenFromGrabbingBlocksInTF);
 
-		// TODO [Fabric] remaining NeoForge hooks need mixins (mixin batch):
-		// reduceFrostedEffectIfOnFire / wipeOreMeterOnLeftClick / onParryProjectile /
-		// addCloudJumpParticles / structureSpecialSpawns / adjustEntityHealthInMultiplayerFights /
-		// lichBombsDontBlowUpItems / resetFlaskLogic
+		// TODO [Fabric] remaining NeoForge hooks still need mixins:
+		// wipeOreMeterOnLeftClick / structureSpecialSpawns / lichBombsDontBlowUpItems / resetFlaskLogic
+		// (reduceFrostedEffectIfOnFire, onParryProjectile, addCloudJumpParticles and
+		//  adjustEntityHealthInMultiplayerFights are now mixins in asm.mixin.event)
 	}
 
 	private static void ominousFireConversion(LivingEntity entity, net.minecraft.world.damagesource.DamageSource source) {
