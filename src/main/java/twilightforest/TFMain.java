@@ -110,6 +110,7 @@ public final class TFMain implements ModInitializer {
 		TFDataComponents.init();
 		TFMapDecorations.init();
 		TFParticleType.init();
+		twilightforest.events.CharmEvents.init();
 		TravellersModifierTypes.init();
 		TFBlockEntities.init();
 		TFConsumeEffects.init();

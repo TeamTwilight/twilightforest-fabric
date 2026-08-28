@@ -39,6 +39,14 @@ accessible field net/minecraft/world/level/levelgen/structure/pieces/StructurePi
 # EntityEvents (reduces frosted effect amplifier if entity is on fire)
 accessible field net/minecraft/world/effect/MobEffectInstance amplifier I
 
+# CharmEvents (inventory keepsake casket)
+accessible field net/minecraft/world/entity/LivingEntity equipment Lnet/minecraft/world/entity/EntityEquipment;
+accessible field net/minecraft/world/entity/player/Inventory equipment Lnet/minecraft/world/entity/EntityEquipment;
+accessible field net/minecraft/world/entity/player/Inventory items Lnet/minecraft/core/NonNullList;
+
+
+accessible field net/minecraft/world/entity/player/Inventory selected I
+
 # Goblin Knights (adds breaking armor effects when goblin knight armor layers are broken)
 accessible method net/minecraft/world/entity/LivingEntity breakItem (Lnet/minecraft/world/item/ItemStack;)V
 
