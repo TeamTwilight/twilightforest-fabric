@@ -142,7 +142,6 @@ public class Yeti extends Monster implements IHostileMount {
 		return new Vec3(0.0F, dimensions.height(), 0.4F);
 	}
 
-	@Override
 	public boolean canRiderInteract() {
 		return true;
 	}

@@ -6,6 +6,7 @@
   "mixins": [
     "ServerPlayerGameModeMixin",
     "LivingEntityGetDeathSoundAccessor",
+    "PowderSnowBlockMixin",
     "enums.DamageEffectsMixin",
     "enums.GrassColorModifierMixin",
     "enums.ItemDisplayContextMixin",

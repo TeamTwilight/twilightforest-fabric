@@ -146,7 +146,6 @@ public class PinchBeetle extends Monster implements IHostileMount {
 		return new Vec3(0.0F, this.getEyeHeight(), 0.75F);
 	}
 
-	@Override
 	public boolean canRiderInteract() {
 		return true;
 	}
