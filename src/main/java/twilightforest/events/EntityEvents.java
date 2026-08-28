@@ -1,199 +1,159 @@
 package twilightforest.events;
 
-import net.minecraft.ChatFormatting;
-import net.minecraft.commands.Commands;
+import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.util.random.Weighted;
-import net.minecraft.world.Difficulty;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Interaction;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.EnderMan;
-import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.entity.projectile.ProjectileDeflection;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.LeadItem;
-import net.minecraft.world.item.component.ResolvableProfile;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.StructureManager;
-import net.minecraft.world.level.biome.MobSpawnSettings;
-import net.minecraft.world.level.block.AbstractSkullBlock;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SkullBlock;
-import net.minecraft.world.level.block.WallSkullBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructureStart;
+import net.minecraft.world.level.block.SkullBlock;
+import net.minecraft.world.level.block.WallSkullBlock;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
-import net.neoforged.fml.ModList;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.damagesource.DamageContainer;
-import net.neoforged.neoforge.event.EventHooks;
-import net.neoforged.neoforge.event.OnDatapackSyncEvent;
-import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
-import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
-import net.neoforged.neoforge.event.entity.living.*;
-import net.neoforged.neoforge.event.entity.player.AdvancementEvent;
-import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import net.neoforged.neoforge.event.level.BlockEvent;
-import net.neoforged.neoforge.event.level.ExplosionEvent;
-import net.neoforged.neoforge.event.level.LevelEvent;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
-import net.neoforged.neoforge.network.PacketDistributor;
-import tamaized.beanification.PostConstruct;
 import twilightforest.TFMain;
-import twilightforest.advancements.DrinkFromFlaskTrigger;
-import tamaized.beanification.Autowired;
-import twilightforest.block.*;
+import twilightforest.block.AbstractSkullCandleBlock;
 import twilightforest.block.entity.SkullCandleBlockEntity;
+import twilightforest.block.SkullChestBlock;
+import twilightforest.block.WroughtIronFenceBlock;
 import twilightforest.block.entity.SkullChestBlockEntity;
-import twilightforest.components.item.SkullCandles;
+
+import twilightforest.components.entity.MultiplayerInclusivityAttachment;
 import twilightforest.config.TFConfig;
-import twilightforest.tags.TFEntityTypeTags;
-import twilightforest.enchantment.ApplyFrostedEffect;
-import twilightforest.entity.passive.quest.ram.QuestingRamCurrentContext;
-import twilightforest.entity.projectile.ITFProjectile;
 import twilightforest.entity.projectile.LichBomb;
-import twilightforest.init.*;
-import twilightforest.item.FieryArmorItem;
-import twilightforest.item.YetiArmorItem;
+import twilightforest.entity.boss.Lich;
+import twilightforest.entity.passive.quest.ram.QuestingRamCurrentContext;
+import twilightforest.init.TFBlocks;
+import twilightforest.init.TFDataAttachments;
+import twilightforest.init.TFDataComponents;
+import twilightforest.init.TFDataMaps;
+import twilightforest.init.TFDimensionData;
+import twilightforest.init.TFDamageTypes;
+import twilightforest.tags.TFEntityTypeTags;
+import twilightforest.init.TFItems;
+import twilightforest.init.TFSounds;
+import twilightforest.init.TFStats;
+
 import twilightforest.network.SyncQuestsPacket;
 import twilightforest.network.WipeOreMeterPacket;
-import twilightforest.util.datamaps.EntityTransformation;
 import twilightforest.util.entities.EntityUtil;
-import twilightforest.util.entities.OminousFireDamageSource;
-import twilightforest.world.components.structures.SpawnIndexProvider;
-import twilightforest.world.components.structures.finalcastle.FinalCastleBossGazeboComponent;
-import twilightforest.world.components.structures.start.TFStructureStart;
-import twilightforest.world.components.structures.util.ControlledSpawns;
-import twilightforest.world.components.structures.util.ValidatedSpawnLocations;
+import twilightforest.util.datamaps.EntityTransformation;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-@tamaized.beanification.Component
 public class EntityEvents {
 
-	@Autowired
-	private QuestingRamCurrentContext questingRamCurrentContext;
+	private static final boolean SHIELD_PARRY_MOD_LOADED = FabricLoader.getInstance().isModLoaded("parry");
 
-	private static final boolean SHIELD_PARRY_MOD_LOADED = ModList.get().isLoaded("parry");
+	private static final QuestingRamCurrentContext questingRamCurrentContext = QuestingRamCurrentContext.INSTANCE;
 
-	@PostConstruct
-	private void setup() {
-		NeoForge.EVENT_BUS.addListener(this::ominousFireConversion);
-		NeoForge.EVENT_BUS.addListener(this::zombifiedPlayerAttacks);
-		NeoForge.EVENT_BUS.addListener(this::alertPlayerCastleIsWIP);
-		NeoForge.EVENT_BUS.addListener(this::attachLeadToWroughtFence);
-		NeoForge.EVENT_BUS.addListener(this::wipeOreMeterOnLeftClick);
-		NeoForge.EVENT_BUS.addListener(this::entityHurts);
-		NeoForge.EVENT_BUS.addListener(this::onCasketBreak);
-		NeoForge.EVENT_BUS.addListener(this::reduceFrostedEffectIfOnFire);
-		NeoForge.EVENT_BUS.addListener(this::onParryProjectile);
-		NeoForge.EVENT_BUS.addListener(this::createSkullCandle);
-		NeoForge.EVENT_BUS.addListener(this::addCloudJumpParticles);
-		NeoForge.EVENT_BUS.addListener(this::structureSpecialSpawns);
-		NeoForge.EVENT_BUS.addListener(this::removeCastleTextIfAttacked);
-		NeoForge.EVENT_BUS.addListener(this::adjustEntityHealthInMultiplayerFights);
-		NeoForge.EVENT_BUS.addListener(this::addQualifiedGroupPlayerIfNeeded);
-		NeoForge.EVENT_BUS.addListener(this::grantGroupAdvancementIfNeeded);
-		NeoForge.EVENT_BUS.addListener(this::lichBombsDontBlowUpItems);
-		NeoForge.EVENT_BUS.addListener(this::handleQuestSyncing);
-		NeoForge.EVENT_BUS.addListener(this::resetFlaskLogic);
-		NeoForge.EVENT_BUS.addListener(this::handleLeashPathingOverrides);
-		NeoForge.EVENT_BUS.addListener(this::stopEndermenFromGrabbingBlocksInTF);
+	public static void init() {
+		ServerLivingEntityEvents.AFTER_DEATH.register(EntityEvents::ominousFireConversion);
+		ServerLivingEntityEvents.AFTER_DEATH.register(EntityEvents::grantGroupAdvancementIfNeeded);
+		ServerLivingEntityEvents.ALLOW_DAMAGE.register(EntityEvents::zombifiedPlayerAttacks);
+		ServerLivingEntityEvents.AFTER_DAMAGE.register(EntityEvents::entityHurts);
+		ServerLivingEntityEvents.AFTER_DAMAGE.register(EntityEvents::addQualifiedGroupPlayerIfNeeded);
+
+		UseBlockCallback.EVENT.register(EntityEvents::attachLeadToWroughtFence);
+		UseBlockCallback.EVENT.register(EntityEvents::createSkullCandle);
+		PlayerBlockBreakEvents.BEFORE.register(EntityEvents::onCasketBreak);
+		AttackEntityCallback.EVENT.register(EntityEvents::removeCastleTextIfAttacked);
+
+		ServerLifecycleEvents.SYNC_DATA_PACK_CONTENTS.register(EntityEvents::handleQuestSyncing);
+
+		ServerEntityEvents.ENTITY_LOAD.register(EntityEvents::handleLeashPathingOverrides);
+		ServerEntityEvents.ENTITY_LOAD.register(EntityEvents::stopEndermenFromGrabbingBlocksInTF);
+
+		// TODO [Fabric] remaining NeoForge hooks still need mixins:
+		// wipeOreMeterOnLeftClick / structureSpecialSpawns / lichBombsDontBlowUpItems / resetFlaskLogic
+		// (reduceFrostedEffectIfOnFire, onParryProjectile, addCloudJumpParticles and
+		//  adjustEntityHealthInMultiplayerFights are now mixins in asm.mixin.event)
 	}
 
-	private void ominousFireConversion(LivingDeathEvent event) {
-		if (!event.isCanceled() && event.getSource().is(TFDamageTypes.OMINOUS_FIRE)) {
-			EntityTransformation dataMap = event.getEntity().getType().builtInRegistryHolder().getData(TFDataMaps.OMINOUS_FIRE);
+	private static void ominousFireConversion(LivingEntity entity, net.minecraft.world.damagesource.DamageSource source) {
+		if (source.is(TFDamageTypes.OMINOUS_FIRE)) {
+			EntityTransformation dataMap = TFDataMaps.OMINOUS_FIRE.get(entity.getType().builtInRegistryHolder());
 
-			if (event.getEntity() instanceof ServerPlayer player) {
-				var zombie = EntityType.ZOMBIE.create(player.level());
-				zombie.setData(TFDataAttachments.ZOMBIFIED_PLAYER, player.getGameProfile());
+			if (entity instanceof ServerPlayer player) {
+				var zombie = EntityType.ZOMBIE.create(player.level(), net.minecraft.world.entity.EntitySpawnReason.CONVERSION);
+				((net.fabricmc.fabric.api.attachment.v1.AttachmentTarget) zombie).setAttached(TFDataAttachments.ZOMBIFIED_PLAYER, player.getGameProfile());
 				zombie.setCustomName(player.getName());
 				zombie.copyPosition(player);
 				zombie.setCanPickUpLoot(true);
 				zombie.setBaby(false);
-				EventHooks.finalizeMobSpawn(zombie, player.serverLevel(), player.level().getCurrentDifficultyAt(player.blockPosition()), EntitySpawnReason.CONVERSION, null);
+				zombie.finalizeSpawn((ServerLevel) player.level(), player.level().getCurrentDifficultyAt(player.blockPosition()), net.minecraft.world.entity.EntitySpawnReason.CONVERSION, null);
 				player.level().addFreshEntity(zombie);
-			} else if (dataMap != null && event.getEntity().level() instanceof ServerLevel) {
-				EntityUtil.convertEntity(event.getEntity(), dataMap.result());
+			} else if (dataMap != null && entity.level() instanceof ServerLevel) {
+				EntityUtil.convertEntity(entity, dataMap.result());
 			}
 		}
 	}
 
-	private void zombifiedPlayerAttacks(LivingIncomingDamageEvent event) {
-		if (!(event.getSource() instanceof OminousFireDamageSource) && event.getSource().getEntity() instanceof Zombie zombie && zombie.hasData(TFDataAttachments.ZOMBIFIED_PLAYER)) {
-			float amount = event.getAmount();
-			event.setCanceled(true);
-			event.getEntity().hurt(new OminousFireDamageSource(event.getSource()), amount);
+	private static boolean zombifiedPlayerAttacks(LivingEntity entity, net.minecraft.world.damagesource.DamageSource source, float amount) {
+		if (!(source instanceof twilightforest.util.entities.OminousFireDamageSource) && source.getEntity() instanceof Zombie zombie && ((net.fabricmc.fabric.api.attachment.v1.AttachmentTarget) zombie).hasAttached(TFDataAttachments.ZOMBIFIED_PLAYER)) {
+			entity.hurt(new twilightforest.util.entities.OminousFireDamageSource(source), amount);
+			return false;
 		}
+		return true;
 	}
 
-	private void alertPlayerCastleIsWIP(AdvancementEvent.AdvancementEarnEvent event) {
-		if (event.getAdvancement().id().equals(TFMain.prefix("progression_end"))) {
-			event.getEntity().sendSystemMessage(Component.translatable("gui.twilightforest.progression_end.message", Component.translatable("gui.twilightforest.progression_end.discord").withStyle(style -> style.withColor(ChatFormatting.BLUE).applyFormat(ChatFormatting.UNDERLINE).withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.experiment115.com/")))));
-		}
-	}
-
-	private void attachLeadToWroughtFence(PlayerInteractEvent.RightClickBlock event) {
-		Player player = event.getEntity();
-		ItemStack stack = player.getItemInHand(event.getHand());
+	private static InteractionResult attachLeadToWroughtFence(Player player, Level level, InteractionHand hand, net.minecraft.world.phys.BlockHitResult hitResult) {
+		ItemStack stack = player.getItemInHand(hand);
 		if (stack.is(Items.LEAD)) {
-			BlockPos pos = event.getPos();
-			BlockState state = event.getLevel().getBlockState(pos);
+			BlockPos pos = hitResult.getBlockPos();
+			net.minecraft.world.level.block.state.BlockState state = level.getBlockState(pos);
 			if (state.is(TFBlocks.WROUGHT_IRON_FENCE) && state.getValue(WroughtIronFenceBlock.POST) != WroughtIronFenceBlock.PostState.NONE) {
-				if (!event.getLevel().isClientSide()) {
-					LeadItem.bindPlayerMobs(player, event.getLevel(), event.getPos());
-					event.setCanceled(true);
-					event.setCancellationResult(InteractionResult.SUCCESS);
+				if (!level.isClientSide()) {
+					net.minecraft.world.item.LeadItem.bindPlayerMobs(player, level, pos);
+					return InteractionResult.SUCCESS;
 				}
 			}
 		}
+		return InteractionResult.PASS;
 	}
 
-	private void wipeOreMeterOnLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
-		ItemStack item = event.getItemStack();
-		if (item.is(TFItems.ORE_METER.get()) && (item.has(TFDataComponents.ORE_DATA) || item.has(TFDataComponents.ORE_FILTER))) {
-			PacketDistributor.sendToServer(new WipeOreMeterPacket(event.getHand()));
-			item.remove(TFDataComponents.ORE_DATA);
-			item.remove(TFDataComponents.ORE_FILTER);
-			event.getLevel().playSound(event.getEntity(), event.getEntity().blockPosition(), TFSounds.ORE_METER_CLEAR.get(), SoundSource.PLAYERS, 1.25F, event.getLevel().getRandom().nextFloat() * 0.2F + 0.6F);
-		}
-	}
-
-	private void entityHurts(LivingDamageEvent.Post event) {
-		LivingEntity living = event.getEntity();
-		DamageSource source = event.getSource();
+	private static void entityHurts(LivingEntity living, net.minecraft.world.damagesource.DamageSource source, float amount, float original, boolean blockedByShield) {
 		Entity trueSource = source.getEntity();
 
 		// fire react and chill aura
-		if (source.getEntity() != null && trueSource != null && event.getOriginalDamage() > 0) {
+		if (source.getEntity() != null && trueSource != null && original > 0) {
 			int fireLevel = getGearCoverage(living, false) * 5;
 			int chillLevel = getGearCoverage(living, true);
 
@@ -202,136 +162,98 @@ public class EntityEvents {
 			}
 
 			if (trueSource instanceof LivingEntity target) {
-				ApplyFrostedEffect.doChillAuraEffect(target, chillLevel * 5 + 5, chillLevel, chillLevel > 0);
+				twilightforest.enchantment.ApplyFrostedEffect.doChillAuraEffect(target, chillLevel * 5 + 5, chillLevel, chillLevel > 0);
 			}
 		}
 
 		// triple bow strips invulnerableTime
 		if (source.getMsgId().equals("arrow") && trueSource instanceof Player player) {
-
-			if (player.getItemInHand(player.getUsedItemHand()).is(TFItems.TRIPLE_BOW.get())) {
+			if (player.getItemInHand(player.getUsedItemHand()).is(TFItems.TRIPLE_BOW)) {
 				living.invulnerableTime = 0;
 			}
 		}
 	}
 
 	//if our casket is owned by someone and that player isnt the one breaking it, stop them
-	private void onCasketBreak(BlockEvent.BreakEvent event) {
-		Player player = event.getPlayer();
-		if (event.getState().getBlock() instanceof SkullChestBlock) {
-			BlockEntity te = event.getLevel().getBlockEntity(event.getPos());
+	private static boolean onCasketBreak(Level level, Player player, BlockPos pos, net.minecraft.world.level.block.state.BlockState state, BlockEntity blockEntity) {
+		if (state.getBlock() instanceof SkullChestBlock) {
+			BlockEntity te = level.getBlockEntity(pos);
 			if (te instanceof SkullChestBlockEntity casket) {
-				ResolvableProfile checker = casket.owner;
+				net.minecraft.world.item.component.ResolvableProfile checker = casket.owner;
 				if (checker != null && !casket.isEmpty()) {
-					if (!Commands.LEVEL_ADMINS.check(player.permissions()) || !player.getGameProfile().equals(checker.gameProfile())) {
-						event.setCanceled(true);
+					if (!net.minecraft.commands.Commands.LEVEL_ADMINS.check(player.permissions()) || !player.getGameProfile().equals(checker.partialProfile())) {
+						return false;
 					}
 				}
 			}
 		}
-	}
-
-	private void reduceFrostedEffectIfOnFire(LivingIncomingDamageEvent event) {
-		if (!event.isCanceled()) {
-			LivingEntity living = event.getEntity();
-			Optional.ofNullable(living.getEffect(TFMobEffects.FROSTY)).ifPresent(mobEffectInstance -> {
-				DamageContainer container = event.getContainer();
-				if (container.getSource().typeHolder().is(DamageTypes.FREEZE)) {
-					container.setNewDamage(container.getOriginalDamage() + (float) (mobEffectInstance.getAmplifier() / 2));
-				} else if (container.getSource().typeHolder().is(DamageTypeTags.IS_FIRE)) {
-					living.removeEffect(TFMobEffects.FROSTY);
-					mobEffectInstance.amplifier -= 1;
-					if (mobEffectInstance.amplifier >= 0) living.addEffect(mobEffectInstance);
-				}
-			});
-		}
-	}
-
-	// Parrying
-	private void onParryProjectile(ProjectileImpactEvent event) {
-		final Projectile projectile = event.getProjectile();
-
-		if (!projectile.getCommandSenderWorld().isClientSide() && !SHIELD_PARRY_MOD_LOADED && (TFConfig.parryNonTwilightAttacks || projectile instanceof ITFProjectile)) {
-			if (event.getRayTraceResult() instanceof EntityHitResult result) {
-				Entity entity = result.getEntity();
-
-				if (entity instanceof LivingEntity entityBlocking) {
-					if (entityBlocking.isBlocking() && entityBlocking.getUseItem().getUseDuration(entityBlocking) - entityBlocking.getUseItemRemainingTicks() <= TFConfig.shieldParryTicks) {
-						projectile.deflect(ProjectileDeflection.AIM_DEFLECT, entityBlocking, entityBlocking, true);
-						event.setCanceled(true);
-					}
-				}
-			}
-		}
+		return true;
 	}
 
 	/**
 	 * Checks if the player is attempting to create a skull candle
 	 */
-	// I wanted to make sure absolutely nothing broke, so I also check against the namespaces of the item to make sure theyre vanilla.
-	// Worst case some stupid mod adds their own stuff to the minecraft namespace and breaks this, then you can disable this via config.
-	private void createSkullCandle(PlayerInteractEvent.RightClickBlock event) {
-		ItemStack stack = event.getItemStack();
-		Level level = event.getLevel();
-		BlockPos pos = event.getPos();
-		BlockState state = level.getBlockState(pos);
+	private static InteractionResult createSkullCandle(Player player, Level level, InteractionHand hand, net.minecraft.world.phys.BlockHitResult hitResult) {
+		ItemStack stack = player.getItemInHand(hand);
+		BlockPos pos = hitResult.getBlockPos();
+		net.minecraft.world.level.block.state.BlockState state = level.getBlockState(pos);
 		if (!TFConfig.disableSkullCandles) {
-			if (stack.is(ItemTags.CANDLES) && BuiltInRegistries.ITEM.getKey(stack.getItem()).getNamespace().equals("minecraft") && !event.getEntity().isShiftKeyDown()) {
-				if (state.getBlock() instanceof AbstractSkullBlock skull && BuiltInRegistries.BLOCK.getKey(state.getBlock()).getNamespace().equals("minecraft")) {
+			if (stack.is(net.minecraft.tags.ItemTags.CANDLES) && BuiltInRegistries.ITEM.getKey(stack.getItem()).getNamespace().equals("minecraft") && !player.isShiftKeyDown()) {
+				if (state.getBlock() instanceof SkullBlock skull && BuiltInRegistries.BLOCK.getKey(state.getBlock()).getNamespace().equals("minecraft")) {
 					SkullBlock.Types type = (SkullBlock.Types) skull.getType();
 					boolean wall = state.getBlock() instanceof WallSkullBlock;
 					switch (type) {
 						case SKELETON -> {
-							if (wall) makeSkullCandle(event, TFBlocks.SKELETON_WALL_SKULL_CANDLE.get());
-							else makeSkullCandle(event, TFBlocks.SKELETON_SKULL_CANDLE.get());
+							if (wall) makeSkullCandle(level, pos, stack, player, TFBlocks.SKELETON_WALL_SKULL_CANDLE);
+							else makeSkullCandle(level, pos, stack, player, TFBlocks.SKELETON_SKULL_CANDLE);
 						}
 						case WITHER_SKELETON -> {
-							if (wall) makeSkullCandle(event, TFBlocks.WITHER_SKELE_WALL_SKULL_CANDLE.get());
-							else makeSkullCandle(event, TFBlocks.WITHER_SKELE_SKULL_CANDLE.get());
+							if (wall) makeSkullCandle(level, pos, stack, player, TFBlocks.WITHER_SKELE_WALL_SKULL_CANDLE);
+							else makeSkullCandle(level, pos, stack, player, TFBlocks.WITHER_SKELE_SKULL_CANDLE);
 						}
 						case PLAYER -> {
-							if (wall) makeSkullCandle(event, TFBlocks.PLAYER_WALL_SKULL_CANDLE.get());
-							else makeSkullCandle(event, TFBlocks.PLAYER_SKULL_CANDLE.get());
+							if (wall) makeSkullCandle(level, pos, stack, player, TFBlocks.PLAYER_WALL_SKULL_CANDLE);
+							else makeSkullCandle(level, pos, stack, player, TFBlocks.PLAYER_SKULL_CANDLE);
 						}
 						case ZOMBIE -> {
-							if (wall) makeSkullCandle(event, TFBlocks.ZOMBIE_WALL_SKULL_CANDLE.get());
-							else makeSkullCandle(event, TFBlocks.ZOMBIE_SKULL_CANDLE.get());
+							if (wall) makeSkullCandle(level, pos, stack, player, TFBlocks.ZOMBIE_WALL_SKULL_CANDLE);
+							else makeSkullCandle(level, pos, stack, player, TFBlocks.ZOMBIE_SKULL_CANDLE);
 						}
 						case CREEPER -> {
-							if (wall) makeSkullCandle(event, TFBlocks.CREEPER_WALL_SKULL_CANDLE.get());
-							else makeSkullCandle(event, TFBlocks.CREEPER_SKULL_CANDLE.get());
+							if (wall) makeSkullCandle(level, pos, stack, player, TFBlocks.CREEPER_WALL_SKULL_CANDLE);
+							else makeSkullCandle(level, pos, stack, player, TFBlocks.CREEPER_SKULL_CANDLE);
 						}
 						case PIGLIN -> {
-							if (wall) makeSkullCandle(event, TFBlocks.PIGLIN_WALL_SKULL_CANDLE.get());
-							else makeSkullCandle(event, TFBlocks.PIGLIN_SKULL_CANDLE.get());
+							if (wall) makeSkullCandle(level, pos, stack, player, TFBlocks.PIGLIN_WALL_SKULL_CANDLE);
+							else makeSkullCandle(level, pos, stack, player, TFBlocks.PIGLIN_SKULL_CANDLE);
 						}
 						default -> {
-							return;
+							return InteractionResult.PASS;
 						}
 					}
-					stack.consume(1, event.getEntity());
-					event.getEntity().swing(event.getHand());
-					if (event.getEntity() instanceof ServerPlayer)
-						event.getEntity().awardStat(TFStats.SKULL_CANDLES_MADE.get());
+					stack.consume(1, player);
+					player.swing(hand);
+					if (player instanceof ServerPlayer)
+						player.awardStat(TFStats.SKULL_CANDLES_MADE);
 					//this is to prevent anything from being placed afterwords
-					event.setCanceled(true);
+					return InteractionResult.SUCCESS;
 				}
 			}
 		}
+		return InteractionResult.PASS;
 	}
 
-	private static void makeSkullCandle(PlayerInteractEvent.RightClickBlock event, Block newBlock) {
-		ResolvableProfile profile = null;
-		Level level = event.getLevel();
-		if (level.getBlockEntity(event.getPos()) instanceof SkullBlockEntity skull)
+	private static void makeSkullCandle(Level level, BlockPos pos, ItemStack stack, Player player, Block newBlock) {
+		net.minecraft.world.item.component.ResolvableProfile profile = null;
+		if (level.getBlockEntity(pos) instanceof SkullBlockEntity skull)
 			profile = skull.getOwnerProfile();
-		level.playSound(null, event.getPos(), SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
-		level.setBlockAndUpdate(event.getPos(), newBlock.withPropertiesOf(level.getBlockState(event.getPos()))
-			.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE));
-		level.setBlockEntity(new SkullCandleBlockEntity(event.getPos(), newBlock.withPropertiesOf(level.getBlockState(event.getPos()))
-			.setValue(AbstractSkullCandleBlock.LIGHTING, LightableBlock.Lighting.NONE)));
-		if (level.getBlockEntity(event.getPos()) instanceof SkullCandleBlockEntity sc) {
-			sc.setCandleInfo(new SkullCandles(sc.getCandleInfo().count(), AbstractSkullCandleBlock.candleToCandleColor(event.getItemStack().getItem()).getValue()));
+		level.playSound(null, pos, SoundEvents.CANDLE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
+		level.setBlockAndUpdate(pos, newBlock.withPropertiesOf(level.getBlockState(pos))
+			.setValue(AbstractSkullCandleBlock.LIGHTING, twilightforest.block.LightableBlock.Lighting.NONE));
+		level.setBlockEntity(new SkullCandleBlockEntity(pos, newBlock.withPropertiesOf(level.getBlockState(pos))
+			.setValue(AbstractSkullCandleBlock.LIGHTING, twilightforest.block.LightableBlock.Lighting.NONE)));
+		if (level.getBlockEntity(pos) instanceof SkullCandleBlockEntity sc) {
+			sc.setCandleInfo(new twilightforest.components.item.SkullCandles(sc.getCandleInfo().count(), AbstractSkullCandleBlock.candleToCandleColor(stack.getItem()).getValue()));
 			sc.setOwnerProfile(profile);
 			sc.setChanged();
 		}
@@ -343,169 +265,61 @@ public class EntityEvents {
 	public static int getGearCoverage(LivingEntity entity, boolean yeti) {
 		int amount = 0;
 
-		for (ItemStack armor : entity.getArmorSlots()) {
-			if (!armor.isEmpty() && (yeti ? armor.getItem() instanceof YetiArmorItem : armor.getItem() instanceof FieryArmorItem)) {
-				amount++;
+		for (EquipmentSlot slot : EquipmentSlot.values()) {
+			if (slot.isArmor()) {
+				ItemStack armor = entity.getItemBySlot(slot);
+				if (!armor.isEmpty() && (yeti ? armor.getItem() instanceof twilightforest.item.YetiArmorItem : armor.getItem() instanceof twilightforest.item.FieryArmorItem)) {
+					amount++;
+				}
 			}
 		}
 
 		return amount;
 	}
 
-	private void addCloudJumpParticles(LivingEvent.LivingJumpEvent event) {
-		LivingEntity living = event.getEntity();
-		if (living.level().isClientSide() && !living.isSpectator() && living.level().getBlockState(living.getOnPos()).getBlock() instanceof CloudBlock) {
-			for (int i = 0; i < 12; i++)
-				CloudBlock.addEntityMovementParticles(living.level(), living.getOnPos(), living, true);
-		}
-	}
-
-	private static int getSpawnListIndexAt(StructureStart start, BlockPos pos) {
-		int highestFoundIndex = -1;
-		for (StructurePiece component : start.getPieces()) {
-			if (component.getBoundingBox().isInside(pos) && component instanceof SpawnIndexProvider indexProvider && indexProvider.getSpawnIndex() > highestFoundIndex) {
-				highestFoundIndex = indexProvider.getSpawnIndex();
-			}
-		}
-		return highestFoundIndex;
-	}
-
-	public static void gatherPotentialSpawns(StructureManager structureManager, MobCategory classification, BlockPos pos, Consumer<Weighted<MobSpawnSettings.SpawnerData>> consumer) {
-		List<StructureStart> structureStarts = structureManager.startsForStructure(ChunkPos.containing(pos), s -> s instanceof ControlledSpawns);
-
-		for (StructureStart start : structureStarts) {
-			if (start.getStructure() instanceof ControlledSpawns landmark) {
-
-				if (!start.isValid())
-					continue;
-
-				if (classification != MobCategory.MONSTER) {
-					landmark.getSpawnableList(classification)
-						.unwrap()
-						.forEach(consumer);
-
-					return;
-				}
-
-				if (start instanceof TFStructureStart s && s.isConquered())
-					return;
-
-				if (landmark instanceof ValidatedSpawnLocations validator && !validator.canSpawnMob(pos, start.getBoundingBox()))
-					return;
-
-				final int index = getSpawnListIndexAt(start, pos);
-				if (index < 0)
-					return;
-
-				landmark.getSpawnableMonsterList(index)
-					.unwrap()
-					.forEach(consumer);
-
-				return;
-			}
-		}
-	}
-
-	private void structureSpecialSpawns(LevelEvent.PotentialSpawns event) {
-		if (!(event.getLevel() instanceof ServerLevel serverLevel))
-			return;
-
-		List<Weighted<MobSpawnSettings.SpawnerData>> potentialStructureSpawns = new ArrayList<>();
-
-		gatherPotentialSpawns(
-			serverLevel.structureManager(),
-			event.getMobCategory(),
-			event.getPos(),
-			potentialStructureSpawns::add
-		);
-
-		if (!potentialStructureSpawns.isEmpty()) {
-			List.copyOf(event.getSpawnerDataList()).forEach(event::removeSpawnerData);
-			potentialStructureSpawns.forEach(event::addSpawnerData);
-		}
-	}
-
-	private void removeCastleTextIfAttacked(AttackEntityEvent event) {
+	private static InteractionResult removeCastleTextIfAttacked(Player player, Level level, InteractionHand hand, Entity target, EntityHitResult hitResult) {
 		// For clearing our Display text entities at the Final Castle Gazebo, there's no other way to remove them otherwise
 		// The tag distinguishes our Interaction entities from other Mods' utilization
-		if (event.getTarget().level() instanceof ServerLevel level && event.getTarget() instanceof Interaction interaction
-			&& interaction.getTags().contains(FinalCastleBossGazeboComponent.INTERACTION_TAG)) {
+		if (target.level() instanceof ServerLevel serverLevel && target instanceof Interaction interaction
+			&& interaction.tags.contains(twilightforest.world.components.structures.finalcastle.FinalCastleBossGazeboComponent.INTERACTION_TAG)) {
 			AABB bounds = interaction.getBoundingBox();
-			level.getEntities(interaction, bounds, e -> e instanceof Display).forEach(Entity::discard);
+			serverLevel.getEntities(interaction, bounds, e -> e instanceof net.minecraft.world.entity.Display).forEach(Entity::discard);
 			interaction.discard();
 		}
+		return InteractionResult.PASS;
 	}
 
-	private void adjustEntityHealthInMultiplayerFights(FinalizeSpawnEvent event) {
-		if (event.getEntity().is(TFEntityTypeTags.MULTIPLAYER_INCLUSIVE_ENTITIES)) {
-			if (TFConfig.multiplayerFightAdjuster.adjustsHealth()) {
-				List<ServerPlayer> nearbyPlayers = event.getLevel().getEntitiesOfClass(ServerPlayer.class, event.getEntity().getBoundingBox().inflate(32, 10, 32), player -> EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.ENTITY_STILL_ALIVE).test(player));
-				if (nearbyPlayers.size() > 1 && event.getEntity().getAttribute(Attributes.MAX_HEALTH) != null) {
-					event.getEntity().getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(TFMain.prefix("group_health_boost"), getHealthBasedOnDifficulty(event.getDifficulty().getDifficulty()) * (nearbyPlayers.size() - 1), AttributeModifier.Operation.ADD_VALUE));
-				}
+	private static void addQualifiedGroupPlayerIfNeeded(LivingEntity entity, net.minecraft.world.damagesource.DamageSource source, float amount, float original, boolean blockedByShield) {
+		if (entity.is(TFEntityTypeTags.MULTIPLAYER_INCLUSIVE_ENTITIES)) {
+			var data = ((net.fabricmc.fabric.api.attachment.v1.AttachmentTarget) entity).getAttached(TFDataAttachments.MULTIPLAYER_FIGHT);
+			if (source.getEntity() != null) {
+				data.maybeAddQualifiedPlayer(source.getEntity());
 			}
 		}
 	}
 
-	private static double getHealthBasedOnDifficulty(Difficulty difficulty) {
-		return switch (difficulty) {
-			case EASY -> 20.0D;
-			case NORMAL -> 40.0D;
-			case HARD -> 60.0D;
-			default -> 0.0D;
-		};
-	}
-
-	private void addQualifiedGroupPlayerIfNeeded(LivingDamageEvent.Post event) {
-		if (event.getEntity().is(TFEntityTypeTags.MULTIPLAYER_INCLUSIVE_ENTITIES)) {
-			var data = event.getEntity().getData(TFDataAttachments.MULTIPLAYER_FIGHT);
-			if (event.getSource().getEntity() != null) {
-				data.maybeAddQualifiedPlayer(event.getSource().getEntity());
-			}
+	private static void grantGroupAdvancementIfNeeded(LivingEntity entity, net.minecraft.world.damagesource.DamageSource source) {
+		if (((net.fabricmc.fabric.api.attachment.v1.AttachmentTarget) entity).hasAttached(TFDataAttachments.MULTIPLAYER_FIGHT)) {
+			((net.fabricmc.fabric.api.attachment.v1.AttachmentTarget) entity).getAttached(TFDataAttachments.MULTIPLAYER_FIGHT).grantGroupAdvancement(entity);
 		}
 	}
 
-	private void grantGroupAdvancementIfNeeded(LivingDeathEvent event) {
-		if (!event.isCanceled() && event.getEntity().hasData(TFDataAttachments.MULTIPLAYER_FIGHT)) {
-			event.getEntity().getData(TFDataAttachments.MULTIPLAYER_FIGHT).grantGroupAdvancement(event.getEntity());
-		}
+	private static void handleQuestSyncing(ServerPlayer player, boolean joined) {
+		net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking.send(player, new SyncQuestsPacket(questingRamCurrentContext.getContext()));
 	}
 
-	private void lichBombsDontBlowUpItems(ExplosionEvent.Detonate event) {
-		if (event.getExplosion().getDirectSourceEntity() instanceof LichBomb) {
-			event.getAffectedEntities().removeIf(entity -> entity instanceof ItemEntity || entity instanceof LichBomb);
-		}
-	}
-
-	private void handleQuestSyncing(OnDatapackSyncEvent event) {
-		if (event.getPlayer() != null) {
-			PacketDistributor.sendToPlayer(event.getPlayer(), new SyncQuestsPacket(this.questingRamCurrentContext.getContext()));
-		} else {
-			event.getPlayerList().getPlayers().forEach(player -> PacketDistributor.sendToPlayer(player, new SyncQuestsPacket(this.questingRamCurrentContext.getContext())));
-		}
-	}
-
-	private void resetFlaskLogic(AdvancementEvent.AdvancementEarnEvent event) {
-		for (var criteria : event.getAdvancement().value().criteria().entrySet()) {
-			if (criteria.getValue().trigger() instanceof DrinkFromFlaskTrigger) {
-				event.getEntity().getData(TFDataAttachments.FLASK_DOSES).resetDoses();
-				break;
-			}
-		}
-	}
-
-	private void handleLeashPathingOverrides(EntityJoinLevelEvent event) {
-		if (!(event.getEntity() instanceof PathfinderMob mob && mob.hasData(TFDataAttachments.LEASH_PATHFINDER_OVERRIDE))) {
+	private static void handleLeashPathingOverrides(Entity entity, ServerLevel level) {
+		if (!(entity instanceof PathfinderMob mob && ((net.fabricmc.fabric.api.attachment.v1.AttachmentTarget) mob).hasAttached(TFDataAttachments.LEASH_PATHFINDER_OVERRIDE))) {
 			return;
 		}
 
 		if (!mob.mayBeLeashed()) {
-			mob.removeData(TFDataAttachments.LEASH_PATHFINDER_OVERRIDE);
+			((net.fabricmc.fabric.api.attachment.v1.AttachmentTarget) mob).removeAttached(TFDataAttachments.LEASH_PATHFINDER_OVERRIDE);
 		}
 	}
 
-	private void stopEndermenFromGrabbingBlocksInTF(EntityJoinLevelEvent event) {
-		if (event.getEntity() instanceof EnderMan enderMan) {
+	private static void stopEndermenFromGrabbingBlocksInTF(Entity entity, ServerLevel level) {
+		if (entity instanceof EnderMan enderMan) {
 			enderMan.goalSelector.getAvailableGoals().stream()
 				.filter(g -> g.getGoal() instanceof EnderMan.EndermanTakeBlockGoal)
 				.findAny()
