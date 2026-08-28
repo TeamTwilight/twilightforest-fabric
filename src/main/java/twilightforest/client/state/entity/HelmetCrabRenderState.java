@@ -8,7 +8,7 @@ public class HelmetCrabRenderState extends LivingEntityRenderState {
 	public float helmetRot;
 	public int id;
 	public boolean blue;
-
+	public float partialTick;
 
     public float getHelmetRotation(HelmetCrab entity, float partialTicks) {
         float f = Mth.rotLerp(partialTicks, entity.yBodyRotO, entity.yBodyRot);

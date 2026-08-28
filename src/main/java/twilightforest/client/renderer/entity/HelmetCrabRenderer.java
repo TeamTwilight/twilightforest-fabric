@@ -28,6 +28,7 @@ public class HelmetCrabRenderer extends MobRenderer<HelmetCrab, HelmetCrabRender
 		state.helmetRot = state.getHelmetRotation(entity, partialTicks);
 		state.id = entity.getId();
 		state.blue = entity.isBlue();
+		state.partialTick = partialTicks;
 	}
 
 	@Override
