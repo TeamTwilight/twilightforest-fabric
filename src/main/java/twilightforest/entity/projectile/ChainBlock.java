@@ -4,7 +4,6 @@ import carminite.multipart.PartEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -29,7 +28,6 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFDataAttachments;
@@ -37,7 +35,7 @@ import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
 import twilightforest.tags.TFBlockTags;
 
-public class ChainBlock extends ThrowableProjectile implements IEntityWithComplexSpawn {
+public class ChainBlock extends ThrowableProjectile {
 
 	private static final int MAX_STUCK_TICKS = 100;
 	private static final int MAX_CHAIN = 16;
@@ -319,20 +317,5 @@ public class ChainBlock extends ThrowableProjectile implements IEntityWithComple
 			pCompound.store("BlockAndChainStack", ItemStack.CODEC, this.stack); //TODO: I don't think we should be checking if this is null, ItemStacks should never be null.
 		}
 		pCompound.putBoolean("IsReturning", this.isReturning());
-	}
-
-	@Override
-	public void writeSpawnData(RegistryFriendlyByteBuf buffer) {
-		buffer.writeInt(this.getOwner() != null ? this.getOwner().getId() : -1);
-		buffer.writeBoolean(this.getHand() == InteractionHand.MAIN_HAND);
-	}
-
-	@Override
-	public void readSpawnData(RegistryFriendlyByteBuf buf) {
-		Entity e = this.level().getEntity(buf.readInt());
-		if (e instanceof LivingEntity) {
-			this.setOwner(e);
-		}
-		this.setHand(buf.readBoolean() ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND);
 	}
 }
