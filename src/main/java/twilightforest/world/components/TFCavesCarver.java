@@ -8,19 +8,16 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.CarvingMask;
 import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.Aquifer;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.carver.CarvingContext;
 import net.minecraft.world.level.levelgen.carver.CaveCarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
-import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.synth.ImprovedNoise;
 import net.minecraft.world.level.material.Fluids;
 import org.apache.commons.lang3.mutable.MutableBoolean;
@@ -33,10 +30,10 @@ import java.util.function.Function;
 public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 
 	private final boolean isHighlands;
-	private final BlockStateProvider wallBlocks;
+	private final CarverWallProvider wallBlocks;
 	private final ImprovedNoise noise;
 
-	public TFCavesCarver(Codec<CaveCarverConfiguration> codec, boolean isHighlands, BlockStateProvider wallBlocks) {
+	public TFCavesCarver(Codec<CaveCarverConfiguration> codec, boolean isHighlands, CarverWallProvider wallBlocks) {
 		super(codec);
 		this.wallBlocks = wallBlocks;
 		this.liquids = ImmutableSet.of(Fluids.WATER, Fluids.LAVA);
@@ -157,9 +154,6 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 	}
 
 	private void postCarveBlock(ChunkAccess access, BlockPos pos, CaveCarverConfiguration config, RandomSource rand, BlockPos chunkOrigin) {
-		if (!(access instanceof LevelChunk levelChunk)) return;
-		if (!(levelChunk.getLevel() instanceof ServerLevelAccessor serverLevelAccessor)) return;
-
 		for (Direction facing : Direction.values()) {
 			BlockPos directionalRelative = pos.relative(facing);
 			if (!isInsideChunk(directionalRelative, chunkOrigin)) continue;
@@ -169,7 +163,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 
 			if (this.isHighlands) {
 				if (rand.nextInt(4) == 0 && this.canReplaceBlock(config, access.getBlockState(directionalRelative))) {
-					access.setBlockState(directionalRelative, this.wallBlocks.getState(serverLevelAccessor.getLevel(), rand, directionalRelative));
+					access.setBlockState(directionalRelative, this.wallBlocks.getState(rand, directionalRelative));
 				}
 			} else if (facing != Direction.DOWN && (facing == Direction.UP || access.getBlockState(directionalRelative.above()).isAir() || this.checkNoiseThreshold(directionalRelative, 0.25f, 0.5f))) { //here's the code for making dirt roofs. Enjoy :)
 				// Dirt is never placed below, always on roof, and typically to the sides
@@ -177,7 +171,7 @@ public class TFCavesCarver extends WorldCarver<CaveCarverConfiguration> {
 				BlockState neighboringBlock = access.getBlockState(directionalRelative);
 
 				if (neighboringBlock.is(BlockTags.BASE_STONE_OVERWORLD) || neighboringBlock.getFluidState().is(FluidTags.WATER)) {
-					access.setBlockState(directionalRelative, this.wallBlocks.getState(serverLevelAccessor.getLevel(), rand, directionalRelative));
+					access.setBlockState(directionalRelative, this.wallBlocks.getState(rand, directionalRelative));
 				}
 			}
 		}
