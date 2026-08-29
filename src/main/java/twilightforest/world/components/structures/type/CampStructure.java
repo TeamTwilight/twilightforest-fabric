@@ -16,11 +16,12 @@ import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
-import twilightforest.TFMain;
+import tamaized.beanification.Autowired;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.tags.TFBiomeTags;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.components.structures.TwilightJigsawPiece;
+import twilightforest.world.components.structures.camp.CampPieces;
 import twilightforest.world.components.structures.util.DecorationClearance;
 import twilightforest.world.components.structures.util.StructureTemplateDefinitions;
 
@@ -28,7 +29,12 @@ import java.util.Map;
 import java.util.Optional;
 
 public class CampStructure extends Structure implements DecorationClearance {
-	private static final StructureTemplateDefinitions structureTemplateDefinitions = StructureTemplateDefinitions.INSTANCE;
+
+	@Autowired
+	private static StructureTemplateDefinitions structureTemplateDefinitions;
+
+	@Autowired
+	private static CampPieces campPieces;
 
 	public static final MapCodec<CampStructure> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		Structure.settingsCodec(instance)
@@ -52,7 +58,7 @@ public class CampStructure extends Structure implements DecorationClearance {
 		FrontAndTop oriented = FrontAndTop.fromFrontAndTop(Direction.UP, direction);
 
 		return Optional.of(new GenerationStub(freePosition, structurePiecesBuilder -> {
-			Identifier templatePool = TFMain.prefix("camp/structure_start");
+			Identifier templatePool = campPieces.start;
 			TwilightJigsawPiece twilightJigsawPiece = structureTemplateDefinitions.initializeTemplateFromPool(templatePool, freePosition.mutable(), oriented, templatePool.toString(), random, 0, context.structureTemplateManager());
 
 			if (twilightJigsawPiece == null) return;
@@ -65,7 +71,7 @@ public class CampStructure extends Structure implements DecorationClearance {
 
 	@Override
 	public StructureType<?> type() {
-		return TFStructureTypes.CAMP;
+		return TFStructureTypes.CAMP.value();
 	}
 
 	public static CampStructure buildStructureConfig(BootstrapContext<Structure> context) {
