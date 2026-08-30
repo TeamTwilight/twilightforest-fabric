@@ -14,7 +14,8 @@ import net.minecraft.world.phys.Vec3;
 import twilightforest.TFMain;
 import twilightforest.network.UpdateTFMultipartPacket;
 
-import java.util.Objects;
+import java.util.function.Consumer;
+import java.util.function.ObjIntConsumer;
 
 public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 
@@ -96,7 +97,7 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 
 	@Override
 	public boolean isInvisible() {
-		return this.getParent().isInvisible();
+		return super.isInvisible() || this.getParent().isInvisible();
 	}
 
 	@Override
@@ -144,13 +145,32 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 		this.refreshDimensions();
 	}
 
-	public static void assignPartIDs(Entity parent) {
-		if (parent instanceof IMultiPartEntity multiPartEntity) {
-			PartEntity<?>[] parts = multiPartEntity.getParts();
-			for (int i = 0, partsLength = Objects.requireNonNull(parts).length; i < partsLength; i++) {
-				PartEntity<?> part = parts[i];
-				part.setId(parent.getId() + i);
-			}
+	public static void forEachPart(Entity parent, ObjIntConsumer<TFPart<?>> action) {
+		if (!(parent instanceof IMultiPartEntity multiPartEntity))
+			return;
+
+		if (!multiPartEntity.isMultipartEntity())
+			return;
+
+		@SuppressWarnings("NullableProblems") PartEntity<?>[] parts = multiPartEntity.getParts();
+		// getParts is nullable, the annotation is used incorrectly
+		//noinspection ConstantValue
+		if (parts == null)
+			return;
+
+		for (int i = 0; i < parts.length; i++) {
+			if (parts[i] instanceof TFPart<?> part)
+				action.accept(part, i);
 		}
+	}
+
+	public static void forEachPart(Iterable<Entity> entities, Consumer<TFPart<?>> action) {
+		ObjIntConsumer<TFPart<?>> indexed = (part, _) -> action.accept(part);
+		for (Entity entity : entities)
+			forEachPart(entity, indexed);
+	}
+
+	public static void assignPartIDs(Entity parent) {
+		forEachPart(parent, (part, index) -> part.setId(parent.getId() + index));
 	}
 }
