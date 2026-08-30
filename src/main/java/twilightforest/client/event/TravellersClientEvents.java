@@ -240,13 +240,13 @@ public class TravellersClientEvents {
 
 	@SuppressWarnings("unchecked") //meh
 	private void renderGlovesInFirstPerson(RenderArmEvent event) {
-		if (!TFConfig.firstPersonGloveOverlay)
+        if (!TFConfig.firstPersonGloveOverlay)
 			return;
 
-		AbstractClientPlayer player = event.getPlayer();
-		ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
-		if (!chestStack.has(TFDataComponents.TRAVELLERS_HAS_GLOVES) || chestStack.has(TFDataComponents.EMPERORS_CLOTH))
-			return;
+        AbstractClientPlayer player = event.getPlayer();
+        ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
+        if (!chestStack.has(TFDataComponents.TRAVELLERS_HAS_GLOVES) || chestStack.has(TFDataComponents.EMPERORS_CLOTH))
+            return;
 
 		Minecraft minecraft = Minecraft.getInstance();
 		EntityRenderDispatcher renderDispatcher = minecraft.getEntityRenderDispatcher();
@@ -268,7 +268,7 @@ public class TravellersClientEvents {
 //		ModelPart armPart = event.getArm() == HumanoidArm.RIGHT ? model.rightArm : model.leftArm;
 //        armPart.xRot = 0.0F;
 
-		Identifier gloveLocation = TwilightForestMod.prefix("textures/models/armor/travellers_layer_1.png");
+        Identifier gloveLocation = TwilightForestMod.prefix("textures/entity/equipment/humanoid/travellers.png");
 //		event.getSubmitNodeCollector().submitModelPart(armPart, event.getPoseStack(), RenderTypes.armorCutoutNoCull(gloveLocation), event.getPackedLight(), OverlayTexture.NO_OVERLAY, null);
-	}
+    }
 }
