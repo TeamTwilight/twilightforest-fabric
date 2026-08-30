@@ -63,7 +63,7 @@ public class TFDataComponents {
 	public static final DataComponentType<Unit> SWAP_HOTBAR_MODIFIER = registerSyncedCached("swap_hotbar_modifier", Unit.CODEC, Unit.STREAM_CODEC);
 	public static final DataComponentType<Integer> HIGH_JUMP_AMPLIFIER = registerSyncedCached("high_jump_amplifier", ExtraCodecs.UNSIGNED_BYTE, ByteBufCodecs.INT);
 	public static final DataComponentType<Float> GRADUALLY_GLIDING_MULTIPLIER = registerSyncedCached("gradually_gliding_multiplier", ExtraCodecs.POSITIVE_FLOAT, ByteBufCodecs.FLOAT);
-	public static final DataComponentType<Float> AGILE_RANGER_MODIFIER = registerSyncedCached("agile_ranger_modifier", ExtraCodecs.POSITIVE_FLOAT, ByteBufCodecs.FLOAT);
+	public static final DataComponentType<Unit> AGILE_RANGER_MODIFIER = registerSyncedCached("agile_ranger_modifier", Unit.CODEC, Unit.STREAM_CODEC);
 	public static final DataComponentType<Unit> DOUBLE_JUMP = registerSyncedCached("double_jump", Unit.CODEC, Unit.STREAM_CODEC);
 	public static final DataComponentType<Long> SIDESTEP_COOLDOWN = registerSyncedCached("sidestep_cooldown", Codec.LONG, ByteBufCodecs.VAR_LONG);
 	public static final DataComponentType<Double> STRAIGHT_AHEAD_MULTIPLIER = registerSyncedCached("straight_ahead_multiplier", Codec.DOUBLE, ByteBufCodecs.DOUBLE);

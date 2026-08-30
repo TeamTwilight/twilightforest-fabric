@@ -282,6 +282,9 @@ accessible method net/minecraft/client/gui/Gui extractFood (Lnet/minecraft/clien
 # EntityHooks
 accessible field net/minecraft/world/entity/Entity stuckSpeedMultiplier Lnet/minecraft/world/phys/Vec3;
 
+# TravellersClientEvents
+accessible field net/minecraft/client/player/ClientInput moveVector Lnet/minecraft/world/phys/Vec2;
+
 # Enum Extensions
 extend-enum net/minecraft/world/damagesource/DamageEffects TWILIGHTFOREST_PINCH
 extend-enum net/minecraft/world/item/Rarity TWILIGHTFOREST_TWILIGHT
