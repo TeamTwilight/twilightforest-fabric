@@ -5,37 +5,38 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
-import net.neoforged.neoforge.common.util.Lazy;
+import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
-public abstract class TFArmorRenderer implements IClientItemExtensions {
+public abstract class TFArmorRenderer implements ArmorRenderer {
 	public static final List<TFSimpleArmorRenderer> INSTANCES = new ArrayList<>();
-	protected final Map<ModelLayerLocation, Lazy<ModelPart>> ARMOR_MODELS = new HashMap<>();
+	protected final Map<ModelLayerLocation, ModelPart> ARMOR_MODELS = new HashMap<>();
 
 	public TFArmorRenderer(ModelLayerLocation... layerLocations) {
 		for (ModelLayerLocation layerLocation : layerLocations) {
-			this.ARMOR_MODELS.put(
-				layerLocation,
-				Lazy.of(() -> Minecraft.getInstance().getEntityModels().bakeLayer(layerLocation))
-			);
+			ARMOR_MODELS.put(layerLocation, bakeLayer(layerLocation));
 		}
 	}
 
+	private static ModelPart bakeLayer(ModelLayerLocation layerLocation) {
+		return Minecraft.getInstance().getEntityModels().bakeLayer(layerLocation);
+	}
+
 	public void resetModelCache() {
-		ARMOR_MODELS.values().forEach(Lazy::invalidate);
+		ARMOR_MODELS.replaceAll((layer, model) -> bakeLayer(layer));
 	}
 
 	public static void resetAllModelCache() {
-		INSTANCES.forEach(TFSimpleArmorRenderer::resetModelCache);
+		INSTANCES.forEach(TFArmorRenderer::resetModelCache);
 	}
 
 	protected ModelPart getModelPart(ModelLayerLocation layerLocation) {
-		return ARMOR_MODELS.get(layerLocation).get();
+		return ARMOR_MODELS.get(layerLocation);
 	}
 
 	public static final class ResourceReloadListener implements ResourceManagerReloadListener {

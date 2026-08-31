@@ -26,7 +26,7 @@ import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
-import net.neoforged.neoforge.common.util.ConcatenatedListView;
+import carminite.util.ConcatenatedListView;
 import org.jspecify.annotations.Nullable;
 import twilightforest.TFMain;
 import twilightforest.client.model.TFModelLayers;
@@ -110,7 +110,7 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 		List<Holder.Reference<TravellersModifier>> insertableModifiers = TravellersModifiersManager.findAllInsertableModifiers(registries, stack);
 		for (Holder.Reference<TravellersModifier> modifier : insertableModifiers) {
 			builder.accept(Component.literal("- ").append(TravellersModifiersManager.getModifierTooltipComponent(modifier).withStyle(ChatFormatting.GRAY)));
-			if (flag.hasShiftDown()) {
+			if (flag.isAdvanced()) {
 				for (Component description : modifier.value().getDescription()) {
 					// FIXME There has to be a better way to bold only the indent and arrow and not the information component
 					builder.accept(Component.literal("").append(Component.translatable("travellers_gear.info_indent").withStyle(ChatFormatting.BOLD)).append(description));
@@ -122,11 +122,11 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 			builder.accept(Component.literal("- ").append(Component.translatable("travellers_gear.modifier.empty").withStyle(ChatFormatting.DARK_GRAY)));
 		}
 
-		if (TFItems.TRAVELLERS_GLOVES.get() == this) {
+		if (TFItems.TRAVELLERS_GLOVES == this) {
 			builder.accept(GLOVES_TOOLTIP);
 		}
 
-		if (!flag.hasShiftDown()) {
+		if (!flag.isAdvanced()) {
 			ConcatenatedListView<Holder.Reference<TravellersModifier>> modifiers = ConcatenatedListView.of(abilityModifiers, insertableModifiers);
 			boolean hasHiddenDescriptions = modifiers.stream().map(Holder::value).map(TravellersModifier::getDescription).anyMatch(Predicate.not(List::isEmpty));
 			if (hasHiddenDescriptions) {
@@ -134,22 +134,6 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 			}
 		}
 	}
-
-	@Override
-	public boolean isPrimaryItemFor(ItemStack stack, Holder<Enchantment> enchantment) {
-		return false;
-	}
-
-	@Override
-	public boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
-		return false;
-	}
-
-	@Override
-	public boolean canWalkOnPowderedSnow(ItemStack stack, LivingEntity wearer) {
-		return stack.is(TFItems.TRAVELLERS_BOOTS);
-	}
-
 	public static boolean isTravellersArmorAndBroken(ItemStack stack) {
 		return stack.has(TFDataComponents.IS_TRAVELLERS_GEAR) && stack.isDamageableItem() && stack.getMaxDamage() - 1 <= stack.getDamageValue();
 	}
@@ -182,61 +166,58 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 			super(TFModelLayers.TRAVELLERS_ARMOR_HELMET, TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES, TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES_SLIM, TFModelLayers.TRAVELLERS_ARMOR_LEGGINGS, TFModelLayers.TRAVELLERS_ARMOR_BOOTS);
 		}
 
-		//TODO I dont know how to check the entity for this anymore.
-		//we dont even have access to the renderstate which wouldve been a way around it, but alas
-		@Nullable
 		@Override
-		public Identifier getArmorTexture(ItemStack stack, EquipmentClientInfo.LayerType type, EquipmentClientInfo.Layer layer, Identifier def) {
-			return type != EquipmentClientInfo.LayerType.HUMANOID_LEGGINGS && entity.getData(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER) ?
-				TFMain.prefix("textures/models/armor/travellers_layer_1_down.png") :
-				super.getArmorTexture(stack, type, layer, def);
-		}
+		public void render(com.mojang.blaze3d.vertex.PoseStack poseStack, net.minecraft.client.renderer.SubmitNodeCollector collector, ItemStack stack, net.minecraft.client.renderer.entity.state.HumanoidRenderState state, EquipmentSlot slot, int light, net.minecraft.client.model.HumanoidModel<net.minecraft.client.renderer.entity.state.HumanoidRenderState> contextModel) {
+			if (!stack.has(DataComponents.EQUIPPABLE))
+				return;
 
-		@Override
-		public Model<?> getHumanoidArmorModel(ItemStack stack, EquipmentClientInfo.LayerType layerType, Model model) {
-			if (stack.has(DataComponents.EQUIPPABLE)) {
-				EquipmentSlot slot = stack.get(DataComponents.EQUIPPABLE).slot();
-				ModelPart root = switch (slot) {
-					case CHEST -> {
-						ModelPart chestLayer = this.getModelPart(this.isModelSlim(model) ? TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES_SLIM : TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES);
-						chestLayer.getAllParts().forEach(part -> part.skipDraw = true);
-						boolean hasChestplate = stack.has(TFDataComponents.TRAVELLERS_HAS_CHESTPLATE);
-						boolean hasGloves = stack.has(TFDataComponents.TRAVELLERS_HAS_GLOVES);
-						chestLayer.getChild("body").skipDraw = !hasChestplate;
-						chestLayer.getChild("left_arm").skipDraw = !hasGloves;
-						chestLayer.getChild("right_arm").skipDraw = !hasGloves;
-
-						yield chestLayer;
-					}
-					case LEGS -> {
-						ModelPart leggingsLayer = this.getModelPart(TFModelLayers.TRAVELLERS_ARMOR_LEGGINGS);
-						leggingsLayer.getAllParts().forEach(part -> part.skipDraw = true);
-						boolean hasWings = stack.has(TFDataComponents.TRAVELLERS_HAS_WINGS);
-						boolean hasBelt = stack.has(TFDataComponents.TRAVELLERS_HAS_BELT) || TravellersModifiersManager.hasTravellersModifier(Minecraft.getInstance().level.registryAccess(), stack, TravellersModifiersManager.SWAP_HOTBAR_MODIFIER);
-
-						TravellersWingsModel.skipBelt(leggingsLayer, !hasBelt);
-						TravellersWingsModel.skipWings(leggingsLayer, !hasWings);
-
-						yield leggingsLayer;
-					}
-					case FEET -> this.getModelPart(TFModelLayers.TRAVELLERS_ARMOR_BOOTS);
-					default -> null;
-				};
-
-
-				if (slot == EquipmentSlot.LEGS) {
-					return new TravellersWingsModel(root);
-				} else if (root != null) {
-					return new TFArmorModel(root);
+			EquipmentSlot eqSlot = stack.get(DataComponents.EQUIPPABLE).slot();
+			ModelPart root = switch (eqSlot) {
+				case CHEST -> {
+					ModelPart chestLayer = this.getModelPart(this.isModelSlim(contextModel) ? TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES_SLIM : TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES);
+					chestLayer.getAllParts().forEach(part -> part.skipDraw = true);
+					boolean hasChestplate = stack.has(TFDataComponents.TRAVELLERS_HAS_CHESTPLATE);
+					boolean hasGloves = stack.has(TFDataComponents.TRAVELLERS_HAS_GLOVES);
+					chestLayer.getChild("body").skipDraw = !hasChestplate;
+					chestLayer.getChild("left_arm").skipDraw = !hasGloves;
+					chestLayer.getChild("right_arm").skipDraw = !hasGloves;
+					yield chestLayer;
 				}
+				case LEGS -> {
+					ModelPart leggingsLayer = this.getModelPart(TFModelLayers.TRAVELLERS_ARMOR_LEGGINGS);
+					leggingsLayer.getAllParts().forEach(part -> part.skipDraw = true);
+					boolean hasWings = stack.has(TFDataComponents.TRAVELLERS_HAS_WINGS);
+					boolean hasBelt = stack.has(TFDataComponents.TRAVELLERS_HAS_BELT) || TravellersModifiersManager.hasTravellersModifier(Minecraft.getInstance().level.registryAccess(), stack, TravellersModifiersManager.SWAP_HOTBAR_MODIFIER);
+					TravellersWingsModel.skipBelt(leggingsLayer, !hasBelt);
+					TravellersWingsModel.skipWings(leggingsLayer, !hasWings);
+					yield leggingsLayer;
+				}
+				case FEET -> this.getModelPart(TFModelLayers.TRAVELLERS_ARMOR_BOOTS);
+				default -> null;
+			};
+
+			Model armorModel;
+			if (eqSlot == EquipmentSlot.LEGS && root != null) {
+				armorModel = new TravellersWingsModel(root);
+			} else if (root != null) {
+				armorModel = new TFArmorModel(root);
+			} else {
+				return;
 			}
-			return super.getHumanoidArmorModel(stack, layerType, model);
+
+			// TODO [Fabric] the zoom "down" texture switch and the live wings animation need
+			// the entity/wings data piped into the render state (extract batch).
+			Identifier texture = textureFor(stack, eqSlot);
+			collector.submitModel(armorModel, state, poseStack, armorModel.renderType(texture), light, net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY, 0xffffffff, null);
 		}
 
-		@Override
-		public void setupModelAnimations(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, Model model, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
-			if (model instanceof TravellersWingsModel wingsModel)
-				wingsModel.setupModelAnimations(livingEntity, ageInTicks);
+		private static Identifier textureFor(ItemStack stack, EquipmentSlot slot) {
+			return switch (slot) {
+				case CHEST -> TFMain.prefix("textures/models/armor/travellers_layer_1_gloves.png");
+				case LEGS -> TFMain.prefix("textures/models/armor/travellers_layer_2.png");
+				case FEET -> TFMain.prefix("textures/models/armor/travellers_layer_1.png");
+				default -> TFMain.prefix("textures/models/armor/travellers_layer_1.png");
+			};
 		}
 
 		private boolean isModelSlim(Model<?> model) {
@@ -246,6 +227,6 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 	}
 
 	public boolean makesPiglinsNeutral(ItemStack stack, LivingEntity wearer) {
-		return this == TFItems.TRAVELLERS_GOGGLES.get() || stack.has(TFDataComponents.TRAVELLERS_HAS_WINGS);
+		return this == TFItems.TRAVELLERS_GOGGLES || stack.has(TFDataComponents.TRAVELLERS_HAS_WINGS);
 	}
 }
