@@ -11,11 +11,18 @@
   },
   "pattern": [
     "##",
-    "#X",
+    " X",
     " X"
   ],
   "result": {
+    "components": {
+      "minecraft:enchantments": {
+        "levels": {
+          "minecraft:efficiency": 1
+        }
+      }
+    },
     "count": 1,
-    "id": "twilightforest:ironwood_axe"
+    "id": "twilightforest:ironwood_hoe"
   }
 }

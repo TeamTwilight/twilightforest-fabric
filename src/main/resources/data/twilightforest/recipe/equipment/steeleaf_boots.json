@@ -11,6 +11,13 @@
     "# #"
   ],
   "result": {
+    "components": {
+      "minecraft:enchantments": {
+        "levels": {
+          "minecraft:feather_falling": 2
+        }
+      }
+    },
     "count": 1,
     "id": "twilightforest:steeleaf_boots"
   }
