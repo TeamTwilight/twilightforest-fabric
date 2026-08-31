@@ -1,21 +1,27 @@
 package twilightforest.events;
 
+import carminite.events.api.EntityEvents;
+import carminite.events.neoforge.ProjectileImpactEvent;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.entity.event.v1.effect.ServerMobEffectEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalEntityTypeTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -25,7 +31,9 @@ import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jspecify.annotations.Nullable;
 import twilightforest.block.GiantBlock;
 import twilightforest.components.entity.GiantPickaxeMiningAttachment;
 import twilightforest.tags.TFBlockTags;
@@ -39,11 +47,47 @@ public class ToolEvents {
 	public static final ToolEvents INSTANCE = new ToolEvents();
 
 	public static void init() {
+		EntityEvents.PROJECTILE_IMPACT.register(INSTANCE::onEnderBowHit);
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, _) -> INSTANCE.fieryToolSetFire(entity, source));
 		PlayerBlockBreakEvents.BEFORE.register((_, player, _, state, _) -> INSTANCE.damageNonMazebreakerToolsMore(player, state));
 		ServerMobEffectEvents.ALLOW_ADD.register((effectInstance, entity, _) -> INSTANCE.preventFatigueWithPocketWatch(effectInstance, entity));
 		PlayerBlockBreakEvents.BEFORE.register((level, player, pos, state, _) -> INSTANCE.handleGiantPickaxeMining(level, player, pos, state));
 		CommonLifecycleEvents.TAGS_LOADED.register((_, _) -> INSTANCE.refreshOreMagnetCache());
+	}
+
+	private void onEnderBowHit(ProjectileImpactEvent evt) {
+		Projectile arrow = evt.getProjectile();
+		if (arrow.getOwner() instanceof Player player
+			&& evt.getRayTraceResult() instanceof EntityHitResult result
+			&& result.getEntity() instanceof LivingEntity living
+			&& arrow.getOwner() != result.getEntity() && !result.getEntity().is(ConventionalEntityTypeTags.BOSSES)) {
+
+			if (arrow.hasAttached(TFDataAttachments.ENDER_ARROW)) {
+				double sourceX = player.getX(), sourceY = player.getY(), sourceZ = player.getZ();
+				float sourceYaw = player.getYRot(), sourcePitch = player.getXRot();
+				@Nullable Entity playerVehicle = player.getVehicle();
+
+				player.setYRot(living.getYRot());
+				player.teleportTo(living.getX(), living.getY(), living.getZ());
+				player.invulnerableTime = 40;
+				player.level().broadcastEntityEvent(player, (byte) 46);
+				if (living.isPassenger() && living.getVehicle() != null) {
+					player.startRiding(living.getVehicle(), true, true);
+					living.stopRiding();
+				}
+				player.playSound(SoundEvents.CHORUS_FRUIT_TELEPORT, 1.0F, 1.0F);
+
+				living.setYRot(sourceYaw);
+				living.setXRot(sourcePitch);
+				living.teleportTo(sourceX, sourceY, sourceZ);
+				living.level().broadcastEntityEvent(player, (byte) 46);
+				if (playerVehicle != null) {
+					living.startRiding(playerVehicle, true, true);
+					player.stopRiding();
+				}
+				living.playSound(SoundEvents.CHORUS_FRUIT_TELEPORT, 1.0F, 1.0F);
+			}
+		}
 	}
 
 	private boolean fieryToolSetFire(LivingEntity entity, DamageSource source) {

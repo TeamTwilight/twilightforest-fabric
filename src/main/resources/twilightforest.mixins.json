@@ -10,16 +10,9 @@
     "enums.GrassColorModifierMixin",
     "enums.ItemDisplayContextMixin",
     "enums.RarityMixin",
-    "event.AbstractArrowMixin",
-    "event.AbstractHurtingProjectileMixin",
     "event.EntityMixin",
-    "event.FireworkRocketEntityMixin",
-    "event.FishingHookMixin",
-    "event.LlamaSpitMixin",
     "event.PlayerMixin",
-    "event.ServerLevelMixin",
-    "event.ShulkerBulletMixin",
-    "event.ThrowableProjectileMixin"
+    "event.ServerLevelMixin"
   ],
   "client": [
     "event.ClientLevelMixin"
