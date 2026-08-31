@@ -18,13 +18,11 @@
     "event.LlamaSpitMixin",
     "event.PlayerMixin",
     "event.ServerLevelMixin",
-    "event.ServerPlayerGameModeMixin",
     "event.ShulkerBulletMixin",
     "event.ThrowableProjectileMixin"
   ],
   "client": [
-    "event.ClientLevelMixin",
-    "event.MultiPlayerGameModeMixin"
+    "event.ClientLevelMixin"
   ],
   "injectors": {
     "defaultRequire": 1
