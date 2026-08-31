@@ -8,10 +8,18 @@
   },
   "pattern": [
     "###",
+    "# #",
     "# #"
   ],
   "result": {
+    "components": {
+      "minecraft:enchantments": {
+        "levels": {
+          "minecraft:fire_protection": 2
+        }
+      }
+    },
     "count": 1,
-    "id": "twilightforest:steeleaf_helmet"
+    "id": "twilightforest:steeleaf_leggings"
   }
 }

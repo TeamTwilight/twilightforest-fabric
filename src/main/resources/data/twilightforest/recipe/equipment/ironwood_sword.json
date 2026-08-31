@@ -15,6 +15,13 @@
     "X"
   ],
   "result": {
+    "components": {
+      "minecraft:enchantments": {
+        "levels": {
+          "minecraft:knockback": 1
+        }
+      }
+    },
     "count": 1,
     "id": "twilightforest:ironwood_sword"
   }

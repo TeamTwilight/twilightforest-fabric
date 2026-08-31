@@ -8,10 +8,18 @@
   },
   "pattern": [
     "###",
+    "# #",
     "# #"
   ],
   "result": {
+    "components": {
+      "minecraft:enchantments": {
+        "levels": {
+          "minecraft:protection": 2
+        }
+      }
+    },
     "count": 1,
-    "id": "twilightforest:yeti_helmet"
+    "id": "twilightforest:yeti_leggings"
   }
 }

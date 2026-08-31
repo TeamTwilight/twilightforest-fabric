@@ -7,12 +7,19 @@
     }
   },
   "pattern": [
-    "###",
     "# #",
     "# #"
   ],
   "result": {
+    "components": {
+      "minecraft:enchantments": {
+        "levels": {
+          "minecraft:feather_falling": 4,
+          "minecraft:protection": 2
+        }
+      }
+    },
     "count": 1,
-    "id": "twilightforest:yeti_leggings"
+    "id": "twilightforest:yeti_boots"
   }
 }

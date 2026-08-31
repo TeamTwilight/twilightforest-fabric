@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "#": {
-      "tag": "c:ingots/steeleaf"
+      "tag": "c:ingots/ironwood"
     },
     "X": {
       "tag": "c:rods/wooden"
@@ -15,7 +15,14 @@
     " X"
   ],
   "result": {
+    "components": {
+      "minecraft:enchantments": {
+        "levels": {
+          "minecraft:fortune": 1
+        }
+      }
+    },
     "count": 1,
-    "id": "twilightforest:steeleaf_axe"
+    "id": "twilightforest:ironwood_axe"
   }
 }

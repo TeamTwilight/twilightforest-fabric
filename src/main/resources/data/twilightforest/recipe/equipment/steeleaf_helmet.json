@@ -4,18 +4,21 @@
   "key": {
     "#": {
       "tag": "c:ingots/steeleaf"
-    },
-    "X": {
-      "tag": "c:rods/wooden"
     }
   },
   "pattern": [
     "###",
-    " X ",
-    " X "
+    "# #"
   ],
   "result": {
+    "components": {
+      "minecraft:enchantments": {
+        "levels": {
+          "minecraft:projectile_protection": 2
+        }
+      }
+    },
     "count": 1,
-    "id": "twilightforest:steeleaf_pickaxe"
+    "id": "twilightforest:steeleaf_helmet"
   }
 }

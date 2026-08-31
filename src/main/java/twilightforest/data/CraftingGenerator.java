@@ -1,6 +1,5 @@
 package twilightforest.data;
 
-import com.mojang.datafixers.util.Pair;
 import net.fabricmc.fabric.api.recipe.v1.ingredient.DefaultCustomIngredients;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.core.Holder;
@@ -18,7 +17,6 @@ import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.*;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Blocks;
 import io.github.fabricators_of_create.porting_lib.tags.Tags;
 import io.github.fabricators_of_create.porting_lib.resources.crafting.DataComponentIngredient;
@@ -408,26 +406,6 @@ public class CraftingGenerator extends CraftingDataHelper {
 	}
 
 	private void equipmentRecipes(HolderLookup.Provider provider, RecipeOutput output) {
-		bootsItem(output, TFItems.IRONWOOD_BOOTS, ItemTagGenerator.IRONWOOD_INGOTS, this.buildEnchants(provider, Pair.of(Enchantments.FEATHER_FALLING, 1)));
-		leggingsItem(output, TFItems.IRONWOOD_LEGGINGS, ItemTagGenerator.IRONWOOD_INGOTS, this.buildEnchants(provider, Pair.of(Enchantments.PROTECTION, 1)));
-		chestplateItem(output, TFItems.IRONWOOD_CHESTPLATE, ItemTagGenerator.IRONWOOD_INGOTS, this.buildEnchants(provider, Pair.of(Enchantments.PROTECTION, 1)));
-		helmetItem(output, TFItems.IRONWOOD_HELMET, ItemTagGenerator.IRONWOOD_INGOTS, this.buildEnchants(provider, Pair.of(Enchantments.AQUA_AFFINITY, 1)));
-		swordItem(output, TFItems.IRONWOOD_SWORD, ItemTagGenerator.IRONWOOD_INGOTS, Tags.Items.RODS_WOODEN, this.buildEnchants(provider, Pair.of(Enchantments.KNOCKBACK, 1)));
-		pickaxeItem(output, TFItems.IRONWOOD_PICKAXE, ItemTagGenerator.IRONWOOD_INGOTS, Tags.Items.RODS_WOODEN, this.buildEnchants(provider, Pair.of(Enchantments.EFFICIENCY, 1)));
-		axeItem(output, TFItems.IRONWOOD_AXE, ItemTagGenerator.IRONWOOD_INGOTS, Tags.Items.RODS_WOODEN, this.buildEnchants(provider, Pair.of(Enchantments.FORTUNE, 1)));
-		shovelItem(output, TFItems.IRONWOOD_SHOVEL, ItemTagGenerator.IRONWOOD_INGOTS, Tags.Items.RODS_WOODEN, this.buildEnchants(provider, Pair.of(Enchantments.UNBREAKING, 1)));
-		hoeItem(output, TFItems.IRONWOOD_HOE, ItemTagGenerator.IRONWOOD_INGOTS, Tags.Items.RODS_WOODEN, this.buildEnchants(provider, Pair.of(Enchantments.EFFICIENCY, 1)));
-
-		bootsItem(output, TFItems.STEELEAF_BOOTS, ItemTagGenerator.STEELEAF_INGOTS, this.buildEnchants(provider, Pair.of(Enchantments.FEATHER_FALLING, 2)));
-		leggingsItem(output, TFItems.STEELEAF_LEGGINGS, ItemTagGenerator.STEELEAF_INGOTS, this.buildEnchants(provider, Pair.of(Enchantments.FIRE_PROTECTION, 2)));
-		chestplateItem(output, TFItems.STEELEAF_CHESTPLATE, ItemTagGenerator.STEELEAF_INGOTS, this.buildEnchants(provider, Pair.of(Enchantments.BLAST_PROTECTION, 2)));
-		helmetItem(output, TFItems.STEELEAF_HELMET, ItemTagGenerator.STEELEAF_INGOTS, this.buildEnchants(provider, Pair.of(Enchantments.PROJECTILE_PROTECTION, 2)));
-		swordItem(output, TFItems.STEELEAF_SWORD, ItemTagGenerator.STEELEAF_INGOTS, Tags.Items.RODS_WOODEN, this.buildEnchants(provider, Pair.of(Enchantments.LOOTING, 2)));
-		pickaxeItem(output, TFItems.STEELEAF_PICKAXE, ItemTagGenerator.STEELEAF_INGOTS, Tags.Items.RODS_WOODEN, this.buildEnchants(provider, Pair.of(Enchantments.FORTUNE, 2)));
-		axeItem(output, TFItems.STEELEAF_AXE, ItemTagGenerator.STEELEAF_INGOTS, Tags.Items.RODS_WOODEN, this.buildEnchants(provider, Pair.of(Enchantments.EFFICIENCY, 2)));
-		shovelItem(output, TFItems.STEELEAF_SHOVEL, ItemTagGenerator.STEELEAF_INGOTS, Tags.Items.RODS_WOODEN, this.buildEnchants(provider, Pair.of(Enchantments.EFFICIENCY, 2)));
-		hoeItem(output, TFItems.STEELEAF_HOE, ItemTagGenerator.STEELEAF_INGOTS, Tags.Items.RODS_WOODEN, this.buildEnchants(provider, Pair.of(Enchantments.FORTUNE, 2)));
-
 		bootsItem(output, TFItems.ARCTIC_BOOTS, ItemTagGenerator.ARCTIC_FUR);
 		chestplateItem(output, TFItems.ARCTIC_CHESTPLATE, ItemTagGenerator.ARCTIC_FUR);
 		helmetItem(output, TFItems.ARCTIC_HELMET, ItemTagGenerator.ARCTIC_FUR);
@@ -494,52 +472,6 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_item", has(ItemTagGenerator.FIERY_INGOTS))
 			.group("fiery_sword")
 			.save(output, locEquip(TFItems.FIERY_SWORD.getKey().location().getPath()));
-
-		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, TFItems.NAGA_CHESTPLATE.get())
-			.pattern("# #")
-			.pattern("###")
-			.pattern("###")
-			.define('#', TFItems.NAGA_SCALE)
-			.unlockedBy("has_item", has(TFItems.NAGA_SCALE))
-			.save(output, locEquip(TFItems.NAGA_CHESTPLATE.getKey().location().getPath()));
-
-		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, TFItems.NAGA_LEGGINGS.get())
-			.pattern("###")
-			.pattern("# #")
-			.pattern("# #")
-			.define('#', TFItems.NAGA_SCALE)
-			.unlockedBy("has_item", has(TFItems.NAGA_SCALE))
-			.save(output, locEquip(TFItems.NAGA_LEGGINGS.getKey().location().getPath()));
-
-		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, TFItems.YETI_HELMET.get())
-			.pattern("###")
-			.pattern("# #")
-			.define('#', TFItems.ALPHA_YETI_FUR)
-			.unlockedBy("has_item", has(TFItems.ALPHA_YETI_FUR))
-			.save(output, locEquip(TFItems.YETI_HELMET.getKey().location().getPath()));
-
-		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, TFItems.YETI_CHESTPLATE.get())
-			.pattern("# #")
-			.pattern("###")
-			.pattern("###")
-			.define('#', TFItems.ALPHA_YETI_FUR)
-			.unlockedBy("has_item", has(TFItems.ALPHA_YETI_FUR))
-			.save(output, locEquip(TFItems.YETI_CHESTPLATE.getKey().location().getPath()));
-
-		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, TFItems.YETI_LEGGINGS.get())
-			.pattern("###")
-			.pattern("# #")
-			.pattern("# #")
-			.define('#', TFItems.ALPHA_YETI_FUR)
-			.unlockedBy("has_item", has(TFItems.ALPHA_YETI_FUR))
-			.save(output, locEquip(TFItems.YETI_LEGGINGS.getKey().location().getPath()));
-
-		ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, TFItems.YETI_BOOTS.get())
-			.pattern("# #")
-			.pattern("# #")
-			.define('#', TFItems.ALPHA_YETI_FUR)
-			.unlockedBy("has_item", has(TFItems.ALPHA_YETI_FUR))
-			.save(output, locEquip(TFItems.YETI_BOOTS.getKey().location().getPath()));
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, TFItems.GIANT_PICKAXE.get())
 			.pattern("###")
