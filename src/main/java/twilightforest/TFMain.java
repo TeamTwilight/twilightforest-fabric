@@ -55,7 +55,7 @@ import twilightforest.entity.passive.*;
 import twilightforest.entity.passive.quest.QuestReloadListener;
 import twilightforest.entity.projectile.MoonwormShot;
 import twilightforest.entity.projectile.TwilightWandBolt;
-import twilightforest.events.LootEvents;
+import twilightforest.events.*;
 import twilightforest.init.*;
 import twilightforest.init.custom.*;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
@@ -127,6 +127,17 @@ public final class TFMain implements ModInitializer {
 		TemplateMarkerHandlers.init();
 
 		TFRemapper.addRegistryAliases();
+
+		CapabilityEvents.init();
+		//CharmEvents.init();
+		//EntityEvents.init();
+		HostileMountEvents.init();
+		LootEvents.init();
+		MiscEvents.init();
+		LootEvents.init();
+		ProgressionEvents.init();
+		ToolEvents.init();
+		TravellersGearEvents.init();
 
 		registerPackets();
 		registerCustomRegistries();
