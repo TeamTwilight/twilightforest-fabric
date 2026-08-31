@@ -9,14 +9,9 @@
     "enums.DamageEffectsMixin",
     "enums.GrassColorModifierMixin",
     "enums.ItemDisplayContextMixin",
-    "enums.RarityMixin",
-    "event.EntityMixin",
-    "event.PlayerMixin",
-    "event.ServerLevelMixin"
+    "enums.RarityMixin"
   ],
-  "client": [
-    "event.ClientLevelMixin"
-  ],
+  "client": [],
   "injectors": {
     "defaultRequire": 1
   },
