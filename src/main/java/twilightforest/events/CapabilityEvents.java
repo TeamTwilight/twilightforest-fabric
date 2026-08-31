@@ -1,5 +1,8 @@
 package twilightforest.events;
 
+import carminite.events.api.TickEvents;
+import carminite.events.neoforge.EntityTickEvent;
+import carminite.events.neoforge.PlayerTickEvent;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.minecraft.core.BlockPos;
@@ -22,9 +25,30 @@ public class CapabilityEvents {
 	public static final CapabilityEvents INSTANCE = new CapabilityEvents();
 
 	public static void init() {
+		TickEvents.ENTITY_TICK_POST.register(INSTANCE::updateShields);
+		TickEvents.PLAYER_TICK_POST.register(INSTANCE::updatePlayerCaps);
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(INSTANCE::absorbShieldHits);
 		ServerPlayerEvents.AFTER_RESPAWN.register((_, newPlayer, _) -> INSTANCE.spawnInTFIfNecessary(newPlayer));
 		ServerPlayerEvents.JOIN.register(INSTANCE::playerLogsIn);
+	}
+
+	private void updateShields(EntityTickEvent.Post event) {
+		if (event.getEntity() instanceof LivingEntity living && !living.level().isClientSide() && living.hasAttached(TFDataAttachments.FORTIFICATION_SHIELDS)) {
+			event.getEntity().getAttached(TFDataAttachments.FORTIFICATION_SHIELDS).tick(living);
+		}
+	}
+
+	private void updatePlayerCaps(PlayerTickEvent.Post event) {
+		if (event.getEntity().getAttached(TFDataAttachments.FEATHER_FAN)) {
+			event.getEntity().setIgnoreFallDamageFromCurrentImpulse(true, event.getEntity().position());
+			event.getEntity().currentImpulseImpactPos = event.getEntity().position();
+
+			if (event.getEntity().onGround() || event.getEntity().isSwimming() || event.getEntity().isInWater()) {
+				event.getEntity().setAttached(TFDataAttachments.FEATHER_FAN, false);
+			}
+		}
+		event.getEntity().getAttached(TFDataAttachments.YETI_THROWING).tick(event.getEntity());
+		event.getEntity().getAttached(TFDataAttachments.TF_PORTAL_COOLDOWN).tick(event.getEntity());
 	}
 
 	private boolean absorbShieldHits(LivingEntity entity, DamageSource source, float amount) {
