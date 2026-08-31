@@ -1,5 +1,7 @@
 package twilightforest.events;
 
+import carminite.events.api.TickEvents;
+import carminite.events.neoforge.EntityTickEvent;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -17,6 +19,7 @@ public class HostileMountEvents {
 
 	public static void init() {
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(INSTANCE::handleMountDamage);
+		TickEvents.ENTITY_TICK_POST.register(INSTANCE::preventHostileMountCrouching);
 	}
 
 	private boolean handleMountDamage(LivingEntity entity, DamageSource source, float amount) {
@@ -37,6 +40,11 @@ public class HostileMountEvents {
 		HostileMountEvents.allowDismount = true;
 		rider.stopRiding();
 		HostileMountEvents.allowDismount = false;
+	}
+
+	private void preventHostileMountCrouching(EntityTickEvent.Post event) {
+		if (event.getEntity() instanceof IHostileMount)
+			event.getEntity().getPassengers().forEach(e -> e.setShiftKeyDown(false));
 	}
 
 	public static boolean isRidingUnfriendly(LivingEntity entity) {

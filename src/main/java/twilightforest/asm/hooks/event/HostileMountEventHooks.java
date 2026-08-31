@@ -1,8 +1,5 @@
 package twilightforest.asm.hooks.event;
 
-import net.minecraft.world.entity.Entity;
-import twilightforest.entity.IHostileMount;
-
 // TODO [Fabric] : Integrate these hooks into mixins and validate each one of them once the project compiles
 public final class HostileMountEventHooks {
 	/*
@@ -21,9 +18,4 @@ public final class HostileMountEventHooks {
 			event.setCanceled(true);
 	}
 	*/
-
-	public static void preventHostileMountCrouching(Entity entity) {
-		if (entity instanceof IHostileMount)
-			entity.getPassengers().forEach(e -> e.setShiftKeyDown(false));
-	}
 }
