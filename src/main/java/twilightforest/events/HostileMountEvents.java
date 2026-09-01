@@ -1,6 +1,8 @@
 package twilightforest.events;
 
+import carminite.events.api.EntityEvents;
 import carminite.events.api.TickEvents;
+import carminite.events.neoforge.EntityMountEvent;
 import carminite.events.neoforge.EntityTickEvent;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.minecraft.world.damagesource.DamageSource;
@@ -19,6 +21,7 @@ public class HostileMountEvents {
 
 	public static void init() {
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(INSTANCE::handleMountDamage);
+		EntityEvents.ENTITY_MOUNT.register(INSTANCE::preventMountDismount);
 		TickEvents.ENTITY_TICK_POST.register(INSTANCE::preventHostileMountCrouching);
 	}
 
@@ -40,6 +43,14 @@ public class HostileMountEvents {
 		HostileMountEvents.allowDismount = true;
 		rider.stopRiding();
 		HostileMountEvents.allowDismount = false;
+	}
+
+	private void preventMountDismount(EntityMountEvent event) {
+		if (!event.getLevel().isClientSide() &&
+			!event.isMounting() && event.getEntityBeingMounted().isAlive() &&
+			event.getEntityMounting() instanceof Player player && player.isAlive() &&
+			isRidingUnfriendly(player) && !allowDismount && !player.getAbilities().invulnerable)
+			event.setCanceled(true);
 	}
 
 	private void preventHostileMountCrouching(EntityTickEvent.Post event) {

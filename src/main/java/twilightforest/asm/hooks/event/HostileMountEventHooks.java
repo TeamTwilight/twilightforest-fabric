@@ -9,13 +9,5 @@ public final class HostileMountEventHooks {
 			event.setCanceled(true);
 		}
 	}
-
-	private void preventMountDismount(EntityMountEvent event) {
-		if (!event.getLevel().isClientSide() &&
-			!event.isMounting() && event.getEntityBeingMounted().isAlive() &&
-			event.getEntityMounting() instanceof Player player && player.isAlive() &&
-			isRidingUnfriendly(player) && !allowDismount && !player.getAbilities().invulnerable)
-			event.setCanceled(true);
-	}
 	*/
 }
