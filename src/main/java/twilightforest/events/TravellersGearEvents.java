@@ -1,14 +1,18 @@
 package twilightforest.events;
 
+import carminite.events.api.*;
 import carminite.events.api.EntityEvents;
-import carminite.events.api.LivingEvents;
-import carminite.events.api.TickEvents;
-import carminite.events.api.WorkstationEvents;
 import carminite.events.neoforge.*;
 import carminite.network.PacketDistributor;
+import carminite.util.ServerLifecycleHooks;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.minecraft.core.Holder;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -23,6 +27,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -32,10 +37,15 @@ import twilightforest.init.*;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.inventory.InventoryUtil;
 import twilightforest.item.travellers_gear.TravellersGearLogic;
+import twilightforest.item.travellers_gear.modifiers.InsertableTravellersModifier;
+import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 import twilightforest.network.GradualGlidePacket;
 import twilightforest.network.ParticlePacket;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class TravellersGearEvents {
 	public static final TravellersGearEvents INSTANCE = new TravellersGearEvents();
@@ -55,6 +65,9 @@ public class TravellersGearEvents {
 		LivingEvents.ARMOR_HURT.register(INSTANCE::stopDamagingTravellersGear);
 		LivingEvents.ARMOR_HURT.register(INSTANCE::setLastDamageArmorTime);
 		WorkstationEvents.ANVIL_UPDATE.register(INSTANCE::cancelCombiningTravellersGear);
+		WorkstationEvents.GRINDSTONE_PLACE.register(INSTANCE::removeModifiersFromTravellersGear);
+		WorkstationEvents.GRINDSTONE_TAKE.register(INSTANCE::extractItemsFromSwapHotbarModifier);
+		PlayerEvents.ITEM_CRAFTED.register(INSTANCE::fireCraftingModifierTrigger);
 		ServerPlayerEvents.COPY_FROM.register(INSTANCE::keepAttachmentsOnDeath);
 	}
 
@@ -216,6 +229,80 @@ public class TravellersGearEvents {
 	private void cancelCombiningTravellersGear(AnvilUpdateEvent event) {
 		if (event.getLeft().has(TFDataComponents.IS_TRAVELLERS_GEAR) && event.getRight().has(TFDataComponents.IS_TRAVELLERS_GEAR)) {
 			event.setCanceled(true);
+		}
+	}
+
+	private void removeModifiersFromTravellersGear(GrindstoneEvent.OnPlaceItem event) {
+		if (ServerLifecycleHooks.getCurrentServer() == null)
+			return;
+		RegistryAccess access = ServerLifecycleHooks.getCurrentServer().registryAccess();
+		List<ItemStack> travellersItemStacks = Stream.of(event.getTopItem(), event.getBottomItem())
+			.filter(stack -> stack.has(TFDataComponents.IS_TRAVELLERS_GEAR))
+			.toList();
+
+		if (travellersItemStacks.isEmpty())
+			return; // Delegate to vanilla logic
+		if (travellersItemStacks.size() > 1) {
+			event.setCanceled(true);
+			return;
+		}
+		ItemStack inputStack = travellersItemStacks.getFirst();
+		List<Holder.Reference<TravellersModifier>> modifiers = TravellersModifiersManager.findAllInsertableModifiers(access, inputStack);
+		if (modifiers.isEmpty()) {
+			event.setCanceled(true);
+			return;
+		}
+
+		ItemStack unmodifiedStack = inputStack.copy();
+		modifiers.forEach(modifier -> ((InsertableTravellersModifier) modifier.value()).removeModifier(unmodifiedStack));
+		event.setOutput(unmodifiedStack.copy());
+	}
+
+	private void extractItemsFromSwapHotbarModifier(GrindstoneEvent.OnTakeItem event) {
+		returnModifierItems(event,
+			TravellersModifiersManager.SWAP_HOTBAR_MODIFIER,
+			DataComponents.CONTAINER,
+			ItemContainerContents::nonEmptyItemCopyStream
+		);
+
+		returnModifierItems(event,
+			TravellersModifiersManager.ITEM_DISPLAY_MODIFIER,
+			TFDataComponents.ITEM_DISPLAY,
+			contents -> contents.items().stream()
+		);
+	}
+
+	private <T> void returnModifierItems(GrindstoneEvent.OnTakeItem event, ResourceKey<TravellersModifier> modifierKey, DataComponentType<T> componentType, Function<T, Stream<ItemStack>> itemStreamExtractor) {
+		getUniqueTravellersGear(event.getTopItem(), event.getBottomItem(), stack ->
+			TravellersModifiersManager.hasTravellersModifier(event.getPlayer().registryAccess(), stack, modifierKey)
+		).map(stack -> stack.get(componentType))
+			.ifPresent(component ->
+				itemStreamExtractor.apply(component)
+					.forEach(itemStack -> InventoryUtil.giveItemToPlayer(event.getPlayer(), itemStack))
+			);
+	}
+
+	private Optional<ItemStack> getUniqueTravellersGear(ItemStack top, ItemStack bottom, Predicate<ItemStack> predicate) {
+		List<ItemStack> travellersItemStacks = Stream.of(top, bottom)
+			.filter(stack -> stack.has(TFDataComponents.IS_TRAVELLERS_GEAR))
+			.filter(predicate)
+			.toList();
+		return travellersItemStacks.size() == 1 ? Optional.of(travellersItemStacks.getFirst()) : Optional.empty();
+	}
+
+	private void fireCraftingModifierTrigger(PlayerEvent.ItemCraftedEvent event) {
+		if (event.getEntity() instanceof ServerPlayer player && event.getCrafting().has(TFDataComponents.IS_TRAVELLERS_GEAR)) {
+			ItemStack compareStack = ItemStack.EMPTY;
+			for (int i = 0; i < event.getInventory().getContainerSize(); i++) {
+				if (event.getInventory().getItem(i).is(event.getCrafting().getItem())) compareStack = event.getInventory().getItem(i);
+			}
+
+			if (!compareStack.isEmpty()) {
+				var oldMods = TravellersModifiersManager.findAllInsertableModifiers(player, compareStack);
+				TravellersModifiersManager.findAllInsertableModifiers(player, event.getCrafting()).stream()
+					.filter(modifier -> !oldMods.contains(modifier)).toList()
+					.forEach(modifier -> TFAdvancements.ADD_MODIFIER.trigger(player, modifier.key().identifier()));
+			}
 		}
 	}
 

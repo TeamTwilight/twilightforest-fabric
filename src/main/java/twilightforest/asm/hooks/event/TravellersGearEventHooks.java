@@ -51,83 +51,9 @@ public final class TravellersGearEventHooks {
 		}
 	}
 
-	private void removeModifiersFromTravellersGear(GrindstoneEvent.OnPlaceItem event) {
-		if (ServerLifecycleHooks.getCurrentServer() == null)
-			return;
-		RegistryAccess access = ServerLifecycleHooks.getCurrentServer().registryAccess();
-		List<ItemStack> travellersItemStacks = Stream.of(event.getTopItem(), event.getBottomItem())
-			.filter(stack -> stack.has(TFDataComponents.IS_TRAVELLERS_GEAR))
-			.toList();
-
-		if (travellersItemStacks.isEmpty())
-			return; // Delegate to vanilla logic
-		if (travellersItemStacks.size() > 1) {
-			event.setCanceled(true);
-			return;
-		}
-		ItemStack inputStack = travellersItemStacks.getFirst();
-		List<Holder.Reference<TravellersModifier>> modifiers = TravellersModifiersManager.findAllInsertableModifiers(access, inputStack);
-		if (modifiers.isEmpty()) {
-			event.setCanceled(true);
-			return;
-		}
-
-		ItemStack unmodifiedStack = inputStack.copy();
-		modifiers.forEach(modifier -> ((InsertableTravellersModifier) modifier.value()).removeModifier(unmodifiedStack));
-		event.setOutput(unmodifiedStack.copy());
-	}
-
-	private void extractItemsFromSwapHotbarModifier(GrindstoneEvent.OnTakeItem event) {
-		returnModifierItems(event,
-			TravellersModifiersManager.SWAP_HOTBAR_MODIFIER,
-			DataComponents.CONTAINER,
-			ItemContainerContents::nonEmptyItemCopyStream
-		);
-
-		returnModifierItems(event,
-			TravellersModifiersManager.ITEM_DISPLAY_MODIFIER,
-			TFDataComponents.ITEM_DISPLAY.get(),
-			contents -> contents.items().stream()
-		);
-	}
-
-	private <T> void returnModifierItems(GrindstoneEvent.OnTakeItem event, ResourceKey<TravellersModifier> modifierKey, DataComponentType<T> componentType, Function<T, Stream<ItemStack>> itemStreamExtractor) {
-		getUniqueTravellersGear(event.getTopItem(), event.getBottomItem(), stack ->
-			TravellersModifiersManager.hasTravellersModifier(event.getPlayer().registryAccess(), stack, modifierKey)
-		).map(stack -> stack.get(componentType))
-			.ifPresent(component ->
-				itemStreamExtractor.apply(component)
-					.forEach(itemStack -> InventoryUtil.giveItemToPlayer(event.getPlayer(), itemStack))
-			);
-	}
-
-	private Optional<ItemStack> getUniqueTravellersGear(ItemStack top, ItemStack bottom, Predicate<ItemStack> predicate) {
-		List<ItemStack> travellersItemStacks = Stream.of(top, bottom)
-			.filter(stack -> stack.has(TFDataComponents.IS_TRAVELLERS_GEAR))
-			.filter(predicate)
-			.toList();
-		return travellersItemStacks.size() == 1 ? Optional.of(travellersItemStacks.getFirst()) : Optional.empty();
-	}
-
 	private void cancelPhantomSpawns(PlayerSpawnPhantomsEvent event) {
 		if (TravellersModifiersManager.isModifierActive(event.getEntity(), TravellersModifiersManager.ALL_NIGHT_GOGGLES_MODIFIER)) {
 			event.setResult(PlayerSpawnPhantomsEvent.Result.DENY);
-		}
-	}
-
-	private void fireCraftingModifierTrigger(PlayerEvent.ItemCraftedEvent event) {
-		if (event.getEntity() instanceof ServerPlayer player && event.getCrafting().has(TFDataComponents.IS_TRAVELLERS_GEAR)) {
-			ItemStack compareStack = ItemStack.EMPTY;
-			for (int i = 0; i < event.getInventory().getContainerSize(); i++) {
-				if (event.getInventory().getItem(i).is(event.getCrafting().getItem())) compareStack = event.getInventory().getItem(i);
-			}
-
-			if (!compareStack.isEmpty()) {
-				var oldMods = TravellersModifiersManager.findAllInsertableModifiers(player, compareStack);
-				TravellersModifiersManager.findAllInsertableModifiers(player, event.getCrafting()).stream()
-					.filter(modifier -> !oldMods.contains(modifier)).toList()
-					.forEach(modifier -> TFAdvancements.ADD_MODIFIER.get().trigger(player, modifier.key().identifier()));
-			}
 		}
 	}
 	 */
