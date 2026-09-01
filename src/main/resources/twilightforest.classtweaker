@@ -262,9 +262,6 @@ accessible field net/minecraft/world/entity/Mob targetSelector Lnet/minecraft/wo
 # TFPoiTypes
 accessible method net/minecraft/world/entity/ai/village/poi/PoiTypes register (Lnet/minecraft/core/Registry;Lnet/minecraft/resources/ResourceKey;Ljava/util/Set;II)Lnet/minecraft/world/entity/ai/village/poi/PoiType;
 
-# FishingHookMixin
-accessible method net/minecraft/world/entity/projectile/Projectile onHit (Lnet/minecraft/world/phys/HitResult;)V
-
 # AngryLichParticle, MagicEffectParticle and ProtectionParticle extend HeartParticle, SpellParticle and SuspendedTownParticle
 accessible method net/minecraft/client/particle/HeartParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDLnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V
 accessible method net/minecraft/client/particle/SpellParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;DDDDDDLnet/minecraft/client/particle/SpriteSet;)V
