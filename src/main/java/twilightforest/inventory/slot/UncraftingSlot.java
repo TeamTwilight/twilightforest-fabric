@@ -85,11 +85,11 @@ public class UncraftingSlot extends Slot {
 		ItemStack inputStack = this.inputSlot.getItem(0);
 		if (!inputStack.isEmpty()) {
 			if (player instanceof ServerPlayer server) {
-				TFAdvancements.UNCRAFT_ITEM.get().trigger(server, inputStack);
+				TFAdvancements.UNCRAFT_ITEM.trigger(server, inputStack);
 			}
 			if (inputStack.has(DataComponents.CONTAINER)) {
 				inputStack.get(DataComponents.CONTAINER).nonEmptyItems().forEach(stack1 -> {
-					InventoryUtil.giveItemToPlayer(player, stack1);
+					InventoryUtil.giveItemToPlayer(player, stack1.create());
 				});
 			}
 			this.inputSlot.removeItem(0, this.uncraftingMatrix.numberOfInputItems);

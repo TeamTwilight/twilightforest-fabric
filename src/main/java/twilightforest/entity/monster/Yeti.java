@@ -143,7 +143,7 @@ public class Yeti extends Monster implements IHostileMount {
 	}
 
 	@Override
-	public boolean canRiderInteract() {
+	public boolean carminite$canRiderInteract() {
 		return true;
 	}
 
