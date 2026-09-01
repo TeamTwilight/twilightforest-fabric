@@ -1,15 +1,17 @@
 package twilightforest.events;
 
 import carminite.events.api.EntityEvents;
+import carminite.events.api.LivingEvents;
 import carminite.events.api.TickEvents;
-import carminite.events.neoforge.EntityTickEvent;
-import carminite.events.neoforge.PlayerTickEvent;
-import carminite.events.neoforge.ProjectileImpactEvent;
+import carminite.events.api.WorkstationEvents;
+import carminite.events.neoforge.*;
 import carminite.network.PacketDistributor;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -25,6 +27,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import twilightforest.components.entity.SlimySolesAttachment;
 import twilightforest.init.*;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.inventory.InventoryUtil;
@@ -44,10 +47,14 @@ public class TravellersGearEvents {
 	public static void init() {
 		EntityEvents.PROJECTILE_IMPACT.register(INSTANCE::magnetizeArrows);
 		EntityEvents.PROJECTILE_IMPACT.register(INSTANCE::performPerfectDodge);
+		LivingEvents.LIVING_JUMP.register(INSTANCE::cancelSlimySolesJump);
 		TickEvents.PLAYER_TICK_PRE.register(INSTANCE::tickMovementModifiers);
 		TickEvents.PLAYER_TICK_POST.register(INSTANCE::performStealth);
 		TickEvents.PLAYER_TICK_PRE.register(INSTANCE::disableHighStepWhileSneaking);
 		TickEvents.ENTITY_TICK_POST.register(INSTANCE::updateOtherModifiers);
+		LivingEvents.ARMOR_HURT.register(INSTANCE::stopDamagingTravellersGear);
+		LivingEvents.ARMOR_HURT.register(INSTANCE::setLastDamageArmorTime);
+		WorkstationEvents.ANVIL_UPDATE.register(INSTANCE::cancelCombiningTravellersGear);
 		ServerPlayerEvents.COPY_FROM.register(INSTANCE::keepAttachmentsOnDeath);
 	}
 
@@ -104,6 +111,14 @@ public class TravellersGearEvents {
 			particlePacket.queueParticle(type, false, false, hitPosition, particleVelocity);
 		}
 		PacketDistributor.sendToPlayersTrackingEntityAndSelf(livingEntity, particlePacket);
+	}
+
+	private void cancelSlimySolesJump(LivingEvent.LivingJumpEvent event) {
+		LivingEntity livingEntity = event.getEntity();
+		SlimySolesAttachment slimySolesAttachment = livingEntity.getAttached(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO);
+		slimySolesAttachment.bounceVelocity = 0;
+		slimySolesAttachment.forceBounce = false;
+		livingEntity.setAttached(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO, slimySolesAttachment);
 	}
 
 	private void tickMovementModifiers(PlayerTickEvent.Pre event) {
@@ -174,6 +189,34 @@ public class TravellersGearEvents {
 		TravellersGearLogic.travellersGearAutoRepair(livingEntity);
 		TravellersGearLogic.travellersBootsStraightAhead(livingEntity);
 		TravellersGearLogic.determineWingState(livingEntity);
+	}
+
+	private void stopDamagingTravellersGear(ArmorHurtEvent event) {
+		if (event.isCanceled())
+			return;
+		event.getArmorMap().forEach((slot, entry) -> {
+			ItemStack damagedStack = event.getArmorItemStack(slot);
+			if (!damagedStack.has(TFDataComponents.IS_TRAVELLERS_GEAR))
+				return;
+			if (damagedStack.getDamageValue() + event.getNewDamage(slot) >= damagedStack.getMaxDamage()) {
+				event.setNewDamage(slot, damagedStack.getMaxDamage() - damagedStack.getDamageValue() - 1);
+			} else if (damagedStack.getDamageValue() + event.getNewDamage(slot) >= damagedStack.getMaxDamage() - 1 && event.getEntity() instanceof ServerPlayer player) {
+				player.level().playLocalSound(player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_BREAK.value(), SoundSource.PLAYERS, 1.0F, player.getVoicePitch(), false);
+			}
+		});
+	}
+
+	private void setLastDamageArmorTime(ArmorHurtEvent event) {
+		if (Arrays.stream(EquipmentSlot.values()).noneMatch(slot -> event.getNewDamage(slot) > 0)) return;
+		LivingEntity entity = event.getEntity();
+		entity.setAttached(TFDataAttachments.LAST_DAMAGE_ARMOR_TIME, entity.level().getGameTime());
+	}
+
+
+	private void cancelCombiningTravellersGear(AnvilUpdateEvent event) {
+		if (event.getLeft().has(TFDataComponents.IS_TRAVELLERS_GEAR) && event.getRight().has(TFDataComponents.IS_TRAVELLERS_GEAR)) {
+			event.setCanceled(true);
+		}
 	}
 
 	public void keepAttachmentsOnDeath(ServerPlayer oldPlayer, ServerPlayer newPlayer, boolean alive) {

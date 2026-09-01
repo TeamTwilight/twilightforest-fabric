@@ -25,14 +25,6 @@ public final class TravellersGearEventHooks {
 		return Mth.ceil(unsafeFallDistance * event.getDamageMultiplier() * livingEntity.getAttributeValue(Attributes.FALL_DAMAGE_MULTIPLIER));
 	}
 
-	private void cancelSlimySolesJump(LivingEvent.LivingJumpEvent event) {
-		LivingEntity livingEntity = event.getEntity();
-		SlimySolesAttachment slimySolesAttachment = livingEntity.getData(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO);
-		slimySolesAttachment.bounceVelocity = 0;
-		slimySolesAttachment.forceBounce = false;
-		livingEntity.setData(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO, slimySolesAttachment);
-	}
-
 	private void activateAndDeactivateTravellersModifiers(ItemAttributeModifierEvent event) {
 		if (ServerLifecycleHooks.getCurrentServer() == null)
 			return;
@@ -56,34 +48,6 @@ public final class TravellersGearEventHooks {
 				armor.remove(TFDataComponents.STORED_BROKEN_ATTRIBUTES);
 				armor.set(DataComponents.ATTRIBUTE_MODIFIERS, event.build());
 			}
-		}
-	}
-
-	private void stopDamagingTravellersGear(ArmorHurtEvent event) {
-		if (event.isCanceled())
-			return;
-		event.getArmorMap().forEach((slot, entry) -> {
-			ItemStack damagedStack = event.getArmorItemStack(slot);
-			if (!damagedStack.has(TFDataComponents.IS_TRAVELLERS_GEAR))
-				return;
-			if (damagedStack.getDamageValue() + event.getNewDamage(slot) >= damagedStack.getMaxDamage()) {
-				event.setNewDamage(slot, damagedStack.getMaxDamage() - damagedStack.getDamageValue() - 1);
-			} else if (damagedStack.getDamageValue() + event.getNewDamage(slot) >= damagedStack.getMaxDamage() - 1 && event.getEntity() instanceof ServerPlayer player) {
-				player.level().playLocalSound(player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_BREAK.value(), SoundSource.PLAYERS, 1.0F, player.getVoicePitch(), false);
-			}
-		});
-	}
-
-	private void setLastDamageArmorTime(ArmorHurtEvent event) {
-		if (Arrays.stream(EquipmentSlot.values()).noneMatch(slot -> event.getNewDamage(slot) > 0)) return;
-		LivingEntity entity = event.getEntity();
-		entity.setData(TFDataAttachments.LAST_DAMAGE_ARMOR_TIME, entity.level().getGameTime());
-	}
-
-
-	private void cancelCombiningTravellersGear(AnvilUpdateEvent event) {
-		if (event.getLeft().has(TFDataComponents.IS_TRAVELLERS_GEAR) && event.getRight().has(TFDataComponents.IS_TRAVELLERS_GEAR)) {
-			event.setCanceled(true);
 		}
 	}
 
