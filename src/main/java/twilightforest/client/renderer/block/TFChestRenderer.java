@@ -22,23 +22,23 @@ public class TFChestRenderer<T extends ChestBlockEntity> extends ChestRenderer<T
 	static {
 		ImmutableMap.Builder<Block, EnumMap<ChestType, SpriteId>> builder = ImmutableMap.builder();
 
-		builder.put(TFBlocks.TWILIGHT_OAK_CHEST.get(), chestMaterial("twilight", "normal"));
-		builder.put(TFBlocks.CANOPY_CHEST.get(), chestMaterial("canopy", "normal"));
-		builder.put(TFBlocks.MANGROVE_CHEST.get(), chestMaterial("mangrove", "normal"));
-		builder.put(TFBlocks.DARK_CHEST.get(), chestMaterial("darkwood", "normal"));
-		builder.put(TFBlocks.TIME_CHEST.get(), chestMaterial("time", "normal"));
-		builder.put(TFBlocks.TRANSFORMATION_CHEST.get(), chestMaterial("transformation", "normal"));
-		builder.put(TFBlocks.MINING_CHEST.get(), chestMaterial("mining", "normal"));
-		builder.put(TFBlocks.SORTING_CHEST.get(), chestMaterial("sorting", "normal"));
+		builder.put(TFBlocks.TWILIGHT_OAK_CHEST, chestMaterial("twilight", "normal"));
+		builder.put(TFBlocks.CANOPY_CHEST, chestMaterial("canopy", "normal"));
+		builder.put(TFBlocks.MANGROVE_CHEST, chestMaterial("mangrove", "normal"));
+		builder.put(TFBlocks.DARK_CHEST, chestMaterial("darkwood", "normal"));
+		builder.put(TFBlocks.TIME_CHEST, chestMaterial("time", "normal"));
+		builder.put(TFBlocks.TRANSFORMATION_CHEST, chestMaterial("transformation", "normal"));
+		builder.put(TFBlocks.MINING_CHEST, chestMaterial("mining", "normal"));
+		builder.put(TFBlocks.SORTING_CHEST, chestMaterial("sorting", "normal"));
 
-		builder.put(TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST.get(), chestMaterial("twilight", "trapped"));
-		builder.put(TFBlocks.CANOPY_TRAPPED_CHEST.get(), chestMaterial("canopy", "trapped"));
-		builder.put(TFBlocks.MANGROVE_TRAPPED_CHEST.get(), chestMaterial("mangrove", "trapped"));
-		builder.put(TFBlocks.DARK_TRAPPED_CHEST.get(), chestMaterial("darkwood", "trapped"));
-		builder.put(TFBlocks.TIME_TRAPPED_CHEST.get(), chestMaterial("time", "trapped"));
-		builder.put(TFBlocks.TRANSFORMATION_TRAPPED_CHEST.get(), chestMaterial("transformation", "trapped"));
-		builder.put(TFBlocks.MINING_TRAPPED_CHEST.get(), chestMaterial("mining", "trapped"));
-		builder.put(TFBlocks.SORTING_TRAPPED_CHEST.get(), chestMaterial("sorting", "trapped"));
+		builder.put(TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST, chestMaterial("twilight", "trapped"));
+		builder.put(TFBlocks.CANOPY_TRAPPED_CHEST, chestMaterial("canopy", "trapped"));
+		builder.put(TFBlocks.MANGROVE_TRAPPED_CHEST, chestMaterial("mangrove", "trapped"));
+		builder.put(TFBlocks.DARK_TRAPPED_CHEST, chestMaterial("darkwood", "trapped"));
+		builder.put(TFBlocks.TIME_TRAPPED_CHEST, chestMaterial("time", "trapped"));
+		builder.put(TFBlocks.TRANSFORMATION_TRAPPED_CHEST, chestMaterial("transformation", "trapped"));
+		builder.put(TFBlocks.MINING_TRAPPED_CHEST, chestMaterial("mining", "trapped"));
+		builder.put(TFBlocks.SORTING_TRAPPED_CHEST, chestMaterial("sorting", "trapped"));
 
 		MATERIALS = builder.build();
 	}

@@ -78,8 +78,8 @@ public class RedThreadRenderer implements BlockEntityRenderer<RedThreadBlockEnti
 
 		Player player = Minecraft.getInstance().player;
 		if (player != null) {
-			boolean wearsActivatedTravellersGoggles = player.getData(TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION) && TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.RED_THREAD_VISION_MODIFIER);
-			state.glowing = player.isHolding(TFBlocks.RED_THREAD.get().asItem()) || wearsActivatedTravellersGoggles;
+			boolean wearsActivatedTravellersGoggles = player.getAttached(TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION) && TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.RED_THREAD_VISION_MODIFIER);
+			state.glowing = player.isHolding(TFBlocks.RED_THREAD.asItem()) || wearsActivatedTravellersGoggles;
 		}
 
 		Map<Direction, Map<Direction, Boolean>> flags = new HashMap<>();
@@ -95,13 +95,13 @@ public class RedThreadRenderer implements BlockEntityRenderer<RedThreadBlockEnti
 						if (!flag && level != null) { //If there is no other face to connect to, we check neighboring positions for other red thread blocks.
 							BlockPos pos = blockEntity.getBlockPos();
 							BlockState checkState = level.getBlockState(pos.relative(direction));
-							flag = checkState.getBlock().equals(TFBlocks.RED_THREAD.get()) && checkState.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(face));
+							flag = checkState.getBlock().equals(TFBlocks.RED_THREAD) && checkState.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(face));
 
 							if (!flag) { //And if the above check also fails, we check if there is a red thread behind the corner for us to connect to.
 								checkState = level.getBlockState(pos.relative(direction).relative(face));
 								//check if there's a block in the way of the connection. If there is, dont connect
 								boolean threadBlocked = level.getBlockState(pos.relative(direction)).isFaceSturdy(level, pos, direction.getOpposite());
-								flag = checkState.is(TFBlocks.RED_THREAD.get()) && !threadBlocked && checkState.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction.getOpposite()));
+								flag = checkState.is(TFBlocks.RED_THREAD) && !threadBlocked && checkState.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction.getOpposite()));
 							}
 						}
 

@@ -1,6 +1,6 @@
 package twilightforest.components.entity;
 
-import twilightforest.fabric.network.PacketDistributor;
+import carminite.network.PacketDistributor;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

@@ -282,6 +282,14 @@ accessible field net/minecraft/world/entity/Entity stuckSpeedMultiplier Lnet/min
 # TravellersClientEvents
 accessible field net/minecraft/client/player/ClientInput moveVector Lnet/minecraft/world/phys/Vec2;
 
+# SkeletonDruid
+accessible method net/minecraft/world/entity/monster/skeleton/AbstractSkeleton getStepSound ()Lnet/minecraft/sounds/SoundEvent;
+accessible method net/minecraft/world/entity/monster/skeleton/Bogged getStepSound ()Lnet/minecraft/sounds/SoundEvent;
+accessible method net/minecraft/world/entity/monster/skeleton/Parched getStepSound ()Lnet/minecraft/sounds/SoundEvent;
+accessible method net/minecraft/world/entity/monster/skeleton/Skeleton getStepSound ()Lnet/minecraft/sounds/SoundEvent;
+accessible method net/minecraft/world/entity/monster/skeleton/Stray getStepSound ()Lnet/minecraft/sounds/SoundEvent;
+accessible method net/minecraft/world/entity/monster/skeleton/WitherSkeleton getStepSound ()Lnet/minecraft/sounds/SoundEvent;
+
 # Enum Extensions
 extend-enum net/minecraft/world/damagesource/DamageEffects TWILIGHTFOREST_PINCH
 extend-enum net/minecraft/world/item/Rarity TWILIGHTFOREST_TWILIGHT

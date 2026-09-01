@@ -4,8 +4,9 @@
   "package": "twilightforest.asm.mixin",
   "compatibilityLevel": "JAVA_25",
   "mixins": [
-    "ServerPlayerGameModeMixin",
+    "ItemContainerContentsAccessor",
     "LivingEntityGetDeathSoundAccessor",
+    "ServerPlayerGameModeMixin",
     "enums.DamageEffectsMixin",
     "enums.GrassColorModifierMixin",
     "enums.ItemDisplayContextMixin",

@@ -1,5 +1,6 @@
 package twilightforest.item.travellers_gear;
 
+import carminite.util.ConcatenatedListView;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.Model;
@@ -26,7 +27,6 @@ import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
-import net.neoforged.neoforge.common.util.ConcatenatedListView;
 import org.jspecify.annotations.Nullable;
 import twilightforest.TFMain;
 import twilightforest.client.model.TFModelLayers;
@@ -122,7 +122,7 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 			builder.accept(Component.literal("- ").append(Component.translatable("travellers_gear.modifier.empty").withStyle(ChatFormatting.DARK_GRAY)));
 		}
 
-		if (TFItems.TRAVELLERS_GLOVES.get() == this) {
+		if (TFItems.TRAVELLERS_GLOVES == this) {
 			builder.accept(GLOVES_TOOLTIP);
 		}
 

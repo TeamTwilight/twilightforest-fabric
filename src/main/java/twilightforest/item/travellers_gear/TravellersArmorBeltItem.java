@@ -9,8 +9,10 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.component.TooltipDisplay;
+import twilightforest.asm.mixin.ItemContainerContentsAccessor;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFSounds;
 import twilightforest.init.custom.TravellersModifiersManager;
@@ -62,8 +64,8 @@ public class TravellersArmorBeltItem extends TravellersArmorItem {
 		boolean hasChanged = false;
 		for (int slotIndex = 0; slotIndex < 9; slotIndex++) {
 			ItemStack inventoryStack = inventory.getItem(slotIndex);
-			ItemStack beltStack = containerContents.getSlots() <= slotIndex ? ItemStack.EMPTY : containerContents.getStackInSlot(slotIndex);
-			if (inventoryStack.canFitInsideContainerItems() && !inventoryStack.is(TFItemTags.TRAVELLERS_BELT_BLACKLISTED) && (isSwapHotbarActive || inventoryStack.isEmpty())) {
+			ItemStack beltStack = ((ItemContainerContentsAccessor) (Object) containerContents).twilightforest$getItems().size() <= slotIndex ? ItemStack.EMPTY : ((ItemContainerContentsAccessor) (Object) containerContents).twilightforest$getItems().get(slotIndex).map(ItemStackTemplate::create).orElse(ItemStack.EMPTY);
+			if (inventoryStack.getItem().canFitInsideContainerItems() && !inventoryStack.is(TFItemTags.TRAVELLERS_BELT_BLACKLISTED) && (isSwapHotbarActive || inventoryStack.isEmpty())) {
 				hotbarStacks.set(slotIndex, inventoryStack);
 				inventory.setItem(slotIndex, beltStack);
 				if (!beltStack.equals(inventoryStack))
@@ -74,7 +76,7 @@ public class TravellersArmorBeltItem extends TravellersArmorItem {
 		}
 		legArmor.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(hotbarStacks));
 		if (hasChanged)
-			player.level().playSound(null, player, TFSounds.SWAP_HOTBAR.get(), SoundSource.PLAYERS, 1F, 1F);
+			player.level().playSound(null, player, TFSounds.SWAP_HOTBAR.value(), SoundSource.PLAYERS, 1F, 1F);
 	}
 
 	public static boolean isSwapHotbarActive(Player player, ItemStack stack) {

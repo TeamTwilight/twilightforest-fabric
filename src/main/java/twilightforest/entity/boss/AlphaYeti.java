@@ -210,7 +210,7 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 	}
 
 	@Override
-	public boolean canRiderInteract() {
+	public boolean carminite$canRiderInteract() {
 		return true;
 	}
 

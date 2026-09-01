@@ -69,7 +69,7 @@ public class SkeletonDruid extends AbstractSkeleton {
 	}
 
 	@Override
-	protected SoundEvent getStepSound() {
+	public SoundEvent getStepSound() {
 		return TFSounds.SKELETON_DRUID_STEP.value();
 	}
 

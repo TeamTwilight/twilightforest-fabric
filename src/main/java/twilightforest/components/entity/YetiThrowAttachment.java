@@ -1,6 +1,6 @@
 package twilightforest.components.entity;
 
-import twilightforest.fabric.network.PacketDistributor;
+import carminite.network.PacketDistributor;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
