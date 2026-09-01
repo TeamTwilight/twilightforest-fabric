@@ -5,6 +5,7 @@ import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multisets;
+import com.mojang.datafixers.util.Either;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
@@ -26,11 +27,9 @@ import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
 import net.minecraft.world.level.saveddata.maps.MapId;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import org.jspecify.annotations.Nullable;
-import twilightforest.init.TFDataMaps;
 import twilightforest.init.TFItems;
 import twilightforest.item.mapdata.MapDataManager;
 import twilightforest.item.mapdata.TFMazeMapData;
-import twilightforest.util.datamaps.OreMapOreColor;
 
 import java.util.Optional;
 
@@ -177,9 +176,18 @@ public class MazeMapItem extends MapItem implements ICustomMapItem {
 
 									if (this.mapOres) {
 										// recolor ores
-										OreMapOreColor color = TFDataMaps.ORE_MAP_ORE_COLOR.get(state.typeHolder());
+										MapColor color = MapDataManager.ORE_MAP_ORE_COLOR.get(Either.right(state.getBlock()));
+										if (color == null) {
+											for (var entry : MapDataManager.ORE_MAP_ORE_COLOR.entrySet()) {
+												if (entry.getKey().left().isPresent() && state.is(entry.getKey().left().get())) {
+													color = entry.getValue();
+													break;
+												}
+											}
+										}
+
 										if (color != null) {
-											multiset.add(color.color(), 1000);
+											multiset.add(color, 1000);
 										} else if (!state.isAir() && state.is(ConventionalBlockTags.ORES)) {
 											multiset.add(MapColor.COLOR_PINK, 1000);
 										}

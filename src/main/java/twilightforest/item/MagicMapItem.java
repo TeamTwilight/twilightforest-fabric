@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import carminite.interfaces.markers.ICustomMapItem;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -24,12 +25,10 @@ import net.minecraft.world.level.saveddata.maps.MapId;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFBiomes;
-import twilightforest.init.TFDataMaps;
 import twilightforest.init.TFItems;
 import twilightforest.item.mapdata.MapDataManager;
 import twilightforest.item.mapdata.TFMagicMapData;
 import twilightforest.tags.TFStructureTags;
-import twilightforest.util.datamaps.MagicMapBiomeColor;
 import twilightforest.util.landmarks.LandmarkUtil;
 import twilightforest.util.landmarks.LegacyLandmarkPlacements;
 import twilightforest.world.components.structures.util.LandmarkStructure;
@@ -151,10 +150,10 @@ public class MagicMapItem extends MapItem implements ICustomMapItem {
 						Holder<Biome> downBiome = biomes[xPixel * biomesPerPixel + (zPixel * biomesPerPixel + 1) * 128 * biomesPerPixel];
 						biome = overBiome != null && overBiome.is(TFBiomes.STREAM) ? overBiome : downBiome != null && downBiome.is(TFBiomes.STREAM) ? downBiome : biome;
 
-						MagicMapBiomeColor colorBrightness = this.getMapColorPerBiome(biome);
+						Pair<MapColor, Integer> colorBrightness = this.getMapColorPerBiome(biome);
 
-						MapColor mapcolor = colorBrightness.color();
-						int brightness = colorBrightness.brightness();
+						MapColor mapcolor = colorBrightness.getFirst();
+						int brightness = colorBrightness.getSecond();
 
 						if (xPixelDist * xPixelDist + zPixelDist * zPixelDist < viewRadiusPixels * viewRadiusPixels && (!shouldFuzz || (xPixel + zPixel & 1) != 0)) {
 							byte orgPixel = data.colors[xPixel + zPixel * 128];
@@ -190,9 +189,9 @@ public class MagicMapItem extends MapItem implements ICustomMapItem {
 		return type.value().assetId() + "_" + x + "_" + z;
 	}
 
-	private MagicMapBiomeColor getMapColorPerBiome(Holder<Biome> biome) {
-		MagicMapBiomeColor color = TFDataMaps.MAGIC_MAP_BIOME_COLOR.get(biome);
-		return color != null ? color : new MagicMapBiomeColor(MapColor.COLOR_MAGENTA);
+	private Pair<MapColor, Integer> getMapColorPerBiome(Holder<Biome> biome) {
+		Pair<MapColor, Integer> color = MapDataManager.MAGIC_MAP_BIOME_COLOR.get(biome.unwrapKey().orElseThrow());
+		return color != null ? color : Pair.of(MapColor.COLOR_MAGENTA, 1);
 	}
 
 //	@Override

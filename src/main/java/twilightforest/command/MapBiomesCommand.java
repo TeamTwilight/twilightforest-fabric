@@ -5,6 +5,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.datafixers.util.Pair;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
@@ -17,11 +18,11 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.LevelResource;
 import twilightforest.init.TFBiomes;
-import twilightforest.init.TFDataMaps;
+import twilightforest.item.mapdata.MapDataManager;
 import twilightforest.util.ColorUtil;
-import twilightforest.util.datamaps.MagicMapBiomeColor;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -157,14 +158,14 @@ public class MapBiomesCommand {
 	}
 
 	public static int getBiomeColor(Holder<Biome> biome) {
-		MagicMapBiomeColor c = TFDataMaps.MAGIC_MAP_BIOME_COLOR.get(biome);
+		Pair<MapColor, Integer> c = MapDataManager.MAGIC_MAP_BIOME_COLOR.get(biome.unwrapKey().orElseThrow());
 		return c != null ? getMapColor(c) : 0xFF000000;
 	}
 
-	public static int getMapColor(MagicMapBiomeColor color) {
-		int j = (color.color().col >> 16 & 255);
-		int k = (color.color().col >> 8 & 255);
-		int l = (color.color().col & 255);
+	public static int getMapColor(Pair<MapColor, Integer> color) {
+		int j = (color.getSecond() >> 16 & 255);
+		int k = (color.getSecond() >> 8 & 255);
+		int l = (color.getSecond() & 255);
 		return 0xFF000000 | l << 16 | k << 8 | j;
 	}
 

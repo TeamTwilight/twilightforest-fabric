@@ -1,5 +1,6 @@
 package twilightforest.dispenser;
 
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
@@ -10,7 +11,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.init.TFDataMaps;
+import twilightforest.item.CrumbleHornItem;
 
 public class CrumbleDispenseBehavior extends DefaultDispenseItemBehavior {
 
@@ -22,12 +23,12 @@ public class CrumbleDispenseBehavior extends DefaultDispenseItemBehavior {
 		BlockPos pos = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
 		BlockState state = level.getBlockState(pos);
 		if (!(stack.getMaxDamage() == stack.getDamageValue() + 1)) {
-			var resultBlock = TFDataMaps.CRUMBLE_HORN.get(state.typeHolder());
+			Pair<Block, Float> resultBlock = CrumbleHornItem.CRUMBLE_HORN.get(state.getBlock());
 			if (resultBlock != null) {
-				if (resultBlock.result() == Blocks.AIR) {
+				if (resultBlock.getFirst() == Blocks.AIR) {
 					level.destroyBlock(pos, true);
 				} else {
-					level.setBlock(pos, resultBlock.result().withPropertiesOf(state), Block.UPDATE_ALL);
+					level.setBlock(pos, resultBlock.getFirst().withPropertiesOf(state), Block.UPDATE_ALL);
 					level.levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, pos, Block.getId(state));
 				}
 
