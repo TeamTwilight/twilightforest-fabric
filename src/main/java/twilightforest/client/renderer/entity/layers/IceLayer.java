@@ -18,7 +18,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.RenderStateDataKey;
 import twilightforest.client.model.entity.DeathTomeModel;
 import twilightforest.potions.FrostedEffect;
 
-public class IceLayer<S extends LivingEntityRenderState, M extends EntityModel<S>> extends RenderLayer<S, M> {
+public class IceLayer<S extends LivingEntityRenderState, M extends EntityModel<? super S>> extends RenderLayer<S, M> {
 	private final RandomSource random = RandomSource.create();
 
 	public static final RenderStateDataKey<Double> FROST_COUNT_KEY = RenderStateDataKey.create(() -> "frost_count");
