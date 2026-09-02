@@ -12,21 +12,20 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.client.CustomSkyboxRenderer;
-import net.neoforged.neoforge.client.CustomWeatherEffectRenderer;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4fc;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.init.TFBiomes;
 
 import java.util.Optional;
 
-public class TwilightForestRenderInfo implements CustomSkyboxRenderer, CustomWeatherEffectRenderer {
+public class TwilightForestRenderInfo {
+	public static final TwilightForestRenderInfo INSTANCE = new TwilightForestRenderInfo();
 
-	public static final Identifier SKY_RENDERER = TwilightForestMod.prefix("renderer");
-	public static final Identifier WEATHER_RENDERER = TwilightForestMod.prefix("weather");
+	public static final Identifier SKY_RENDERER = TFMain.prefix("renderer");
+	public static final Identifier WEATHER_RENDERER = TFMain.prefix("weather");
 
 	@Nullable
 	private TFSkyRenderer skyRenderer;
@@ -67,7 +66,6 @@ public class TwilightForestRenderInfo implements CustomSkyboxRenderer, CustomWea
 //		//Make the fog on these biomes much much darker, maybe pitch black even. Do we keep this harsher fog underground too?
 //	}
 
-	@Override
 	public boolean renderSky(LevelRenderState levelRenderState, SkyRenderState skyRenderState, Matrix4fc modelViewMatrix, Runnable setupFog) {
 		if (this.skyRenderer == null) {
 			this.skyRenderer = new TFSkyRenderer();
@@ -75,12 +73,10 @@ public class TwilightForestRenderInfo implements CustomSkyboxRenderer, CustomWea
 		return skyRenderer.renderSky(levelRenderState, skyRenderState, modelViewMatrix, setupFog);
 	}
 
-	@Override
-	public boolean renderSnowAndRain(LevelRenderState levelRenderState, WeatherRenderState weatherRenderState, MultiBufferSource bufferSource, Vec3 camPos) {
-		return TFWeatherRenderer.renderSnowAndRain(Minecraft.getInstance().level, Minecraft.getInstance().levelRenderer.getTicks(), Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks(), camPos, bufferSource);
+	public boolean renderSnowAndRain(MultiBufferSource bufferSource, Vec3 camPos) {
+		return TFWeatherRenderer.renderSnowAndRain(Minecraft.getInstance().level, Minecraft.getInstance().levelRenderer.ticks, Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaTicks(), camPos, bufferSource);
 	}
 
-	@Override
 	public boolean tickRain(ClientLevel level, int ticks, Camera camera) {
 		return TFWeatherRenderer.tickRain(level, ticks, camera.blockPosition());
 	}

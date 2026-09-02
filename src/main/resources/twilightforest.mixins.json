@@ -12,7 +12,10 @@
     "enums.ItemDisplayContextMixin",
     "enums.RarityMixin"
   ],
-  "client": [],
+  "client": [
+    "LevelRendererMixin",
+    "WeatherEffectRendererMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   },

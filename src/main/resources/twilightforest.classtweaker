@@ -290,6 +290,9 @@ accessible method net/minecraft/world/entity/monster/skeleton/Skeleton getStepSo
 accessible method net/minecraft/world/entity/monster/skeleton/Stray getStepSound ()Lnet/minecraft/sounds/SoundEvent;
 accessible method net/minecraft/world/entity/monster/skeleton/WitherSkeleton getStepSound ()Lnet/minecraft/sounds/SoundEvent;
 
+# TwilightForestRenderInfo
+accessible field net/minecraft/client/renderer/LevelRenderer ticks I
+
 # Enum Extensions
 extend-enum net/minecraft/world/damagesource/DamageEffects TWILIGHTFOREST_PINCH
 extend-enum net/minecraft/world/item/Rarity TWILIGHTFOREST_TWILIGHT
