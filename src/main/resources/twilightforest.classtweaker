@@ -83,6 +83,7 @@ accessible field net/minecraft/world/level/biome/BiomeManager biomeZoomSeed J
 
 # TFClientSetup (creates custom birthday splash)
 accessible field net/minecraft/client/gui/components/SplashRenderer splash Lnet/minecraft/network/chat/Component;
+mutable field net/minecraft/client/gui/components/SplashRenderer splash Lnet/minecraft/network/chat/Component;
 accessible field net/minecraft/client/gui/screens/TitleScreen splash Lnet/minecraft/client/gui/components/SplashRenderer;
 
 # TFMagicMapData (sets decorations dirty after being loaded from nbt)

@@ -17,7 +17,7 @@ public class LockedBiomeToastHandler {
 	private static boolean progressionEnforced = true;
 
 	public static void init() {
-		ClientTickEvents.END_CLIENT_TICK.register(client -> tickLockedToastLogic());
+		ClientTickEvents.END_CLIENT_TICK.register(_ -> tickLockedToastLogic());
 	}
 
 	public static void tickLockedToastLogic() {
