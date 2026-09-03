@@ -3,6 +3,8 @@ package twilightforest.client.renderer.entity.layers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.QuadInstance;
 import com.mojang.math.Axis;
+import net.fabricmc.fabric.api.client.model.loading.v1.ExtraModelKey;
+import net.fabricmc.fabric.api.client.rendering.v1.RenderStateDataKey;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.Sheets;
@@ -14,9 +16,7 @@ import net.minecraft.client.resources.model.geometry.BakedQuad;
 import net.minecraft.client.resources.model.geometry.QuadCollection;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
-import net.minecraft.util.context.ContextKey;
 import net.minecraft.world.entity.LivingEntity;
-import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
 import twilightforest.TFMain;
 import twilightforest.entity.boss.Lich;
 import twilightforest.init.TFDataAttachments;
@@ -26,9 +26,9 @@ import java.util.List;
 public class ShieldLayer<S extends LivingEntityRenderState, M extends EntityModel<? super S>> extends RenderLayer<S, M> {
 
 	public static final Identifier LOC = TFMain.prefix("item/shield");
-	public static final StandaloneModelKey<QuadCollection> SHIELD_MODEL = new StandaloneModelKey<>(LOC::toDebugFileName);
+	public static final ExtraModelKey<QuadCollection> SHIELD_MODEL = ExtraModelKey.create(LOC::toDebugFileName);
 
-	public static ContextKey<Integer> SHIELD_COUNT_KEY = new ContextKey<>(TFMain.prefix("shield_count"));
+	public static RenderStateDataKey<Integer> SHIELD_COUNT_KEY = RenderStateDataKey.create(() -> "shield_count");
 
 	public ShieldLayer(RenderLayerParent<S, M> renderer) {
 		super(renderer);
@@ -36,7 +36,7 @@ public class ShieldLayer<S extends LivingEntityRenderState, M extends EntityMode
 
 	@Override
 	public void submit(PoseStack stack, SubmitNodeCollector collector, int light, S state, float netHeadYaw, float headPitch) {
-		Integer count = state.getRenderData(SHIELD_COUNT_KEY);
+		Integer count = state.getData(SHIELD_COUNT_KEY);
 		if (count != null && count > 0) {
 			this.renderShields(stack, collector, state, count);
 		}
@@ -49,7 +49,7 @@ public class ShieldLayer<S extends LivingEntityRenderState, M extends EntityMode
 	}
 
 	private void renderShields(PoseStack stack, SubmitNodeCollector collector, S state, int count) {
-		QuadCollection shieldModel = Minecraft.getInstance().getModelManager().getStandaloneModel(SHIELD_MODEL);
+		QuadCollection shieldModel = Minecraft.getInstance().getModelManager().getModel(SHIELD_MODEL);
 		if (shieldModel == null)
 			return;
 
