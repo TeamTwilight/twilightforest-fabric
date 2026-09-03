@@ -1,4 +1,4 @@
-package twilightforest.client.model.block.patch;
+/*package twilightforest.client.model.block.patch;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.math.Transformation;
@@ -219,4 +219,4 @@ public class PatchModel implements BakedModel {
 	public RenderType getRenderType(ItemStack stack) {
 		return this.itemRenderType != null ? this.itemRenderType : BakedModel.super.getRenderType(stack);
 	}
-}
+}*/

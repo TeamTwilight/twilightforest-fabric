@@ -1,4 +1,4 @@
-package twilightforest.client.model.block.patch;
+/*package twilightforest.client.model.block.patch;
 
 import com.google.gson.JsonObject;
 import net.neoforged.neoforge.client.model.generators.template.CustomLoaderBuilder;
@@ -32,4 +32,4 @@ public class PatchBuilder extends CustomLoaderBuilder {
 
 		return mainJson;
 	}
-}
+}*/

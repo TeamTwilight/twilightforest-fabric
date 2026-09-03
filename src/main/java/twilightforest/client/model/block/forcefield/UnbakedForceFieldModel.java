@@ -1,4 +1,4 @@
-package twilightforest.client.model.block.forcefield;
+/*package twilightforest.client.model.block.forcefield;
 
 import net.minecraft.client.renderer.block.model.BlockElement;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -25,4 +25,4 @@ public class UnbakedForceFieldModel extends AbstractUnbakedModel {
 	public BakedModel bake(TextureSlots textures, ModelBaker baker, ModelState modelState, boolean useAmbientOcclusion, boolean usesBlockLight, ItemTransforms itemTransforms, ContextMap additionalProperties) {
 		return new ForceFieldModel(this.elementsAndConditions, s -> baker.findSprite(textures, s), useAmbientOcclusion, usesBlockLight, itemTransforms, this.parameters.renderTypeGroup());
 	}
-}
+}*/

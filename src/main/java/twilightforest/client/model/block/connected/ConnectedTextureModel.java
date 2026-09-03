@@ -1,4 +1,4 @@
-package twilightforest.client.model.block.connected;
+/*package twilightforest.client.model.block.connected;
 
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -159,4 +159,4 @@ public class ConnectedTextureModel implements IDynamicBakedModel {
 		private ConnectedTextureData() {
 		}
 	}
-}
+}*/

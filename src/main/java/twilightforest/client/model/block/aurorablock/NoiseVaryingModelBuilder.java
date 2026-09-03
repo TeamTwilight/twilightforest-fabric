@@ -1,4 +1,4 @@
-package twilightforest.client.model.block.aurorablock;
+/*package twilightforest.client.model.block.aurorablock;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -45,4 +45,4 @@ public class NoiseVaryingModelBuilder extends CustomLoaderBuilder {
 
 		return mainJson;
 	}
-}
+}*/

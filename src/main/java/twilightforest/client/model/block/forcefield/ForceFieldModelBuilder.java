@@ -1,4 +1,4 @@
-package twilightforest.client.model.block.forcefield;
+/*package twilightforest.client.model.block.forcefield;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
@@ -172,9 +172,7 @@ public class ForceFieldModelBuilder extends CustomLoaderBuilder {
 	}
 
 
-	/**
-	 * Forge copy of ElementBuilder, with some things changed
-	 */
+
 	public class ForceFieldElementBuilder {
 		private Vector3f from = new Vector3f();
 		private Vector3f to = new Vector3f(16, 16, 16);
@@ -408,4 +406,4 @@ public class ForceFieldModelBuilder extends CustomLoaderBuilder {
 			this.rotation = rotation;
 		}
 	}
-}
+}*/

@@ -1,4 +1,4 @@
-package twilightforest.client.model.block.connected;
+/*package twilightforest.client.model.block.connected;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -169,4 +169,4 @@ public class ConnectedTextureBuilder extends CustomLoaderBuilder {
 		}
 		return f;
 	}
-}
+}*/

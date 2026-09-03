@@ -1,4 +1,4 @@
-package twilightforest.client.model.block.connected;
+/*package twilightforest.client.model.block.connected;
 
 import com.google.gson.*;
 import com.mojang.datafixers.util.Pair;
@@ -101,4 +101,4 @@ public class ConnectedTextureModelLoader implements UnbakedModelLoader<UnbakedCo
 		}
 		return new Vector3f(0, 0, 0);
 	}
-}
+}*/

@@ -1,4 +1,4 @@
-package twilightforest.client.model.block.patch;
+/*package twilightforest.client.model.block.patch;
 
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.block.model.TextureSlots;
@@ -21,4 +21,4 @@ public class UnbakedPatchModel extends AbstractUnbakedModel {
 	public BakedModel bake(TextureSlots textureSlots, ModelBaker baker, ModelState modelState, boolean hasAmbientOcclusion, boolean useBlockLight, ItemTransforms transforms, ContextMap additionalProperties) {
 		return new PatchModel(baker.findSprite(textureSlots, "texture"), this.shaggify, baker.findSprite(textureSlots, "particle"), hasAmbientOcclusion, useBlockLight, transforms, this.parameters.renderTypeGroup());
 	}
-}
+}*/

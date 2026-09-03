@@ -1,4 +1,4 @@
-package twilightforest.client.model.block.patch;
+/*package twilightforest.client.model.block.patch;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
@@ -22,4 +22,4 @@ public final class PatchModelLoader implements UnbakedModelLoader<UnbakedPatchMo
 
 		return new UnbakedPatchModel(JsonUtils.getBooleanOr("shaggify", object, false), StandardModelParameters.parse(object, deserializationContext));
 	}
-}
+}*/

@@ -1,4 +1,4 @@
-package twilightforest.client.model.block.giantblock;
+/*package twilightforest.client.model.block.giantblock;
 
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
@@ -45,4 +45,4 @@ public class GiantBlockModel implements BlockStateModel, DynamicBlockStateModel 
 	public @MaterialFlags int materialFlags() {
 		return this.voxels[0].materialFlags();
 	}
-}
+}*/

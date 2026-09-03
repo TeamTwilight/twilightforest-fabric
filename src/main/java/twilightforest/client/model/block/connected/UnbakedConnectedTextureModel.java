@@ -1,4 +1,4 @@
-package twilightforest.client.model.block.connected;
+/*package twilightforest.client.model.block.connected;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Transformation;
@@ -130,4 +130,4 @@ public class UnbakedConnectedTextureModel extends AbstractUnbakedModel {
 
 		return new ConnectedTextureModel(this.connectedFaces, unculledFaces, this.renderOverlayOnAllFaces, this.connectableBlocks, baseQuads, connectedQuads, sprites[2], useAmbientOcclusion, usesBlockLight, itemTransforms, this.parameters.renderTypeGroup());
 	}
-}
+}*/

@@ -1,4 +1,4 @@
-package twilightforest.client.model.block.forcefield;
+/*package twilightforest.client.model.block.forcefield;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
@@ -51,4 +51,4 @@ public class ForceFieldModelLoader implements UnbakedModelLoader<UnbakedForceFie
 	public record Condition(@Nullable ExtraDirection direction, boolean b, List<ExtraDirection> parents) {
 
 	}
-}
+}*/

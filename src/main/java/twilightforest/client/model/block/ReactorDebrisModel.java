@@ -1,4 +1,4 @@
-package twilightforest.client.model.block;
+/*package twilightforest.client.model.block;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
@@ -26,4 +26,4 @@ public class ReactorDebrisModel extends DelegateBlockStateModel implements Dynam
         return ReactorDebrisRenderer.getSprite(ReactorDebrisBlockEntity.DEFAULT_TEXTURE);
 	}
 
-}
+}*/

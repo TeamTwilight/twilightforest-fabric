@@ -1,4 +1,4 @@
-package twilightforest.client.model.block.aurorablock;
+/*package twilightforest.client.model.block.aurorablock;
 
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
@@ -42,4 +42,4 @@ public class NoiseVaryingModel extends DelegateBlockStateModel implements Dynami
 		return this.variants[SimplexNoiseHelper.calcVariant(pos, this.variants.length)];
 	}
 
-}
+}*/

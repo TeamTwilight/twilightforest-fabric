@@ -1,4 +1,4 @@
-package twilightforest.client.model.block.giantblock;
+/*package twilightforest.client.model.block.giantblock;
 
 import com.mojang.math.Quadrant;
 import com.mojang.serialization.MapCodec;
@@ -134,4 +134,4 @@ public record UnbakedGiantBlockStateModel(BlockStateModel.Unbaked sourceModel) i
 	public MapCodec<? extends CustomUnbakedBlockStateModel> codec() {
 		return UnbakedGiantBlockStateModel.MAP_CODEC;
 	}
-}
+}*/

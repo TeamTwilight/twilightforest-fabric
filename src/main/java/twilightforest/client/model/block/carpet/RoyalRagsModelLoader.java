@@ -1,4 +1,4 @@
-package twilightforest.client.model.block.carpet;
+/*package twilightforest.client.model.block.carpet;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
@@ -15,4 +15,4 @@ public class RoyalRagsModelLoader implements IGeometryLoader<UnbakedRoyalRagsMod
 	public UnbakedRoyalRagsModel read(JsonObject jsonObject, JsonDeserializationContext deserializationContext) throws JsonParseException {
 		return new UnbakedRoyalRagsModel();
 	}
-}
+}*/

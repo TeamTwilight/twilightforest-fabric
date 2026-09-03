@@ -1,4 +1,4 @@
-package twilightforest.client.model.block.forcefield;
+/*package twilightforest.client.model.block.forcefield;
 
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.*;
@@ -256,4 +256,4 @@ public class ForceFieldModel implements IDynamicBakedModel {
 	//modeldata holder
 	public record ForceFieldData(Map<ExtraDirection, List<Direction>> directions) {
 	}
-}
+}*/

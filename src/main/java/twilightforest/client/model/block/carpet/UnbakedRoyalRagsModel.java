@@ -1,4 +1,4 @@
-package twilightforest.client.model.block.carpet;
+/*package twilightforest.client.model.block.carpet;
 
 import com.mojang.math.Transformation;
 import net.minecraft.client.renderer.block.model.*;
@@ -102,4 +102,4 @@ public class UnbakedRoyalRagsModel implements IUnbakedGeometry<UnbakedRoyalRagsM
 		RenderTypeGroup renderTypes = renderTypeHint != null ? context.getRenderType(renderTypeHint) : RenderTypeGroup.EMPTY;
 		return new RoyalRagsModel(baseQuads, quads, spriteGetter.apply(context.getMaterial("wool")), overrides, context.getTransforms(), renderTypes);
 	}
-}
+}*/

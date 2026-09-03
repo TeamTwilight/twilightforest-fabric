@@ -1,4 +1,4 @@
-package twilightforest.client.model.block.carpet;
+/*package twilightforest.client.model.block.carpet;
 
 import net.neoforged.neoforge.client.model.generators.CustomLoaderBuilder;
 import net.neoforged.neoforge.client.model.generators.ModelBuilder;
@@ -14,4 +14,4 @@ public class RoyalRagsBuilder<T extends ModelBuilder<T>> extends CustomLoaderBui
 	public static <T extends ModelBuilder<T>> RoyalRagsBuilder<T> begin(T parent, ExistingFileHelper helper) {
 		return new RoyalRagsBuilder<>(parent, helper);
 	}
-}
+}*/

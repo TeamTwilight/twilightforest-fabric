@@ -1,4 +1,4 @@
-package twilightforest.client.model.block.aurorablock;
+/*package twilightforest.client.model.block.aurorablock;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -35,4 +35,4 @@ public record UnbakedNoiseVaryingBlockStateModel(List<BlockStateModel.Unbaked> m
 	public MapCodec<? extends CustomUnbakedBlockStateModel> codec() {
 		return MAP_CODEC;
 	}
-}
+}*/
