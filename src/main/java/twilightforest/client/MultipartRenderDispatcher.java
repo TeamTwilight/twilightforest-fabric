@@ -1,6 +1,10 @@
 package twilightforest.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.fabricmc.fabric.api.client.rendering.v1.RenderStateDataKey;
+import net.fabricmc.fabric.api.client.rendering.v1.level.LevelExtractionContext;
+import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderContext;
+import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.debug.DebugScreenEntries;
@@ -14,19 +18,12 @@ import net.minecraft.client.renderer.state.level.LevelRenderState;
 import net.minecraft.gizmos.GizmoStyle;
 import net.minecraft.gizmos.Gizmos;
 import net.minecraft.util.ARGB;
-import net.minecraft.util.context.ContextKey;
 import net.minecraft.util.debug.DebugValueAccess;
 import net.minecraft.world.TickRateManager;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.client.event.ExtractLevelRenderStateEvent;
-import net.neoforged.neoforge.client.event.RegisterDebugRenderersEvent;
-import net.neoforged.neoforge.client.event.SubmitCustomGeometryEvent;
 import org.jetbrains.annotations.Nullable;
-import tamaized.beanification.PostConstruct;
-import twilightforest.TFMain;
 import twilightforest.entity.TFPart;
 
 import java.util.ArrayList;
@@ -35,23 +32,22 @@ import java.util.List;
 public class MultipartRenderDispatcher implements DebugRenderer.SimpleDebugRenderer {
 	public static final MultipartRenderDispatcher INSTANCE = new MultipartRenderDispatcher();
 
-	private final ContextKey<List<PartRender>> partRenders = new ContextKey<>(TFMain.prefix("multipart_renders"));
+	private final RenderStateDataKey<List<PartRender>> partRenders = RenderStateDataKey.create((() -> "multipart_renders"));
 	private final int hitboxColor = ARGB.colorFromFloat(1.0F, 0.25F, 1.0F, 0.0F);
 
-	@PostConstruct
-	private void setup(IEventBus modBus, IEventBus gameBus) {
-		gameBus.addListener(this::extractPartRenderStates);
-		gameBus.addListener(this::submitPartRenderStates);
+	public static void init() {
+		LevelRenderEvents.END_EXTRACTION.register(INSTANCE::extractPartRenderStates);
+		LevelRenderEvents.COLLECT_SUBMITS.register(INSTANCE::submitPartRenderStates);
 	}
 
-	private void extractPartRenderStates(ExtractLevelRenderStateEvent event) {
-		ClientLevel level = event.getLevel();
-		LevelRenderState renderState = event.getRenderState();
-		DeltaTracker deltaTracker = event.getDeltaTracker();
+	private void extractPartRenderStates(LevelExtractionContext context) {
+		ClientLevel level = context.level();
+		LevelRenderState renderState = context.levelState();
+		DeltaTracker deltaTracker = context.deltaTracker();
 		TickRateManager tickRateManager = level.tickRateManager();
-		Frustum frustum = event.getFrustum();
-		Vec3 cameraPos = event.getCamera().position();
-		boolean showOutlines = event.getLevelRenderer().shouldShowEntityOutlines();
+		Frustum frustum = context.camera().getCullFrustum();
+		Vec3 cameraPos = context.camera().position();
+		boolean showOutlines = context.levelRenderer().shouldShowEntityOutlines();
 		List<PartRender> renders = new ArrayList<>();
 
 		TFPart.forEachPart(level.entitiesForRendering(), part -> {
@@ -65,18 +61,18 @@ public class MultipartRenderDispatcher implements DebugRenderer.SimpleDebugRende
 				renderState.haveGlowingEntities = true;
 		});
 
-		renderState.setRenderData(this.partRenders, renders);
+		renderState.setData(this.partRenders, renders);
 	}
 
-	private void submitPartRenderStates(SubmitCustomGeometryEvent event) {
-		LevelRenderState renderState = event.getLevelRenderState();
-		@Nullable List<PartRender> renders = renderState.getRenderData(this.partRenders);
+	private void submitPartRenderStates(LevelRenderContext context) {
+		LevelRenderState renderState = context.levelState();
+		@Nullable List<PartRender> renders = renderState.getData(this.partRenders);
 		if (renders == null || renders.isEmpty())
 			return;
 
 		CameraRenderState cameraRenderState = renderState.cameraRenderState;
 		Vec3 cameraPos = cameraRenderState.pos;
-		PoseStack stack = event.getPoseStack();
+		PoseStack stack = context.poseStack();
 
 		for (PartRender render : renders) {
 			EntityRenderState state = render.state();
@@ -86,7 +82,7 @@ public class MultipartRenderDispatcher implements DebugRenderer.SimpleDebugRende
 			Vec3 offset = render.renderer().getRenderOffset(state);
 			stack.pushPose();
 			stack.translate(state.x - cameraPos.x() + offset.x(), state.y - cameraPos.y() + offset.y(), state.z - cameraPos.z() + offset.z());
-			render.renderer().submit(state, stack, event.getSubmitNodeCollector(), cameraRenderState);
+			render.renderer().submit(state, stack, context.submitNodeCollector(), cameraRenderState);
 			stack.popPose();
 		}
 	}

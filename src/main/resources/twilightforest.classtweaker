@@ -294,6 +294,9 @@ accessible method net/minecraft/world/entity/monster/skeleton/WitherSkeleton get
 # TwilightForestRenderInfo
 accessible field net/minecraft/client/renderer/LevelRenderer ticks I
 
+# MultipartRenderDispatcher
+accessible method net/minecraft/client/renderer/LevelRenderer shouldShowEntityOutlines ()Z
+
 # Enum Extensions
 extend-enum net/minecraft/world/damagesource/DamageEffects TWILIGHTFOREST_PINCH
 extend-enum net/minecraft/world/item/Rarity TWILIGHTFOREST_TWILIGHT
