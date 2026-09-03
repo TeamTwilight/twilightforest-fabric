@@ -40,14 +40,8 @@ public class MultipartRenderDispatcher implements DebugRenderer.SimpleDebugRende
 
 	@PostConstruct
 	private void setup(IEventBus modBus, IEventBus gameBus) {
-		modBus.addListener(this::registerDebugRenderers);
-
 		gameBus.addListener(this::extractPartRenderStates);
 		gameBus.addListener(this::submitPartRenderStates);
-	}
-
-	private void registerDebugRenderers(RegisterDebugRenderersEvent event) {
-		event.register(this);
 	}
 
 	private void extractPartRenderStates(ExtractLevelRenderStateEvent event) {
