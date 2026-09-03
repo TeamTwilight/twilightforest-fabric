@@ -94,7 +94,7 @@ public class PeacockFanItem extends Item {
 
 	@Override
 	public ItemUseAnimation getUseAnimation(ItemStack stack) {
-		return ItemUseAnimation.BLOCK;
+		return ItemUseAnimation.NONE;
 	}
 
 	@Override
