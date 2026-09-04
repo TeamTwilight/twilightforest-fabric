@@ -2,7 +2,7 @@ package twilightforest.client.model;
 
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.entity.ArmorModelSet;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 
 public class TFModelLayers {
 
@@ -125,7 +125,7 @@ public class TFModelLayers {
 	}
 
 	private static ModelLayerLocation register(String p_171301_, String p_171302_) {
-		return new ModelLayerLocation(TwilightForestMod.prefix(p_171301_), p_171302_);
+		return new ModelLayerLocation(TFMain.prefix(p_171301_), p_171302_);
 	}
 
 	private static ArmorModelSet<ModelLayerLocation> registerArmorSet(String modelId) {
