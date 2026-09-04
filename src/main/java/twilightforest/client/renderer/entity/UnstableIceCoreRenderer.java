@@ -4,89 +4,84 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
-import twilightforest.TFMain;
+import twilightforest.TwilightForestMod;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.UnstableIceCoreModel;
-import twilightforest.client.state.entity.UnstableIceCoreRenderState;
 import twilightforest.entity.monster.UnstableIceCore;
 
-public class UnstableIceCoreRenderer extends MobRenderer<UnstableIceCore, UnstableIceCoreRenderState, UnstableIceCoreModel> {
+public class UnstableIceCoreRenderer extends MobRenderer<UnstableIceCore, LivingEntityRenderState, UnstableIceCoreModel> {
 
-	public static final Identifier TEXTURE = TFMain.getModelTexture("iceexploder.png");
+	public static final Identifier TEXTURE = TwilightForestMod.getModelTexture("iceexploder.png");
 
 	public UnstableIceCoreRenderer(EntityRendererProvider.Context context) {
 		super(context, new UnstableIceCoreModel(context.bakeLayer(TFModelLayers.UNSTABLE_ICE_CORE)), 0.4F);
 	}
 
 	@Override
-	protected void scale(UnstableIceCoreRenderState state, PoseStack stack) {
+	protected void scale(LivingEntityRenderState state, PoseStack stack) {
 		stack.translate(0.0F, Mth.sin(state.ageInTicks * 0.2F) * 0.15F, 0.0F);
 
 		// flash
-		float f1 = state.deathTime;
-		if (f1 > 0) {
-			float f2 = 1.0F + Mth.sin(f1 * 100.0F) * f1 * 0.01F;
+		if (state.deathTime > 0.0F) {
+			int deathTick = (int) state.deathTime;
+			float wobble = 1.0F + Mth.lerp(state.deathTime - deathTick, this.wobbleAt(deathTick), this.wobbleAt(deathTick + 1));
 
-			if (f1 > 1.0F) {
-				f1 = 1.0F;
-			}
+			float growth = Math.min(state.deathTime, 1.0F);
+			growth *= growth;
+			growth *= growth;
 
-			f1 *= f1;
-			f1 *= f1;
-			float f3 = (1.0F + f1 * 0.4F) * f2;
-			float f4 = (1.0F + f1 * 0.1F) / f2;
-			stack.scale(f3, f4, f3);
+			float horizontal = (1.0F + growth * 0.4F) * wobble;
+			float vertical = (1.0F + growth * 0.1F) / wobble;
+			stack.scale(horizontal, vertical, horizontal);
 		}
 	}
 
+	private float wobbleAt(int deathTick) {
+		return Mth.sin(deathTick * 100.0F) * deathTick * 0.01F;
+	}
+
 	@Override
-	protected void setupRotations(UnstableIceCoreRenderState state, PoseStack stack, float yRot, float scale) {
+	protected void setupRotations(LivingEntityRenderState state, PoseStack stack, float yRot, float scale) {
 		stack.mulPose(Axis.YP.rotationDegrees(180 - yRot));
 	}
 
 	@Override
-	protected float getWhiteOverlayProgress(UnstableIceCoreRenderState state) {
-		if (state.deathTime > 0) {
-			float f2 = state.deathTime + state.partialTick;
+	public void extractRenderState(UnstableIceCore entity, LivingEntityRenderState state, float partialTick) {
+		super.extractRenderState(entity, state, partialTick);
+		state.hasRedOverlay = entity.hurtTime > 0;
+	}
 
-			if ((int) (f2 / 2) % 2 == 0) {
-				return 0;
-			} else {
-				int i = (int) (f2 * 0.2F * 255.0F);
-
-				if (i < 0) {
-					i = 0;
-				}
-
-				if (i > 255) {
-					i = 255;
-				}
-
-				short short1 = 255;
-				short short2 = 255;
-				short short3 = 255;
-				return i << 24 | short1 << 16 | short2 << 8 | short3;
-			}
+	@Override
+	protected float getWhiteOverlayProgress(LivingEntityRenderState state) {
+		if (state.deathTime > 0.0F && (int) (state.deathTime / 2.0F) % 2 != 0) {
+			return Mth.clamp(state.deathTime * 0.2F, 0.0F, 1.0F);
 		} else {
-			return 0;
+			return 0.0F;
 		}
 	}
 
 	@Override
-	public void extractRenderState(UnstableIceCore entity, UnstableIceCoreRenderState state, float partialTick) {
-		super.extractRenderState(entity, state, partialTick);
-		state.partialTick = partialTick;
+	protected int getModelTint(LivingEntityRenderState state) {
+		if (state.deathTime > 0.0F) {
+			return super.getModelTint(state);
+		} else {
+			return ARGB.colorFromFloat(0.6F, 1.0F, 1.0F, 1.0F);
+		}
 	}
 
 	@Override
-	public UnstableIceCoreRenderState createRenderState() {
-		return new UnstableIceCoreRenderState();
+	public LivingEntityRenderState createRenderState() {
+		return new LivingEntityRenderState();
 	}
 
 	@Override
-	public Identifier getTextureLocation(UnstableIceCoreRenderState state) {
+	public Identifier getTextureLocation(LivingEntityRenderState state) {
 		return TEXTURE;
 	}
 }
+
+
