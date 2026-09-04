@@ -206,7 +206,7 @@ public class AlphaYeti extends BaseTFBoss implements RangedAttackMob, IHostileMo
 
 	@Override
 	protected Vec3 getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float yRot) {
-		return new Vec3(0.0F, dimensions.height(), 0.4F);
+		return super.getPassengerAttachmentPoint(entity, dimensions, yRot).add(0.0F, 0F, 0.4F);
 	}
 
 	@Override
