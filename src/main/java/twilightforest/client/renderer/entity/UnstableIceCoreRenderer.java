@@ -8,14 +8,14 @@ import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFMain;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.UnstableIceCoreModel;
 import twilightforest.entity.monster.UnstableIceCore;
 
 public class UnstableIceCoreRenderer extends MobRenderer<UnstableIceCore, LivingEntityRenderState, UnstableIceCoreModel> {
 
-	public static final Identifier TEXTURE = TwilightForestMod.getModelTexture("iceexploder.png");
+	public static final Identifier TEXTURE = TFMain.getModelTexture("iceexploder.png");
 
 	public UnstableIceCoreRenderer(EntityRendererProvider.Context context) {
 		super(context, new UnstableIceCoreModel(context.bakeLayer(TFModelLayers.UNSTABLE_ICE_CORE)), 0.4F);
