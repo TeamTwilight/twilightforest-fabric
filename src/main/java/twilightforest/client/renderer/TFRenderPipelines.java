@@ -22,9 +22,9 @@ public class TFRenderPipelines {
 	private static final BlendFunction SHADOW = new BlendFunction(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
 
 	public static final RenderPipeline AURORA = RenderPipeline.builder(RenderPipelines.MATRICES_FOG_SNIPPET, RenderPipelines.GLOBALS_SNIPPET)
-		.withLocation(TwilightForestMod.prefix("pipeline/aurora"))
-		.withVertexShader(TwilightForestMod.prefix("core/aurora/aurora"))
-		.withFragmentShader(TwilightForestMod.prefix("core/aurora/aurora"))
+		.withLocation(TFMain.prefix("pipeline/aurora"))
+		.withVertexShader(TFMain.prefix("core/aurora/aurora"))
+		.withFragmentShader(TFMain.prefix("core/aurora/aurora"))
 		.withUniform(AURORA_UNIFORM, UniformType.UNIFORM_BUFFER)
 		.withColorTargetState(new ColorTargetState(BlendFunction.TRANSLUCENT))
 		.withVertexFormat(DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS)
