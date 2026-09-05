@@ -1,11 +1,6 @@
 package twilightforest.events;
 
-import carminite.events.api.EntityEvents;
 import carminite.events.neoforge.ProjectileImpactEvent;
-import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
-import net.fabricmc.fabric.api.entity.event.v1.effect.ServerMobEffectEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
-import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalEntityTypeTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -46,16 +41,7 @@ import java.util.List;
 public class ToolEvents {
 	public static final ToolEvents INSTANCE = new ToolEvents();
 
-	public static void init() {
-		EntityEvents.PROJECTILE_IMPACT.register(INSTANCE::onEnderBowHit);
-		ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, _) -> INSTANCE.fieryToolSetFire(entity, source));
-		PlayerBlockBreakEvents.BEFORE.register((_, player, _, state, _) -> INSTANCE.damageNonMazebreakerToolsMore(player, state));
-		ServerMobEffectEvents.ALLOW_ADD.register((effectInstance, entity, _) -> INSTANCE.preventFatigueWithPocketWatch(effectInstance, entity));
-		PlayerBlockBreakEvents.BEFORE.register((level, player, pos, state, _) -> INSTANCE.handleGiantPickaxeMining(level, player, pos, state));
-		CommonLifecycleEvents.TAGS_LOADED.register((_, _) -> INSTANCE.refreshOreMagnetCache());
-	}
-
-	private void onEnderBowHit(ProjectileImpactEvent evt) {
+	public void onEnderBowHit(ProjectileImpactEvent evt) {
 		Projectile arrow = evt.getProjectile();
 		if (arrow.getOwner() instanceof Player player
 			&& evt.getRayTraceResult() instanceof EntityHitResult result
@@ -90,14 +76,14 @@ public class ToolEvents {
 		}
 	}
 
-	private boolean fieryToolSetFire(LivingEntity entity, DamageSource source) {
+	public boolean fieryToolSetFire(LivingEntity entity, DamageSource source) {
 		if (source.getEntity() instanceof LivingEntity living && (living.getMainHandItem().is(TFItems.FIERY_SWORD) || living.getMainHandItem().is(TFItems.FIERY_PICKAXE)) && !entity.fireImmune()) {
 			entity.igniteForSeconds(1);
 		}
 		return true;
 	}
 
-	private boolean damageNonMazebreakerToolsMore(Player player, BlockState state) {
+	public boolean damageNonMazebreakerToolsMore(Player player, BlockState state) {
 		ItemStack stack = player.getMainHandItem();
 		if (state.is(TFBlockTags.MAZEBREAKER_ACCELERATED)) {
 			if (stack.isDamageableItem() && !(stack.getItem() instanceof MazebreakerPickItem)) {
@@ -107,11 +93,11 @@ public class ToolEvents {
 		return true;
 	}
 
-	private boolean preventFatigueWithPocketWatch(MobEffectInstance effectInstance, LivingEntity entity) {
+	public boolean preventFatigueWithPocketWatch(MobEffectInstance effectInstance, LivingEntity entity) {
 		return !effectInstance.is(MobEffects.MINING_FATIGUE) || !entity.isHolding(TFItems.POCKET_WATCH);
 	}
 
-	private boolean handleGiantPickaxeMining(Level level, Player player, BlockPos pos, BlockState state) {
+	public boolean handleGiantPickaxeMining(Level level, Player player, BlockPos pos, BlockState state) {
 		if (player instanceof ServerPlayer serverPlayer && canHarvestWithGiantPick(player, state)) {
 			var attachment = serverPlayer.getAttached(TFDataAttachments.GIANT_PICKAXE_MINING);
 
@@ -165,7 +151,7 @@ public class ToolEvents {
 		return attachment.getMining() == player.level().getGameTime() && !attachment.getBreaking();
 	}
 
-	private void refreshOreMagnetCache() {
+	public void refreshOreMagnetCache() {
 		OreMagnetItem.MAGNET_ORE_TO_BLOCK_REPLACEMENTS.clear();
 		OreMagnetItem.TREE_ORE_TO_BLOCK_REPLACEMENTS.clear();
 

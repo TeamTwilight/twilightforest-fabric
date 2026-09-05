@@ -1,8 +1,6 @@
 package twilightforest.events;
 
 import carminite.network.PacketDistributor;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
-import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -38,14 +36,7 @@ import twilightforest.network.CreateMovingCicadaSoundPacket;
 public class MiscEvents {
 	public static final MiscEvents INSTANCE = new MiscEvents();
 
-	public static void init() {
-		ServerEntityEvents.ENTITY_LOAD.register((entity, _) -> INSTANCE.addPrey(entity));
-		ServerEntityEvents.EQUIPMENT_CHANGE.register((livingEntity, equipmentSlot, _, currentStack) -> INSTANCE.updateCicadaSoundsOnHead(livingEntity, equipmentSlot, currentStack));
-		UseBlockCallback.EVENT.register(INSTANCE::addTomesToLecterns);
-		UseBlockCallback.EVENT.register(INSTANCE::washOffCloth);
-	}
-
-	private void addPrey(Entity entity) {
+	public void addPrey(Entity entity) {
 		if (entity instanceof Mob mob) {
 			EntityType<?> type = mob.getType();
 			if (type == EntityType.CAT) {
@@ -67,7 +58,7 @@ public class MiscEvents {
 		}
 	}
 
-	private void updateCicadaSoundsOnHead(LivingEntity livingEntity, EquipmentSlot equipmentSlot, ItemStack currentStack) {
+	public void updateCicadaSoundsOnHead(LivingEntity livingEntity, EquipmentSlot equipmentSlot, ItemStack currentStack) {
 		// from what I can see, vanilla doesn't have a hook for this in the item class. So this will have to do.
 		// we only have to check equipping, when its unequipped the sound instance handles the rest
 
@@ -81,7 +72,7 @@ public class MiscEvents {
 		}
 	}
 
-	private InteractionResult addTomesToLecterns(Player player, Level level, InteractionHand hand, BlockHitResult hitResult) {
+	public InteractionResult addTomesToLecterns(Player player, Level level, InteractionHand hand, BlockHitResult hitResult) {
 		if (player.isSpectator()) {
 			return InteractionResult.PASS;
 		}
@@ -112,7 +103,7 @@ public class MiscEvents {
 		return InteractionResult.PASS;
 	}
 
-	private InteractionResult washOffCloth(Player player, Level level, InteractionHand hand, BlockHitResult hitResult) {
+	public InteractionResult washOffCloth(Player player, Level level, InteractionHand hand, BlockHitResult hitResult) {
 		if (player.isSpectator()) {
 			return InteractionResult.PASS;
 		}

@@ -1,9 +1,7 @@
 package twilightforest.client.event;
 
 import com.mojang.blaze3d.vertex.*;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderContext;
-import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -38,18 +36,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CloudEvents {
+	public static final CloudEvents INSTANCE = new CloudEvents();
 	private static final List<PrecipitationRenderHelper> RENDER_HELPER = new ArrayList<>();
-
-	public static void init() {
-		ClientTickEvents.END_CLIENT_TICK.register(CloudEvents::tickWeatherEffects);
-		LevelRenderEvents.AFTER_TRANSLUCENT_TERRAIN.register(CloudEvents::renderPrecipitation);
-	}
 
 	record PrecipitationRenderHelper(BlockPos cloudPos, Biome.Precipitation precipitation, float precipitationLevel, int rainOnY) {
 
 	}
 
-	protected static void tickWeatherEffects(Minecraft mc) {
+	public void tickWeatherEffects(Minecraft mc) {
 		if (!mc.isPaused()) {
 			if (mc.level != null && TFConfig.getClientCloudBlockPrecipitationDistance() > 0) { // Semi vanilla copy of the weather tick, but made to work with cloud blocks instead
 				Vec3 vec3 = mc.gameRenderer.getMainCamera().position();
@@ -153,7 +147,7 @@ public class CloudEvents {
 		}
 	}
 
-	protected static void renderPrecipitation(LevelRenderContext context) {
+	public void renderPrecipitation(LevelRenderContext context) {
 		if (TFConfig.getClientCloudBlockPrecipitationDistance() > 0 && !RENDER_HELPER.isEmpty()) {
 			Minecraft minecraft = Minecraft.getInstance();
 			if (minecraft.level == null) return;

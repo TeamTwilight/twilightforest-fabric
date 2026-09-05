@@ -12,7 +12,9 @@ import twilightforest.init.TFDataAttachments;
 
 public class PortalOverlay {
 
-	public static void render(GuiGraphicsExtractor graphics, Minecraft minecraft, Player player) {
+	public static void render(GuiGraphicsExtractor graphics) {
+		Minecraft minecraft = Minecraft.getInstance();
+		Player player = minecraft.player;
 		Window window = minecraft.getWindow();
 		if (player != null) {
 			TFPortalAttachment portal = player.getAttached(TFDataAttachments.TF_PORTAL_COOLDOWN);

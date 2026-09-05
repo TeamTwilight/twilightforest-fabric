@@ -1,12 +1,10 @@
 package twilightforest.events;
 
 import carminite.events.api.*;
-import carminite.events.api.EntityEvents;
 import carminite.events.neoforge.*;
 import carminite.network.PacketDistributor;
 import carminite.util.ServerLifecycleHooks;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
-import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponentType;
@@ -54,24 +52,7 @@ public class TravellersGearEvents {
 		TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION
 	);
 
-	public static void init() {
-		EntityEvents.PROJECTILE_IMPACT.register(INSTANCE::magnetizeArrows);
-		EntityEvents.PROJECTILE_IMPACT.register(INSTANCE::performPerfectDodge);
-		LivingEvents.LIVING_JUMP.register(INSTANCE::cancelSlimySolesJump);
-		TickEvents.PLAYER_TICK_PRE.register(INSTANCE::tickMovementModifiers);
-		TickEvents.PLAYER_TICK_POST.register(INSTANCE::performStealth);
-		TickEvents.PLAYER_TICK_PRE.register(INSTANCE::disableHighStepWhileSneaking);
-		TickEvents.ENTITY_TICK_POST.register(INSTANCE::updateOtherModifiers);
-		LivingEvents.ARMOR_HURT.register(INSTANCE::stopDamagingTravellersGear);
-		LivingEvents.ARMOR_HURT.register(INSTANCE::setLastDamageArmorTime);
-		WorkstationEvents.ANVIL_UPDATE.register(INSTANCE::cancelCombiningTravellersGear);
-		WorkstationEvents.GRINDSTONE_PLACE.register(INSTANCE::removeModifiersFromTravellersGear);
-		WorkstationEvents.GRINDSTONE_TAKE.register(INSTANCE::extractItemsFromSwapHotbarModifier);
-		PlayerEvents.ITEM_CRAFTED.register(INSTANCE::fireCraftingModifierTrigger);
-		ServerPlayerEvents.COPY_FROM.register(INSTANCE::keepAttachmentsOnDeath);
-	}
-
-	private void magnetizeArrows(ProjectileImpactEvent event) {
+	public void magnetizeArrows(ProjectileImpactEvent event) {
 		Projectile projectile = event.getProjectile();
 		Entity entity = projectile.getOwner();
 		if (!(entity instanceof LivingEntity livingEntity) || !event.getRayTraceResult().getType().equals(HitResult.Type.BLOCK) || projectile.tickCount >= 200)
@@ -94,7 +75,7 @@ public class TravellersGearEvents {
 			projectile.discard();
 	}
 
-	private void performPerfectDodge(ProjectileImpactEvent event) {
+	public void performPerfectDodge(ProjectileImpactEvent event) {
 		HitResult rayResult = event.getRayTraceResult();
 		if (!(rayResult instanceof EntityHitResult entityHitResult) || !(entityHitResult.getEntity() instanceof LivingEntity livingEntity))
 			return;
@@ -126,7 +107,7 @@ public class TravellersGearEvents {
 		PacketDistributor.sendToPlayersTrackingEntityAndSelf(livingEntity, particlePacket);
 	}
 
-	private void cancelSlimySolesJump(LivingEvent.LivingJumpEvent event) {
+	public void cancelSlimySolesJump(LivingEvent.LivingJumpEvent event) {
 		LivingEntity livingEntity = event.getEntity();
 		SlimySolesAttachment slimySolesAttachment = livingEntity.getAttached(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO);
 		slimySolesAttachment.bounceVelocity = 0;
@@ -134,7 +115,7 @@ public class TravellersGearEvents {
 		livingEntity.setAttached(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO, slimySolesAttachment);
 	}
 
-	private void tickMovementModifiers(PlayerTickEvent.Pre event) {
+	public void tickMovementModifiers(PlayerTickEvent.Pre event) {
 		Player player = event.getEntity();
 		Boolean hasDoubleJump = null;
 		if (!TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.DOUBLE_JUMP_MODIFIER))
@@ -168,13 +149,13 @@ public class TravellersGearEvents {
 		TravellersGearLogic.travellersWingsSidestepCooldownSound(player);
 	}
 
-	private void performStealth(PlayerTickEvent.Post event) {
+	public void performStealth(PlayerTickEvent.Post event) {
 		if (!event.getEntity().level().isClientSide()) {
 			TravellersGearLogic.travellersStealth(event.getEntity(), player1 -> player1.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 2, 0, false, false, false)));
 		}
 	}
 
-	private void disableHighStepWhileSneaking(PlayerTickEvent.Pre event) {
+	public void disableHighStepWhileSneaking(PlayerTickEvent.Pre event) {
 		Player player = event.getEntity();
 		if (!TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.STEP_UP_ABILITY))
 			return;
@@ -190,7 +171,7 @@ public class TravellersGearEvents {
 			attribute.addPermanentModifier(TFAttributeModifiers.TRAVELLERS_HIGH_STEP);
 	}
 
-	private void updateOtherModifiers(EntityTickEvent.Post event) {
+	public void updateOtherModifiers(EntityTickEvent.Post event) {
 		if (!(event.getEntity() instanceof LivingEntity livingEntity)) return;
 		TravellersGearLogic.travellersWingsGradualGlide(livingEntity);
 		TravellersGearLogic.travellersBootsUnrestrained(livingEntity);
@@ -204,7 +185,7 @@ public class TravellersGearEvents {
 		TravellersGearLogic.determineWingState(livingEntity);
 	}
 
-	private void stopDamagingTravellersGear(ArmorHurtEvent event) {
+	public void stopDamagingTravellersGear(ArmorHurtEvent event) {
 		if (event.isCanceled())
 			return;
 		event.getArmorMap().forEach((slot, entry) -> {
@@ -219,20 +200,20 @@ public class TravellersGearEvents {
 		});
 	}
 
-	private void setLastDamageArmorTime(ArmorHurtEvent event) {
+	public void setLastDamageArmorTime(ArmorHurtEvent event) {
 		if (Arrays.stream(EquipmentSlot.values()).noneMatch(slot -> event.getNewDamage(slot) > 0)) return;
 		LivingEntity entity = event.getEntity();
 		entity.setAttached(TFDataAttachments.LAST_DAMAGE_ARMOR_TIME, entity.level().getGameTime());
 	}
 
 
-	private void cancelCombiningTravellersGear(AnvilUpdateEvent event) {
+	public void cancelCombiningTravellersGear(AnvilUpdateEvent event) {
 		if (event.getLeft().has(TFDataComponents.IS_TRAVELLERS_GEAR) && event.getRight().has(TFDataComponents.IS_TRAVELLERS_GEAR)) {
 			event.setCanceled(true);
 		}
 	}
 
-	private void removeModifiersFromTravellersGear(GrindstoneEvent.OnPlaceItem event) {
+	public void removeModifiersFromTravellersGear(GrindstoneEvent.OnPlaceItem event) {
 		if (ServerLifecycleHooks.getCurrentServer() == null)
 			return;
 		RegistryAccess access = ServerLifecycleHooks.getCurrentServer().registryAccess();
@@ -258,7 +239,7 @@ public class TravellersGearEvents {
 		event.setOutput(unmodifiedStack.copy());
 	}
 
-	private void extractItemsFromSwapHotbarModifier(GrindstoneEvent.OnTakeItem event) {
+	public void extractItemsFromSwapHotbarModifier(GrindstoneEvent.OnTakeItem event) {
 		returnModifierItems(event,
 			TravellersModifiersManager.SWAP_HOTBAR_MODIFIER,
 			DataComponents.CONTAINER,
@@ -290,7 +271,7 @@ public class TravellersGearEvents {
 		return travellersItemStacks.size() == 1 ? Optional.of(travellersItemStacks.getFirst()) : Optional.empty();
 	}
 
-	private void fireCraftingModifierTrigger(PlayerEvent.ItemCraftedEvent event) {
+	public void fireCraftingModifierTrigger(PlayerEvent.ItemCraftedEvent event) {
 		if (event.getEntity() instanceof ServerPlayer player && event.getCrafting().has(TFDataComponents.IS_TRAVELLERS_GEAR)) {
 			ItemStack compareStack = ItemStack.EMPTY;
 			for (int i = 0; i < event.getInventory().getContainerSize(); i++) {

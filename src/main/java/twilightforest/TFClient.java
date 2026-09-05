@@ -2,12 +2,15 @@ package twilightforest;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import twilightforest.init.TFTintSources;
 import twilightforest.network.*;
 
 public final class TFClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
+		TFClientEvents.init();
+		TFTintSources.init();
 		registerPackets();
 	}
 

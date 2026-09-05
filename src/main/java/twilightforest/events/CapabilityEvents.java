@@ -1,10 +1,7 @@
 package twilightforest.events;
 
-import carminite.events.api.TickEvents;
 import carminite.events.neoforge.EntityTickEvent;
 import carminite.events.neoforge.PlayerTickEvent;
-import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
-import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -24,21 +21,13 @@ import twilightforest.world.TFTeleporter;
 public class CapabilityEvents {
 	public static final CapabilityEvents INSTANCE = new CapabilityEvents();
 
-	public static void init() {
-		TickEvents.ENTITY_TICK_POST.register(INSTANCE::updateShields);
-		TickEvents.PLAYER_TICK_POST.register(INSTANCE::updatePlayerCaps);
-		ServerLivingEntityEvents.ALLOW_DAMAGE.register(INSTANCE::absorbShieldHits);
-		ServerPlayerEvents.AFTER_RESPAWN.register((_, newPlayer, _) -> INSTANCE.spawnInTFIfNecessary(newPlayer));
-		ServerPlayerEvents.JOIN.register(INSTANCE::playerLogsIn);
-	}
-
-	private void updateShields(EntityTickEvent.Post event) {
+	public void updateShields(EntityTickEvent.Post event) {
 		if (event.getEntity() instanceof LivingEntity living && !living.level().isClientSide() && living.hasAttached(TFDataAttachments.FORTIFICATION_SHIELDS)) {
 			event.getEntity().getAttached(TFDataAttachments.FORTIFICATION_SHIELDS).tick(living);
 		}
 	}
 
-	private void updatePlayerCaps(PlayerTickEvent.Post event) {
+	public void updatePlayerCaps(PlayerTickEvent.Post event) {
 		if (event.getEntity().getAttached(TFDataAttachments.FEATHER_FAN)) {
 			event.getEntity().setIgnoreFallDamageFromCurrentImpulse(true, event.getEntity().position());
 			event.getEntity().currentImpulseImpactPos = event.getEntity().position();
@@ -51,7 +40,7 @@ public class CapabilityEvents {
 		event.getEntity().getAttached(TFDataAttachments.TF_PORTAL_COOLDOWN).tick(event.getEntity());
 	}
 
-	private boolean absorbShieldHits(LivingEntity entity, DamageSource source, float amount) {
+	public boolean absorbShieldHits(LivingEntity entity, DamageSource source, float amount) {
 		if (!entity.level().isClientSide() && !source.is(DamageTypeTags.BYPASSES_ARMOR)) {
 			FortificationShieldAttachment attachment = entity.getAttached(TFDataAttachments.FORTIFICATION_SHIELDS);
 			if (attachment.shieldsLeft() > 0) {
@@ -66,7 +55,7 @@ public class CapabilityEvents {
 		return true;
 	}
 
-	private void spawnInTFIfNecessary(ServerPlayer newPlayer) {
+	public void spawnInTFIfNecessary(ServerPlayer newPlayer) {
 		if (newPlayer.getRespawnConfig() == null) {
 			newSpawnInTwilightForest(newPlayer);
 		}

@@ -128,16 +128,7 @@ public final class TFMain implements ModInitializer {
 
 		TFRemapper.addRegistryAliases();
 
-		CapabilityEvents.init();
-		//CharmEvents.init();
-		//EntityEvents.init();
-		HostileMountEvents.init();
-		LootEvents.init();
-		MiscEvents.init();
-		LootEvents.init();
-		ProgressionEvents.init();
-		ToolEvents.init();
-		TravellersGearEvents.init();
+		TFCommonEvents.init();
 
 		registerPackets();
 		registerCustomRegistries();

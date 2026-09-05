@@ -1,16 +1,11 @@
 package twilightforest.client.event;
 
+import carminite.events.neoforge.RenderFrameEvent;
+import carminite.events.neoforge.ViewportEvent;
 import com.ibm.icu.text.RuleBasedNumberFormat;
 import com.mojang.blaze3d.vertex.*;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
-import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderContext;
-import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
-import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -30,7 +25,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.ChunkPos;
@@ -41,13 +35,12 @@ import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.client.event.*;
-import net.neoforged.neoforge.common.NeoForge;
 import twilightforest.TFMain;
 import twilightforest.block.GiantBlock;
 import twilightforest.block.MiniatureStructureBlock;
 import twilightforest.block.entity.GrowingBeanstalkBlockEntity;
 import twilightforest.client.*;
+import twilightforest.client.renderer.AuroraRenderer;
 import twilightforest.client.renderer.entity.MagicPaintingRenderer;
 import twilightforest.config.TFConfig;
 import twilightforest.tags.TFItemTags;
@@ -61,6 +54,7 @@ import java.time.Month;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class ClientGameEvents {
 	public static final ClientGameEvents INSTANCE = new ClientGameEvents();
@@ -74,33 +68,11 @@ public class ClientGameEvents {
 
 	private int aurora = 0;
 	private int lastAurora = 0;
+	private final AuroraRenderer auroraRenderer = new AuroraRenderer();
 
 	private final HolderMatcher holderMatcher = HolderMatcher.INSTANCE;
 
-	public static void init() {
-		ItemTooltipCallback.EVENT.register((stack, _, _, lines) -> INSTANCE.addCustomTooltips(stack, lines));
-		ClientTickEvents.END_CLIENT_TICK.register(INSTANCE::clientTick);
-		ScreenEvents.AFTER_INIT.register((_, screen, _, _) -> {
-			INSTANCE.customizeSplashes(screen);
-			ScreenEvents.remove(screen).register(_ -> INSTANCE.clearEntityRenderUtilMap());
-		});
-		//NeoForge.EVENT_BUS.addListener(this::killVignette);
-		HudElementRegistry.replaceElement(VanillaHudElements.MOUNT_HEALTH, hudElement -> (graphics, deltaTracker) -> INSTANCE.removeHostileMountHealth(hudElement, graphics, deltaTracker));
-
-		//NeoForge.EVENT_BUS.addListener(this::renderAurora);
-		//NeoForge.EVENT_BUS.addListener(this::renderCustomBossbars);
-		LevelRenderEvents.BEFORE_BLOCK_OUTLINE.register(INSTANCE::renderGiantBlockOutlines);
-		//NeoForge.EVENT_BUS.addListener(this::setMusicInDimension);
-		//NeoForge.EVENT_BUS.addListener(this::shakeCamera);
-		ItemTooltipCallback.EVENT.register((stack, _, _, lines) -> INSTANCE.translateBookAuthor(stack, lines));
-		//NeoForge.EVENT_BUS.addListener(this::unrenderHeadWithTrophies);
-		//NeoForge.EVENT_BUS.addListener(this::updateBowFOV);
-
-		NeoForge.EVENT_BUS.addListener(FogHandler::renderFog);
-		NeoForge.EVENT_BUS.addListener(FogHandler::unloadFog);
-	}
-
-	private void customizeSplashes(Screen screen) {
+	public void customizeSplashes(Screen screen) {
 		if (screen instanceof TitleScreen title) {
 			SplashRenderer renderer = title.splash;
 			if (renderer != null) {
@@ -113,58 +85,25 @@ public class ClientGameEvents {
 		}
 	}
 
-	private void clearEntityRenderUtilMap() {
+	public void clearEntityRenderUtilMap() {
 		EntityCache.clearCache();
 	}
-
-	/*private void setMusicInDimension(SelectMusicEvent event) {
-		Music music = event.getOriginalMusic();
-		if (Minecraft.getInstance().level != null && Minecraft.getInstance().player != null && (music == Musics.CREATIVE || music == Musics.UNDER_WATER) && TFDimension.isTwilightWorldOnClient(Minecraft.getInstance().level)) {
-			event.setMusic(Minecraft.getInstance().level.getBiomeManager().getNoiseBiomeAtPosition(Minecraft.getInstance().player.blockPosition()).value().getBackgroundMusic().orElse(Musics.GAME));
-		}
-	}*/
 
 	/**
 	 * Stop the game from rendering the mount health for unfriendly creatures
 	 */
-	private void removeHostileMountHealth(HudElement hudElement, GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
-		if (HostileMountEvents.isRidingUnfriendly(Minecraft.getInstance().player)) {
+	public void removeHostileMountHealth(HudElement hudElement, GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
+		if (HostileMountEvents.isRidingUnfriendly(Objects.requireNonNull(Minecraft.getInstance()).player)) {
 			return;
 		}
 		hudElement.extractRenderState(graphics, deltaTracker);
 	}
 
-	/**
-	 * Render aurora effect as needed
-	 */
-	/*private void renderAurora(RenderLevelStageEvent event) {
-		if (Minecraft.getInstance().level == null) return;
+	public void endAuroraFrame(RenderFrameEvent.Post event) {
+		auroraRenderer.endFrame();
+	}
 
-		if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER && (aurora > 0 || lastAurora > 0) && TFShaders.AURORA != null) {
-			Tesselator tesselator = Tesselator.getInstance();
-			BufferBuilder buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-
-			final float scale = 2048F * (Minecraft.getInstance().gameRenderer.getRenderDistance() / 32F);
-			Vec3 pos = event.getCamera().getPosition();
-			float y = (float) (256F - pos.y());
-			buffer.addVertex(-scale, y, scale).setColor(1F, 1F, 1F, 1F);
-			buffer.addVertex(-scale, y, -scale).setColor(1F, 1F, 1F, 1F);
-			buffer.addVertex(scale, y, -scale).setColor(1F, 1F, 1F, 1F);
-			buffer.addVertex(scale, y, scale).setColor(1F, 1F, 1F, 1F);
-
-			RenderSystem.enableBlend();
-			RenderSystem.enableDepthTest();
-			RenderSystem.setShaderColor(1F, 1F, 1F, (Mth.lerp(event.getPartialTick().getGameTimeDeltaTicks(), lastAurora, aurora)) / 60F * 0.5F);
-			TFShaders.AURORA.invokeThenEndTesselator(
-				Minecraft.getInstance().level == null ? 0 : Mth.abs((int) Minecraft.getInstance().level.getBiomeManager().biomeZoomSeed),
-				(float) pos.x(), (float) pos.y(), (float) pos.z(), buffer);
-			RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
-			RenderSystem.disableDepthTest();
-			RenderSystem.disableBlend();
-		}
-	}*/
-
-	/*private void killVignette(RenderFrameEvent.Pre event) {
+	public void killVignette(RenderFrameEvent.Pre event) {
 		Minecraft minecraft = Minecraft.getInstance();
 		// only fire if we're in the twilight forest
 		if (minecraft.level != null && TFDimension.DIMENSION_KEY.equals(minecraft.level.dimension())) {
@@ -174,9 +113,9 @@ public class ClientGameEvents {
 		if (minecraft.player != null && HostileMountEvents.isRidingUnfriendly(minecraft.player)) {
 			minecraft.gui.setOverlayMessage(Component.empty(), false);
 		}
-	}*/
+	}
 
-	private void clientTick(Minecraft mc) {
+	public void clientTick(Minecraft mc) {
 		if (!mc.isPaused()) {
 			time++;
 
@@ -231,16 +170,16 @@ public class ClientGameEvents {
 		}
 	}
 
-	/*private void shakeCamera(ViewportEvent.ComputeCameraAngles event) {
+	public void shakeCamera(ViewportEvent.ComputeCameraAngles event) {
 		if (TFConfig.firstPersonEffects && !Minecraft.getInstance().isPaused() && shakeIntensity > 0 && Minecraft.getInstance().player != null) {
 			event.setYaw((float) Mth.lerp(event.getPartialTick(), event.getYaw(), event.getYaw() + (Minecraft.getInstance().player.getRandom().nextFloat() * 2F - 1F) * shakeIntensity));
 			event.setPitch((float) Mth.lerp(event.getPartialTick(), event.getPitch(), event.getPitch() + (Minecraft.getInstance().player.getRandom().nextFloat() * 2F - 1F) * shakeIntensity));
 			event.setRoll((float) Mth.lerp(event.getPartialTick(), event.getRoll(), event.getRoll() + (Minecraft.getInstance().player.getRandom().nextFloat() * 2F - 1F) * shakeIntensity));
 			shakeIntensity = 0F;
 		}
-	}*/
+	}
 
-	private void addCustomTooltips(ItemStack item, List<Component> lines) {
+	public void addCustomTooltips(ItemStack item, List<Component> lines) {
 		if (item.has(TFDataComponents.EMPERORS_CLOTH)) {
 			lines.add(1, EMPERORS_CLOTH_TOOLTIP);
 		}
@@ -250,41 +189,7 @@ public class ClientGameEvents {
 		}
 	}
 
-	/**
-	 * Zooms in the FOV while using a bow, just like vanilla does in the AbstractClientPlayer's getFieldOfViewModifier() method (1.18.2)
-	 */
-	/*private void updateBowFOV(ComputeFovModifierEvent event) {
-		Player player = event.getPlayer();
-		if (player.isUsingItem()) {
-			Item useItem = player.getUseItem().getItem();
-			if (useItem instanceof TripleBowItem || useItem instanceof EnderBowItem || useItem instanceof IceBowItem || useItem instanceof SeekerBowItem) {
-				float f = player.getTicksUsingItem() / 20.0F;
-				f = f > 1.0F ? 1.0F : f * f;
-				event.setNewFovModifier((float) Mth.lerp(Minecraft.getInstance().options.fovEffectScale().get(), 1.0F, (event.getFovModifier() * (1.0F - f * 0.15F))));
-			}
-		}
-	}*/
-
-	/*private void unrenderHeadWithTrophies(RenderLivingEvent.Pre<?, ?> event) {
-		ItemStack stack = event.getEntity().getItemBySlot(EquipmentSlot.HEAD);
-		boolean visible = !(stack.getItem() instanceof TrophyItem) && !areCuriosEquipped(event.getEntity());
-		boolean isPlayer = event.getEntity() instanceof Player;
-		if (event.getRenderer().getModel() instanceof HeadedModel headedModel) {
-			headedModel.getHead().visible = visible && (!isPlayer || headedModel.getHead().visible);  // some mods like Better Combat can move player's head and hide it in the first person view
-			if (event.getRenderer().getModel() instanceof HumanoidModel<?> humanoidModel) {
-				humanoidModel.hat.visible = visible && (!isPlayer || humanoidModel.hat.visible);
-			}
-		}
-	}*/
-
-	private boolean areTrinketsEquipped(LivingEntity entity) {
-		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
-			//return CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof TrophyItem);
-		}
-		return false;
-	}
-
-	private void translateBookAuthor(ItemStack stack, List<Component> lines) {
+	public void translateBookAuthor(ItemStack stack, List<Component> lines) {
 		if (stack.getItem() instanceof WrittenBookItem && stack.has(DataComponents.WRITTEN_BOOK_CONTENT)) {
 			if (stack.has(TFDataComponents.TRANSLATABLE_BOOK)) {
 				List<Component> components = lines;
@@ -298,7 +203,7 @@ public class ClientGameEvents {
 		}
 	}
 
-	private boolean renderGiantBlockOutlines(LevelRenderContext context, BlockOutlineRenderState outlineState) {
+	public boolean renderGiantBlockOutlines(LevelRenderContext context, BlockOutlineRenderState outlineState) {
 		BlockPos pos = outlineState.pos();
 		BlockState state = Minecraft.getInstance().level.getBlockState(pos);
 
@@ -318,11 +223,4 @@ public class ClientGameEvents {
 		}
 		return true;
 	}
-
-	/*private void renderCustomBossbars(CustomizeGuiOverlayEvent.BossEventProgress event) {
-		if (event.getBossEvent() instanceof ClientTFBossBar bossEvent) {
-			event.setCanceled(true);
-			bossEvent.renderBossBar(event.getGuiGraphics(), event.getX(), event.getY());
-		}
-	}*/
 }

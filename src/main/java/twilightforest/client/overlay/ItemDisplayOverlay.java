@@ -21,7 +21,10 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ItemDisplayOverlay {
-	public static void render(GuiGraphicsExtractor graphics, Minecraft minecraft, Window window, Gui gui, Player player) {
+	public static void render(GuiGraphicsExtractor graphics, Player player) {
+		Minecraft minecraft = Minecraft.getInstance();
+		Gui gui = minecraft.gui;
+
 		if (player == null || gui.getDebugOverlay().showDebugScreen() || minecraft.options.hideGui)
 			return;
 

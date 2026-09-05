@@ -1,10 +1,7 @@
 package twilightforest.events;
 
-import carminite.events.api.EntityEvents;
-import carminite.events.api.TickEvents;
 import carminite.events.neoforge.EntityMountEvent;
 import carminite.events.neoforge.EntityTickEvent;
-import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
@@ -19,13 +16,7 @@ public class HostileMountEvents {
 
 	public static volatile boolean allowDismount = false;
 
-	public static void init() {
-		ServerLivingEntityEvents.ALLOW_DAMAGE.register(INSTANCE::handleMountDamage);
-		EntityEvents.ENTITY_MOUNT.register(INSTANCE::preventMountDismount);
-		TickEvents.ENTITY_TICK_POST.register(INSTANCE::preventHostileMountCrouching);
-	}
-
-	private boolean handleMountDamage(LivingEntity entity, DamageSource source, float amount) {
+	public boolean handleMountDamage(LivingEntity entity, DamageSource source, float amount) {
 		// lets not make the player take suffocation damage if riding something
 		if (entity instanceof Player && isRidingUnfriendly(entity) && source.is(DamageTypes.IN_WALL)) {
 			return false;
@@ -45,7 +36,7 @@ public class HostileMountEvents {
 		HostileMountEvents.allowDismount = false;
 	}
 
-	private void preventMountDismount(EntityMountEvent event) {
+	public void preventMountDismount(EntityMountEvent event) {
 		if (!event.getLevel().isClientSide() &&
 			!event.isMounting() && event.getEntityBeingMounted().isAlive() &&
 			event.getEntityMounting() instanceof Player player && player.isAlive() &&
@@ -53,7 +44,7 @@ public class HostileMountEvents {
 			event.setCanceled(true);
 	}
 
-	private void preventHostileMountCrouching(EntityTickEvent.Post event) {
+	public void preventHostileMountCrouching(EntityTickEvent.Post event) {
 		if (event.getEntity() instanceof IHostileMount)
 			event.getEntity().getPassengers().forEach(e -> e.setShiftKeyDown(false));
 	}

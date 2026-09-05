@@ -1,6 +1,5 @@
 package twilightforest.events;
 
-import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -27,12 +26,7 @@ public class LootEvents {
 
 	private static final GiantPickUsedCondition GIANT_PICK_USED = new GiantPickUsedCondition(LootContext.EntityTarget.THIS);
 
-	public static void init() {
-		LootTableEvents.MODIFY_DROPS.register((_, context, drops) -> INSTANCE.handleFieryToolDrops(context, drops));
-		LootTableEvents.MODIFY_DROPS.register((_, context, drops) -> INSTANCE.handleGiantToolGrouping(context, drops));
-	}
-
-	private void handleFieryToolDrops(LootContext context, List<ItemStack> drops) {
+	public void handleFieryToolDrops(LootContext context, List<ItemStack> drops) {
 		if (!context.getOptionalParameter(LootContextParams.TOOL).is(TFItems.FIERY_PICKAXE)) {
 			return;
 		}
@@ -60,7 +54,7 @@ public class LootEvents {
 		drops.addAll(list.stream().map(Pair::getLeft).toList());
 	}
 
-	private void handleGiantToolGrouping(LootContext context, List<ItemStack> drops) {
+	public void handleGiantToolGrouping(LootContext context, List<ItemStack> drops) {
 		if (!GIANT_PICK_USED.test(context)) {
 			return;
 		}

@@ -1,17 +1,11 @@
 package twilightforest.events;
 
-import carminite.events.api.PlayerEvents;
-import carminite.events.api.TickEvents;
 import carminite.events.neoforge.PlayerInteractEvent;
 import carminite.events.neoforge.PlayerTickEvent;
 import carminite.network.PacketDistributor;
 import carminite.util.ServerLifecycleHooks;
 import com.mojang.datafixers.util.Pair;
 import net.fabricmc.fabric.api.entity.FakePlayer;
-import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
-import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
-import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
-import net.fabricmc.fabric.api.gamerule.v1.GameRuleEvents;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.BlockPos;
@@ -64,27 +58,17 @@ import java.util.*;
 public class ProgressionEvents {
 	public static final ProgressionEvents INSTANCE = new ProgressionEvents();
 
-	public static void init() {
-		GameRuleEvents.changeCallback(TFGameRules.ENFORCED_PROGRESSION_RULE).register(INSTANCE::gameRuleChanged);
-		PlayerBlockBreakEvents.BEFORE.register((level, player, pos, _, _) -> INSTANCE.preventLockedAreaBlockBreaking(level, player, pos));
-		PlayerEvents.RIGHT_CLICK_BLOCK.register(INSTANCE::preventLockedAreaBlockPlacing);
-		PlayerEvents.RIGHT_CLICK_BLOCK.register(INSTANCE::preventLockedAreaBlockInteracting);
-		ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, _) -> INSTANCE.preventLockedAreaEntityDamage(entity, source));
-		TickEvents.PLAYER_TICK_POST.register(INSTANCE::performProtectionAndPortalChecks);
-		ServerPlayerEvents.JOIN.register(INSTANCE::syncProgressionGameRuleStatus);
-	}
-
 	/**
 	 * Notify all players' clients of gamerule change if progression is the change.
 	 */
-	private void gameRuleChanged(Boolean progressionEnforced, MinecraftServer server) {
+	public void gameRuleChanged(Boolean progressionEnforced, MinecraftServer server) {
 		PacketDistributor.sendToAllPlayers(new EnforceProgressionStatusPacket(progressionEnforced));
 	}
 
 	/**
 	 * Check if the player is trying to break a block in a structure that's considered unbreakable for progression reasons
 	 */
-	private boolean preventLockedAreaBlockBreaking(Level level, Player player, BlockPos pos) {
+	public boolean preventLockedAreaBlockBreaking(Level level, Player player, BlockPos pos) {
 		if (!(level instanceof ServerLevel serverLevel)) return true;
 
 		return !isBlockProtectedFromBreaking(level, pos) || !isAreaProtected(serverLevel, player, pos);
@@ -93,7 +77,7 @@ public class ProgressionEvents {
 	/**
 	 * Check if the player is trying to place a block in a structure that's considered inaccessible for progression reasons
 	 */
-	private void preventLockedAreaBlockPlacing(PlayerInteractEvent.RightClickBlock event) {
+	public void preventLockedAreaBlockPlacing(PlayerInteractEvent.RightClickBlock event) {
 		if (!(event.getLevel() instanceof ServerLevel level) || event.isCanceled()) return;
 
 		BlockPos pos = event.getPos();
@@ -106,7 +90,7 @@ public class ProgressionEvents {
 	/**
 	 * Stop the player from interacting with blocks that could produce treasure or open doors in a protected area
 	 */
-	private void preventLockedAreaBlockInteracting(PlayerInteractEvent.RightClickBlock event) {
+	public void preventLockedAreaBlockInteracting(PlayerInteractEvent.RightClickBlock event) {
 		Player player = event.getEntity();
 		Level level = player.level();
 
@@ -150,7 +134,7 @@ public class ProgressionEvents {
 	}
 
 	//TODO make ignored entities into a tag
-	private boolean preventLockedAreaEntityDamage(LivingEntity entity, DamageSource source) {
+	public boolean preventLockedAreaEntityDamage(LivingEntity entity, DamageSource source) {
 		// cancel attacks in protected areas
 		if (entity.level() instanceof ServerLevel serverLevel && entity instanceof Enemy && source.getEntity() instanceof Player && !(entity instanceof Kobold)
 			&& isAreaProtected(serverLevel, (Player) source.getEntity(), new BlockPos(entity.blockPosition()))) {
@@ -179,7 +163,7 @@ public class ProgressionEvents {
 		}).orElse(false);
 	}
 
-	private void performProtectionAndPortalChecks(PlayerTickEvent.Post event) {
+	public void performProtectionAndPortalChecks(PlayerTickEvent.Post event) {
 		Player eventPlayer = event.getEntity();
 
 		if (!(eventPlayer instanceof ServerPlayer player)) return;
@@ -292,7 +276,7 @@ public class ProgressionEvents {
 	/**
 	 * TFWeatherRenderer.progressionEnforced defaults to true on the client, so it's up to the server (via this listener) to notify true status when the player logs in
 	 */
-	private void syncProgressionGameRuleStatus(ServerPlayer player) {
+	public void syncProgressionGameRuleStatus(ServerPlayer player) {
         boolean progressionEnforced = ServerLifecycleHooks.getCurrentServer().getGameRules().get(TFGameRules.ENFORCED_PROGRESSION_RULE);
 		PacketDistributor.sendToPlayer(player, new EnforceProgressionStatusPacket(progressionEnforced));
 	}
