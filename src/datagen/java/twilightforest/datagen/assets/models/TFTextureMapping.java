@@ -7,8 +7,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.Nullable;
-import org.w3c.dom.Text;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFCommon;
 import twilightforest.enums.BossVariant;
 import twilightforest.init.TFBlocks;
 
@@ -29,7 +28,7 @@ public class TFTextureMapping {
 			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, suffix))
 			.put(TextureSlot.TOP, TextureMapping.getBlockTexture(topBlock, suffix + "_top"))
 			.put(TFTextureSlot.TOP_2, TextureMapping.getBlockTexture(topBlock, suffix + "_top_layer_1"))
-			.put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(TFBlocks.ENCASED_TOWERWOOD.get()))
+			.put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(TFBlocks.ENCASED_TOWERWOOD))
 			.put(TFTextureSlot.SIDE_2, TextureMapping.getBlockTexture(block, "_layer_1"))
 			.put(TFTextureSlot.SIDE_3, TextureMapping.getBlockTexture(block, suffix + "_layer_2"));
 	}
@@ -50,21 +49,6 @@ public class TFTextureMapping {
 
 	public static TextureMapping uncraftingTableOn(Block block) {
 		return uncraftingTable(block).put(TFTextureSlot.SIDE_2, TextureMapping.getBlockTexture(block, "_glow"));
-	}
-
-	public static TextureMapping ctmBlock(Block block) {
-		var overlay = TextureMapping.getBlockTexture(block);
-		return ctmBlock(null, overlay.sprite());
-	}
-
-	public static TextureMapping forcefield() {
-		var tex = new Material(TwilightForestMod.prefix("block/forcefield"));
-		return new TextureMapping().put(TextureSlot.PANE, tex).put(TextureSlot.PARTICLE, tex);
-	}
-
-	public static TextureMapping giantBlock(Block block) {
-		var tex = TextureMapping.getBlockTexture(block);
-		return giantBlock(tex, tex);
 	}
 
 	public static TextureMapping giantBlock(Material side, Material end) {

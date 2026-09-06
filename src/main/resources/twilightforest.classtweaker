@@ -328,6 +328,10 @@ accessible class net/minecraft/client/data/models/BlockModelGenerators$BookSlotM
 # ItemModelGenerator
 accessible method net/minecraft/client/data/models/model/ModelTemplates createItem (Ljava/lang/String;[Lnet/minecraft/client/data/models/model/TextureSlot;)Lnet/minecraft/client/data/models/model/ModelTemplate;
 
+# ModelGenerator
+accessible method net/minecraft/client/data/models/ModelProvider$ItemInfoCollector <init> ()V
+accessible method net/minecraft/client/data/models/ModelProvider$BlockStateGeneratorCollector <init> ()V
+
 # Enum Extensions
 extend-enum net/minecraft/world/damagesource/DamageEffects TWILIGHTFOREST_PINCH
 extend-enum net/minecraft/world/item/Rarity TWILIGHTFOREST_TWILIGHT

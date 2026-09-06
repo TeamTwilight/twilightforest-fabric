@@ -48,9 +48,6 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.spawner(TFBlocks.FINAL_BOSS_BOSS_SPAWNER, "block/boss_spawner");
 		this.spawner(TFBlocks.SINISTER_SPAWNER, "block/sinister_spawner");
 
-		this.thorns(TFBlocks.BROWN_THORNS, TFBlocks.POTTED_THORN);
-		this.thorns(TFBlocks.GREEN_THORNS, TFBlocks.POTTED_GREEN_THORN);
-		this.thorns(TFBlocks.BURNT_THORNS, TFBlocks.POTTED_DEAD_THORN);
 		this.directionalCrossModel(TFBlocks.THORN_ROSE, PlantType.NOT_TINTED);
 		this.createTintedLeaves(TFBlocks.THORN_LEAVES, TexturedModel.createDefault(block -> TextureMapping.cube(Blocks.SPRUCE_LEAVES), ModelTemplates.LEAVES), -10380959);
 		this.wrapBlockItem(TFBlocks.DEADROCK, this::createTrivialCube);
