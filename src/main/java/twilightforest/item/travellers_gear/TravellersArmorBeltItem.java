@@ -48,7 +48,7 @@ public class TravellersArmorBeltItem extends TravellersArmorItem {
 	}
 
 	@Override
-	public boolean canFitInsideContainerItems(ItemStack stack) {
+	public boolean carminite$canFitInsideContainerItems(ItemStack stack) {
 		return !stack.has(DataComponents.CONTAINER);
 	}
 
