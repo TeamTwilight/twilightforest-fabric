@@ -9,7 +9,7 @@ import twilightforest.datagen.generator.AssetsGenerator;
 import twilightforest.datagen.generator.DataGenerator;
 
 @Component
-public class TFData {
+public class DataGenerators {
 
 	@Autowired
 	private AssetsGenerator assetsGenerator;
