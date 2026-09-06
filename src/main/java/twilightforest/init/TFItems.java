@@ -390,7 +390,7 @@ public class TFItems {
 		return Registry.register(
 			BuiltInRegistries.ITEM,
 			TFMain.prefix(name),
-			new SpawnEggItem(new Item.Properties().spawnEgg(type))
+			new SpawnEggItem(new Item.Properties().spawnEgg(type).setId(ResourceKey.create(Registries.ITEM, TFMain.prefix(name))))
 		);
 	}
 

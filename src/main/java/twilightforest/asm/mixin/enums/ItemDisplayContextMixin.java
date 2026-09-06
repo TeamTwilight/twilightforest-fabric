@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(ItemDisplayContext.class)
 public enum ItemDisplayContextMixin {
-	TWILIGHTFOREST_JARRED(-1, "twilightforest:jarred");
+	TWILIGHTFOREST_JARRED(10, "twilightforest:jarred");
 
 	@Shadow
 	ItemDisplayContextMixin(int id, String name){

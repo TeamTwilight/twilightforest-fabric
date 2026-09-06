@@ -26,10 +26,15 @@ if (secretsFile.exists()) {
 version = (hasProperty("CIRevision") ? CIRevision : project.mod_version)
 group = group_name
 
+java {
+	toolchain {
+		languageVersion.set(JavaLanguageVersion.of(25))
+	}
+}
+
 tasks.withType(JavaCompile).configureEach {
 	options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation,-this-escape" << "-Werror" << "-Xmaxerrs" << "10000" // Remove max errors flag before publishing
 	options.encoding = 'UTF-8'
-	it.options.release = 25
 }
 
 base {
@@ -96,7 +101,7 @@ processResources {
 		expand([
 			"version"             : ver,
 			"loader_version"      : loader_version,
-			"minecraft_version"   : minecraft_version,
+			"minecraft_version"   : base_minecraft_version,
 			"fabric_api_version"  : fabric_api_version,
 			"java_version"        : java.toolchain.languageVersion.get().asInt()
 		])

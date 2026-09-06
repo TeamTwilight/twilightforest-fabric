@@ -4,7 +4,6 @@ import com.google.common.reflect.Reflection;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
-import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
@@ -87,6 +86,7 @@ public final class TFMain implements ModInitializer {
 	public void onInitialize() {
 		Reflection.initialize(ConfigSetup.class);
 
+		TFRegistries.init();
 		TFKeyBinds.init();
 		TFItems.init();
 		TFStats.init();
@@ -131,7 +131,6 @@ public final class TFMain implements ModInitializer {
 		TFCommonEvents.init();
 
 		registerPackets();
-		registerCustomRegistries();
 		registerDynamicRegistries();
 		registerBiomeSource();
 		registerConfig();
@@ -189,14 +188,6 @@ public final class TFMain implements ModInitializer {
 		ServerPlayNetworking.registerGlobalReceiver(CycleMapSlotPacket.TYPE, CycleMapSlotPacket::handle);
 		ServerPlayNetworking.registerGlobalReceiver(UncraftingGuiPacket.TYPE, UncraftingGuiPacket::handle);
 		ServerPlayNetworking.registerGlobalReceiver(WipeOreMeterPacket.TYPE, WipeOreMeterPacket::handle);
-	}
-
-	private static void registerCustomRegistries() {
-		FabricRegistryBuilder.create(TFRegistries.Keys.ENFORCEMENT).buildAndRegister();
-		FabricRegistryBuilder.create(TFRegistries.Keys.CHUNK_BLANKET_TYPE).buildAndRegister();
-		FabricRegistryBuilder.create(TFRegistries.Keys.TEMPLATE_MARKER_HANDLER_TYPE).buildAndRegister();
-		FabricRegistryBuilder.create(TFRegistries.Keys.ITEM_DISPLAY_TYPE).buildAndRegister();
-		FabricRegistryBuilder.create(TFRegistries.Keys.TRAVELLERS_MODIFIER_TYPE).buildAndRegister();
 	}
 
 	private static void registerDynamicRegistries() {

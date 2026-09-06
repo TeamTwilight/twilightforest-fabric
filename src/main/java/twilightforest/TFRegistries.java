@@ -63,4 +63,8 @@ public class TFRegistries {
 			return Identifier.fromNamespaceAndPath(REGISTRY_NAMESPACE, name.toLowerCase(Locale.ROOT));
 		}
 	}
+
+	public static void init() {
+		TFMain.LOGGER.info("Initializing modded registries...");
+	}
 }
