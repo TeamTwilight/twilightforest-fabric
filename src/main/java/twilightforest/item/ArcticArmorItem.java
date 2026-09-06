@@ -13,6 +13,7 @@ import twilightforest.init.TFItems;
 import java.util.function.Consumer;
 
 public class ArcticArmorItem extends Item {
+	public static final int DEFAULT_COLOR = 0xFFBDCFD9;
 	private static final MutableComponent TOOLTIP = Component.translatable("item.twilightforest.arctic_armor.desc").withStyle(ChatFormatting.GRAY);
 
 	public ArcticArmorItem(Properties properties) {
