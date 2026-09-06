@@ -7,7 +7,9 @@ import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
+import net.fabricmc.fabric.api.registry.CompostableRegistry;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
+import net.fabricmc.fabric.api.registry.FuelValueEvents;
 import net.fabricmc.fabric.api.registry.StrippableBlockRegistry;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.fabricmc.fabric.api.transfer.v1.item.ContainerStorage;
@@ -22,10 +24,12 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.parrot.Parrot;
 import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.skeleton.AbstractSkeleton;
@@ -59,6 +63,7 @@ import twilightforest.init.*;
 import twilightforest.init.custom.*;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 import twilightforest.network.*;
+import twilightforest.tags.TFItemTags;
 import twilightforest.util.HolidayEvent;
 import twilightforest.util.Restriction;
 import twilightforest.util.TFRemapper;
@@ -138,6 +143,9 @@ public final class TFCommon implements ModInitializer {
 		registerJarLids();
 		registerStrippableBlocks();
 		registerFlammableBlocks();
+		registerCompostables();
+		registerFuels();
+		registerParrotImitations();
 		registerDispenseBehaviors();
 		registerCommands();
 		registerEntityAttributes();
@@ -473,6 +481,100 @@ public final class TFCommon implements ModInitializer {
 		flammableBlockRegistry.add(TFBlocks.BAMBOO_BANISTER, 5, 20);
 	}
 
+	private static void registerCompostables() {
+		CompostableRegistry.INSTANCE.add(TFBlocks.FALLEN_LEAVES.asItem(), 0.1F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.CANOPY_LEAVES.asItem(), 0.3F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.CLOVER_PATCH.asItem(), 0.3F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.DARK_LEAVES.asItem(), 0.3F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.FIDDLEHEAD.asItem(), 0.3F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.HEDGE.asItem(), 0.3F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.MANGROVE_LEAVES.asItem(), 0.3F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.MAYAPPLE.asItem(), 0.3F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.MINING_LEAVES.asItem(), 0.3F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.TWILIGHT_OAK_LEAVES.asItem(), 0.3F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.RAINBOW_OAK_LEAVES.asItem(), 0.3F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.ROOT_STRAND.asItem(), 0.3F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.SORTING_LEAVES.asItem(), 0.3F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.THORN_LEAVES.asItem(), 0.3F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.TIME_LEAVES.asItem(), 0.3F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.TRANSFORMATION_LEAVES.asItem(), 0.3F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.TWILIGHT_OAK_SAPLING.asItem(), 0.3F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.CANOPY_SAPLING.asItem(), 0.3F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.MANGROVE_SAPLING.asItem(), 0.3F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.DARKWOOD_SAPLING.asItem(), 0.3F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.RAINBOW_OAK_SAPLING.asItem(), 0.3F);
+		CompostableRegistry.INSTANCE.add(TFItems.TORCHBERRIES, 0.3F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.BEANSTALK_LEAVES.asItem(), 0.5F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.MOSS_PATCH.asItem(), 0.5F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.ROOT_BLOCK.asItem(), 0.5F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.THORN_ROSE.asItem(), 0.5F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.TROLLVIDR.asItem(), 0.5F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.HOLLOW_OAK_SAPLING.asItem(), 0.5F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.TIME_SAPLING.asItem(), 0.5F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.TRANSFORMATION_SAPLING.asItem(), 0.5F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.MINING_SAPLING.asItem(), 0.5F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.SORTING_SAPLING.asItem(), 0.5F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.TORCHBERRY_PLANT.asItem(), 0.5F);
+		CompostableRegistry.INSTANCE.add(TFItems.LIVEROOT, 0.5F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.HUGE_MUSHGLOOM_STEM.asItem(), 0.65F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.HUGE_WATER_LILY.asItem(), 0.65F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.LIVEROOT_BLOCK.asItem(), 0.65F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.MUSHGLOOM.asItem(), 0.65F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.UBEROUS_SOIL.asItem(), 0.65F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.HUGE_STALK.asItem(), 0.65F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.UNRIPE_TROLLBER.asItem(), 0.65F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.TROLLBER.asItem(), 0.65F);
+		CompostableRegistry.INSTANCE.add(TFItems.MAZE_WAFER, 0.65F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.HUGE_LILY_PAD.asItem(), 0.85F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.HUGE_MUSHGLOOM.asItem(), 0.85F);
+		CompostableRegistry.INSTANCE.add(TFItems.EXPERIMENT_115, 0.85F);
+		CompostableRegistry.INSTANCE.add(TFItems.MAGIC_BEANS, 0.85F);
+	}
+
+	private static void registerFuels() {
+		FuelValueEvents.BUILD.register((builder, _) -> builder.add(TFItemTags.BANISTERS, 300));
+	}
+
+	private static void registerParrotImitations() {
+		Parrot.MOB_SOUND_MAP.put(TFEntities.ALPHA_YETI, TFSounds.ALPHA_YETI_PARROT.value());
+		Parrot.MOB_SOUND_MAP.put(TFEntities.BLOCKCHAIN_GOBLIN, TFSounds.REDCAP_PARROT.value());
+		Parrot.MOB_SOUND_MAP.put(TFEntities.CARMINITE_BROODLING, SoundEvents.PARROT_IMITATE_SPIDER);
+		Parrot.MOB_SOUND_MAP.put(TFEntities.CARMINITE_GOLEM, TFSounds.CARMINITE_GOLEM_PARROT.value());
+		Parrot.MOB_SOUND_MAP.put(TFEntities.FIRE_BEETLE, SoundEvents.PARROT_IMITATE_SPIDER);
+		Parrot.MOB_SOUND_MAP.put(TFEntities.CARMINITE_GHASTLING, SoundEvents.PARROT_IMITATE_GHAST);
+		Parrot.MOB_SOUND_MAP.put(TFEntities.CARMINITE_GHASTGUARD, SoundEvents.PARROT_IMITATE_GHAST);
+		Parrot.MOB_SOUND_MAP.put(TFEntities.HEDGE_SPIDER, SoundEvents.PARROT_IMITATE_SPIDER);
+		Parrot.MOB_SOUND_MAP.put(TFEntities.HELMET_CRAB, SoundEvents.PARROT_IMITATE_SPIDER);
+		Parrot.MOB_SOUND_MAP.put(TFEntities.HOSTILE_WOLF, TFSounds.HOSTILE_WOLF_PARROT.value());
+		Parrot.MOB_SOUND_MAP.put(TFEntities.HYDRA, TFSounds.HYDRA_PARROT.value());
+		Parrot.MOB_SOUND_MAP.put(TFEntities.STABLE_ICE_CORE, TFSounds.ICE_CORE_PARROT.value());
+		Parrot.MOB_SOUND_MAP.put(TFEntities.KING_SPIDER, SoundEvents.PARROT_IMITATE_SPIDER);
+		Parrot.MOB_SOUND_MAP.put(TFEntities.KOBOLD, TFSounds.KOBOLD_PARROT.value());
+		Parrot.MOB_SOUND_MAP.put(TFEntities.LICH, SoundEvents.PARROT_IMITATE_BLAZE);
+		Parrot.MOB_SOUND_MAP.put(TFEntities.MAZE_SLIME, SoundEvents.PARROT_IMITATE_SLIME);
+		Parrot.MOB_SOUND_MAP.put(TFEntities.LICH_MINION, SoundEvents.PARROT_IMITATE_ZOMBIE);
+		Parrot.MOB_SOUND_MAP.put(TFEntities.MINOSHROOM, TFSounds.MINOTAUR_PARROT.value());
+		Parrot.MOB_SOUND_MAP.put(TFEntities.MINOTAUR, TFSounds.MINOTAUR_PARROT.value());
+		Parrot.MOB_SOUND_MAP.put(TFEntities.MIST_WOLF, TFSounds.HOSTILE_WOLF_PARROT.value());
+		Parrot.MOB_SOUND_MAP.put(TFEntities.MOSQUITO_SWARM, TFSounds.MOSQUITO_PARROT.value());
+		Parrot.MOB_SOUND_MAP.put(TFEntities.NAGA, TFSounds.NAGA_PARROT.value());
+		Parrot.MOB_SOUND_MAP.put(TFEntities.KNIGHT_PHANTOM, TFSounds.WRAITH_PARROT.value());
+		Parrot.MOB_SOUND_MAP.put(TFEntities.PINCH_BEETLE, SoundEvents.PARROT_IMITATE_SPIDER);
+		Parrot.MOB_SOUND_MAP.put(TFEntities.REDCAP, TFSounds.REDCAP_PARROT.value());
+		Parrot.MOB_SOUND_MAP.put(TFEntities.REDCAP_SAPPER, TFSounds.REDCAP_PARROT.value());
+		Parrot.MOB_SOUND_MAP.put(TFEntities.SKELETON_DRUID, SoundEvents.PARROT_IMITATE_SKELETON);
+		Parrot.MOB_SOUND_MAP.put(TFEntities.SLIME_BEETLE, SoundEvents.PARROT_IMITATE_SLIME);
+		Parrot.MOB_SOUND_MAP.put(TFEntities.SNOW_GUARDIAN, TFSounds.ICE_CORE_PARROT.value());
+		Parrot.MOB_SOUND_MAP.put(TFEntities.SNOW_QUEEN, TFSounds.ICE_CORE_PARROT.value());
+		Parrot.MOB_SOUND_MAP.put(TFEntities.SWARM_SPIDER, SoundEvents.PARROT_IMITATE_SPIDER);
+		Parrot.MOB_SOUND_MAP.put(TFEntities.TOWERWOOD_BORER, SoundEvents.PARROT_IMITATE_SILVERFISH);
+		Parrot.MOB_SOUND_MAP.put(TFEntities.DEATH_TOME, TFSounds.DEATH_TOME_PARROT.value());
+		Parrot.MOB_SOUND_MAP.put(TFEntities.UR_GHAST, SoundEvents.PARROT_IMITATE_GHAST);
+		Parrot.MOB_SOUND_MAP.put(TFEntities.WINTER_WOLF, TFSounds.HOSTILE_WOLF_PARROT.value());
+		Parrot.MOB_SOUND_MAP.put(TFEntities.WRAITH, TFSounds.WRAITH_PARROT.value());
+		Parrot.MOB_SOUND_MAP.put(TFEntities.YETI, TFSounds.ALPHA_YETI_PARROT.value());
+	}
+
 	private static void registerDispenseBehaviors() {
 		DispenserBlock.registerBehavior(TFItems.MOONWORM_QUEEN, new DamageableStackDispenseBehavior() {
 			@Override
@@ -616,7 +718,6 @@ public final class TFCommon implements ModInitializer {
 		FabricDefaultAttributeRegistry.register(TFEntities.ADHERENT, Adherent.registerAttributes());
 		FabricDefaultAttributeRegistry.register(TFEntities.ROVING_CUBE, RovingCube.registerAttributes());
 		FabricDefaultAttributeRegistry.register(TFEntities.PLATEAU_BOSS, PlateauBoss.registerAttributes());
-		//FabricDefaultAttributeRegistry.register(TFEntities.BOGGARD, Boggard.registerAttributes());
 		FabricDefaultAttributeRegistry.register(TFEntities.RISING_ZOMBIE, Zombie.createAttributes());
 	}
 
