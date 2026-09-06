@@ -3,6 +3,7 @@ package twilightforest;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import twilightforest.init.TFTintSources;
+import twilightforest.item.mapdata.MapDataManager;
 import twilightforest.network.*;
 
 public final class TFClient implements ClientModInitializer {
@@ -10,6 +11,7 @@ public final class TFClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		TFClientEvents.init();
+		MapDataManager.init();
 		TFTintSources.init();
 		registerPackets();
 	}
