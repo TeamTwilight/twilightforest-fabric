@@ -2,7 +2,7 @@ package twilightforest.init.custom;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Registry;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.TFRegistries;
 import twilightforest.item.travellers_gear.modifiers.*;
 
@@ -19,12 +19,12 @@ public class TravellersModifierTypes {
 	) {
 		return Registry.register(
 			TFRegistries.TRAVELLERS_MODIFIER_TYPE,
-			TFMain.prefix(name),
+			TFCommon.prefix(name),
 			codec
 		);
 	}
 
 	public static void init() {
-		TFMain.LOGGER.info("Initializing travellers modifier types...");
+		TFCommon.LOGGER.info("Initializing travellers modifier types...");
 	}
 }

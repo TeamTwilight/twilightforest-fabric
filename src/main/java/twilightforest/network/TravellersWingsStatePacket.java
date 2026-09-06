@@ -7,13 +7,13 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.components.entity.TravellersWingsAttachment;
 import twilightforest.init.TFDataAttachments;
 
 public class TravellersWingsStatePacket implements CustomPacketPayload {
 
-	public static final Type<TravellersWingsStatePacket> TYPE = new Type<>(TFMain.prefix("travellers_wings_state"));
+	public static final Type<TravellersWingsStatePacket> TYPE = new Type<>(TFCommon.prefix("travellers_wings_state"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, TravellersWingsStatePacket> STREAM_CODEC = CustomPacketPayload.codec(TravellersWingsStatePacket::write, TravellersWingsStatePacket::new);
 
 	private final int entityId;

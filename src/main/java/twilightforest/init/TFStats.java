@@ -6,7 +6,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.stats.StatFormatter;
 import net.minecraft.stats.Stats;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,17 +27,17 @@ public class TFStats {
 	public static final Identifier TF_SHIELDS_BROKEN = makeTFStat("tf_shields_broken");
 
 	private static Identifier makeTFStat(String key) {
-		Identifier identifier = TFMain.prefix(key);
+		Identifier identifier = TFCommon.prefix(key);
 		STAT_SETUP.add(() -> Stats.CUSTOM.get(identifier, StatFormatter.DEFAULT));
 		return Registry.register(
 			BuiltInRegistries.CUSTOM_STAT,
-			TFMain.prefix(key),
+			TFCommon.prefix(key),
 			identifier
 		);
 	}
 
 	public static void init() {
-		TFMain.LOGGER.info("Initializing stats...");
+		TFCommon.LOGGER.info("Initializing stats...");
 		STAT_SETUP.forEach(Runnable::run);
 	}
 }

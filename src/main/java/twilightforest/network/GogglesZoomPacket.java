@@ -7,7 +7,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFSounds;
 import twilightforest.init.custom.TravellersModifiersManager;
@@ -15,7 +15,7 @@ import twilightforest.init.custom.TravellersModifiersManager;
 import java.util.UUID;
 
 public record GogglesZoomPacket(boolean isUsingZoom, UUID playerUUID) implements CustomPacketPayload {
-	public static final Type<GogglesZoomPacket> TYPE = new Type<>(TFMain.prefix("goggles_zoom_packet"));
+	public static final Type<GogglesZoomPacket> TYPE = new Type<>(TFCommon.prefix("goggles_zoom_packet"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, twilightforest.network.GogglesZoomPacket> STREAM_CODEC = CustomPacketPayload.codec(twilightforest.network.GogglesZoomPacket::write, twilightforest.network.GogglesZoomPacket::new);
 
 	public GogglesZoomPacket(RegistryFriendlyByteBuf registryFriendlyByteBuf) {

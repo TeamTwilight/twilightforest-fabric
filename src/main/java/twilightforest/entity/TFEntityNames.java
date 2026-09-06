@@ -2,7 +2,7 @@ package twilightforest.entity;
 
 import net.minecraft.resources.Identifier;
 
-import static twilightforest.TFMain.prefix;
+import static twilightforest.TFCommon.prefix;
 
 public class TFEntityNames {
 	// Passive Animals

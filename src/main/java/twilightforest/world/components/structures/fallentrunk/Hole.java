@@ -1,7 +1,7 @@
 package twilightforest.world.components.structures.fallentrunk;
 
 import net.minecraft.util.RandomSource;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 
 public class Hole {
 	protected final boolean[][] hole;
@@ -44,7 +44,7 @@ public class Hole {
 			}
 
 			if (tries >= maxAttemptAmount)
-				TFMain.LOGGER.error("Too many tries during generation of the hole in Fallen Trunk! Please report to https://github.com/TeamTwilight/twilightforest/issues the with seed and {}", piece.getBoundingBox().getCenter().toString());
+				TFCommon.LOGGER.error("Too many tries during generation of the hole in Fallen Trunk! Please report to https://github.com/TeamTwilight/twilightforest/issues the with seed and {}", piece.getBoundingBox().getCenter().toString());
 
 			previousX1 = x1;
 			previousX2 = x2;

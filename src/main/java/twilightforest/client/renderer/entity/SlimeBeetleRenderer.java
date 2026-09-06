@@ -11,14 +11,14 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.SlimeBeetleModel;
 import twilightforest.entity.monster.SlimeBeetle;
 
 public class SlimeBeetleRenderer extends MobRenderer<SlimeBeetle, LivingEntityRenderState, SlimeBeetleModel> {
 
-	private static final Identifier TEXTURE = TFMain.getModelTexture("slimebeetle.png");
+	private static final Identifier TEXTURE = TFCommon.getModelTexture("slimebeetle.png");
 
 	public SlimeBeetleRenderer(EntityRendererProvider.Context context) {
 		super(context, new SlimeBeetleModel(context.bakeLayer(TFModelLayers.SLIME_BEETLE), false), 0.6F);

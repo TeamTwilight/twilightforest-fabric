@@ -23,7 +23,7 @@ import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
@@ -35,7 +35,7 @@ import java.util.function.Predicate;
 
 public class TwilightJigsawPiece extends TwilightTemplateStructurePiece implements ProgressionPiece, IPieceBeardifierModifier {
 
-	private static final Logger LOGGER = LogManager.getLogger(TFMain.ID + "/TwilightJigsawPiece");
+	private static final Logger LOGGER = LogManager.getLogger(TFCommon.ID + "/TwilightJigsawPiece");
 
 	private static final StructureTemplateDefinitions structureTemplateDefinitions = StructureTemplateDefinitions.INSTANCE;
 

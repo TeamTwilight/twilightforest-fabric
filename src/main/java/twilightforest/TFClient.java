@@ -95,17 +95,17 @@ public final class TFClient implements ClientModInitializer {
 	}
 
 	private static void registerSpecialModelRenderers() {
-		SpecialModelRenderers.ID_MAPPER.put(TFMain.prefix("candelabra"), CandelabraSpecialRenderer.Unbaked.MAP_CODEC);
-		SpecialModelRenderers.ID_MAPPER.put(TFMain.prefix("cicada"), CicadaSpecialRenderer.Unbaked.MAP_CODEC);
-		SpecialModelRenderers.ID_MAPPER.put(TFMain.prefix("firefly"), FireflySpecialRenderer.Unbaked.MAP_CODEC);
-		SpecialModelRenderers.ID_MAPPER.put(TFMain.prefix("keepsake_casket"), KeepsakeCasketSpecialRenderer.Unbaked.MAP_CODEC);
-		SpecialModelRenderers.ID_MAPPER.put(TFMain.prefix("knightmetal_shield"), KnightmetalShieldSpecialRenderer.Unbaked.MAP_CODEC);
-		SpecialModelRenderers.ID_MAPPER.put(TFMain.prefix("mason_jar"), MasonJarSpecialRenderer.Unbaked.MAP_CODEC);
-		SpecialModelRenderers.ID_MAPPER.put(TFMain.prefix("moonworm"), MoonwormSpecialRenderer.Unbaked.MAP_CODEC);
-		SpecialModelRenderers.ID_MAPPER.put(TFMain.prefix("mystic_crown"), MysticCrownSpecialRenderer.Unbaked.MAP_CODEC);
-		SpecialModelRenderers.ID_MAPPER.put(TFMain.prefix("skull_candle"), SkullCandleSpecialRenderer.Unbaked.MAP_CODEC);
-		SpecialModelRenderers.ID_MAPPER.put(TFMain.prefix("skull_chest"), SkullChestSpecialRenderer.Unbaked.MAP_CODEC);
-		SpecialModelRenderers.ID_MAPPER.put(TFMain.prefix("trophy"), TrophySpecialRenderer.Unbaked.MAP_CODEC);
+		SpecialModelRenderers.ID_MAPPER.put(TFCommon.prefix("candelabra"), CandelabraSpecialRenderer.Unbaked.MAP_CODEC);
+		SpecialModelRenderers.ID_MAPPER.put(TFCommon.prefix("cicada"), CicadaSpecialRenderer.Unbaked.MAP_CODEC);
+		SpecialModelRenderers.ID_MAPPER.put(TFCommon.prefix("firefly"), FireflySpecialRenderer.Unbaked.MAP_CODEC);
+		SpecialModelRenderers.ID_MAPPER.put(TFCommon.prefix("keepsake_casket"), KeepsakeCasketSpecialRenderer.Unbaked.MAP_CODEC);
+		SpecialModelRenderers.ID_MAPPER.put(TFCommon.prefix("knightmetal_shield"), KnightmetalShieldSpecialRenderer.Unbaked.MAP_CODEC);
+		SpecialModelRenderers.ID_MAPPER.put(TFCommon.prefix("mason_jar"), MasonJarSpecialRenderer.Unbaked.MAP_CODEC);
+		SpecialModelRenderers.ID_MAPPER.put(TFCommon.prefix("moonworm"), MoonwormSpecialRenderer.Unbaked.MAP_CODEC);
+		SpecialModelRenderers.ID_MAPPER.put(TFCommon.prefix("mystic_crown"), MysticCrownSpecialRenderer.Unbaked.MAP_CODEC);
+		SpecialModelRenderers.ID_MAPPER.put(TFCommon.prefix("skull_candle"), SkullCandleSpecialRenderer.Unbaked.MAP_CODEC);
+		SpecialModelRenderers.ID_MAPPER.put(TFCommon.prefix("skull_chest"), SkullChestSpecialRenderer.Unbaked.MAP_CODEC);
+		SpecialModelRenderers.ID_MAPPER.put(TFCommon.prefix("trophy"), TrophySpecialRenderer.Unbaked.MAP_CODEC);
 	}
 
 	private static void registerAtlases() {
@@ -113,8 +113,8 @@ public final class TFClient implements ClientModInitializer {
 	}
 
 	private static void registerClientReloadListeners() {
-		ResourceLoader.get(PackType.CLIENT_RESOURCES).registerReloadListener(TFMain.prefix("texture_generator"), TextureGeneratorReloadListener.INSTANCE);
-		ResourceLoader.get(PackType.CLIENT_RESOURCES).registerReloadListener(TFMain.prefix("armor_cache"), new TFArmorRenderer.ResourceReloadListener());
+		ResourceLoader.get(PackType.CLIENT_RESOURCES).registerReloadListener(TFCommon.prefix("texture_generator"), TextureGeneratorReloadListener.INSTANCE);
+		ResourceLoader.get(PackType.CLIENT_RESOURCES).registerReloadListener(TFCommon.prefix("armor_cache"), new TFArmorRenderer.ResourceReloadListener());
 	}
 
 	private static void registerScreens() {
@@ -186,8 +186,8 @@ public final class TFClient implements ClientModInitializer {
 		EntityRenderers.register(TFEntities.RISING_ZOMBIE, RisingZombieRenderer::new);
 		EntityRenderers.register(TFEntities.PLATEAU_BOSS, NoopRenderer::new);
 		EntityRenderers.register(TFEntities.NATURE_BOLT, ThrownItemRenderer::new);
-		EntityRenderers.register(TFEntities.LICH_BOLT, c -> new CustomProjectileTextureRenderer(c, TFMain.prefix("textures/particle/twilight_orb.png"), 1.0F, true, false));
-		EntityRenderers.register(TFEntities.WAND_BOLT, c -> new CustomProjectileTextureRenderer(c, TFMain.prefix("textures/particle/twilight_orb.png"), 1.0F, true, false));
+		EntityRenderers.register(TFEntities.LICH_BOLT, c -> new CustomProjectileTextureRenderer(c, TFCommon.prefix("textures/particle/twilight_orb.png"), 1.0F, true, false));
+		EntityRenderers.register(TFEntities.WAND_BOLT, c -> new CustomProjectileTextureRenderer(c, TFCommon.prefix("textures/particle/twilight_orb.png"), 1.0F, true, false));
 		EntityRenderers.register(TFEntities.LICH_BOMB, c -> new CustomProjectileTextureRenderer(c, Identifier.withDefaultNamespace("textures/item/magma_cream.png"), 1.0F, true, true));
 		EntityRenderers.register(TFEntities.TOME_BOLT, ThrownItemRenderer::new);
 		EntityRenderers.register(TFEntities.HYDRA_MORTAR, HydraMortarRenderer::new);

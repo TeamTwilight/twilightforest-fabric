@@ -5,7 +5,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 
 public class TFAttributes {
 
@@ -16,12 +16,12 @@ public class TFAttributes {
 	private static Holder<Attribute> register(String name, Attribute attribute) {
 		return Registry.registerForHolder(
 			BuiltInRegistries.ATTRIBUTE,
-			TFMain.prefix(name),
+			TFCommon.prefix(name),
 			attribute
 		);
 	}
 
 	public static void init() {
-		TFMain.LOGGER.info("Initializing attributes...");
+		TFCommon.LOGGER.info("Initializing attributes...");
 	}
 }

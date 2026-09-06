@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.phys.AABB;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.NagaModel;
 import twilightforest.client.state.entity.NagaRenderState;
@@ -14,9 +14,9 @@ import twilightforest.entity.boss.Naga;
 
 public class NagaRenderer extends MobRenderer<Naga, NagaRenderState, NagaModel<NagaRenderState>> {
 
-	public static final Identifier TEXTURE = TFMain.getModelTexture("nagahead.png");
-	public static final Identifier CHARGING_TEXTURE = TFMain.getModelTexture("nagahead_charging.png");
-	public static final Identifier DAZED_TEXTURE = TFMain.getModelTexture("nagahead_dazed.png");
+	public static final Identifier TEXTURE = TFCommon.getModelTexture("nagahead.png");
+	public static final Identifier CHARGING_TEXTURE = TFCommon.getModelTexture("nagahead_charging.png");
+	public static final Identifier DAZED_TEXTURE = TFCommon.getModelTexture("nagahead_dazed.png");
 
 	public NagaRenderer(EntityRendererProvider.Context context) {
 		super(context, new NagaModel<>(context.bakeLayer(TFModelLayers.NAGA)), 1.45F);

@@ -24,7 +24,7 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.enchantment.Repairable;
 import net.minecraft.world.item.equipment.ArmorType;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.components.item.PotionFlaskComponent;
 import twilightforest.item.*;
 import twilightforest.item.food.TFConsumables;
@@ -381,20 +381,20 @@ public class TFItems {
 	public static <T extends Item> T register(String name, Function<Item.Properties, T> item, Supplier<Item.Properties> properties) {
 		return Registry.register(
 			BuiltInRegistries.ITEM,
-			TFMain.prefix(name),
-			item.apply(properties.get().setId(ResourceKey.create(Registries.ITEM, TFMain.prefix(name))))
+			TFCommon.prefix(name),
+			item.apply(properties.get().setId(ResourceKey.create(Registries.ITEM, TFCommon.prefix(name))))
 		);
 	}
 
 	private static <E extends LivingEntity> SpawnEggItem registerSpawnEgg(String name, EntityType<E> type) {
 		return Registry.register(
 			BuiltInRegistries.ITEM,
-			TFMain.prefix(name),
-			new SpawnEggItem(new Item.Properties().spawnEgg(type).setId(ResourceKey.create(Registries.ITEM, TFMain.prefix(name))))
+			TFCommon.prefix(name),
+			new SpawnEggItem(new Item.Properties().spawnEgg(type).setId(ResourceKey.create(Registries.ITEM, TFCommon.prefix(name))))
 		);
 	}
 
 	public static void init() {
-		TFMain.LOGGER.info("Initializing items...");
+		TFCommon.LOGGER.info("Initializing items...");
 	}
 }

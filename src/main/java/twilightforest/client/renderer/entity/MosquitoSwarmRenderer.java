@@ -4,14 +4,14 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.resources.Identifier;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.MosquitoSwarmModel;
 import twilightforest.entity.monster.MosquitoSwarm;
 
 public class MosquitoSwarmRenderer extends MobRenderer<MosquitoSwarm, LivingEntityRenderState, MosquitoSwarmModel> {
 
-	private static final Identifier TEXTURE = TFMain.getModelTexture("mosquitoswarm.png");
+	private static final Identifier TEXTURE = TFCommon.getModelTexture("mosquitoswarm.png");
 
 	public MosquitoSwarmRenderer(EntityRendererProvider.Context context) {
 		super(context, new MosquitoSwarmModel(context.bakeLayer(TFModelLayers.MOSQUITO_SWARM)), 0.0F);

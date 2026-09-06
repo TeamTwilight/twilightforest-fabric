@@ -1,6 +1,5 @@
 package twilightforest.client.overlay;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -8,15 +7,15 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameType;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.passive.QuestRam;
 import twilightforest.entity.passive.quest.ram.QuestingRamCurrentContext;
 
 public class QuestingRamIndicatorOverlay {
 
-	private static final Identifier QUESTING_RAM_CHECK_SPRITE = TFMain.prefix("questing_ram_check");
-	private static final Identifier QUESTING_RAM_X_SPRITE = TFMain.prefix("questing_ram_x");
+	private static final Identifier QUESTING_RAM_CHECK_SPRITE = TFCommon.prefix("questing_ram_check");
+	private static final Identifier QUESTING_RAM_X_SPRITE = TFCommon.prefix("questing_ram_x");
 
 	public static void render(Minecraft minecraft, GuiGraphicsExtractor graphics, Gui gui, Player player) {
 		if (player != null && !minecraft.options.hideGui && TFConfig.showQuestRamCrosshairIndicator) {

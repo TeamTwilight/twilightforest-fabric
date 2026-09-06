@@ -7,7 +7,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.level.gamerules.*;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 
 public class TFGameRules {
 
@@ -18,7 +18,7 @@ public class TFGameRules {
 	public static GameRule<Boolean> registerBoolean(String id, GameRuleCategory category, boolean defaultValue) {
 		return Registry.register(
 			BuiltInRegistries.GAME_RULE,
-			TFMain.prefix(id),
+			TFCommon.prefix(id),
 			new GameRule<>(category, GameRuleType.BOOL, BoolArgumentType.bool(), GameRuleTypeVisitor::visitBoolean, Codec.BOOL, b -> b ? 1 : 0, defaultValue, FeatureFlagSet.of())
 		);
 	}
@@ -26,12 +26,12 @@ public class TFGameRules {
 	public static GameRule<Integer> registerInteger(String id, GameRuleCategory category, int defaultValue, int min) {
 		return Registry.register(
 			BuiltInRegistries.GAME_RULE,
-			TFMain.prefix(id),
+			TFCommon.prefix(id),
 			new GameRule<>(category, GameRuleType.INT, IntegerArgumentType.integer(min, Integer.MAX_VALUE), GameRuleTypeVisitor::visitInteger, Codec.INT, i -> i, defaultValue, FeatureFlagSet.of())
 		);
 	}
 
 	public static void init() {
-		TFMain.LOGGER.info("Initializing game rules...");
+		TFCommon.LOGGER.info("Initializing game rules...");
 	}
 }

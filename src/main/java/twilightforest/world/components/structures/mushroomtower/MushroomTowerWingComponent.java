@@ -16,7 +16,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
@@ -75,9 +75,9 @@ public class MushroomTowerWingComponent extends TowerWingComponent {
 			boolean madeIt = makeMainBridge(list, rand, this.getGenDepth() + 1, dest[0], dest[1], dest[2], childHeight, Rotation.CLOCKWISE_180);
 
 			if (!madeIt) {
-				TFMain.LOGGER.info("Did not make bridge back to new main");
+				TFCommon.LOGGER.info("Did not make bridge back to new main");
 			} else {
-				TFMain.LOGGER.debug("Made bridge back to new main");
+				TFCommon.LOGGER.debug("Made bridge back to new main");
 			}
 		}
 

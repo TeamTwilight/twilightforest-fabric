@@ -4,7 +4,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 
 public class TFBlockTags {
 
@@ -113,7 +113,7 @@ public class TFBlockTags {
 	}
 
 	public static TagKey<Block> create(final String name) {
-		return TagKey.create(Registries.BLOCK, TFMain.prefix(name));
+		return TagKey.create(Registries.BLOCK, TFCommon.prefix(name));
 	}
 
 	private static TagKey<Block> createFromNamespace(String modid, String tagName) {

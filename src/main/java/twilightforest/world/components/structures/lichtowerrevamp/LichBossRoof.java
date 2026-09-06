@@ -5,7 +5,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
@@ -20,7 +20,7 @@ public final class LichBossRoof extends TwilightJigsawPiece implements IPieceBea
 	}
 
 	public LichBossRoof(StructureTemplateManager structureManager, JigsawPlaceContext jigsawContext) {
-		super(TFStructurePieceTypes.LICH_BOSS_ROOF, 1, structureManager, TFMain.prefix("lich_tower/tower_boss_roof"), jigsawContext);
+		super(TFStructurePieceTypes.LICH_BOSS_ROOF, 1, structureManager, TFCommon.prefix("lich_tower/tower_boss_roof"), jigsawContext);
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings);
 	}

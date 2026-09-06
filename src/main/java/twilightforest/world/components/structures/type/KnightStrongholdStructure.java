@@ -19,7 +19,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.tags.TFBiomeTags;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFMapDecorations;
@@ -65,7 +65,7 @@ public class KnightStrongholdStructure extends ControlledSpawningStructure {
 				.add(new MobSpawnSettings.SpawnerData(EntityType.SLIME, 4, 4), 5)
 				.build()
 			),
-			new AdvancementLockConfig(List.of(TFMain.prefix("progress_trophy_pedestal"))),
+			new AdvancementLockConfig(List.of(TFCommon.prefix("progress_trophy_pedestal"))),
 			Optional.of(new HintConfig(HintConfig.book("tfstronghold", 4), TFEntities.KOBOLD)),
 			Optional.of(new DecorationConfig(3, true, false, false)),
 			true, Optional.of(BuiltInRegistries.MAP_DECORATION_TYPE.wrapAsHolder(TFMapDecorations.KNIGHT_STRONGHOLD)),

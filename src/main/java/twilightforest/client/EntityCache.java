@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -23,7 +23,7 @@ import java.util.WeakHashMap;
 
 public class EntityCache {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TFMain.ID + "/EntityCache");
+    private static final Logger LOGGER = LoggerFactory.getLogger(TFCommon.ID + "/EntityCache");
     private static final Map<EntityType<?>, Entity> ENTITY_MAP = new WeakHashMap<>();
     private static final Set<EntityType<?>> IGNORED_ENTITIES = new HashSet<>();
 

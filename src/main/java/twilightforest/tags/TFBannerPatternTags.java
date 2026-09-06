@@ -3,7 +3,7 @@ package twilightforest.tags;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.entity.BannerPattern;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 
 public class TFBannerPatternTags {
 
@@ -18,6 +18,6 @@ public class TFBannerPatternTags {
 	public static final TagKey<BannerPattern> QUESTING_RAM_BANNER_PATTERN = create("pattern_item/questing_ram");
 
 	private static TagKey<BannerPattern> create(String name) {
-		return TagKey.create(Registries.BANNER_PATTERN, TFMain.prefix(name));
+		return TagKey.create(Registries.BANNER_PATTERN, TFCommon.prefix(name));
 	}
 }

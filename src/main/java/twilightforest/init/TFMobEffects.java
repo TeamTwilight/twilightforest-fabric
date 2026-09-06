@@ -4,7 +4,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffect;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.potions.FrostedEffect;
 
 public class TFMobEffects {
@@ -14,12 +14,12 @@ public class TFMobEffects {
 	private static Holder<MobEffect> register(String name, MobEffect effect) {
 		return Registry.registerForHolder(
 			BuiltInRegistries.MOB_EFFECT,
-			TFMain.prefix(name),
+			TFCommon.prefix(name),
 			effect
 		);
 	}
 
 	public static void init() {
-		TFMain.LOGGER.info("Initializing mob effects...");
+		TFCommon.LOGGER.info("Initializing mob effects...");
 	}
 }

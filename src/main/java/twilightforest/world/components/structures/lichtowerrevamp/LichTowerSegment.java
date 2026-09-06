@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.tags.TFPaintingVariantTags;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
@@ -74,7 +74,7 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements IPiec
 	}
 
 	public static void buildTowerBySegments(StructurePieceAccessor pieceAccessor, Structure.GenerationContext context, final BlockPos sourceJigsawPos, final FrontAndTop sourceOrientation, final TwilightJigsawPiece parentBase, StructureTemplateManager structureManager, final int segments) {
-		Identifier segmentId = TFMain.prefix("lich_tower/tower_slice");
+		Identifier segmentId = TFCommon.prefix("lich_tower/tower_slice");
 		ArrayList<TwilightJigsawPiece> pieces = new ArrayList<>();
 
 		TwilightJigsawPiece priorPiece = parentBase;
@@ -88,7 +88,7 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements IPiec
 
 			boolean putWings = stackIndex > segments >> 1;
 			boolean putGallery = stackIndex == segments - 1;
-			LichTowerSegment towerSegment = new LichTowerSegment(structureManager, priorPiece.getGenDepth() + 1, placeableJunction, mobBridge == 0, putWings, putGallery, TFMain.prefix("lich_tower/tower_slice"));
+			LichTowerSegment towerSegment = new LichTowerSegment(structureManager, priorPiece.getGenDepth() + 1, placeableJunction, mobBridge == 0, putWings, putGallery, TFCommon.prefix("lich_tower/tower_slice"));
 
 			pieceAccessor.addPiece(towerSegment);
 			pieces.add(towerSegment); // Add to list for adding children later, must build upwards to the boss room before beginning Sidetowers from the base & upwards too
@@ -104,13 +104,13 @@ public final class LichTowerSegment extends TwilightJigsawPiece implements IPiec
 		}
 
 		// The boss room is wider than Main Tower segments, adding to piece list sooner will help prevent these collisions
-		JigsawPlaceContext bossRoomJunction = JigsawPlaceContext.pickPlaceableJunction(priorPiece.templatePosition(), priorJigsawOffset, priorOrientation, structureManager, TFMain.prefix("lich_tower/tower_boss_room"), "twilightforest:lich_tower/tower_below", context.random());
+		JigsawPlaceContext bossRoomJunction = JigsawPlaceContext.pickPlaceableJunction(priorPiece.templatePosition(), priorJigsawOffset, priorOrientation, structureManager, TFCommon.prefix("lich_tower/tower_boss_room"), "twilightforest:lich_tower/tower_below", context.random());
 		if (bossRoomJunction != null) {
 			LichBossRoom bossRoom = new LichBossRoom(structureManager, bossRoomJunction);
 			pieceAccessor.addPiece(bossRoom);
 			bossRoom.addJigsaws(priorPiece, pieceAccessor, context);
 
-			LichTowerSegment boundary = new LichTowerSegment(structureManager, priorPiece.getGenDepth() + 1, bossRoomJunction.copy(), false, false, false, TFMain.prefix("lich_tower/tower_boss_boundary"));
+			LichTowerSegment boundary = new LichTowerSegment(structureManager, priorPiece.getGenDepth() + 1, bossRoomJunction.copy(), false, false, false, TFCommon.prefix("lich_tower/tower_boss_boundary"));
 			pieceAccessor.addPiece(boundary);
 			boundary.addJigsaws(priorPiece, pieceAccessor, context);
 		}

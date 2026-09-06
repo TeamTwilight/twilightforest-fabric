@@ -46,7 +46,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.entity.TFPart;
 import twilightforest.entity.ai.control.NagaMoveControl;
 import twilightforest.entity.ai.goal.AttemptToGoHomeGoal;
@@ -198,7 +198,7 @@ public class Naga extends BaseTFBoss implements IMultiPartEntity {
 
 		if (!this.level().isClientSide() && oldSegments != newSegments) {
 			double speedMod = ((float) MAX_SEGMENTS / newSegments * 0.02F);
-			AttributeModifier modifier = new AttributeModifier(TFMain.prefix("segment_speed_boost"), speedMod, AttributeModifier.Operation.ADD_VALUE);
+			AttributeModifier modifier = new AttributeModifier(TFCommon.prefix("segment_speed_boost"), speedMod, AttributeModifier.Operation.ADD_VALUE);
 			Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).removeModifier(modifier.id());
 			Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED)).addTransientModifier(modifier);
 		}
@@ -210,7 +210,7 @@ public class Naga extends BaseTFBoss implements IMultiPartEntity {
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor accessor, DifficultyInstance difficulty, EntitySpawnReason type, @Nullable SpawnGroupData data) {
 		if (this.level().getDifficulty() != Difficulty.EASY && this.getAttribute(Attributes.MAX_HEALTH) != null) {
 			boolean hard = this.level().getDifficulty() == Difficulty.HARD;
-			AttributeModifier modifier = new AttributeModifier(TFMain.prefix("difficulty_health_boost"), hard ? 130 : 80, AttributeModifier.Operation.ADD_VALUE);
+			AttributeModifier modifier = new AttributeModifier(TFCommon.prefix("difficulty_health_boost"), hard ? 130 : 80, AttributeModifier.Operation.ADD_VALUE);
 			if (!Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).hasModifier(modifier.id())) {
 				Objects.requireNonNull(this.getAttribute(Attributes.MAX_HEALTH)).addPermanentModifier(modifier);
 				this.setHealth(this.getMaxHealth());

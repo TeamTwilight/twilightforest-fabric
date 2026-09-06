@@ -20,7 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import org.apache.commons.lang3.StringUtils;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 
 import java.util.*;
 
@@ -40,7 +40,7 @@ public class EntityRenderingUtil {
 			try {
 				renderTheEntity(graphics, x + size / 2, y + size - 2, scale, living);
 			} catch (Exception e) {
-				TFMain.LOGGER.error("Error drawing entity {}", BuiltInRegistries.ENTITY_TYPE.getKey(type), e);
+				TFCommon.LOGGER.error("Error drawing entity {}", BuiltInRegistries.ENTITY_TYPE.getKey(type), e);
 				EntityCache.addEntityToBlacklist(type);
 			}
 		}

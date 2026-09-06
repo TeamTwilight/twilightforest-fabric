@@ -6,26 +6,19 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.state.level.LevelRenderState;
 import net.minecraft.client.renderer.state.level.SkyRenderState;
-import net.minecraft.client.renderer.state.level.WeatherRenderState;
 import net.minecraft.resources.Identifier;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4fc;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
-import twilightforest.init.TFBiomes;
-
-import java.util.Optional;
 
 public class TwilightForestRenderInfo {
 	public static final TwilightForestRenderInfo INSTANCE = new TwilightForestRenderInfo();
 
-	public static final Identifier SKY_RENDERER = TFMain.prefix("renderer");
-	public static final Identifier WEATHER_RENDERER = TFMain.prefix("weather");
+	public static final Identifier SKY_RENDERER = TFCommon.prefix("renderer");
+	public static final Identifier WEATHER_RENDERER = TFCommon.prefix("weather");
 
 	@Nullable
 	private TFSkyRenderer skyRenderer;

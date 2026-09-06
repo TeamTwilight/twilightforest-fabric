@@ -3,7 +3,7 @@ package twilightforest.init;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.world.components.structures.*;
 import twilightforest.world.components.structures.courtyard.*;
 import twilightforest.world.components.structures.darktower.*;
@@ -232,12 +232,12 @@ public class TFStructurePieceTypes {
 	private static StructurePieceType registerPieceType(String name, StructurePieceType structurePieceType) {
 		return Registry.register(
 			BuiltInRegistries.STRUCTURE_PIECE,
-			TFMain.prefix(name),
+			TFCommon.prefix(name),
 			structurePieceType
 		);
 	}
 
 	public static void init() {
-		TFMain.LOGGER.info("Initializing structure piece types...");
+		TFCommon.LOGGER.info("Initializing structure piece types...");
 	}
 }

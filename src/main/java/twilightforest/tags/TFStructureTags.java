@@ -3,7 +3,7 @@ package twilightforest.tags;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 
 public class TFStructureTags {
 
@@ -11,6 +11,6 @@ public class TFStructureTags {
 	public static final TagKey<Structure> LANDMARK = create("landmark");
 
 	private static TagKey<Structure> create(String tagName) {
-		return TagKey.create(Registries.STRUCTURE, TFMain.prefix(tagName));
+		return TagKey.create(Registries.STRUCTURE, TFCommon.prefix(tagName));
 	}
 }

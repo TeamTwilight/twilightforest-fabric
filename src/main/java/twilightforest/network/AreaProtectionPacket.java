@@ -9,7 +9,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.entity.ProtectionBox;
 import twilightforest.init.TFParticleType;
 
@@ -18,7 +18,7 @@ import java.util.List;
 
 public class AreaProtectionPacket implements CustomPacketPayload {
 
-	public static final Type<AreaProtectionPacket> TYPE = new Type<>(TFMain.prefix("add_protection_box"));
+	public static final Type<AreaProtectionPacket> TYPE = new Type<>(TFCommon.prefix("add_protection_box"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, AreaProtectionPacket> STREAM_CODEC = CustomPacketPayload.codec(AreaProtectionPacket::write, AreaProtectionPacket::new);
 
 	private final List<BoundingBox> sbb;

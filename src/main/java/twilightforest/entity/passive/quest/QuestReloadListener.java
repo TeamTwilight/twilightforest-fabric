@@ -5,7 +5,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.entity.passive.quest.ram.QuestingRamContext;
 import twilightforest.entity.passive.quest.ram.QuestingRamCurrentContext;
 
@@ -25,13 +25,13 @@ public class QuestReloadListener extends SimpleJsonResourceReloadListener<Questi
 		for (var entry : object.entrySet()) {
 			if (entry.getKey().getPath().equals("questing_ram")) {
 				questingRamCurrentContext.setContext(entry.getValue());
-				TFMain.LOGGER.debug("Questing Ram quest set by mod {}", entry.getKey().getNamespace());
+				TFCommon.LOGGER.debug("Questing Ram quest set by mod {}", entry.getKey().getNamespace());
 				found = true;
 			}
 		}
 
 		if (!found) {
-			TFMain.LOGGER.error("Questing Ram quest file not found. Defaulting to fallback");
+			TFCommon.LOGGER.error("Questing Ram quest file not found. Defaulting to fallback");
 			questingRamCurrentContext.setContext(QuestingRamContext.FALLBACK);
 		}
 	}

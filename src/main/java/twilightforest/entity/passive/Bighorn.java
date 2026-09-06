@@ -18,7 +18,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFSounds;
 
@@ -72,7 +72,7 @@ public class Bighorn extends Sheep {
 	@Override
 	public Sheep getBreedOffspring(ServerLevel world, AgeableMob ageable) {
 		if (!(ageable instanceof Bighorn otherParent)) {
-			TFMain.LOGGER.error("Code was called to breed a Bighorn with a non Bighorn! Cancelling!");
+			TFCommon.LOGGER.error("Code was called to breed a Bighorn with a non Bighorn! Cancelling!");
 			return null;
 		}
 

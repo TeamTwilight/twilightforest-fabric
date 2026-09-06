@@ -11,7 +11,7 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.network.UpdateTFMultipartPacket;
 
 import java.util.function.Consumer;
@@ -19,7 +19,7 @@ import java.util.function.ObjIntConsumer;
 
 public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 
-	public static final Identifier RENDERER = TFMain.prefix("noop");
+	public static final Identifier RENDERER = TFCommon.prefix("noop");
 
 	protected EntityDimensions realSize = EntityDimensions.fixed(1F, 1F);
 

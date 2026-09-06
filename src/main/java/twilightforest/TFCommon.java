@@ -72,7 +72,7 @@ import twilightforest.world.components.structures.util.TemplateMarkerHandlerList
 
 import java.util.Locale;
 
-public final class TFMain implements ModInitializer {
+public final class TFCommon implements ModInitializer {
 
 	public static final String ID = "twilightforest";
 
@@ -208,7 +208,7 @@ public final class TFMain implements ModInitializer {
 	private static void registerBiomeSource() {
 		Registry.register(
 			BuiltInRegistries.BIOME_SOURCE,
-			TFMain.prefix("twilight_biomes"),
+			TFCommon.prefix("twilight_biomes"),
 			TFBiomeProvider.TF_CODEC
 		);
 	}

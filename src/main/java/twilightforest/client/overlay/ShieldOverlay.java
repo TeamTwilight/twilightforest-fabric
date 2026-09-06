@@ -8,13 +8,13 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.client.event.OverlayHandler;
 import twilightforest.config.TFConfig;
 import twilightforest.init.TFDataAttachments;
 
 public class ShieldOverlay {
-	private static final Identifier FORTIFICATION_SHIELD_SPRITE = TFMain.prefix("fortification_shield");
+	private static final Identifier FORTIFICATION_SHIELD_SPRITE = TFCommon.prefix("fortification_shield");
 
 	public static void render(GuiGraphicsExtractor graphics, Minecraft minecraft, Gui gui, @Nullable Player player) {
 		if (player != null && !minecraft.options.hideGui && (minecraft.gameMode.canHurtPlayer() || TFConfig.showFortificationShieldIndicatorInCreative) && player.hasAttached(TFDataAttachments.FORTIFICATION_SHIELDS) && player.getAttached(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft() > 0 && TFConfig.showFortificationShieldIndicator) {

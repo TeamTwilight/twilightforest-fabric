@@ -12,7 +12,7 @@ import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.DensityFunctions;
 import net.minecraft.world.level.levelgen.Noises;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.TFRegistries;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.world.components.chunkgenerators.*;
@@ -29,15 +29,15 @@ public class TFDensityFunctions {
 	public static final MapCodec<AbsoluteDifferenceFunction.Max> COORD_MAX = register("coord_max", AbsoluteDifferenceFunction.Max.CODEC);
 	public static final MapCodec<SqrtDensityFunction> SQRT = register("sqrt", SqrtDensityFunction.CODEC);
 
-	public static final ResourceKey<DensityFunction> BIOME_TERRAIN_RAW = ResourceKey.create(Registries.DENSITY_FUNCTION, TFMain.prefix("raw_biome_terrain"));
-	public static final ResourceKey<DensityFunction> BIOME_NOISE_RAW = ResourceKey.create(Registries.DENSITY_FUNCTION, TFMain.prefix("raw_biome_noise"));
-	public static final ResourceKey<DensityFunction> FORESTED_TERRAIN = ResourceKey.create(Registries.DENSITY_FUNCTION, TFMain.prefix("forested_terrain"));
-	public static final ResourceKey<DensityFunction> SKYLIGHT_TERRAIN = ResourceKey.create(Registries.DENSITY_FUNCTION, TFMain.prefix("skylight_terrain"));
+	public static final ResourceKey<DensityFunction> BIOME_TERRAIN_RAW = ResourceKey.create(Registries.DENSITY_FUNCTION, TFCommon.prefix("raw_biome_terrain"));
+	public static final ResourceKey<DensityFunction> BIOME_NOISE_RAW = ResourceKey.create(Registries.DENSITY_FUNCTION, TFCommon.prefix("raw_biome_noise"));
+	public static final ResourceKey<DensityFunction> FORESTED_TERRAIN = ResourceKey.create(Registries.DENSITY_FUNCTION, TFCommon.prefix("forested_terrain"));
+	public static final ResourceKey<DensityFunction> SKYLIGHT_TERRAIN = ResourceKey.create(Registries.DENSITY_FUNCTION, TFCommon.prefix("skylight_terrain"));
 
 	private static <T extends DensityFunction> MapCodec<T> register(String name, MapCodec<T> keyCodec) {
 		return Registry.register(
 			BuiltInRegistries.DENSITY_FUNCTION_TYPE,
-			TFMain.prefix(name),
+			TFCommon.prefix(name),
 			keyCodec
 		);
 	}
@@ -171,6 +171,6 @@ public class TFDensityFunctions {
 	}
 
 	public static void init() {
-		TFMain.LOGGER.info("Initializing density function types...");
+		TFCommon.LOGGER.info("Initializing density function types...");
 	}
 }

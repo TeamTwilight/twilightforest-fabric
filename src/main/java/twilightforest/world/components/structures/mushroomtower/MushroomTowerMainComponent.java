@@ -9,7 +9,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.components.structures.TFStructureComponentOld;
@@ -107,10 +107,10 @@ public class MushroomTowerMainComponent extends MushroomTowerWingComponent {
 		boolean madeIt = makeBridge(list, rand, this.getGenDepth() + 1, dest[0], dest[1], dest[2], size - 4, childHeight, mainDir, true);
 
 		if (madeIt) {
-			TFMain.LOGGER.debug("Main tower made a bridge to another tower");
+			TFCommon.LOGGER.debug("Main tower made a bridge to another tower");
 			return mainDir;
 		} else {
-			TFMain.LOGGER.info("Main tower failed to branch off at index {}", this.genDepth);
+			TFCommon.LOGGER.info("Main tower failed to branch off at index {}", this.genDepth);
 			return null;
 		}
 	}

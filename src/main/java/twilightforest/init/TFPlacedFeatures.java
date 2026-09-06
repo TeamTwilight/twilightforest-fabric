@@ -24,7 +24,7 @@ import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.placement.*;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.world.components.placements.AvoidLandmarkModifier;
 import twilightforest.world.components.placements.ChunkBlanketingModifier;
 import twilightforest.world.components.placements.ChunkCenterModifier;
@@ -197,7 +197,7 @@ public class TFPlacedFeatures {
 	}
 
 	public static ResourceKey<PlacedFeature> registerKey(String name) {
-		return ResourceKey.create(Registries.PLACED_FEATURE, TFMain.prefix(name));
+		return ResourceKey.create(Registries.PLACED_FEATURE, TFCommon.prefix(name));
 	}
 
 	public static void bootstrap(BootstrapContext<PlacedFeature> context) {

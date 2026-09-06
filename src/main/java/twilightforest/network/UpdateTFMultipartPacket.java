@@ -7,14 +7,14 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import org.jspecify.annotations.Nullable;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.entity.TFPart;
 
 import java.util.*;
 
 public record UpdateTFMultipartPacket(int entityId, @Nullable Entity entity, @Nullable Map<Integer, PartDataHolder> data) implements CustomPacketPayload {
 
-	public static final Type<UpdateTFMultipartPacket> TYPE = new Type<>(TFMain.prefix("update_multipart_entity"));
+	public static final Type<UpdateTFMultipartPacket> TYPE = new Type<>(TFCommon.prefix("update_multipart_entity"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, UpdateTFMultipartPacket> STREAM_CODEC = CustomPacketPayload.codec(UpdateTFMultipartPacket::write, UpdateTFMultipartPacket::new);
 
 	public UpdateTFMultipartPacket(RegistryFriendlyByteBuf buf) {

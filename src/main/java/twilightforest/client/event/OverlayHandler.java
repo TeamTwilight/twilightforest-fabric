@@ -20,7 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameType;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.client.overlay.ItemDisplayOverlay;
 import twilightforest.client.overlay.PortalOverlay;
 import twilightforest.components.item.OreScannerData;
@@ -41,16 +41,16 @@ public class OverlayHandler {
 	public static final OverlayHandler INSTANCE = new OverlayHandler();
 
 	public static final Map<Long, OreMeterInfoCache> ORE_METER_STAT_CACHE = new HashMap<>();
-	public static final Identifier QUEST_RAM_INDICATOR = TFMain.prefix("quest_ram_indicator");
-	public static final Identifier HOSTILE_MOUNT_HUNGER_BAR = TFMain.prefix("hostile_mount_hunger_bar");
-	public static final Identifier ORE_METER_STATS = TFMain.prefix("ore_meter_stats");
-	public static final Identifier FORTIFICATION_SHIELD_COUNT = TFMain.prefix("fortification_shield_count");
-	public static final Identifier PORTAL_OVERLAY = TFMain.prefix("portal_overlay");
-	public static final Identifier ITEM_DISPLAY_OVERLAY = TFMain.prefix("item_display_overlay");
+	public static final Identifier QUEST_RAM_INDICATOR = TFCommon.prefix("quest_ram_indicator");
+	public static final Identifier HOSTILE_MOUNT_HUNGER_BAR = TFCommon.prefix("hostile_mount_hunger_bar");
+	public static final Identifier ORE_METER_STATS = TFCommon.prefix("ore_meter_stats");
+	public static final Identifier FORTIFICATION_SHIELD_COUNT = TFCommon.prefix("fortification_shield_count");
+	public static final Identifier PORTAL_OVERLAY = TFCommon.prefix("portal_overlay");
+	public static final Identifier ITEM_DISPLAY_OVERLAY = TFCommon.prefix("item_display_overlay");
 
-	private static final Identifier QUESTING_RAM_CHECK_SPRITE = TFMain.prefix("questing_ram_check");
-	private static final Identifier QUESTING_RAM_X_SPRITE = TFMain.prefix("questing_ram_x");
-	private static final Identifier FORTIFICATION_SHIELD_SPRITE = TFMain.prefix("fortification_shield");
+	private static final Identifier QUESTING_RAM_CHECK_SPRITE = TFCommon.prefix("questing_ram_check");
+	private static final Identifier QUESTING_RAM_X_SPRITE = TFCommon.prefix("questing_ram_x");
+	private static final Identifier FORTIFICATION_SHIELD_SPRITE = TFCommon.prefix("fortification_shield");
 	private static final QuestingRamCurrentContext questingRamCurrentContext = QuestingRamCurrentContext.INSTANCE;
 
 	public static void init() {

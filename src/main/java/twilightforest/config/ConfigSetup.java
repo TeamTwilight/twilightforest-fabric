@@ -7,7 +7,7 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.network.SyncUncraftingTableConfigPacket;
 
 public final class ConfigSetup {
@@ -20,18 +20,18 @@ public final class ConfigSetup {
 	static {
 		{
 			final Pair<TFCommonConfig, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(TFCommonConfig::new);
-			ConfigRegistry.INSTANCE.register(TFMain.ID, ModConfig.Type.COMMON, COMMON_SPEC = specPair.getRight());
+			ConfigRegistry.INSTANCE.register(TFCommon.ID, ModConfig.Type.COMMON, COMMON_SPEC = specPair.getRight());
 			COMMON_CONFIG = specPair.getLeft();
 		}
 		{
 			final Pair<TFClientConfig, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(TFClientConfig::new);
-			ConfigRegistry.INSTANCE.register(TFMain.ID, ModConfig.Type.CLIENT, CLIENT_SPEC = specPair.getRight());
+			ConfigRegistry.INSTANCE.register(TFCommon.ID, ModConfig.Type.CLIENT, CLIENT_SPEC = specPair.getRight());
 			CLIENT_CONFIG = specPair.getLeft();
 		}
 	}
 
 	public static void loadConfigs() {
-		ModConfigEvents.loading(TFMain.ID).register(modConfig -> {
+		ModConfigEvents.loading(TFCommon.ID).register(modConfig -> {
 			if (modConfig.getSpec() == CLIENT_SPEC) {
 				TFConfig.rebakeClientOptions(CLIENT_CONFIG);
 			} else if (modConfig.getSpec() == COMMON_SPEC) {
@@ -41,7 +41,7 @@ public final class ConfigSetup {
 	}
 
 	public static void reloadConfigs() {
-		ModConfigEvents.reloading(TFMain.ID).register(modConfig -> {
+		ModConfigEvents.reloading(TFCommon.ID).register(modConfig -> {
 			if (modConfig.getSpec() == CLIENT_SPEC) {
 				TFConfig.rebakeClientOptions(CLIENT_CONFIG);
 			} else if (modConfig.getSpec() == COMMON_SPEC) {
@@ -53,7 +53,7 @@ public final class ConfigSetup {
 	//sends uncrafting settings to a player on a server when they log in. This prevents desyncs when the configs dont match up between the player and the server.
 	public static void syncUncraftingConfig() {
 		ServerPlayerEvents.JOIN.register(player -> {
-			TFMain.LOGGER.info("[TwilightForest] Syncing Uncrafting Table config");
+			TFCommon.LOGGER.info("[TwilightForest] Syncing Uncrafting Table config");
 			PacketDistributor.sendToPlayer(player, new SyncUncraftingTableConfigPacket(
 				COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get(),
 				COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.get(),

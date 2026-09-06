@@ -1,22 +1,15 @@
 package twilightforest.client;
 
 import carminite.network.ClientPacketDistributor;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.navigation.ScreenPosition;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.AbstractRecipeBookScreen;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
 import net.minecraft.client.gui.screens.recipebook.CraftingRecipeBookComponent;
-import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
-import net.minecraft.client.gui.screens.recipebook.RecipeUpdateListener;
-import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.component.DataComponents;
@@ -24,10 +17,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.config.TFConfig;
 import twilightforest.tags.TFItemTags;
 import twilightforest.inventory.UncraftingMenu;
@@ -36,7 +28,7 @@ import twilightforest.network.UncraftingGuiPacket;
 import java.util.List;
 
 public class UncraftingScreen extends AbstractRecipeBookScreen<UncraftingMenu> {
-	private static final Identifier TEXTURE = TFMain.getGuiTexture("guigoblintinkering.png");
+	private static final Identifier TEXTURE = TFCommon.getGuiTexture("guigoblintinkering.png");
 
 	public UncraftingScreen(UncraftingMenu container, Inventory player, Component name) {
 		super(container, new CraftingRecipeBookComponent(container), player, name);

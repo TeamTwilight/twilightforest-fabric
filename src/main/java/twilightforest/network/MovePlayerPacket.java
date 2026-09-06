@@ -5,11 +5,11 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 
 public record MovePlayerPacket(double motionX, double motionY, double motionZ) implements CustomPacketPayload {
 
-	public static final Type<MovePlayerPacket> TYPE = new Type<>(TFMain.prefix("move_player"));
+	public static final Type<MovePlayerPacket> TYPE = new Type<>(TFCommon.prefix("move_player"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, MovePlayerPacket> STREAM_CODEC = CustomPacketPayload.codec(MovePlayerPacket::write, MovePlayerPacket::new);
 
 	public MovePlayerPacket(FriendlyByteBuf buf) {

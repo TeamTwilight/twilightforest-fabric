@@ -11,7 +11,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import org.jspecify.annotations.Nullable;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
 import twilightforest.client.model.armor.TravellersWingsModel;
@@ -30,7 +30,7 @@ public final class TravellersArmorRenderer extends TFArmorRenderer {
 	@Override
 	public Identifier getArmorTexture(ItemStack stack, EquipmentClientInfo.LayerType type, EquipmentClientInfo.Layer layer, Identifier def) {
 		return type != EquipmentClientInfo.LayerType.HUMANOID_LEGGINGS && entity.getData(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER) ?
-			TFMain.prefix("textures/models/armor/travellers_layer_1_down.png") :
+			TFCommon.prefix("textures/models/armor/travellers_layer_1_down.png") :
 			super.getArmorTexture(stack, type, layer, def);
 	}
 

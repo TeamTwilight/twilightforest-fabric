@@ -13,7 +13,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.block.ClimbableHollowLogBlock;
 import twilightforest.client.properties.PotionFlaskTintSource;
 import twilightforest.enums.HollowLogVariants;
@@ -284,7 +284,7 @@ public class TFTintSources {
 	};
 
 	public static void init() {
-		TFMain.LOGGER.info("Initializing tint sources...");
+		TFCommon.LOGGER.info("Initializing tint sources...");
 		registerBlocks();
 		registerItems();
 	}
@@ -328,7 +328,7 @@ public class TFTintSources {
 	}
 
 	private static void registerItems() {
-		ItemTintSources.ID_MAPPER.put(TFMain.prefix("potion_flask"), PotionFlaskTintSource.TYPE);
+		ItemTintSources.ID_MAPPER.put(TFCommon.prefix("potion_flask"), PotionFlaskTintSource.TYPE);
 	}
 
 	private static int auroraTint(@Nullable BlockAndTintGetter getter, @Nullable BlockPos pos) {

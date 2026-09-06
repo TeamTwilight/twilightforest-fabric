@@ -27,7 +27,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import org.jspecify.annotations.Nullable;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.block.ChiseledCanopyShelfBlock;
 
 import java.util.ArrayList;
@@ -174,7 +174,7 @@ public abstract class BookshelfSpawner implements IOwnedSpawner {
 		CompoundTag tag = data.entityToSpawn();
 		BlockState shelf = level.getBlockState(pos);
 		Direction facing = shelf.getValue(HorizontalDirectionalBlock.FACING);
-		try (ProblemReporter.ScopedCollector reporter = new ProblemReporter.ScopedCollector(this::toString, TFMain.LOGGER)) {
+		try (ProblemReporter.ScopedCollector reporter = new ProblemReporter.ScopedCollector(this::toString, TFCommon.LOGGER)) {
 			ValueInput input = TagValueInput.create(reporter, level.registryAccess(), this.nextSpawnData.getEntityToSpawn());
 			Optional<EntityType<?>> entityType = EntityType.by(input);
 			//if the assigned entity doesn't exist or the bookshelf is blocked off, fail early

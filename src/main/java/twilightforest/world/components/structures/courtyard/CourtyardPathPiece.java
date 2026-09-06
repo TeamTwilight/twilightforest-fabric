@@ -11,7 +11,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.world.components.processors.NagastoneVariants;
 import twilightforest.world.components.structures.TwilightTemplateStructurePiece;
@@ -22,7 +22,7 @@ public class CourtyardPathPiece extends TwilightTemplateStructurePiece {
 	}
 
 	public CourtyardPathPiece(int i, int x, int y, int z, StructureTemplateManager structureManager) {
-		super(TFStructurePieceTypes.TFNCPa, i, structureManager, TFMain.prefix("courtyard/pathway"), makeSettings(Rotation.NONE).addProcessor(NagastoneVariants.INSTANCE), new BlockPos(x, y + 1, z));
+		super(TFStructurePieceTypes.TFNCPa, i, structureManager, TFCommon.prefix("courtyard/pathway"), makeSettings(Rotation.NONE).addProcessor(NagastoneVariants.INSTANCE), new BlockPos(x, y + 1, z));
 	}
 
 	@Override

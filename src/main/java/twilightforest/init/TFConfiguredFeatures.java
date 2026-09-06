@@ -31,7 +31,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.ProcessorRule
 import net.minecraft.world.level.levelgen.structure.templatesystem.RandomBlockMatchTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.TFRegistries;
 import twilightforest.block.TorchberryPlantBlock;
 import twilightforest.tags.TFBlockTags;
@@ -234,7 +234,7 @@ public final class TFConfiguredFeatures {
 	public static final ResourceKey<ConfiguredFeature<?, ?>> FLOWER_PLACER_ALT = registerKey("flower_placer_alt");
 
 	public static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {
-		return ResourceKey.create(Registries.CONFIGURED_FEATURE, TFMain.prefix(name));
+		return ResourceKey.create(Registries.CONFIGURED_FEATURE, TFCommon.prefix(name));
 	}
 
 	public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {

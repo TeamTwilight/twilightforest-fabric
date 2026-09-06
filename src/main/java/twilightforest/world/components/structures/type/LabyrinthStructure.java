@@ -19,7 +19,7 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.tags.TFBiomeTags;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFMapDecorations;
@@ -74,7 +74,7 @@ public class LabyrinthStructure extends ControlledSpawningStructure implements C
 				.add(new MobSpawnSettings.SpawnerData(TFEntities.PINCH_BEETLE, 1, 1), 10)
 				.build()
 			),
-			new AdvancementLockConfig(List.of(TFMain.prefix("progress_lich"))),
+			new AdvancementLockConfig(List.of(TFCommon.prefix("progress_lich"))),
 			Optional.of(new HintConfig(HintConfig.book("labyrinth", 5), TFEntities.KOBOLD)),
 			Optional.of(new DecorationConfig(3, true, false, false)),
 			true, Optional.of(BuiltInRegistries.MAP_DECORATION_TYPE.wrapAsHolder(TFMapDecorations.LABYRINTH)),

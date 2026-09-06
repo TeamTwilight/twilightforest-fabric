@@ -11,7 +11,7 @@ import com.mojang.blaze3d.shaders.UniformType;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.renderer.RenderPipelines;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 
 import java.util.Optional;
 
@@ -22,9 +22,9 @@ public class TFRenderPipelines {
 	private static final BlendFunction SHADOW = new BlendFunction(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
 
 	public static final RenderPipeline AURORA = RenderPipeline.builder(RenderPipelines.MATRICES_FOG_SNIPPET, RenderPipelines.GLOBALS_SNIPPET)
-		.withLocation(TFMain.prefix("pipeline/aurora"))
-		.withVertexShader(TFMain.prefix("core/aurora/aurora"))
-		.withFragmentShader(TFMain.prefix("core/aurora/aurora"))
+		.withLocation(TFCommon.prefix("pipeline/aurora"))
+		.withVertexShader(TFCommon.prefix("core/aurora/aurora"))
+		.withFragmentShader(TFCommon.prefix("core/aurora/aurora"))
 		.withUniform(AURORA_UNIFORM, UniformType.UNIFORM_BUFFER)
 		.withColorTargetState(new ColorTargetState(BlendFunction.TRANSLUCENT))
 		.withVertexFormat(DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS)
@@ -32,7 +32,7 @@ public class TFRenderPipelines {
 		.build();
 
 	public static final RenderPipeline RED_THREAD = RenderPipeline.builder(RenderPipelines.MATRICES_FOG_SNIPPET)
-		.withLocation(TFMain.prefix("core/red_thread/red_thread"))
+		.withLocation(TFCommon.prefix("core/red_thread/red_thread"))
 		.withSampler("Sampler0")
 		.withSampler("Sampler2")
 		.withVertexShader("core/block")

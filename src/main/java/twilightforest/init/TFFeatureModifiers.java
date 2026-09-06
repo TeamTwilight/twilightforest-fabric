@@ -10,7 +10,7 @@ import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.world.components.feature.trees.treeplacers.*;
 import twilightforest.world.components.placements.AvoidLandmarkModifier;
 import twilightforest.world.components.placements.ChunkBlanketingModifier;
@@ -35,7 +35,7 @@ public final class TFFeatureModifiers {
 	private static <T extends TrunkPlacer> TrunkPlacerType<T> registerTrunkPlacerType(String name, TrunkPlacerType<T> type) {
 		return Registry.register(
 			BuiltInRegistries.TRUNK_PLACER_TYPE,
-			TFMain.prefix(name),
+			TFCommon.prefix(name),
 			type
 		);
 	}
@@ -43,7 +43,7 @@ public final class TFFeatureModifiers {
 	private static <T extends FoliagePlacer> FoliagePlacerType<T> registerFoliagePlacerType(String name, FoliagePlacerType<T> type) {
 		return Registry.register(
 			BuiltInRegistries.FOLIAGE_PLACER_TYPE,
-			TFMain.prefix(name),
+			TFCommon.prefix(name),
 			type
 		);
 	}
@@ -51,7 +51,7 @@ public final class TFFeatureModifiers {
 	private static <T extends TreeDecorator> TreeDecoratorType<T> registerTreeDecoratorType(String name, TreeDecoratorType<T> type) {
 		return Registry.register(
 			BuiltInRegistries.TREE_DECORATOR_TYPE,
-			TFMain.prefix(name),
+			TFCommon.prefix(name),
 			type
 		);
 	}
@@ -59,12 +59,12 @@ public final class TFFeatureModifiers {
 	private static <T extends PlacementModifier> PlacementModifierType<T> registerPlacementModifierType(String name, PlacementModifierType<T> type) {
 		return Registry.register(
 			BuiltInRegistries.PLACEMENT_MODIFIER_TYPE,
-			TFMain.prefix(name),
+			TFCommon.prefix(name),
 			type
 		);
 	}
 
 	public static void init() {
-		TFMain.LOGGER.info("Initializing feature modifiers...");
+		TFCommon.LOGGER.info("Initializing feature modifiers...");
 	}
 }

@@ -4,17 +4,17 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.init.TFStructurePieceTypes;
 
 public class NagaCourtyardHedgeCapComponent extends NagaCourtyardHedgeAbstractComponent {
 
 	public NagaCourtyardHedgeCapComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(ctx, TFStructurePieceTypes.TFNCCp, nbt, TFMain.prefix("courtyard/hedge_end"), TFMain.prefix("courtyard/hedge_end_big"));
+		super(ctx, TFStructurePieceTypes.TFNCCp, nbt, TFCommon.prefix("courtyard/hedge_end"), TFCommon.prefix("courtyard/hedge_end_big"));
 	}
 
 	@SuppressWarnings("WeakerAccess")
 	public NagaCourtyardHedgeCapComponent(StructureTemplateManager manager, int i, int x, int y, int z, Rotation rotation) {
-		super(manager, TFStructurePieceTypes.TFNCCp, i, x, y, z, rotation, TFMain.prefix("courtyard/hedge_end"), TFMain.prefix("courtyard/hedge_end_big"));
+		super(manager, TFStructurePieceTypes.TFNCCp, i, x, y, z, rotation, TFCommon.prefix("courtyard/hedge_end"), TFCommon.prefix("courtyard/hedge_end_big"));
 	}
 }

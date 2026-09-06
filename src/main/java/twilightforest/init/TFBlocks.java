@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.block.*;
 import twilightforest.enums.BlockLoggingEnum;
 import twilightforest.enums.BossVariant;
@@ -663,11 +663,11 @@ public class TFBlocks {
 	public static final FlowerPotBlock POTTED_DEAD_THORN = register("potted_dead_thorn", properties -> new SpecialFlowerPotBlock(BURNT_THORNS, properties), () -> BlockBehaviour.Properties.ofFullCopy(Blocks.FLOWER_POT));
 
 	public static <T extends Block> T register(String name, Function<BlockBehaviour.Properties, T> block, Supplier<BlockBehaviour.Properties> properties) {
-		return Registry.register(BuiltInRegistries.BLOCK, TFMain.prefix(name), block.apply(properties.get().setId(ResourceKey.create(Registries.BLOCK, TFMain.prefix(name)))));
+		return Registry.register(BuiltInRegistries.BLOCK, TFCommon.prefix(name), block.apply(properties.get().setId(ResourceKey.create(Registries.BLOCK, TFCommon.prefix(name)))));
 	}
 
 	public static <T extends Block> T registerCustomID(String name, Function<BlockBehaviour.Properties, T> block, Supplier<BlockBehaviour.Properties> properties, String id) {
-		return Registry.register(BuiltInRegistries.BLOCK, TFMain.prefix(name), block.apply(properties.get().setId(ResourceKey.create(Registries.BLOCK, TFMain.prefix(name))).overrideDescription("block.twilightforest." + id)));
+		return Registry.register(BuiltInRegistries.BLOCK, TFCommon.prefix(name), block.apply(properties.get().setId(ResourceKey.create(Registries.BLOCK, TFCommon.prefix(name))).overrideDescription("block.twilightforest." + id)));
 	}
 
 	public static <T extends Block> T registerWithItem(String name, Function<BlockBehaviour.Properties, T> block, Supplier<BlockBehaviour.Properties> properties) {
@@ -693,7 +693,7 @@ public class TFBlocks {
 	public static OminousCandleBlock ominousCandle(String name, MapColor mapColor, Block candle) {
 		return Registry.register(
 			BuiltInRegistries.BLOCK,
-			TFMain.prefix(name),
+			TFCommon.prefix(name),
 			new OminousCandleBlock(candle,
 				BlockBehaviour.Properties.of()
 					.mapColor(mapColor)
@@ -702,7 +702,7 @@ public class TFBlocks {
 					.sound(SoundType.CANDLE)
 					.lightLevel(state -> 2 * state.getValue(OminousCandleBlock.CANDLES))
 					.pushReaction(PushReaction.DESTROY)
-					.setId(ResourceKey.create(Registries.BLOCK, TFMain.prefix(name)))
+					.setId(ResourceKey.create(Registries.BLOCK, TFCommon.prefix(name)))
 			)
 		);
 	}
@@ -725,6 +725,6 @@ public class TFBlocks {
 	}
 
 	public static void init() {
-		TFMain.LOGGER.info("Initializing blocks...");
+		TFCommon.LOGGER.info("Initializing blocks...");
 	}
 }

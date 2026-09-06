@@ -29,7 +29,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.components.entity.SlimySolesAttachment;
 import twilightforest.components.entity.TravellersWingsAttachment;
 import twilightforest.init.*;
@@ -319,7 +319,7 @@ public class TravellersGearLogic {
 		int lastTick = serverPlayer.getAttached(lastCheck);
 		int currentTick = serverPlayer.tickCount;
 		int diff = currentTick - lastTick;
-		TFMain.LOGGER.debug("{} {} check: count={}, lastTick={}, currentTick={}, diff={}",
+		TFCommon.LOGGER.debug("{} {} check: count={}, lastTick={}, currentTick={}, diff={}",
 			serverPlayer.getName().getString(), movementType, count, lastTick, currentTick, diff);
 
 		if (diff >= 45 && !serverPlayer.isFallFlying()) {
@@ -336,7 +336,7 @@ public class TravellersGearLogic {
 		serverPlayer.setAttached(validator, count + 1);
 
 		if (count > 1) {
-			TFMain.LOGGER.warn("{} illegal {}", serverPlayer.getName().getString(), movementType);
+			TFCommon.LOGGER.warn("{} illegal {}", serverPlayer.getName().getString(), movementType);
 			serverPlayer.absSnapTo(serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(),
 				serverPlayer.getYRot(), serverPlayer.getXRot());
 			serverPlayer.connection.send(ClientboundPlayerPositionPacket.of(serverPlayer.getId(),

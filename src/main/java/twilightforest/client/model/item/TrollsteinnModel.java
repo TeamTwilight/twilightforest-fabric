@@ -1,18 +1,10 @@
 package twilightforest.client.model.item;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import twilightforest.TFMain;
-import twilightforest.block.TrollsteinnBlock;
+import twilightforest.TFCommon;
 
 public class TrollsteinnModel {
-	public static final Identifier LIT_TROLLSTEINN = TFMain.prefix("item/trollsteinn_light");
+	public static final Identifier LIT_TROLLSTEINN = TFCommon.prefix("item/trollsteinn_light");
 //	@Nullable
 //	private BakedModel litTrollsteinnModel;
 //	private final ItemOverrides overrides = new ItemOverrides() {

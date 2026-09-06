@@ -16,11 +16,11 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnorePr
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockRotProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.init.TFStructurePieceTypes;
 
 public class CourtyardTerraceHedge extends CourtyardTerrace {
-	private final Identifier hedgeBig = TFMain.prefix("courtyard/terrace_hedge_big");
+	private final Identifier hedgeBig = TFCommon.prefix("courtyard/terrace_hedge_big");
 	private StructureTemplate templateBig;
 
 	public CourtyardTerraceHedge(StructurePieceSerializationContext ctx, CompoundTag nbt) {
@@ -30,7 +30,7 @@ public class CourtyardTerraceHedge extends CourtyardTerrace {
 	}
 
 	public CourtyardTerraceHedge(int i, int x, int y, int z, Rotation rotation, StructureTemplateManager structureManager) {
-		super(TFStructurePieceTypes.TFNCHe, i, x, y, z, rotation, structureManager, TFMain.prefix("courtyard/terrace_hedge"));
+		super(TFStructurePieceTypes.TFNCHe, i, x, y, z, rotation, structureManager, TFCommon.prefix("courtyard/terrace_hedge"));
 
 		this.templateBig = structureManager.getOrCreate(this.hedgeBig);
 	}

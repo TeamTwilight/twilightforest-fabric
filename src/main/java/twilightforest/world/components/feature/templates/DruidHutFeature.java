@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.state.properties.StructureMode;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.init.TFEntities;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.entities.EntityUtil;
@@ -142,9 +142,9 @@ public class DruidHutFeature extends TemplateFeature<SwizzleConfig> {
 	}
 
 	private enum HutType {
-		REGULAR(TFMain.prefix("feature/druid_hut/druid_hut")),
-		SIDEWAYS(TFMain.prefix("feature/druid_hut/druid_sideways")),
-		DOUBLE_DECK(TFMain.prefix("feature/druid_hut/druid_doubledeck"));
+		REGULAR(TFCommon.prefix("feature/druid_hut/druid_hut")),
+		SIDEWAYS(TFCommon.prefix("feature/druid_hut/druid_sideways")),
+		DOUBLE_DECK(TFCommon.prefix("feature/druid_hut/druid_doubledeck"));
 
 		private final Identifier identifier;
 
@@ -154,9 +154,9 @@ public class DruidHutFeature extends TemplateFeature<SwizzleConfig> {
 	}
 
 	private enum BasementType {
-		STUDY(TFMain.prefix("feature/druid_hut/basement_study"), TFMain.prefix("feature/druid_hut/basement_study_trap")),
-		SHELVES(TFMain.prefix("feature/druid_hut/basement_shelves"), TFMain.prefix("feature/druid_hut/basement_shelves_trap")),
-		GALLERY(TFMain.prefix("feature/druid_hut/basement_gallery"), TFMain.prefix("feature/druid_hut/basement_gallery_trap"));
+		STUDY(TFCommon.prefix("feature/druid_hut/basement_study"), TFCommon.prefix("feature/druid_hut/basement_study_trap")),
+		SHELVES(TFCommon.prefix("feature/druid_hut/basement_shelves"), TFCommon.prefix("feature/druid_hut/basement_shelves_trap")),
+		GALLERY(TFCommon.prefix("feature/druid_hut/basement_gallery"), TFCommon.prefix("feature/druid_hut/basement_gallery_trap"));
 
 		private final Identifier identifier;
 		private final Identifier identifierTrap;

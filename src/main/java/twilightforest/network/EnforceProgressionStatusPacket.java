@@ -5,13 +5,13 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.client.event.LockedBiomeToastHandler;
 import twilightforest.client.renderer.TFWeatherRenderer;
 
 public record EnforceProgressionStatusPacket(boolean enforce) implements CustomPacketPayload {
 
-	public static final Type<EnforceProgressionStatusPacket> TYPE = new Type<>(TFMain.prefix("sync_progression_status"));
+	public static final Type<EnforceProgressionStatusPacket> TYPE = new Type<>(TFCommon.prefix("sync_progression_status"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, EnforceProgressionStatusPacket> STREAM_CODEC = CustomPacketPayload.codec(EnforceProgressionStatusPacket::write, EnforceProgressionStatusPacket::new);
 
 	public EnforceProgressionStatusPacket(FriendlyByteBuf buf) {

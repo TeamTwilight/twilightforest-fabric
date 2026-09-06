@@ -4,11 +4,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.WolfRenderState;
 import net.minecraft.resources.Identifier;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 
 public class WinterWolfRenderer extends HostileWolfRenderer {
 
-	private static final Identifier TEXTURE = TFMain.getModelTexture("winterwolf.png");
+	private static final Identifier TEXTURE = TFCommon.getModelTexture("winterwolf.png");
 
 	public WinterWolfRenderer(EntityRendererProvider.Context context) {
 		super(context);

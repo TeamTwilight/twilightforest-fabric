@@ -7,8 +7,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
-import twilightforest.TFMain;
-import twilightforest.init.*;
+import twilightforest.TFCommon;
 
 public class TFRemapper {
 
@@ -18,7 +17,7 @@ public class TFRemapper {
 		Registry<Item> itemReg = BuiltInRegistries.ITEM;
 		Registry<StructurePieceType> pieceTypeReg = BuiltInRegistries.STRUCTURE_PIECE;
 
-		BuiltInRegistries.BLOCK_ENTITY_TYPE.addAlias(Identifier.fromNamespaceAndPath(TFMain.ID, "tf_chest"), Identifier.withDefaultNamespace("chest"));
+		BuiltInRegistries.BLOCK_ENTITY_TYPE.addAlias(Identifier.fromNamespaceAndPath(TFCommon.ID, "tf_chest"), Identifier.withDefaultNamespace("chest"));
 
 		remapEntryFromRegistries("yeti_trophy", "alpha_yeti_trophy", blockReg, itemReg);
 		remapEntryFromRegistries("yeti_wall_trophy", "alpha_yeti_wall_trophy", blockReg, itemReg);
@@ -192,16 +191,16 @@ public class TFRemapper {
 		remapEntry(pieceTypeReg, "TFNCDu", "TFNCTe"); // Terrace Duct
 		remapEntry(pieceTypeReg, "TFNCSt", "TFNCTe"); // Terrace Statue
 
-		BuiltInRegistries.STRUCTURE_PROCESSOR.addAlias(TFMain.prefix("meta_block_processor"), Identifier.withDefaultNamespace("jigsaw_replacement"));
+		BuiltInRegistries.STRUCTURE_PROCESSOR.addAlias(TFCommon.prefix("meta_block_processor"), Identifier.withDefaultNamespace("jigsaw_replacement"));
 	}
 
 	private static void remapEntryFromRegistries(String oldId, String newId, Registry<?>... registries) {
 		for (Registry<?> registry : registries) {
-			registry.addAlias(TFMain.prefix(oldId), TFMain.prefix(newId));
+			registry.addAlias(TFCommon.prefix(oldId), TFCommon.prefix(newId));
 		}
 	}
 
 	private static void remapEntry(Registry<?> registry, String oldId, String newId) {
-		registry.addAlias(TFMain.prefix(oldId), TFMain.prefix(newId));
+		registry.addAlias(TFCommon.prefix(oldId), TFCommon.prefix(newId));
 	}
 }

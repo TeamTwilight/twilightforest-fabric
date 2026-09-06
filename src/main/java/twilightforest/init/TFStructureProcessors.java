@@ -4,7 +4,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.world.components.feature.templates.GraveyardFeature;
 import twilightforest.world.components.processors.*;
 import twilightforest.world.components.structures.courtyard.CourtyardTerraceTemplateProcessor;
@@ -41,12 +41,12 @@ public class TFStructureProcessors {
 	public static <P extends StructureProcessor> StructureProcessorType<P> registerProcessor(String name, StructureProcessorType<P> processor) {
 		return Registry.register(
 			BuiltInRegistries.STRUCTURE_PROCESSOR,
-			TFMain.prefix(name),
+			TFCommon.prefix(name),
 			processor
 		);
 	}
 
 	public static void init() {
-		TFMain.LOGGER.info("Initializing structure processor types...");
+		TFCommon.LOGGER.info("Initializing structure processor types...");
 	}
 }

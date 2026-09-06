@@ -27,7 +27,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "twilightforest.TFMain"
+      "twilightforest.TFCommon"
     ],
     "client": [
       "twilightforest.TFClient"

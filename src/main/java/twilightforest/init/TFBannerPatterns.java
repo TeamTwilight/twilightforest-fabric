@@ -4,7 +4,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.entity.BannerPattern;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 
 public class TFBannerPatterns {
 	public static final ResourceKey<BannerPattern> NAGA = register("naga");
@@ -18,18 +18,18 @@ public class TFBannerPatterns {
 	public static final ResourceKey<BannerPattern> QUESTING_RAM = register("questing_ram");
 
 	private static ResourceKey<BannerPattern> register(String name) {
-		return ResourceKey.create(Registries.BANNER_PATTERN, TFMain.prefix(name));
+		return ResourceKey.create(Registries.BANNER_PATTERN, TFCommon.prefix(name));
 	}
 
 	public static void bootstrap(BootstrapContext<BannerPattern> context) {
-		context.register(NAGA, new BannerPattern(TFMain.prefix("naga"), "block.minecraft.banner.twilightforest.naga"));
-		context.register(LICH, new BannerPattern(TFMain.prefix("lich"), "block.minecraft.banner.twilightforest.lich"));
-		context.register(MINOSHROOM, new BannerPattern(TFMain.prefix("minoshroom"), "block.minecraft.banner.twilightforest.minoshroom"));
-		context.register(HYDRA, new BannerPattern(TFMain.prefix("hydra"), "block.minecraft.banner.twilightforest.hydra"));
-		context.register(KNIGHT_PHANTOM, new BannerPattern(TFMain.prefix("knight_phantom"), "block.minecraft.banner.twilightforest.knight_phantom"));
-		context.register(UR_GHAST, new BannerPattern(TFMain.prefix("ur_ghast"), "block.minecraft.banner.twilightforest.ur_ghast"));
-		context.register(ALPHA_YETI, new BannerPattern(TFMain.prefix("alpha_yeti"), "block.minecraft.banner.twilightforest.alpha_yeti"));
-		context.register(SNOW_QUEEN, new BannerPattern(TFMain.prefix("snow_queen"), "block.minecraft.banner.twilightforest.snow_queen"));
-		context.register(QUESTING_RAM, new BannerPattern(TFMain.prefix("quest_ram"), "block.minecraft.banner.twilightforest.quest_ram"));
+		context.register(NAGA, new BannerPattern(TFCommon.prefix("naga"), "block.minecraft.banner.twilightforest.naga"));
+		context.register(LICH, new BannerPattern(TFCommon.prefix("lich"), "block.minecraft.banner.twilightforest.lich"));
+		context.register(MINOSHROOM, new BannerPattern(TFCommon.prefix("minoshroom"), "block.minecraft.banner.twilightforest.minoshroom"));
+		context.register(HYDRA, new BannerPattern(TFCommon.prefix("hydra"), "block.minecraft.banner.twilightforest.hydra"));
+		context.register(KNIGHT_PHANTOM, new BannerPattern(TFCommon.prefix("knight_phantom"), "block.minecraft.banner.twilightforest.knight_phantom"));
+		context.register(UR_GHAST, new BannerPattern(TFCommon.prefix("ur_ghast"), "block.minecraft.banner.twilightforest.ur_ghast"));
+		context.register(ALPHA_YETI, new BannerPattern(TFCommon.prefix("alpha_yeti"), "block.minecraft.banner.twilightforest.alpha_yeti"));
+		context.register(SNOW_QUEEN, new BannerPattern(TFCommon.prefix("snow_queen"), "block.minecraft.banner.twilightforest.snow_queen"));
+		context.register(QUESTING_RAM, new BannerPattern(TFCommon.prefix("quest_ram"), "block.minecraft.banner.twilightforest.quest_ram"));
 	}
 }

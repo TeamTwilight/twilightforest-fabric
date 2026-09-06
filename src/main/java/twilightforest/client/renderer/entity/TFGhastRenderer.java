@@ -4,16 +4,16 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.client.model.entity.TFGhastModel;
 import twilightforest.client.state.entity.TFGhastRenderState;
 import twilightforest.entity.monster.CarminiteGhastguard;
 
 public class TFGhastRenderer<T extends CarminiteGhastguard, M extends TFGhastModel<TFGhastRenderState>> extends MobRenderer<T, TFGhastRenderState, M> {
 
-	private static final Identifier TEXTURE = TFMain.getModelTexture("towerghast.png");
-	private static final Identifier LOOKING_TEXTURE = TFMain.getModelTexture("towerghast_openeyes.png");
-	private static final Identifier ATTACKING_TEXTURE = TFMain.getModelTexture("towerghast_fire.png");
+	private static final Identifier TEXTURE = TFCommon.getModelTexture("towerghast.png");
+	private static final Identifier LOOKING_TEXTURE = TFCommon.getModelTexture("towerghast_openeyes.png");
+	private static final Identifier ATTACKING_TEXTURE = TFCommon.getModelTexture("towerghast_fire.png");
 
 	public TFGhastRenderer(EntityRendererProvider.Context context, M model, float shadowSize) {
 		super(context, model, shadowSize);

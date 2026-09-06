@@ -22,7 +22,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.ColorUtil;
 import twilightforest.world.components.structures.util.ProgressionPiece;
@@ -133,7 +133,7 @@ public abstract class TFStructureComponent extends StructurePiece implements Spa
 	protected void placeBlock(WorldGenLevel worldIn, BlockState blockstateIn, int x, int y, int z, BoundingBox boundingboxIn) {
 		BlockPos blockpos = new BlockPos(this.getWorldX(x, z), this.getWorldY(y), this.getWorldZ(x, z));
 		if (blockstateIn == null) {
-			TFMain.LOGGER.warn("TFStructureComponent: Block at Pos {} {} {} was null! Ignoring!", blockpos.getX(), blockpos.getY(), blockpos.getZ());
+			TFCommon.LOGGER.warn("TFStructureComponent: Block at Pos {} {} {} was null! Ignoring!", blockpos.getX(), blockpos.getY(), blockpos.getZ());
 		}
 
 		if (boundingboxIn.isInside(blockpos)) {

@@ -19,7 +19,7 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.TFRegistries;
 import twilightforest.tags.TFBiomeTags;
 import twilightforest.init.TFEntities;
@@ -65,7 +65,7 @@ public class HydraLairStructure extends ProgressionStructure implements CustomDe
 
 	public static HydraLairStructure buildHydraLairConfig(BootstrapContext<Structure> context) {
 		return new HydraLairStructure(
-			new AdvancementLockConfig(List.of(TFMain.prefix("progress_labyrinth"))),
+			new AdvancementLockConfig(List.of(TFCommon.prefix("progress_labyrinth"))),
 			Optional.of(new HintConfig(HintConfig.book("hydralair", 4), TFEntities.KOBOLD)),
 			Optional.of(new DecorationConfig(2, false, false, false)),
 			true, Optional.of(BuiltInRegistries.MAP_DECORATION_TYPE.wrapAsHolder(TFMapDecorations.HYDRA_LAIR)),

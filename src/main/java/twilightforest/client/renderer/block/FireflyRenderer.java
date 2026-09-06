@@ -15,7 +15,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.block.CicadaBlock;
 import twilightforest.block.entity.FireflyBlockEntity;
 import twilightforest.client.model.TFModelLayers;
@@ -24,7 +24,7 @@ import twilightforest.client.state.block.FireflyRenderState;
 
 public class FireflyRenderer implements BlockEntityRenderer<FireflyBlockEntity, FireflyRenderState> {
 	private final FireflyModel fireflyModel;
-	private static final Identifier TEXTURE = TFMain.getModelTexture("firefly-tiny.png");
+	private static final Identifier TEXTURE = TFCommon.getModelTexture("firefly-tiny.png");
 
 	public FireflyRenderer(BlockEntityRendererProvider.Context context) {
 		this.fireflyModel = new FireflyModel(context.bakeLayer(TFModelLayers.FIREFLY));

@@ -3,7 +3,7 @@ package twilightforest.init;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import org.lwjgl.glfw.GLFW;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -24,10 +24,10 @@ public abstract class TFKeyBinds {
 	}
 
 	private static String addPrefix(String s) {
-		return "key." + TFMain.ID + "." + s;
+		return "key." + TFCommon.ID + "." + s;
 	}
 
 	public static void init() {
-		TFMain.LOGGER.info("Initializing keybinds...");
+		TFCommon.LOGGER.info("Initializing keybinds...");
 	}
 }

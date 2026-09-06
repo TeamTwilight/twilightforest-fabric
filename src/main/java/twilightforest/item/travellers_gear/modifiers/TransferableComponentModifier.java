@@ -11,7 +11,7 @@ import net.minecraft.util.Unit;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingInput;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 
 import java.util.List;
 
@@ -73,7 +73,7 @@ public record TransferableComponentModifier(
 		if (dataComponentProviders.isEmpty())
 			return false;
 		if (dataComponentProviders.size() > 1) {
-			TFMain.LOGGER.error("A recipe with more than 2 dataComponentProviders was matched: {}. Please report to https://github.com/TeamTwilight/twilightforest/issues", input);
+			TFCommon.LOGGER.error("A recipe with more than 2 dataComponentProviders was matched: {}. Please report to https://github.com/TeamTwilight/twilightforest/issues", input);
 			return false;
 		}
 		ItemStack dataComponentProvider = dataComponentProviders.getFirst();

@@ -3,7 +3,7 @@ package twilightforest.init;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.consume_effects.ConsumeEffect;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.item.effects.StackableEffectConsumeEffect;
 
 public class TFConsumeEffects {
@@ -13,12 +13,12 @@ public class TFConsumeEffects {
 	private static <T extends ConsumeEffect> ConsumeEffect.Type<T> register(String name, ConsumeEffect.Type<T> type) {
 		return Registry.register(
 			BuiltInRegistries.CONSUME_EFFECT_TYPE,
-			TFMain.prefix(name),
+			TFCommon.prefix(name),
 			type
 		);
 	}
 
 	public static void init() {
-		TFMain.LOGGER.info("Initializing consume effects...");
+		TFCommon.LOGGER.info("Initializing consume effects...");
 	}
 }

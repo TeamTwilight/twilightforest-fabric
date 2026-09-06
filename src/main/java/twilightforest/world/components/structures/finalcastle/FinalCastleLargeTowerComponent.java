@@ -16,7 +16,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.BoundingBoxUtils;
@@ -27,7 +27,7 @@ import twilightforest.world.components.structures.util.StructureTemplateDefiniti
 
 public class FinalCastleLargeTowerComponent extends TowerWingComponent {
 
-	public static final Identifier LARGE_TOWER_TEMP_POOL = TFMain.prefix("final_castle/temp/large_tower");
+	public static final Identifier LARGE_TOWER_TEMP_POOL = TFCommon.prefix("final_castle/temp/large_tower");
 
 	private static final StructureTemplateDefinitions structureTemplateDefinitions = StructureTemplateDefinitions.INSTANCE;
 

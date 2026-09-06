@@ -5,7 +5,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.item.recipe.*;
 import twilightforest.item.recipe.travellers.TravellersGearModifierShapedRecipe;
 import twilightforest.item.recipe.travellers.TravellersGearModifierShapelessRecipe;
@@ -33,13 +33,13 @@ public class TFRecipes {
 	private static <T extends Recipe<?>> RecipeSerializer<T> registerSerializer(String name, RecipeSerializer<T> serializer) {
 		return Registry.register(
 			BuiltInRegistries.RECIPE_SERIALIZER,
-			TFMain.prefix(name),
+			TFCommon.prefix(name),
 			serializer
 		);
 	}
 
 	private static <T extends Recipe<?>> RecipeType<T> registerType(String name) {
-		return Registry.register(BuiltInRegistries.RECIPE_TYPE, TFMain.prefix(name), new RecipeType<T>() {
+		return Registry.register(BuiltInRegistries.RECIPE_TYPE, TFCommon.prefix(name), new RecipeType<T>() {
 			@Override
 			public String toString() {
 				return name;
@@ -48,6 +48,6 @@ public class TFRecipes {
 	}
 
 	public static void init() {
-		TFMain.LOGGER.info("Initializing recipe types...");
+		TFCommon.LOGGER.info("Initializing recipe types...");
 	}
 }

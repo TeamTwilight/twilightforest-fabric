@@ -7,13 +7,13 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.init.TFDataAttachments;
 
 import java.util.UUID;
 
 public record GradualGlidePacket(boolean isGraduallyGliding, UUID playerUUID) implements CustomPacketPayload {
-	public static final Type<GradualGlidePacket> TYPE = new Type<>(TFMain.prefix("gradual_glide_packet"));
+	public static final Type<GradualGlidePacket> TYPE = new Type<>(TFCommon.prefix("gradual_glide_packet"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, GradualGlidePacket> STREAM_CODEC = CustomPacketPayload.codec(GradualGlidePacket::write, GradualGlidePacket::new);
 
 	public GradualGlidePacket(RegistryFriendlyByteBuf registryFriendlyByteBuf) {

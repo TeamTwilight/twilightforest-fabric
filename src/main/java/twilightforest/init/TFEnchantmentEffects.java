@@ -4,7 +4,7 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.enchantment.ApplyFrostedEffect;
 import twilightforest.enchantment.RechargeScepterEffect;
 import twilightforest.enchantment.SmashBlocksEffect;
@@ -18,12 +18,12 @@ public class TFEnchantmentEffects {
 	private static <T extends EnchantmentEntityEffect> MapCodec<T> register(String name, MapCodec<T> codec) {
 		return Registry.register(
 			BuiltInRegistries.ENCHANTMENT_ENTITY_EFFECT_TYPE,
-			TFMain.prefix(name),
+			TFCommon.prefix(name),
 			codec
 		);
 	}
 
 	public static void init() {
-		TFMain.LOGGER.info("Initializing enchantment effects...");
+		TFCommon.LOGGER.info("Initializing enchantment effects...");
 	}
 }

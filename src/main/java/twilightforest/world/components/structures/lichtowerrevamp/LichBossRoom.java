@@ -26,7 +26,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.tags.TFPaintingVariantTags;
 import twilightforest.util.DirectionUtil;
@@ -46,7 +46,7 @@ public final class LichBossRoom extends TwilightJigsawPiece implements IPieceBea
 	}
 
 	public LichBossRoom(StructureTemplateManager structureManager, JigsawPlaceContext jigsawContext) {
-		super(TFStructurePieceTypes.LICH_BOSS_ROOM, 1, structureManager, TFMain.prefix("lich_tower/tower_boss_room"), jigsawContext);
+		super(TFStructurePieceTypes.LICH_BOSS_ROOM, 1, structureManager, TFCommon.prefix("lich_tower/tower_boss_room"), jigsawContext);
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings);
 	}
@@ -123,7 +123,7 @@ public final class LichBossRoom extends TwilightJigsawPiece implements IPieceBea
 		if (!"twilightforest:lich_tower/tower_below".equals(connection.target()))
 			return;
 
-		JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), connection.orientation(), this.structureManager, TFMain.prefix("lich_tower/tower_boss_roof"), "twilightforest:lich_tower/tower_below", context.random());
+		JigsawPlaceContext placeableJunction = JigsawPlaceContext.pickPlaceableJunction(this.templatePosition(), connection.pos(), connection.orientation(), this.structureManager, TFCommon.prefix("lich_tower/tower_boss_roof"), "twilightforest:lich_tower/tower_below", context.random());
 
 		if (placeableJunction == null)
 			return;

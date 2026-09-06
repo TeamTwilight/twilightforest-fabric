@@ -6,7 +6,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.loot.LootingEnchantNumberProvider;
 import twilightforest.loot.MultiplayerBasedAdditionLootFunction;
 import twilightforest.loot.MultiplayerBasedNumberProvider;
@@ -30,7 +30,7 @@ public class TFLoot {
 	private static <T extends LootItemCondition> MapCodec<T> registerCondition(String name, MapCodec<T> codec) {
 		return Registry.register(
 			BuiltInRegistries.LOOT_CONDITION_TYPE,
-			TFMain.prefix(name),
+			TFCommon.prefix(name),
 			codec
 		);
 	}
@@ -38,7 +38,7 @@ public class TFLoot {
 	private static <T extends LootItemFunction> MapCodec<T> registerFunction(String name, MapCodec<T> codec) {
 		return Registry.register(
 			BuiltInRegistries.LOOT_FUNCTION_TYPE,
-			TFMain.prefix(name),
+			TFCommon.prefix(name),
 			codec
 		);
 	}
@@ -46,12 +46,12 @@ public class TFLoot {
 	private static <T extends NumberProvider> MapCodec<T> registerNumber(String name, MapCodec<T> codec) {
 		return Registry.register(
 			BuiltInRegistries.LOOT_NUMBER_PROVIDER_TYPE,
-			TFMain.prefix(name),
+			TFCommon.prefix(name),
 			codec
 		);
 	}
 
 	public static void init() {
-		TFMain.LOGGER.info("Initializing loot...");
+		TFCommon.LOGGER.info("Initializing loot...");
 	}
 }

@@ -1,17 +1,9 @@
 package twilightforest.client;
 
 import com.mojang.blaze3d.platform.NativeImage;
-import com.mojang.blaze3d.platform.TextureUtil;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.AbstractTexture;
-import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
-import twilightforest.TFMain;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.EnumMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class TextureGeneratorReloadListener implements ResourceManagerReloadListener {

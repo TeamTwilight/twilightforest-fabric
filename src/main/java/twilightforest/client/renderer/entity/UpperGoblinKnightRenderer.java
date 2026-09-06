@@ -5,7 +5,7 @@ import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.resources.Identifier;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.UpperGoblinKnightModel;
 import twilightforest.client.state.entity.UpperGoblinKnightRenderState;
@@ -13,7 +13,7 @@ import twilightforest.entity.monster.UpperGoblinKnight;
 
 public class UpperGoblinKnightRenderer extends HumanoidMobRenderer<UpperGoblinKnight, UpperGoblinKnightRenderState, UpperGoblinKnightModel> {
 
-	public static final Identifier TEXTURE = TFMain.getModelTexture("doublegoblin.png");
+	public static final Identifier TEXTURE = TFCommon.getModelTexture("doublegoblin.png");
 
 	public UpperGoblinKnightRenderer(EntityRendererProvider.Context context) {
 		super(context, new UpperGoblinKnightModel(context.bakeLayer(TFModelLayers.UPPER_GOBLIN_KNIGHT)), 0.625F);

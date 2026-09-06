@@ -15,7 +15,7 @@ import net.minecraft.util.Unit;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.components.item.*;
 import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.init.custom.MagicPaintingVariants;
@@ -83,7 +83,7 @@ public class TFDataComponents {
 	) {
 		return Registry.register(
 			BuiltInRegistries.DATA_COMPONENT_TYPE,
-			TFMain.prefix(name),
+			TFCommon.prefix(name),
 			DataComponentType.<T>builder()
 				.persistent(codec)
 				.build()
@@ -97,7 +97,7 @@ public class TFDataComponents {
 	) {
 		return Registry.register(
 			BuiltInRegistries.DATA_COMPONENT_TYPE,
-			TFMain.prefix(name),
+			TFCommon.prefix(name),
 			DataComponentType.<T>builder()
 				.persistent(codec)
 				.networkSynchronized(streamCodec)
@@ -112,7 +112,7 @@ public class TFDataComponents {
 	) {
 		return Registry.register(
 			BuiltInRegistries.DATA_COMPONENT_TYPE,
-			TFMain.prefix(name),
+			TFCommon.prefix(name),
 			DataComponentType.<T>builder()
 				.persistent(codec)
 				.networkSynchronized(streamCodec)
@@ -122,6 +122,6 @@ public class TFDataComponents {
 	}
 
 	public static void init() {
-		TFMain.LOGGER.info("Initializing data components...");
+		TFCommon.LOGGER.info("Initializing data components...");
 	}
 }

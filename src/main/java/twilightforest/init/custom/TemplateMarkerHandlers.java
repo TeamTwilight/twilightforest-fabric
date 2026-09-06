@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.TFRegistries;
 import twilightforest.init.TFBlocks;
 import twilightforest.loot.TFLootTables;
@@ -35,12 +35,12 @@ public class TemplateMarkerHandlers {
 	public static final TemplateMarkerHandlerType PAINTING = register("painting", () -> PaintingMarkerHandler.CODEC);
 	public static final TemplateMarkerHandlerType LOOT = register("loot", () -> LootMarkerHandler.CODEC);
 
-	public static final ResourceKey<TemplateMarkerHandlerList> CAMP_MARKER_HANDLERS = ResourceKey.create(TFRegistries.Keys.TEMPLATE_MARKER_HANDLER_LIST, TFMain.prefix("camp_marker_handlers"));
+	public static final ResourceKey<TemplateMarkerHandlerList> CAMP_MARKER_HANDLERS = ResourceKey.create(TFRegistries.Keys.TEMPLATE_MARKER_HANDLER_LIST, TFCommon.prefix("camp_marker_handlers"));
 
 	private static TemplateMarkerHandlerType register(String name, TemplateMarkerHandlerType type) {
 		return Registry.register(
 			TFRegistries.TEMPLATE_MARKER_HANDLER_TYPES,
-			TFMain.prefix(name),
+			TFCommon.prefix(name),
 			type
 		);
 	}
@@ -85,6 +85,6 @@ public class TemplateMarkerHandlers {
 	}
 
 	public static void init() {
-		TFMain.LOGGER.info("Initializing template marker handler types...");
+		TFCommon.LOGGER.info("Initializing template marker handler types...");
 	}
 }

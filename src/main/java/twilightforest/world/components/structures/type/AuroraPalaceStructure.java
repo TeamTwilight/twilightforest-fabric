@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
@@ -55,7 +55,7 @@ public class AuroraPalaceStructure extends ControlledSpawningStructure {
 				.add(new MobSpawnSettings.SpawnerData(TFEntities.UNSTABLE_ICE_CORE, 1, 2), 5)
 				.build()
 			),
-			new AdvancementLockConfig(List.of(TFMain.prefix("progress_yeti"))),
+			new AdvancementLockConfig(List.of(TFCommon.prefix("progress_yeti"))),
 			Optional.of(new HintConfig(HintConfig.book("icetower", 3), TFEntities.KOBOLD)),
 			Optional.of(new DecorationConfig(2, false, true, false)),
 			true, Optional.of(BuiltInRegistries.MAP_DECORATION_TYPE.wrapAsHolder(TFMapDecorations.AURORA_PALACE)),

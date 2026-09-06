@@ -1,7 +1,7 @@
 package twilightforest.tags;
 
 import net.minecraft.tags.TagKey;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.TFRegistries;
 import twilightforest.util.woods.WoodPalette;
 
@@ -15,6 +15,6 @@ public class TFWoodPaletteTags {
 	public static final TagKey<WoodPalette> TREASURE_PALETTES = create("treasure");
 
 	private static TagKey<WoodPalette> create(String name) {
-		return TagKey.create(TFRegistries.Keys.WOOD_PALETTES, TFMain.prefix(name));
+		return TagKey.create(TFRegistries.Keys.WOOD_PALETTES, TFCommon.prefix(name));
 	}
 }

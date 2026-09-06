@@ -4,7 +4,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacementType;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.world.components.structures.placements.AvoidLandmarkGridPlacement;
 import twilightforest.world.components.structures.placements.LandmarkGridPlacement;
 
@@ -16,12 +16,12 @@ public class TFStructurePlacementTypes {
 	private static <P extends StructurePlacement> StructurePlacementType<P> registerPlacer(String name, StructurePlacementType<P> factory) {
 		return Registry.register(
 			BuiltInRegistries.STRUCTURE_PLACEMENT,
-			TFMain.prefix(name),
+			TFCommon.prefix(name),
 			factory
 		);
 	}
 
 	public static void init() {
-		TFMain.LOGGER.info("Initializing structure placement types...");
+		TFCommon.LOGGER.info("Initializing structure placement types...");
 	}
 }

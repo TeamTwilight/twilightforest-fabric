@@ -6,7 +6,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.resources.Identifier;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.TFRegistries;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFMobEffects;
@@ -89,13 +89,13 @@ public final class Enforcements {
 	}));
 
 	private static ResourceKey<Enforcement> makeKey(String name) {
-		return ResourceKey.create(TFRegistries.Keys.ENFORCEMENT, TFMain.prefix(name));
+		return ResourceKey.create(TFRegistries.Keys.ENFORCEMENT, TFCommon.prefix(name));
 	}
 
 	private static Enforcement register(ResourceKey<Enforcement> key, Enforcement enforcement) {
 		return Registry.register(
 			TFRegistries.ENFORCEMENT,
-			Identifier.fromNamespaceAndPath(TFMain.ID, key.identifier().getPath()),
+			Identifier.fromNamespaceAndPath(TFCommon.ID, key.identifier().getPath()),
 			enforcement
 		);
 	}
@@ -104,6 +104,6 @@ public final class Enforcements {
 	}
 
 	public static void init() {
-		TFMain.LOGGER.info("Initializing enforcements...");
+		TFCommon.LOGGER.info("Initializing enforcements...");
 	}
 }

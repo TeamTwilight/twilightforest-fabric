@@ -6,7 +6,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.block.entity.*;
 import twilightforest.block.entity.bookshelf.ChiseledCanopyShelfBlockEntity;
 import twilightforest.block.entity.spawner.*;
@@ -84,10 +84,10 @@ public class TFBlockEntities {
 		TFBlocks.OMINOUS_BLACK_CANDLE);
 
 	private static <T extends BlockEntity> BlockEntityType<T> register(String name, FabricBlockEntityTypeBuilder.Factory<? extends T> entityFactory, Block... blocks) {
-		return Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, TFMain.prefix(name), FabricBlockEntityTypeBuilder.<T>create(entityFactory, blocks).build());
+		return Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, TFCommon.prefix(name), FabricBlockEntityTypeBuilder.<T>create(entityFactory, blocks).build());
 	}
 
 	public static void init() {
-		TFMain.LOGGER.info("Initializing block entities...");
+		TFCommon.LOGGER.info("Initializing block entities...");
 	}
 }

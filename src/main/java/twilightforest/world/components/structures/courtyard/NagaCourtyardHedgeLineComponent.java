@@ -4,15 +4,15 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.init.TFStructurePieceTypes;
 
 public class NagaCourtyardHedgeLineComponent extends NagaCourtyardHedgeAbstractComponent {
 	public NagaCourtyardHedgeLineComponent(StructurePieceSerializationContext ctx, CompoundTag nbt) {
-		super(ctx, TFStructurePieceTypes.TFNCLn, nbt, TFMain.prefix("courtyard/hedge_line"), TFMain.prefix("courtyard/hedge_line_big"));
+		super(ctx, TFStructurePieceTypes.TFNCLn, nbt, TFCommon.prefix("courtyard/hedge_line"), TFCommon.prefix("courtyard/hedge_line_big"));
 	}
 
 	public NagaCourtyardHedgeLineComponent(StructureTemplateManager manager, int i, int x, int y, int z, Rotation rotation) {
-		super(manager, TFStructurePieceTypes.TFNCLn, i, x, y, z, rotation, TFMain.prefix("courtyard/hedge_line"), TFMain.prefix("courtyard/hedge_line_big"));
+		super(manager, TFStructurePieceTypes.TFNCLn, i, x, y, z, rotation, TFCommon.prefix("courtyard/hedge_line"), TFCommon.prefix("courtyard/hedge_line_big"));
 	}
 }

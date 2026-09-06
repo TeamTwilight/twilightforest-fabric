@@ -24,7 +24,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gamerules.GameRules;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.config.TFConfig;
 import twilightforest.tags.TFItemTags;
 import twilightforest.init.TFBlocks;
@@ -115,7 +115,7 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 				joiner.add("[index " + slot.index + ": " + slot.getClass().getName() + " (container slot: " + slot.getContainerSlot() + ")]");
 			}
 
-			TFMain.LOGGER.info(joiner.toString());
+			TFCommon.LOGGER.info(joiner.toString());
 		}
 	}
 

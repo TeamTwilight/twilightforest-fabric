@@ -7,14 +7,14 @@ import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.entity.StableIceCoreModel;
 import twilightforest.entity.monster.StableIceCore;
 
 public class StableIceCoreRenderer extends MobRenderer<StableIceCore, LivingEntityRenderState, StableIceCoreModel> {
 
-	public static final Identifier TEXTURE = TFMain.getModelTexture("iceshooter.png");
+	public static final Identifier TEXTURE = TFCommon.getModelTexture("iceshooter.png");
 
 	public StableIceCoreRenderer(EntityRendererProvider.Context context) {
 		super(context, new StableIceCoreModel(context.bakeLayer(TFModelLayers.STABLE_ICE_CORE)), 0.4F);

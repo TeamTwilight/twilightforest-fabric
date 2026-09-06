@@ -4,7 +4,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.*;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.world.components.feature.*;
 import twilightforest.world.components.feature.config.*;
 import twilightforest.world.components.feature.templates.*;
@@ -65,12 +65,12 @@ public class TFFeatures {
 	private static <C extends FeatureConfiguration> Feature<C> register(String name, Feature<C> feature) {
 		return Registry.register(
 			BuiltInRegistries.FEATURE,
-			TFMain.prefix(name),
+			TFCommon.prefix(name),
 			feature
 		);
 	}
 
 	public static void init() {
-		TFMain.LOGGER.info("Initializing features...");
+		TFCommon.LOGGER.info("Initializing features...");
 	}
 }

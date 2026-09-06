@@ -8,7 +8,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.init.TFDimension;
 import twilightforest.util.Codecs;
@@ -18,7 +18,7 @@ import java.util.Optional;
 
 public record StructureProtectionPacket(Optional<List<Pair<BoundingBox, Boolean>>> boxes) implements CustomPacketPayload {
 
-	public static final Type<StructureProtectionPacket> TYPE = new Type<>(TFMain.prefix("change_protection_renderer"));
+	public static final Type<StructureProtectionPacket> TYPE = new Type<>(TFCommon.prefix("change_protection_renderer"));
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, StructureProtectionPacket> STREAM_CODEC =
 		StreamCodec.composite(
@@ -35,7 +35,7 @@ public record StructureProtectionPacket(Optional<List<Pair<BoundingBox, Boolean>
 	public static void handle(StructureProtectionPacket message, ClientPlayNetworking.Context ctx) {
 		ClientLevel level = ctx.client().level;
 		if (level == null) {
-			TFMain.LOGGER.warn("ctx.client().level was null in StructureProtectionPacket, skipping logic");
+			TFCommon.LOGGER.warn("ctx.client().level was null in StructureProtectionPacket, skipping logic");
 		} else if (level.dimension().equals(TFDimension.DIMENSION_KEY)) {
 			TFWeatherRenderer.setProtectedBoxes(message.boxes().orElse(null));
 		}

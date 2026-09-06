@@ -11,7 +11,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.profiling.ProfilerFiller;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +43,7 @@ public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceR
 			if (location.getPath().contains("entries"))
 				continue;
 
-			if (TFMain.ID.equals(location.getNamespace())) {
+			if (TFCommon.ID.equals(location.getNamespace())) {
 				JsonElement jsonElement = entry.getValue();
 				this.deserialize(manager, location, jsonElement);
 			} else {
@@ -67,10 +67,10 @@ public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceR
 			if (checkFile.isPresent()) {
 				this.forLocation(manager, location, checkFile.get());
 			} else {
-				TFMain.LOGGER.error("Listener '{}' failed to load resource {}", this.getName(), location);
+				TFCommon.LOGGER.error("Listener '{}' failed to load resource {}", this.getName(), location);
 			}
 		} catch (Exception e) {
-			TFMain.LOGGER.error("Listener '{}' couldn't read element {}", this.getName(), location, e);
+			TFCommon.LOGGER.error("Listener '{}' couldn't read element {}", this.getName(), location, e);
 		}
 	}
 

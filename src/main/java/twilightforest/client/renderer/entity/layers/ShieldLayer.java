@@ -17,7 +17,7 @@ import net.minecraft.client.resources.model.geometry.QuadCollection;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.entity.boss.Lich;
 import twilightforest.init.TFDataAttachments;
 
@@ -25,7 +25,7 @@ import java.util.List;
 
 public class ShieldLayer<S extends LivingEntityRenderState, M extends EntityModel<? super S>> extends RenderLayer<S, M> {
 
-	public static final Identifier LOC = TFMain.prefix("item/shield");
+	public static final Identifier LOC = TFCommon.prefix("item/shield");
 	public static final ExtraModelKey<QuadCollection> SHIELD_MODEL = ExtraModelKey.create(LOC::toDebugFileName);
 
 	public static RenderStateDataKey<Integer> SHIELD_COUNT_KEY = RenderStateDataKey.create(() -> "shield_count");

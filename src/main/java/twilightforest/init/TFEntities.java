@@ -12,7 +12,7 @@ import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.entity.vehicle.boat.Boat;
 import net.minecraft.world.entity.vehicle.boat.ChestBoat;
 import org.jspecify.annotations.Nullable;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.entity.*;
 import twilightforest.entity.boss.*;
 import twilightforest.entity.monster.*;
@@ -129,7 +129,7 @@ public class TFEntities {
 	public static <E extends Entity> EntityType<E> registerMisc(String name, EntityType.Builder<E> builder) {
 		return Registry.register(
 			BuiltInRegistries.ENTITY_TYPE,
-			TFMain.prefix(name),
+			TFCommon.prefix(name),
 			builder.noLootTable().build(createIDFor(name))
 		);
 	}
@@ -137,7 +137,7 @@ public class TFEntities {
 	public static <E extends LivingEntity> EntityType<E> registerWithAttributes(String name, EntityType.Builder<E> builder, Supplier<AttributeSupplier.Builder> attributes) {
 		EntityType<E> ret = Registry.register(
 			BuiltInRegistries.ENTITY_TYPE,
-			TFMain.prefix(name),
+			TFCommon.prefix(name),
 			builder.build(createIDFor(name))
 		);
 		return ret;
@@ -146,7 +146,7 @@ public class TFEntities {
 	public static <E extends LivingEntity> EntityType<E> registerWithPlacement(String name, EntityType.Builder<E> builder, Supplier<AttributeSupplier.Builder> attributes, SpawnPlacements.@Nullable SpawnPredicate<E> predicate) {
 		EntityType<E> ret = Registry.register(
 			BuiltInRegistries.ENTITY_TYPE,
-			TFMain.prefix(name),
+			TFCommon.prefix(name),
 			builder.build(createIDFor(name))
 		);
 
@@ -158,10 +158,10 @@ public class TFEntities {
 	}
 
 	private static ResourceKey<EntityType<?>> createIDFor(String name) {
-		return ResourceKey.create(Registries.ENTITY_TYPE, TFMain.prefix(name));
+		return ResourceKey.create(Registries.ENTITY_TYPE, TFCommon.prefix(name));
 	}
 
 	public static void init() {
-		TFMain.LOGGER.info("Initializing entity types...");
+		TFCommon.LOGGER.info("Initializing entity types...");
 	}
 }

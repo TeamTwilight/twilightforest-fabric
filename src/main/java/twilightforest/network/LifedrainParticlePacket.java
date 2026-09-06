@@ -7,12 +7,12 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.item.LifedrainScepterItem;
 
 public record LifedrainParticlePacket(int entityID, Vec3 victimPos) implements CustomPacketPayload {
 
-	public static final Type<LifedrainParticlePacket> TYPE = new Type<>(TFMain.prefix("lifedrain_particles"));
+	public static final Type<LifedrainParticlePacket> TYPE = new Type<>(TFCommon.prefix("lifedrain_particles"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, LifedrainParticlePacket> STREAM_CODEC = CustomPacketPayload.codec(LifedrainParticlePacket::write, LifedrainParticlePacket::new);
 
 	public LifedrainParticlePacket(RegistryFriendlyByteBuf buf) {

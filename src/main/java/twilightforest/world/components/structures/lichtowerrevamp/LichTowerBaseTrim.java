@@ -5,7 +5,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.jigsaw.JigsawPlaceContext;
 import twilightforest.util.jigsaw.JigsawRecord;
@@ -20,7 +20,7 @@ public final class LichTowerBaseTrim extends TwilightJigsawPiece implements IPie
 	}
 
 	public LichTowerBaseTrim(StructureTemplateManager structureManager, JigsawPlaceContext jigsawContext) {
-		super(TFStructurePieceTypes.LICH_TOWER_BASE_TRIM, 1, structureManager, TFMain.prefix("lich_tower/central_trim"), jigsawContext);
+		super(TFStructurePieceTypes.LICH_TOWER_BASE_TRIM, 1, structureManager, TFCommon.prefix("lich_tower/central_trim"), jigsawContext);
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings);
 	}

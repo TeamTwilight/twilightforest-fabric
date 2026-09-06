@@ -41,7 +41,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.level.storage.loot.LootTable;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.block.ChiseledCanopyShelfBlock;
 import twilightforest.block.LightableBlock;
 import twilightforest.block.SkullCandleBlock;
@@ -274,7 +274,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements IPie
 
 			Direction front = connection.orientation().front();
 			if (front != Direction.UP) {
-				TFMain.LOGGER.error("Jigsaw {} was facing {} inside of {}", connection.name(), front, this.templateName);
+				TFCommon.LOGGER.error("Jigsaw {} was facing {} inside of {}", connection.name(), front, this.templateName);
 			}
 
 			if (this.roofFallback >= 0) {
@@ -545,7 +545,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements IPie
 				if (!blockState.isAir()) {
 					level.setBlock(pos, blockState, Block.UPDATE_CLIENTS);
 				} else if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
-					TFMain.LOGGER.warn("Variation label {} ({}) obtained {} in {}", parameters[0], parameters, blockState, this.templateName);
+					TFCommon.LOGGER.warn("Variation label {} ({}) obtained {} in {}", parameters[0], parameters, blockState, this.templateName);
 				}
 			}
 		}

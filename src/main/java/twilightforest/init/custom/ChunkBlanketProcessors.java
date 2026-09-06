@@ -15,7 +15,7 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.TFRegistries;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFBlocks;
@@ -37,13 +37,13 @@ public final class ChunkBlanketProcessors {
 	public static final ChunkBlanketType CANOPY = registerType("canopy", CanopyBlanketProcessor.CODEC);
 	public static final ChunkBlanketType GLACIER = registerType("glacier", GlacierBlanketProcessor.CODEC);
 
-	public static final ResourceKey<ChunkBlanketProcessor> DARK_FOREST_CANOPY = ResourceKey.create(TFRegistries.Keys.CHUNK_BLANKET_PROCESSORS, TFMain.prefix("dark_forest_canopy"));
-	public static final ResourceKey<ChunkBlanketProcessor> SNOWY_FOREST_GLACIER = ResourceKey.create(TFRegistries.Keys.CHUNK_BLANKET_PROCESSORS, TFMain.prefix("snowy_forest_glacier"));
+	public static final ResourceKey<ChunkBlanketProcessor> DARK_FOREST_CANOPY = ResourceKey.create(TFRegistries.Keys.CHUNK_BLANKET_PROCESSORS, TFCommon.prefix("dark_forest_canopy"));
+	public static final ResourceKey<ChunkBlanketProcessor> SNOWY_FOREST_GLACIER = ResourceKey.create(TFRegistries.Keys.CHUNK_BLANKET_PROCESSORS, TFCommon.prefix("snowy_forest_glacier"));
 
 	public static ChunkBlanketType registerType(String name, MapCodec<? extends ChunkBlanketProcessor> codec) {
 		return Registry.register(
 			TFRegistries.CHUNK_BLANKET_TYPES,
-			TFMain.prefix(name),
+			TFCommon.prefix(name),
 			() -> codec
 		);
 	}
@@ -80,6 +80,6 @@ public final class ChunkBlanketProcessors {
 	}
 
 	public static void init() {
-		TFMain.LOGGER.info("Initializing chunk blanket types...");
+		TFCommon.LOGGER.info("Initializing chunk blanket types...");
 	}
 }

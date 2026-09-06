@@ -16,7 +16,7 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.tags.TFBiomeTags;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFMapDecorations;
@@ -69,7 +69,7 @@ public class DarkTowerStructure extends ControlledSpawningStructure {
 				.add(new MobSpawnSettings.SpawnerData(EntityType.SQUID, 4, 4), 10)
 				.build()
 			),
-			new AdvancementLockConfig(List.of(TFMain.prefix("progress_knights"))),
+			new AdvancementLockConfig(List.of(TFCommon.prefix("progress_knights"))),
 			Optional.of(new HintConfig(HintConfig.book("darktower", 3), TFEntities.KOBOLD)),
 			Optional.of(new DecorationConfig(1, false, true, true)),
 			true, Optional.of(BuiltInRegistries.MAP_DECORATION_TYPE.wrapAsHolder(TFMapDecorations.DARK_TOWER)),

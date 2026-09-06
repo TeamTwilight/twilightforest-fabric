@@ -4,7 +4,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvent;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 
 public final class TFSounds {
 
@@ -347,12 +347,12 @@ public final class TFSounds {
 	private static Holder<SoundEvent> createEvent(String sound) {
 		return Registry.registerForHolder(
 			BuiltInRegistries.SOUND_EVENT,
-			TFMain.prefix(sound),
-			SoundEvent.createVariableRangeEvent(TFMain.prefix(sound))
+			TFCommon.prefix(sound),
+			SoundEvent.createVariableRangeEvent(TFCommon.prefix(sound))
 		);
 	}
 
 	public static void init() {
-		TFMain.LOGGER.info("Initializing sound events...");
+		TFCommon.LOGGER.info("Initializing sound events...");
 	}
 }

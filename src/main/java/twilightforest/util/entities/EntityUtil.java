@@ -42,7 +42,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.asm.mixin.LivingEntityGetDeathSoundAccessor;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.init.TFSounds;
@@ -298,7 +298,7 @@ public class EntityUtil {
 				living.setHealth(living.getMaxHealth());
 			}
 		} catch (Exception e) {
-			TFMain.LOGGER.warn("Couldn't transform entity NBT data", e);
+			TFCommon.LOGGER.warn("Couldn't transform entity NBT data", e);
 		}
 
 		ItemStack saddleStack = oldEntity.getItemBySlot(EquipmentSlot.SADDLE);

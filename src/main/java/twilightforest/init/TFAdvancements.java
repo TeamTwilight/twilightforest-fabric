@@ -3,7 +3,7 @@ package twilightforest.init;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.advancements.*;
 
 public class TFAdvancements {
@@ -25,12 +25,12 @@ public class TFAdvancements {
 	private static <T extends CriterionTrigger<?>> T register(String name, T trigger) {
 		return Registry.register(
 			BuiltInRegistries.TRIGGER_TYPES,
-			TFMain.prefix(name),
+			TFCommon.prefix(name),
 			trigger
 		);
 	}
 
 	public static void init() {
-		TFMain.LOGGER.info("Initializing advancements...");
+		TFCommon.LOGGER.info("Initializing advancements...");
 	}
 }

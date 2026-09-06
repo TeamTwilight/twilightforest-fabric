@@ -14,7 +14,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.world.components.structures.TFStructureComponentOld;
@@ -23,7 +23,7 @@ import twilightforest.world.components.structures.util.StructureTemplateDefiniti
 
 public class FinalCastleBossGazeboComponent extends TFStructureComponentOld {
 
-	public static final Identifier GAZEBO_TEMP_POOL = TFMain.prefix("final_castle/temp/gazebo");
+	public static final Identifier GAZEBO_TEMP_POOL = TFCommon.prefix("final_castle/temp/gazebo");
 
 	private static final StructureTemplateDefinitions structureTemplateDefinitions = StructureTemplateDefinitions.INSTANCE;
 

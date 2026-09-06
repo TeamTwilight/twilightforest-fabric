@@ -15,7 +15,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.saveddata.SavedDataType;
 import net.minecraft.world.level.saveddata.maps.*;
 import org.jspecify.annotations.Nullable;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.item.MagicMapItem;
 import twilightforest.network.MagicMapPacket;
 import twilightforest.util.Codecs;
@@ -83,7 +83,7 @@ public class TFMagicMapData extends MapItemSavedData {
 
 	// [VanillaCopy] from MapItemSavedData but changed to use our Codec and namespace
 	public static SavedDataType<TFMagicMapData> magicMapType(MapId id) {
-		return new SavedDataType<>(TFMain.prefix(id.key()), () -> {
+		return new SavedDataType<>(TFCommon.prefix(id.key()), () -> {
 			throw new IllegalStateException("Should never create an empty map saved data");
 		}, CODEC, DataFixTypes.SAVED_DATA_MAP_DATA);
 	}

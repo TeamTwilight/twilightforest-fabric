@@ -2,8 +2,8 @@ package twilightforest.init.custom;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Registry;
+import twilightforest.TFCommon;
 import twilightforest.TFRegistries;
-import twilightforest.TFMain;
 import twilightforest.world.components.layer.*;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerType;
 import twilightforest.world.components.layer.vanillalegacy.SmoothLayer;
@@ -26,12 +26,12 @@ public class BiomeLayerTypes {
 	private static BiomeLayerType registerType(String name, BiomeLayerType type) {
 		return Registry.register(
 			TFRegistries.BIOME_LAYER_TYPE,
-			TFMain.prefix(name),
+			TFCommon.prefix(name),
 			type
 		);
 	}
 
 	public static void init() {
-		TFMain.LOGGER.info("Initializing biome layer types...");
+		TFCommon.LOGGER.info("Initializing biome layer types...");
 	}
 }

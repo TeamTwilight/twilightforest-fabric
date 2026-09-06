@@ -3,7 +3,7 @@ package twilightforest.init.custom;
 import net.minecraft.core.Registry;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.MapItem;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.TFRegistries;
 import twilightforest.client.overlay.display.ClockDisplay;
 import twilightforest.client.overlay.display.CompassDisplay;
@@ -16,20 +16,20 @@ import java.util.Optional;
 
 public class ItemDisplays {
 
-	public static final ItemDisplayType MAP = register("map", new ItemDisplayType(stack -> stack.getItem() instanceof MapItem, MapDisplay::new, Optional.of(TFMain.prefix("textures/item/map_display.png"))));
-	public static final ItemDisplayType COMPASS = register("compass", new ItemDisplayType(stack -> stack.is(Items.COMPASS), CompassDisplay::new, Optional.of(TFMain.prefix("textures/item/compass_display.png"))));
-	public static final ItemDisplayType CLOCK = register("clock", new ItemDisplayType(stack -> stack.is(Items.CLOCK), ClockDisplay::new, Optional.of(TFMain.prefix("textures/item/clock_display.png"))));
-	public static final ItemDisplayType MOON_DIAL = register("moon_dial", new ItemDisplayType(stack -> stack.is(TFItems.MOON_DIAL), MoonDialDisplay::new, Optional.of(TFMain.prefix("textures/item/moon_dial_display.png"))));
+	public static final ItemDisplayType MAP = register("map", new ItemDisplayType(stack -> stack.getItem() instanceof MapItem, MapDisplay::new, Optional.of(TFCommon.prefix("textures/item/map_display.png"))));
+	public static final ItemDisplayType COMPASS = register("compass", new ItemDisplayType(stack -> stack.is(Items.COMPASS), CompassDisplay::new, Optional.of(TFCommon.prefix("textures/item/compass_display.png"))));
+	public static final ItemDisplayType CLOCK = register("clock", new ItemDisplayType(stack -> stack.is(Items.CLOCK), ClockDisplay::new, Optional.of(TFCommon.prefix("textures/item/clock_display.png"))));
+	public static final ItemDisplayType MOON_DIAL = register("moon_dial", new ItemDisplayType(stack -> stack.is(TFItems.MOON_DIAL), MoonDialDisplay::new, Optional.of(TFCommon.prefix("textures/item/moon_dial_display.png"))));
 
 	private static ItemDisplayType register(String name, ItemDisplayType type) {
 		return Registry.register(
 			TFRegistries.ITEM_DISPLAY_TYPE,
-			TFMain.prefix(name),
+			TFCommon.prefix(name),
 			type
 		);
 	}
 
 	public static void init() {
-		TFMain.LOGGER.info("Initializing item display types...");
+		TFCommon.LOGGER.info("Initializing item display types...");
 	}
 }

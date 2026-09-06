@@ -19,7 +19,7 @@ import net.minecraft.world.level.levelgen.carver.WorldCarver;
 import net.minecraft.world.level.levelgen.heightproviders.BiasedToBottomHeight;
 import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.tags.TFBlockTags;
 import twilightforest.world.components.NoiseCarverWallProvider;
 import twilightforest.world.components.TFCavesCarver;
@@ -66,13 +66,13 @@ public class TFCaveCarvers {
 	public static final ResourceKey<ConfiguredWorldCarver<?>> HIGHLANDCAVES_CONFIGURED = registerKey("highland_caves");
 
 	private static ResourceKey<ConfiguredWorldCarver<?>> registerKey(String name) {
-		return ResourceKey.create(Registries.CONFIGURED_CARVER, TFMain.prefix(name));
+		return ResourceKey.create(Registries.CONFIGURED_CARVER, TFCommon.prefix(name));
 	}
 
 	private static <T extends WorldCarver<?>> T register(String name, T carver) {
 		return Registry.register(
 			BuiltInRegistries.CARVER,
-			TFMain.prefix(name),
+			TFCommon.prefix(name),
 			carver
 		);
 	}
@@ -103,6 +103,6 @@ public class TFCaveCarvers {
 	}
 
 	public static void init() {
-		TFMain.LOGGER.info("Initializing cave carvers...");
+		TFCommon.LOGGER.info("Initializing cave carvers...");
 	}
 }

@@ -16,7 +16,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.block.CandelabraBlock;
 import twilightforest.block.LightableBlock;
 import twilightforest.block.SkullCandleBlock;
@@ -39,7 +39,7 @@ public class LichTowerFoyerDecor extends TwilightJigsawPiece implements IPieceBe
 	}
 
 	public LichTowerFoyerDecor(int genDepth, StructureTemplateManager structureManager, JigsawPlaceContext jigsawContext) {
-		super(TFStructurePieceTypes.LICH_FOYER_DECORATION, genDepth, structureManager, TFMain.prefix("lich_tower/foyer_decor"), jigsawContext);
+		super(TFStructurePieceTypes.LICH_FOYER_DECORATION, genDepth, structureManager, TFCommon.prefix("lich_tower/foyer_decor"), jigsawContext);
 
 		LichTowerUtil.addDefaultProcessors(this.placeSettings);
 	}

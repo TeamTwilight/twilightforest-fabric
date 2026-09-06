@@ -4,7 +4,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.world.components.structures.type.*;
 
 public class TFStructureTypes {
@@ -33,12 +33,12 @@ public class TFStructureTypes {
 	private static <P extends Structure> StructureType<P> registerType(String name, StructureType<P> factory) {
 		return Registry.register(
 			BuiltInRegistries.STRUCTURE_TYPE,
-			TFMain.prefix(name),
+			TFCommon.prefix(name),
 			factory
 		);
 	}
 
 	public static void init() {
-		TFMain.LOGGER.info("Initializing structure types...");
+		TFCommon.LOGGER.info("Initializing structure types...");
 	}
 }

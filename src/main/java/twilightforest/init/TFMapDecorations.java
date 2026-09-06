@@ -3,7 +3,7 @@ package twilightforest.init;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 
 public class TFMapDecorations {
 
@@ -26,12 +26,12 @@ public class TFMapDecorations {
 	private static MapDecorationType register(String name) {
 		return Registry.register(
 			BuiltInRegistries.MAP_DECORATION_TYPE,
-			TFMain.prefix(name),
-			new MapDecorationType(TFMain.prefix(name), true, -1, false, true)
+			TFCommon.prefix(name),
+			new MapDecorationType(TFCommon.prefix(name), true, -1, false, true)
 		);
 	}
 
 	public static void init() {
-		TFMain.LOGGER.info("Initializing map decoration types...");
+		TFCommon.LOGGER.info("Initializing map decoration types...");
 	}
 }

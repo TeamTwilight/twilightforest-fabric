@@ -30,7 +30,7 @@ import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.storage.loot.LootTable;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.loot.TFLootTables;
 import twilightforest.util.BoundingBoxUtils;
 import twilightforest.world.components.structures.selectors.StrongholdStonesRandomBlockSelectorFactory;
@@ -190,7 +190,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 	 */
 	protected void placeTreasureRotated(WorldGenLevel world, int x, int y, int z, Direction facing, Rotation rotation, ResourceKey<LootTable> treasureType, boolean trapped, BoundingBox sbb) {
 		if (facing == null) {
-			TFMain.LOGGER.error("Loot Chest at {}, {}, {} has null direction, setting it to north", x, y, z);
+			TFCommon.LOGGER.error("Loot Chest at {}, {}, {} has null direction, setting it to north", x, y, z);
 			facing = Direction.NORTH;
 		}
 
@@ -219,7 +219,7 @@ public abstract class TFStructureComponentOld extends TFStructureComponent imple
 
 	protected void setDoubleLootChest(WorldGenLevel world, int x, int y, int z, int otherx, int othery, int otherz, @Nullable Direction facing, ResourceKey<LootTable> treasureType, ResourceKey<LootTable> secondaryLootType, BoundingBox sbb, boolean trapped) {
 		if (facing == null) {
-			TFMain.LOGGER.error("Loot Chest at {}, {}, {} has null direction, setting it to north", x, y, z);
+			TFCommon.LOGGER.error("Loot Chest at {}, {}, {} has null direction, setting it to north", x, y, z);
 			facing = Direction.NORTH;
 		}
 

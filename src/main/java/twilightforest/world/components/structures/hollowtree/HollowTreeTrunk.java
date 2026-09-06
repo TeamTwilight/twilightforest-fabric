@@ -26,7 +26,7 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.storage.loot.LootTable;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.init.TFStructurePieceTypes;
 import twilightforest.util.features.FeatureLogic;
 
@@ -107,15 +107,15 @@ public class HollowTreeTrunk extends HollowTreePiece {
 		tag.putInt("trunkHeight", this.height);
 		tag.putInt("trunkRadius", this.radius);
 
-		tag.put("log", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.log).resultOrPartial(TFMain.LOGGER::error).orElseGet(CompoundTag::new));
-		tag.put("wood", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.wood).resultOrPartial(TFMain.LOGGER::error).orElseGet(CompoundTag::new));
-		tag.put("root", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.root).resultOrPartial(TFMain.LOGGER::error).orElseGet(CompoundTag::new));
-		tag.put("leaves", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.leaves).resultOrPartial(TFMain.LOGGER::error).orElseGet(CompoundTag::new));
-		tag.put("vine", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.vine).resultOrPartial(TFMain.LOGGER::error).orElseGet(CompoundTag::new));
-		tag.put("bug", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.bug).resultOrPartial(TFMain.LOGGER::error).orElseGet(CompoundTag::new));
-		tag.put("dungeon_wood", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.dungeonWood).resultOrPartial(TFMain.LOGGER::error).orElseGet(CompoundTag::new));
-		tag.put("dungeon_air", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.dungeonAir).resultOrPartial(TFMain.LOGGER::error).orElseGet(CompoundTag::new));
-		tag.put("dungeon_loot_block", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.dungeonLootBlock).resultOrPartial(TFMain.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("log", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.log).resultOrPartial(TFCommon.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("wood", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.wood).resultOrPartial(TFCommon.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("root", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.root).resultOrPartial(TFCommon.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("leaves", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.leaves).resultOrPartial(TFCommon.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("vine", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.vine).resultOrPartial(TFCommon.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("bug", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.bug).resultOrPartial(TFCommon.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("dungeon_wood", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.dungeonWood).resultOrPartial(TFCommon.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("dungeon_air", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.dungeonAir).resultOrPartial(TFCommon.LOGGER::error).orElseGet(CompoundTag::new));
+		tag.put("dungeon_loot_block", BlockStateProvider.CODEC.encodeStart(NbtOps.INSTANCE, this.dungeonLootBlock).resultOrPartial(TFCommon.LOGGER::error).orElseGet(CompoundTag::new));
 
 		tag.putString("dungeon_loot_table", this.dungeonLootTable.identifier().toString());
 

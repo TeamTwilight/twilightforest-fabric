@@ -5,7 +5,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.Shapes;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 
 public abstract class HoverBaseGoal<T extends Mob> extends Goal {
 
@@ -53,7 +53,7 @@ public abstract class HoverBaseGoal<T extends Mob> extends Goal {
 		}
 
 		if (!found) {
-			TFMain.LOGGER.debug("Found no spots, giving up");
+			TFCommon.LOGGER.debug("Found no spots, giving up");
 		}
 
 		this.hoverPosX = hx;

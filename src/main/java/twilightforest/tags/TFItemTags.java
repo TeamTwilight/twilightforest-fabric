@@ -4,7 +4,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 
 public class TFItemTags {
 
@@ -114,7 +114,7 @@ public class TFItemTags {
 	}
 
 	public static TagKey<Item> create(final String name) {
-		return TagKey.create(Registries.ITEM, TFMain.prefix(name));
+		return TagKey.create(Registries.ITEM, TFCommon.prefix(name));
 	}
 
 	private static TagKey<Item> createFromNamespace(String modid, String tagName) {

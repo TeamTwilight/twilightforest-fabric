@@ -2,10 +2,9 @@ package twilightforest.network;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.entity.passive.quest.ram.QuestingRamContext;
 import twilightforest.entity.passive.quest.ram.QuestingRamCurrentContext;
 
@@ -13,7 +12,7 @@ public record SyncQuestsPacket(QuestingRamContext ram) implements CustomPacketPa
 
 	private static final QuestingRamCurrentContext questingRamCurrentContext = QuestingRamCurrentContext.INSTANCE;
 
-	public static final Type<SyncQuestsPacket> TYPE = new Type<>(TFMain.prefix("sync_quests"));
+	public static final Type<SyncQuestsPacket> TYPE = new Type<>(TFCommon.prefix("sync_quests"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, SyncQuestsPacket> STREAM_CODEC = StreamCodec.composite(
 		QuestingRamContext.STREAM_CODEC, SyncQuestsPacket::ram,
 		SyncQuestsPacket::new

@@ -10,7 +10,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionContents;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.components.item.PotionFlaskComponent;
 import twilightforest.item.PotionFlaskItem;
 
@@ -20,8 +20,8 @@ import java.util.Optional;
 
 public class PotionFlaskTooltipComponent implements ClientTooltipComponent {
 
-	private static final Identifier BORDER_SPRITE = TFMain.prefix("flask_bar_border");
-	private static final Identifier DOSE_SPRITE = TFMain.prefix("flask_dose_bar");
+	private static final Identifier BORDER_SPRITE = TFCommon.prefix("flask_bar_border");
+	private static final Identifier DOSE_SPRITE = TFCommon.prefix("flask_dose_bar");
 	private static final Component EMPTY_DESCRIPTION = Component.translatable("item.twilightforest.flask.empty_description");
 
 	public static final int WIDTH = 115; //hehe

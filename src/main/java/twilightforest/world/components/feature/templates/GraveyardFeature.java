@@ -24,7 +24,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.*;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jspecify.annotations.Nullable;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.entity.monster.Wraith;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFStructureProcessors;
@@ -35,8 +35,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
-	private static final Identifier GRAVEYARD = TFMain.prefix("feature/graveyard/graveyard");
-	private static final Identifier TRAP = TFMain.prefix("feature/graveyard/grave_trap");
+	private static final Identifier GRAVEYARD = TFCommon.prefix("feature/graveyard/graveyard");
+	private static final Identifier TRAP = TFCommon.prefix("feature/graveyard/grave_trap");
 
 	public GraveyardFeature(Codec<NoneFeatureConfiguration> config) {
 		super(config);
@@ -206,11 +206,11 @@ public class GraveyardFeature extends Feature<NoneFeatureConfiguration> {
 
 	private enum GraveType {
 
-		Full(TFMain.prefix("feature/graveyard/grave_full")),
+		Full(TFCommon.prefix("feature/graveyard/grave_full")),
 
-		Upper(TFMain.prefix("feature/graveyard/grave_upper")),
+		Upper(TFCommon.prefix("feature/graveyard/grave_upper")),
 
-		Lower(TFMain.prefix("feature/graveyard/grave_lower"));
+		Lower(TFCommon.prefix("feature/graveyard/grave_lower"));
 
 		private static final GraveType[] VALUES = values();
 		private final Identifier RL;

@@ -35,7 +35,7 @@ import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import twilightforest.TFMain;
+import twilightforest.TFCommon;
 import twilightforest.block.GiantBlock;
 import twilightforest.block.MiniatureStructureBlock;
 import twilightforest.block.entity.GrowingBeanstalkBlockEntity;
@@ -196,7 +196,7 @@ public class ClientGameEvents {
 				for (int i = 0; i < components.size(); i++) {
 					Component component = components.get(i);
 					if (component.toString().contains("book.byAuthor")) {
-						components.set(i, (Component.translatable("book.byAuthor", Component.translatable(TFMain.ID + ".book.author"))).withStyle(component.getStyle()));
+						components.set(i, (Component.translatable("book.byAuthor", Component.translatable(TFCommon.ID + ".book.author"))).withStyle(component.getStyle()));
 					}
 				}
 			}
