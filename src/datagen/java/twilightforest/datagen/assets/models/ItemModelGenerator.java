@@ -1,6 +1,5 @@
 package twilightforest.datagen.assets.models;
 
-import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.model.*;
 import net.minecraft.client.renderer.item.ItemModel;
@@ -11,23 +10,17 @@ import net.minecraft.client.renderer.item.properties.conditional.HasComponent;
 import net.minecraft.client.renderer.item.properties.numeric.Count;
 import net.minecraft.client.renderer.item.properties.numeric.Time;
 import net.minecraft.client.renderer.item.properties.numeric.UseDuration;
-import net.minecraft.client.renderer.item.properties.select.DisplayContext;
-import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.client.resources.model.sprite.Material;
-import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.Items;
-import net.neoforged.neoforge.client.model.generators.template.ExtendedModelTemplateBuilder;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFCommon;
 import twilightforest.client.model.item.TravellersGearItemModel;
 import twilightforest.client.properties.*;
 import twilightforest.client.renderer.special.*;
 import twilightforest.datagen.helpers.ItemModelBuilders;
 import twilightforest.init.*;
-import twilightforest.item.ArcticArmorItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,240 +34,205 @@ public class ItemModelGenerator extends ItemModelBuilders {
 
 	@Override
 	public void run() {
-		this.generateFlatItem(TFItems.MAGIC_MAP.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.MAZE_MAP.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.ORE_MAP.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.FILLED_MAGIC_MAP.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.FILLED_MAZE_MAP.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.FILLED_ORE_MAP.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.TORCHBERRIES.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.RAVEN_FEATHER.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.MAGIC_MAP_FOCUS.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.MAZE_MAP_FOCUS.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.CHARM_OF_LIFE_1.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.CHARM_OF_LIFE_2.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.CHARM_OF_KEEPING_1.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.CHARM_OF_KEEPING_2.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.CHARM_OF_KEEPING_3.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.TRANSFORMATION_POWDER.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.RAW_VENISON.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.COOKED_VENISON.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.RAW_MEEF.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.COOKED_MEEF.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.MAZE_WAFER.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.MEEF_STROGANOFF.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.HYDRA_CHOP.get(), ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.MAGIC_MAP, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.MAZE_MAP, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.ORE_MAP, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.FILLED_MAGIC_MAP, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.FILLED_MAZE_MAP, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.FILLED_ORE_MAP, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.TORCHBERRIES, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.RAVEN_FEATHER, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.MAGIC_MAP_FOCUS, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.MAZE_MAP_FOCUS, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.CHARM_OF_LIFE_1, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.CHARM_OF_LIFE_2, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.CHARM_OF_KEEPING_1, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.CHARM_OF_KEEPING_2, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.CHARM_OF_KEEPING_3, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.TRANSFORMATION_POWDER, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.RAW_VENISON, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.COOKED_VENISON, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.RAW_MEEF, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.COOKED_MEEF, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.MAZE_WAFER, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.MEEF_STROGANOFF, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.HYDRA_CHOP, ModelTemplates.FLAT_ITEM);
 		this.itemModelOutput.accept(TFBlocks.EXPERIMENT_115.asItem(), ItemModelUtils.select(new Experiment115Type(), ItemModelUtils.plainModel(this.createFlatItemModel(TFBlocks.EXPERIMENT_115.asItem(), ModelTemplates.FLAT_ITEM)),
-			ItemModelUtils.when("think", ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(TFBlocks.EXPERIMENT_115.asItem(), "_think"), TextureMapping.layer0(new Material(TwilightForestMod.prefix("item/think115"))), this.modelOutput))),
-			ItemModelUtils.when("full", ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(TFBlocks.EXPERIMENT_115.get(), "_8_8_regenerating")))));
-		this.generateFlatItem(TFItems.LIVEROOT.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.RAW_IRONWOOD.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.IRONWOOD_INGOT.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.STEELEAF_INGOT.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.NAGA_SCALE.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.WROUGHT_IRON_BAR.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.ARMOR_SHARD.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.ARMOR_SHARD_CLUSTER.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.KNIGHTMETAL_INGOT.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.KNIGHTMETAL_RING.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.FIERY_BLOOD.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.FIERY_TEARS.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.FIERY_INGOT.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.ARCTIC_FUR.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.ALPHA_YETI_FUR.get(), ModelTemplates.FLAT_ITEM);
-		Identifier empty = ModelTemplates.FLAT_ITEM.create(TwilightForestMod.prefix("item/potion_flask_empty"), TextureMapping.layer0(new Material(TwilightForestMod.prefix("block/blank"))), this.modelOutput);
-		this.generatePotionFlask(TFItems.BRITTLE_FLASK.get(), true, empty);
-		this.generatePotionFlask(TFItems.GREATER_FLASK.get(), false, empty);
-		this.generateTwoLayerItem(TFItems.EXANIMATE_ESSENCE.get(), "_flames", ModelTemplates.TWO_LAYERED_ITEM);
-		this.generateFlatItem(TFItems.CROWN_SPLINTER.get(), ModelTemplates.FLAT_ITEM);
+			ItemModelUtils.when("think", ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(TFBlocks.EXPERIMENT_115.asItem(), "_think"), TextureMapping.layer0(new Material(TFCommon.prefix("item/think115"))), this.modelOutput))),
+			ItemModelUtils.when("full", ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(TFBlocks.EXPERIMENT_115, "_8_8_regenerating")))));
+		this.generateFlatItem(TFItems.LIVEROOT, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.RAW_IRONWOOD, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.IRONWOOD_INGOT, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.STEELEAF_INGOT, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.NAGA_SCALE, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.WROUGHT_IRON_BAR, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.ARMOR_SHARD, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.ARMOR_SHARD_CLUSTER, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.KNIGHTMETAL_INGOT, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.KNIGHTMETAL_RING, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.FIERY_BLOOD, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.FIERY_TEARS, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.FIERY_INGOT, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.ARCTIC_FUR, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.ALPHA_YETI_FUR, ModelTemplates.FLAT_ITEM);
+		Identifier empty = ModelTemplates.FLAT_ITEM.create(TFCommon.prefix("item/potion_flask_empty"), TextureMapping.layer0(new Material(TFCommon.prefix("block/blank"))), this.modelOutput);
+		this.generatePotionFlask(TFItems.BRITTLE_FLASK, true, empty);
+		this.generatePotionFlask(TFItems.GREATER_FLASK, false, empty);
+		this.generateTwoLayerItem(TFItems.EXANIMATE_ESSENCE, "_flames", ModelTemplates.TWO_LAYERED_ITEM);
+		this.generateFlatItem(TFItems.CROWN_SPLINTER, ModelTemplates.FLAT_ITEM);
 		this.itemModelOutput.accept(TFBlocks.RED_THREAD.asItem(), ItemModelUtils.rangeSelect(new Count(true), ItemModelUtils.plainModel(this.createFlatItemModel(TFBlocks.RED_THREAD.asItem(), ModelTemplates.FLAT_ITEM)), List.of(
 			ItemModelUtils.override(ItemModelUtils.plainModel(this.createFlatItemModel(TFBlocks.RED_THREAD.asItem(), "_bundle_0", ModelTemplates.FLAT_ITEM)), 4.0F / 64.0F),
 			ItemModelUtils.override(ItemModelUtils.plainModel(this.createFlatItemModel(TFBlocks.RED_THREAD.asItem(), "_bundle_1", ModelTemplates.FLAT_ITEM)), 16.0F / 64.0F),
 			ItemModelUtils.override(ItemModelUtils.plainModel(this.createFlatItemModel(TFBlocks.RED_THREAD.asItem(), "_bundle_2", ModelTemplates.FLAT_ITEM)), 32.0F / 64.0F))));
-		this.generateTwoLayerItem(TFItems.BORER_ESSENCE.get(), "_particles", ModelTemplates.TWO_LAYERED_ITEM);
-		this.generateFlatItem(TFItems.CARMINITE.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.TOWER_KEY.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.MAGIC_BEANS.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.MUSIC_DISC_THREAD.get(), ModelTemplates.MUSIC_DISC);
-		this.generateFlatItem(TFItems.MUSIC_DISC_FINDINGS.get(), ModelTemplates.MUSIC_DISC);
-		this.generateFlatItem(TFItems.MUSIC_DISC_RADIANCE.get(), ModelTemplates.MUSIC_DISC);
-		this.generateFlatItem(TFItems.MUSIC_DISC_STEPS.get(), ModelTemplates.MUSIC_DISC);
-		this.generateFlatItem(TFItems.MUSIC_DISC_MOTION.get(), ModelTemplates.MUSIC_DISC);
-		this.generateFlatItem(TFItems.MUSIC_DISC_WAYFARER.get(), ModelTemplates.MUSIC_DISC);
-		this.generateFlatItem(TFItems.MUSIC_DISC_HOME.get(), ModelTemplates.MUSIC_DISC);
-		this.generateFlatItem(TFItems.MUSIC_DISC_MAKER.get(), ModelTemplates.MUSIC_DISC);
-		this.generateFlatItem(TFItems.MUSIC_DISC_SUPERSTITIOUS.get(), ModelTemplates.MUSIC_DISC);
+		this.generateTwoLayerItem(TFItems.BORER_ESSENCE, "_particles", ModelTemplates.TWO_LAYERED_ITEM);
+		this.generateFlatItem(TFItems.CARMINITE, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.TOWER_KEY, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.MAGIC_BEANS, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.MUSIC_DISC_THREAD, ModelTemplates.MUSIC_DISC);
+		this.generateFlatItem(TFItems.MUSIC_DISC_FINDINGS, ModelTemplates.MUSIC_DISC);
+		this.generateFlatItem(TFItems.MUSIC_DISC_RADIANCE, ModelTemplates.MUSIC_DISC);
+		this.generateFlatItem(TFItems.MUSIC_DISC_STEPS, ModelTemplates.MUSIC_DISC);
+		this.generateFlatItem(TFItems.MUSIC_DISC_MOTION, ModelTemplates.MUSIC_DISC);
+		this.generateFlatItem(TFItems.MUSIC_DISC_WAYFARER, ModelTemplates.MUSIC_DISC);
+		this.generateFlatItem(TFItems.MUSIC_DISC_HOME, ModelTemplates.MUSIC_DISC);
+		this.generateFlatItem(TFItems.MUSIC_DISC_MAKER, ModelTemplates.MUSIC_DISC);
+		this.generateFlatItem(TFItems.MUSIC_DISC_SUPERSTITIOUS, ModelTemplates.MUSIC_DISC);
 
-		this.generatePattern(TFItems.NAGA_BANNER_PATTERN.get());
-		this.generatePattern(TFItems.LICH_BANNER_PATTERN.get());
-		this.generatePattern(TFItems.MINOSHROOM_BANNER_PATTERN.get());
-		this.generatePattern(TFItems.HYDRA_BANNER_PATTERN.get());
-		this.generatePattern(TFItems.KNIGHT_PHANTOM_BANNER_PATTERN.get());
-		this.generatePattern(TFItems.UR_GHAST_BANNER_PATTERN.get());
-		this.generatePattern(TFItems.ALPHA_YETI_BANNER_PATTERN.get());
-		this.generatePattern(TFItems.SNOW_QUEEN_BANNER_PATTERN.get());
-		this.generatePattern(TFItems.QUEST_RAM_BANNER_PATTERN.get());
+		this.generatePattern(TFItems.NAGA_BANNER_PATTERN);
+		this.generatePattern(TFItems.LICH_BANNER_PATTERN);
+		this.generatePattern(TFItems.MINOSHROOM_BANNER_PATTERN);
+		this.generatePattern(TFItems.HYDRA_BANNER_PATTERN);
+		this.generatePattern(TFItems.KNIGHT_PHANTOM_BANNER_PATTERN);
+		this.generatePattern(TFItems.UR_GHAST_BANNER_PATTERN);
+		this.generatePattern(TFItems.ALPHA_YETI_BANNER_PATTERN);
+		this.generatePattern(TFItems.SNOW_QUEEN_BANNER_PATTERN);
+		this.generatePattern(TFItems.QUEST_RAM_BANNER_PATTERN);
 
-		this.generateFlatItem(TFItems.TWILIGHT_OAK_BOAT.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.CANOPY_BOAT.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.MANGROVE_BOAT.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.DARK_BOAT.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.TIME_BOAT.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.TRANSFORMATION_BOAT.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.MINING_BOAT.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.SORTING_BOAT.get(), ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.TWILIGHT_OAK_BOAT, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.CANOPY_BOAT, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.MANGROVE_BOAT, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.DARK_BOAT, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.TIME_BOAT, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.TRANSFORMATION_BOAT, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.MINING_BOAT, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.SORTING_BOAT, ModelTemplates.FLAT_ITEM);
 
-		this.generateChestBoat(TFItems.TWILIGHT_OAK_CHEST_BOAT.get());
-		this.generateChestBoat(TFItems.CANOPY_CHEST_BOAT.get());
-		this.generateChestBoat(TFItems.MANGROVE_CHEST_BOAT.get());
-		this.generateChestBoat(TFItems.DARK_CHEST_BOAT.get());
-		this.generateChestBoat(TFItems.TIME_CHEST_BOAT.get());
-		this.generateChestBoat(TFItems.TRANSFORMATION_CHEST_BOAT.get());
-		this.generateChestBoat(TFItems.MINING_CHEST_BOAT.get());
-		this.generateChestBoat(TFItems.SORTING_CHEST_BOAT.get());
+		this.generateChestBoat(TFItems.TWILIGHT_OAK_CHEST_BOAT);
+		this.generateChestBoat(TFItems.CANOPY_CHEST_BOAT);
+		this.generateChestBoat(TFItems.MANGROVE_CHEST_BOAT);
+		this.generateChestBoat(TFItems.DARK_CHEST_BOAT);
+		this.generateChestBoat(TFItems.TIME_CHEST_BOAT);
+		this.generateChestBoat(TFItems.TRANSFORMATION_CHEST_BOAT);
+		this.generateChestBoat(TFItems.MINING_CHEST_BOAT);
+		this.generateChestBoat(TFItems.SORTING_CHEST_BOAT);
 
-		this.generateDynamicTrimmableItem(TFItems.IRONWOOD_HELMET.get(), ItemModelGenerators.TRIM_PREFIX_HELMET);
-		this.generateDynamicTrimmableItem(TFItems.IRONWOOD_CHESTPLATE.get(), ItemModelGenerators.TRIM_PREFIX_CHESTPLATE);
-		this.generateDynamicTrimmableItem(TFItems.IRONWOOD_LEGGINGS.get(), ItemModelGenerators.TRIM_PREFIX_LEGGINGS);
-		this.generateDynamicTrimmableItem(TFItems.IRONWOOD_BOOTS.get(), ItemModelGenerators.TRIM_PREFIX_BOOTS);
-		this.generateFlatItem(TFItems.IRONWOOD_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-		this.generateFlatItem(TFItems.IRONWOOD_PICKAXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-		this.generateFlatItem(TFItems.IRONWOOD_AXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-		this.generateFlatItem(TFItems.IRONWOOD_SHOVEL.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-		this.generateFlatItem(TFItems.IRONWOOD_HOE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.IRONWOOD_SWORD, ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.IRONWOOD_PICKAXE, ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.IRONWOOD_AXE, ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.IRONWOOD_SHOVEL, ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.IRONWOOD_HOE, ModelTemplates.FLAT_HANDHELD_ITEM);
 
-		this.generateDynamicTrimmableItem(TFItems.STEELEAF_HELMET.get(), ItemModelGenerators.TRIM_PREFIX_HELMET);
-		this.generateDynamicTrimmableItem(TFItems.STEELEAF_CHESTPLATE.get(), ItemModelGenerators.TRIM_PREFIX_CHESTPLATE);
-		this.generateDynamicTrimmableItem(TFItems.STEELEAF_LEGGINGS.get(), ItemModelGenerators.TRIM_PREFIX_LEGGINGS);
-		this.generateDynamicTrimmableItem(TFItems.STEELEAF_BOOTS.get(), ItemModelGenerators.TRIM_PREFIX_BOOTS);
-		this.generateFlatItem(TFItems.STEELEAF_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-		this.generateFlatItem(TFItems.STEELEAF_PICKAXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-		this.generateFlatItem(TFItems.STEELEAF_AXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-		this.generateFlatItem(TFItems.STEELEAF_SHOVEL.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-		this.generateFlatItem(TFItems.STEELEAF_HOE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.STEELEAF_SWORD, ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.STEELEAF_PICKAXE, ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.STEELEAF_AXE, ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.STEELEAF_SHOVEL, ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.STEELEAF_HOE, ModelTemplates.FLAT_HANDHELD_ITEM);
 
-		this.generateDynamicTrimmableItem(TFItems.KNIGHTMETAL_HELMET.get(), ItemModelGenerators.TRIM_PREFIX_HELMET);
-		this.generateDynamicTrimmableItem(TFItems.KNIGHTMETAL_CHESTPLATE.get(), ItemModelGenerators.TRIM_PREFIX_CHESTPLATE);
-		this.generateDynamicTrimmableItem(TFItems.KNIGHTMETAL_LEGGINGS.get(), ItemModelGenerators.TRIM_PREFIX_LEGGINGS);
-		this.generateDynamicTrimmableItem(TFItems.KNIGHTMETAL_BOOTS.get(), ItemModelGenerators.TRIM_PREFIX_BOOTS);
-		this.generateFlatItem(TFItems.KNIGHTMETAL_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-		this.generateFlatItem(TFItems.KNIGHTMETAL_PICKAXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-		this.generateFlatItem(TFItems.KNIGHTMETAL_AXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-		this.itemModelOutput.accept(TFItems.BLOCK_AND_CHAIN.get(), ItemModelUtils.conditional(new HasComponent(TFDataComponents.THROWN_PROJECTILE.get(), false),
-			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.BLOCK_AND_CHAIN.get(), "_thrown", ModelTemplates.FLAT_HANDHELD_ITEM)),
-			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.BLOCK_AND_CHAIN.get(), ModelTemplates.FLAT_HANDHELD_ITEM))));
-		this.generateKnightmetalShield(TFItems.KNIGHTMETAL_SHIELD.get());
+		this.generateFlatItem(TFItems.KNIGHTMETAL_SWORD, ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.KNIGHTMETAL_PICKAXE, ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.KNIGHTMETAL_AXE, ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.itemModelOutput.accept(TFItems.BLOCK_AND_CHAIN, ItemModelUtils.conditional(new HasComponent(TFDataComponents.THROWN_PROJECTILE, false),
+			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.BLOCK_AND_CHAIN, "_thrown", ModelTemplates.FLAT_HANDHELD_ITEM)),
+			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.BLOCK_AND_CHAIN, ModelTemplates.FLAT_HANDHELD_ITEM))));
+		this.generateKnightmetalShield(TFItems.KNIGHTMETAL_SHIELD);
 
-		this.generateDynamicTrimmableItem(TFItems.FIERY_HELMET.get(), ItemModelGenerators.TRIM_PREFIX_HELMET);
-		this.generateDynamicTrimmableItem(TFItems.FIERY_CHESTPLATE.get(), ItemModelGenerators.TRIM_PREFIX_CHESTPLATE);
-		this.generateDynamicTrimmableItem(TFItems.FIERY_LEGGINGS.get(), ItemModelGenerators.TRIM_PREFIX_LEGGINGS);
-		this.generateDynamicTrimmableItem(TFItems.FIERY_BOOTS.get(), ItemModelGenerators.TRIM_PREFIX_BOOTS);
-		this.generateFlatItem(TFItems.FIERY_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-		this.generateFlatItem(TFItems.FIERY_PICKAXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.FIERY_SWORD, ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.FIERY_PICKAXE, ModelTemplates.FLAT_HANDHELD_ITEM);
 
-		this.generateDynamicTrimmableItem(TFItems.ARCTIC_HELMET.get(), ItemModelGenerators.TRIM_PREFIX_HELMET, ArcticArmorItem.DEFAULT_COLOR);
-		this.generateDynamicTrimmableItem(TFItems.ARCTIC_CHESTPLATE.get(), ItemModelGenerators.TRIM_PREFIX_CHESTPLATE, ArcticArmorItem.DEFAULT_COLOR);
-		this.generateDynamicTrimmableItem(TFItems.ARCTIC_LEGGINGS.get(), ItemModelGenerators.TRIM_PREFIX_LEGGINGS, ArcticArmorItem.DEFAULT_COLOR);
-		this.generateDynamicTrimmableItem(TFItems.ARCTIC_BOOTS.get(), ItemModelGenerators.TRIM_PREFIX_BOOTS, ArcticArmorItem.DEFAULT_COLOR);
+		this.itemModelOutput.accept(TFItems.MYSTIC_CROWN, ItemModelUtils.specialModel(ModelLocationUtils.getModelLocation(TFItems.MYSTIC_CROWN), new MysticCrownSpecialRenderer.Unbaked()));
 
-		this.generateDynamicTrimmableItem(TFItems.YETI_HELMET.get(), ItemModelGenerators.TRIM_PREFIX_HELMET);
-		this.generateDynamicTrimmableItem(TFItems.YETI_CHESTPLATE.get(), ItemModelGenerators.TRIM_PREFIX_CHESTPLATE);
-		this.generateDynamicTrimmableItem(TFItems.YETI_LEGGINGS.get(), ItemModelGenerators.TRIM_PREFIX_LEGGINGS);
-		this.generateDynamicTrimmableItem(TFItems.YETI_BOOTS.get(), ItemModelGenerators.TRIM_PREFIX_BOOTS);
+		this.generateFlatItem(TFItems.MAZEBREAKER_PICKAXE, ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.DIAMOND_MINOTAUR_AXE, ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.GOLDEN_MINOTAUR_AXE, ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateTwoLayerItem(TFItems.ICE_SWORD, "", "_solid", "_clear", TFModelTemplates.TWO_LAYERED_HANDHELD);
+		this.generateTwoLayerItem(TFItems.GLASS_SWORD, "", "_solid", "_clear", TFModelTemplates.TWO_LAYERED_HANDHELD);
 
-		this.generateDynamicTrimmableItem(TFItems.PHANTOM_HELMET.get(), ItemModelGenerators.TRIM_PREFIX_HELMET);
-		this.generateDynamicTrimmableItem(TFItems.PHANTOM_CHESTPLATE.get(), ItemModelGenerators.TRIM_PREFIX_CHESTPLATE);
+		this.generateBow(TFItems.TRIPLE_BOW, false);
+		this.generateBow(TFItems.SEEKER_BOW, false);
+		this.generateBow(TFItems.ICE_BOW, true);
+		this.generateBow(TFItems.ENDER_BOW, false);
 
-		this.generateDynamicTrimmableItem(TFItems.NAGA_CHESTPLATE.get(), ItemModelGenerators.TRIM_PREFIX_CHESTPLATE);
-		this.generateDynamicTrimmableItem(TFItems.NAGA_LEGGINGS.get(), ItemModelGenerators.TRIM_PREFIX_LEGGINGS);
+		this.generateFlatItem(TFItems.ICE_BOMB, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.TWILIGHT_SCEPTER, ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.LIFEDRAIN_SCEPTER, ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.ZOMBIE_SCEPTER, ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFlatItem(TFItems.FORTIFICATION_SCEPTER, ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.itemModelOutput.accept(TFItems.LAMP_OF_CINDERS, ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(TFItems.LAMP_OF_CINDERS)));
+		this.generateFlatItem(TFItems.EMPERORS_CLOTH, ModelTemplates.FLAT_ITEM);
+		this.generateOreMagnet(TFItems.ORE_MAGNET);
+		this.itemModelOutput.accept(TFItems.ORE_METER, ItemModelUtils.conditional(new OreMeterFlash(),
+			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.ORE_METER, "_active", ModelTemplates.FLAT_ITEM)),
+			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.ORE_METER, ModelTemplates.FLAT_ITEM))));
+		this.generateFlatItem(TFItems.POCKET_WATCH, ModelTemplates.FLAT_ITEM);
+		this.generateMoonDial(TFItems.MOON_DIAL);
+		this.generateBooleanDispatch(TFItems.CRUMBLE_HORN, ItemModelUtils.isUsingItem(),
+			ItemModelUtils.plainModel(ModelTemplates.createItem(Identifier.withDefaultNamespace("tooting_goat_horn").toString(), TextureSlot.LAYER0).create(TFCommon.prefix("tooting_crumble_horn"), TextureMapping.layer0(TFItems.CRUMBLE_HORN), this.modelOutput)),
+			ItemModelUtils.plainModel(ModelTemplates.createItem(Identifier.withDefaultNamespace("goat_horn").toString(), TextureSlot.LAYER0).create(TFItems.CRUMBLE_HORN, TextureMapping.layer0(TFItems.CRUMBLE_HORN), this.modelOutput)));
+		this.generateFlatItem(TFItems.PEACOCK_FEATHER_FAN, ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.itemModelOutput.accept(TFItems.MOONWORM_QUEEN, ItemModelUtils.conditional(new MoonwormQueenPulse(),
+			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.MOONWORM_QUEEN, "_alt", ModelTemplates.FLAT_HANDHELD_ITEM)),
+			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.MOONWORM_QUEEN, ModelTemplates.FLAT_HANDHELD_ITEM))));
+		this.generateFlatItem(TFItems.MAGIC_PAINTING, ModelTemplates.FLAT_ITEM);
 
-		this.itemModelOutput.accept(TFItems.MYSTIC_CROWN.get(), ItemModelUtils.specialModel(ModelLocationUtils.getModelLocation(TFItems.MYSTIC_CROWN.get()), new MysticCrownSpecialRenderer.Unbaked()));
+		this.generateFlatItem(TFItems.CUBE_TALISMAN, ModelTemplates.FLAT_ITEM);
+		this.itemModelOutput.accept(TFItems.CUBE_OF_ANNIHILATION, ItemModelUtils.conditional(new HasComponent(TFDataComponents.THROWN_PROJECTILE, false),
+			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.CUBE_OF_ANNIHILATION, "_thrown", ModelTemplates.FLAT_HANDHELD_ITEM)),
+			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.CUBE_OF_ANNIHILATION, ModelTemplates.FLAT_HANDHELD_ITEM))));
+		this.generateFlatItem(TFItems.FOUR_LEAF_CLOVER, ModelTemplates.FLAT_ITEM);
 
-		this.generateFlatItem(TFItems.MAZEBREAKER_PICKAXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-		this.generateFlatItem(TFItems.DIAMOND_MINOTAUR_AXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-		this.generateFlatItem(TFItems.GOLDEN_MINOTAUR_AXE.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-		this.generateTwoLayerItem(TFItems.ICE_SWORD.get(), "", "_solid", "_clear", TFModelTemplates.TWO_LAYERED_HANDHELD);
-		this.generateTwoLayerItem(TFItems.GLASS_SWORD.get(), "", "_solid", "_clear", TFModelTemplates.TWO_LAYERED_HANDHELD);
+		this.generateFlatItem(TFItems.RASPBERRY, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.BLUEBERRY, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.BLACKBERRY, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.MALOBERRY, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.BLIGHTBERRY, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.DUSKBERRY, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.SKYBERRY, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.STINGBERRY, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.COPPER_BERRY, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.IRON_BERRY, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.GOLD_BERRY, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.ESSENCE_BERRY, ModelTemplates.FLAT_ITEM);
 
-		this.generateBow(TFItems.TRIPLE_BOW.get(), false);
-		this.generateBow(TFItems.SEEKER_BOW.get(), false);
-		this.generateBow(TFItems.ICE_BOW.get(), true);
-		this.generateBow(TFItems.ENDER_BOW.get(), false);
+		this.generateFlatItem(TFItems.BEEF_JERKY, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.CHICKEN_JERKY, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.PORK_JERKY, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.MUTTON_JERKY, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.RABBIT_JERKY, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.MEEF_JERKY, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.VENISON_JERKY, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.MONSTER_JERKY, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.COD_JERKY, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.SALMON_JERKY, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.TROPICAL_FISH_JERKY, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.FUGU_JERKY, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.SHIKA_SENBEI, ModelTemplates.FLAT_ITEM);
 
-		this.generateGiantTool(TFItems.GIANT_SWORD.get(), Items.STONE_SWORD, 3.0F, 5.0F, 11.0F, 13.0F);
-		this.generateGiantTool(TFItems.GIANT_PICKAXE.get(), Items.STONE_PICKAXE, 7.0F, 2.0F, 15.0F, 10.0F);
+		this.generateFlatItem(TFItems.GELATINOUS_MAZE_SLIME_DROP, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.GELATINOUS_SLIME_DROP, ModelTemplates.FLAT_ITEM);
+		this.itemModelOutput.accept(TFItems.BERRY_MEDLEY, ItemModelUtils.plainModel(this.generateLayeredItem(TFItems.BERRY_MEDLEY, TextureMapping.getItemTexture(Items.BOWL), TextureMapping.getItemTexture(TFItems.BERRY_MEDLEY))));
+		this.itemModelOutput.accept(TFItems.MOSS_SOUP, ItemModelUtils.plainModel(this.generateLayeredItem(TFItems.MOSS_SOUP, TextureMapping.getItemTexture(Items.BOWL), TextureMapping.getItemTexture(TFItems.MOSS_SOUP))));
 
-		this.generateFlatItem(TFItems.ICE_BOMB.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.TWILIGHT_SCEPTER.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-		this.generateFlatItem(TFItems.LIFEDRAIN_SCEPTER.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-		this.generateFlatItem(TFItems.ZOMBIE_SCEPTER.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-		this.generateFlatItem(TFItems.FORTIFICATION_SCEPTER.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-		this.itemModelOutput.accept(TFItems.LAMP_OF_CINDERS.get(), ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(TFItems.LAMP_OF_CINDERS.get())));
-		this.generateFlatItem(TFItems.EMPERORS_CLOTH.get(), ModelTemplates.FLAT_ITEM);
-		this.generateOreMagnet(TFItems.ORE_MAGNET.get());
-		this.itemModelOutput.accept(TFItems.ORE_METER.get(), ItemModelUtils.conditional(new OreMeterFlash(),
-			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.ORE_METER.get(), "_active", ModelTemplates.FLAT_ITEM)),
-			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.ORE_METER.get(), ModelTemplates.FLAT_ITEM))));
-		this.generateFlatItem(TFItems.POCKET_WATCH.get(), ModelTemplates.FLAT_ITEM);
-		this.generateMoonDial(TFItems.MOON_DIAL.get());
-		this.generateBooleanDispatch(TFItems.CRUMBLE_HORN.get(), ItemModelUtils.isUsingItem(),
-			ItemModelUtils.plainModel(ModelTemplates.createItem(Identifier.withDefaultNamespace("tooting_goat_horn").toString(), TextureSlot.LAYER0).create(TwilightForestMod.prefix("tooting_crumble_horn"), TextureMapping.layer0(TFItems.CRUMBLE_HORN.get()), this.modelOutput)),
-			ItemModelUtils.plainModel(ModelTemplates.createItem(Identifier.withDefaultNamespace("goat_horn").toString(), TextureSlot.LAYER0).create(TFItems.CRUMBLE_HORN.get(), TextureMapping.layer0(TFItems.CRUMBLE_HORN.get()), this.modelOutput)));
-		this.generateFlatItem(TFItems.PEACOCK_FEATHER_FAN.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
-		this.itemModelOutput.accept(TFItems.MOONWORM_QUEEN.get(), ItemModelUtils.conditional(new MoonwormQueenPulse(),
-			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.MOONWORM_QUEEN.get(), "_alt", ModelTemplates.FLAT_HANDHELD_ITEM)),
-			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.MOONWORM_QUEEN.get(), ModelTemplates.FLAT_HANDHELD_ITEM))));
-		this.generateFlatItem(TFItems.MAGIC_PAINTING.get(), ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.MAZE_SLIME_BALL, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.TANNIN, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.TREATED_LEATHER, ModelTemplates.FLAT_ITEM);
+		this.generateFlatItem(TFItems.TANNED_LEATHER, ModelTemplates.FLAT_ITEM);
+		this.itemModelOutput.accept(TFItems.STALE_BREAD, ItemModelUtils.plainModel(ModelTemplates.FLAT_HANDHELD_ITEM.create(TFItems.STALE_BREAD, TextureMapping.layer0(Items.BREAD), this.modelOutput)));
 
-		this.generateFlatItem(TFItems.CUBE_TALISMAN.get(), ModelTemplates.FLAT_ITEM);
-		this.itemModelOutput.accept(TFItems.CUBE_OF_ANNIHILATION.get(), ItemModelUtils.conditional(new HasComponent(TFDataComponents.THROWN_PROJECTILE.get(), false),
-			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.CUBE_OF_ANNIHILATION.get(), "_thrown", ModelTemplates.FLAT_HANDHELD_ITEM)),
-			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.CUBE_OF_ANNIHILATION.get(), ModelTemplates.FLAT_HANDHELD_ITEM))));
-		this.generateFlatItem(TFItems.FOUR_LEAF_CLOVER.get(), ModelTemplates.FLAT_ITEM);
-
-		this.generateFlatItem(TFItems.RASPBERRY.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.BLUEBERRY.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.BLACKBERRY.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.MALOBERRY.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.BLIGHTBERRY.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.DUSKBERRY.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.SKYBERRY.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.STINGBERRY.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.COPPER_BERRY.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.IRON_BERRY.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.GOLD_BERRY.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.ESSENCE_BERRY.get(), ModelTemplates.FLAT_ITEM);
-
-		this.generateFlatItem(TFItems.BEEF_JERKY.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.CHICKEN_JERKY.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.PORK_JERKY.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.MUTTON_JERKY.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.RABBIT_JERKY.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.MEEF_JERKY.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.VENISON_JERKY.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.MONSTER_JERKY.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.COD_JERKY.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.SALMON_JERKY.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.TROPICAL_FISH_JERKY.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.FUGU_JERKY.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.SHIKA_SENBEI.get(), ModelTemplates.FLAT_ITEM);
-
-		this.generateFlatItem(TFItems.GELATINOUS_MAZE_SLIME_DROP.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.GELATINOUS_SLIME_DROP.get(), ModelTemplates.FLAT_ITEM);
-		this.itemModelOutput.accept(TFItems.BERRY_MEDLEY.get(), ItemModelUtils.plainModel(this.generateLayeredItem(TFItems.BERRY_MEDLEY.get(), TextureMapping.getItemTexture(Items.BOWL), TextureMapping.getItemTexture(TFItems.BERRY_MEDLEY.get()))));
-		this.itemModelOutput.accept(TFItems.MOSS_SOUP.get(), ItemModelUtils.plainModel(this.generateLayeredItem(TFItems.MOSS_SOUP.get(), TextureMapping.getItemTexture(Items.BOWL), TextureMapping.getItemTexture(TFItems.MOSS_SOUP.get()))));
-
-		this.generateFlatItem(TFItems.MAZE_SLIME_BALL.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.TANNIN.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.TREATED_LEATHER.get(), ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.TANNED_LEATHER.get(), ModelTemplates.FLAT_ITEM);
-		this.itemModelOutput.accept(TFItems.STALE_BREAD.get(), ItemModelUtils.plainModel(ModelTemplates.FLAT_HANDHELD_ITEM.create(TFItems.STALE_BREAD.get(), TextureMapping.layer0(Items.BREAD), this.modelOutput)));
-
-		this.generateTravellersGear(TFItems.TRAVELLERS_GOGGLES.get(), TwilightForestMod.prefix("travellers_modifiers/goggles"));
-		this.generateLayeredTravellersGear(TFItems.TRAVELLERS_VEST.get(), TFItems.TRAVELLERS_GLOVES.get(), new HasComponent(TFDataComponents.TRAVELLERS_HAS_GLOVES.get(), true), TwilightForestMod.prefix("travellers_modifiers/vest"));
-		this.generateTravellersGear(TFItems.TRAVELLERS_WINGS.get(), TwilightForestMod.prefix("travellers_modifiers/wings"));
-		this.generateTravellersGear(TFItems.TRAVELLERS_BOOTS.get(), TwilightForestMod.prefix("travellers_modifiers/boots"));
-		this.generateFlatItem(TFItems.TRAVELLERS_BELT.get(), ModelTemplates.FLAT_ITEM);
+		this.generateTravellersGear(TFItems.TRAVELLERS_GOGGLES, TFCommon.prefix("travellers_modifiers/goggles"));
+		this.generateLayeredTravellersGear(TFItems.TRAVELLERS_VEST, TFItems.TRAVELLERS_GLOVES, new HasComponent(TFDataComponents.TRAVELLERS_HAS_GLOVES, true), TFCommon.prefix("travellers_modifiers/vest"));
+		this.generateTravellersGear(TFItems.TRAVELLERS_WINGS, TFCommon.prefix("travellers_modifiers/wings"));
+		this.generateTravellersGear(TFItems.TRAVELLERS_BOOTS, TFCommon.prefix("travellers_modifiers/boots"));
+		this.generateFlatItem(TFItems.TRAVELLERS_BELT, ModelTemplates.FLAT_ITEM);
 
 		this.generateSpawnEgg("alpha_yeti", 0xCDCDCD, 0x29486E);
 		this.generateSpawnEgg("armored_giant", 0x239391, 0x9A9A9A);
@@ -328,32 +286,17 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateSpawnEgg("wraith", 0x505050, 0x838383);
 		this.generateSpawnEgg("yeti", 0xDEDEDE, 0x4675BB);
 
-		this.generateLayeredItem(TwilightForestMod.prefix("item/shield"), new Material(TwilightForestMod.prefix("item/lich_shield_frame")), new Material(TwilightForestMod.prefix("item/lich_shield_fill")));
+		this.generateLayeredItem(TFCommon.prefix("item/shield"), new Material(TFCommon.prefix("item/lich_shield_frame")), new Material(TFCommon.prefix("item/lich_shield_fill")));
 	}
 
 	private void generateSpawnEgg(String entityName, int primary, int secondary) {
-		Item item = BuiltInRegistries.ITEM.getValue(TwilightForestMod.prefix(entityName + "_spawn_egg"));
-		Identifier model = this.generateLayeredItem(item, new Material(TwilightForestMod.prefix("item/spawn_egg_base")), new Material(TwilightForestMod.prefix("item/spawn_egg_overlay")));
+		Item item = BuiltInRegistries.ITEM.getValue(TFCommon.prefix(entityName + "_spawn_egg"));
+		Identifier model = this.generateLayeredItem(item, new Material(TFCommon.prefix("item/spawn_egg_base")), new Material(TFCommon.prefix("item/spawn_egg_overlay")));
 		this.itemModelOutput.accept(item, ItemModelUtils.tintedModel(model, ItemModelUtils.constantTint(primary), ItemModelUtils.constantTint(secondary)));
 	}
 
 	public void generatePattern(Item item) {
-		this.itemModelOutput.accept(item, ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(item, TextureMapping.layer0(new Material(TwilightForestMod.prefix("item/tf_banner_pattern"))), this.modelOutput)));
-	}
-
-	public void generateGiantTool(Item tool, Item baseTool, float u0, float v0, float u1, float v1) {
-		TextureMapping textures = TextureMapping.layer0(baseTool);
-		ItemModel.Unbaked base = ItemModelUtils.plainModel(TFModelTemplates.GIANT_TOOL.create(tool, textures, this.modelOutput));
-		ItemModel.Unbaked gui = ItemModelUtils.plainModel(ExtendedModelTemplateBuilder.builder()
-			.suffix("_gui")
-			.guiLight(UnbakedModel.GuiLight.FRONT)
-			.requiredTextureSlot(TextureSlot.LAYER0)
-			.element(elementBuilder ->
-				elementBuilder.from(0.0F, 0.0F, 0.0F).to(16.0F, 16.0F, 0.0F)
-					.face(Direction.SOUTH, faceBuilder -> faceBuilder.texture(TextureSlot.LAYER0).uvs(u0, v0, u1, v1)))
-			.build()
-			.create(tool, textures, this.modelOutput));
-		this.itemModelOutput.accept(tool, ItemModelUtils.select(new DisplayContext(), base, ItemModelUtils.when(ItemDisplayContext.GUI, gui)));
+		this.itemModelOutput.accept(item, ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(item, TextureMapping.layer0(new Material(TFCommon.prefix("item/tf_banner_pattern"))), this.modelOutput)));
 	}
 
 	public void generateChestBoat(Item boat) {
@@ -364,14 +307,6 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		var normal = ItemModelUtils.specialModel(ModelLocationUtils.getModelLocation(shieldItem), new KnightmetalShieldSpecialRenderer.Unbaked());
 		var blocking = ItemModelUtils.specialModel(ModelLocationUtils.getModelLocation(shieldItem, "_blocking"), new KnightmetalShieldSpecialRenderer.Unbaked());
 		this.generateBooleanDispatch(shieldItem, ItemModelUtils.isUsingItem(), blocking, normal);
-	}
-
-	public void generateDynamicTrimmableItem(Item armor, Identifier slotTrimPrefix) {
-		this.generateDynamicTrimmableItem(armor, this.createFlatItemModel(armor, ModelTemplates.FLAT_ITEM), slotTrimPrefix);
-	}
-
-	public void generateDynamicTrimmableItem(Item armor, Identifier slotTrimPrefix, int color) {
-		this.generateDynamicTrimmableItem(armor, this.twoLayerItem(armor, "_0", ModelTemplates.TWO_LAYERED_ITEM), slotTrimPrefix, color);
 	}
 
 	public void generateBow(Item bowItem, boolean twoLayered) {
@@ -425,7 +360,7 @@ public class ItemModelGenerator extends ItemModelBuilders {
 			if (i == 0) {
 				var base = ItemModelUtils.plainModel(this.createFlatItemModel(flask, ModelTemplates.FLAT_ITEM));
 				flaskEntries.add(ItemModelUtils.override(crackable ?
-					ItemModelUtils.conditional(new HasComponent(TFDataComponents.POTION_FLASK_CONTENTS.get(), true),
+					ItemModelUtils.conditional(new HasComponent(TFDataComponents.POTION_FLASK_CONTENTS, true),
 						ItemModelUtils.plainModel(this.createFlatItemModel(flask, suffixes[i], ModelTemplates.FLAT_ITEM)), base) : base, 0));
 			} else if (crackable) {
 				flaskEntries.add(ItemModelUtils.override(ItemModelUtils.plainModel(this.createFlatItemModel(flask, suffixes[i], ModelTemplates.FLAT_ITEM)), i));
