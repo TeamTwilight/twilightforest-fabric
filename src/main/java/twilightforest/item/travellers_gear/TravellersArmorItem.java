@@ -123,7 +123,7 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 	}
 
 	@Override
-	public boolean isPrimaryItemFor(ItemStack stack, Holder<Enchantment> enchantment) {
+	public boolean carminite$isPrimaryItemFor(ItemStack stack, Holder<Enchantment> enchantment) {
 		return false;
 	}
 
