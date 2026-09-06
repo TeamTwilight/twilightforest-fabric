@@ -302,6 +302,10 @@ accessible field net/minecraft/world/item/crafting/ShapedRecipe pattern Lnet/min
 accessible field net/minecraft/world/item/crafting/RecipeManager recipes Lnet/minecraft/world/item/crafting/RecipeMap;
 accessible field net/minecraft/world/item/crafting/Ingredient values Lnet/minecraft/core/HolderSet;
 
+# TFClient
+accessible field net/minecraft/client/model/geom/LayerDefinitions INNER_ARMOR_DEFORMATION Lnet/minecraft/client/model/geom/builders/CubeDeformation;
+accessible field net/minecraft/client/model/geom/LayerDefinitions OUTER_ARMOR_DEFORMATION Lnet/minecraft/client/model/geom/builders/CubeDeformation;
+
 # Enum Extensions
 extend-enum net/minecraft/world/damagesource/DamageEffects TWILIGHTFOREST_PINCH
 extend-enum net/minecraft/world/item/Rarity TWILIGHTFOREST_TWILIGHT
