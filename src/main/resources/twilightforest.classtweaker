@@ -306,6 +306,10 @@ accessible field net/minecraft/world/item/crafting/Ingredient values Lnet/minecr
 accessible field net/minecraft/client/model/geom/LayerDefinitions INNER_ARMOR_DEFORMATION Lnet/minecraft/client/model/geom/builders/CubeDeformation;
 accessible field net/minecraft/client/model/geom/LayerDefinitions OUTER_ARMOR_DEFORMATION Lnet/minecraft/client/model/geom/builders/CubeDeformation;
 
+# PatchModel
+accessible class net/minecraft/client/resources/model/ModelBakery$InternerImpl
+accessible method net/minecraft/client/resources/model/ModelBakery$InternerImpl <init> ()V
+
 # Enum Extensions
 extend-enum net/minecraft/world/damagesource/DamageEffects TWILIGHTFOREST_PINCH
 extend-enum net/minecraft/world/item/Rarity TWILIGHTFOREST_TWILIGHT
