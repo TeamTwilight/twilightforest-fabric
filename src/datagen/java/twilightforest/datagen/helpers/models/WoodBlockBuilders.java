@@ -1,14 +1,12 @@
 package twilightforest.datagen.helpers.models;
 
 import com.mojang.datafixers.util.Pair;
-import com.mojang.math.Quadrant;
 import net.minecraft.client.color.item.ItemTintSource;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.*;
 import net.minecraft.client.data.models.model.*;
-import net.minecraft.client.renderer.block.dispatch.Variant;
 import net.minecraft.client.renderer.block.dispatch.VariantMutator;
 import net.minecraft.client.renderer.block.dispatch.multipart.CombinedCondition;
 import net.minecraft.client.renderer.block.dispatch.multipart.Condition;
@@ -21,7 +19,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFCommon;
 import twilightforest.block.BanisterBlock;
 import twilightforest.block.ClimbableHollowLogBlock;
 import twilightforest.block.HorizontalHollowLogBlock;
@@ -44,38 +42,6 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 
 	@Override
 	public abstract void run();
-
-	public void generateSortingLeaves() {
-		Block block = TFBlocks.SORTING_LEAVES.get();
-
-		// we create 4 variants of leaves and choose 1 of 4 flowing direction for each face of each variant
-		int[][] CHOSEN_VARIANTS = {{0, 2, 2, 3, 0, 0}, {2, 0, 3, 0, 2, 1}, {3, 3, 1, 2, 3, 2}, {1, 1, 0, 1, 1, 3}};
-		Variant[] modelFiles = new Variant[CHOSEN_VARIANTS.length];
-		for (int i = 0; i < CHOSEN_VARIANTS.length; i++) {
-			int finalI = i;
-			Identifier model = TFModelTemplates.CUBE_ALL.extend().element(builder -> builder.from(0, 0, 0).to(16, 16, 16).allFaces((direction, faceBuilder) -> {
-				Quadrant rotation = Quadrant.values()[CHOSEN_VARIANTS[finalI][direction.ordinal()]];
-				faceBuilder.cullface(direction).texture(TextureSlot.ALL).rotation(rotation).tintindex(0);
-			})).build().createWithSuffix(block, (i > 0 ? "_" + i : ""), TextureMapping.cube(block), this.modelOutput);
-
-			modelFiles[i] = plainModel(model);
-		}
-
-		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, variants(modelFiles)));
-
-	}
-
-	public void generateMagicLeaves(Block leaves, int rotation, int tint) {
-		Quadrant faceRotation = rotation % 180 == 0 ? Quadrant.R0 : Quadrant.values()[rotation / 90];
-		boolean isRotation180 = rotation == 180;
-		float u1 = isRotation180 ? 16 : 0;
-		float v1 = isRotation180 ? 16 : 0;
-		float u2 = isRotation180 ? 0 : 16;
-		float v2 = isRotation180 ? 0 : 16;
-
-		Identifier model = ModelTemplates.CUBE_ALL.extend().element(builder -> builder.from(0, 0, 0).to(16, 16, 16).allFaces(((dir, faceBuilder) -> faceBuilder.cullface(dir).uvs(u1, v1, u2, v2).tintindex(0).rotation(faceRotation).texture(TextureSlot.ALL)))).build().create(leaves, TextureMapping.cube(leaves), this.modelOutput);
-		this.wrapTintedBlockItem(leaves, ItemModelUtils.constantTint(tint), block -> this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(model))));
-	}
 
 	public void generateSapling(Block block, Block pottedBlock, PlantType type) {
 		MultiVariant sapling = plainVariant(type.getCross().create(block, type.getTextureMapping(block), this.modelOutput));
@@ -204,9 +170,9 @@ public abstract class WoodBlockBuilders extends BlockModelGenerators {
 	public void generateHollowLog(Block log, Block stripped, Block horizontal, Block vertical, Block climbable) {
 		TextureMapping base = TextureMapping.logColumn(log).put(TextureSlot.INSIDE, TextureMapping.getBlockTexture(stripped));
 		Identifier horizModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG.create(horizontal, base, this.modelOutput);
-		Identifier mossModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG_CARPET.createWithSuffix(horizontal, "_moss", base.put(TFTextureSlot.CARPET, TextureMapping.getBlockTexture(TFBlocks.MOSS_PATCH.get())).put(TFTextureSlot.OVERHANG, new Material(TwilightForestMod.prefix("block/moss_overhang"))), this.modelOutput);
-		Identifier grassModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG_PLANT.createWithSuffix(horizontal, "_grass", base.put(TextureSlot.PLANT, TextureMapping.getBlockTexture(Blocks.SHORT_GRASS)).put(TFTextureSlot.CARPET, TextureMapping.getBlockTexture(TFBlocks.MOSS_PATCH.get())).put(TFTextureSlot.OVERHANG, new Material(TwilightForestMod.prefix("block/moss_overhang"))), this.modelOutput);
-		Identifier snowModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG_CARPET.createWithSuffix(horizontal, "_snow", base.put(TFTextureSlot.CARPET, TextureMapping.getBlockTexture(Blocks.SNOW)).put(TFTextureSlot.OVERHANG, new Material(TwilightForestMod.prefix("block/snow_overhang"))), this.modelOutput);
+		Identifier mossModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG_CARPET.createWithSuffix(horizontal, "_moss", base.put(TFTextureSlot.CARPET, TextureMapping.getBlockTexture(TFBlocks.MOSS_PATCH)).put(TFTextureSlot.OVERHANG, new Material(TFCommon.prefix("block/moss_overhang"))), this.modelOutput);
+		Identifier grassModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG_PLANT.createWithSuffix(horizontal, "_grass", base.put(TextureSlot.PLANT, TextureMapping.getBlockTexture(Blocks.SHORT_GRASS)).put(TFTextureSlot.CARPET, TextureMapping.getBlockTexture(TFBlocks.MOSS_PATCH)).put(TFTextureSlot.OVERHANG, new Material(TFCommon.prefix("block/moss_overhang"))), this.modelOutput);
+		Identifier snowModel = TFModelTemplates.HORIZONTAL_HOLLOW_LOG_CARPET.createWithSuffix(horizontal, "_snow", base.put(TFTextureSlot.CARPET, TextureMapping.getBlockTexture(Blocks.SNOW)).put(TFTextureSlot.OVERHANG, new Material(TFCommon.prefix("block/snow_overhang"))), this.modelOutput);
 		Identifier vertModel = TFModelTemplates.VERTICAL_HOLLOW_LOG.create(vertical, base, this.modelOutput);
 		Identifier ladderModel = TFModelTemplates.CLIMBABLE_HOLLOW_LOG.createWithSuffix(climbable, "_ladder", base.put(TFTextureSlot.CLIMBABLE, TextureMapping.getBlockTexture(Blocks.LADDER)), this.modelOutput);
 		Identifier vineModel = TFModelTemplates.CLIMBABLE_HOLLOW_LOG.createWithSuffix(climbable, "_vine", base.put(TFTextureSlot.CLIMBABLE, TextureMapping.getBlockTexture(Blocks.VINE)), this.modelOutput);

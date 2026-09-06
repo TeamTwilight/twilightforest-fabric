@@ -313,6 +313,18 @@ accessible method net/minecraft/client/resources/model/ModelBakery$InternerImpl 
 #TFCommon
 accessible field net/minecraft/world/entity/animal/parrot/Parrot MOB_SOUND_MAP Ljava/util/Map;
 
+# BlockModelGenerator
+accessible method net/minecraft/client/data/models/model/ModelTemplates create (Ljava/lang/String;Ljava/lang/String;[Lnet/minecraft/client/data/models/model/TextureSlot;)Lnet/minecraft/client/data/models/model/ModelTemplate;
+accessible method net/minecraft/client/data/models/model/ModelTemplates create (Ljava/lang/String;[Lnet/minecraft/client/data/models/model/TextureSlot;)Lnet/minecraft/client/data/models/model/ModelTemplate;
+
+# BlockModelBuilders
+accessible field net/minecraft/client/data/models/BlockModelGenerators ROTATION_HORIZONTAL_FACING Lnet/minecraft/client/data/models/blockstates/PropertyDispatch;
+
+# WoodBlockBuilders
+accessible field net/minecraft/client/data/models/BlockModelGenerators ROTATION_HORIZONTAL_FACING_ALT Lnet/minecraft/client/data/models/blockstates/PropertyDispatch;
+accessible field net/minecraft/client/data/models/BlockModelGenerators CHISELED_BOOKSHELF_SLOT_MODEL_CACHE Ljava/util/Map;
+accessible class net/minecraft/client/data/models/BlockModelGenerators$BookSlotModelCacheKey
+
 # Enum Extensions
 extend-enum net/minecraft/world/damagesource/DamageEffects TWILIGHTFOREST_PINCH
 extend-enum net/minecraft/world/item/Rarity TWILIGHTFOREST_TWILIGHT
