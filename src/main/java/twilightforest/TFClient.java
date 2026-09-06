@@ -2,7 +2,10 @@ package twilightforest;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.client.particle.v1.FabricSpriteSet;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.AtlasRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityRenderLayerRegistrationCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.ModelLayerRegistry;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -14,15 +17,14 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.monster.silverfish.SilverfishModel;
 import net.minecraft.client.model.monster.slime.SlimeModel;
 import net.minecraft.client.model.monster.spider.SpiderModel;
+import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import net.minecraft.client.renderer.entity.ArmorModelSet;
-import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.client.renderer.entity.NoopRenderer;
-import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.renderer.special.SpecialModelRenderers;
 import net.minecraft.client.resources.model.sprite.AtlasManager;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackType;
+import twilightforest.client.BakedMultiPartRenderers;
 import twilightforest.client.MagicPaintingAtlasInfo;
 import twilightforest.client.TextureGeneratorReloadListener;
 import twilightforest.client.UncraftingScreen;
@@ -30,14 +32,14 @@ import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.*;
 import twilightforest.client.model.block.BrazierModel;
 import twilightforest.client.model.entity.*;
+import twilightforest.client.particle.*;
 import twilightforest.client.renderer.armor.TFArmorRenderer;
 import twilightforest.client.renderer.block.*;
 import twilightforest.client.renderer.entity.*;
+import twilightforest.client.renderer.entity.layers.IceLayer;
+import twilightforest.client.renderer.entity.layers.ShieldLayer;
 import twilightforest.client.renderer.special.*;
-import twilightforest.init.TFBlockEntities;
-import twilightforest.init.TFEntities;
-import twilightforest.init.TFMenuTypes;
-import twilightforest.init.TFTintSources;
+import twilightforest.init.*;
 import twilightforest.item.mapdata.MapDataManager;
 import twilightforest.network.*;
 
@@ -57,6 +59,8 @@ public final class TFClient implements ClientModInitializer {
 		registerEntityRenderers();
 		registerBlockEntityRenderers();
 		registerLayerDefinitions();
+		registerParticleFactories();
+		registerRenderLayers();
 	}
 
 	private static void registerPackets() {
@@ -232,7 +236,6 @@ public final class TFClient implements ClientModInitializer {
 		ModelLayerRegistry.registerModelLayer(TFModelLayers.PHANTOM_ARMOR_OUTER, () -> LayerDefinition.create(PhantomArmorModel.addPieces(LayerDefinitions.OUTER_ARMOR_DEFORMATION), 64, 32));
 		ModelLayerRegistry.registerModelLayer(TFModelLayers.YETI_ARMOR_INNER, () -> LayerDefinition.create(YetiArmorModel.addPieces(LayerDefinitions.INNER_ARMOR_DEFORMATION), 64, 32));
 		ModelLayerRegistry.registerModelLayer(TFModelLayers.YETI_ARMOR_OUTER, () -> LayerDefinition.create(YetiArmorModel.addPieces(LayerDefinitions.OUTER_ARMOR_DEFORMATION), 64, 32));
-
 		ModelLayerRegistry.registerModelLayer(TFModelLayers.ALPHA_YETI_TROPHY, AlphaYetiModel::createTrophy);
 		ModelLayerRegistry.registerModelLayer(TFModelLayers.HYDRA_TROPHY, HydraHeadModel::create);
 		ModelLayerRegistry.registerModelLayer(TFModelLayers.KNIGHT_PHANTOM_TROPHY, KnightPhantomModel::createTrophy);
@@ -242,7 +245,6 @@ public final class TFClient implements ClientModInitializer {
 		ModelLayerRegistry.registerModelLayer(TFModelLayers.QUEST_RAM_TROPHY, QuestRamModel::create);
 		ModelLayerRegistry.registerModelLayer(TFModelLayers.SNOW_QUEEN_TROPHY, SnowQueenModel::create);
 		ModelLayerRegistry.registerModelLayer(TFModelLayers.UR_GHAST_TROPHY, UrGhastModel::create);
-
 		ModelLayerRegistry.registerModelLayer(TFModelLayers.ADHERENT, AdherentModel::create);
 		ModelLayerRegistry.registerModelLayer(TFModelLayers.ALPHA_YETI, AlphaYetiModel::create);
 		ModelLayerRegistry.registerModelLayer(TFModelLayers.ARMORED_GIANT, () -> LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 64, 32));
@@ -319,16 +321,63 @@ public final class TFClient implements ClientModInitializer {
 		ModelLayerRegistry.registerModelLayer(TFModelLayers.WINTER_WOLF, () -> LayerDefinition.create(AdultWolfModel.createBodyLayer(CubeDeformation.NONE), 64, 32));
 		ModelLayerRegistry.registerModelLayer(TFModelLayers.WRAITH, WraithModel::create);
 		ModelLayerRegistry.registerModelLayer(TFModelLayers.YETI, YetiModel::create);
-
 		ModelLayerRegistry.registerModelLayer(TFModelLayers.CICADA, CicadaModel::create);
 		ModelLayerRegistry.registerModelLayer(TFModelLayers.FIREFLY, FireflyModel::create);
 		ModelLayerRegistry.registerModelLayer(TFModelLayers.KEEPSAKE_CASKET, () -> KeepsakeCasketModel.create(true));
 		ModelLayerRegistry.registerModelLayer(TFModelLayers.SKULL_CHEST, () -> KeepsakeCasketModel.create(false));
 		ModelLayerRegistry.registerModelLayer(TFModelLayers.MOONWORM, MoonwormModel::create);
 		ModelLayerRegistry.registerModelLayer(TFModelLayers.BRAZIER, BrazierModel::create);
-
 		ModelLayerRegistry.registerModelLayer(TFModelLayers.RED_THREAD, RedThreadModel::create);
-
 		ModelLayerRegistry.registerModelLayer(TFModelLayers.KNIGHTMETAL_SHIELD, KnightmetalShieldModel::create);
+	}
+
+	private static void registerParticleFactories() {
+		ParticleProviderRegistry.getInstance().register(TFParticleType.LARGE_FLAME, LargeFlameParticle.Factory::new);
+		ParticleProviderRegistry.getInstance().register(TFParticleType.LEAF_RUNE, LeafRuneParticle.Factory::new);
+		ParticleProviderRegistry.getInstance().register(TFParticleType.BOSS_TEAR, new GhastTearParticle.Factory());
+		ParticleProviderRegistry.getInstance().register(TFParticleType.GHAST_TRAP, GhastTrapParticle.Factory::new);
+		ParticleProviderRegistry.getInstance().register(TFParticleType.PROTECTION, ProtectionParticle.Factory::new); //probably not a good idea, but worth a shot
+		ParticleProviderRegistry.getInstance().register(TFParticleType.SNOW, SnowParticle.Factory::new);
+		ParticleProviderRegistry.getInstance().register(TFParticleType.SNOW_GUARDIAN, SnowGuardianParticle.Factory::new);
+		ParticleProviderRegistry.getInstance().register(TFParticleType.SNOW_WARNING, SnowWarningParticle.SimpleFactory::new);
+		ParticleProviderRegistry.getInstance().register(TFParticleType.EXTENDED_SNOW_WARNING, SnowWarningParticle.ExtendedFactory::new);
+		ParticleProviderRegistry.getInstance().register(TFParticleType.ICE_BEAM, IceBeamParticle.Factory::new);
+		ParticleProviderRegistry.getInstance().register(TFParticleType.ANNIHILATE, AnnihilateParticle.Factory::new);
+		ParticleProviderRegistry.getInstance().register(TFParticleType.PERFECT_DODGE, PerfectDodgeParticle.Provider::new);
+		ParticleProviderRegistry.getInstance().register(TFParticleType.DOUBLE_JUMP, DoubleJumpParticle.Provider::new);
+		ParticleProviderRegistry.getInstance().register(TFParticleType.HUGE_SMOKE, SmokeScaleParticle.Factory::new);
+		ParticleProviderRegistry.getInstance().register(TFParticleType.FIREFLY, FireflyParticle.StationaryProvider::new);
+		ParticleProviderRegistry.getInstance().register(TFParticleType.WANDERING_FIREFLY, FireflyParticle.WanderingProvider::new);
+		ParticleProviderRegistry.getInstance().register(TFParticleType.PARTICLE_SPAWNER_FIREFLY, FireflyParticle.ParticleSpawnerProvider::new);
+		ParticleProviderRegistry.getInstance().register(TFParticleType.FALLEN_LEAF, LeafParticle.Factory::new);
+		ParticleProviderRegistry.getInstance().register(TFParticleType.DIM_FLAME, FlameParticle.SmallFlameProvider::new);
+		ParticleProviderRegistry.getInstance().register(TFParticleType.OMINOUS_FLAME, FlameParticle.SmallFlameProvider::new);
+		ParticleProviderRegistry.getInstance().register(TFParticleType.SORTING_PARTICLE, SortingParticle.Factory::new);
+		ParticleProviderRegistry.getInstance().register(TFParticleType.TRANSFORMATION_PARTICLE, TransformationParticle.Factory::new);
+		ParticleProviderRegistry.getInstance().register(TFParticleType.LOG_CORE_PARTICLE, LogCoreParticle.Factory::new);
+		ParticleProviderRegistry.getInstance().register(TFParticleType.CLOUD_PUFF, CloudPuffParticle.Factory::new);
+		ParticleProviderRegistry.getInstance().register(TFParticleType.DRYING_RACK, DryingRackParticle.Provider::new);
+		ParticleProviderRegistry.getInstance().register(TFParticleType.MAGIC_EFFECT, MagicEffectParticle.Factory::new);
+		ParticleProviderRegistry.getInstance().register(TFParticleType.ANGRY_LICH, AngryLichParticle.Factory::new);
+		ParticleProviderRegistry.getInstance().register(TFParticleType.TWILIGHT_ORB, (FabricSpriteSet sprite) -> new CustomTextureParticle.Factory(sprite, true));
+		ParticleProviderRegistry.getInstance().register(TFParticleType.SHIELD_BREAK, CustomTextureParticle.ShieldBreak::new);
+	}
+
+	private static boolean bakedMultiPartRenderers = false;
+	private static void registerRenderLayers() {
+		LivingEntityRenderLayerRegistrationCallback.EVENT.register((_, renderer, registrationHelper, context) -> {
+			if (!bakedMultiPartRenderers) {
+				BakedMultiPartRenderers.bakeMultiPartRenderers(context);
+				bakedMultiPartRenderers = true;
+			}
+
+			attachLivingRenderLayers(renderer, registrationHelper);
+		});
+	}
+
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	private static void attachLivingRenderLayers(LivingEntityRenderer<?, ?, ?> renderer, LivingEntityRenderLayerRegistrationCallback.RegistrationHelper registrationHelper) {
+		registrationHelper.register(new ShieldLayer(renderer));
+		registrationHelper.register(new IceLayer(renderer));
 	}
 }
