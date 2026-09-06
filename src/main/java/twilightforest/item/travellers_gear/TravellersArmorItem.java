@@ -141,12 +141,12 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 	}
 
 	@Override
-	public boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
+	public boolean carminite$supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
 		return false;
 	}
 
 	@Override
-	public boolean canWalkOnPowderedSnow(ItemStack stack, LivingEntity wearer) {
+	public boolean carminite$canWalkOnPowderedSnow(ItemStack stack, LivingEntity wearer) {
 		return stack.is(TFItems.TRAVELLERS_BOOTS);
 	}
 
@@ -249,6 +249,6 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 	}
 
 	public boolean makesPiglinsNeutral(ItemStack stack, LivingEntity wearer) {
-		return this == TFItems.TRAVELLERS_GOGGLES.get() || stack.has(TFDataComponents.TRAVELLERS_HAS_WINGS);
+		return this == TFItems.TRAVELLERS_GOGGLES || stack.has(TFDataComponents.TRAVELLERS_HAS_WINGS);
 	}
 }

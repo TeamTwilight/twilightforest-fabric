@@ -26,7 +26,7 @@ public class YetiArmorItem extends Item {
 	}
 
 	@Override
-	public boolean canWalkOnPowderedSnow(ItemStack stack, LivingEntity wearer) {
+	public boolean carminite$canWalkOnPowderedSnow(ItemStack stack, LivingEntity wearer) {
 		return stack.is(TFItems.YETI_BOOTS);
 	}
 }
