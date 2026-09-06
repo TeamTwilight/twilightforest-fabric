@@ -24,6 +24,7 @@ import net.minecraft.client.renderer.special.SpecialModelRenderers;
 import net.minecraft.client.resources.model.sprite.AtlasManager;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
 import twilightforest.client.BakedMultiPartRenderers;
 import twilightforest.client.MagicPaintingAtlasInfo;
 import twilightforest.client.TextureGeneratorReloadListener;
@@ -38,6 +39,9 @@ import twilightforest.client.renderer.block.*;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.client.renderer.entity.layers.IceLayer;
 import twilightforest.client.renderer.entity.layers.ShieldLayer;
+import twilightforest.client.renderer.map.ConqueredMapIconRenderer;
+import twilightforest.client.renderer.map.MagicMapPlayerIconRenderer;
+import twilightforest.client.renderer.map.MapDecorationManager;
 import twilightforest.client.renderer.special.*;
 import twilightforest.init.*;
 import twilightforest.item.mapdata.MapDataManager;
@@ -60,6 +64,7 @@ public final class TFClient implements ClientModInitializer {
 		registerBlockEntityRenderers();
 		registerLayerDefinitions();
 		registerParticleFactories();
+		registerMapDecorators();
 		registerRenderLayers();
 	}
 
@@ -361,6 +366,20 @@ public final class TFClient implements ClientModInitializer {
 		ParticleProviderRegistry.getInstance().register(TFParticleType.ANGRY_LICH, AngryLichParticle.Factory::new);
 		ParticleProviderRegistry.getInstance().register(TFParticleType.TWILIGHT_ORB, (FabricSpriteSet sprite) -> new CustomTextureParticle.Factory(sprite, true));
 		ParticleProviderRegistry.getInstance().register(TFParticleType.SHIELD_BREAK, CustomTextureParticle.ShieldBreak::new);
+	}
+
+	private static void registerMapDecorators() {
+		MapDecorationManager.addDecoration(MapDecorationTypes.PLAYER.value(), new MagicMapPlayerIconRenderer());
+		MapDecorationManager.addDecoration(TFMapDecorations.QUEST_GROVE, new ConqueredMapIconRenderer());
+		MapDecorationManager.addDecoration(TFMapDecorations.NAGA_COURTYARD, new ConqueredMapIconRenderer());
+		MapDecorationManager.addDecoration(TFMapDecorations.LICH_TOWER, new ConqueredMapIconRenderer());
+		MapDecorationManager.addDecoration(TFMapDecorations.LABYRINTH, new ConqueredMapIconRenderer());
+		MapDecorationManager.addDecoration(TFMapDecorations.HYDRA_LAIR, new ConqueredMapIconRenderer());
+		MapDecorationManager.addDecoration(TFMapDecorations.KNIGHT_STRONGHOLD, new ConqueredMapIconRenderer());
+		MapDecorationManager.addDecoration(TFMapDecorations.DARK_TOWER, new ConqueredMapIconRenderer());
+		MapDecorationManager.addDecoration(TFMapDecorations.YETI_LAIR, new ConqueredMapIconRenderer());
+		MapDecorationManager.addDecoration(TFMapDecorations.AURORA_PALACE, new ConqueredMapIconRenderer());
+		MapDecorationManager.addDecoration(TFMapDecorations.FINAL_CASTLE, new ConqueredMapIconRenderer());
 	}
 
 	private static boolean bakedMultiPartRenderers = false;

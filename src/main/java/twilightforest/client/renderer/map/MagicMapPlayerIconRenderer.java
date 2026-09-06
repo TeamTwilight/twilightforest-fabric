@@ -7,10 +7,9 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.MapRenderState;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.neoforged.neoforge.client.gui.map.IMapDecorationRenderer;
 import org.joml.Matrix4f;
 
-public class MagicMapPlayerIconRenderer implements IMapDecorationRenderer {
+public class MagicMapPlayerIconRenderer implements TFMapDecorationRenderer {
 
 	//[VanillaCopy] of MapRenderer.RenderInstance.draw, but with a set depth offset instead of relying on index.
 	//this allows the icon to render on top of everything else instead of sometimes on top, sometimes behind
