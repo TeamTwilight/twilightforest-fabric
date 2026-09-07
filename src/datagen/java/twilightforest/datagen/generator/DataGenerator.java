@@ -25,6 +25,7 @@ public class DataGenerator {
 		pack.addProvider(StructureTagGenerator::new);
 		pack.addProvider(WoodPaletteTagGenerator::new);
 
+		pack.addProvider(DynamicRegistryProvider::new);
 		pack.addProvider(CraftingGeneratorRunner::new);
 		pack.addProvider(LootGenerator::new);
 		pack.addProvider(QuestGenerator::new);
