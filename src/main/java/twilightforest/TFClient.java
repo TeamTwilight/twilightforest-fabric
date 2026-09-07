@@ -25,15 +25,13 @@ import net.minecraft.client.resources.model.sprite.AtlasManager;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
-import twilightforest.client.BakedMultiPartRenderers;
-import twilightforest.client.MagicPaintingAtlasInfo;
-import twilightforest.client.TextureGeneratorReloadListener;
-import twilightforest.client.UncraftingScreen;
+import twilightforest.client.*;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.*;
 import twilightforest.client.model.block.BrazierModel;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.particle.*;
+import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.armor.TFArmorRenderer;
 import twilightforest.client.renderer.block.*;
 import twilightforest.client.renderer.entity.*;
@@ -51,9 +49,12 @@ public final class TFClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		TFClientEvents.init();
-		MapDataManager.init();
 		TFTintSources.init();
+
+		TFClientEvents.init();
+		TFSkyRenderer.init();
+		MapDataManager.init();
+		MultipartRenderDispatcher.init();
 
 		registerPackets();
 		registerSpecialModelRenderers();

@@ -12,9 +12,9 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.world.components.structures.util.StructureHints;
 
 public class GenerateBookCommand {
@@ -30,31 +30,31 @@ public class GenerateBookCommand {
 				.executes(context -> generateBook(context.getSource(), ResourceKeyArgument.getStructure(context, "structure"))));
 	}
 
-	private int generateBook(CommandSourceStack source, @Nullable Holder.Reference<Structure> structureKey) throws CommandSyntaxException {
+	private int generateBook(CommandSourceStack source, Holder.@Nullable Reference<Structure> structureKey) throws CommandSyntaxException {
 		if (!(source.getEntity() instanceof Player player) || player instanceof FakePlayer) throw ERROR_NOT_RUN_BY_PLAYER.create();
 		if (structureKey == null) {
 			for (Structure structure : source.getLevel().registryAccess().lookupOrThrow(Registries.STRUCTURE).stream().toList()) {
 				if (structure instanceof StructureHints hint) {
-					ItemStack book = hint.createHintBook(source.registryAccess());
-					if (!book.isEmpty()) {
-						if (!player.addItem(book)) {
-							player.drop(book, true);
+					ItemStackTemplate book = hint.createHintBook(source.registryAccess());
+					if (!book.create().isEmpty()) {
+						if (!player.addItem(book.create())) {
+							player.drop(book.create(), true);
 						}
 					}
 				}
 			}
 		} else {
 			if (source.getLevel().registryAccess().lookupOrThrow(Registries.STRUCTURE).get(structureKey.key()).orElseThrow() instanceof StructureHints hint) {
-				ItemStack book = hint.createHintBook(source.registryAccess());
-				if (!book.isEmpty()) {
-					if (!player.addItem(book)) {
-						player.drop(book, true);
+				ItemStackTemplate book = hint.createHintBook(source.registryAccess());
+				if (!book.create().isEmpty()) {
+					if (!player.addItem(book.create())) {
+						player.drop(book.create(), true);
 					}
 				}
 			} else {
-				ItemStack book = StructureHints.HintConfig.defaultBook();
-				if (!player.addItem(book)) {
-					player.drop(book, true);
+				ItemStackTemplate book = StructureHints.HintConfig.defaultBook();
+				if (!player.addItem(book.create())) {
+					player.drop(book.create(), true);
 				}
 			}
 		}

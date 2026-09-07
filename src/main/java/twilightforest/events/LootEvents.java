@@ -4,6 +4,7 @@ import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemInstance;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
@@ -27,7 +28,9 @@ public class LootEvents {
 	private static final GiantPickUsedCondition GIANT_PICK_USED = new GiantPickUsedCondition(LootContext.EntityTarget.THIS);
 
 	public void handleFieryToolDrops(LootContext context, List<ItemStack> drops) {
-		if (!context.getOptionalParameter(LootContextParams.TOOL).is(TFItems.FIERY_PICKAXE)) {
+		ItemInstance tool = context.getOptionalParameter(LootContextParams.TOOL);
+
+		if (tool == null || !tool.is(TFItems.FIERY_PICKAXE)) {
 			return;
 		}
 

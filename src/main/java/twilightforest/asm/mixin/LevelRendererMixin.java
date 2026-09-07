@@ -1,6 +1,7 @@
 package twilightforest.asm.mixin;
 
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import com.mojang.blaze3d.framegraph.FramePass;
@@ -23,20 +24,36 @@ public class LevelRendererMixin {
 	@Final
 	private LevelRenderState levelRenderState;
 
-	@WrapWithCondition(
+	@WrapOperation(
 		method = "addSkyPass(Lcom/mojang/blaze3d/framegraph/FrameGraphBuilder;Lnet/minecraft/client/renderer/state/level/CameraRenderState;Lcom/mojang/blaze3d/buffers/GpuBufferSlice;)V",
 		at = @At(
 			value = "INVOKE",
 			target = "Lcom/mojang/blaze3d/framegraph/FramePass;executes(Ljava/lang/Runnable;)V"
 		)
 	)
-	private boolean twilightforest$renderSky(
+	private void twilightforest$renderSky(
 		FramePass instance,
-		Runnable runnable,
+		Runnable original,
+		Operation<Void> operation,
 		@Local(name = "state") SkyRenderState state,
 		@Local(argsOnly = true, name = "skyFog") GpuBufferSlice skyFog
 	) {
-		return !Minecraft.getInstance().level.dimension().equals(TFDimension.DIMENSION_KEY)
-			|| !TwilightForestRenderInfo.INSTANCE.renderSky(this.levelRenderState, state, RenderSystem.getModelViewMatrix(), () -> RenderSystem.setShaderFog(skyFog));
+		boolean isTwilightForest = Minecraft.getInstance().level != null
+			&& Minecraft.getInstance().level.dimension().equals(TFDimension.DIMENSION_KEY);
+
+		Runnable replacement = () -> {
+			if (isTwilightForest) {
+				TwilightForestRenderInfo.INSTANCE.renderSky(
+					this.levelRenderState,
+					state,
+					RenderSystem.getModelViewMatrix(),
+					() -> RenderSystem.setShaderFog(skyFog)
+				);
+			} else {
+				original.run();
+			}
+		};
+
+		operation.call(instance, replacement);
 	}
 }
