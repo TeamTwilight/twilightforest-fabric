@@ -16,13 +16,12 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
+import twilightforest.TFCommon;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
 
 import java.util.Collections;
 import java.util.Optional;
-
-import static twilightforest.TwilightForestMod.prefix;
 
 public class StonecuttingGenerator {
 
@@ -171,7 +170,7 @@ public class StonecuttingGenerator {
 
 	private static ResourceKey<Recipe<?>> getIdFor(ItemLike input, ItemLike output) {
 		String path = String.format("stonecutting/%s/%s", BuiltInRegistries.ITEM.getKey(input.asItem()).getPath(), BuiltInRegistries.ITEM.getKey(output.asItem()).getPath());
-		return ResourceKey.create(Registries.RECIPE, prefix(path));
+		return ResourceKey.create(Registries.RECIPE, TFCommon.prefix(path));
 	}
 
 	protected static Criterion<InventoryChangeTrigger.TriggerInstance> has(HolderGetter<Item> getter, ItemLike item) {
