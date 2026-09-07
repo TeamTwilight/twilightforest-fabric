@@ -1,15 +1,14 @@
 package twilightforest.client.renderer.block;
 
 import com.google.common.collect.ImmutableMap;
+import net.fabricmc.fabric.api.client.rendering.v1.RenderStateDataKey;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.ChestRenderer;
-import net.minecraft.client.renderer.blockentity.state.ChestRenderState;
 import net.minecraft.client.resources.model.sprite.SpriteId;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.properties.ChestType;
-import org.jspecify.annotations.Nullable;
 import twilightforest.TFCommon;
 import twilightforest.init.TFBlocks;
 
@@ -17,6 +16,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 public class TFChestRenderer<T extends ChestBlockEntity> extends ChestRenderer<T> {
+	public static final RenderStateDataKey<SpriteId> CUSTOM_CHEST_SPRITE_KEY = RenderStateDataKey.create(() -> "custom_chest_sprite");
 	public static final Map<Block, EnumMap<ChestType, SpriteId>> MATERIALS;
 
 	static {
@@ -45,11 +45,6 @@ public class TFChestRenderer<T extends ChestBlockEntity> extends ChestRenderer<T
 
 	public TFChestRenderer(BlockEntityRendererProvider.Context context) {
 		super(context);
-	}
-
-	@Override
-	protected @Nullable SpriteId getCustomSprite(T blockEntity, ChestRenderState renderState) {
-		return MATERIALS.get(blockEntity.getBlockState().getBlock()).get(renderState.type);
 	}
 
 	private static EnumMap<ChestType, SpriteId> chestMaterial(String type, String suffix) {
