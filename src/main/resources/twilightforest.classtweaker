@@ -332,6 +332,9 @@ accessible method net/minecraft/client/data/models/model/ModelTemplates createIt
 accessible method net/minecraft/client/data/models/ModelProvider$ItemInfoCollector <init> ()V
 accessible method net/minecraft/client/data/models/ModelProvider$BlockStateGeneratorCollector <init> ()V
 
+# EquipmentAssetsGenerator
+accessible method net/minecraft/client/data/models/EquipmentAssetProvider bootstrap (Ljava/util/function/BiConsumer;)V
+
 # Enum Extensions
 extend-enum net/minecraft/world/damagesource/DamageEffects TWILIGHTFOREST_PINCH
 extend-enum net/minecraft/world/item/Rarity TWILIGHTFOREST_TWILIGHT

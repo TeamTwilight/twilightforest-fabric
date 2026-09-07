@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFCommon;
 import twilightforest.init.TFBlocks;
 
 public class UncraftingGenerator {
@@ -23,8 +23,8 @@ public class UncraftingGenerator {
 			.pattern("B")
 			.define('B', Items.BOOK).save(output);
 
-		UncraftingRecipeBuilder.uncrafting(items, TFBlocks.KEEPSAKE_CASKET.get()).setCost(0)
+		UncraftingRecipeBuilder.uncrafting(items, TFBlocks.KEEPSAKE_CASKET).setCost(0)
 			.pattern("C")
-			.define('C', TFBlocks.SKULL_CHEST.value()).save(output, ResourceKey.create(Registries.RECIPE, TwilightForestMod.prefix("relinquish_keepsakes")));
+			.define('C', TFBlocks.SKULL_CHEST).save(output, ResourceKey.create(Registries.RECIPE, TFCommon.prefix("relinquish_keepsakes")));
 	}
 }

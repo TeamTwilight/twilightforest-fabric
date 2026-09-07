@@ -1,5 +1,6 @@
 package twilightforest.datagen.helpers;
 
+import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricSoundsProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
@@ -10,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.datagen.assets.LangGenerator;
 
-public abstract class TFSoundProvider extends SoundDefinitionsProvider {
+public abstract class TFSoundProvider extends FabricSoundsProvider {
 
 	protected TFSoundProvider(PackOutput output) {
 		super(output, TwilightForestMod.ID);

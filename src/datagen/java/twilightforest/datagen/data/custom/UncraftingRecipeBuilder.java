@@ -14,7 +14,7 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.level.ItemLike;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFCommon;
 import twilightforest.item.recipe.UncraftingRecipe;
 
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public class UncraftingRecipeBuilder implements RecipeBuilder {
 
 	@Override
 	public ResourceKey<Recipe<?>> defaultId() {
-		return RecipeBuilder.getDefaultRecipeId(new ItemStackTemplate(this.input.getValues().get(0).value())); //TODO: idk
+		return RecipeBuilder.getDefaultRecipeId(new ItemStackTemplate(this.input.values.get(0).value())); //TODO: idk
 	}
 
 	public static UncraftingRecipeBuilder uncrafting(HolderGetter<Item> getter, ItemLike input) {
@@ -112,7 +112,7 @@ public class UncraftingRecipeBuilder implements RecipeBuilder {
 
 	@Override
 	public void save(RecipeOutput output) {
-		this.save(output, ResourceKey.create(Registries.RECIPE, TwilightForestMod.prefix("uncrafting/" + defaultId().identifier().getPath())));
+		this.save(output, ResourceKey.create(Registries.RECIPE, TFCommon.prefix("uncrafting/" + defaultId().identifier().getPath())));
 	}
 
 	@Override

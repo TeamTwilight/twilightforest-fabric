@@ -504,7 +504,7 @@ public record ChestLootTables(HolderLookup.Provider registries) implements LootT
 					.add(LootItem.lootTableItem(Items.BOOK).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 12))))
 					.add(LootItem.lootTableItem(Items.INK_SAC).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
 					.add(LootItem.lootTableItem(Items.BOOK).apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries(), UniformGenerator.between(5, 10))))
-					.add(LootItem.lootTableItem(TFBlocks.CANOPY_BOOKSHELF.value()).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 12))))
+					.add(LootItem.lootTableItem(TFBlocks.CANOPY_BOOKSHELF).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 12))))
 					.add(LootItem.lootTableItem(Blocks.BOOKSHELF).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 12))))
 					.add(LootItem.lootTableItem(Items.WRITABLE_BOOK).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
 					.add(LootItem.lootTableItem(Items.LADDER).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 10)))))
@@ -518,7 +518,7 @@ public record ChestLootTables(HolderLookup.Provider registries) implements LootT
 					.add(LootItem.lootTableItem(Items.DIAMOND))
 					.add(LootItem.lootTableItem(Items.WRITABLE_BOOK).setWeight(2))
 					.add(LootItem.lootTableItem(Items.BOOK).apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries(), UniformGenerator.between(20, 30))).setWeight(2))
-					.add(LootItem.lootTableItem(Items.BOOK).apply(new SetEnchantmentsFunction.Builder().withEnchantment(this.registries.holderOrThrow(TFEnchantments.RENEWAL), ConstantValue.exactly(1.0F))))));
+					.add(LootItem.lootTableItem(Items.BOOK).apply(new SetEnchantmentsFunction.Builder().withEnchantment(this.registries.carminite$holderOrThrow(TFEnchantments.RENEWAL), ConstantValue.exactly(1.0F))))));
 
 		register.accept(TFLootTables.TOWER_ROOM,
 			LootTable.lootTable()
@@ -565,8 +565,8 @@ public record ChestLootTables(HolderLookup.Provider registries) implements LootT
 					.add(LootItem.lootTableItem(Items.GOLDEN_AXE).apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries(), ConstantValue.exactly(20))).setWeight(75))
 					//TODO XP Charm
 					.add(LootItem.lootTableItem(Items.ENCHANTED_GOLDEN_APPLE).setWeight(25))
-					.add(LootItem.lootTableItem(TFItems.MOONWORM_QUEEN.value()).setWeight(25))
-					.add(LootItem.lootTableItem(TFItems.PEACOCK_FEATHER_FAN.value()).setWeight(25))));
+					.add(LootItem.lootTableItem(TFItems.MOONWORM_QUEEN).setWeight(25))
+					.add(LootItem.lootTableItem(TFItems.PEACOCK_FEATHER_FAN).setWeight(25))));
 
 		register.accept(TFLootTables.TOWER_POTION,
 			LootTable.lootTable()

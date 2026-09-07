@@ -1,9 +1,9 @@
 package twilightforest.datagen.data.recipes;
 
 import com.mojang.datafixers.util.Pair;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.*;
@@ -11,16 +11,10 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Unit;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionContents;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Blocks;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.crafting.CompoundIngredient;
-import net.neoforged.neoforge.common.crafting.DataComponentIngredient;
 import twilightforest.datagen.data.custom.DryingRecipeBuilder;
 import twilightforest.datagen.data.custom.NoSmithingTemplateRecipeBuilder;
 import twilightforest.datagen.data.custom.ScepterRecipeBuilder;
@@ -42,7 +36,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 	}
 
 	@Override
-	protected void buildRecipes() {
+	public void buildRecipes() {
 		HolderGetter<Item> getter = this.registries.lookupOrThrow(Registries.ITEM);
 		StonecuttingGenerator.buildRecipes(getter, this.output);
 		UncraftingGenerator.buildRecipes(getter, this.output);
@@ -80,7 +74,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.pattern("-#-")
 			.pattern("-#-")
 			.define('#', Ingredient.of(Blocks.IRON_BARS))
-			.define('-', Tags.Items.NUGGETS_IRON)
+			.define('-', ConventionalItemTags.IRON_NUGGETS)
 			.unlockedBy("has_iron_bars", has(Blocks.IRON_BARS))
 			.save(this.output);
 
@@ -110,7 +104,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.pattern("GPG")
 			.pattern("PPP")
 			.pattern("GPG")
-			.define('G', Ingredient.of(getter.getOrThrow(Tags.Items.GLASS_BLOCKS)))
+			.define('G', Ingredient.of(getter.getOrThrow(ConventionalItemTags.GLASS_BLOCKS)))
 			.define('P', Ingredient.of(TFBlocks.CANOPY_PLANKS))
 			.unlockedBy("has_planks", has(TFBlocks.CANOPY_PLANKS))
 			.save(this.output);
@@ -128,7 +122,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.pattern("GGG")
 			.define('G', Ingredient.of(Items.GLASS))
 			.define('L', Ingredient.of(TFBlocks.TWILIGHT_OAK_LOG))
-			.unlockedBy("has_tf_oak", has(TFBlocks.TWILIGHT_OAK_LOG.value()))
+			.unlockedBy("has_tf_oak", has(TFBlocks.TWILIGHT_OAK_LOG))
 			.save(this.output);
 
 		ShapelessRecipeBuilder.shapeless(getter, RecipeCategory.DECORATIONS, TFBlocks.FIREFLY_JAR)
@@ -170,18 +164,9 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.pattern("∴")
 			.pattern("|")
 			.define('∴', Ingredient.of(TFItems.TORCHBERRIES))
-			.define('|', Tags.Items.RODS_WOODEN)
+			.define('|', ConventionalItemTags.WOODEN_RODS)
 			.unlockedBy("has_item", has(TFItems.TORCHBERRIES))
 			.save(this.output, this.createKey("berry_torch"));
-
-		ShapedRecipeBuilder.shaped(getter, RecipeCategory.DECORATIONS, TFBlocks.UNCRAFTING_TABLE)
-			.pattern("###")
-			.pattern("#X#")
-			.pattern("###")
-			.define('#', Blocks.CRAFTING_TABLE)
-			.define('X', TFItems.MAZE_MAP_FOCUS)
-			.unlockedBy("has_uncrafting_table", has(TFBlocks.UNCRAFTING_TABLE))
-			.save(this.output.withConditions(UncraftingTableCondition.INSTANCE), this.createKey("uncrafting_table"));
 
 		cookingRecipes("smelted", SmeltingRecipe::new, 200);
 		cookingRecipes("smoked", SmokingRecipe::new, 100);
@@ -222,7 +207,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		ShapelessRecipeBuilder.shapeless(getter, RecipeCategory.MISC, TFItems.ARMOR_SHARD_CLUSTER)
 			.requires(Ingredient.of(TFItems.ARMOR_SHARD), 9)
 			.unlockedBy("has_item", has(TFItems.ARMOR_SHARD))
-			.save(this.output, this.createKey("material/" + TFItems.ARMOR_SHARD_CLUSTER.getId().getPath()));
+			.save(this.output, this.createKey("material/" + BuiltInRegistries.ITEM.getKey(TFItems.ARMOR_SHARD_CLUSTER).getPath()));
 
 		ShapelessRecipeBuilder.shapeless(getter, RecipeCategory.BUILDING_BLOCKS, TFBlocks.MOSSY_UNDERBRICK, 1)
 			.requires(Ingredient.of(Blocks.VINE, Blocks.MOSS_BLOCK))
@@ -238,23 +223,23 @@ public class CraftingGenerator extends CraftingDataHelper {
 
 		ShapelessRecipeBuilder.shapeless(getter, RecipeCategory.MISC, TFItems.CARMINITE)
 			.requires(Ingredient.of(TFItems.BORER_ESSENCE))
-			.requires(Tags.Items.DUSTS_REDSTONE)
+			.requires(ConventionalItemTags.REDSTONE_DUSTS)
 			.requires(Ingredient.of(TFItems.BORER_ESSENCE))
-			.requires(Tags.Items.DUSTS_REDSTONE)
+			.requires(ConventionalItemTags.REDSTONE_DUSTS)
 			.requires(Ingredient.of(Items.GHAST_TEAR))
-			.requires(Tags.Items.DUSTS_REDSTONE)
+			.requires(ConventionalItemTags.REDSTONE_DUSTS)
 			.requires(Ingredient.of(TFItems.BORER_ESSENCE))
-			.requires(Tags.Items.DUSTS_REDSTONE)
+			.requires(ConventionalItemTags.REDSTONE_DUSTS)
 			.requires(Ingredient.of(TFItems.BORER_ESSENCE))
 			.unlockedBy("has_item", has(TFItems.BORER_ESSENCE))
-			.save(this.output, this.createKey("material/" + TFItems.CARMINITE.getId().getPath()));
+			.save(this.output, this.createKey("material/" + BuiltInRegistries.ITEM.getKey(TFItems.CARMINITE).getPath()));
 
 		ShapelessRecipeBuilder.shapeless(getter, RecipeCategory.MISC, TFItems.RAW_IRONWOOD, 2)
 			.requires(Ingredient.of(TFItems.LIVEROOT))
 			.requires(Ingredient.of(Items.RAW_IRON))
-			.requires(Tags.Items.NUGGETS_GOLD)
+			.requires(ConventionalItemTags.GOLD_NUGGETS)
 			.unlockedBy("has_item", has(TFItems.LIVEROOT))
-			.save(this.output, this.createKey("material/" + TFItems.RAW_IRONWOOD.getId().getPath()));
+			.save(this.output, this.createKey("material/" + BuiltInRegistries.ITEM.getKey(TFItems.RAW_IRONWOOD).getPath()));
 
 		ShapedRecipeBuilder.shaped(getter, RecipeCategory.BUILDING_BLOCKS, TFBlocks.RAINY_CLOUD, 8)
 			.pattern("ccc")
@@ -288,7 +273,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.pattern("#∴#")
 			.pattern("∴^∴")
 			.pattern("uuu")
-			.define('∴', Tags.Items.DUSTS_REDSTONE)
+			.define('∴', ConventionalItemTags.REDSTONE_DUSTS)
 			.define('#', Ingredient.of(TFBlocks.ENCASED_TOWERWOOD))
 			.define('^', Ingredient.of(TFBlocks.FIRE_JET))
 			.define('u', Ingredient.of(Items.LAVA_BUCKET))
@@ -299,7 +284,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.pattern("#∴#")
 			.pattern("∴^∴")
 			.pattern("#∴#")
-			.define('∴', Tags.Items.DUSTS_REDSTONE)
+			.define('∴', ConventionalItemTags.REDSTONE_DUSTS)
 			.define('#', Ingredient.of(TFBlocks.ENCASED_TOWERWOOD))
 			.define('^', Ingredient.of(TFBlocks.SMOKER))
 			.unlockedBy("has_item", has(TFBlocks.SMOKER))
@@ -321,7 +306,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.pattern("#6#")
 			.define('6', TFItemTags.CARMINITE_GEMS)
 			.define('#', Ingredient.of(TFBlocks.ENCASED_TOWERWOOD))
-			.define('%', Tags.Items.ORES_REDSTONE)
+			.define('%', ConventionalItemTags.REDSTONE_ORES)
 			.unlockedBy("has_item", has(TFItemTags.CARMINITE_GEMS))
 			.save(this.output);
 
@@ -329,7 +314,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.pattern("#∴#")
 			.pattern("∴6∴")
 			.pattern("#∴#")
-			.define('∴', Tags.Items.DUSTS_REDSTONE)
+			.define('∴', ConventionalItemTags.REDSTONE_DUSTS)
 			.define('#', Ingredient.of(TFBlocks.ENCASED_TOWERWOOD))
 			.define('6', TFItemTags.CARMINITE_GEMS)
 			.unlockedBy("has_item", has(TFBlocks.REAPPEARING_BLOCK))
@@ -349,7 +334,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.requires(Ingredient.of(TFBlocks.TOWERWOOD))
 			.requires(Ingredient.of(Blocks.VINE, Blocks.MOSS_BLOCK))
 			.unlockedBy("has_item", has(TFBlocks.TOWERWOOD))
-			.save(this.output, this.createKey("wood/" + TFBlocks.MOSSY_TOWERWOOD.getId().getPath()));
+			.save(this.output, this.createKey("wood/" + BuiltInRegistries.BLOCK.getKey(TFBlocks.MOSSY_TOWERWOOD).getPath()));
 
 	}
 
@@ -358,21 +343,21 @@ public class CraftingGenerator extends CraftingDataHelper {
 		leggingsItem(getter, TFItems.IRONWOOD_LEGGINGS, TFItemTags.IRONWOOD_INGOTS, this.buildEnchants(provider, Pair.of(Enchantments.PROTECTION, 1)));
 		chestplateItem(getter, TFItems.IRONWOOD_CHESTPLATE, TFItemTags.IRONWOOD_INGOTS, this.buildEnchants(provider, Pair.of(Enchantments.PROTECTION, 1)));
 		helmetItem(getter, TFItems.IRONWOOD_HELMET, TFItemTags.IRONWOOD_INGOTS, this.buildEnchants(provider, Pair.of(Enchantments.AQUA_AFFINITY, 1)));
-		swordItem(getter, TFItems.IRONWOOD_SWORD, TFItemTags.IRONWOOD_INGOTS, Tags.Items.RODS_WOODEN, this.buildEnchants(provider, Pair.of(Enchantments.KNOCKBACK, 1)));
-		pickaxeItem(getter, TFItems.IRONWOOD_PICKAXE, TFItemTags.IRONWOOD_INGOTS, Tags.Items.RODS_WOODEN, this.buildEnchants(provider, Pair.of(Enchantments.EFFICIENCY, 1)));
-		axeItem(getter, TFItems.IRONWOOD_AXE, TFItemTags.IRONWOOD_INGOTS, Tags.Items.RODS_WOODEN, this.buildEnchants(provider, Pair.of(Enchantments.FORTUNE, 1)));
-		shovelItem(getter, TFItems.IRONWOOD_SHOVEL, TFItemTags.IRONWOOD_INGOTS, Tags.Items.RODS_WOODEN, this.buildEnchants(provider, Pair.of(Enchantments.UNBREAKING, 1)));
-		hoeItem(getter, TFItems.IRONWOOD_HOE, TFItemTags.IRONWOOD_INGOTS, Tags.Items.RODS_WOODEN, this.buildEnchants(provider, Pair.of(Enchantments.EFFICIENCY, 1)));
+		swordItem(getter, TFItems.IRONWOOD_SWORD, TFItemTags.IRONWOOD_INGOTS, ConventionalItemTags.WOODEN_RODS, this.buildEnchants(provider, Pair.of(Enchantments.KNOCKBACK, 1)));
+		pickaxeItem(getter, TFItems.IRONWOOD_PICKAXE, TFItemTags.IRONWOOD_INGOTS, ConventionalItemTags.WOODEN_RODS, this.buildEnchants(provider, Pair.of(Enchantments.EFFICIENCY, 1)));
+		axeItem(getter, TFItems.IRONWOOD_AXE, TFItemTags.IRONWOOD_INGOTS, ConventionalItemTags.WOODEN_RODS, this.buildEnchants(provider, Pair.of(Enchantments.FORTUNE, 1)));
+		shovelItem(getter, TFItems.IRONWOOD_SHOVEL, TFItemTags.IRONWOOD_INGOTS, ConventionalItemTags.WOODEN_RODS, this.buildEnchants(provider, Pair.of(Enchantments.UNBREAKING, 1)));
+		hoeItem(getter, TFItems.IRONWOOD_HOE, TFItemTags.IRONWOOD_INGOTS, ConventionalItemTags.WOODEN_RODS, this.buildEnchants(provider, Pair.of(Enchantments.EFFICIENCY, 1)));
 
 		bootsItem(getter, TFItems.STEELEAF_BOOTS, TFItemTags.STEELEAF_INGOTS, this.buildEnchants(provider, Pair.of(Enchantments.FEATHER_FALLING, 2)));
 		leggingsItem(getter, TFItems.STEELEAF_LEGGINGS, TFItemTags.STEELEAF_INGOTS, this.buildEnchants(provider, Pair.of(Enchantments.FIRE_PROTECTION, 2)));
 		chestplateItem(getter, TFItems.STEELEAF_CHESTPLATE, TFItemTags.STEELEAF_INGOTS, this.buildEnchants(provider, Pair.of(Enchantments.BLAST_PROTECTION, 2)));
 		helmetItem(getter, TFItems.STEELEAF_HELMET, TFItemTags.STEELEAF_INGOTS, this.buildEnchants(provider, Pair.of(Enchantments.PROJECTILE_PROTECTION, 2)));
-		swordItem(getter, TFItems.STEELEAF_SWORD, TFItemTags.STEELEAF_INGOTS, Tags.Items.RODS_WOODEN, this.buildEnchants(provider, Pair.of(Enchantments.LOOTING, 2)));
-		pickaxeItem(getter, TFItems.STEELEAF_PICKAXE, TFItemTags.STEELEAF_INGOTS, Tags.Items.RODS_WOODEN, this.buildEnchants(provider, Pair.of(Enchantments.FORTUNE, 2)));
-		axeItem(getter, TFItems.STEELEAF_AXE, TFItemTags.STEELEAF_INGOTS, Tags.Items.RODS_WOODEN, this.buildEnchants(provider, Pair.of(Enchantments.EFFICIENCY, 2)));
-		shovelItem(getter, TFItems.STEELEAF_SHOVEL, TFItemTags.STEELEAF_INGOTS, Tags.Items.RODS_WOODEN, this.buildEnchants(provider, Pair.of(Enchantments.EFFICIENCY, 2)));
-		hoeItem(getter, TFItems.STEELEAF_HOE, TFItemTags.STEELEAF_INGOTS, Tags.Items.RODS_WOODEN, this.buildEnchants(provider, Pair.of(Enchantments.FORTUNE, 2)));
+		swordItem(getter, TFItems.STEELEAF_SWORD, TFItemTags.STEELEAF_INGOTS, ConventionalItemTags.WOODEN_RODS, this.buildEnchants(provider, Pair.of(Enchantments.LOOTING, 2)));
+		pickaxeItem(getter, TFItems.STEELEAF_PICKAXE, TFItemTags.STEELEAF_INGOTS, ConventionalItemTags.WOODEN_RODS, this.buildEnchants(provider, Pair.of(Enchantments.FORTUNE, 2)));
+		axeItem(getter, TFItems.STEELEAF_AXE, TFItemTags.STEELEAF_INGOTS, ConventionalItemTags.WOODEN_RODS, this.buildEnchants(provider, Pair.of(Enchantments.EFFICIENCY, 2)));
+		shovelItem(getter, TFItems.STEELEAF_SHOVEL, TFItemTags.STEELEAF_INGOTS, ConventionalItemTags.WOODEN_RODS, this.buildEnchants(provider, Pair.of(Enchantments.EFFICIENCY, 2)));
+		hoeItem(getter, TFItems.STEELEAF_HOE, TFItemTags.STEELEAF_INGOTS, ConventionalItemTags.WOODEN_RODS, this.buildEnchants(provider, Pair.of(Enchantments.FORTUNE, 2)));
 
 		bootsItem(getter, TFItems.ARCTIC_BOOTS, TFItemTags.ARCTIC_FUR);
 		chestplateItem(getter, TFItems.ARCTIC_CHESTPLATE, TFItemTags.ARCTIC_FUR);
@@ -383,9 +368,9 @@ public class CraftingGenerator extends CraftingDataHelper {
 		chestplateItem(getter, TFItems.KNIGHTMETAL_CHESTPLATE, TFItemTags.KNIGHTMETAL_INGOTS);
 		helmetItem(getter, TFItems.KNIGHTMETAL_HELMET, TFItemTags.KNIGHTMETAL_INGOTS);
 		leggingsItem(getter, TFItems.KNIGHTMETAL_LEGGINGS, TFItemTags.KNIGHTMETAL_INGOTS);
-		pickaxeItem(getter, TFItems.KNIGHTMETAL_PICKAXE, TFItemTags.KNIGHTMETAL_INGOTS, Tags.Items.RODS_WOODEN);
-		swordItem(getter, TFItems.KNIGHTMETAL_SWORD, TFItemTags.KNIGHTMETAL_INGOTS, Tags.Items.RODS_WOODEN);
-		axeItem(getter, TFItems.KNIGHTMETAL_AXE, TFItemTags.KNIGHTMETAL_INGOTS, Tags.Items.RODS_WOODEN);
+		pickaxeItem(getter, TFItems.KNIGHTMETAL_PICKAXE, TFItemTags.KNIGHTMETAL_INGOTS, ConventionalItemTags.WOODEN_RODS);
+		swordItem(getter, TFItems.KNIGHTMETAL_SWORD, TFItemTags.KNIGHTMETAL_INGOTS, ConventionalItemTags.WOODEN_RODS);
+		axeItem(getter, TFItems.KNIGHTMETAL_AXE, TFItemTags.KNIGHTMETAL_INGOTS, ConventionalItemTags.WOODEN_RODS);
 
 		ShapedRecipeBuilder.shaped(getter, RecipeCategory.COMBAT, TFItems.FIERY_BOOTS)
 			.pattern("# #")
@@ -393,7 +378,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.define('#', TFItemTags.FIERY_INGOTS)
 			.unlockedBy("has_item", has(TFItemTags.FIERY_INGOTS))
 			.group("fiery_boots")
-			.save(this.output, locEquip(TFItems.FIERY_BOOTS.getId().getPath()));
+			.save(this.output, locEquip(BuiltInRegistries.ITEM.getKey(TFItems.FIERY_BOOTS).getPath()));
 
 		ShapedRecipeBuilder.shaped(getter, RecipeCategory.COMBAT, TFItems.FIERY_LEGGINGS)
 			.pattern("###")
@@ -402,7 +387,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.define('#', TFItemTags.FIERY_INGOTS)
 			.unlockedBy("has_item", has(TFItemTags.FIERY_INGOTS))
 			.group("fiery_leggings")
-			.save(this.output, locEquip(TFItems.FIERY_LEGGINGS.getId().getPath()));
+			.save(this.output, locEquip(BuiltInRegistries.ITEM.getKey(TFItems.FIERY_LEGGINGS).getPath()));
 
 		ShapedRecipeBuilder.shaped(getter, RecipeCategory.COMBAT, TFItems.FIERY_CHESTPLATE)
 			.pattern("# #")
@@ -411,7 +396,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.define('#', TFItemTags.FIERY_INGOTS)
 			.unlockedBy("has_item", has(TFItemTags.FIERY_INGOTS))
 			.group("fiery_chestplate")
-			.save(this.output, locEquip(TFItems.FIERY_CHESTPLATE.getId().getPath()));
+			.save(this.output, locEquip(BuiltInRegistries.ITEM.getKey(TFItems.FIERY_CHESTPLATE).getPath()));
 
 		ShapedRecipeBuilder.shaped(getter, RecipeCategory.COMBAT, TFItems.FIERY_HELMET)
 			.pattern("###")
@@ -419,73 +404,73 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.define('#', TFItemTags.FIERY_INGOTS)
 			.unlockedBy("has_item", has(TFItemTags.FIERY_INGOTS))
 			.group("fiery_helmet")
-			.save(this.output, locEquip(TFItems.FIERY_HELMET.getId().getPath()));
+			.save(this.output, locEquip(BuiltInRegistries.ITEM.getKey(TFItems.FIERY_HELMET).getPath()));
 
 		ShapedRecipeBuilder.shaped(getter, RecipeCategory.TOOLS, TFItems.FIERY_PICKAXE)
 			.pattern("###")
 			.pattern(" X ")
 			.pattern(" X ")
 			.define('#', TFItemTags.FIERY_INGOTS)
-			.define('X', Tags.Items.RODS_BLAZE)
+			.define('X', ConventionalItemTags.BLAZE_RODS)
 			.unlockedBy("has_item", has(TFItemTags.FIERY_INGOTS))
 			.group("fiery_pickaxe")
-			.save(this.output, locEquip(TFItems.FIERY_PICKAXE.getId().getPath()));
+			.save(this.output, locEquip(BuiltInRegistries.ITEM.getKey(TFItems.FIERY_PICKAXE).getPath()));
 
 		ShapedRecipeBuilder.shaped(getter, RecipeCategory.COMBAT, TFItems.FIERY_SWORD)
 			.pattern("#")
 			.pattern("#")
 			.pattern("X")
 			.define('#', TFItemTags.FIERY_INGOTS)
-			.define('X', Tags.Items.RODS_BLAZE)
+			.define('X',ConventionalItemTags.BLAZE_RODS)
 			.unlockedBy("has_item", has(TFItemTags.FIERY_INGOTS))
 			.group("fiery_sword")
-			.save(this.output, locEquip(TFItems.FIERY_SWORD.getId().getPath()));
+			.save(this.output, locEquip(BuiltInRegistries.ITEM.getKey(TFItems.FIERY_SWORD).getPath()));
 
-		ShapedRecipeBuilder.shaped(getter, RecipeCategory.COMBAT, new ItemStackTemplate(TFItems.NAGA_CHESTPLATE, 1, this.buildEnchants(provider, Pair.of(Enchantments.FIRE_PROTECTION, 3)).build()))
+		ShapedRecipeBuilder.shaped(getter, RecipeCategory.COMBAT, TFItems.NAGA_CHESTPLATE, 1)
 			.pattern("# #")
 			.pattern("###")
 			.pattern("###")
 			.define('#', TFItems.NAGA_SCALE)
 			.unlockedBy("has_item", has(TFItems.NAGA_SCALE))
-			.save(this.output, locEquip(TFItems.NAGA_CHESTPLATE.getId().getPath()));
+			.save(this.output, locEquip(BuiltInRegistries.ITEM.getKey(TFItems.NAGA_CHESTPLATE).getPath()));
 
-		ShapedRecipeBuilder.shaped(getter, RecipeCategory.COMBAT, new ItemStackTemplate(TFItems.NAGA_LEGGINGS, 1, this.buildEnchants(provider, Pair.of(Enchantments.PROTECTION, 3)).build()))
+		ShapedRecipeBuilder.shaped(getter, RecipeCategory.COMBAT, TFItems.NAGA_LEGGINGS, 1)
 			.pattern("###")
 			.pattern("# #")
 			.pattern("# #")
 			.define('#', TFItems.NAGA_SCALE)
 			.unlockedBy("has_item", has(TFItems.NAGA_SCALE))
-			.save(this.output, locEquip(TFItems.NAGA_LEGGINGS.getId().getPath()));
+			.save(this.output, locEquip(BuiltInRegistries.ITEM.getKey(TFItems.NAGA_LEGGINGS).getPath()));
 
-		ShapedRecipeBuilder.shaped(getter, RecipeCategory.COMBAT, new ItemStackTemplate(TFItems.YETI_HELMET, 1, this.buildEnchants(provider, Pair.of(Enchantments.PROTECTION, 2)).build()))
+		ShapedRecipeBuilder.shaped(getter, RecipeCategory.COMBAT, TFItems.YETI_HELMET, 1)
 			.pattern("###")
 			.pattern("# #")
 			.define('#', TFItems.ALPHA_YETI_FUR)
 			.unlockedBy("has_item", has(TFItems.ALPHA_YETI_FUR))
-			.save(this.output, locEquip(TFItems.YETI_HELMET.getId().getPath()));
+			.save(this.output, locEquip(BuiltInRegistries.ITEM.getKey(TFItems.YETI_HELMET).getPath()));
 
-		ShapedRecipeBuilder.shaped(getter, RecipeCategory.COMBAT, new ItemStackTemplate(TFItems.YETI_CHESTPLATE, 1, this.buildEnchants(provider, Pair.of(Enchantments.PROTECTION, 2)).build()))
+		ShapedRecipeBuilder.shaped(getter, RecipeCategory.COMBAT, TFItems.YETI_CHESTPLATE, 1)
 			.pattern("# #")
 			.pattern("###")
 			.pattern("###")
 			.define('#', TFItems.ALPHA_YETI_FUR)
 			.unlockedBy("has_item", has(TFItems.ALPHA_YETI_FUR))
-			.save(this.output, locEquip(TFItems.YETI_CHESTPLATE.getId().getPath()));
+			.save(this.output, locEquip(BuiltInRegistries.ITEM.getKey(TFItems.YETI_CHESTPLATE).getPath()));
 
-		ShapedRecipeBuilder.shaped(getter, RecipeCategory.COMBAT, new ItemStackTemplate(TFItems.YETI_LEGGINGS, 1, this.buildEnchants(provider, Pair.of(Enchantments.PROTECTION, 2)).build()))
+		ShapedRecipeBuilder.shaped(getter, RecipeCategory.COMBAT, TFItems.YETI_LEGGINGS, 1)
 			.pattern("###")
 			.pattern("# #")
 			.pattern("# #")
 			.define('#', TFItems.ALPHA_YETI_FUR)
 			.unlockedBy("has_item", has(TFItems.ALPHA_YETI_FUR))
-			.save(this.output, locEquip(TFItems.YETI_LEGGINGS.getId().getPath()));
+			.save(this.output, locEquip(BuiltInRegistries.ITEM.getKey(TFItems.YETI_LEGGINGS).getPath()));
 
-		ShapedRecipeBuilder.shaped(getter, RecipeCategory.COMBAT, new ItemStackTemplate(TFItems.YETI_BOOTS, 1, this.buildEnchants(provider, Pair.of(Enchantments.PROTECTION, 2), Pair.of(Enchantments.FEATHER_FALLING, 4)).build()))
+		ShapedRecipeBuilder.shaped(getter, RecipeCategory.COMBAT, TFItems.YETI_BOOTS, 1)
 			.pattern("# #")
 			.pattern("# #")
 			.define('#', TFItems.ALPHA_YETI_FUR)
 			.unlockedBy("has_item", has(TFItems.ALPHA_YETI_FUR))
-			.save(this.output, locEquip(TFItems.YETI_BOOTS.getId().getPath()));
+			.save(this.output, locEquip(BuiltInRegistries.ITEM.getKey(TFItems.YETI_BOOTS).getPath()));
 
 		ShapedRecipeBuilder.shaped(getter, RecipeCategory.TOOLS, TFItems.GIANT_PICKAXE)
 			.pattern("###")
@@ -494,7 +479,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.define('#', TFBlocks.GIANT_COBBLESTONE)
 			.define('X', TFBlocks.GIANT_LOG)
 			.unlockedBy("has_item", has(TFBlocks.GIANT_COBBLESTONE))
-			.save(this.output, locEquip(TFItems.GIANT_PICKAXE.getId().getPath()));
+			.save(this.output, locEquip(BuiltInRegistries.ITEM.getKey(TFItems.GIANT_PICKAXE).getPath()));
 
 		ShapedRecipeBuilder.shaped(getter, RecipeCategory.TOOLS, TFItems.GIANT_SWORD)
 			.pattern("#")
@@ -503,7 +488,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.define('#', TFBlocks.GIANT_COBBLESTONE)
 			.define('X', TFBlocks.GIANT_LOG)
 			.unlockedBy("has_item", has(TFBlocks.GIANT_COBBLESTONE))
-			.save(this.output, locEquip(TFItems.GIANT_SWORD.getId().getPath()));
+			.save(this.output, locEquip(BuiltInRegistries.ITEM.getKey(TFItems.GIANT_SWORD).getPath()));
 
 		charmRecipe(getter, "charm_of_keeping_2", TFItems.CHARM_OF_KEEPING_2, TFItems.CHARM_OF_KEEPING_1);
 		charmRecipe(getter, "charm_of_keeping_3", TFItems.CHARM_OF_KEEPING_3, TFItems.CHARM_OF_KEEPING_2);
@@ -517,30 +502,30 @@ public class CraftingGenerator extends CraftingDataHelper {
 		SpecialRecipeBuilder.special(() -> EssenceRepairRecipe.INSTANCE).save(this.output, this.createKey("essence_repair_recipe"));
 
 		NoSmithingTemplateRecipeBuilder
-			.noTemplate(Ingredient.of(getter.getOrThrow(Tags.Items.ARMORS)), Ingredient.of(TFItems.EMPERORS_CLOTH), RecipeCategory.MISC)
-			.attachData(TFDataComponents.EMPERORS_CLOTH::value, Unit.INSTANCE)
+			.noTemplate(Ingredient.of(getter.getOrThrow(ConventionalItemTags.ARMORS)), Ingredient.of(TFItems.EMPERORS_CLOTH), RecipeCategory.MISC)
+			.attachData(() -> TFDataComponents.EMPERORS_CLOTH, Unit.INSTANCE)
 			.unlocks("has_cloth", has(TFItems.EMPERORS_CLOTH))
 			.save(this.output, this.createKey("emperors_cloth_smithing"));
 
 		ShapelessRecipeBuilder.shapeless(getter, RecipeCategory.BUILDING_BLOCKS, Blocks.COBBLESTONE, 64)
 			.requires(TFBlocks.GIANT_COBBLESTONE)
 			.unlockedBy("has_item", has(TFBlocks.GIANT_COBBLESTONE))
-			.save(this.output, this.createKey(TFBlocks.GIANT_COBBLESTONE.getId().getPath() + "_to_" + BuiltInRegistries.ITEM.getKey(Items.COBBLESTONE).getPath()));
+			.save(this.output, this.createKey(BuiltInRegistries.BLOCK.getKey(TFBlocks.GIANT_COBBLESTONE).getPath() + "_to_" + BuiltInRegistries.ITEM.getKey(Items.COBBLESTONE).getPath()));
 
 		ShapelessRecipeBuilder.shapeless(getter, RecipeCategory.BUILDING_BLOCKS, Blocks.OAK_PLANKS, 64)
 			.requires(TFBlocks.GIANT_LOG)
 			.unlockedBy("has_item", has(TFBlocks.GIANT_LOG))
-			.save(this.output, this.createKey(TFBlocks.GIANT_LOG.getId().getPath() + "_to_" + BuiltInRegistries.ITEM.getKey(Items.OAK_PLANKS).getPath()));
+			.save(this.output, this.createKey(BuiltInRegistries.BLOCK.getKey(TFBlocks.GIANT_LOG).getPath() + "_to_" + BuiltInRegistries.ITEM.getKey(Items.OAK_PLANKS).getPath()));
 
 		ShapelessRecipeBuilder.shapeless(getter, RecipeCategory.BUILDING_BLOCKS, Blocks.OAK_LEAVES, 64)
 			.requires(TFBlocks.GIANT_LEAVES)
 			.unlockedBy("has_item", has(TFBlocks.GIANT_LEAVES))
-			.save(this.output, this.createKey(TFBlocks.GIANT_LEAVES.getId().getPath() + "_to_" + BuiltInRegistries.ITEM.getKey(Items.OAK_LEAVES).getPath()));
+			.save(this.output, this.createKey(BuiltInRegistries.BLOCK.getKey(TFBlocks.GIANT_LEAVES).getPath() + "_to_" + BuiltInRegistries.ITEM.getKey(Items.OAK_LEAVES).getPath()));
 
 		ShapelessRecipeBuilder.shapeless(getter, RecipeCategory.BUILDING_BLOCKS, Blocks.OBSIDIAN, 64)
 			.requires(TFBlocks.GIANT_OBSIDIAN)
 			.unlockedBy("has_item", has(TFBlocks.GIANT_OBSIDIAN))
-			.save(this.output, this.createKey(TFBlocks.GIANT_OBSIDIAN.getId().getPath() + "_to_" + BuiltInRegistries.ITEM.getKey(Items.OBSIDIAN).getPath()));
+			.save(this.output, this.createKey(BuiltInRegistries.BLOCK.getKey(TFBlocks.GIANT_OBSIDIAN).getPath() + "_to_" + BuiltInRegistries.ITEM.getKey(Items.OBSIDIAN).getPath()));
 
 		ShapelessRecipeBuilder.shapeless(getter, RecipeCategory.COMBAT, TFItems.BLOCK_AND_CHAIN)
 			.requires(Ingredient.of(getter.getOrThrow(TFItemTags.STORAGE_BLOCKS_KNIGHTMETAL)))
@@ -549,7 +534,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_block", has(TFItemTags.STORAGE_BLOCKS_KNIGHTMETAL))
 			.unlockedBy("has_ingot", has(TFItemTags.KNIGHTMETAL_INGOTS))
 			.unlockedBy("has_ring", has(TFItems.KNIGHTMETAL_RING))
-			.save(this.output, locEquip(TFItems.BLOCK_AND_CHAIN.getId().getPath()));
+			.save(this.output, locEquip(BuiltInRegistries.ITEM.getKey(TFItems.BLOCK_AND_CHAIN).getPath()));
 
 		ShapedRecipeBuilder.shaped(getter, RecipeCategory.MISC, TFItems.KNIGHTMETAL_RING)
 			.pattern(" - ")
@@ -557,7 +542,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.pattern(" - ")
 			.define('-', TFItemTags.KNIGHTMETAL_INGOTS)
 			.unlockedBy("has_item", has(TFItemTags.KNIGHTMETAL_INGOTS))
-			.save(this.output, locEquip(TFItems.KNIGHTMETAL_RING.getId().getPath()));
+			.save(this.output, locEquip(BuiltInRegistries.ITEM.getKey(TFItems.KNIGHTMETAL_RING).getPath()));
 
 		ShapedRecipeBuilder.shaped(getter, RecipeCategory.COMBAT, TFItems.KNIGHTMETAL_SHIELD)
 			.pattern("-#")
@@ -568,28 +553,19 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.define('o', Ingredient.of(TFItems.KNIGHTMETAL_RING))
 			.unlockedBy("has_ingot", has(TFItemTags.KNIGHTMETAL_INGOTS))
 			.unlockedBy("has_ring", has(TFItems.KNIGHTMETAL_RING))
-			.save(this.output, locEquip(TFItems.KNIGHTMETAL_SHIELD.getId().getPath()));
+			.save(this.output, locEquip(BuiltInRegistries.ITEM.getKey(TFItems.KNIGHTMETAL_SHIELD).getPath()));
 
 		ScepterRecipeBuilder.repairFor(getter, TFItems.LIFEDRAIN_SCEPTER, 9)
 			.addRepairIngredient(Items.FERMENTED_SPIDER_EYE)
-			.save(this.output, locEquip(TFItems.LIFEDRAIN_SCEPTER.getId().getPath()));
+			.save(this.output, locEquip(BuiltInRegistries.ITEM.getKey(TFItems.LIFEDRAIN_SCEPTER).getPath()));
 
 		ScepterRecipeBuilder.repairFor(getter, TFItems.FORTIFICATION_SCEPTER, 9)
 			.addRepairIngredient(Ingredient.of(Items.GOLDEN_APPLE))
-			.save(this.output, locEquip(TFItems.FORTIFICATION_SCEPTER.getId().getPath()));
+			.save(this.output, locEquip(BuiltInRegistries.ITEM.getKey(TFItems.FORTIFICATION_SCEPTER).getPath()));
 
 		ScepterRecipeBuilder.repairFor(getter, TFItems.TWILIGHT_SCEPTER, 9)
-			.addRepairIngredient(Tags.Items.ENDER_PEARLS)
-			.save(this.output, locEquip(TFItems.TWILIGHT_SCEPTER.getId().getPath()));
-
-		ScepterRecipeBuilder.repairFor(getter, TFItems.ZOMBIE_SCEPTER, 9)
-			.addRepairIngredient(CompoundIngredient.of(
-				DataComponentIngredient.of(false, DataComponents.POTION_CONTENTS, new PotionContents(Potions.STRENGTH), Items.POTION),
-				DataComponentIngredient.of(false, DataComponents.POTION_CONTENTS, new PotionContents(Potions.LONG_STRENGTH), Items.POTION),
-				DataComponentIngredient.of(false, DataComponents.POTION_CONTENTS, new PotionContents(Potions.STRONG_STRENGTH), Items.POTION)
-			))
-			.addRepairIngredient(Items.ROTTEN_FLESH)
-			.save(this.output, locEquip(TFItems.ZOMBIE_SCEPTER.getId().getPath()));
+			.addRepairIngredient(ConventionalItemTags.ENDER_PEARLS)
+			.save(this.output, locEquip(BuiltInRegistries.ITEM.getKey(TFItems.TWILIGHT_SCEPTER).getPath()));
 	}
 
 	private void blockCompressionRecipes(HolderGetter<Item> getter) {
@@ -617,7 +593,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		ShapelessRecipeBuilder.shapeless(getter, RecipeCategory.MISC, TFItems.MAGIC_MAP_FOCUS)
 			.requires(TFItems.RAVEN_FEATHER)
 			.requires(TFItems.TORCHBERRIES)
-			.requires(Tags.Items.DUSTS_GLOWSTONE)
+			.requires(ConventionalItemTags.GLOWSTONE_DUSTS)
 			.unlockedBy("has_berries", has(TFItems.TORCHBERRIES))
 			.unlockedBy("has_feather", has(TFItems.RAVEN_FEATHER))
 			.save(this.output);
@@ -642,9 +618,9 @@ public class CraftingGenerator extends CraftingDataHelper {
 
 		ShapelessRecipeBuilder.shapeless(getter, RecipeCategory.MISC, TFItems.ORE_MAP)
 			.requires(TFItems.MAZE_MAP)
-			.requires(Tags.Items.STORAGE_BLOCKS_DIAMOND)
-			.requires(Tags.Items.STORAGE_BLOCKS_GOLD)
-			.requires(Tags.Items.STORAGE_BLOCKS_IRON)
+			.requires(ConventionalItemTags.STORAGE_BLOCKS_DIAMOND)
+			.requires(ConventionalItemTags.STORAGE_BLOCKS_GOLD)
+			.requires(ConventionalItemTags.STORAGE_BLOCKS_IRON)
 			.unlockedBy("has_item", has(TFItems.MAZE_MAP))
 			.save(this.output);
 	}
@@ -831,8 +807,8 @@ public class CraftingGenerator extends CraftingDataHelper {
 	}
 
 	private void dryingRecipes(HolderGetter<Item> getter) {
-		DryingRecipeBuilder.drying(getter, Tags.Items.FOODS_COOKED_MEAT, Items.LEATHER, 8.5F)
-			.unlockedBy("has_meat", has(Tags.Items.FOODS_COOKED_MEAT))
+		DryingRecipeBuilder.drying(getter, ConventionalItemTags.COOKED_MEAT_FOODS, Items.LEATHER, 8.5F)
+			.unlockedBy("has_meat", has(ConventionalItemTags.COOKED_MEAT_FOODS))
 			.save(this.output, this.createKey("drying/cooked_meat_to_leather"));
 
 		DryingRecipeBuilder.drying(getter, ItemTags.SAPLINGS, Items.DEAD_BUSH, 6)
@@ -1001,7 +977,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 	private void fieryConversions(HolderGetter<Item> getter) {
 		ShapelessRecipeBuilder.shapeless(getter, RecipeCategory.MISC, TFItems.FIERY_INGOT)
 			.requires(Ingredient.of(getter.getOrThrow(TFItemTags.FIERY_VIAL)))
-			.requires(Ingredient.of(getter.getOrThrow(Tags.Items.INGOTS_IRON)))
+			.requires(Ingredient.of(getter.getOrThrow(ConventionalItemTags.IRON_INGOTS)))
 			.unlockedBy("has_item", has(TFItemTags.FIERY_VIAL))
 			.group("fiery_ingot")
 			.save(this.output, locEquip("fiery_ingot_crafting"));
@@ -1014,7 +990,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		ShapelessRecipeBuilder.shapeless(getter, RecipeCategory.COMBAT, TFItems.FIERY_SWORD)
 			.requires(Items.IRON_SWORD)
 			.requires(Ingredient.of(getter.getOrThrow(TFItemTags.FIERY_VIAL)), 2)
-			.requires(Ingredient.of(getter.getOrThrow(Tags.Items.RODS_BLAZE)))
+			.requires(Ingredient.of(getter.getOrThrow(ConventionalItemTags.BLAZE_RODS)))
 			.unlockedBy("has_item", has(TFItemTags.FIERY_VIAL))
 			.group("fiery_sword")
 			.save(this.output, locEquip("fiery_" + BuiltInRegistries.ITEM.getKey(Items.IRON_SWORD).getPath()));
@@ -1022,7 +998,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		ShapelessRecipeBuilder.shapeless(getter, RecipeCategory.TOOLS, TFItems.FIERY_PICKAXE)
 			.requires(Items.IRON_PICKAXE)
 			.requires(Ingredient.of(getter.getOrThrow(TFItemTags.FIERY_VIAL)), 3)
-			.requires(Ingredient.of(getter.getOrThrow(Tags.Items.RODS_BLAZE)), 2)
+			.requires(Ingredient.of(getter.getOrThrow(ConventionalItemTags.BLAZE_RODS)), 2)
 			.unlockedBy("has_item", has(TFItemTags.FIERY_VIAL))
 			.group("fiery_pickaxe")
 			.save(this.output, locEquip("fiery_" + BuiltInRegistries.ITEM.getKey(Items.IRON_PICKAXE).getPath()));
