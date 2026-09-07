@@ -1,6 +1,6 @@
 package twilightforest.datagen.data.custom.stalactites;
 
-import net.minecraft.data.PackOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.world.level.block.Blocks;
 import twilightforest.TFCommon;
 import twilightforest.init.TFStructures;
@@ -8,7 +8,7 @@ import twilightforest.world.components.feature.BlockSpikeFeature;
 
 public class StalactiteGenerator extends StalactiteProvider {
 
-	public StalactiteGenerator(PackOutput output) {
+	public StalactiteGenerator(FabricPackOutput output) {
 		super(output, TFCommon.ID);
 	}
 

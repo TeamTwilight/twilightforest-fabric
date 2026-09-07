@@ -1,7 +1,7 @@
 package twilightforest.datagen.data.tags;
 
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.KeyTagProvider;
 import twilightforest.TFRegistries;
 import twilightforest.init.custom.WoodPalettes;
@@ -13,7 +13,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class WoodPaletteTagGenerator extends KeyTagProvider<WoodPalette> {
 
-	public WoodPaletteTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
+	public WoodPaletteTagGenerator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
 		super(output, TFRegistries.Keys.WOOD_PALETTES, provider);
 	}
 

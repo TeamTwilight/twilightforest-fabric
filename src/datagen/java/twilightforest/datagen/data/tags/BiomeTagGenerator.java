@@ -1,7 +1,7 @@
 package twilightforest.datagen.data.tags;
 
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.BiomeTagsProvider;
 import net.minecraft.tags.BiomeTags;
 import twilightforest.init.TFBiomes;
@@ -12,7 +12,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class BiomeTagGenerator extends BiomeTagsProvider {
 
-	public BiomeTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
+	public BiomeTagGenerator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
 		super(output, provider);
 	}
 

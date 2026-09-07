@@ -2,6 +2,7 @@ package twilightforest.datagen.data.custom;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.JsonOps;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
@@ -16,7 +17,7 @@ public class QuestGenerator implements DataProvider {
 
 	private final PackOutput output;
 
-	public QuestGenerator(PackOutput output) {
+	public QuestGenerator(FabricPackOutput output) {
 		this.output = output;
 	}
 

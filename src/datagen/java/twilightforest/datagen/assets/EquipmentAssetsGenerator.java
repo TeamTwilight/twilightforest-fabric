@@ -1,5 +1,6 @@
 package twilightforest.datagen.assets;
 
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.client.data.models.EquipmentAssetProvider;
 import net.minecraft.client.resources.model.EquipmentClientInfo;
 import net.minecraft.data.CachedOutput;
@@ -17,7 +18,7 @@ import java.util.function.BiConsumer;
 public class EquipmentAssetsGenerator implements DataProvider {
 	private final PackOutput.PathProvider pathProvider;
 
-	public EquipmentAssetsGenerator(PackOutput output) {
+	public EquipmentAssetsGenerator(FabricPackOutput output) {
 		this.pathProvider = output.createPathProvider(
 			PackOutput.Target.RESOURCE_PACK,
 			"equipment"

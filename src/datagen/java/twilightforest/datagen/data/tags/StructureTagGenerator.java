@@ -1,7 +1,7 @@
 package twilightforest.datagen.data.tags;
 
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.StructureTagsProvider;
 import twilightforest.init.TFStructures;
 import twilightforest.tags.TFStructureTags;
@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class StructureTagGenerator extends StructureTagsProvider {
 
-	public StructureTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
+	public StructureTagGenerator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
 		super(output, provider);
 	}
 

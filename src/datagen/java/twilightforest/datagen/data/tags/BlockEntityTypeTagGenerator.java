@@ -1,8 +1,8 @@
 package twilightforest.datagen.data.tags;
 
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.KeyTagProvider;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import twilightforest.init.TFBlockEntities;
@@ -13,7 +13,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class BlockEntityTypeTagGenerator extends KeyTagProvider<BlockEntityType<?>> {
 
-	public BlockEntityTypeTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
+	public BlockEntityTypeTagGenerator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
 		super(output, Registries.BLOCK_ENTITY_TYPE, provider);
 	}
 

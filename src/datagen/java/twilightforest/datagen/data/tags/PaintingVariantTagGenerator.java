@@ -1,8 +1,8 @@
 package twilightforest.datagen.data.tags;
 
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.KeyTagProvider;
 import net.minecraft.world.entity.decoration.painting.PaintingVariant;
 import net.minecraft.world.entity.decoration.painting.PaintingVariants;
@@ -13,7 +13,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class PaintingVariantTagGenerator extends KeyTagProvider<PaintingVariant> {
 
-	public PaintingVariantTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
+	public PaintingVariantTagGenerator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
 		super(output, Registries.PAINTING_VARIANT, provider);
 	}
 

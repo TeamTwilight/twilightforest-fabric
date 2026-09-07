@@ -1,9 +1,9 @@
 package twilightforest.datagen.data.tags;
 
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
@@ -15,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 
-	public BlockTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> future) {
+	public BlockTagGenerator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> future) {
 		super(output, Registries.BLOCK, future, block -> block.builtInRegistryHolder().key());
 	}
 
