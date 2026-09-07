@@ -2,14 +2,18 @@ package twilightforest.asm.mixin;
 
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.BlockItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import twilightforest.asm.hooks.coremod.RenderHooks;
+import twilightforest.block.AbstractTrophyBlock;
 import twilightforest.client.renderer.entity.layers.IceLayer;
 import twilightforest.client.renderer.entity.layers.ShieldLayer;
 import twilightforest.potions.FrostedEffect;
@@ -27,6 +31,9 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, S extend
 		float partialTicks,
 		CallbackInfo ci
 	) {
+		if (entity.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof BlockItem head && head.getBlock() instanceof AbstractTrophyBlock)
+			state.setData(RenderHooks.HIDE_HEAD_KEY, true);
+
 		state.setData(ShieldLayer.SHIELD_COUNT_KEY, ShieldLayer.getShieldCount(entity));
 
 		AttributeInstance speed = entity.getAttribute(Attributes.MOVEMENT_SPEED);

@@ -54,18 +54,6 @@ public final class ClientGameEventHooks {
 		}
 	}*/
 
-	/*private void unrenderHeadWithTrophies(RenderLivingEvent.Pre<?, ?> event) {
-		ItemStack stack = event.getEntity().getItemBySlot(EquipmentSlot.HEAD);
-		boolean visible = !(stack.getItem() instanceof TrophyItem) && !areCuriosEquipped(event.getEntity());
-		boolean isPlayer = event.getEntity() instanceof Player;
-		if (event.getRenderer().getModel() instanceof HeadedModel headedModel) {
-			headedModel.getHead().visible = visible && (!isPlayer || headedModel.getHead().visible);  // some mods like Better Combat can move player's head and hide it in the first person view
-			if (event.getRenderer().getModel() instanceof HumanoidModel<?> humanoidModel) {
-				humanoidModel.hat.visible = visible && (!isPlayer || humanoidModel.hat.visible);
-			}
-		}
-	}*/
-
 	/*private void renderCustomBossbars(CustomizeGuiOverlayEvent.BossEventProgress event) {
 		if (event.getBossEvent() instanceof ClientTFBossBar bossEvent) {
 			event.setCanceled(true);
