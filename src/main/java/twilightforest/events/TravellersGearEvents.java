@@ -91,7 +91,7 @@ public class TravellersGearEvents {
 		if (probability <= level.getRandom().nextFloat())
 			return;
 		Entity projectile = event.getEntity();
-		Vec3 hitPosition = projectile.position().add(projectile.getDeltaMovement());
+		Vec3 hitPosition = projectile.position();
 		level.playSound(null, hitPosition.x(), hitPosition.y(), hitPosition.z(), TFSounds.PERFECT_DODGE.value(), livingEntity.getSoundSource(), 1.5F, livingEntity.getVoicePitch());
 		event.setCanceled(true);
 		ParticlePacket particlePacket = new ParticlePacket();
