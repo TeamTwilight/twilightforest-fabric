@@ -371,5 +371,7 @@ public class MagicPaintingRenderer extends EntityRenderer<MagicPainting, MagicPa
 				state.lightCoords[w + h * widthAsBlock] = LevelRenderer.getLightCoords(level, new BlockPos(lightX, lightY, lightZ));
 			}
 		}
+
+		state.partialTick = partialTick;
 	}
 }

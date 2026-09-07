@@ -16,4 +16,5 @@ public class MagicPaintingRenderState extends EntityRenderState {
 	public MagicPaintingVariant variant;
 	public Identifier texture;
 	public int[] lightCoords = new int[0];
+	public float partialTick;
 }

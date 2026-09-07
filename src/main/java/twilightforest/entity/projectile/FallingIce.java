@@ -15,6 +15,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.damagesource.DamageSource;
@@ -126,11 +127,11 @@ public class FallingIce extends Entity {
 			if (!this.level().isClientSide()) {
 				BlockPos blockpos = this.blockPosition();
 				boolean flag = this.blockState.getBlock() instanceof ConcretePowderBlock;
-				boolean flag1 = flag && this.blockState.canBeHydrated(this.level(), blockpos, this.level().getFluidState(blockpos), blockpos);
+				boolean flag1 = flag && this.level().getFluidState(blockpos).is(FluidTags.WATER);
 				double d0 = this.getDeltaMovement().lengthSqr();
 				if (flag && d0 > 1.0D) {
 					BlockHitResult blockhitresult = this.level().clip(new ClipContext(new Vec3(this.xo, this.yo, this.zo), this.position(), ClipContext.Block.COLLIDER, ClipContext.Fluid.SOURCE_ONLY, this));
-					if (blockhitresult.getType() != HitResult.Type.MISS && this.blockState.canBeHydrated(this.level(), blockpos, this.level().getFluidState(blockhitresult.getBlockPos()), blockhitresult.getBlockPos())) {
+					if (blockhitresult.getType() != HitResult.Type.MISS && this.level().getFluidState(blockhitresult.getBlockPos()).is(FluidTags.WATER)) {
 						blockpos = blockhitresult.getBlockPos();
 						flag1 = true;
 					}
