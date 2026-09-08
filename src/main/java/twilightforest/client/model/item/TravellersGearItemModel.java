@@ -1,5 +1,6 @@
 package twilightforest.client.model.item;
 
+import carminite.model.ComposedModelState;
 import com.google.common.collect.Maps;
 import com.mojang.math.Transformation;
 import com.mojang.serialization.MapCodec;
@@ -21,7 +22,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.ItemOwner;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.client.model.ComposedModelState;
 import org.joml.Matrix4fc;
 import org.joml.Vector3f;
 import org.jspecify.annotations.Nullable;

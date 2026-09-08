@@ -339,6 +339,10 @@ accessible method net/minecraft/client/data/models/EquipmentAssetProvider bootst
 accessible field net/minecraft/world/entity/Mob goalSelector Lnet/minecraft/world/entity/ai/goal/GoalSelector;
 accessible class net/minecraft/world/entity/monster/EnderMan$EndermanTakeBlockGoal
 
+# TravellersGearItemModel
+accessible class net/minecraft/client/resources/model/cuboid/ItemModelGenerator$ItemLayerKey
+accessible method net/minecraft/client/renderer/item/CuboidItemModelWrapper <init> (Ljava/util/List;Lnet/minecraft/client/resources/model/geometry/QuadCollection;Lnet/minecraft/client/renderer/item/ModelRenderProperties;Lorg/joml/Matrix4fc;)V
+
 # Enum Extensions
 extend-enum net/minecraft/world/damagesource/DamageEffects TWILIGHTFOREST_PINCH
 extend-enum net/minecraft/world/item/Rarity TWILIGHTFOREST_TWILIGHT
