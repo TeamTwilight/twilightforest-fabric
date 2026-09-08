@@ -1,6 +1,5 @@
 package twilightforest.client.event;
 
-import carminite.events.api.ClientEvents;
 import carminite.events.modified.CarminiteComputeFogColorEvent;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
@@ -10,11 +9,7 @@ import twilightforest.init.TFDimension;
 public class FogHandler {
 	public static final FogHandler INSTANCE = new FogHandler();
 
-	public static void init() {
-		ClientEvents.CARMINITE_COMPUTE_FOG_COLOR.register(INSTANCE::colorFog);
-	}
-
-	private void colorFog(CarminiteComputeFogColorEvent event) {
+	public void colorFog(CarminiteComputeFogColorEvent event) {
 		if (event.getCamera().entity() instanceof LocalPlayer player && player.level() instanceof ClientLevel client && client.dimension() == TFDimension.DIMENSION_KEY) {
 			double time = 13000;
 			double d0 = Mth.frac(time / (double)24000.0F - (double)0.25F);

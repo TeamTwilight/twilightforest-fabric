@@ -1,14 +1,14 @@
 package twilightforest.client.event;
 
+import carminite.events.neoforge.*;
 import com.mojang.blaze3d.platform.InputConstants;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.ClientInput;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.resources.Identifier;
+import net.minecraft.network.protocol.common.ServerboundCustomPayloadPacket;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -21,14 +21,6 @@ import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.component.UseEffects;
 import net.minecraft.world.phys.Vec2;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.neoforge.attachment.AttachmentType;
-import net.neoforged.neoforge.client.event.*;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import tamaized.beanification.Component;
-import tamaized.beanification.PostConstruct;
-import twilightforest.TwilightForestMod;
 import twilightforest.config.TFConfig;
 import twilightforest.init.*;
 import twilightforest.init.custom.TravellersModifiersManager;
@@ -38,31 +30,14 @@ import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 import twilightforest.network.*;
 import twilightforest.tags.TFItemTags;
 
-@Component(dist = Dist.CLIENT)
 public class TravellersClientEvents {
+	public static final TravellersClientEvents INSTANCE = new TravellersClientEvents();
 
 	private static boolean isZoomKeyHeld(Player player) {
 		return TFKeyBinds.ZOOM_KEY.isDown() && !player.isScoping();
 	}
 
-	@PostConstruct
-	private void setup() {
-		NeoForge.EVENT_BUS.addListener(this::handleDoubleJump);
-		NeoForge.EVENT_BUS.addListener(this::handleAgileRanger);
-		NeoForge.EVENT_BUS.addListener(this::handleStraightAhead);
-		NeoForge.EVENT_BUS.addListener(this::speedUpControlledWhileSneaking);
-		NeoForge.EVENT_BUS.addListener(this::handleSidestep);
-		NeoForge.EVENT_BUS.addListener(this::handleStealth);
-		NeoForge.EVENT_BUS.addListener(this::updateZoomState);
-		NeoForge.EVENT_BUS.addListener(this::updateGradualGlideState);
-		NeoForge.EVENT_BUS.addListener(this::cycleItemDisplayMap);
-		NeoForge.EVENT_BUS.addListener(this::slowZoomSensitivity);
-		NeoForge.EVENT_BUS.addListener(this::swapHotbar);
-		NeoForge.EVENT_BUS.addListener(this::toggleRedThreadVision);
-		NeoForge.EVENT_BUS.addListener(this::renderGlovesInFirstPerson);
-	}
-
-	private void handleAgileRanger(MovementInputUpdateEvent event) {
+	public void handleAgileRanger(MovementInputUpdateEvent event) {
 		if (!(event.getEntity() instanceof LocalPlayer localPlayer))
 			return;
 		ItemStack leggingsStack = localPlayer.getItemBySlot(EquipmentSlot.LEGS);
@@ -79,7 +54,7 @@ public class TravellersClientEvents {
 		}
 	}
 
-	private void handleStraightAhead(MovementInputUpdateEvent event) {
+	public void handleStraightAhead(MovementInputUpdateEvent event) {
 		if (!(event.getEntity() instanceof LocalPlayer localPlayer))
 			return;
 		ItemStack bootsStack = localPlayer.getItemBySlot(EquipmentSlot.FEET);
@@ -95,38 +70,38 @@ public class TravellersClientEvents {
 		input.moveVector = new Vec2((float) (input.getMoveVector().x / multiplier), input.getMoveVector().y);
 	}
 
-	private void speedUpControlledWhileSneaking(MovementInputUpdateEvent event) {
-		if (!(event.getEntity() instanceof LocalPlayer localPlayer) || !localPlayer.getData(TFDataAttachments.IS_GRADUALLY_GLIDING) || !localPlayer.isShiftKeyDown())
+	public void speedUpControlledWhileSneaking(MovementInputUpdateEvent event) {
+		if (!(event.getEntity() instanceof LocalPlayer localPlayer) || !localPlayer.getAttached(TFDataAttachments.IS_GRADUALLY_GLIDING) || !localPlayer.isShiftKeyDown())
 			return;
 		localPlayer.input.getMoveVector().scale(5.0F); //Effectively x/y /= 0.2F
 	}
 
-	private void handleSidestep(MovementInputUpdateEvent event) {
+	public void handleSidestep(MovementInputUpdateEvent event) {
 		if (!(event.getEntity() instanceof LocalPlayer localPlayer) || !localPlayer.onGround())
 			return;
 
 		ClientInput input = localPlayer.input;
-		boolean lastImpulseZero = localPlayer.getData(TFDataAttachments.LAST_HORIZONTAL_IMPULSE) == 0;
-		boolean sameImpulseDirection = Math.signum(localPlayer.getData(TFDataAttachments.LAST_NON_ZERO_HORIZONTAL_IMPULSE)) == Math.signum(input.getMoveVector().x);
+		boolean lastImpulseZero = localPlayer.getAttached(TFDataAttachments.LAST_HORIZONTAL_IMPULSE) == 0;
+		boolean sameImpulseDirection = Math.signum(localPlayer.getAttached(TFDataAttachments.LAST_NON_ZERO_HORIZONTAL_IMPULSE)) == Math.signum(input.getMoveVector().x);
 		int currentTime = localPlayer.tickCount;
-		int lastWalkingTime = localPlayer.getData(TFDataAttachments.LAST_HORIZONTAL_WALKING_TIME);
+		int lastWalkingTime = localPlayer.getAttached(TFDataAttachments.LAST_HORIZONTAL_WALKING_TIME);
 		boolean hasDoubleTapped = currentTime - lastWalkingTime < 4;
 
 		if (lastImpulseZero && sameImpulseDirection && hasDoubleTapped && input.getMoveVector().x != 0) {
 			boolean isLeftSidestep = input.getMoveVector().x > 0;
 			if (TravellersGearLogic.tryPerformSidestep(localPlayer, isLeftSidestep)) {
-				localPlayer.connection.send(new PerformSidestepPacket(isLeftSidestep));
+				localPlayer.connection.send(new ServerboundCustomPayloadPacket(new PerformSidestepPacket(isLeftSidestep)));
 			}
 		}
 
-		localPlayer.setData(TFDataAttachments.LAST_HORIZONTAL_IMPULSE, input.getMoveVector().x);
+		localPlayer.setAttached(TFDataAttachments.LAST_HORIZONTAL_IMPULSE, input.getMoveVector().x);
 		if (input.getMoveVector().x != 0) {
-			localPlayer.setData(TFDataAttachments.LAST_HORIZONTAL_WALKING_TIME, currentTime);
-			localPlayer.setData(TFDataAttachments.LAST_NON_ZERO_HORIZONTAL_IMPULSE, input.getMoveVector().x);
+			localPlayer.setAttached(TFDataAttachments.LAST_HORIZONTAL_WALKING_TIME, currentTime);
+			localPlayer.setAttached(TFDataAttachments.LAST_NON_ZERO_HORIZONTAL_IMPULSE, input.getMoveVector().x);
 		}
 	}
 
-	private void handleStealth(RenderFrameEvent.Pre event) {
+	public void handleStealth(RenderFrameEvent.Pre event) {
 		if (Minecraft.getInstance().level == null)
 			return;
 		for (Entity entity : Minecraft.getInstance().level.entitiesForRendering()) {
@@ -135,25 +110,25 @@ public class TravellersClientEvents {
 		}
 	}
 
-	private void handleDoubleJump(InputEvent.Key event) {
+	public void handleDoubleJump(InputEvent.Key event) {
 		if (!(Minecraft.getInstance().player instanceof LocalPlayer localPlayer) || ignoreKeyEvent(event, Minecraft.getInstance().options.keyJump))
 			return;
-		int lastJumpKeyPressTime = localPlayer.getData(TFDataAttachments.LAST_JUMP_KEY_PRESS_TIME);
+		int lastJumpKeyPressTime = localPlayer.getAttached(TFDataAttachments.LAST_JUMP_KEY_PRESS_TIME);
 		boolean pressedKey = event.getAction() == InputConstants.PRESS;
 		if (pressedKey)
-			localPlayer.setData(TFDataAttachments.LAST_JUMP_KEY_PRESS_TIME, localPlayer.tickCount);
-		boolean avoidCreativeFly = localPlayer.mayFly() && localPlayer.tickCount - lastJumpKeyPressTime <= 6;
+			localPlayer.setAttached(TFDataAttachments.LAST_JUMP_KEY_PRESS_TIME, localPlayer.tickCount);
+		boolean avoidCreativeFly = localPlayer.getAbilities().mayfly && localPlayer.tickCount - lastJumpKeyPressTime <= 6;
 		if (pressedKey && !avoidCreativeFly && TravellersModifiersManager.isModifierActive(localPlayer, TravellersModifiersManager.DOUBLE_JUMP_MODIFIER)) {
 			if (TravellersGearLogic.performDoubleJump(localPlayer)) {
-				localPlayer.connection.send(new PerformDoubleJumpPacket());
+				localPlayer.connection.send(new ServerboundCustomPayloadPacket(new PerformDoubleJumpPacket()));
 			}
 		}
 	}
 
-	private void updateZoomState(ComputeFovModifierEvent event) {
+	public void updateZoomState(ComputeFovModifierEvent event) {
 		LocalPlayer player = Minecraft.getInstance().player;
 		if (player == null) return;
-		boolean wasUsingZoom = player.getData(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER);
+		boolean wasUsingZoom = player.getAttached(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER);
 		ItemStack headStack = player.getItemBySlot(EquipmentSlot.HEAD);
 		Float zoomModifier = headStack.get(TFDataComponents.ZOOM_ABILITY_MODIFIER);
 		boolean isUsingZoom = isZoomKeyHeld(player) && TravellersModifiersManager.isModifierActive(player, headStack, TravellersModifiersManager.ZOOM_ABILITY) && zoomModifier != null;
@@ -162,31 +137,31 @@ public class TravellersClientEvents {
 		if (isUsingZoom == wasUsingZoom)
 			return;
 
-		player.setData(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER, isUsingZoom);
-		player.playSound(isUsingZoom ? TFSounds.GOGGLES_ZOOM_IN.get() : TFSounds.GOGGLES_ZOOM_OUT.get());
-		player.connection.send(new GogglesZoomPacket(isUsingZoom, player.getUUID()));
+		player.setAttached(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER, isUsingZoom);
+		player.playSound(isUsingZoom ? TFSounds.GOGGLES_ZOOM_IN.value() : TFSounds.GOGGLES_ZOOM_OUT.value());
+		player.connection.send(new ServerboundCustomPayloadPacket(new GogglesZoomPacket(isUsingZoom, player.getUUID())));
 	}
 
-	private void updateGradualGlideState(RenderFrameEvent.Pre event) {
+	public void updateGradualGlideState(RenderFrameEvent.Pre event) {
 		LocalPlayer player = Minecraft.getInstance().player;
 		if (player == null) return;
-		boolean wasGraduallyGliding = player.getData(TFDataAttachments.IS_GRADUALLY_GLIDING);
+		boolean wasGraduallyGliding = player.getAttached(TFDataAttachments.IS_GRADUALLY_GLIDING);
 		boolean shiftHeld = player.isShiftKeyDown();
 		boolean isGraduallyGliding = TFConfig.manualTravellersWingsGradualGlideDefault == shiftHeld && player.getKnownMovement().y() < 0 && !player.onGround();
 		if (isGraduallyGliding == wasGraduallyGliding)
 			return;
 
-		player.setData(TFDataAttachments.IS_GRADUALLY_GLIDING, isGraduallyGliding);
-		player.connection.send(new GradualGlidePacket(isGraduallyGliding, player.getUUID()));
+		player.setAttached(TFDataAttachments.IS_GRADUALLY_GLIDING, isGraduallyGliding);
+		player.connection.send(new ServerboundCustomPayloadPacket(new GradualGlidePacket(isGraduallyGliding, player.getUUID())));
 	}
 
-	private void cycleItemDisplayMap(InputEvent.Key event) {
+	public void cycleItemDisplayMap(InputEvent.Key event) {
 		if (!(Minecraft.getInstance().player instanceof LocalPlayer localPlayer) || !TFKeyBinds.ITEM_DISPLAY_MAP_CYCLE_KEY.consumeClick())
 			return;
-		localPlayer.connection.send(CycleMapSlotPacket.INSTANCE);
+		localPlayer.connection.send(new ServerboundCustomPayloadPacket(CycleMapSlotPacket.INSTANCE));
 	}
 
-	private void swapHotbar(InputEvent.Key event) {
+	public void swapHotbar(InputEvent.Key event) {
 		if (!TFKeyBinds.SWAP_HOTBAR_KEY.consumeClick())
 			return;
 		Player player = Minecraft.getInstance().player;
@@ -195,14 +170,14 @@ public class TravellersClientEvents {
 		ItemContainerContents containerContents = legArmor.get(DataComponents.CONTAINER);
 		if (!TravellersArmorBeltItem.hasSwapHotbar(player, legArmor) || containerContents == null)
 			return;
-		localPlayer.connection.send(SwapHotbarPacket.INSTANCE);
+		localPlayer.connection.send(new ServerboundCustomPayloadPacket(SwapHotbarPacket.INSTANCE));
 	}
 
-	private void toggleRedThreadVision(InputEvent.Key event) {
+	public void toggleRedThreadVision(InputEvent.Key event) {
 		this.toggleBooleanDataAttachment(TFKeyBinds.RED_THREAD_VISION_KEY.consumeClick(), TravellersModifiersManager.RED_THREAD_VISION_MODIFIER, TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION);
 	}
 
-	private void toggleBooleanDataAttachment(boolean pressed, ResourceKey<TravellersModifier> modifier, DeferredHolder<AttachmentType<?>, AttachmentType<Boolean>> attachment) {
+	private void toggleBooleanDataAttachment(boolean pressed, ResourceKey<TravellersModifier> modifier, AttachmentType<Boolean> attachment) {
 		if (!pressed)
 			return;
 
@@ -210,11 +185,11 @@ public class TravellersClientEvents {
 		if (player == null || !TravellersModifiersManager.isModifierActive(player, modifier))
 			return;
 
-		boolean current = player.getData(attachment.get());
-		player.setData(attachment.get(), !current);
+		boolean current = player.getAttached(attachment);
+		player.setAttached(attachment, !current);
 	}
 
-	private void slowZoomSensitivity(CalculatePlayerTurnEvent event) {
+	public void slowZoomSensitivity(CalculatePlayerTurnEvent event) {
 		Player player = Minecraft.getInstance().player; // Player is never null but we need to check for null to avoid warnings
 		if (event.getCinematicCameraEnabled() || player == null)
 			return;
@@ -234,41 +209,41 @@ public class TravellersClientEvents {
 		event.setMouseSensitivity(mod * mouseSensitivity / fovMod);
 	}
 
-	private boolean ignoreKeyEvent(InputEvent.Key event, KeyMapping key) {
+	public boolean ignoreKeyEvent(InputEvent.Key event, KeyMapping key) {
 		return !key.matches(event.getKeyEvent()) || event.getAction() != InputConstants.PRESS || Minecraft.getInstance().screen != null;
 	}
 
-	@SuppressWarnings("unchecked") //meh
+	/*@SuppressWarnings("unchecked") //meh
 	private void renderGlovesInFirstPerson(RenderArmEvent event) {
-        if (!TFConfig.firstPersonGloveOverlay)
+		if (!TFConfig.firstPersonGloveOverlay)
 			return;
 
-        AbstractClientPlayer player = event.getPlayer();
-        ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
-        if (!chestStack.has(TFDataComponents.TRAVELLERS_HAS_GLOVES) || chestStack.has(TFDataComponents.EMPERORS_CLOTH))
-            return;
+		AbstractClientPlayer player = event.getPlayer();
+		ItemStack chestStack = player.getItemBySlot(EquipmentSlot.CHEST);
+		if (!chestStack.has(TFDataComponents.TRAVELLERS_HAS_GLOVES) || chestStack.has(TFDataComponents.EMPERORS_CLOTH))
+			return;
 
 		Minecraft minecraft = Minecraft.getInstance();
 		EntityRenderDispatcher renderDispatcher = minecraft.getEntityRenderDispatcher();
 
-//		if (!(renderDispatcher.getRenderer(player) instanceof AvatarRenderer avatarRenderer))
-//            return;
+		if (!(renderDispatcher.getRenderer(player) instanceof AvatarRenderer avatarRenderer))
+			return;
 
-//		if (!(IClientItemExtensions.of(TFItems.TRAVELLERS_GLOVES.get()).getHumanoidArmorModel(chestStack, EquipmentClientInfo.LayerType.HUMANOID, avatarRenderer.getModel()) instanceof HumanoidModel model))
-//			return;
+		if (!(IClientItemExtensions.of(TFItems.TRAVELLERS_GLOVES.get()).getHumanoidArmorModel(chestStack, EquipmentClientInfo.LayerType.HUMANOID, avatarRenderer.getModel()) instanceof HumanoidModel model))
+			return;
 
-//		if (!(avatarRenderer.createRenderState(player, minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(false)) instanceof AvatarRenderState renderState))
-//			return;
+		if (!(avatarRenderer.createRenderState(player, minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(false)) instanceof AvatarRenderState renderState))
+			return;
 
-//		renderState.attackTime = 0.0F;
-//		renderState.isCrouching = false;
-//		renderState.swimAmount = 0.0F;
-//        model.setupAnim(renderState);
+		renderState.attackTime = 0.0F;
+		renderState.isCrouching = false;
+		renderState.swimAmount = 0.0F;
+		model.setupAnim(renderState);
 
-//		ModelPart armPart = event.getArm() == HumanoidArm.RIGHT ? model.rightArm : model.leftArm;
-//        armPart.xRot = 0.0F;
+		ModelPart armPart = event.getArm() == HumanoidArm.RIGHT ? model.rightArm : model.leftArm;
+		armPart.xRot = 0.0F;
 
-        Identifier gloveLocation = TwilightForestMod.prefix("textures/entity/equipment/humanoid/travellers.png");
-//		event.getSubmitNodeCollector().submitModelPart(armPart, event.getPoseStack(), RenderTypes.armorCutoutNoCull(gloveLocation), event.getPackedLight(), OverlayTexture.NO_OVERLAY, null);
-    }
+		Identifier gloveLocation = TwilightForestMod.prefix("textures/entity/equipment/humanoid/travellers.png");
+		event.getSubmitNodeCollector().submitModelPart(armPart, event.getPoseStack(), RenderTypes.armorCutoutNoCull(gloveLocation), event.getPackedLight(), OverlayTexture.NO_OVERLAY, null);
+	}*/
 }

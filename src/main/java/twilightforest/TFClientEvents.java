@@ -8,24 +8,29 @@ import net.fabricmc.fabric.api.client.rendering.v1.hud.HudStatusBarHeightRegistr
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
-import twilightforest.client.event.ClientGameEvents;
-import twilightforest.client.event.CloudEvents;
-import twilightforest.client.event.LockedBiomeToastHandler;
-import twilightforest.client.event.OverlayHandler;
+import twilightforest.client.event.*;
 import twilightforest.client.overlay.ItemDisplayOverlay;
 import twilightforest.client.overlay.PortalOverlay;
 
 public final class TFClientEvents {
+	private static final FogHandler fogEvents = FogHandler.INSTANCE;
 	private static final LockedBiomeToastHandler lockedBiomeToastEvents = LockedBiomeToastHandler.INSTANCE;
 	private static final CloudEvents cloudEvents = CloudEvents.INSTANCE;
 	private static final OverlayHandler overlayEvents = OverlayHandler.INSTANCE;
 	private static final ClientGameEvents clientGameEvents = ClientGameEvents.INSTANCE;
+	private static final TravellersClientEvents travellersClientEvents = TravellersClientEvents.INSTANCE;
 
 	public static void init() {
+		setupFogEvents();
 		setupLockedBiomeToastEvents();
 		setupCloudEvents();
 		setupOverlayEvents();
 		setupClientGameEvents();
+		setupTravellersClientEvents();
+	}
+
+	private static void setupFogEvents() {
+		ClientEvents.CARMINITE_COMPUTE_FOG_COLOR.register(fogEvents::colorFog);
 	}
 
 	private static void setupLockedBiomeToastEvents() {
@@ -61,5 +66,20 @@ public final class TFClientEvents {
 		LevelRenderEvents.BEFORE_BLOCK_OUTLINE.register(clientGameEvents::renderGiantBlockOutlines);
 		ClientEvents.COMPUTE_CAMERA_ANGLES.register(clientGameEvents::shakeCamera);
 		ItemTooltipCallback.EVENT.register((stack, _, _, lines) -> clientGameEvents.translateBookAuthor(stack, lines));
+	}
+
+	private static void setupTravellersClientEvents() {
+		ClientEvents.INPUT_KEY.register(travellersClientEvents::handleDoubleJump);
+		ClientEvents.MOVEMENT_INPUT_UPDATE.register(travellersClientEvents::handleAgileRanger);
+		ClientEvents.MOVEMENT_INPUT_UPDATE.register(travellersClientEvents::handleStraightAhead);
+		ClientEvents.MOVEMENT_INPUT_UPDATE.register(travellersClientEvents::speedUpControlledWhileSneaking);
+		ClientEvents.MOVEMENT_INPUT_UPDATE.register(travellersClientEvents::handleSidestep);
+		ClientEvents.RENDER_FRAME_PRE.register(travellersClientEvents::handleStealth);
+		ClientEvents.COMPUTE_FOV_MODIFIER.register(travellersClientEvents::updateZoomState);
+		ClientEvents.RENDER_FRAME_PRE.register(travellersClientEvents::updateGradualGlideState);
+		ClientEvents.INPUT_KEY.register(travellersClientEvents::cycleItemDisplayMap);
+		ClientEvents.CALCULATE_PLAYER_TURN.register(travellersClientEvents::slowZoomSensitivity);
+		ClientEvents.INPUT_KEY.register(travellersClientEvents::swapHotbar);
+		ClientEvents.INPUT_KEY.register(travellersClientEvents::toggleRedThreadVision);
 	}
 }
