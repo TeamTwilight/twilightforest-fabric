@@ -1,7 +1,6 @@
 package twilightforest;
 
 import carminite.events.api.*;
-import carminite.events.api.EntityEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.entity.event.v1.effect.ServerMobEffectEvents;
@@ -12,6 +11,7 @@ import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleEvents;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import twilightforest.events.*;
+import twilightforest.events.EntityEvents;
 import twilightforest.init.TFGameRules;
 
 public final class TFCommonEvents {
@@ -22,6 +22,7 @@ public final class TFCommonEvents {
 	private static final ToolEvents toolEvents = ToolEvents.INSTANCE;
 	private static final ProgressionEvents progressionEvents = ProgressionEvents.INSTANCE;
 	private static final TravellersGearEvents travellersGearEvents = TravellersGearEvents.INSTANCE;
+	private static final EntityEvents entityEvents = EntityEvents.INSTANCE;
 
 	public static void init() {
 		setupLootEvents();
@@ -31,6 +32,7 @@ public final class TFCommonEvents {
 		setupToolEvents();
 		setupProgressionEvents();
 		setupTravellersGearEvents();
+		setupEntityEvents();
 	}
 
 	private static void setupLootEvents() {
@@ -40,7 +42,7 @@ public final class TFCommonEvents {
 
 	private static void setupHostileMountEvents() {
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(hostileMountEvents::handleMountDamage);
-		EntityEvents.ENTITY_MOUNT.register(hostileMountEvents::preventMountDismount);
+		carminite.events.api.EntityEvents.ENTITY_MOUNT.register(hostileMountEvents::preventMountDismount);
 		TickEvents.ENTITY_TICK_POST.register(hostileMountEvents::preventHostileMountCrouching);
 	}
 
@@ -60,7 +62,7 @@ public final class TFCommonEvents {
 	}
 
 	private static void setupToolEvents() {
-		EntityEvents.PROJECTILE_IMPACT.register(toolEvents::onEnderBowHit);
+		carminite.events.api.EntityEvents.PROJECTILE_IMPACT.register(toolEvents::onEnderBowHit);
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, _) -> toolEvents.fieryToolSetFire(entity, source));
 		PlayerBlockBreakEvents.BEFORE.register((_, player, _, state, _) -> toolEvents.damageNonMazebreakerToolsMore(player, state));
 		ServerMobEffectEvents.ALLOW_ADD.register((effectInstance, entity, _) -> toolEvents.preventFatigueWithPocketWatch(effectInstance, entity));
@@ -79,8 +81,8 @@ public final class TFCommonEvents {
 	}
 
 	private static void setupTravellersGearEvents() {
-		EntityEvents.PROJECTILE_IMPACT.register(travellersGearEvents::magnetizeArrows);
-		EntityEvents.PROJECTILE_IMPACT.register(travellersGearEvents::performPerfectDodge);
+		carminite.events.api.EntityEvents.PROJECTILE_IMPACT.register(travellersGearEvents::magnetizeArrows);
+		carminite.events.api.EntityEvents.PROJECTILE_IMPACT.register(travellersGearEvents::performPerfectDodge);
 		LivingEvents.LIVING_JUMP.register(travellersGearEvents::cancelSlimySolesJump);
 		TickEvents.PLAYER_TICK_PRE.register(travellersGearEvents::tickMovementModifiers);
 		TickEvents.PLAYER_TICK_POST.register(travellersGearEvents::performStealth);
@@ -93,5 +95,25 @@ public final class TFCommonEvents {
 		WorkstationEvents.GRINDSTONE_TAKE.register(travellersGearEvents::extractItemsFromSwapHotbarModifier);
 		PlayerEvents.ITEM_CRAFTED.register(travellersGearEvents::fireCraftingModifierTrigger);
 		ServerPlayerEvents.COPY_FROM.register(travellersGearEvents::keepAttachmentsOnDeath);
+	}
+
+	private static void setupEntityEvents() {
+		LivingEvents.LIVING_DEATH.register(entityEvents::ominousFireConversion);
+		ServerLivingEntityEvents.ALLOW_DAMAGE.register(entityEvents::zombifiedPlayerAttacks);
+		PlayerEvents.ADVANCEMENT_EARNED.register(entityEvents::alertPlayerCastleIsWIP);
+		PlayerEvents.RIGHT_CLICK_BLOCK.register(entityEvents::attachLeadToWroughtFence);
+		PlayerEvents.LEFT_CLICK_EMPTY.register(entityEvents::wipeOreMeterOnLeftClick);
+		ServerLivingEntityEvents.AFTER_DAMAGE.register(entityEvents::entityHurts);
+		PlayerBlockBreakEvents.BEFORE.register(entityEvents::onCasketBreak);
+		carminite.events.api.EntityEvents.PROJECTILE_IMPACT.register(entityEvents::onParryProjectile);
+		PlayerEvents.RIGHT_CLICK_BLOCK.register(entityEvents::createSkullCandle);
+		LivingEvents.LIVING_JUMP.register(entityEvents::addCloudJumpParticles);
+		PlayerEvents.ATTACK_ENTITY.register(entityEvents::removeCastleTextIfAttacked);
+		ServerLivingEntityEvents.AFTER_DAMAGE.register(entityEvents::addQualifiedGroupPlayerIfNeeded);
+		LivingEvents.LIVING_DEATH.register(entityEvents::grantGroupAdvancementIfNeeded);
+		LevelEvents.DETONATE.register(entityEvents::lichBombsDontBlowUpItems);
+		PlayerEvents.ADVANCEMENT_EARNED.register(entityEvents::resetFlaskLogic);
+		carminite.events.api.EntityEvents.JOIN_LEVEL.register(entityEvents::handleLeashPathingOverrides);
+		carminite.events.api.EntityEvents.JOIN_LEVEL.register(entityEvents::stopEndermenFromGrabbingBlocksInTF);
 	}
 }

@@ -335,6 +335,10 @@ accessible method net/minecraft/client/data/models/ModelProvider$BlockStateGener
 # EquipmentAssetsGenerator
 accessible method net/minecraft/client/data/models/EquipmentAssetProvider bootstrap (Ljava/util/function/BiConsumer;)V
 
+# EntityEvents
+accessible field net/minecraft/world/entity/Mob goalSelector Lnet/minecraft/world/entity/ai/goal/GoalSelector;
+accessible class net/minecraft/world/entity/monster/EnderMan$EndermanTakeBlockGoal
+
 # Enum Extensions
 extend-enum net/minecraft/world/damagesource/DamageEffects TWILIGHTFOREST_PINCH
 extend-enum net/minecraft/world/item/Rarity TWILIGHTFOREST_TWILIGHT
