@@ -66,6 +66,7 @@ public final class TFClientEvents {
 		LevelRenderEvents.BEFORE_BLOCK_OUTLINE.register(clientGameEvents::renderGiantBlockOutlines);
 		ClientEvents.COMPUTE_CAMERA_ANGLES.register(clientGameEvents::shakeCamera);
 		ItemTooltipCallback.EVENT.register((stack, _, _, lines) -> clientGameEvents.translateBookAuthor(stack, lines));
+		ClientEvents.COMPUTE_FOV_MODIFIER.register(clientGameEvents::updateBowFOV);
 	}
 
 	private static void setupTravellersClientEvents() {
