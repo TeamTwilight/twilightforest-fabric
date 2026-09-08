@@ -26,6 +26,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
 import twilightforest.client.*;
+import twilightforest.client.event.FogHandler;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.*;
 import twilightforest.client.model.block.BrazierModel;
@@ -55,6 +56,7 @@ public final class TFClient implements ClientModInitializer {
 		TFSkyRenderer.init();
 		MapDataManager.init();
 		MultipartRenderDispatcher.init();
+		FogHandler.init();
 
 		registerPackets();
 		registerSpecialModelRenderers();
