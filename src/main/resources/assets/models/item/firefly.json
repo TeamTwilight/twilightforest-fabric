@@ -1,12 +1,11 @@
 {
-  "parent": "builtin/entity",
   "textures": {
     "particle": "minecraft:block/slime_block"
   },
   "display": {
     "gui": {
       "rotation": [ -55, 180, 135 ],
-      "translation": [ 1.5, 5, 0 ],
+      "translation": [ 1, 5, 0 ],
       "scale":[ 1.1, 1.1, 1.1 ]
     },
     "ground": {
@@ -21,10 +20,10 @@
     },
     "fixed": {
       "rotation": [ 180, 180, 180 ],
-      "translation": [ 0, 2, -7.5 ],
+      "translation": [ 0, 0, -7.5 ],
       "scale":[ 1, 1, 1 ]
     },
-   "thirdperson_righthand": {
+    "thirdperson_righthand": {
       "rotation": [ 90, 0, 180 ],
       "translation": [ 0, 3.3, 2],
       "scale": [ 0.375, 0.375, 0.375 ]
