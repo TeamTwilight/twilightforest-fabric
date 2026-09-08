@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -105,6 +106,28 @@ public class TravellersGearEvents {
 			particlePacket.queueParticle(type, false, false, hitPosition, particleVelocity);
 		}
 		PacketDistributor.sendToPlayersTrackingEntityAndSelf(livingEntity, particlePacket);
+	}
+
+	public void reduceSlimySolesFallDamage(LivingFallEvent event) {
+		LivingEntity livingEntity = event.getEntity();
+		ItemStack boots = livingEntity.getItemBySlot(EquipmentSlot.FEET);
+		Float coefficient = boots.get(TFDataComponents.SLIMY_SOLES_COEFFICIENT);
+		SlimySolesAttachment slimySolesAttachment = livingEntity.getAttached(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO);
+		if (!livingEntity.isShiftKeyDown() && TravellersModifiersManager.isModifierActive(livingEntity, boots, TravellersModifiersManager.SLIMY_SOLES_MODIFIER) && coefficient != null && (calculateFallDamage(event) > 0 || slimySolesAttachment.forceBounce)) {
+			event.setCanceled(true);
+			slimySolesAttachment.bounceVelocity = -livingEntity.getDeltaMovement().y() * Math.sqrt(coefficient);
+			slimySolesAttachment.doubleJumpBoostVelocity = slimySolesAttachment.bounceVelocity;
+			slimySolesAttachment.hasBounced = false;
+			livingEntity.setAttached(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO, slimySolesAttachment);
+		}
+	}
+
+	// [VanillaCopy]
+	private double calculateFallDamage(LivingFallEvent event) {
+		LivingEntity livingEntity = event.getEntity();
+		double safeFallDistance = livingEntity.getAttributeValue(Attributes.SAFE_FALL_DISTANCE);
+		double unsafeFallDistance = event.getDistance() - safeFallDistance;
+		return Mth.ceil(unsafeFallDistance * event.getDamageMultiplier() * livingEntity.getAttributeValue(Attributes.FALL_DAMAGE_MULTIPLIER));
 	}
 
 	public void cancelSlimySolesJump(LivingEvent.LivingJumpEvent event) {
@@ -269,6 +292,12 @@ public class TravellersGearEvents {
 			.filter(predicate)
 			.toList();
 		return travellersItemStacks.size() == 1 ? Optional.of(travellersItemStacks.getFirst()) : Optional.empty();
+	}
+
+	public void cancelPhantomSpawns(PlayerSpawnPhantomsEvent event) {
+		if (TravellersModifiersManager.isModifierActive(event.getEntity(), TravellersModifiersManager.ALL_NIGHT_GOGGLES_MODIFIER)) {
+			event.setResult(PlayerSpawnPhantomsEvent.Result.DENY);
+		}
 	}
 
 	public void fireCraftingModifierTrigger(PlayerEvent.ItemCraftedEvent event) {

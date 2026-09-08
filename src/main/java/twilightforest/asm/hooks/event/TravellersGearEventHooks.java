@@ -3,28 +3,6 @@ package twilightforest.asm.hooks.event;
 // TODO [Fabric] : Integrate these hooks into mixins and validate each one of them once the project compiles
 public final class TravellersGearEventHooks {
 	/*
-	private void reduceSlimySolesFallDamage(LivingFallEvent event) {
-		LivingEntity livingEntity = event.getEntity();
-		ItemStack boots = livingEntity.getItemBySlot(EquipmentSlot.FEET);
-		Float coefficient = boots.get(TFDataComponents.SLIMY_SOLES_COEFFICIENT);
-		SlimySolesAttachment slimySolesAttachment = livingEntity.getData(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO);
-		if (!livingEntity.isShiftKeyDown() && TravellersModifiersManager.isModifierActive(livingEntity, boots, TravellersModifiersManager.SLIMY_SOLES_MODIFIER) && coefficient != null && (calculateFallDamage(event) > 0 || slimySolesAttachment.forceBounce)) {
-			event.setCanceled(true);
-			slimySolesAttachment.bounceVelocity = -livingEntity.getDeltaMovement().y() * Math.sqrt(coefficient);
-			slimySolesAttachment.doubleJumpBoostVelocity = slimySolesAttachment.bounceVelocity;
-			slimySolesAttachment.hasBounced = false;
-			livingEntity.setData(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO, slimySolesAttachment);
-		}
-	}
-
-	// [VanillaCopy]
-	private double calculateFallDamage(LivingFallEvent event) {
-		LivingEntity livingEntity = event.getEntity();
-		double safeFallDistance = livingEntity.getAttributeValue(Attributes.SAFE_FALL_DISTANCE);
-		double unsafeFallDistance = event.getDistance() - safeFallDistance;
-		return Mth.ceil(unsafeFallDistance * event.getDamageMultiplier() * livingEntity.getAttributeValue(Attributes.FALL_DAMAGE_MULTIPLIER));
-	}
-
 	private void activateAndDeactivateTravellersModifiers(ItemAttributeModifierEvent event) {
 		if (ServerLifecycleHooks.getCurrentServer() == null)
 			return;
@@ -50,11 +28,5 @@ public final class TravellersGearEventHooks {
 			}
 		}
 	}
-
-	private void cancelPhantomSpawns(PlayerSpawnPhantomsEvent event) {
-		if (TravellersModifiersManager.isModifierActive(event.getEntity(), TravellersModifiersManager.ALL_NIGHT_GOGGLES_MODIFIER)) {
-			event.setResult(PlayerSpawnPhantomsEvent.Result.DENY);
-		}
-	}
-	 */
+	*/
 }

@@ -83,6 +83,7 @@ public final class TFCommonEvents {
 	private static void setupTravellersGearEvents() {
 		carminite.events.api.EntityEvents.PROJECTILE_IMPACT.register(travellersGearEvents::magnetizeArrows);
 		carminite.events.api.EntityEvents.PROJECTILE_IMPACT.register(travellersGearEvents::performPerfectDodge);
+		LivingEvents.LIVING_FALL.register(travellersGearEvents::reduceSlimySolesFallDamage);
 		LivingEvents.LIVING_JUMP.register(travellersGearEvents::cancelSlimySolesJump);
 		TickEvents.PLAYER_TICK_PRE.register(travellersGearEvents::tickMovementModifiers);
 		TickEvents.PLAYER_TICK_POST.register(travellersGearEvents::performStealth);
@@ -91,6 +92,7 @@ public final class TFCommonEvents {
 		LivingEvents.ARMOR_HURT.register(travellersGearEvents::stopDamagingTravellersGear);
 		LivingEvents.ARMOR_HURT.register(travellersGearEvents::setLastDamageArmorTime);
 		WorkstationEvents.ANVIL_UPDATE.register(travellersGearEvents::cancelCombiningTravellersGear);
+		PlayerEvents.SPAWN_PHANTOMS.register(travellersGearEvents::cancelPhantomSpawns);
 		WorkstationEvents.GRINDSTONE_PLACE.register(travellersGearEvents::removeModifiersFromTravellersGear);
 		WorkstationEvents.GRINDSTONE_TAKE.register(travellersGearEvents::extractItemsFromSwapHotbarModifier);
 		PlayerEvents.ITEM_CRAFTED.register(travellersGearEvents::fireCraftingModifierTrigger);
