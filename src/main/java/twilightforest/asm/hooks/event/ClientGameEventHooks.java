@@ -39,13 +39,6 @@ public final class ClientGameEventHooks {
 		}
 	}*/
 
-	/*private void renderCustomBossbars(CustomizeGuiOverlayEvent.BossEventProgress event) {
-		if (event.getBossEvent() instanceof ClientTFBossBar bossEvent) {
-			event.setCanceled(true);
-			bossEvent.renderBossBar(event.getGuiGraphics(), event.getX(), event.getY());
-		}
-	}*/
-
 	private boolean areTrinketsEquipped(LivingEntity entity) {
 		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
 			//return CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof TrophyItem);

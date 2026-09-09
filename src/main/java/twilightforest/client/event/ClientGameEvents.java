@@ -1,6 +1,7 @@
 package twilightforest.client.event;
 
 import carminite.events.neoforge.ComputeFovModifierEvent;
+import carminite.events.neoforge.CustomizeGuiOverlayEvent;
 import carminite.events.neoforge.RenderFrameEvent;
 import carminite.events.neoforge.ViewportEvent;
 import com.ibm.icu.text.RuleBasedNumberFormat;
@@ -44,6 +45,7 @@ import twilightforest.client.*;
 import twilightforest.client.renderer.AuroraRenderer;
 import twilightforest.client.renderer.entity.MagicPaintingRenderer;
 import twilightforest.config.TFConfig;
+import twilightforest.entity.boss.bar.ClientTFBossBar;
 import twilightforest.tags.TFItemTags;
 import twilightforest.events.HostileMountEvents;
 import twilightforest.init.*;
@@ -238,5 +240,12 @@ public class ClientGameEvents {
 			return false;
 		}
 		return true;
+	}
+
+	public void renderCustomBossbars(CustomizeGuiOverlayEvent.BossEventProgress event) {
+		if (event.getBossEvent() instanceof ClientTFBossBar bossEvent) {
+			event.setCanceled(true);
+			bossEvent.renderBossBar(event.getGuiGraphics(), event.getX(), event.getY());
+		}
 	}
 }

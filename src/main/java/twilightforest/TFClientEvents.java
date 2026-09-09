@@ -63,6 +63,7 @@ public final class TFClientEvents {
 		ClientEvents.RENDER_FRAME_POST.register(clientGameEvents::endAuroraFrame);
 		ClientEvents.RENDER_FRAME_PRE.register(clientGameEvents::killVignette);
 		HudElementRegistry.replaceElement(VanillaHudElements.MOUNT_HEALTH, hudElement -> (graphics, deltaTracker) -> clientGameEvents.removeHostileMountHealth(hudElement, graphics, deltaTracker));
+		ClientEvents.CUSTOMIZE_BOSS_HEALTH_OVERLAY.register(clientGameEvents::renderCustomBossbars);
 		LevelRenderEvents.BEFORE_BLOCK_OUTLINE.register(clientGameEvents::renderGiantBlockOutlines);
 		ClientEvents.COMPUTE_CAMERA_ANGLES.register(clientGameEvents::shakeCamera);
 		ItemTooltipCallback.EVENT.register((stack, _, _, lines) -> clientGameEvents.translateBookAuthor(stack, lines));
