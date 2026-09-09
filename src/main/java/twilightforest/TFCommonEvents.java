@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.entity.event.v1.effect.ServerMobEffectEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleEvents;
@@ -114,6 +115,7 @@ public final class TFCommonEvents {
 		ServerLivingEntityEvents.AFTER_DAMAGE.register(entityEvents::addQualifiedGroupPlayerIfNeeded);
 		LivingEvents.LIVING_DEATH.register(entityEvents::grantGroupAdvancementIfNeeded);
 		LevelEvents.DETONATE.register(entityEvents::lichBombsDontBlowUpItems);
+		ServerLifecycleEvents.SYNC_DATA_PACK_CONTENTS.register((player, _) -> entityEvents.handleQuestSyncing(player));
 		PlayerEvents.ADVANCEMENT_EARNED.register(entityEvents::resetFlaskLogic);
 		carminite.events.api.EntityEvents.JOIN_LEVEL.register(entityEvents::handleLeashPathingOverrides);
 		carminite.events.api.EntityEvents.JOIN_LEVEL.register(entityEvents::stopEndermenFromGrabbingBlocksInTF);

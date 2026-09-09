@@ -2,6 +2,7 @@ package twilightforest.events;
 
 import carminite.events.neoforge.*;
 import carminite.network.ClientPacketDistributor;
+import carminite.network.PacketDistributor;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -48,6 +49,7 @@ import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.block.entity.SkullChestBlockEntity;
 import twilightforest.components.item.SkullCandles;
 import twilightforest.config.TFConfig;
+import twilightforest.network.SyncQuestsPacket;
 import twilightforest.tags.TFEntityTypeTags;
 import twilightforest.enchantment.ApplyFrostedEffect;
 import twilightforest.entity.passive.quest.ram.QuestingRamCurrentContext;
@@ -422,13 +424,9 @@ public class EntityEvents {
 		}
 	}
 
-	/*private void handleQuestSyncing(OnDatapackSyncEvent event) {
-		if (event.getPlayer() != null) {
-			PacketDistributor.sendToPlayer(event.getPlayer(), new SyncQuestsPacket(this.questingRamCurrentContext.getContext()));
-		} else {
-			event.getPlayerList().getPlayers().forEach(player -> PacketDistributor.sendToPlayer(player, new SyncQuestsPacket(this.questingRamCurrentContext.getContext())));
-		}
-	}*/
+	public void handleQuestSyncing(ServerPlayer player) {
+		PacketDistributor.sendToPlayer(player, new SyncQuestsPacket(this.questingRamCurrentContext.getContext()));
+	}
 
 	public void resetFlaskLogic(AdvancementEvent.AdvancementEarnEvent event) {
 		for (var criteria : event.getAdvancement().value().criteria().entrySet()) {
