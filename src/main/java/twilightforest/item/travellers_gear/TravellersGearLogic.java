@@ -145,7 +145,7 @@ public class TravellersGearLogic {
 	}
 
 	public static void travellersGearAutoRepair(LivingEntity livingEntity) {
-		long lastHitTime = livingEntity.getAttached(TFDataAttachments.LAST_DAMAGE_ARMOR_TIME);
+		long lastHitTime = livingEntity.getAttachedOrCreate(TFDataAttachments.LAST_DAMAGE_ARMOR_TIME);
 		if (livingEntity.level().getGameTime() - lastHitTime <= 10 * 20)  // 10 seconds
 			return;
 
@@ -277,7 +277,7 @@ public class TravellersGearLogic {
 	}
 
 	public static void travellersBootsSlimySolesBounce(LivingEntity livingEntity) {
-		SlimySolesAttachment slimySolesAttachment = livingEntity.getAttached(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO);
+		SlimySolesAttachment slimySolesAttachment = livingEntity.getAttachedOrCreate(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO);
 		if (slimySolesAttachment.bounceVelocity == 0 || slimySolesAttachment.hasBounced)
 			return;
 		Vec3 velocity = livingEntity.getDeltaMovement();
@@ -364,7 +364,7 @@ public class TravellersGearLogic {
 	}
 
 	public static void determineWingState(LivingEntity livingEntity) {
-		TravellersWingsAttachment attachment = livingEntity.getAttached(TFDataAttachments.TRAVELLERS_WINGS);
+		TravellersWingsAttachment attachment = livingEntity.getAttachedOrCreate(TFDataAttachments.TRAVELLERS_WINGS);
 		TravellersWingsAttachment.WingState newState = TravellersWingsAttachment.WingState.IDLE;
 
 		boolean isLocked = false;

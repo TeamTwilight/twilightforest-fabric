@@ -156,7 +156,7 @@ public class TravellersGearEvents {
 
 		if (!player.level().isClientSide()) {
 			boolean modifierActive = TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.GRADUAL_GLIDE_MODIFIER);
-			if (!modifierActive && player.getAttached(TFDataAttachments.IS_GRADUALLY_GLIDING)) {
+			if (!modifierActive && player.getAttachedOrCreate(TFDataAttachments.IS_GRADUALLY_GLIDING)) {
 				player.setAttached(TFDataAttachments.IS_GRADUALLY_GLIDING, false);
 				PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, new GradualGlidePacket(false, player.getUUID()));
 			}
@@ -164,7 +164,7 @@ public class TravellersGearEvents {
 
 		//reset double jump wing anim if on the ground
 		if (event.getEntity().level().isClientSide()) {
-			if (player.getAttached(TFDataAttachments.TRAVELLERS_WINGS_ANIM).doubleJump && player.onGround()) {
+			if (player.getAttachedOrCreate(TFDataAttachments.TRAVELLERS_WINGS_ANIM).doubleJump && player.onGround()) {
 				player.getAttached(TFDataAttachments.TRAVELLERS_WINGS_ANIM).doubleJump = false;
 			}
 		}

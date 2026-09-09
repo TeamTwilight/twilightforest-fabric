@@ -81,10 +81,10 @@ public class TravellersClientEvents {
 			return;
 
 		ClientInput input = localPlayer.input;
-		boolean lastImpulseZero = localPlayer.getAttached(TFDataAttachments.LAST_HORIZONTAL_IMPULSE) == 0;
-		boolean sameImpulseDirection = Math.signum(localPlayer.getAttached(TFDataAttachments.LAST_NON_ZERO_HORIZONTAL_IMPULSE)) == Math.signum(input.getMoveVector().x);
+		boolean lastImpulseZero = localPlayer.getAttachedOrCreate(TFDataAttachments.LAST_HORIZONTAL_IMPULSE) == 0;
+		boolean sameImpulseDirection = Math.signum(localPlayer.getAttachedOrCreate(TFDataAttachments.LAST_NON_ZERO_HORIZONTAL_IMPULSE)) == Math.signum(input.getMoveVector().x);
 		int currentTime = localPlayer.tickCount;
-		int lastWalkingTime = localPlayer.getAttached(TFDataAttachments.LAST_HORIZONTAL_WALKING_TIME);
+		int lastWalkingTime = localPlayer.getAttachedOrCreate(TFDataAttachments.LAST_HORIZONTAL_WALKING_TIME);
 		boolean hasDoubleTapped = currentTime - lastWalkingTime < 4;
 
 		if (lastImpulseZero && sameImpulseDirection && hasDoubleTapped && input.getMoveVector().x != 0) {
@@ -113,7 +113,7 @@ public class TravellersClientEvents {
 	public void handleDoubleJump(InputEvent.Key event) {
 		if (!(Minecraft.getInstance().player instanceof LocalPlayer localPlayer) || ignoreKeyEvent(event, Minecraft.getInstance().options.keyJump))
 			return;
-		int lastJumpKeyPressTime = localPlayer.getAttached(TFDataAttachments.LAST_JUMP_KEY_PRESS_TIME);
+		int lastJumpKeyPressTime = localPlayer.getAttachedOrCreate(TFDataAttachments.LAST_JUMP_KEY_PRESS_TIME);
 		boolean pressedKey = event.getAction() == InputConstants.PRESS;
 		if (pressedKey)
 			localPlayer.setAttached(TFDataAttachments.LAST_JUMP_KEY_PRESS_TIME, localPlayer.tickCount);
@@ -128,7 +128,7 @@ public class TravellersClientEvents {
 	public void updateZoomState(ComputeFovModifierEvent event) {
 		LocalPlayer player = Minecraft.getInstance().player;
 		if (player == null) return;
-		boolean wasUsingZoom = player.getAttached(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER);
+		boolean wasUsingZoom = player.getAttachedOrCreate(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER);
 		ItemStack headStack = player.getItemBySlot(EquipmentSlot.HEAD);
 		Float zoomModifier = headStack.get(TFDataComponents.ZOOM_ABILITY_MODIFIER);
 		boolean isUsingZoom = isZoomKeyHeld(player) && TravellersModifiersManager.isModifierActive(player, headStack, TravellersModifiersManager.ZOOM_ABILITY) && zoomModifier != null;
@@ -145,7 +145,7 @@ public class TravellersClientEvents {
 	public void updateGradualGlideState(RenderFrameEvent.Pre event) {
 		LocalPlayer player = Minecraft.getInstance().player;
 		if (player == null) return;
-		boolean wasGraduallyGliding = player.getAttached(TFDataAttachments.IS_GRADUALLY_GLIDING);
+		boolean wasGraduallyGliding = player.getAttachedOrCreate(TFDataAttachments.IS_GRADUALLY_GLIDING);
 		boolean shiftHeld = player.isShiftKeyDown();
 		boolean isGraduallyGliding = TFConfig.manualTravellersWingsGradualGlideDefault == shiftHeld && player.getKnownMovement().y() < 0 && !player.onGround();
 		if (isGraduallyGliding == wasGraduallyGliding)

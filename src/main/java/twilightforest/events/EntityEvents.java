@@ -405,7 +405,7 @@ public class EntityEvents {
 
 	public void addQualifiedGroupPlayerIfNeeded(LivingEntity entity, DamageSource source, float baseDamageTaken, float damageTaken, boolean blocked) {
 		if (entity.is(TFEntityTypeTags.MULTIPLAYER_INCLUSIVE_ENTITIES)) {
-			var data = entity.getAttached(TFDataAttachments.MULTIPLAYER_FIGHT);
+			var data = entity.getAttachedOrCreate(TFDataAttachments.MULTIPLAYER_FIGHT);
 			if (source.getEntity() != null) {
 				data.maybeAddQualifiedPlayer(source.getEntity());
 			}

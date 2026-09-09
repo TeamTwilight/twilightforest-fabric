@@ -47,7 +47,7 @@ public class TravellersWingsStatePacket implements CustomPacketPayload {
 		if (player != null && player.level() != null) {
 			Entity entity = player.level().getEntity(message.entityId);
 			if (entity instanceof LivingEntity livingEntity) {
-				TravellersWingsAttachment attachment = livingEntity.getAttached(TFDataAttachments.TRAVELLERS_WINGS);
+				TravellersWingsAttachment attachment = livingEntity.getAttachedOrCreate(TFDataAttachments.TRAVELLERS_WINGS);
 				attachment.state = message.state;
 				attachment.sidestepLeft = message.sidestepLeft;
 				attachment.doubleJumpTimer = message.doubleJumpTimer;

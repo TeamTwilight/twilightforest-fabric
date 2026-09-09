@@ -28,7 +28,7 @@ public class CapabilityEvents {
 	}
 
 	public void updatePlayerCaps(PlayerTickEvent.Post event) {
-		if (event.getEntity().getAttached(TFDataAttachments.FEATHER_FAN)) {
+		if (event.getEntity().getAttachedOrCreate(TFDataAttachments.FEATHER_FAN)) {
 			event.getEntity().setIgnoreFallDamageFromCurrentImpulse(true, event.getEntity().position());
 			event.getEntity().currentImpulseImpactPos = event.getEntity().position();
 
@@ -36,13 +36,13 @@ public class CapabilityEvents {
 				event.getEntity().setAttached(TFDataAttachments.FEATHER_FAN, false);
 			}
 		}
-		event.getEntity().getAttached(TFDataAttachments.YETI_THROWING).tick(event.getEntity());
-		event.getEntity().getAttached(TFDataAttachments.TF_PORTAL_COOLDOWN).tick(event.getEntity());
+		event.getEntity().getAttachedOrCreate(TFDataAttachments.YETI_THROWING).tick(event.getEntity());
+		event.getEntity().getAttachedOrCreate(TFDataAttachments.TF_PORTAL_COOLDOWN).tick(event.getEntity());
 	}
 
 	public boolean absorbShieldHits(LivingEntity entity, DamageSource source, float amount) {
 		if (!entity.level().isClientSide() && !source.is(DamageTypeTags.BYPASSES_ARMOR)) {
-			FortificationShieldAttachment attachment = entity.getAttached(TFDataAttachments.FORTIFICATION_SHIELDS);
+			FortificationShieldAttachment attachment = entity.getAttachedOrCreate(TFDataAttachments.FORTIFICATION_SHIELDS);
 			if (attachment.shieldsLeft() > 0) {
 				if (entity.invulnerableTime <= 0) {
 					attachment.breakShield(entity, false);
