@@ -1,8 +1,5 @@
 package twilightforest.asm.hooks.event;
 
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.world.entity.LivingEntity;
-
 public final class ClientGameEventHooks {
 	/*private void setMusicInDimension(SelectMusicEvent event) {
 		Music music = event.getOriginalMusic();
@@ -38,11 +35,4 @@ public final class ClientGameEventHooks {
 			);
 		}
 	}*/
-
-	private boolean areTrinketsEquipped(LivingEntity entity) {
-		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
-			//return CuriosCompat.isCurioEquippedAndVisible(entity, stack -> stack.getItem() instanceof TrophyItem);
-		}
-		return false;
-	}
 }
