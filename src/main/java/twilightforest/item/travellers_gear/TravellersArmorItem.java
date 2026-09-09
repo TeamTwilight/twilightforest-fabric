@@ -97,7 +97,7 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 		List<Holder.Reference<TravellersModifier>> insertableModifiers = TravellersModifiersManager.findAllInsertableModifiers(registries, stack);
 		for (Holder.Reference<TravellersModifier> modifier : insertableModifiers) {
 			builder.accept(Component.literal("- ").append(TravellersModifiersManager.getModifierTooltipComponent(modifier).withStyle(ChatFormatting.GRAY)));
-			if (flag.hasShiftDown()) {
+			if (flag.carminite$hasShiftDown()) {
 				for (Component description : modifier.value().getDescription()) {
 					// FIXME There has to be a better way to bold only the indent and arrow and not the information component
 					builder.accept(Component.literal("").append(Component.translatable("travellers_gear.info_indent").withStyle(ChatFormatting.BOLD)).append(description));
@@ -113,7 +113,7 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 			builder.accept(GLOVES_TOOLTIP);
 		}
 
-		if (!flag.hasShiftDown()) {
+		if (!flag.carminite$hasShiftDown()) {
 			ConcatenatedListView<Holder.Reference<TravellersModifier>> modifiers = ConcatenatedListView.of(abilityModifiers, insertableModifiers);
 			boolean hasHiddenDescriptions = modifiers.stream().map(Holder::value).map(TravellersModifier::getDescription).anyMatch(Predicate.not(List::isEmpty));
 			if (hasHiddenDescriptions) {
