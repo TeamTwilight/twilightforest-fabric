@@ -146,7 +146,7 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		etchedNagastone(TFBlocks.MOSSY_ETCHED_NAGASTONE, "_mossy");
 		etchedNagastone(TFBlocks.CRACKED_ETCHED_NAGASTONE, "_weathered");
 
-		bisectedStairsBlock(TFBlocks.NAGASTONE_STAIRS_LEFT, ModelLocationUtils.decorateBlockModelLocation("block/etched_nagastone_left"), TFCommon.prefix("block/stone_tiles"), TFCommon.prefix("block/nagastone_bare"));
+		bisectedStairsBlock(TFBlocks.NAGASTONE_STAIRS_LEFT, TFCommon.prefix("block/etched_nagastone_left"), TFCommon.prefix("block/stone_tiles"), TFCommon.prefix("block/nagastone_bare"));
 		bisectedStairsBlock(TFBlocks.NAGASTONE_STAIRS_RIGHT, TFCommon.prefix("block/etched_nagastone_right"), TFCommon.prefix("block/stone_tiles"), TFCommon.prefix("block/nagastone_bare"));
 		bisectedStairsBlock(TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT, TFCommon.prefix("block/etched_nagastone_left_mossy"), TFCommon.prefix("block/stone_tiles_mossy"), TFCommon.prefix("block/nagastone_bare_mossy"));
 		bisectedStairsBlock(TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT, TFCommon.prefix("block/etched_nagastone_right_mossy"), TFCommon.prefix("block/stone_tiles_mossy"), TFCommon.prefix("block/nagastone_bare_mossy"));
