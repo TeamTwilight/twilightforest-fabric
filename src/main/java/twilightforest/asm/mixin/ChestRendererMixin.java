@@ -24,7 +24,7 @@ public class ChestRendererMixin<T extends BlockEntity & LidBlockEntity> {
 		method = "extractRenderState(Lnet/minecraft/world/level/block/entity/BlockEntity;Lnet/minecraft/client/renderer/blockentity/state/ChestRenderState;FLnet/minecraft/world/phys/Vec3;Lnet/minecraft/client/renderer/feature/ModelFeatureRenderer$CrumblingOverlay;)V",
 		at = @At("TAIL")
 	)
-	private void carminite$addState(
+	private void twilightforest$addState(
 		T blockEntity,
 		ChestRenderState state,
 		float partialTicks,
@@ -32,7 +32,7 @@ public class ChestRendererMixin<T extends BlockEntity & LidBlockEntity> {
 		ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress,
 		CallbackInfo ci
 	) {
-		state.setData(TFChestRenderer.CUSTOM_CHEST_SPRITE_KEY, this.carminite$getCustomSprite(blockEntity, state));
+		state.setData(TFChestRenderer.CUSTOM_CHEST_SPRITE_KEY, this.twilightforest$getCustomSprite(blockEntity, state));
 	}
 
 	@ModifyExpressionValue(
@@ -42,7 +42,7 @@ public class ChestRendererMixin<T extends BlockEntity & LidBlockEntity> {
 			target = "Lnet/minecraft/client/renderer/Sheets;chooseSprite(Lnet/minecraft/client/renderer/blockentity/state/ChestRenderState$ChestMaterialType;Lnet/minecraft/world/level/block/state/properties/ChestType;)Lnet/minecraft/client/resources/model/sprite/SpriteId;"
 		)
 	)
-	private SpriteId carminite$setCustomSprite(
+	private SpriteId twilightforest$setCustomSprite(
 		SpriteId original,
 		@Local(argsOnly = true, name = "state") ChestRenderState state
 	) {
@@ -51,7 +51,8 @@ public class ChestRendererMixin<T extends BlockEntity & LidBlockEntity> {
 
 	@Unique
 	@Nullable
-	private  <E extends BlockEntity & LidBlockEntity> SpriteId carminite$getCustomSprite(E blockEntity, ChestRenderState renderState) {
-		return TFChestRenderer.MATERIALS.get(blockEntity.getBlockState().getBlock()).get(renderState.type);
+	private  <E extends BlockEntity & LidBlockEntity> SpriteId twilightforest$getCustomSprite(E blockEntity, ChestRenderState renderState) {
+		var materials = TFChestRenderer.MATERIALS.get(blockEntity.getBlockState().getBlock());
+		return materials != null ? materials.get(renderState.type) : null;
 	}
 }
