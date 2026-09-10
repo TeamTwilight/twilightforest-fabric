@@ -12,13 +12,6 @@
     "###"
   ],
   "result": {
-    "components": {
-      "minecraft:enchantments": {
-        "levels": {
-          "minecraft:protection": 1
-        }
-      }
-    },
     "count": 1,
     "id": "twilightforest:ironwood_chestplate"
   }

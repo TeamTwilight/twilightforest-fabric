@@ -7,19 +7,12 @@
     }
   },
   "pattern": [
-    "###",
     "# #",
-    "# #"
+    "###",
+    "###"
   ],
   "result": {
-    "components": {
-      "minecraft:enchantments": {
-        "levels": {
-          "minecraft:protection": 3
-        }
-      }
-    },
     "count": 1,
-    "id": "twilightforest:naga_leggings"
+    "id": "twilightforest:naga_chestplate"
   }
 }

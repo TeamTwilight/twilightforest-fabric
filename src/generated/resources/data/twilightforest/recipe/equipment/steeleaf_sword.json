@@ -10,19 +10,12 @@
     }
   },
   "pattern": [
-    "##",
-    " X",
-    " X"
+    "#",
+    "#",
+    "X"
   ],
   "result": {
-    "components": {
-      "minecraft:enchantments": {
-        "levels": {
-          "minecraft:fortune": 2
-        }
-      }
-    },
     "count": 1,
-    "id": "twilightforest:steeleaf_hoe"
+    "id": "twilightforest:steeleaf_sword"
   }
 }

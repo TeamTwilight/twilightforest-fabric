@@ -7,18 +7,11 @@
     }
   },
   "pattern": [
-    "# #",
+    "###",
     "# #"
   ],
   "result": {
-    "components": {
-      "minecraft:enchantments": {
-        "levels": {
-          "minecraft:feather_falling": 1
-        }
-      }
-    },
     "count": 1,
-    "id": "twilightforest:ironwood_boots"
+    "id": "twilightforest:ironwood_helmet"
   }
 }
