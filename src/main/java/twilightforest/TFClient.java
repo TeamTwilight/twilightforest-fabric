@@ -9,6 +9,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.ClientTooltipComponentCallbac
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityRenderLayerRegistrationCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.ModelLayerRegistry;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
+import net.fabricmc.fabric.impl.client.model.loading.CustomUnbakedBlockStateModelRegistry;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.animal.wolf.AdultWolfModel;
@@ -31,6 +32,7 @@ import twilightforest.client.*;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.*;
 import twilightforest.client.model.block.BrazierModel;
+import twilightforest.client.model.block.patch.UnbakedPlantPatchBlockStateModel;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.item.AnimatedItemModel;
 import twilightforest.client.model.item.TravellersGearItemModel;
@@ -68,6 +70,7 @@ public final class TFClient implements ClientModInitializer {
 
 		registerPackets();
 		registerTooltips();
+		registerBlockStateModels();
 		registerItemModels();
 		registerSpecialModelRenderers();
 		registerAtlases();
@@ -115,6 +118,10 @@ public final class TFClient implements ClientModInitializer {
 				case TravellersGogglesItem.Tooltip tooltip -> new ItemDisplayTooltipComponent(tooltip);
 				default -> null;
 		});
+	}
+
+	private static void registerBlockStateModels() {
+		CustomUnbakedBlockStateModelRegistry.register(TFCommon.prefix("plant_patch"), UnbakedPlantPatchBlockStateModel.MAP_CODEC);
 	}
 
 	private static void registerItemModels() {
