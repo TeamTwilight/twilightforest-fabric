@@ -175,7 +175,7 @@ public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRendere
 			return;
 
 		boolean translucent = (part.materialFlags() & BakedQuad.FLAG_TRANSLUCENT) != 0;
-		collector.submitMultiLayerBlockModel(poseStack, List.of(part), translucent, BlockModelRenderState.EMPTY_TINTS, lightCoords, OverlayTexture.NO_OVERLAY, 0);
+		collector.carminite$submitMultiLayerBlockModel(poseStack, List.of(part), translucent, BlockModelRenderState.EMPTY_TINTS, lightCoords, OverlayTexture.NO_OVERLAY, 0);
 	}
 
 	public void submitContents(JarRenderState state, PoseStack poseStack, SubmitNodeCollector collector) {
