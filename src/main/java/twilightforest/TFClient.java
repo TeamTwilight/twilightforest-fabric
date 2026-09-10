@@ -21,6 +21,7 @@ import net.minecraft.client.model.monster.spider.SpiderModel;
 import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.*;
+import net.minecraft.client.renderer.item.ItemModels;
 import net.minecraft.client.renderer.special.SpecialModelRenderers;
 import net.minecraft.client.resources.model.sprite.AtlasManager;
 import net.minecraft.resources.Identifier;
@@ -31,6 +32,8 @@ import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.*;
 import twilightforest.client.model.block.BrazierModel;
 import twilightforest.client.model.entity.*;
+import twilightforest.client.model.item.AnimatedItemModel;
+import twilightforest.client.model.item.TravellersGearItemModel;
 import twilightforest.client.particle.*;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.armor.TFArmorRenderer;
@@ -65,6 +68,7 @@ public final class TFClient implements ClientModInitializer {
 
 		registerPackets();
 		registerTooltips();
+		registerItemModels();
 		registerSpecialModelRenderers();
 		registerAtlases();
 		registerClientReloadListeners();
@@ -111,6 +115,11 @@ public final class TFClient implements ClientModInitializer {
 				case TravellersGogglesItem.Tooltip tooltip -> new ItemDisplayTooltipComponent(tooltip);
 				default -> null;
 		});
+	}
+
+	private static void registerItemModels() {
+		ItemModels.ID_MAPPER.put(TFCommon.prefix("travellers_gear"), TravellersGearItemModel.Unbaked.MAP_CODEC);
+		ItemModels.ID_MAPPER.put(TFCommon.prefix("animated_item_model"), AnimatedItemModel.Unbaked.MAP_CODEC);
 	}
 
 	private static void registerSpecialModelRenderers() {
