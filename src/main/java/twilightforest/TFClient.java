@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.particle.v1.FabricSpriteSet;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.AtlasRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.ClientTooltipComponentCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityRenderLayerRegistrationCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.ModelLayerRegistry;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
@@ -41,8 +42,14 @@ import twilightforest.client.renderer.map.ConqueredMapIconRenderer;
 import twilightforest.client.renderer.map.MagicMapPlayerIconRenderer;
 import twilightforest.client.renderer.map.MapDecorationManager;
 import twilightforest.client.renderer.special.*;
+import twilightforest.client.renderer.tooltip.ItemDisplayTooltipComponent;
+import twilightforest.client.renderer.tooltip.PotionFlaskTooltipComponent;
+import twilightforest.client.renderer.tooltip.TravellersBeltTooltipComponent;
 import twilightforest.init.*;
+import twilightforest.item.PotionFlaskItem;
 import twilightforest.item.mapdata.MapDataManager;
+import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
+import twilightforest.item.travellers_gear.TravellersGogglesItem;
 import twilightforest.network.*;
 
 public final class TFClient implements ClientModInitializer {
@@ -57,6 +64,7 @@ public final class TFClient implements ClientModInitializer {
 		MultipartRenderDispatcher.init();
 
 		registerPackets();
+		registerTooltips();
 		registerSpecialModelRenderers();
 		registerAtlases();
 		registerClientReloadListeners();
@@ -93,6 +101,16 @@ public final class TFClient implements ClientModInitializer {
 		ClientPlayNetworking.registerGlobalReceiver(SetMasonJarItemPacket.TYPE, SetMasonJarItemPacket::handle);
 		ClientPlayNetworking.registerGlobalReceiver(SyncQuestsPacket.TYPE, SyncQuestsPacket::handle);
 		ClientPlayNetworking.registerGlobalReceiver(TravellersWingsStatePacket.TYPE, TravellersWingsStatePacket::handle);
+	}
+
+	private static void registerTooltips() {
+		ClientTooltipComponentCallback.EVENT.register(component ->
+			switch (component) {
+				case PotionFlaskItem.Tooltip tooltip -> new PotionFlaskTooltipComponent(tooltip);
+				case TravellersArmorBeltItem.Tooltip tooltip -> new TravellersBeltTooltipComponent(tooltip);
+				case TravellersGogglesItem.Tooltip tooltip -> new ItemDisplayTooltipComponent(tooltip);
+				default -> null;
+		});
 	}
 
 	private static void registerSpecialModelRenderers() {
