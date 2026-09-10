@@ -1,5 +1,6 @@
 package twilightforest.client.event;
 
+import carminite.events.modified.CarminiteRenderLevelStageEvent;
 import carminite.events.neoforge.ComputeFovModifierEvent;
 import carminite.events.neoforge.CustomizeGuiOverlayEvent;
 import carminite.events.neoforge.RenderFrameEvent;
@@ -100,6 +101,34 @@ public class ClientGameEvents {
 			return;
 		}
 		hudElement.extractRenderState(graphics, deltaTracker);
+	}
+
+	public void renderAurora(CarminiteRenderLevelStageEvent.AfterWeather event) {
+		Minecraft mc = Minecraft.getInstance();
+		if (mc.level == null)
+			return;
+
+		if (aurora > 0 || lastAurora > 0) {
+			BufferBuilder buffer = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+
+			final float scale = 2048F * (mc.options.getEffectiveRenderDistance() * 16F / 32F);
+			Vec3 pos = event.getLevelRenderState().cameraRenderState.pos;
+			float y = (float) (256F - pos.y());
+			buffer.addVertex(-scale, y, scale).setColor(1F, 1F, 1F, 1F);
+			buffer.addVertex(-scale, y, -scale).setColor(1F, 1F, 1F, 1F);
+			buffer.addVertex(scale, y, -scale).setColor(1F, 1F, 1F, 1F);
+			buffer.addVertex(scale, y, scale).setColor(1F, 1F, 1F, 1F);
+
+			float alpha = Mth.lerp(mc.getDeltaTracker().getGameTimeDeltaTicks(), lastAurora, aurora) / 60F * 0.5F;
+			auroraRenderer.draw(
+				buffer.buildOrThrow(),
+				alpha,
+				Mth.abs((int) mc.level.getBiomeManager().biomeZoomSeed),
+				(float) pos.x(),
+				(float) pos.y(),
+				(float) pos.z()
+			);
+		}
 	}
 
 	public void endAuroraFrame(RenderFrameEvent.Post event) {

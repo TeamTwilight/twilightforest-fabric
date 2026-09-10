@@ -21,6 +21,7 @@ import net.minecraft.client.model.monster.silverfish.SilverfishModel;
 import net.minecraft.client.model.monster.slime.SlimeModel;
 import net.minecraft.client.model.monster.spider.SpiderModel;
 import net.minecraft.client.particle.FlameParticle;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.renderer.item.ItemModels;
@@ -39,6 +40,7 @@ import twilightforest.client.model.entity.*;
 import twilightforest.client.model.item.AnimatedItemModel;
 import twilightforest.client.model.item.TravellersGearItemModel;
 import twilightforest.client.particle.*;
+import twilightforest.client.renderer.TFRenderPipelines;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.armor.TFArmorRenderer;
 import twilightforest.client.renderer.block.*;
@@ -73,6 +75,7 @@ public final class TFClient implements ClientModInitializer {
 		ModelLoadingPlugin.register(new TFModelLoadingPlugin());
 
 		registerPackets();
+		registerRenderPipelines();
 		registerTooltips();
 		registerBlockStateModels();
 		registerItemModels();
@@ -112,6 +115,10 @@ public final class TFClient implements ClientModInitializer {
 		ClientPlayNetworking.registerGlobalReceiver(SetMasonJarItemPacket.TYPE, SetMasonJarItemPacket::handle);
 		ClientPlayNetworking.registerGlobalReceiver(SyncQuestsPacket.TYPE, SyncQuestsPacket::handle);
 		ClientPlayNetworking.registerGlobalReceiver(TravellersWingsStatePacket.TYPE, TravellersWingsStatePacket::handle);
+	}
+
+	private static void registerRenderPipelines() {
+		RenderPipelines.register(TFRenderPipelines.AURORA);
 	}
 
 	private static void registerTooltips() {
