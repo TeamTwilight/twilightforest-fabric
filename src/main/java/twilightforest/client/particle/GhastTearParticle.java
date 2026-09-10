@@ -40,7 +40,7 @@ public class GhastTearParticle extends SingleQuadParticle {
 	public void tick() {
 		if (this.onGround) {
 			if (this.random.nextBoolean()) {
-				this.level.playLocalSound(this.x, this.y + 1.0D, this.z, TFSounds.TEAR_BREAK.get(), SoundSource.AMBIENT, 0.5F, 1.65F, false);
+				this.level.playLocalSound(this.x, this.y + 1.0D, this.z, TFSounds.TEAR_BREAK.value(), SoundSource.AMBIENT, 0.5F, 1.65F, false);
 			}
 
 			ItemStack itemID = new ItemStack(Items.GHAST_TEAR);
