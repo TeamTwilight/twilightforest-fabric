@@ -12,7 +12,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -265,7 +264,7 @@ public class ChainBlock extends ThrowableProjectile {
 				if (this.isReturning()) {
 					// despawn if close enough
 					if (distToPlayer < 2F) {
-						if (this.stack != null && this.getOwner() instanceof LivingEntity living && living.getAttached(TFDataAttachments.SMASH_BLOCKS).getBlocksSmashed() > 0) {
+						if (this.stack != null && this.getOwner() instanceof LivingEntity living && living.getAttachedOrCreate(TFDataAttachments.SMASH_BLOCKS).getBlocksSmashed() > 0) {
 							this.stack.hurtAndBreak(Math.min(living.getAttached(TFDataAttachments.SMASH_BLOCKS).getBlocksSmashed(), 3), living, this.getHand());
 						}
 						this.discard();
