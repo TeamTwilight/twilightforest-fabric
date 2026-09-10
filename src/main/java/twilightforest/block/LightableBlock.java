@@ -37,7 +37,7 @@ public interface LightableBlock {
 			return InteractionResult.SUCCESS;
 		} else if (this.canBeLit(state)) {
 			if (stack.is(Items.FLINT_AND_STEEL) || stack.is(Items.FIRE_CHARGE)) {
-				return InteractionResult.SUCCESS;
+				return InteractionResult.PASS;
 			}
 		}
 		return InteractionResult.TRY_WITH_EMPTY_HAND;
