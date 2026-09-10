@@ -1,6 +1,7 @@
 package twilightforest;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.particle.v1.FabricSpriteSet;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
@@ -30,6 +31,7 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
 import twilightforest.client.*;
 import twilightforest.client.model.TFModelLayers;
+import twilightforest.client.model.TFModelLoadingPlugin;
 import twilightforest.client.model.armor.*;
 import twilightforest.client.model.block.BrazierModel;
 import twilightforest.client.model.block.patch.UnbakedPlantPatchBlockStateModel;
@@ -67,6 +69,8 @@ public final class TFClient implements ClientModInitializer {
 		TFSkyRenderer.init();
 		MapDataManager.init();
 		MultipartRenderDispatcher.init();
+
+		ModelLoadingPlugin.register(new TFModelLoadingPlugin());
 
 		registerPackets();
 		registerTooltips();
