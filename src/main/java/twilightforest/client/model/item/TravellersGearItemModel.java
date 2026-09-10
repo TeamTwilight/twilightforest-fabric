@@ -1,6 +1,6 @@
 package twilightforest.client.model.item;
 
-import carminite.model.ComposedModelState;
+import carminite.client.ComposedModelState;
 import com.google.common.collect.Maps;
 import com.mojang.math.Transformation;
 import com.mojang.serialization.MapCodec;
