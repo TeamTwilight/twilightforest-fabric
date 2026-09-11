@@ -18,8 +18,8 @@ public final class TFClientEvents {
 		setupLockedBiomeToastEvents();
 		setupCloudEvents();
 		setupOverlayEvents();
-		setupClientGameEvents();
 		setupTravellersClientEvents();
+		setupClientGameEvents();
 	}
 
 	private static void setupFogEvents() {
@@ -46,24 +46,6 @@ public final class TFClientEvents {
 		HudElementRegistry.addLast(OverlayEventListeners.ITEM_DISPLAY_OVERLAY, (graphics, _) -> ItemDisplayOverlay.render(graphics, OverlayEventListeners.getCameraPlayer()));
 	}
 
-	private static void setupClientGameEvents() {
-		ItemTooltipCallback.EVENT.register((stack, _, _, lines) -> ClientGameEventListeners.addCustomTooltips(stack, lines));
-		ClientTickEvents.END_CLIENT_TICK.register(ClientGameEventListeners::clientTick);
-		ScreenEvents.AFTER_INIT.register((_, screen, _, _) -> {
-			ClientGameEventListeners.customizeSplashes(screen);
-			ScreenEvents.remove(screen).register(_ -> ClientGameEventListeners.clearEntityRenderUtilMap());
-		});
-		ClientEvents.RENDER_FRAME_POST.register(ClientGameEventListeners::endAuroraFrame);
-		ClientEvents.RENDER_FRAME_PRE.register(ClientGameEventListeners::killVignette);
-		HudElementRegistry.replaceElement(VanillaHudElements.MOUNT_HEALTH, hudElement -> (graphics, deltaTracker) -> ClientGameEventListeners.removeHostileMountHealth(hudElement, graphics, deltaTracker));
-		ClientEvents.CARMINITE_RENDER_LEVEL_AFTER_WEATHER.register(ClientGameEventListeners::renderAurora);
-		ClientEvents.CUSTOMIZE_BOSS_HEALTH_OVERLAY.register(ClientGameEventListeners::renderCustomBossbars);
-		LevelRenderEvents.BEFORE_BLOCK_OUTLINE.register(ClientGameEventListeners::renderGiantBlockOutlines);
-		ClientEvents.COMPUTE_CAMERA_ANGLES.register(ClientGameEventListeners::shakeCamera);
-		ItemTooltipCallback.EVENT.register((stack, _, _, lines) -> ClientGameEventListeners.translateBookAuthor(stack, lines));
-		ClientEvents.COMPUTE_FOV_MODIFIER.register(ClientGameEventListeners::updateBowFOV);
-	}
-
 	private static void setupTravellersClientEvents() {
 		ClientEvents.INPUT_KEY.register(TravellersClientEventListeners::handleDoubleJump);
 		ClientEvents.MOVEMENT_INPUT_UPDATE.register(TravellersClientEventListeners::handleAgileRanger);
@@ -77,5 +59,24 @@ public final class TFClientEvents {
 		ClientEvents.CALCULATE_PLAYER_TURN.register(TravellersClientEventListeners::slowZoomSensitivity);
 		ClientEvents.INPUT_KEY.register(TravellersClientEventListeners::swapHotbar);
 		ClientEvents.INPUT_KEY.register(TravellersClientEventListeners::toggleRedThreadVision);
+	}
+
+	private static void setupClientGameEvents() {
+		ItemTooltipCallback.EVENT.register((stack, _, _, lines) -> ClientGameEventListeners.addCustomTooltips(stack, lines));
+		ClientTickEvents.END_CLIENT_TICK.register(ClientGameEventListeners::clientTick);
+		ScreenEvents.AFTER_INIT.register((_, screen, _, _) -> {
+			ClientGameEventListeners.customizeSplashes(screen);
+			ScreenEvents.remove(screen).register(_ -> ClientGameEventListeners.clearEntityRenderUtilMap());
+		});
+		ClientEvents.RENDER_FRAME_POST.register(ClientGameEventListeners::endAuroraFrame);
+		ClientEvents.RENDER_FRAME_PRE.register(ClientGameEventListeners::killVignette);
+		HudElementRegistry.replaceElement(VanillaHudElements.MOUNT_HEALTH, hudElement -> (graphics, deltaTracker) -> ClientGameEventListeners.removeHostileMountHealth(hudElement, graphics, deltaTracker));
+		ClientEvents.CARMINITE_RENDER_LEVEL_AFTER_WEATHER.register(ClientGameEventListeners::renderAurora);
+		ClientEvents.CUSTOMIZE_BOSS_HEALTH_OVERLAY.register(ClientGameEventListeners::renderCustomBossbars);
+		LevelRenderEvents.BEFORE_BLOCK_OUTLINE.register(ClientGameEventListeners::renderGiantBlockOutlines);
+		ClientEvents.SELECT_MUSIC.register(ClientGameEventListeners::setMusicInDimension);
+		ClientEvents.COMPUTE_CAMERA_ANGLES.register(ClientGameEventListeners::shakeCamera);
+		ItemTooltipCallback.EVENT.register((stack, _, _, lines) -> ClientGameEventListeners.translateBookAuthor(stack, lines));
+		ClientEvents.COMPUTE_FOV_MODIFIER.register(ClientGameEventListeners::updateBowFOV);
 	}
 }
