@@ -2,9 +2,7 @@ package twilightforest.client.event;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
-import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudStatusBarHeightRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -21,8 +19,6 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFCommon;
-import twilightforest.client.overlay.ItemDisplayOverlay;
-import twilightforest.client.overlay.PortalOverlay;
 import twilightforest.components.item.OreScannerData;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.passive.QuestRam;
@@ -37,9 +33,7 @@ import twilightforest.util.ComponentAlignment;
 import java.text.DecimalFormat;
 import java.util.*;
 
-public class OverlayHandler {
-	public static final OverlayHandler INSTANCE = new OverlayHandler();
-
+public final class OverlayHandler {
 	public static final Map<Long, OreMeterInfoCache> ORE_METER_STAT_CACHE = new HashMap<>();
 	public static final Identifier QUEST_RAM_INDICATOR = TFCommon.prefix("quest_ram_indicator");
 	public static final Identifier HOSTILE_MOUNT_HUNGER_BAR = TFCommon.prefix("hostile_mount_hunger_bar");
@@ -53,18 +47,7 @@ public class OverlayHandler {
 	private static final Identifier FORTIFICATION_SHIELD_SPRITE = TFCommon.prefix("fortification_shield");
 	private static final QuestingRamCurrentContext questingRamCurrentContext = QuestingRamCurrentContext.INSTANCE;
 
-	public static void init() {
-		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, QUEST_RAM_INDICATOR, (graphics, _) -> INSTANCE.renderIndicator(graphics, graphics.guiWidth(), graphics.guiHeight()));
-		HudElementRegistry.attachElementAfter(VanillaHudElements.MOUNT_HEALTH, HOSTILE_MOUNT_HUNGER_BAR, (graphics, _) -> INSTANCE.renderHostileMountHungerBar(graphics));
-		HudStatusBarHeightRegistry.addRight(HOSTILE_MOUNT_HUNGER_BAR, _ -> 10);
-		HudElementRegistry.addLast(ORE_METER_STATS, (graphics, _) -> INSTANCE.renderOreMeterStats(graphics));
-		HudElementRegistry.attachElementAfter(VanillaHudElements.ARMOR_BAR, FORTIFICATION_SHIELD_COUNT, (graphics, _) -> INSTANCE.renderShieldCount(graphics, graphics.guiWidth(), graphics.guiHeight()));
-		HudStatusBarHeightRegistry.addLeft(FORTIFICATION_SHIELD_COUNT, _ -> 10);
-		HudElementRegistry.addLast(PORTAL_OVERLAY, (graphics, _) -> PortalOverlay.render(graphics));
-		HudElementRegistry.addLast(ITEM_DISPLAY_OVERLAY, (graphics, _) -> ItemDisplayOverlay.render(graphics, getCameraPlayer()));
-	}
-
-	public void renderIndicator(GuiGraphicsExtractor graphics, int screenWidth, int screenHeight) {
+	public static void renderIndicator(GuiGraphicsExtractor graphics, int screenWidth, int screenHeight) {
 		Minecraft minecraft = Minecraft.getInstance();
 		LocalPlayer player = minecraft.player;
 		Gui gui = minecraft.gui;
@@ -89,7 +72,7 @@ public class OverlayHandler {
 		}
 	}
 
-	public void renderHostileMountHungerBar(GuiGraphicsExtractor graphics) {
+	public static void renderHostileMountHungerBar(GuiGraphicsExtractor graphics) {
 		Minecraft minecraft = Minecraft.getInstance();
 		LocalPlayer player = minecraft.player;
 		Gui gui = minecraft.gui;
@@ -100,7 +83,7 @@ public class OverlayHandler {
 		}
 	}
 
-	public void renderShieldCount(GuiGraphicsExtractor graphics, int screenWidth, int screenHeight) {
+	public static void renderShieldCount(GuiGraphicsExtractor graphics, int screenWidth, int screenHeight) {
 		Minecraft minecraft = Minecraft.getInstance();
 		LocalPlayer player = minecraft.player;
 		int shieldCount = player.getAttached(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft();
@@ -111,7 +94,7 @@ public class OverlayHandler {
 		}
 	}
 
-	public void renderOreMeterStats(GuiGraphicsExtractor graphics) {
+	public static void renderOreMeterStats(GuiGraphicsExtractor graphics) {
 		Minecraft minecraft = Minecraft.getInstance();
 		LocalPlayer player = minecraft.player;
 		Gui gui = minecraft.gui;

@@ -30,14 +30,12 @@ import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 import twilightforest.network.*;
 import twilightforest.tags.TFItemTags;
 
-public class TravellersClientEvents {
-	public static final TravellersClientEvents INSTANCE = new TravellersClientEvents();
-
+public final class TravellersClientEvents {
 	private static boolean isZoomKeyHeld(Player player) {
 		return TFKeyBinds.ZOOM_KEY.isDown() && !player.isScoping();
 	}
 
-	public void handleAgileRanger(MovementInputUpdateEvent event) {
+	public static void handleAgileRanger(MovementInputUpdateEvent event) {
 		if (!(event.getEntity() instanceof LocalPlayer localPlayer))
 			return;
 		ItemStack leggingsStack = localPlayer.getItemBySlot(EquipmentSlot.LEGS);
@@ -54,7 +52,7 @@ public class TravellersClientEvents {
 		}
 	}
 
-	public void handleStraightAhead(MovementInputUpdateEvent event) {
+	public static void handleStraightAhead(MovementInputUpdateEvent event) {
 		if (!(event.getEntity() instanceof LocalPlayer localPlayer))
 			return;
 		ItemStack bootsStack = localPlayer.getItemBySlot(EquipmentSlot.FEET);
@@ -70,13 +68,13 @@ public class TravellersClientEvents {
 		input.moveVector = new Vec2((float) (input.getMoveVector().x / multiplier), input.getMoveVector().y);
 	}
 
-	public void speedUpControlledWhileSneaking(MovementInputUpdateEvent event) {
+	public static void speedUpControlledWhileSneaking(MovementInputUpdateEvent event) {
 		if (!(event.getEntity() instanceof LocalPlayer localPlayer) || !localPlayer.getAttached(TFDataAttachments.IS_GRADUALLY_GLIDING) || !localPlayer.isShiftKeyDown())
 			return;
 		localPlayer.input.getMoveVector().scale(5.0F); //Effectively x/y /= 0.2F
 	}
 
-	public void handleSidestep(MovementInputUpdateEvent event) {
+	public static void handleSidestep(MovementInputUpdateEvent event) {
 		if (!(event.getEntity() instanceof LocalPlayer localPlayer) || !localPlayer.onGround())
 			return;
 
@@ -101,7 +99,7 @@ public class TravellersClientEvents {
 		}
 	}
 
-	public void handleStealth(RenderFrameEvent.Pre event) {
+	public static void handleStealth(RenderFrameEvent.Pre event) {
 		if (Minecraft.getInstance().level == null)
 			return;
 		for (Entity entity : Minecraft.getInstance().level.entitiesForRendering()) {
@@ -110,7 +108,7 @@ public class TravellersClientEvents {
 		}
 	}
 
-	public void handleDoubleJump(InputEvent.Key event) {
+	public static void handleDoubleJump(InputEvent.Key event) {
 		if (!(Minecraft.getInstance().player instanceof LocalPlayer localPlayer) || ignoreKeyEvent(event, Minecraft.getInstance().options.keyJump))
 			return;
 		int lastJumpKeyPressTime = localPlayer.getAttachedOrCreate(TFDataAttachments.LAST_JUMP_KEY_PRESS_TIME);
@@ -125,7 +123,7 @@ public class TravellersClientEvents {
 		}
 	}
 
-	public void updateZoomState(ComputeFovModifierEvent event) {
+	public static void updateZoomState(ComputeFovModifierEvent event) {
 		LocalPlayer player = Minecraft.getInstance().player;
 		if (player == null) return;
 		boolean wasUsingZoom = player.getAttachedOrCreate(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER);
@@ -142,7 +140,7 @@ public class TravellersClientEvents {
 		player.connection.send(new ServerboundCustomPayloadPacket(new GogglesZoomPacket(isUsingZoom, player.getUUID())));
 	}
 
-	public void updateGradualGlideState(RenderFrameEvent.Pre event) {
+	public static void updateGradualGlideState(RenderFrameEvent.Pre event) {
 		LocalPlayer player = Minecraft.getInstance().player;
 		if (player == null) return;
 		boolean wasGraduallyGliding = player.getAttachedOrCreate(TFDataAttachments.IS_GRADUALLY_GLIDING);
@@ -155,13 +153,13 @@ public class TravellersClientEvents {
 		player.connection.send(new ServerboundCustomPayloadPacket(new GradualGlidePacket(isGraduallyGliding, player.getUUID())));
 	}
 
-	public void cycleItemDisplayMap(InputEvent.Key event) {
+	public static void cycleItemDisplayMap(InputEvent.Key event) {
 		if (!(Minecraft.getInstance().player instanceof LocalPlayer localPlayer) || !TFKeyBinds.ITEM_DISPLAY_MAP_CYCLE_KEY.consumeClick())
 			return;
 		localPlayer.connection.send(new ServerboundCustomPayloadPacket(CycleMapSlotPacket.INSTANCE));
 	}
 
-	public void swapHotbar(InputEvent.Key event) {
+	public static void swapHotbar(InputEvent.Key event) {
 		if (!TFKeyBinds.SWAP_HOTBAR_KEY.consumeClick())
 			return;
 		Player player = Minecraft.getInstance().player;
@@ -173,11 +171,11 @@ public class TravellersClientEvents {
 		localPlayer.connection.send(new ServerboundCustomPayloadPacket(SwapHotbarPacket.INSTANCE));
 	}
 
-	public void toggleRedThreadVision(InputEvent.Key event) {
-		this.toggleBooleanDataAttachment(TFKeyBinds.RED_THREAD_VISION_KEY.consumeClick(), TravellersModifiersManager.RED_THREAD_VISION_MODIFIER, TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION);
+	public static void toggleRedThreadVision(InputEvent.Key event) {
+		toggleBooleanDataAttachment(TFKeyBinds.RED_THREAD_VISION_KEY.consumeClick(), TravellersModifiersManager.RED_THREAD_VISION_MODIFIER, TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION);
 	}
 
-	private void toggleBooleanDataAttachment(boolean pressed, ResourceKey<TravellersModifier> modifier, AttachmentType<Boolean> attachment) {
+	private static void toggleBooleanDataAttachment(boolean pressed, ResourceKey<TravellersModifier> modifier, AttachmentType<Boolean> attachment) {
 		if (!pressed)
 			return;
 
@@ -189,7 +187,7 @@ public class TravellersClientEvents {
 		player.setAttached(attachment, !current);
 	}
 
-	public void slowZoomSensitivity(CalculatePlayerTurnEvent event) {
+	public static void slowZoomSensitivity(CalculatePlayerTurnEvent event) {
 		Player player = Minecraft.getInstance().player; // Player is never null but we need to check for null to avoid warnings
 		if (event.getCinematicCameraEnabled() || player == null)
 			return;
@@ -209,7 +207,7 @@ public class TravellersClientEvents {
 		event.setMouseSensitivity(mod * mouseSensitivity / fovMod);
 	}
 
-	public boolean ignoreKeyEvent(InputEvent.Key event, KeyMapping key) {
+	public static boolean ignoreKeyEvent(InputEvent.Key event, KeyMapping key) {
 		return !key.matches(event.getKeyEvent()) || event.getAction() != InputConstants.PRESS || Minecraft.getInstance().screen != null;
 	}
 

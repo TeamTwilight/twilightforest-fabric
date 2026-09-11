@@ -8,12 +8,10 @@ import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFDimension;
 
-public class FogHandler {
-	public static final FogHandler INSTANCE = new FogHandler();
-
+public final class FogHandler {
 	private static float spookyPercent = 0.0F;
 
-	public void colorFog(CarminiteComputeFogColorEvent event) {
+	public static void colorFog(CarminiteComputeFogColorEvent event) {
 		if (event.getCamera().entity() instanceof LocalPlayer player && player.level() instanceof ClientLevel client && client.dimension() == TFDimension.DIMENSION_KEY) {
 			float[] colors = new float[]{event.getRed(), event.getGreen(), event.getBlue()};
 			boolean spooky = isSpooky(client, player);

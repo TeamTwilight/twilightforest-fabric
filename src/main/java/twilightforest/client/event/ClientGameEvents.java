@@ -60,23 +60,19 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-public class ClientGameEvents {
-	public static final ClientGameEvents INSTANCE = new ClientGameEvents();
-
-	private final VoxelShape GIANT_BLOCK = Shapes.box(0.0D, 0.0D, 0.0D, 4.0D, 4.0D, 4.0D);
-	private final MutableComponent WIP_TEXT = Component.translatable("misc.twilightforest.wip").withStyle(ChatFormatting.RED);
-	private final MutableComponent EMPERORS_CLOTH_TOOLTIP = Component.translatable("item.twilightforest.emperors_cloth.desc").withStyle(ChatFormatting.GRAY);
+public final class ClientGameEvents {
+	private static final VoxelShape GIANT_BLOCK = Shapes.box(0.0D, 0.0D, 0.0D, 4.0D, 4.0D, 4.0D);
+	private static final MutableComponent WIP_TEXT = Component.translatable("misc.twilightforest.wip").withStyle(ChatFormatting.RED);
+	private static final MutableComponent EMPERORS_CLOTH_TOOLTIP = Component.translatable("item.twilightforest.emperors_cloth.desc").withStyle(ChatFormatting.GRAY);
 
 	public static int time = 0;
-	private float shakeIntensity = 0.0F;
+	private static float shakeIntensity = 0.0F;
 
-	private int aurora = 0;
-	private int lastAurora = 0;
-	private final AuroraRenderer auroraRenderer = new AuroraRenderer();
+	private static int aurora = 0;
+	private static int lastAurora = 0;
+	private static final AuroraRenderer auroraRenderer = new AuroraRenderer();
 
-	private final HolderMatcher holderMatcher = HolderMatcher.INSTANCE;
-
-	public void customizeSplashes(Screen screen) {
+	public static void customizeSplashes(Screen screen) {
 		if (screen instanceof TitleScreen title) {
 			SplashRenderer renderer = title.splash;
 			if (renderer != null) {
@@ -89,21 +85,21 @@ public class ClientGameEvents {
 		}
 	}
 
-	public void clearEntityRenderUtilMap() {
+	public static void clearEntityRenderUtilMap() {
 		EntityCache.clearCache();
 	}
 
 	/**
 	 * Stop the game from rendering the mount health for unfriendly creatures
 	 */
-	public void removeHostileMountHealth(HudElement hudElement, GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
+	public static void removeHostileMountHealth(HudElement hudElement, GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
 		if (HostileMountEvents.isRidingUnfriendly(Objects.requireNonNull(Minecraft.getInstance()).player)) {
 			return;
 		}
 		hudElement.extractRenderState(graphics, deltaTracker);
 	}
 
-	public void renderAurora(CarminiteRenderLevelStageEvent.AfterWeather event) {
+	public static void renderAurora(CarminiteRenderLevelStageEvent.AfterWeather event) {
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.level == null)
 			return;
@@ -131,11 +127,11 @@ public class ClientGameEvents {
 		}
 	}
 
-	public void endAuroraFrame(RenderFrameEvent.Post event) {
+	public static void endAuroraFrame(RenderFrameEvent.Post event) {
 		auroraRenderer.endFrame();
 	}
 
-	public void killVignette(RenderFrameEvent.Pre event) {
+	public static void killVignette(RenderFrameEvent.Pre event) {
 		Minecraft minecraft = Minecraft.getInstance();
 		// only fire if we're in the twilight forest
 		if (minecraft.level != null && TFDimension.DIMENSION_KEY.equals(minecraft.level.dimension())) {
@@ -147,7 +143,7 @@ public class ClientGameEvents {
 		}
 	}
 
-	public void clientTick(Minecraft mc) {
+	public static void clientTick(Minecraft mc) {
 		if (!mc.isPaused()) {
 			time++;
 
@@ -155,7 +151,7 @@ public class ClientGameEvents {
 			if (mc.level != null && mc.getCameraEntity() != null && !TFConfig.getValidAuroraBiomes(mc.level.registryAccess()).isEmpty()) {
 				RegistryAccess access = mc.level.registryAccess();
 				Holder<Biome> biome = mc.level.getBiome(mc.getCameraEntity().blockPosition());
-				if (TFConfig.getValidAuroraBiomes(access).stream().anyMatch(c -> holderMatcher.match(c, biome)))
+				if (TFConfig.getValidAuroraBiomes(access).stream().anyMatch(c -> HolderMatcher.INSTANCE.match(c, biome)))
 					aurora++;
 				else
 					aurora--;
@@ -202,7 +198,7 @@ public class ClientGameEvents {
 		}
 	}
 
-	public void shakeCamera(ViewportEvent.ComputeCameraAngles event) {
+	public static void shakeCamera(ViewportEvent.ComputeCameraAngles event) {
 		if (TFConfig.firstPersonEffects && !Minecraft.getInstance().isPaused() && shakeIntensity > 0 && Minecraft.getInstance().player != null) {
 			event.setYaw((float) Mth.lerp(event.getPartialTick(), event.getYaw(), event.getYaw() + (Minecraft.getInstance().player.getRandom().nextFloat() * 2F - 1F) * shakeIntensity));
 			event.setPitch((float) Mth.lerp(event.getPartialTick(), event.getPitch(), event.getPitch() + (Minecraft.getInstance().player.getRandom().nextFloat() * 2F - 1F) * shakeIntensity));
@@ -211,7 +207,7 @@ public class ClientGameEvents {
 		}
 	}
 
-	public void addCustomTooltips(ItemStack item, List<Component> lines) {
+	public static void addCustomTooltips(ItemStack item, List<Component> lines) {
 		if (item.has(TFDataComponents.EMPERORS_CLOTH)) {
 			lines.add(1, EMPERORS_CLOTH_TOOLTIP);
 		}
@@ -224,7 +220,7 @@ public class ClientGameEvents {
 	/**
 	 * Zooms in the FOV while using a bow, just like vanilla does in the AbstractClientPlayer's getFieldOfViewModifier() method (1.18.2)
 	 */
-	public void updateBowFOV(ComputeFovModifierEvent event) {
+	public static void updateBowFOV(ComputeFovModifierEvent event) {
 		Player player = event.getPlayer();
 		if (player.isUsingItem()) {
 			Item useItem = player.getUseItem().getItem();
@@ -236,7 +232,7 @@ public class ClientGameEvents {
 		}
 	}
 
-	public void translateBookAuthor(ItemStack stack, List<Component> lines) {
+	public static void translateBookAuthor(ItemStack stack, List<Component> lines) {
 		if (stack.getItem() instanceof WrittenBookItem && stack.has(DataComponents.WRITTEN_BOOK_CONTENT)) {
 			if (stack.has(TFDataComponents.TRANSLATABLE_BOOK)) {
 				List<Component> components = lines;
@@ -250,7 +246,7 @@ public class ClientGameEvents {
 		}
 	}
 
-	public boolean renderGiantBlockOutlines(LevelRenderContext context, BlockOutlineRenderState outlineState) {
+	public static boolean renderGiantBlockOutlines(LevelRenderContext context, BlockOutlineRenderState outlineState) {
 		BlockPos pos = outlineState.pos();
 		BlockState state = Minecraft.getInstance().level.getBlockState(pos);
 
@@ -271,7 +267,7 @@ public class ClientGameEvents {
 		return true;
 	}
 
-	public void renderCustomBossbars(CustomizeGuiOverlayEvent.BossEventProgress event) {
+	public static void renderCustomBossbars(CustomizeGuiOverlayEvent.BossEventProgress event) {
 		if (event.getBossEvent() instanceof ClientTFBossBar bossEvent) {
 			event.setCanceled(true);
 			bossEvent.renderBossBar(event.getGuiGraphics(), event.getX(), event.getY());

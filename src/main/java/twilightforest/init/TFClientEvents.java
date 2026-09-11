@@ -13,13 +13,6 @@ import twilightforest.client.overlay.ItemDisplayOverlay;
 import twilightforest.client.overlay.PortalOverlay;
 
 public final class TFClientEvents {
-	private static final FogHandler fogEvents = FogHandler.INSTANCE;
-	private static final LockedBiomeToastHandler lockedBiomeToastEvents = LockedBiomeToastHandler.INSTANCE;
-	private static final CloudEvents cloudEvents = CloudEvents.INSTANCE;
-	private static final OverlayHandler overlayEvents = OverlayHandler.INSTANCE;
-	private static final ClientGameEvents clientGameEvents = ClientGameEvents.INSTANCE;
-	private static final TravellersClientEvents travellersClientEvents = TravellersClientEvents.INSTANCE;
-
 	public static void init() {
 		setupFogEvents();
 		setupLockedBiomeToastEvents();
@@ -30,59 +23,59 @@ public final class TFClientEvents {
 	}
 
 	private static void setupFogEvents() {
-		ClientEvents.CARMINITE_COMPUTE_FOG_COLOR.register(fogEvents::colorFog);
+		ClientEvents.CARMINITE_COMPUTE_FOG_COLOR.register(FogHandler::colorFog);
 	}
 
 	private static void setupLockedBiomeToastEvents() {
-		ClientTickEvents.END_CLIENT_TICK.register(_ -> lockedBiomeToastEvents.tickLockedToastLogic());
+		ClientTickEvents.END_CLIENT_TICK.register(_ -> LockedBiomeToastHandler.tickLockedToastLogic());
 	}
 
 	private static void setupCloudEvents() {
-		ClientTickEvents.END_CLIENT_TICK.register(cloudEvents::tickWeatherEffects);
-		LevelRenderEvents.AFTER_TRANSLUCENT_TERRAIN.register(cloudEvents::renderPrecipitation);
+		ClientTickEvents.END_CLIENT_TICK.register(CloudEvents::tickWeatherEffects);
+		LevelRenderEvents.AFTER_TRANSLUCENT_TERRAIN.register(CloudEvents::renderPrecipitation);
 	}
 
 	private static void setupOverlayEvents() {
-		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, OverlayHandler.QUEST_RAM_INDICATOR, (graphics, _) -> overlayEvents.renderIndicator(graphics, graphics.guiWidth(), graphics.guiHeight()));
-		HudElementRegistry.attachElementAfter(VanillaHudElements.MOUNT_HEALTH, OverlayHandler.HOSTILE_MOUNT_HUNGER_BAR, (graphics, _) -> overlayEvents.renderHostileMountHungerBar(graphics));
+		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, OverlayHandler.QUEST_RAM_INDICATOR, (graphics, _) -> OverlayHandler.renderIndicator(graphics, graphics.guiWidth(), graphics.guiHeight()));
+		HudElementRegistry.attachElementAfter(VanillaHudElements.MOUNT_HEALTH, OverlayHandler.HOSTILE_MOUNT_HUNGER_BAR, (graphics, _) -> OverlayHandler.renderHostileMountHungerBar(graphics));
 		HudStatusBarHeightRegistry.addRight(OverlayHandler.HOSTILE_MOUNT_HUNGER_BAR, _ -> 10);
-		HudElementRegistry.addLast(OverlayHandler.ORE_METER_STATS, (graphics, _) -> overlayEvents.renderOreMeterStats(graphics));
-		HudElementRegistry.attachElementAfter(VanillaHudElements.ARMOR_BAR, OverlayHandler.FORTIFICATION_SHIELD_COUNT, (graphics, _) -> overlayEvents.renderShieldCount(graphics, graphics.guiWidth(), graphics.guiHeight()));
+		HudElementRegistry.addLast(OverlayHandler.ORE_METER_STATS, (graphics, _) -> OverlayHandler.renderOreMeterStats(graphics));
+		HudElementRegistry.attachElementAfter(VanillaHudElements.ARMOR_BAR, OverlayHandler.FORTIFICATION_SHIELD_COUNT, (graphics, _) -> OverlayHandler.renderShieldCount(graphics, graphics.guiWidth(), graphics.guiHeight()));
 		HudStatusBarHeightRegistry.addLeft(OverlayHandler.FORTIFICATION_SHIELD_COUNT, _ -> 10);
 		HudElementRegistry.addLast(OverlayHandler.PORTAL_OVERLAY, (graphics, _) -> PortalOverlay.render(graphics));
 		HudElementRegistry.addLast(OverlayHandler.ITEM_DISPLAY_OVERLAY, (graphics, _) -> ItemDisplayOverlay.render(graphics, OverlayHandler.getCameraPlayer()));
 	}
 
 	private static void setupClientGameEvents() {
-		ItemTooltipCallback.EVENT.register((stack, _, _, lines) -> clientGameEvents.addCustomTooltips(stack, lines));
-		ClientTickEvents.END_CLIENT_TICK.register(clientGameEvents::clientTick);
+		ItemTooltipCallback.EVENT.register((stack, _, _, lines) -> ClientGameEvents.addCustomTooltips(stack, lines));
+		ClientTickEvents.END_CLIENT_TICK.register(ClientGameEvents::clientTick);
 		ScreenEvents.AFTER_INIT.register((_, screen, _, _) -> {
-			clientGameEvents.customizeSplashes(screen);
-			ScreenEvents.remove(screen).register(_ -> clientGameEvents.clearEntityRenderUtilMap());
+			ClientGameEvents.customizeSplashes(screen);
+			ScreenEvents.remove(screen).register(_ -> ClientGameEvents.clearEntityRenderUtilMap());
 		});
-		ClientEvents.RENDER_FRAME_POST.register(clientGameEvents::endAuroraFrame);
-		ClientEvents.RENDER_FRAME_PRE.register(clientGameEvents::killVignette);
-		HudElementRegistry.replaceElement(VanillaHudElements.MOUNT_HEALTH, hudElement -> (graphics, deltaTracker) -> clientGameEvents.removeHostileMountHealth(hudElement, graphics, deltaTracker));
-		ClientEvents.CARMINITE_RENDER_LEVEL_AFTER_WEATHER.register(clientGameEvents::renderAurora);
-		ClientEvents.CUSTOMIZE_BOSS_HEALTH_OVERLAY.register(clientGameEvents::renderCustomBossbars);
-		LevelRenderEvents.BEFORE_BLOCK_OUTLINE.register(clientGameEvents::renderGiantBlockOutlines);
-		ClientEvents.COMPUTE_CAMERA_ANGLES.register(clientGameEvents::shakeCamera);
-		ItemTooltipCallback.EVENT.register((stack, _, _, lines) -> clientGameEvents.translateBookAuthor(stack, lines));
-		ClientEvents.COMPUTE_FOV_MODIFIER.register(clientGameEvents::updateBowFOV);
+		ClientEvents.RENDER_FRAME_POST.register(ClientGameEvents::endAuroraFrame);
+		ClientEvents.RENDER_FRAME_PRE.register(ClientGameEvents::killVignette);
+		HudElementRegistry.replaceElement(VanillaHudElements.MOUNT_HEALTH, hudElement -> (graphics, deltaTracker) -> ClientGameEvents.removeHostileMountHealth(hudElement, graphics, deltaTracker));
+		ClientEvents.CARMINITE_RENDER_LEVEL_AFTER_WEATHER.register(ClientGameEvents::renderAurora);
+		ClientEvents.CUSTOMIZE_BOSS_HEALTH_OVERLAY.register(ClientGameEvents::renderCustomBossbars);
+		LevelRenderEvents.BEFORE_BLOCK_OUTLINE.register(ClientGameEvents::renderGiantBlockOutlines);
+		ClientEvents.COMPUTE_CAMERA_ANGLES.register(ClientGameEvents::shakeCamera);
+		ItemTooltipCallback.EVENT.register((stack, _, _, lines) -> ClientGameEvents.translateBookAuthor(stack, lines));
+		ClientEvents.COMPUTE_FOV_MODIFIER.register(ClientGameEvents::updateBowFOV);
 	}
 
 	private static void setupTravellersClientEvents() {
-		ClientEvents.INPUT_KEY.register(travellersClientEvents::handleDoubleJump);
-		ClientEvents.MOVEMENT_INPUT_UPDATE.register(travellersClientEvents::handleAgileRanger);
-		ClientEvents.MOVEMENT_INPUT_UPDATE.register(travellersClientEvents::handleStraightAhead);
-		ClientEvents.MOVEMENT_INPUT_UPDATE.register(travellersClientEvents::speedUpControlledWhileSneaking);
-		ClientEvents.MOVEMENT_INPUT_UPDATE.register(travellersClientEvents::handleSidestep);
-		ClientEvents.RENDER_FRAME_PRE.register(travellersClientEvents::handleStealth);
-		ClientEvents.COMPUTE_FOV_MODIFIER.register(travellersClientEvents::updateZoomState);
-		ClientEvents.RENDER_FRAME_PRE.register(travellersClientEvents::updateGradualGlideState);
-		ClientEvents.INPUT_KEY.register(travellersClientEvents::cycleItemDisplayMap);
-		ClientEvents.CALCULATE_PLAYER_TURN.register(travellersClientEvents::slowZoomSensitivity);
-		ClientEvents.INPUT_KEY.register(travellersClientEvents::swapHotbar);
-		ClientEvents.INPUT_KEY.register(travellersClientEvents::toggleRedThreadVision);
+		ClientEvents.INPUT_KEY.register(TravellersClientEvents::handleDoubleJump);
+		ClientEvents.MOVEMENT_INPUT_UPDATE.register(TravellersClientEvents::handleAgileRanger);
+		ClientEvents.MOVEMENT_INPUT_UPDATE.register(TravellersClientEvents::handleStraightAhead);
+		ClientEvents.MOVEMENT_INPUT_UPDATE.register(TravellersClientEvents::speedUpControlledWhileSneaking);
+		ClientEvents.MOVEMENT_INPUT_UPDATE.register(TravellersClientEvents::handleSidestep);
+		ClientEvents.RENDER_FRAME_PRE.register(TravellersClientEvents::handleStealth);
+		ClientEvents.COMPUTE_FOV_MODIFIER.register(TravellersClientEvents::updateZoomState);
+		ClientEvents.RENDER_FRAME_PRE.register(TravellersClientEvents::updateGradualGlideState);
+		ClientEvents.INPUT_KEY.register(TravellersClientEvents::cycleItemDisplayMap);
+		ClientEvents.CALCULATE_PLAYER_TURN.register(TravellersClientEvents::slowZoomSensitivity);
+		ClientEvents.INPUT_KEY.register(TravellersClientEvents::swapHotbar);
+		ClientEvents.INPUT_KEY.register(TravellersClientEvents::toggleRedThreadVision);
 	}
 }

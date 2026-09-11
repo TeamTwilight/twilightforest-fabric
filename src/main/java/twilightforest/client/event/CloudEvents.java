@@ -34,15 +34,12 @@ import twilightforest.util.Vec2i;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CloudEvents {
-	public static final CloudEvents INSTANCE = new CloudEvents();
+public final class CloudEvents {
 	private static final List<PrecipitationRenderHelper> RENDER_HELPER = new ArrayList<>();
 
-	record PrecipitationRenderHelper(BlockPos cloudPos, Biome.Precipitation precipitation, float precipitationLevel, int rainOnY) {
+	record PrecipitationRenderHelper(BlockPos cloudPos, Biome.Precipitation precipitation, float precipitationLevel, int rainOnY) { }
 
-	}
-
-	public void tickWeatherEffects(Minecraft mc) {
+	public static void tickWeatherEffects(Minecraft mc) {
 		if (!mc.isPaused()) {
 			if (mc.level != null && TFConfig.getClientCloudBlockPrecipitationDistance() > 0) { // Semi vanilla copy of the weather tick, but made to work with cloud blocks instead
 				Vec3 vec3 = mc.gameRenderer.getMainCamera().position();
@@ -149,7 +146,7 @@ public class CloudEvents {
 		}
 	}
 
-	public void renderPrecipitation(LevelRenderContext context) {
+	public static void renderPrecipitation(LevelRenderContext context) {
 		if (TFConfig.getClientCloudBlockPrecipitationDistance() > 0 && !RENDER_HELPER.isEmpty()) {
 			Minecraft minecraft = Minecraft.getInstance();
 			if (minecraft.level == null) return;

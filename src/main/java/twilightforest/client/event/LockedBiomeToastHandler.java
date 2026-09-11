@@ -10,13 +10,11 @@ import twilightforest.util.Restriction;
 import java.util.Optional;
 
 public class LockedBiomeToastHandler {
-	public static final LockedBiomeToastHandler INSTANCE = new LockedBiomeToastHandler();
-
 	private static boolean shownToast = false;
 	private static int timeUntilToast = 60;
 	private static boolean progressionEnforced = true;
 
-	public void tickLockedToastLogic() {
+	public static void tickLockedToastLogic() {
 		Player player = Minecraft.getInstance().player;
 		if (player == null || !(player.level() instanceof ClientLevel level))
 			return;
