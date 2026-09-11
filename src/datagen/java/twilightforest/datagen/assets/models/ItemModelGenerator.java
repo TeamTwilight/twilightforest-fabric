@@ -10,10 +10,12 @@ import net.minecraft.client.renderer.item.properties.conditional.HasComponent;
 import net.minecraft.client.renderer.item.properties.numeric.Count;
 import net.minecraft.client.renderer.item.properties.numeric.Time;
 import net.minecraft.client.renderer.item.properties.numeric.UseDuration;
+import net.minecraft.client.renderer.item.properties.select.DisplayContext;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.Items;
 import twilightforest.TFCommon;
 import twilightforest.client.model.item.TravellersGearItemModel;
@@ -149,7 +151,10 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateFlatItem(TFItems.FIERY_SWORD, ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.FIERY_PICKAXE, ModelTemplates.FLAT_HANDHELD_ITEM);
 
-		this.itemModelOutput.accept(TFItems.MYSTIC_CROWN, ItemModelUtils.specialModel(ModelLocationUtils.getModelLocation(TFItems.MYSTIC_CROWN), new MysticCrownSpecialRenderer.Unbaked()));
+		Identifier mysticCrown = ModelLocationUtils.getModelLocation(TFItems.MYSTIC_CROWN);
+		this.itemModelOutput.accept(TFItems.MYSTIC_CROWN, ItemModelUtils.select(new DisplayContext(),
+			ItemModelUtils.specialModel(mysticCrown, new MysticCrownSpecialRenderer.Unbaked(ItemDisplayContext.NONE)),
+			ItemModelUtils.when(ItemDisplayContext.GUI, ItemModelUtils.specialModel(mysticCrown, new MysticCrownSpecialRenderer.Unbaked(ItemDisplayContext.GUI)))));
 
 		this.generateFlatItem(TFItems.MAZEBREAKER_PICKAXE, ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.generateFlatItem(TFItems.DIAMOND_MINOTAUR_AXE, ModelTemplates.FLAT_HANDHELD_ITEM);
