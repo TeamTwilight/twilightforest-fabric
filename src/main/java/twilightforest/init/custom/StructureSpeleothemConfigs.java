@@ -7,7 +7,7 @@ import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
-import twilightforest.TFRegistries;
+import twilightforest.init.TFRegistries;
 import twilightforest.init.TFStructures;
 import twilightforest.util.iterators.RectangleLatticeIterator;
 import twilightforest.world.components.structures.StructureSpeleothemConfig;

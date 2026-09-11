@@ -2,7 +2,7 @@ package twilightforest.tags;
 
 import net.minecraft.tags.TagKey;
 import twilightforest.TFCommon;
-import twilightforest.TFRegistries;
+import twilightforest.init.TFRegistries;
 import twilightforest.util.woods.WoodPalette;
 
 public class TFWoodPaletteTags {

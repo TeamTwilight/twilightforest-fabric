@@ -3,7 +3,7 @@ package twilightforest.world.components.structures.util;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.RegistryFileCodec;
-import twilightforest.TFRegistries;
+import twilightforest.init.TFRegistries;
 import twilightforest.init.custom.TemplateMarkerHandlers;
 import twilightforest.world.components.structures.markerhandler.TemplateMarkerHandler;
 

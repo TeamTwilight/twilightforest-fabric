@@ -13,7 +13,7 @@ import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import twilightforest.TFRegistries;
+import twilightforest.init.TFRegistries;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 
 import java.util.ArrayList;

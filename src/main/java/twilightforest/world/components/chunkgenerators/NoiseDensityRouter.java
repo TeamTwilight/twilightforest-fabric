@@ -9,7 +9,7 @@ import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.util.KeyDispatchDataCodec;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import org.jetbrains.annotations.NotNull;
-import twilightforest.TFRegistries;
+import twilightforest.init.TFRegistries;
 import twilightforest.world.components.layer.BiomeDensitySource;
 
 /**

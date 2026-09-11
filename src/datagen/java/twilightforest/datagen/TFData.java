@@ -4,7 +4,7 @@ import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
-import twilightforest.TFRegistries;
+import twilightforest.init.TFRegistries;
 import twilightforest.datagen.generator.AssetsGenerator;
 import twilightforest.datagen.generator.DataGenerator;
 import twilightforest.init.*;

@@ -14,7 +14,7 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import twilightforest.TFCommon;
-import twilightforest.TFRegistries;
+import twilightforest.init.TFRegistries;
 import twilightforest.init.TFBlocks;
 import twilightforest.loot.TFLootTables;
 import twilightforest.world.components.structures.markerhandler.*;

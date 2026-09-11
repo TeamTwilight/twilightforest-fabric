@@ -7,7 +7,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.resources.Identifier;
 import twilightforest.TFCommon;
-import twilightforest.TFRegistries;
+import twilightforest.init.TFRegistries;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFMobEffects;
 import twilightforest.init.TFSounds;

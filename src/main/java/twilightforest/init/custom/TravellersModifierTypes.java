@@ -3,7 +3,7 @@ package twilightforest.init.custom;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Registry;
 import twilightforest.TFCommon;
-import twilightforest.TFRegistries;
+import twilightforest.init.TFRegistries;
 import twilightforest.item.travellers_gear.modifiers.*;
 
 public class TravellersModifierTypes {

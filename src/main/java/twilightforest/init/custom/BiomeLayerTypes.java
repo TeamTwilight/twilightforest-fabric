@@ -3,7 +3,7 @@ package twilightforest.init.custom;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Registry;
 import twilightforest.TFCommon;
-import twilightforest.TFRegistries;
+import twilightforest.init.TFRegistries;
 import twilightforest.world.components.layer.*;
 import twilightforest.world.components.layer.vanillalegacy.BiomeLayerType;
 import twilightforest.world.components.layer.vanillalegacy.SmoothLayer;

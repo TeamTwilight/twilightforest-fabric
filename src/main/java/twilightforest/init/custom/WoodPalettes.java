@@ -7,7 +7,7 @@ import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Blocks;
-import twilightforest.TFRegistries;
+import twilightforest.init.TFRegistries;
 import twilightforest.TFCommon;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.woods.WoodPalette;

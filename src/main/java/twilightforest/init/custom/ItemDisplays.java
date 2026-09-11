@@ -4,7 +4,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.MapItem;
 import twilightforest.TFCommon;
-import twilightforest.TFRegistries;
+import twilightforest.init.TFRegistries;
 import twilightforest.client.overlay.display.ClockDisplay;
 import twilightforest.client.overlay.display.CompassDisplay;
 import twilightforest.client.overlay.display.MapDisplay;

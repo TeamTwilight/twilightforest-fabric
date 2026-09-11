@@ -32,7 +32,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.RandomBlockMa
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import twilightforest.TFCommon;
-import twilightforest.TFRegistries;
 import twilightforest.block.TorchberryPlantBlock;
 import twilightforest.tags.TFBlockTags;
 import twilightforest.tags.TFWoodPaletteTags;

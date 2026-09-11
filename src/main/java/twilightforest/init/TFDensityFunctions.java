@@ -13,7 +13,6 @@ import net.minecraft.world.level.levelgen.DensityFunctions;
 import net.minecraft.world.level.levelgen.Noises;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import twilightforest.TFCommon;
-import twilightforest.TFRegistries;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.world.components.chunkgenerators.*;
 import twilightforest.world.components.layer.BiomeDensitySource;

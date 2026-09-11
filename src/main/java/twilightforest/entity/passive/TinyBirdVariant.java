@@ -8,7 +8,7 @@ import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.biome.Biome;
-import twilightforest.TFRegistries;
+import twilightforest.init.TFRegistries;
 import twilightforest.init.custom.TinyBirdVariants;
 
 import java.util.List;

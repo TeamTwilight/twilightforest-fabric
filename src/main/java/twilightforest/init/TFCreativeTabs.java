@@ -20,7 +20,6 @@ import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
 import twilightforest.TFCommon;
-import twilightforest.TFRegistries;
 import twilightforest.block.AbstractSkullCandleBlock;
 import twilightforest.components.item.SkullCandles;
 import twilightforest.config.TFConfig;

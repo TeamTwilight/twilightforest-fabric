@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import org.jspecify.annotations.Nullable;
-import twilightforest.TFRegistries;
+import twilightforest.init.TFRegistries;
 
 import java.util.List;
 import java.util.Optional;

@@ -19,7 +19,6 @@ import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.timeline.Timeline;
 import net.minecraft.world.timeline.Timelines;
 import twilightforest.TFCommon;
-import twilightforest.TFRegistries;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.layer.BiomeDensitySource;

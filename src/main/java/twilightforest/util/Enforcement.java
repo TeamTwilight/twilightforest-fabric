@@ -4,7 +4,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import org.apache.logging.log4j.util.TriConsumer;
-import twilightforest.TFRegistries;
+import twilightforest.init.TFRegistries;
 import twilightforest.world.components.structures.util.StructureHints;
 
 import java.util.Optional;
