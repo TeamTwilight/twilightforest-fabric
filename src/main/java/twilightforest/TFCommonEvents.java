@@ -86,6 +86,7 @@ public final class TFCommonEvents {
 		carminite.events.api.EntityEvents.PROJECTILE_IMPACT.register(travellersGearEvents::performPerfectDodge);
 		LivingEvents.LIVING_FALL.register(travellersGearEvents::reduceSlimySolesFallDamage);
 		LivingEvents.LIVING_JUMP.register(travellersGearEvents::cancelSlimySolesJump);
+		LevelEvents.ITEM_ATTRIBUTE_MODIFIERS.register(travellersGearEvents::activateAndDeactivateTravellersModifiers);
 		TickEvents.PLAYER_TICK_PRE.register(travellersGearEvents::tickMovementModifiers);
 		TickEvents.PLAYER_TICK_POST.register(travellersGearEvents::performStealth);
 		TickEvents.PLAYER_TICK_PRE.register(travellersGearEvents::disableHighStepWhileSneaking);
