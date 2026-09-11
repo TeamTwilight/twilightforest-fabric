@@ -33,6 +33,7 @@ public final class TFCommonEvents {
 
 	private static void setupHostileMountEvents() {
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(HostileMountEventListeners::handleMountDamage);
+		EntityEvents.CARMINITE_ENTITY_TELEPORT.register(HostileMountEventListeners::preventTeleportingOffHostileMounts);
 		EntityEvents.ENTITY_MOUNT.register(HostileMountEventListeners::preventMountDismount);
 		TickEvents.ENTITY_TICK_POST.register(HostileMountEventListeners::preventHostileMountCrouching);
 	}

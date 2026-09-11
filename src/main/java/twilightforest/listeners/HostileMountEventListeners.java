@@ -1,5 +1,6 @@
 package twilightforest.listeners;
 
+import carminite.events.modified.CarminiteEntityTeleportEvent;
 import carminite.events.neoforge.EntityMountEvent;
 import carminite.events.neoforge.EntityTickEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -26,6 +27,13 @@ public final class HostileMountEventListeners {
 		}
 
 		return true;
+	}
+
+	public static void preventTeleportingOffHostileMounts(CarminiteEntityTeleportEvent event) {
+		// if our grabbed target tries to teleport dont let them
+		if (event.getEntity() instanceof LivingEntity living && isRidingUnfriendly(living)) {
+			event.setCanceled(true);
+		}
 	}
 
 	public static void hostileDismount(Entity rider) {
