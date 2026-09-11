@@ -6,7 +6,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import twilightforest.TFCommon;
-import twilightforest.client.event.LockedBiomeToastHandler;
+import twilightforest.client.listeners.LockedBiomeToastEventListeners;
 import twilightforest.client.renderer.TFWeatherRenderer;
 
 public record EnforceProgressionStatusPacket(boolean enforce) implements CustomPacketPayload {
@@ -30,6 +30,6 @@ public record EnforceProgressionStatusPacket(boolean enforce) implements CustomP
 	public static void handle(EnforceProgressionStatusPacket message, ClientPlayNetworking.Context ctx) {
 		boolean enforce = message.enforce;
 		TFWeatherRenderer.setProgressionEnforced(enforce);
-		LockedBiomeToastHandler.setProgressionEnforced(enforce);
+		LockedBiomeToastEventListeners.setProgressionEnforced(enforce);
 	}
 }

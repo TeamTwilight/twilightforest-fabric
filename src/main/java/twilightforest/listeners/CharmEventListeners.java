@@ -1,4 +1,4 @@
-package twilightforest.events;
+package twilightforest.listeners;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -46,7 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @tamaized.beanification.Component
-public class CharmEvents {
+public class CharmEventListeners {
 
 	public static final String CHARM_INV_TAG = "TFCharmInventory";
 	public static final String CASKET_DAMAGE_TAG = "CasketDamage";

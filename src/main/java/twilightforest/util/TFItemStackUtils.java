@@ -23,7 +23,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.ItemLike;
 import twilightforest.TFCommon;
 import twilightforest.block.KeepsakeCasketBlock;
-import twilightforest.events.CharmEvents;
+import twilightforest.listeners.CharmEventListeners;
 import twilightforest.init.TFDataComponents;
 
 import org.jspecify.annotations.Nullable;
@@ -48,15 +48,15 @@ public class TFItemStackUtils {
 		if (stack.is(item.asItem())) {
 			Optional<Tag> tag = ItemStack.CODEC.encodeStart(provider.createSerializationContext(NbtOps.INSTANCE), stack).resultOrPartial(TFCommon.LOGGER::error);
 			if (tag.isPresent()) {
-				persistentTag.put(CharmEvents.CONSUMED_CHARM_TAG, tag.get());
+				persistentTag.put(CharmEventListeners.CONSUMED_CHARM_TAG, tag.get());
 			}
 			BlockItemStateProperties blockItemStateProperties = stack.get(DataComponents.BLOCK_STATE);
 			if (blockItemStateProperties != null && blockItemStateProperties.properties().containsKey(KeepsakeCasketBlock.BREAKAGE.getName())) {
 				String propertyValueString = blockItemStateProperties.properties().get(KeepsakeCasketBlock.BREAKAGE.getName());
 
-				persistentTag.putInt(CharmEvents.CASKET_DAMAGE_TAG, propertyValueString != null && propertyValueString.chars().allMatch(Character::isDigit) ? Integer.parseInt(propertyValueString) : 0);
+				persistentTag.putInt(CharmEventListeners.CASKET_DAMAGE_TAG, propertyValueString != null && propertyValueString.chars().allMatch(Character::isDigit) ? Integer.parseInt(propertyValueString) : 0);
 			} else if (stack.has(TFDataComponents.CASKET_DAMAGE)) {
-				persistentTag.putInt(CharmEvents.CASKET_DAMAGE_TAG, stack.getOrDefault(TFDataComponents.CASKET_DAMAGE, 0));
+				persistentTag.putInt(CharmEventListeners.CASKET_DAMAGE_TAG, stack.getOrDefault(TFDataComponents.CASKET_DAMAGE, 0));
 			}
 			stack.shrink(1);
 			return true;

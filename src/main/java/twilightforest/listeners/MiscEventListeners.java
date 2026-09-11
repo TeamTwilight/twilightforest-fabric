@@ -1,4 +1,4 @@
-package twilightforest.events;
+package twilightforest.listeners;
 
 import carminite.network.PacketDistributor;
 import net.fabricmc.loader.api.FabricLoader;
@@ -33,7 +33,7 @@ import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFEntities;
 import twilightforest.network.CreateMovingCicadaSoundPacket;
 
-public final class MiscEvents {
+public final class MiscEventListeners {
 	public static void addPrey(Entity entity) {
 		if (entity instanceof Mob mob) {
 			EntityType<?> type = mob.getType();

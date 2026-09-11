@@ -1,4 +1,4 @@
-package twilightforest.client.event;
+package twilightforest.client.listeners;
 
 import carminite.events.modified.CarminiteComputeFogColorEvent;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -8,7 +8,7 @@ import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFDimension;
 
-public final class FogHandler {
+public final class FogEventListeners {
 	private static float spookyPercent = 0.0F;
 
 	public static void colorFog(CarminiteComputeFogColorEvent event) {

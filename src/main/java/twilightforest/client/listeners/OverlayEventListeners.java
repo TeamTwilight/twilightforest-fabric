@@ -1,4 +1,4 @@
-package twilightforest.client.event;
+package twilightforest.client.listeners;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
@@ -23,7 +23,7 @@ import twilightforest.components.item.OreScannerData;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.passive.QuestRam;
 import twilightforest.entity.passive.quest.ram.QuestingRamCurrentContext;
-import twilightforest.events.HostileMountEvents;
+import twilightforest.listeners.HostileMountEventListeners;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFItems;
@@ -33,7 +33,7 @@ import twilightforest.util.ComponentAlignment;
 import java.text.DecimalFormat;
 import java.util.*;
 
-public final class OverlayHandler {
+public final class OverlayEventListeners {
 	public static final Map<Long, OreMeterInfoCache> ORE_METER_STAT_CACHE = new HashMap<>();
 	public static final Identifier QUEST_RAM_INDICATOR = TFCommon.prefix("quest_ram_indicator");
 	public static final Identifier HOSTILE_MOUNT_HUNGER_BAR = TFCommon.prefix("hostile_mount_hunger_bar");
@@ -76,7 +76,7 @@ public final class OverlayHandler {
 		Minecraft minecraft = Minecraft.getInstance();
 		LocalPlayer player = minecraft.player;
 		Gui gui = minecraft.gui;
-		if (!minecraft.options.hideGui && minecraft.gameMode.canHurtPlayer() && player != null && HostileMountEvents.isRidingUnfriendly(player)) {
+		if (!minecraft.options.hideGui && minecraft.gameMode.canHurtPlayer() && player != null && HostileMountEventListeners.isRidingUnfriendly(player)) {
 			int xPos = graphics.guiWidth() / 2 + 91;
 			int yPos = graphics.guiHeight() - HudStatusBarHeightRegistry.getHeight(HOSTILE_MOUNT_HUNGER_BAR);
 			gui.extractFood(graphics, player, yPos, xPos);

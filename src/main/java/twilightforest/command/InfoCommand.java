@@ -20,7 +20,7 @@ import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-import twilightforest.events.EntityEvents;
+import twilightforest.listeners.EntityEventListeners;
 import twilightforest.util.landmarks.LandmarkUtil;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.components.structures.util.LandmarkStructure;
@@ -80,7 +80,7 @@ public class InfoCommand {
 			// what is the spawn list
 			List<Weighted<MobSpawnSettings.SpawnerData>> spawnList = new ArrayList<>();
 
-			EntityEvents.gatherPotentialSpawns(level.structureManager(), MobCategory.MONSTER, pos, spawnList::add);
+			EntityEventListeners.gatherPotentialSpawns(level.structureManager(), MobCategory.MONSTER, pos, spawnList::add);
 
 			if (!spawnList.isEmpty()) {
 				source.sendSuccess(() -> Component.translatable("commands.tffeature.structure.spawn_list").withStyle(ChatFormatting.UNDERLINE), false);

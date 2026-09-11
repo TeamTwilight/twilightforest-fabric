@@ -1,6 +1,5 @@
-package twilightforest.events;
+package twilightforest.listeners;
 
-import carminite.events.api.*;
 import carminite.events.neoforge.*;
 import carminite.network.PacketDistributor;
 import carminite.util.ServerLifecycleHooks;
@@ -47,7 +46,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public final class TravellersGearEvents {
+public final class TravellersGearEventListeners {
 	private static final List<AttachmentType<?>> ATTACHMENTS_TO_PRESERVE_ON_DEATH = List.of(
 		TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION
 	);

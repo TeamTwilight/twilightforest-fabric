@@ -1,4 +1,4 @@
-package twilightforest.events;
+package twilightforest.listeners;
 
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.player.Player;
@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public final class LootEvents {
+public final class LootEventListeners {
 	public static Map<Block, Item> GIANT_BLOCK_CONVERSIONS = new HashMap<>();
 
 	private static final GiantPickUsedCondition GIANT_PICK_USED = new GiantPickUsedCondition(LootContext.EntityTarget.THIS);

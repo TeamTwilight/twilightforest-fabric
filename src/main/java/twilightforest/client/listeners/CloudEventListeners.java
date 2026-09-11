@@ -1,4 +1,4 @@
-package twilightforest.client.event;
+package twilightforest.client.listeners;
 
 import com.mojang.blaze3d.vertex.*;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderContext;
@@ -34,7 +34,7 @@ import twilightforest.util.Vec2i;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class CloudEvents {
+public final class CloudEventListeners {
 	private static final List<PrecipitationRenderHelper> RENDER_HELPER = new ArrayList<>();
 
 	record PrecipitationRenderHelper(BlockPos cloudPos, Biome.Precipitation precipitation, float precipitationLevel, int rainOnY) { }

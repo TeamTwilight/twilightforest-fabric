@@ -1,4 +1,4 @@
-package twilightforest.client.event;
+package twilightforest.client.listeners;
 
 import carminite.events.modified.CarminiteRenderLevelStageEvent;
 import carminite.events.neoforge.ComputeFovModifierEvent;
@@ -48,7 +48,7 @@ import twilightforest.client.renderer.entity.MagicPaintingRenderer;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.boss.bar.ClientTFBossBar;
 import twilightforest.tags.TFItemTags;
-import twilightforest.events.HostileMountEvents;
+import twilightforest.listeners.HostileMountEventListeners;
 import twilightforest.init.*;
 import twilightforest.item.*;
 import twilightforest.util.HolderMatcher;
@@ -60,7 +60,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-public final class ClientGameEvents {
+public final class ClientGameEventListeners {
 	private static final VoxelShape GIANT_BLOCK = Shapes.box(0.0D, 0.0D, 0.0D, 4.0D, 4.0D, 4.0D);
 	private static final MutableComponent WIP_TEXT = Component.translatable("misc.twilightforest.wip").withStyle(ChatFormatting.RED);
 	private static final MutableComponent EMPERORS_CLOTH_TOOLTIP = Component.translatable("item.twilightforest.emperors_cloth.desc").withStyle(ChatFormatting.GRAY);
@@ -93,7 +93,7 @@ public final class ClientGameEvents {
 	 * Stop the game from rendering the mount health for unfriendly creatures
 	 */
 	public static void removeHostileMountHealth(HudElement hudElement, GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
-		if (HostileMountEvents.isRidingUnfriendly(Objects.requireNonNull(Minecraft.getInstance()).player)) {
+		if (HostileMountEventListeners.isRidingUnfriendly(Objects.requireNonNull(Minecraft.getInstance()).player)) {
 			return;
 		}
 		hudElement.extractRenderState(graphics, deltaTracker);
@@ -138,7 +138,7 @@ public final class ClientGameEvents {
 			minecraft.gui.vignetteBrightness = 0.0F;
 		}
 
-		if (minecraft.player != null && HostileMountEvents.isRidingUnfriendly(minecraft.player)) {
+		if (minecraft.player != null && HostileMountEventListeners.isRidingUnfriendly(minecraft.player)) {
 			minecraft.gui.setOverlayMessage(Component.empty(), false);
 		}
 	}

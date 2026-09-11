@@ -58,10 +58,10 @@ import twilightforest.entity.passive.*;
 import twilightforest.entity.passive.quest.QuestReloadListener;
 import twilightforest.entity.projectile.MoonwormShot;
 import twilightforest.entity.projectile.TwilightWandBolt;
-import twilightforest.events.*;
 import twilightforest.init.*;
 import twilightforest.init.custom.*;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
+import twilightforest.listeners.LootEventListeners;
 import twilightforest.network.*;
 import twilightforest.tags.TFItemTags;
 import twilightforest.util.HolidayEvent;
@@ -225,10 +225,10 @@ public final class TFCommon implements ModInitializer {
 	}
 
 	private static void registerGiantToolDropConversions() {
-		LootEvents.GIANT_BLOCK_CONVERSIONS.put(Blocks.COBBLESTONE, TFBlocks.GIANT_COBBLESTONE.asItem());
-		LootEvents.GIANT_BLOCK_CONVERSIONS.put(Blocks.OAK_LOG, TFBlocks.GIANT_LOG.asItem());
-		LootEvents.GIANT_BLOCK_CONVERSIONS.put(Blocks.OAK_LEAVES, TFBlocks.GIANT_LEAVES.asItem());
-		LootEvents.GIANT_BLOCK_CONVERSIONS.put(Blocks.OBSIDIAN, TFBlocks.GIANT_OBSIDIAN.asItem());
+		LootEventListeners.GIANT_BLOCK_CONVERSIONS.put(Blocks.COBBLESTONE, TFBlocks.GIANT_COBBLESTONE.asItem());
+		LootEventListeners.GIANT_BLOCK_CONVERSIONS.put(Blocks.OAK_LOG, TFBlocks.GIANT_LOG.asItem());
+		LootEventListeners.GIANT_BLOCK_CONVERSIONS.put(Blocks.OAK_LEAVES, TFBlocks.GIANT_LEAVES.asItem());
+		LootEventListeners.GIANT_BLOCK_CONVERSIONS.put(Blocks.OBSIDIAN, TFBlocks.GIANT_OBSIDIAN.asItem());
 	}
 
 	private static void registerJarLids() {

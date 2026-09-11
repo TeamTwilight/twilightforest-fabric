@@ -1,4 +1,4 @@
-package twilightforest.events;
+package twilightforest.listeners;
 
 import carminite.events.neoforge.EntityMountEvent;
 import carminite.events.neoforge.EntityTickEvent;
@@ -11,7 +11,7 @@ import twilightforest.entity.IHostileMount;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFDataAttachments;
 
-public final class HostileMountEvents {
+public final class HostileMountEventListeners {
 	public static volatile boolean allowDismount = false;
 
 	public static boolean handleMountDamage(LivingEntity entity, DamageSource source, float amount) {
@@ -29,9 +29,9 @@ public final class HostileMountEvents {
 	}
 
 	public static void hostileDismount(Entity rider) {
-		HostileMountEvents.allowDismount = true;
+		HostileMountEventListeners.allowDismount = true;
 		rider.stopRiding();
-		HostileMountEvents.allowDismount = false;
+		HostileMountEventListeners.allowDismount = false;
 	}
 
 	public static void preventMountDismount(EntityMountEvent event) {

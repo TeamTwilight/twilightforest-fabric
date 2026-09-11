@@ -1,4 +1,4 @@
-package twilightforest.client.event;
+package twilightforest.client.listeners;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -9,7 +9,7 @@ import twilightforest.util.Restriction;
 
 import java.util.Optional;
 
-public class LockedBiomeToastHandler {
+public final class LockedBiomeToastEventListeners {
 	private static boolean shownToast = false;
 	private static int timeUntilToast = 60;
 	private static boolean progressionEnforced = true;

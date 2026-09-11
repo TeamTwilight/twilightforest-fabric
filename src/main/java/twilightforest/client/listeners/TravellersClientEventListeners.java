@@ -1,4 +1,4 @@
-package twilightforest.client.event;
+package twilightforest.client.listeners;
 
 import carminite.events.neoforge.*;
 import com.mojang.blaze3d.platform.InputConstants;
@@ -30,7 +30,7 @@ import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 import twilightforest.network.*;
 import twilightforest.tags.TFItemTags;
 
-public final class TravellersClientEvents {
+public final class TravellersClientEventListeners {
 	private static boolean isZoomKeyHeld(Player player) {
 		return TFKeyBinds.ZOOM_KEY.isDown() && !player.isScoping();
 	}

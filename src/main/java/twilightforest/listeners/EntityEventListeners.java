@@ -1,4 +1,4 @@
-package twilightforest.events;
+package twilightforest.listeners;
 
 import carminite.events.neoforge.*;
 import carminite.network.ClientPacketDistributor;
@@ -67,7 +67,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.function.Consumer;
 
-public final class EntityEvents {
+public final class EntityEventListeners {
 	private static final boolean SHIELD_PARRY_MOD_LOADED = FabricLoader.getInstance().isModLoaded("parry");
 
 	public static void ominousFireConversion(LivingDeathEvent event) {

@@ -1,4 +1,4 @@
-package twilightforest.events;
+package twilightforest.listeners;
 
 import carminite.events.neoforge.PlayerInteractEvent;
 import carminite.events.neoforge.PlayerTickEvent;
@@ -55,7 +55,7 @@ import java.util.*;
 /**
  * A class to store events relating to progression
  */
-public final class ProgressionEvents {
+public final class ProgressionEventListeners {
 
 	/**
 	 * Notify all players' clients of gamerule change if progression is the change.
@@ -150,7 +150,7 @@ public final class ProgressionEvents {
 		return LandmarkUtil.locateNearestLandmarkStart(world, chunkPlayer.x(), chunkPlayer.z()).map(structureStart -> {
 			if (structureStart.getStructure() instanceof AdvancementLockedStructure advancementLockedStructure && !advancementLockedStructure.doesPlayerHaveRequiredAdvancements(player)) {
 				List<Pair<BoundingBox, Boolean>> boundingBoxesData = structureStart.getPieces().stream()
-					.map(piece -> Pair.of(ProgressionEvents.isPieceProtected(piece) ? piece.getBoundingBox().inflatedBy(4) : piece.getBoundingBox(), ProgressionEvents.isPieceProtected(piece)))
+					.map(piece -> Pair.of(ProgressionEventListeners.isPieceProtected(piece) ? piece.getBoundingBox().inflatedBy(4) : piece.getBoundingBox(), ProgressionEventListeners.isPieceProtected(piece)))
 					.toList();
 
 				sendStructureProtectionPacket(player, boundingBoxesData);

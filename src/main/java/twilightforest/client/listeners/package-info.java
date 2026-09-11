@@ -1,4 +1,4 @@
 @NullMarked
-package twilightforest.client.event;
+package twilightforest.client.listeners;
 
 import org.jspecify.annotations.NullMarked;

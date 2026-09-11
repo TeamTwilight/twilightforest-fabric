@@ -11,7 +11,7 @@ import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.components.entity.YetiThrowAttachment;
-import twilightforest.events.HostileMountEvents;
+import twilightforest.listeners.HostileMountEventListeners;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.network.MovePlayerPacket;
 import twilightforest.tags.TFEntityTypeTags;
@@ -75,7 +75,7 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 	public void stop() {
 		if (!this.mob.getPassengers().isEmpty()) {
 			Entity rider = this.mob.getPassengers().getFirst();
-			HostileMountEvents.hostileDismount(rider);
+			HostileMountEventListeners.hostileDismount(rider);
 
 			Vec3 throwVec = new Vec3(this.mob.getLookAngle().x() * 2.0D, 0.9, this.mob.getLookAngle().z() * 2.0D);
 

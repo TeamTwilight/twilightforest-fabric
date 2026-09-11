@@ -1,4 +1,4 @@
-package twilightforest.events;
+package twilightforest.listeners;
 
 import carminite.events.neoforge.ProjectileImpactEvent;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalEntityTypeTags;
@@ -38,7 +38,7 @@ import twilightforest.item.*;
 
 import java.util.List;
 
-public final class ToolEvents {
+public final class ToolEventListeners {
 	public static void onEnderBowHit(ProjectileImpactEvent evt) {
 		Projectile arrow = evt.getProjectile();
 		if (arrow.getOwner() instanceof Player player
@@ -111,7 +111,7 @@ public final class ToolEvents {
 				List<ItemStack> drops = state.getDrops(builder);
 
 				if (!drops.isEmpty() && drops.getFirst().getItem() instanceof BlockItem block) {
-					boolean allTheSame = LootEvents.GIANT_BLOCK_CONVERSIONS.containsKey(block.getBlock()); //check if the block drops can be converted instead of the block itself so things like stone can make giant cobble
+					boolean allTheSame = LootEventListeners.GIANT_BLOCK_CONVERSIONS.containsKey(block.getBlock()); //check if the block drops can be converted instead of the block itself so things like stone can make giant cobble
 					if (allTheSame) {
 						for (BlockPos offsetPos : GiantBlock.getVolume(pos)) {
 							if (!serverPlayer.level().getBlockState(offsetPos).is(state.getBlock())) {

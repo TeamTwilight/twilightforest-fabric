@@ -1,4 +1,4 @@
-package twilightforest.events;
+package twilightforest.listeners;
 
 import carminite.events.neoforge.EntityTickEvent;
 import carminite.events.neoforge.PlayerTickEvent;
@@ -18,7 +18,7 @@ import twilightforest.init.TFDimension;
 import twilightforest.world.NoReturnTeleporter;
 import twilightforest.world.TFTeleporter;
 
-public final class CapabilityEvents {
+public final class CapabilityEventListeners {
 	public static void updateShields(EntityTickEvent.Post event) {
 		if (event.getEntity() instanceof LivingEntity living && !living.level().isClientSide() && living.hasAttached(TFDataAttachments.FORTIFICATION_SHIELDS)) {
 			event.getEntity().getAttached(TFDataAttachments.FORTIFICATION_SHIELDS).tick(living);
@@ -63,7 +63,7 @@ public final class CapabilityEvents {
 		if (player.level().isClientSide())
 			return;
 		if (!player.hasAttached(TFDataAttachments.BANISHED_TO_TWILIGHT_FOREST))
-			CapabilityEvents.newSpawnInTwilightForest(player);
+			CapabilityEventListeners.newSpawnInTwilightForest(player);
 	}
 
 	public static void newSpawnInTwilightForest(ServerPlayer player) {
