@@ -1,4 +1,4 @@
-package twilightforest;
+package twilightforest.init;
 
 import carminite.events.api.*;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
@@ -13,7 +13,6 @@ import net.fabricmc.fabric.api.gamerule.v1.GameRuleEvents;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import twilightforest.events.*;
 import twilightforest.events.EntityEvents;
-import twilightforest.init.TFGameRules;
 
 public final class TFCommonEvents {
 	private static final LootEvents lootEvents = LootEvents.INSTANCE;

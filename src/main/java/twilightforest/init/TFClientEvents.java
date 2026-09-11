@@ -1,4 +1,4 @@
-package twilightforest;
+package twilightforest.init;
 
 import carminite.events.api.ClientEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
