@@ -38,10 +38,8 @@ import twilightforest.item.*;
 
 import java.util.List;
 
-public class ToolEvents {
-	public static final ToolEvents INSTANCE = new ToolEvents();
-
-	public void onEnderBowHit(ProjectileImpactEvent evt) {
+public final class ToolEvents {
+	public static void onEnderBowHit(ProjectileImpactEvent evt) {
 		Projectile arrow = evt.getProjectile();
 		if (arrow.getOwner() instanceof Player player
 			&& evt.getRayTraceResult() instanceof EntityHitResult result
@@ -76,14 +74,14 @@ public class ToolEvents {
 		}
 	}
 
-	public boolean fieryToolSetFire(LivingEntity entity, DamageSource source) {
+	public static boolean fieryToolSetFire(LivingEntity entity, DamageSource source) {
 		if (source.getEntity() instanceof LivingEntity living && (living.getMainHandItem().is(TFItems.FIERY_SWORD) || living.getMainHandItem().is(TFItems.FIERY_PICKAXE)) && !entity.fireImmune()) {
 			entity.igniteForSeconds(1);
 		}
 		return true;
 	}
 
-	public boolean damageNonMazebreakerToolsMore(Player player, BlockState state) {
+	public static boolean damageNonMazebreakerToolsMore(Player player, BlockState state) {
 		ItemStack stack = player.getMainHandItem();
 		if (state.is(TFBlockTags.MAZEBREAKER_ACCELERATED)) {
 			if (stack.isDamageableItem() && !(stack.getItem() instanceof MazebreakerPickItem)) {
@@ -93,11 +91,11 @@ public class ToolEvents {
 		return true;
 	}
 
-	public boolean preventFatigueWithPocketWatch(MobEffectInstance effectInstance, LivingEntity entity) {
+	public static boolean preventFatigueWithPocketWatch(MobEffectInstance effectInstance, LivingEntity entity) {
 		return !effectInstance.is(MobEffects.MINING_FATIGUE) || !entity.isHolding(TFItems.POCKET_WATCH);
 	}
 
-	public boolean handleGiantPickaxeMining(Level level, Player player, BlockPos pos, BlockState state) {
+	public static boolean handleGiantPickaxeMining(Level level, Player player, BlockPos pos, BlockState state) {
 		if (player instanceof ServerPlayer serverPlayer && canHarvestWithGiantPick(player, state)) {
 			var attachment = serverPlayer.getAttached(TFDataAttachments.GIANT_PICKAXE_MINING);
 
@@ -151,7 +149,7 @@ public class ToolEvents {
 		return attachment.getMining() == player.level().getGameTime() && !attachment.getBreaking();
 	}
 
-	public void refreshOreMagnetCache() {
+	public static void refreshOreMagnetCache() {
 		OreMagnetItem.MAGNET_ORE_TO_BLOCK_REPLACEMENTS.clear();
 		OreMagnetItem.TREE_ORE_TO_BLOCK_REPLACEMENTS.clear();
 

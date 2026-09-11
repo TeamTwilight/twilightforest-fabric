@@ -33,10 +33,8 @@ import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFEntities;
 import twilightforest.network.CreateMovingCicadaSoundPacket;
 
-public class MiscEvents {
-	public static final MiscEvents INSTANCE = new MiscEvents();
-
-	public void addPrey(Entity entity) {
+public final class MiscEvents {
+	public static void addPrey(Entity entity) {
 		if (entity instanceof Mob mob) {
 			EntityType<?> type = mob.getType();
 			if (type == EntityType.CAT) {
@@ -58,7 +56,7 @@ public class MiscEvents {
 		}
 	}
 
-	public void updateCicadaSoundsOnHead(LivingEntity livingEntity, EquipmentSlot equipmentSlot, ItemStack currentStack) {
+	public static void updateCicadaSoundsOnHead(LivingEntity livingEntity, EquipmentSlot equipmentSlot, ItemStack currentStack) {
 		// from what I can see, vanilla doesn't have a hook for this in the item class. So this will have to do.
 		// we only have to check equipping, when its unequipped the sound instance handles the rest
 
@@ -72,7 +70,7 @@ public class MiscEvents {
 		}
 	}
 
-	public InteractionResult addTomesToLecterns(Player player, Level level, InteractionHand hand, BlockHitResult hitResult) {
+	public static InteractionResult addTomesToLecterns(Player player, Level level, InteractionHand hand, BlockHitResult hitResult) {
 		if (player.isSpectator()) {
 			return InteractionResult.PASS;
 		}
@@ -103,7 +101,7 @@ public class MiscEvents {
 		return InteractionResult.PASS;
 	}
 
-	public InteractionResult washOffCloth(Player player, Level level, InteractionHand hand, BlockHitResult hitResult) {
+	public static InteractionResult washOffCloth(Player player, Level level, InteractionHand hand, BlockHitResult hitResult) {
 		if (player.isSpectator()) {
 			return InteractionResult.PASS;
 		}

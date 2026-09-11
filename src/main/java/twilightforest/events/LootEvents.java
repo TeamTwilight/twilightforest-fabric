@@ -20,14 +20,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class LootEvents {
-	public static final LootEvents INSTANCE = new LootEvents();
-
+public final class LootEvents {
 	public static Map<Block, Item> GIANT_BLOCK_CONVERSIONS = new HashMap<>();
 
 	private static final GiantPickUsedCondition GIANT_PICK_USED = new GiantPickUsedCondition(LootContext.EntityTarget.THIS);
 
-	public void handleFieryToolDrops(LootContext context, List<ItemStack> drops) {
+	public static void handleFieryToolDrops(LootContext context, List<ItemStack> drops) {
 		ItemInstance tool = context.getOptionalParameter(LootContextParams.TOOL);
 
 		if (tool == null || !tool.is(TFItems.FIERY_PICKAXE)) {
@@ -57,7 +55,7 @@ public class LootEvents {
 		drops.addAll(list.stream().map(Pair::getLeft).toList());
 	}
 
-	public void handleGiantToolGrouping(LootContext context, List<ItemStack> drops) {
+	public static void handleGiantToolGrouping(LootContext context, List<ItemStack> drops) {
 		if (!GIANT_PICK_USED.test(context)) {
 			return;
 		}

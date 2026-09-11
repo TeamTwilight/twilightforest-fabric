@@ -18,16 +18,14 @@ import twilightforest.init.TFDimension;
 import twilightforest.world.NoReturnTeleporter;
 import twilightforest.world.TFTeleporter;
 
-public class CapabilityEvents {
-	public static final CapabilityEvents INSTANCE = new CapabilityEvents();
-
-	public void updateShields(EntityTickEvent.Post event) {
+public final class CapabilityEvents {
+	public static void updateShields(EntityTickEvent.Post event) {
 		if (event.getEntity() instanceof LivingEntity living && !living.level().isClientSide() && living.hasAttached(TFDataAttachments.FORTIFICATION_SHIELDS)) {
 			event.getEntity().getAttached(TFDataAttachments.FORTIFICATION_SHIELDS).tick(living);
 		}
 	}
 
-	public void updatePlayerCaps(PlayerTickEvent.Post event) {
+	public static void updatePlayerCaps(PlayerTickEvent.Post event) {
 		if (event.getEntity().getAttachedOrCreate(TFDataAttachments.FEATHER_FAN)) {
 			event.getEntity().setIgnoreFallDamageFromCurrentImpulse(true, event.getEntity().position());
 			event.getEntity().currentImpulseImpactPos = event.getEntity().position();
@@ -40,7 +38,7 @@ public class CapabilityEvents {
 		event.getEntity().getAttachedOrCreate(TFDataAttachments.TF_PORTAL_COOLDOWN).tick(event.getEntity());
 	}
 
-	public boolean absorbShieldHits(LivingEntity entity, DamageSource source, float amount) {
+	public static boolean absorbShieldHits(LivingEntity entity, DamageSource source, float amount) {
 		if (!entity.level().isClientSide() && !source.is(DamageTypeTags.BYPASSES_ARMOR)) {
 			FortificationShieldAttachment attachment = entity.getAttachedOrCreate(TFDataAttachments.FORTIFICATION_SHIELDS);
 			if (attachment.shieldsLeft() > 0) {
@@ -55,13 +53,13 @@ public class CapabilityEvents {
 		return true;
 	}
 
-	public void spawnInTFIfNecessary(ServerPlayer newPlayer) {
+	public static void spawnInTFIfNecessary(ServerPlayer newPlayer) {
 		if (newPlayer.getRespawnConfig() == null) {
 			newSpawnInTwilightForest(newPlayer);
 		}
 	}
 
-	public void playerLogsIn(ServerPlayer player) {
+	public static void playerLogsIn(ServerPlayer player) {
 		if (player.level().isClientSide())
 			return;
 		if (!player.hasAttached(TFDataAttachments.BANISHED_TO_TWILIGHT_FOREST))

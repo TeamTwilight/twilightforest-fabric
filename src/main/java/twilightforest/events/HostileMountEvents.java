@@ -11,12 +11,10 @@ import twilightforest.entity.IHostileMount;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFDataAttachments;
 
-public class HostileMountEvents {
-	public static final HostileMountEvents INSTANCE = new HostileMountEvents();
-
+public final class HostileMountEvents {
 	public static volatile boolean allowDismount = false;
 
-	public boolean handleMountDamage(LivingEntity entity, DamageSource source, float amount) {
+	public static boolean handleMountDamage(LivingEntity entity, DamageSource source, float amount) {
 		// lets not make the player take suffocation damage if riding something
 		if (entity instanceof Player && isRidingUnfriendly(entity) && source.is(DamageTypes.IN_WALL)) {
 			return false;
@@ -36,7 +34,7 @@ public class HostileMountEvents {
 		HostileMountEvents.allowDismount = false;
 	}
 
-	public void preventMountDismount(EntityMountEvent event) {
+	public static void preventMountDismount(EntityMountEvent event) {
 		if (!event.getLevel().isClientSide() &&
 			!event.isMounting() && event.getEntityBeingMounted().isAlive() &&
 			event.getEntityMounting() instanceof Player player && player.isAlive() &&
@@ -44,7 +42,7 @@ public class HostileMountEvents {
 			event.setCanceled(true);
 	}
 
-	public void preventHostileMountCrouching(EntityTickEvent.Post event) {
+	public static void preventHostileMountCrouching(EntityTickEvent.Post event) {
 		if (event.getEntity() instanceof IHostileMount)
 			event.getEntity().getPassengers().forEach(e -> e.setShiftKeyDown(false));
 	}

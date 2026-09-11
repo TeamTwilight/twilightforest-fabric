@@ -47,14 +47,12 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public class TravellersGearEvents {
-	public static final TravellersGearEvents INSTANCE = new TravellersGearEvents();
-
+public final class TravellersGearEvents {
 	private static final List<AttachmentType<?>> ATTACHMENTS_TO_PRESERVE_ON_DEATH = List.of(
 		TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION
 	);
 
-	public void magnetizeArrows(ProjectileImpactEvent event) {
+	public static void magnetizeArrows(ProjectileImpactEvent event) {
 		Projectile projectile = event.getProjectile();
 		Entity entity = projectile.getOwner();
 		if (!(entity instanceof LivingEntity livingEntity) || !event.getRayTraceResult().getType().equals(HitResult.Type.BLOCK) || projectile.tickCount >= 200)
@@ -77,7 +75,7 @@ public class TravellersGearEvents {
 			projectile.discard();
 	}
 
-	public void performPerfectDodge(ProjectileImpactEvent event) {
+	public static void performPerfectDodge(ProjectileImpactEvent event) {
 		HitResult rayResult = event.getRayTraceResult();
 		if (!(rayResult instanceof EntityHitResult entityHitResult) || !(entityHitResult.getEntity() instanceof LivingEntity livingEntity))
 			return;
@@ -109,7 +107,7 @@ public class TravellersGearEvents {
 		PacketDistributor.sendToPlayersTrackingEntityAndSelf(livingEntity, particlePacket);
 	}
 
-	public void reduceSlimySolesFallDamage(LivingFallEvent event) {
+	public static void reduceSlimySolesFallDamage(LivingFallEvent event) {
 		LivingEntity livingEntity = event.getEntity();
 		ItemStack boots = livingEntity.getItemBySlot(EquipmentSlot.FEET);
 		Float coefficient = boots.get(TFDataComponents.SLIMY_SOLES_COEFFICIENT);
@@ -124,14 +122,14 @@ public class TravellersGearEvents {
 	}
 
 	// [VanillaCopy]
-	private double calculateFallDamage(LivingFallEvent event) {
+	private static double calculateFallDamage(LivingFallEvent event) {
 		LivingEntity livingEntity = event.getEntity();
 		double safeFallDistance = livingEntity.getAttributeValue(Attributes.SAFE_FALL_DISTANCE);
 		double unsafeFallDistance = event.getDistance() - safeFallDistance;
 		return Mth.ceil(unsafeFallDistance * event.getDamageMultiplier() * livingEntity.getAttributeValue(Attributes.FALL_DAMAGE_MULTIPLIER));
 	}
 
-	public void cancelSlimySolesJump(LivingEvent.LivingJumpEvent event) {
+	public static void cancelSlimySolesJump(LivingEvent.LivingJumpEvent event) {
 		LivingEntity livingEntity = event.getEntity();
 		SlimySolesAttachment slimySolesAttachment = livingEntity.getAttached(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO);
 		slimySolesAttachment.bounceVelocity = 0;
@@ -139,7 +137,7 @@ public class TravellersGearEvents {
 		livingEntity.setAttached(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO, slimySolesAttachment);
 	}
 
-	public void tickMovementModifiers(PlayerTickEvent.Pre event) {
+	public static void tickMovementModifiers(PlayerTickEvent.Pre event) {
 		Player player = event.getEntity();
 		Boolean hasDoubleJump = null;
 		if (!TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.DOUBLE_JUMP_MODIFIER))
@@ -173,13 +171,13 @@ public class TravellersGearEvents {
 		TravellersGearLogic.travellersWingsSidestepCooldownSound(player);
 	}
 
-	public void performStealth(PlayerTickEvent.Post event) {
+	public static void performStealth(PlayerTickEvent.Post event) {
 		if (!event.getEntity().level().isClientSide()) {
 			TravellersGearLogic.travellersStealth(event.getEntity(), player1 -> player1.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 2, 0, false, false, false)));
 		}
 	}
 
-	public void disableHighStepWhileSneaking(PlayerTickEvent.Pre event) {
+	public static void disableHighStepWhileSneaking(PlayerTickEvent.Pre event) {
 		Player player = event.getEntity();
 		if (!TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.STEP_UP_ABILITY))
 			return;
@@ -195,7 +193,7 @@ public class TravellersGearEvents {
 			attribute.addPermanentModifier(TFAttributeModifiers.TRAVELLERS_HIGH_STEP);
 	}
 
-	public void updateOtherModifiers(EntityTickEvent.Post event) {
+	public static void updateOtherModifiers(EntityTickEvent.Post event) {
 		if (!(event.getEntity() instanceof LivingEntity livingEntity)) return;
 		TravellersGearLogic.travellersWingsGradualGlide(livingEntity);
 		TravellersGearLogic.travellersBootsUnrestrained(livingEntity);
@@ -209,7 +207,7 @@ public class TravellersGearEvents {
 		TravellersGearLogic.determineWingState(livingEntity);
 	}
 
-	public void activateAndDeactivateTravellersModifiers(ItemAttributeModifierEvent event) {
+	public static void activateAndDeactivateTravellersModifiers(ItemAttributeModifierEvent event) {
 		if (ServerLifecycleHooks.getCurrentServer() == null)
 			return;
 
@@ -235,7 +233,7 @@ public class TravellersGearEvents {
 		}
 	}
 
-	public void stopDamagingTravellersGear(ArmorHurtEvent event) {
+	public static void stopDamagingTravellersGear(ArmorHurtEvent event) {
 		if (event.isCanceled())
 			return;
 		event.getArmorMap().forEach((slot, entry) -> {
@@ -250,20 +248,20 @@ public class TravellersGearEvents {
 		});
 	}
 
-	public void setLastDamageArmorTime(ArmorHurtEvent event) {
+	public static void setLastDamageArmorTime(ArmorHurtEvent event) {
 		if (Arrays.stream(EquipmentSlot.values()).noneMatch(slot -> event.getNewDamage(slot) > 0)) return;
 		LivingEntity entity = event.getEntity();
 		entity.setAttached(TFDataAttachments.LAST_DAMAGE_ARMOR_TIME, entity.level().getGameTime());
 	}
 
 
-	public void cancelCombiningTravellersGear(AnvilUpdateEvent event) {
+	public static void cancelCombiningTravellersGear(AnvilUpdateEvent event) {
 		if (event.getLeft().has(TFDataComponents.IS_TRAVELLERS_GEAR) && event.getRight().has(TFDataComponents.IS_TRAVELLERS_GEAR)) {
 			event.setCanceled(true);
 		}
 	}
 
-	public void removeModifiersFromTravellersGear(GrindstoneEvent.OnPlaceItem event) {
+	public static void removeModifiersFromTravellersGear(GrindstoneEvent.OnPlaceItem event) {
 		if (ServerLifecycleHooks.getCurrentServer() == null)
 			return;
 		RegistryAccess access = ServerLifecycleHooks.getCurrentServer().registryAccess();
@@ -289,7 +287,7 @@ public class TravellersGearEvents {
 		event.setOutput(unmodifiedStack.copy());
 	}
 
-	public void extractItemsFromSwapHotbarModifier(GrindstoneEvent.OnTakeItem event) {
+	public static void extractItemsFromSwapHotbarModifier(GrindstoneEvent.OnTakeItem event) {
 		returnModifierItems(event,
 			TravellersModifiersManager.SWAP_HOTBAR_MODIFIER,
 			DataComponents.CONTAINER,
@@ -303,7 +301,7 @@ public class TravellersGearEvents {
 		);
 	}
 
-	private <T> void returnModifierItems(GrindstoneEvent.OnTakeItem event, ResourceKey<TravellersModifier> modifierKey, DataComponentType<T> componentType, Function<T, Stream<ItemStack>> itemStreamExtractor) {
+	private static <T> void returnModifierItems(GrindstoneEvent.OnTakeItem event, ResourceKey<TravellersModifier> modifierKey, DataComponentType<T> componentType, Function<T, Stream<ItemStack>> itemStreamExtractor) {
 		getUniqueTravellersGear(event.getTopItem(), event.getBottomItem(), stack ->
 			TravellersModifiersManager.hasTravellersModifier(event.getPlayer().registryAccess(), stack, modifierKey)
 		).map(stack -> stack.get(componentType))
@@ -313,7 +311,7 @@ public class TravellersGearEvents {
 			);
 	}
 
-	private Optional<ItemStack> getUniqueTravellersGear(ItemStack top, ItemStack bottom, Predicate<ItemStack> predicate) {
+	private static Optional<ItemStack> getUniqueTravellersGear(ItemStack top, ItemStack bottom, Predicate<ItemStack> predicate) {
 		List<ItemStack> travellersItemStacks = Stream.of(top, bottom)
 			.filter(stack -> stack.has(TFDataComponents.IS_TRAVELLERS_GEAR))
 			.filter(predicate)
@@ -321,13 +319,13 @@ public class TravellersGearEvents {
 		return travellersItemStacks.size() == 1 ? Optional.of(travellersItemStacks.getFirst()) : Optional.empty();
 	}
 
-	public void cancelPhantomSpawns(PlayerSpawnPhantomsEvent event) {
+	public static void cancelPhantomSpawns(PlayerSpawnPhantomsEvent event) {
 		if (TravellersModifiersManager.isModifierActive(event.getEntity(), TravellersModifiersManager.ALL_NIGHT_GOGGLES_MODIFIER)) {
 			event.setResult(PlayerSpawnPhantomsEvent.Result.DENY);
 		}
 	}
 
-	public void fireCraftingModifierTrigger(PlayerEvent.ItemCraftedEvent event) {
+	public static void fireCraftingModifierTrigger(PlayerEvent.ItemCraftedEvent event) {
 		if (event.getEntity() instanceof ServerPlayer player && event.getCrafting().has(TFDataComponents.IS_TRAVELLERS_GEAR)) {
 			ItemStack compareStack = ItemStack.EMPTY;
 			for (int i = 0; i < event.getInventory().getContainerSize(); i++) {
@@ -343,7 +341,7 @@ public class TravellersGearEvents {
 		}
 	}
 
-	public void keepAttachmentsOnDeath(ServerPlayer oldPlayer, ServerPlayer newPlayer, boolean alive) {
+	public static void keepAttachmentsOnDeath(ServerPlayer oldPlayer, ServerPlayer newPlayer, boolean alive) {
 		if (!alive) {
 			for (AttachmentType<?> attachment : ATTACHMENTS_TO_PRESERVE_ON_DEATH) {
 				copyAttachmentData(oldPlayer, newPlayer, attachment);
@@ -351,7 +349,7 @@ public class TravellersGearEvents {
 		}
 	}
 
-	private <T> void copyAttachmentData(Player source, Player target, AttachmentType<T> type) {
+	private static <T> void copyAttachmentData(Player source, Player target, AttachmentType<T> type) {
 		if (source.hasAttached(type)) {
 			target.setAttached(type, source.getAttached(type));
 		}
