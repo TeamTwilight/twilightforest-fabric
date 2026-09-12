@@ -1,127 +1,126 @@
-/*package twilightforest.client.model.block.forcefield;
+package twilightforest.client.model.block.forcefield;
 
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.*;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.BlockModelRotation;
+import net.fabricmc.fabric.api.client.renderer.v1.mesh.QuadEmitter;
+import net.fabricmc.fabric.api.util.TriState;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
+import net.minecraft.client.resources.model.geometry.BakedQuad;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.ChunkRenderTypeSet;
-import net.neoforged.neoforge.client.RenderTypeGroup;
-import net.neoforged.neoforge.client.model.IDynamicBakedModel;
-import net.neoforged.neoforge.client.model.data.ModelData;
-import net.neoforged.neoforge.client.model.data.ModelProperty;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.block.ForceFieldBlock;
+import twilightforest.client.model.block.forcefield.ForceFieldElement.Condition;
 
-import java.util.*;
-import java.util.function.Function;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Predicate;
 
-public class ForceFieldModel implements IDynamicBakedModel {
-	private static final ModelProperty<ForceFieldData> DATA = new ModelProperty<>();
+public class ForceFieldModel implements BlockStateModel {
 
-	private final Map<BlockElement, ForceFieldModelLoader.Condition> parts;
-	private final Function<String, TextureAtlasSprite> spriteFunction;
-	private final TextureAtlasSprite particle;
-	private final boolean usesAO;
-	private final boolean usesBlockLight;
-	private final ItemTransforms transforms;
-	@Nullable
-	private final ChunkRenderTypeSet blockRenderTypes;
-	@Nullable
-	private final RenderType itemRenderType;
+	private final List<BakedElement> elements;
+	private final Material.Baked particle;
+	private final boolean ambientOcclusion;
+	private final int materialFlags;
 
-	public ForceFieldModel(Map<BlockElement, ForceFieldModelLoader.Condition> parts, Function<String, TextureAtlasSprite> spriteFunction, boolean useAmbientOcclusion, boolean usesBlockLight, ItemTransforms itemTransforms, RenderTypeGroup group) {
-		this.parts = parts;
-		this.spriteFunction = spriteFunction;
-		this.particle = spriteFunction.apply("particle");
-		this.usesAO = useAmbientOcclusion;
-		this.usesBlockLight = usesBlockLight;
-		this.transforms = itemTransforms;
-		this.blockRenderTypes = !group.isEmpty() ? ChunkRenderTypeSet.of(group.block()) : null;
-		this.itemRenderType = !group.isEmpty() ? group.entity() : null;
+	public ForceFieldModel(List<BakedElement> elements, Material.Baked particle, boolean ambientOcclusion) {
+		this.elements = elements;
+		this.particle = particle;
+		this.ambientOcclusion = ambientOcclusion;
+
+		int flags = 0;
+		for (BakedElement element : elements) {
+			flags |= element.quad().materialInfo().flags();
+		}
+		this.materialFlags = flags;
 	}
 
 	@Override
-	public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction cullFace, @NotNull RandomSource rand, @NotNull ModelData extraData, @Nullable RenderType renderType) {
-		List<BakedQuad> quads = new ArrayList<>();
-		ForceFieldData data = extraData.get(DATA);
+	public void emitQuads(QuadEmitter emitter, BlockAndTintGetter level, BlockPos pos, BlockState state, RandomSource random, Predicate<@Nullable Direction> cullTest) {
+		Map<ExtraDirection, List<Direction>> connections = this.connections(level, pos, state);
 
-		if (data != null) {
-			if (cullFace == null) {
-				for (Direction direction : Direction.values()) {
-					quads = this.getQuads(quads, direction, data, false);
-				}
-			} else return this.getQuads(quads, cullFace, data, true);
-		}
-
-		return quads;
-	}
-
-	public @NotNull List<BakedQuad> getQuads(List<BakedQuad> quads, Direction side, ForceFieldData data, boolean cull) {
-		for (Map.Entry<BlockElement, ForceFieldModelLoader.Condition> entry : this.parts.entrySet()) {
-			BlockElementFace blockelementface = entry.getKey().faces.get(side);
-			if (blockelementface != null && blockelementface.cullForDirection() != null == cull) {
-				if (ForceFieldModel.skipRender(data.directions(), entry.getValue().direction(), entry.getValue().b(), entry.getValue().parents(), side)) continue;
-
-				TextureAtlasSprite sprite = this.spriteFunction.apply(blockelementface.texture());
-				quads.add(FaceBakery.bakeQuad(
-					entry.getKey().from,
-					entry.getKey().to,
-					blockelementface,
-					sprite,
-					side,
-					BlockModelRotation.X0_Y0,
-					entry.getKey().rotation,
-					entry.getKey().shade,
-					entry.getKey().lightEmission)
-				);
+		for (BakedElement element : this.elements) {
+			if (this.skipRender(connections, element.condition(), element.side())) {
+				continue;
 			}
-		}
-		return quads;
-	}
 
-	protected static boolean skipRender(Map<ExtraDirection, List<Direction>> directions, @Nullable ExtraDirection direction, boolean supposedToBe, List<ExtraDirection> parents, Direction side) {
-		if (direction == null) return false;
-		for (ExtraDirection parent : parents) if (!directions.containsKey(parent)) return true;
-		boolean hasKey = directions.containsKey(direction);
-		if (hasKey != supposedToBe) return true;
-		if (hasKey) return directions.get(direction).contains(side);
-		return false;
+			emitter.cullFace(element.cullFace);
+			emitter.ambientOcclusion(this.ambientOcclusion ? TriState.TRUE : TriState.FALSE);
+			emitter.fromBakedQuad(element.quad).emit();
+		}
 	}
 
 	@Override
-	public @NotNull ModelData getModelData(@NotNull BlockAndTintGetter level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull ModelData modelData) {
-		if (modelData == ModelData.EMPTY) {
-			Map<ExtraDirection, List<Direction>> map = new HashMap<>();
-			for (ExtraDirection extraDirection : getExtraDirections(state, level, pos)) {
-				List<Direction> directionList = new ArrayList<>();
-				for (Direction dir : Direction.values()) {
-					ExtraDirection mirrored = extraDirection.mirrored(dir.getAxis());
-					if (mirrored != extraDirection) {
-						BlockState other = level.getBlockState(pos.relative(dir));
-						if (other.getBlock() instanceof ForceFieldBlock) {
-							if (getExtraDirections(other, level, pos.relative(dir)).contains(mirrored)) directionList.add(dir);
+	public void collectParts(RandomSource random, List<BlockStateModelPart> output) {
+		// This method will not do anything as this is a Fabric model
+	}
+
+	@Override
+	public Material.Baked particleMaterial() {
+		return this.particle;
+	}
+
+	@Override
+	public @BakedQuad.MaterialFlags int materialFlags() {
+		return this.materialFlags;
+	}
+
+	private Map<ExtraDirection, List<Direction>> connections(BlockAndTintGetter level, BlockPos pos, BlockState state) {
+		Map<ExtraDirection, List<Direction>> map = new HashMap<>();
+
+		for (ExtraDirection extraDirection : this.getExtraDirections(state, level, pos)) {
+			List<Direction> directionList = new ArrayList<>();
+			for (Direction dir : Direction.values()) {
+				ExtraDirection mirrored = extraDirection.mirrored(dir.getAxis());
+				if (mirrored != extraDirection) {
+					BlockState other = level.getBlockState(pos.relative(dir));
+					if (other.getBlock() instanceof ForceFieldBlock) {
+						if (this.getExtraDirections(other, level, pos.relative(dir)).contains(mirrored)) {
+							directionList.add(dir);
 						}
 					}
 				}
-				map.put(extraDirection, directionList);
 			}
-
-			modelData = ModelData.builder().with(DATA, new ForceFieldData(map)).build();
+			map.put(extraDirection, directionList);
 		}
-		return modelData;
+
+		return map;
 	}
 
-	public static List<ExtraDirection> getExtraDirections(BlockState state, BlockGetter level, BlockPos pos) {
+	private boolean skipRender(Map<ExtraDirection, List<Direction>> directions, @Nullable Condition condition, Direction side) {
+		if (condition == null) {
+			return false;
+		}
+
+		for (ExtraDirection parent : condition.parents()) {
+			if (!directions.containsKey(parent)) {
+				return true;
+			}
+		}
+
+		boolean hasKey = directions.containsKey(condition.direction());
+		if (hasKey != condition.value()) {
+			return true;
+		}
+		if (hasKey) {
+			return directions.get(condition.direction()).contains(side);
+		}
+		return false;
+	}
+
+	private List<ExtraDirection> getExtraDirections(BlockState state, BlockGetter level, BlockPos pos) {
 		List<ExtraDirection> directions = new ArrayList<>();
+
+		if (!(state.getBlock() instanceof ForceFieldBlock)) {
+			return directions;
+		}
 
 		boolean down = state.getValue(ForceFieldBlock.DOWN);
 		boolean up = state.getValue(ForceFieldBlock.UP);
@@ -160,41 +159,7 @@ public class ForceFieldModel implements IDynamicBakedModel {
 		return directions;
 	}
 
-	@Override
-	public boolean useAmbientOcclusion() {
-		return this.usesAO;
-	}
-
-	@Override
-	public boolean isGui3d() {
-		return false;
-	}
-
-	@Override
-	public boolean usesBlockLight() {
-		return this.usesBlockLight;
-	}
-
-	@Override
-	public TextureAtlasSprite getParticleIcon() {
-		return this.particle;
-	}
-
-	@NotNull
-	@Override
-	public ItemTransforms getTransforms() {
-		return this.transforms;
-	}
-
-	@NotNull
-	@Override
-	public ChunkRenderTypeSet getRenderTypes(@NotNull BlockState state, @NotNull RandomSource rand, @NotNull ModelData data) {
-		return this.blockRenderTypes != null ? this.blockRenderTypes : IDynamicBakedModel.super.getRenderTypes(state, rand, data);
-	}
-
-	@Override
-	public RenderType getRenderType(ItemStack stack) {
-		return this.itemRenderType != null ? this.itemRenderType : IDynamicBakedModel.super.getRenderType(stack);
+	public record BakedElement(@Nullable Condition condition, Direction side, @Nullable Direction cullFace, BakedQuad quad) {
 	}
 
 	public enum ExtraDirection implements StringRepresentable {
@@ -220,8 +185,7 @@ public class ForceFieldModel implements IDynamicBakedModel {
 		SOUTH_WEST("south_west", 17, 16, 14),
 		SOUTH_EAST("south_east", 16, 17, 15);
 
-		@SuppressWarnings("deprecation")
-		public static final EnumCodec<ExtraDirection> CODEC = StringRepresentable.fromEnum(ExtraDirection::values);
+		public static final StringRepresentable.EnumCodec<ExtraDirection> CODEC = StringRepresentable.fromEnum(ExtraDirection::values);
 		private final String name;
 		private final int xAxisMirror;
 		private final int yAxisMirror;
@@ -246,14 +210,5 @@ public class ForceFieldModel implements IDynamicBakedModel {
 				case Z -> ExtraDirection.values()[this.zAxisMirror];
 			};
 		}
-
-		@Nullable
-		public static ExtraDirection byName(@Nullable String name) {
-			return CODEC.byName(name);
-		}
 	}
-
-	//modeldata holder
-	public record ForceFieldData(Map<ExtraDirection, List<Direction>> directions) {
-	}
-}*/
+}

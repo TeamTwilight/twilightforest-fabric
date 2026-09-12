@@ -35,6 +35,7 @@ import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.TFModelLoadingPlugin;
 import twilightforest.client.model.armor.*;
 import twilightforest.client.model.block.BrazierModel;
+import twilightforest.client.model.block.forcefield.UnbakedForceFieldBlockStateModel;
 import twilightforest.client.model.block.patch.UnbakedPlantPatchBlockStateModel;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.item.AnimatedItemModel;
@@ -132,6 +133,7 @@ public final class TFClient implements ClientModInitializer {
 	}
 
 	private static void registerBlockStateModels() {
+		CustomUnbakedBlockStateModelRegistry.register(TFCommon.prefix("force_field"), UnbakedForceFieldBlockStateModel.MAP_CODEC);
 		CustomUnbakedBlockStateModelRegistry.register(TFCommon.prefix("plant_patch"), UnbakedPlantPatchBlockStateModel.MAP_CODEC);
 	}
 
