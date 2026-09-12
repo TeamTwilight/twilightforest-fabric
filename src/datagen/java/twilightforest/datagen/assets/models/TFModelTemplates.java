@@ -35,7 +35,7 @@ public class TFModelTemplates extends ModelTemplates {
 	public static final ModelTemplate BANISTER_SHORT_EXTENDED = create("twilightforest:banister_short_extended", "_short_extended", TextureSlot.TEXTURE);
 	public static final ModelTemplate BANISTER_TALL = create("twilightforest:banister_tall", "_tall", TextureSlot.TEXTURE);
 	public static final ModelTemplate BANISTER_TALL_EXTENDED = create("twilightforest:banister_tall_extended", "_tall_extended", TextureSlot.TEXTURE);
-	public static final ModelTemplate BANISTER_INVENTORY = createItem("twilightforest:banister_inventory", TextureSlot.create("_inventory"), TextureSlot.TEXTURE);
+	public static final ModelTemplate BANISTER_INVENTORY = createItem("twilightforest:banister_inventory", "_inventory", TextureSlot.TEXTURE);
 	public static final ModelTemplate DRYING_RACK = create("twilightforest:template_drying_rack", TextureSlot.TEXTURE);
 
 	public static final ModelTemplate CORRECTED_DOOR_BOTTOM_LEFT = create("twilightforest:util/corrected_door_bottom_left", "_bottom_left", TextureSlot.TOP, TextureSlot.BOTTOM, TextureSlot.SIDE);
