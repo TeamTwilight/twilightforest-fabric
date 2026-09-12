@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "id": "twilightforest-data",
+  "version": "${version}",
+  "name": "The Twilight Forest",
+  "license": "LGPL-2.1",
+  "icon": "icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-datagen": [
+      "twilightforest.datagen.TFData"
+    ]
+  }
+}

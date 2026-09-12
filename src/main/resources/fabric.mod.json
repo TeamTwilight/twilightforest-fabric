@@ -31,9 +31,6 @@
     ],
     "client": [
       "twilightforest.TFClient"
-    ],
-    "fabric-datagen": [
-      "twilightforest.datagen.TFData"
     ]
   },
   "accessWidener": "twilightforest.classtweaker",
