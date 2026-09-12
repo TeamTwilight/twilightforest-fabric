@@ -19,7 +19,6 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
-import net.minecraft.world.level.storage.loot.functions.CopyBlockState;
 import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -285,7 +284,7 @@ public class BlockLootTables extends BlockLootSubProvider {
 		dropSelf(TFBlocks.TWISTED_STONE_PILLAR);
 		dropSelf(TFBlocks.BOLD_STONE_PILLAR);
 		add(TFBlocks.SKULL_CHEST, skullChestInfo(TFBlocks.SKULL_CHEST));
-		add(TFBlocks.KEEPSAKE_CASKET, casketInfo(TFBlocks.KEEPSAKE_CASKET));
+		add(TFBlocks.KEEPSAKE_CASKET, skullChestInfo(TFBlocks.KEEPSAKE_CASKET));
 		dropSelf(TFBlocks.CANDELABRA);
 		dropSelf(TFBlocks.WROUGHT_IRON_FENCE);
 		dropSelf(TFBlocks.TERRORCOTTA_ARCS);
@@ -675,15 +674,6 @@ public class BlockLootTables extends BlockLootSubProvider {
 				.setRolls(ConstantValue.exactly(1))
 				.add(LootItem.lootTableItem(block)
 					.apply(CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY).include(DataComponents.CUSTOM_NAME))));
-	}
-
-	private static LootTable.Builder casketInfo(Block block) {
-		return LootTable.lootTable()
-			.withPool(LootPool.lootPool()
-				.setRolls(ConstantValue.exactly(1))
-				.add(LootItem.lootTableItem(block)
-					.apply(CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY).include(DataComponents.CUSTOM_NAME))
-					.apply(CopyBlockState.copyState(block).copy(KeepsakeCasketBlock.BREAKAGE))));
 	}
 
 	private LootTable.Builder particleSpawner() {
