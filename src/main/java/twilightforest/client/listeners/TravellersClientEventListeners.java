@@ -69,7 +69,7 @@ public final class TravellersClientEventListeners {
 	}
 
 	public static void speedUpControlledWhileSneaking(MovementInputUpdateEvent event) {
-		if (!(event.getEntity() instanceof LocalPlayer localPlayer) || !localPlayer.getAttached(TFDataAttachments.IS_GRADUALLY_GLIDING) || !localPlayer.isShiftKeyDown())
+		if (!(event.getEntity() instanceof LocalPlayer localPlayer) || !localPlayer.getAttachedOrCreate(TFDataAttachments.IS_GRADUALLY_GLIDING) || !localPlayer.isShiftKeyDown())
 			return;
 		localPlayer.input.getMoveVector().scale(5.0F); //Effectively x/y /= 0.2F
 	}

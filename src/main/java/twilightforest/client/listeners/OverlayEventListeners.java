@@ -86,7 +86,7 @@ public final class OverlayEventListeners {
 	public static void renderShieldCount(GuiGraphicsExtractor graphics, int screenWidth, int screenHeight) {
 		Minecraft minecraft = Minecraft.getInstance();
 		LocalPlayer player = minecraft.player;
-		int shieldCount = player.getAttached(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft();
+		int shieldCount = player.getAttachedOrCreate(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft();
 		if (player != null && !minecraft.options.hideGui && (minecraft.gameMode.canHurtPlayer() || TFConfig.showFortificationShieldIndicatorInCreative) && player.hasAttached(TFDataAttachments.FORTIFICATION_SHIELDS) && player.getAttached(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft() > 0 && TFConfig.showFortificationShieldIndicator) {
 			for (int i = 0; i < Math.min(shieldCount, 10); i++) {
 				graphics.blitSprite(RenderPipelines.GUI_TEXTURED, FORTIFICATION_SHIELD_SPRITE, screenWidth / 2 - 91 + (i * 8), screenHeight - HudStatusBarHeightRegistry.getHeight(FORTIFICATION_SHIELD_COUNT), 9, 9);
