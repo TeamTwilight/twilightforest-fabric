@@ -107,11 +107,11 @@ public abstract class TFLangProvider extends LanguageProvider {
 	}
 
 	public <T> void addGameRule(GameRule<T> gameRule, String gameRuleName) {
-		this.add("gamerule." + gameRule.id(), gameRuleName);
+		this.add(gameRule.getDescriptionId(), gameRuleName);
 	}
 
 	public <T> void addGameRuleDescription(GameRule<T> gameRule, String gameRuleDescription) {
-		this.add("gamerule." + gameRule.id() + ".description", gameRuleDescription);
+		this.add(gameRule.getDescriptionId() + ".description", gameRuleDescription);
 	}
 
 	public void addBannerPattern(String patternPrefix, String patternName) {
