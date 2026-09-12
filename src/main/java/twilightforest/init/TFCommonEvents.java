@@ -17,6 +17,7 @@ import twilightforest.listeners.EntityEventListeners;
 public final class TFCommonEvents {
 	public static void init() {
 		setupLootEvents();
+		setupCharmEvents();
 		setupHostileMountEvents();
 		setupMiscEvents();
 		setupCapabilityEvents();
@@ -29,6 +30,12 @@ public final class TFCommonEvents {
 	private static void setupLootEvents() {
 		LootTableEvents.MODIFY_DROPS.register((_, context, drops) -> LootEventListeners.handleFieryToolDrops(context, drops));
 		LootTableEvents.MODIFY_DROPS.register((_, context, drops) -> LootEventListeners.handleGiantToolGrouping(context, drops));
+	}
+
+	private static void setupCharmEvents() {
+		ServerLivingEntityEvents.ALLOW_DEATH.register((entity, _, _) -> CharmEventListeners.applyCharmOfLife(entity));
+		ServerLivingEntityEvents.ALLOW_DEATH.register((entity, _, _) -> CharmEventListeners.applyKeepingAndCasket(entity));
+		ServerPlayerEvents.AFTER_RESPAWN.register((_, newPlayer, alive) -> CharmEventListeners.returnItemsOnRespawn(newPlayer, alive));
 	}
 
 	private static void setupHostileMountEvents() {

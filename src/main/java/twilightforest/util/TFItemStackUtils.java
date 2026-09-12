@@ -21,6 +21,7 @@ import net.minecraft.world.item.component.BlockItemStateProperties;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.ItemLike;
+import org.apache.commons.lang3.StringUtils;
 import twilightforest.TFCommon;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.listeners.CharmEventListeners;
@@ -46,15 +47,15 @@ public class TFItemStackUtils {
 
 	public static boolean consumeInventoryItem(final ItemStack stack, final ItemLike item, CompoundTag persistentTag, boolean saveItemToTag, HolderLookup.Provider provider) {
 		if (stack.is(item.asItem())) {
-			Optional<Tag> tag = ItemStack.CODEC.encodeStart(provider.createSerializationContext(NbtOps.INSTANCE), stack).resultOrPartial(TFCommon.LOGGER::error);
-			if (tag.isPresent()) {
-				persistentTag.put(CharmEventListeners.CONSUMED_CHARM_TAG, tag.get());
+			if (saveItemToTag) {
+				Optional<Tag> tag = ItemStack.CODEC.encodeStart(provider.createSerializationContext(NbtOps.INSTANCE), stack).resultOrPartial(TFCommon.LOGGER::error);
+				tag.ifPresent(value -> persistentTag.put(CharmEventListeners.CONSUMED_CHARM_TAG, value));
 			}
 			BlockItemStateProperties blockItemStateProperties = stack.get(DataComponents.BLOCK_STATE);
 			if (blockItemStateProperties != null && blockItemStateProperties.properties().containsKey(KeepsakeCasketBlock.BREAKAGE.getName())) {
 				String propertyValueString = blockItemStateProperties.properties().get(KeepsakeCasketBlock.BREAKAGE.getName());
 
-				persistentTag.putInt(CharmEventListeners.CASKET_DAMAGE_TAG, propertyValueString != null && propertyValueString.chars().allMatch(Character::isDigit) ? Integer.parseInt(propertyValueString) : 0);
+				persistentTag.putInt(CharmEventListeners.CASKET_DAMAGE_TAG, StringUtils.isNumeric(propertyValueString) ? Integer.parseInt(propertyValueString) : 0);
 			} else if (stack.has(TFDataComponents.CASKET_DAMAGE)) {
 				persistentTag.putInt(CharmEventListeners.CASKET_DAMAGE_TAG, stack.getOrDefault(TFDataComponents.CASKET_DAMAGE, 0));
 			}

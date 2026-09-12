@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentSyncPredicate;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.minecraft.core.UUIDUtil;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.util.Unit;
 import twilightforest.TFCommon;
@@ -45,9 +46,11 @@ public class TFDataAttachments {
 	public static final AttachmentType<Integer> SIDESTEP_VALIDATOR_LAST_CHECK = AttachmentRegistry.create(TFCommon.prefix("sidestep_validator_last_check"), b -> b.initializer(() -> 0).persistent(Codec.INT));
 	public static final AttachmentType<Boolean> IS_GRADUALLY_GLIDING = AttachmentRegistry.create(TFCommon.prefix("is_gradually_gliding"), b -> b.initializer(() -> false).persistent(Codec.BOOL).syncWith(ByteBufCodecs.BOOL, AttachmentSyncPredicate.all()));
 	public static final AttachmentType<SlimySolesAttachment> SLIMY_SOLES_BOUNCE_INFO = AttachmentRegistry.create(TFCommon.prefix("slimy_soles_bounce_info"), b -> b.initializer(SlimySolesAttachment::new).persistent(SlimySolesAttachment.CODEC.codec()));
+	public static final AttachmentType<CharmAttachment> CHARM_INVENTORY = AttachmentRegistry.create(TFCommon.prefix("charm_inventory"), b -> b.initializer(CharmAttachment::new).persistent(CharmAttachment.CODEC.codec()).copyOnDeath());
 
 	// Added specifically for Fabric
 	public static final AttachmentType<Boolean> ENDER_ARROW = AttachmentRegistry.create(TFCommon.prefix("is_ender_arrow"), b -> b.initializer(() -> false).persistent(Codec.BOOL));
+	public static final AttachmentType<CompoundTag> CHARM_DATA = AttachmentRegistry.create(TFCommon.prefix("charm_data"), b -> b.initializer(CompoundTag::new).persistent(CompoundTag.CODEC).copyOnDeath());
 
 	public static void init() {
 		TFCommon.LOGGER.info("Initializing attachment types...");
