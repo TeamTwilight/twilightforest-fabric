@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Property;
 import org.jspecify.annotations.Nullable;
 import twilightforest.TFCommon;
 import twilightforest.block.ClimbableHollowLogBlock;
@@ -21,6 +22,7 @@ import twilightforest.util.ColorUtil;
 import twilightforest.util.SimplexNoiseHelper;
 
 import java.util.List;
+import java.util.Set;
 
 public class TFTintSources {
 	public static final Int2IntFunction CANOPY_COLORIZER = color -> 0xFF000000 | (((color & 0xFEFEFE) + 0x469A66) / 2);
@@ -268,18 +270,19 @@ public class TFTintSources {
 	};
 
 	private static final BlockTintSource HOLLOW_LOG_CLIMBABLE = new BlockTintSource() {
-		//TODO: For datagen: apply to correct layer
 		@Override
 		public int color(BlockState state) {
-			return FoliageColor.FOLIAGE_DEFAULT;
+			return state.getValue(ClimbableHollowLogBlock.VARIANT) == HollowLogVariants.Climbable.VINE ? FoliageColor.FOLIAGE_DEFAULT : -1;
 		}
 
 		@Override
 		public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
-			if (state.getValue(ClimbableHollowLogBlock.VARIANT) == HollowLogVariants.Climbable.VINE) {
-				return BiomeColors.getAverageFoliageColor(level, pos);
-			}
-			return BlockTintSource.super.colorInWorld(state, level, pos);
+			return state.getValue(ClimbableHollowLogBlock.VARIANT) == HollowLogVariants.Climbable.VINE ? BiomeColors.getAverageFoliageColor(level, pos) : -1;
+		}
+
+		@Override
+		public Set<Property<?>> relevantProperties() {
+			return Set.of(ClimbableHollowLogBlock.VARIANT);
 		}
 	};
 
@@ -305,17 +308,17 @@ public class TFTintSources {
 		BlockColorRegistry.register(List.of(RAINBOW_OAK), TFBlocks.RAINBOW_OAK_LEAVES);
 		BlockColorRegistry.register(List.of(BlockTintSources.constant(FoliageColor.FOLIAGE_EVERGREEN)), TFBlocks.BEANSTALK_LEAVES, TFBlocks.THORN_LEAVES);
 		BlockColorRegistry.register(List.of(BlockTintSources.grass()), TFBlocks.FIDDLEHEAD, TFBlocks.POTTED_FIDDLEHEAD);
-		BlockColorRegistry.register(List.of(BlockTintSources.grass()), TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL, TFBlocks.HOLLOW_SPRUCE_LOG_HORIZONTAL, TFBlocks.HOLLOW_BIRCH_LOG_HORIZONTAL, TFBlocks.HOLLOW_JUNGLE_LOG_HORIZONTAL, //TODO: For datagen: apply to correct layer
+		BlockColorRegistry.register(List.of(BlockTintSources.constant(-1), BlockTintSources.grass()), TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL, TFBlocks.HOLLOW_SPRUCE_LOG_HORIZONTAL, TFBlocks.HOLLOW_BIRCH_LOG_HORIZONTAL, TFBlocks.HOLLOW_JUNGLE_LOG_HORIZONTAL,
 			TFBlocks.HOLLOW_ACACIA_LOG_HORIZONTAL, TFBlocks.HOLLOW_DARK_OAK_LOG_HORIZONTAL, TFBlocks.HOLLOW_CRIMSON_STEM_HORIZONTAL, TFBlocks.HOLLOW_WARPED_STEM_HORIZONTAL,
-			TFBlocks.HOLLOW_VANGROVE_LOG_HORIZONTAL, TFBlocks.HOLLOW_CHERRY_LOG_HORIZONTAL,
+			TFBlocks.HOLLOW_VANGROVE_LOG_HORIZONTAL, TFBlocks.HOLLOW_CHERRY_LOG_HORIZONTAL, TFBlocks.HOLLOW_PALE_OAK_LOG_HORIZONTAL,
 			TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL, TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL, TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL, TFBlocks.HOLLOW_DARK_LOG_HORIZONTAL,
 			TFBlocks.HOLLOW_TIME_LOG_HORIZONTAL, TFBlocks.HOLLOW_TRANSFORMATION_LOG_HORIZONTAL, TFBlocks.HOLLOW_MINING_LOG_HORIZONTAL, TFBlocks.HOLLOW_SORTING_LOG_HORIZONTAL);
-		BlockColorRegistry.register(List.of(HOLLOW_LOG_CLIMBABLE), TFBlocks.HOLLOW_OAK_LOG_CLIMBABLE, TFBlocks.HOLLOW_SPRUCE_LOG_CLIMBABLE, TFBlocks.HOLLOW_BIRCH_LOG_CLIMBABLE, TFBlocks.HOLLOW_JUNGLE_LOG_CLIMBABLE,
+		BlockColorRegistry.register(List.of(BlockTintSources.constant(-1), HOLLOW_LOG_CLIMBABLE), TFBlocks.HOLLOW_OAK_LOG_CLIMBABLE, TFBlocks.HOLLOW_SPRUCE_LOG_CLIMBABLE, TFBlocks.HOLLOW_BIRCH_LOG_CLIMBABLE, TFBlocks.HOLLOW_JUNGLE_LOG_CLIMBABLE,
 			TFBlocks.HOLLOW_ACACIA_LOG_CLIMBABLE, TFBlocks.HOLLOW_DARK_OAK_LOG_CLIMBABLE, TFBlocks.HOLLOW_CRIMSON_STEM_CLIMBABLE, TFBlocks.HOLLOW_WARPED_STEM_CLIMBABLE,
-			TFBlocks.HOLLOW_VANGROVE_LOG_CLIMBABLE, TFBlocks.HOLLOW_CHERRY_LOG_CLIMBABLE,
+			TFBlocks.HOLLOW_VANGROVE_LOG_CLIMBABLE, TFBlocks.HOLLOW_CHERRY_LOG_CLIMBABLE, TFBlocks.HOLLOW_PALE_OAK_LOG_CLIMBABLE,
 			TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE, TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE, TFBlocks.HOLLOW_MANGROVE_LOG_CLIMBABLE, TFBlocks.HOLLOW_DARK_LOG_CLIMBABLE,
 			TFBlocks.HOLLOW_TIME_LOG_CLIMBABLE, TFBlocks.HOLLOW_TRANSFORMATION_LOG_CLIMBABLE, TFBlocks.HOLLOW_MINING_LOG_CLIMBABLE, TFBlocks.HOLLOW_SORTING_LOG_CLIMBABLE);
-		BlockColorRegistry.register(List.of(BlockTintSources.foliage()), TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE, TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE); //TODO: For datagen: apply to correct layer
+		BlockColorRegistry.register(List.of(BlockTintSources.constant(-1), BlockTintSources.grass()), TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE, TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE); //TODO: For datagen: apply to correct layer
 		BlockColorRegistry.register(List.of(BlockTintSources.constant(0xFFFF00FF)), TFBlocks.PINK_CASTLE_RUNE_BRICK, TFBlocks.PINK_CASTLE_DOOR);
 		BlockColorRegistry.register(List.of(BlockTintSources.constant(0xFF00FFFF)), TFBlocks.BLUE_CASTLE_RUNE_BRICK, TFBlocks.BLUE_CASTLE_DOOR);
 		BlockColorRegistry.register(List.of(BlockTintSources.constant(0xFFFFFF00)), TFBlocks.YELLOW_CASTLE_RUNE_BRICK, TFBlocks.YELLOW_CASTLE_DOOR);
