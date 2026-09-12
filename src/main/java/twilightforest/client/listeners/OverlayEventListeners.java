@@ -109,7 +109,7 @@ public final class OverlayEventListeners {
 						component = component.copy().append(".");
 					}
 					graphics.fill(0, 0, 56, 16, 0x9b000000);
-					graphics.text(Minecraft.getInstance().font, component, 4, 4, 16777215, false);
+					graphics.text(Minecraft.getInstance().font, component, 4, 4, 0xFFFFFFFF, false);
 				} else {
 					OreScannerData oreScannerData = selectedMeter.get(TFDataComponents.ORE_DATA);
 
