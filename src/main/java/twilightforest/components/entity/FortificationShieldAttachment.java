@@ -1,9 +1,10 @@
 package twilightforest.components.entity;
 
-import carminite.network.PacketDistributor;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -121,8 +122,12 @@ public class FortificationShieldAttachment {
 			}
 		}
 
-		PacketDistributor.sendToPlayersTrackingEntity(entity, particlePacket);
-		if (entity instanceof ServerPlayer player) PacketDistributor.sendToPlayer(player, particlePacket);
+		for (ServerPlayer player : PlayerLookup.tracking(entity)) {
+			ServerPlayNetworking.send(player, particlePacket);
+		}
+		if (entity instanceof ServerPlayer player) {
+			ServerPlayNetworking.send(player, particlePacket);
+		}
 	}
 
 	public void setShields(LivingEntity entity, int amount, boolean temp) {
