@@ -60,7 +60,7 @@ public class CarminiteGolemModel extends EntityModel<IronGolemRenderState> {
 				.texOffs(52, 45) // shoulder back
 				.addBox(-7.0F, -1.0F, 1.5F, 7.0F, 5.0F, 2.0F)
 				.texOffs(52, 54) // shoulder inner
-				.addBox(-2.0F, -1.0F, -2.0F, 2.0F, 5.0F, 3.0F),
+				.addBox(-2.0F, -1.0F, -1.5F, 2.0F, 5.0F, 3.0F),
 			PartPose.offset(-8.0F, -12.0F, 0.0F));
 
 		partdefinition.addOrReplaceChild("left_arm", CubeListBuilder.create()
@@ -76,7 +76,7 @@ public class CarminiteGolemModel extends EntityModel<IronGolemRenderState> {
 				.texOffs(52, 45) // shoulder back
 				.addBox(0.0F, -1.0F, 1.5F, 7.0F, 5.0F, 2.0F)
 				.texOffs(52, 54) // shoulder inner
-				.addBox(0.0F, -1.0F, -2.0F, 2.0F, 5.0F, 3.0F),
+				.addBox(0.0F, -1.0F, -1.5F, 2.0F, 5.0F, 3.0F),
 			PartPose.offset(8.0F, -12.0F, 0.0F));
 
 		partdefinition.addOrReplaceChild("hips", CubeListBuilder.create()
