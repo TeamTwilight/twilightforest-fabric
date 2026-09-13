@@ -1,6 +1,6 @@
 package twilightforest.client;
 
-import carminite.network.ClientPacketDistributor;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
@@ -39,26 +39,26 @@ public class UncraftingScreen extends AbstractRecipeBookScreen<UncraftingMenu> {
 		super.init();
 
 		this.addRenderableWidget(new CycleButton(this.leftPos + 40, this.topPos + 22, true, button ->
-			ClientPacketDistributor.sendToServer(new UncraftingGuiPacket(0)),
+			ClientPlayNetworking.send(new UncraftingGuiPacket(0)),
 			Component.translatable("container.twilightforest.uncrafting_table.cycle_next_uncraft")));
 		this.addRenderableWidget(new CycleButton(this.leftPos + 40, this.topPos + 55, false, button ->
-			ClientPacketDistributor.sendToServer(new UncraftingGuiPacket(1)),
+			ClientPlayNetworking.send(new UncraftingGuiPacket(1)),
 			Component.translatable("container.twilightforest.uncrafting_table.cycle_back_uncraft")));
 
 		if (!TFConfig.disableIngredientSwitching) {
 			this.addRenderableWidget(new CycleButtonMini(this.leftPos + 27, this.topPos + 56, true, button ->
-				ClientPacketDistributor.sendToServer(new UncraftingGuiPacket(2)),
+				ClientPlayNetworking.send(new UncraftingGuiPacket(2)),
 				Component.translatable("container.twilightforest.uncrafting_table.cycle_next_ingredient")));
 			this.addRenderableWidget(new CycleButtonMini(this.leftPos + 27, this.topPos + 63, false, button ->
-				ClientPacketDistributor.sendToServer(new UncraftingGuiPacket(3)),
+				ClientPlayNetworking.send(new UncraftingGuiPacket(3)),
 				Component.translatable("container.twilightforest.uncrafting_table.cycle_back_ingredient")));
 		}
 
 		this.addRenderableWidget(new CycleButton(this.leftPos + 121, this.topPos + 22, true, button ->
-			ClientPacketDistributor.sendToServer(new UncraftingGuiPacket(4)),
+			ClientPlayNetworking.send(new UncraftingGuiPacket(4)),
 			Component.translatable("container.twilightforest.uncrafting_table.cycle_next_recipe")));
 		this.addRenderableWidget(new CycleButton(this.leftPos + 121, this.topPos + 55, false, button ->
-			ClientPacketDistributor.sendToServer(new UncraftingGuiPacket(5)),
+			ClientPlayNetworking.send(new UncraftingGuiPacket(5)),
 			Component.translatable("container.twilightforest.uncrafting_table.cycle_back_recipe")));
 	}
 
@@ -69,18 +69,18 @@ public class UncraftingScreen extends AbstractRecipeBookScreen<UncraftingMenu> {
 		//ingredient buttons
 		if (!TFConfig.disableIngredientSwitching) {
 			if (x > this.leftPos + 27 && x < this.leftPos + 33 && y > this.topPos + 56 && y < this.topPos + 69) {
-				ClientPacketDistributor.sendToServer(new UncraftingGuiPacket(vertScroll > 0 ? 2 : 3));
+				ClientPlayNetworking.send(new UncraftingGuiPacket(vertScroll > 0 ? 2 : 3));
 			}
 		}
 
 		//uncrafting recipe buttons
 		if (x > this.leftPos + 40 && x < this.leftPos + 54 && y > this.topPos + 22 && y < this.topPos + 64) {
-			ClientPacketDistributor.sendToServer(new UncraftingGuiPacket(vertScroll > 0 ? 0 : 1));
+			ClientPlayNetworking.send(new UncraftingGuiPacket(vertScroll > 0 ? 0 : 1));
 		}
 
 		//recrafting recipe buttons
 		if (x > this.leftPos + 121 && x < this.leftPos + 135 && y > this.topPos + 22 && y < this.topPos + 64) {
-			ClientPacketDistributor.sendToServer(new UncraftingGuiPacket(vertScroll > 0 ? 4 : 5));
+			ClientPlayNetworking.send(new UncraftingGuiPacket(vertScroll > 0 ? 4 : 5));
 		}
 
 		return scrolled;

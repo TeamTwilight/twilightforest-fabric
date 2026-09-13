@@ -1,8 +1,8 @@
 package twilightforest.listeners;
 
 import carminite.events.neoforge.*;
-import carminite.network.ClientPacketDistributor;
 import carminite.network.PacketDistributor;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -125,7 +125,7 @@ public final class EntityEventListeners {
 	public static void wipeOreMeterOnLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
 		ItemStack item = event.getItemStack();
 		if (item.is(TFItems.ORE_METER) && (item.has(TFDataComponents.ORE_DATA) || item.has(TFDataComponents.ORE_FILTER))) {
-			ClientPacketDistributor.sendToServer(new WipeOreMeterPacket(event.getHand()));
+			ClientPlayNetworking.send(new WipeOreMeterPacket(event.getHand()));
 			item.remove(TFDataComponents.ORE_DATA);
 			item.remove(TFDataComponents.ORE_FILTER);
 			event.getLevel().playSound(event.getEntity(), event.getEntity().blockPosition(), TFSounds.ORE_METER_CLEAR.value(), SoundSource.PLAYERS, 1.25F, event.getLevel().getRandom().nextFloat() * 0.2F + 0.6F);
