@@ -1,11 +1,10 @@
-package twilightforest.world.registration.surface_rules;
+package twilightforest.datagen.data.worldgen;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Noises;
 import net.minecraft.world.level.levelgen.SurfaceRules;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
-import org.jetbrains.annotations.NotNull;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFBlocks;
 
@@ -40,7 +39,6 @@ public class TFSurfaceRules {
 		);
 	}
 
-	@NotNull
 	private static SurfaceRules.RuleSource highlandsSurface() {
 		// Make sure it's not a block under the water level
 		SurfaceRules.RuleSource podzolFloor = SurfaceRules.sequence(
@@ -59,7 +57,6 @@ public class TFSurfaceRules {
 		return SurfaceRules.ifTrue(SurfaceRules.isBiome(TFBiomes.HIGHLANDS), highlandsSoil);
 	}
 
-	@NotNull
 	private static SurfaceRules.RuleSource deadrockSurface() {
 		//thornlands/plateau has no caves and deadrock instead of stone
 		SurfaceRules.RuleSource deadrockTerrain = SurfaceRules.sequence(
@@ -75,7 +72,6 @@ public class TFSurfaceRules {
 		return SurfaceRules.ifTrue(SurfaceRules.isBiome(TFBiomes.THORNLANDS, TFBiomes.FINAL_PLATEAU), deadrockTerrain);
 	}
 
-	@NotNull
 	private static SurfaceRules.RuleSource snowyForestSurface() {
 		// Make sure it's not a block under the water level
 		SurfaceRules.RuleSource snowFloor = SurfaceRules.sequence(
@@ -98,7 +94,6 @@ public class TFSurfaceRules {
 		return SurfaceRules.ifTrue(SurfaceRules.isBiome(TFBiomes.SNOWY_FOREST), snowySoil);
 	}
 
-	@NotNull
 	private static SurfaceRules.RuleSource glacierSurface() {
 		//glacier has gravel for a few layers, then stone. All blanketed under 30+ blocks of ice
 		SurfaceRules.RuleSource surfaceUnderPermafrost = SurfaceRules.sequence(
@@ -114,7 +109,6 @@ public class TFSurfaceRules {
 		return SurfaceRules.ifTrue(SurfaceRules.isBiome(TFBiomes.GLACIER), surfaceUnderPermafrost);
 	}
 
-	@NotNull
 	private static SurfaceRules.RuleSource overworldLikeFloor() {
 		//lakes and rivers get sand
 		SurfaceRules.RuleSource riverLakeBeds = SurfaceRules.ifTrue(SurfaceRules.isBiome(TFBiomes.LAKE, TFBiomes.STREAM), SurfaceRules.sequence(
