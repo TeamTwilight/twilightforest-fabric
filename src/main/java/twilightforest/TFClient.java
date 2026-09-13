@@ -5,10 +5,7 @@ import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.particle.v1.FabricSpriteSet;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.AtlasRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.ClientTooltipComponentCallback;
-import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityRenderLayerRegistrationCallback;
-import net.fabricmc.fabric.api.client.rendering.v1.ModelLayerRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.*;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.fabricmc.fabric.impl.client.model.loading.CustomUnbakedBlockStateModelRegistry;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -45,6 +42,8 @@ import twilightforest.client.particle.*;
 import twilightforest.client.renderer.TFRenderPipelines;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.armor.TFArmorRenderer;
+import twilightforest.client.renderer.armor.TFSimpleArmorRenderer;
+import twilightforest.client.renderer.armor.TravellersArmorRenderer;
 import twilightforest.client.renderer.block.*;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.client.renderer.entity.layers.IceLayer;
@@ -91,6 +90,7 @@ public final class TFClient implements ClientModInitializer {
 		registerParticleFactories();
 		registerMapDecorators();
 		registerRenderLayers();
+		registerArmorRenderers();
 	}
 
 	private static void registerPackets() {
@@ -448,5 +448,32 @@ public final class TFClient implements ClientModInitializer {
 	private static void attachLivingRenderLayers(LivingEntityRenderer<?, ?, ?> renderer, LivingEntityRenderLayerRegistrationCallback.RegistrationHelper registrationHelper) {
 		registrationHelper.register(new ShieldLayer(renderer));
 		registrationHelper.register(new IceLayer(renderer));
+	}
+
+	private static void registerArmorRenderers() {
+		ArmorRenderer.register(context ->
+				new TFSimpleArmorRenderer(context, FieryArmorModel::new, TFModelLayers.ARCTIC_ARMOR_INNER, TFModelLayers.ARCTIC_ARMOR_OUTER),
+				TFItems.ARCTIC_HELMET, TFItems.ARCTIC_CHESTPLATE, TFItems.ARCTIC_LEGGINGS, TFItems.ARCTIC_BOOTS
+		);
+		ArmorRenderer.register(context ->
+				new TFSimpleArmorRenderer(context, FieryArmorModel::new, TFModelLayers.FIERY_ARMOR_INNER, TFModelLayers.FIERY_ARMOR_OUTER),
+				TFItems.FIERY_HELMET, TFItems.FIERY_CHESTPLATE, TFItems.FIERY_LEGGINGS, TFItems.FIERY_BOOTS
+		);
+		ArmorRenderer.register(
+			TravellersArmorRenderer::new,
+			TFItems.TRAVELLERS_GOGGLES, TFItems.TRAVELLERS_VEST, TFItems.TRAVELLERS_GLOVES, TFItems.TRAVELLERS_WINGS, TFItems.TRAVELLERS_BELT, TFItems.TRAVELLERS_BOOTS
+		);
+		ArmorRenderer.register(context ->
+			new TFSimpleArmorRenderer(context, TFArmorModel::new, TFModelLayers.KNIGHTMETAL_ARMOR_INNER, TFModelLayers.KNIGHTMETAL_ARMOR_OUTER),
+			TFItems.KNIGHTMETAL_HELMET, TFItems.KNIGHTMETAL_CHESTPLATE, TFItems.KNIGHTMETAL_LEGGINGS, TFItems.KNIGHTMETAL_BOOTS
+		);
+		ArmorRenderer.register(context ->
+			new TFSimpleArmorRenderer(context, TFArmorModel::new, TFModelLayers.PHANTOM_ARMOR_INNER, TFModelLayers.PHANTOM_ARMOR_OUTER),
+			TFItems.PHANTOM_HELMET, TFItems.PHANTOM_CHESTPLATE
+		);
+		ArmorRenderer.register(context ->
+			new TFSimpleArmorRenderer(context, YetiArmorModel::new, TFModelLayers.YETI_ARMOR_INNER, TFModelLayers.YETI_ARMOR_OUTER),
+			TFItems.YETI_HELMET, TFItems.YETI_CHESTPLATE, TFItems.YETI_LEGGINGS, TFItems.YETI_BOOTS
+		);
 	}
 }

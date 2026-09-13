@@ -204,6 +204,7 @@ public final class TravellersGearEventListeners {
 		TravellersGearLogic.travellersGearAutoRepair(livingEntity);
 		TravellersGearLogic.travellersBootsStraightAhead(livingEntity);
 		TravellersGearLogic.determineWingState(livingEntity);
+		TravellersGearLogic.travellersGogglesZoom(livingEntity);
 	}
 
 	public static void activateAndDeactivateTravellersModifiers(ItemAttributeModifierEvent event) {

@@ -53,6 +53,7 @@ public class TFDataComponents {
 
 	public static final DataComponentType<Float> AUTO_REPAIR_PROBABILITY = registerSyncedCached("auto_repair_probability", ExtraCodecs.POSITIVE_FLOAT, ByteBufCodecs.FLOAT);
 	public static final DataComponentType<Float> ZOOM_ABILITY_MODIFIER = registerSyncedCached("zoom_ability_modifier", ExtraCodecs.POSITIVE_FLOAT, ByteBufCodecs.FLOAT);
+	public static final DataComponentType<Unit> IS_USING_GOGGLES_ZOOM = registerSyncedCached("is_using_goggles_zoom", Unit.CODEC, Unit.STREAM_CODEC);
 	public static final DataComponentType<Unit> RED_THREAD_VISION = registerSyncedCached("red_thread_vision", Unit.CODEC, Unit.STREAM_CODEC);
 	public static final DataComponentType<Unit> STEALTH_CROUCHING = registerSyncedCached("stealth_crouching", Unit.CODEC, Unit.STREAM_CODEC);
 	public static final DataComponentType<Unit> ARROW_MAGNETISM = registerSyncedCached("arrow_magnetism", Unit.CODEC, Unit.STREAM_CODEC);

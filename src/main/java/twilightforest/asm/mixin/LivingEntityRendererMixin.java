@@ -14,8 +14,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import twilightforest.asm.hooks.coremod.RenderHooks;
 import twilightforest.block.AbstractTrophyBlock;
+import twilightforest.client.model.armor.TravellersWingsModel;
 import twilightforest.client.renderer.entity.layers.IceLayer;
 import twilightforest.client.renderer.entity.layers.ShieldLayer;
+import twilightforest.init.TFDataAttachments;
+import twilightforest.init.TFDataComponents;
 import twilightforest.potions.FrostedEffect;
 
 @Mixin(LivingEntityRenderer.class)
@@ -35,6 +38,16 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, S extend
 			state.setData(RenderHooks.HIDE_HEAD_KEY, true);
 
 		state.setData(ShieldLayer.SHIELD_COUNT_KEY, ShieldLayer.getShieldCount(entity));
+
+		if (entity.getItemBySlot(EquipmentSlot.LEGS).has(TFDataComponents.TRAVELLERS_HAS_WINGS)) {
+			TravellersWingsModel.WingsPose wingsPose = TravellersWingsModel.advanceAnimation(
+				entity.getAttached(TFDataAttachments.TRAVELLERS_WINGS_ANIM),
+				entity.getAttached(TFDataAttachments.TRAVELLERS_WINGS),
+				state.ageInTicks,
+				state.walkAnimationSpeed
+			);
+			state.setData(TravellersWingsModel.WINGS_POSE_KEY, wingsPose);
+		}
 
 		AttributeInstance speed = entity.getAttribute(Attributes.MOVEMENT_SPEED);
 		if (speed == null)

@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class TFArmorRenderer implements ArmorRenderer {
-	public static final List<TFSimpleArmorRenderer> INSTANCES = new ArrayList<>();
+	public static final List<TFArmorRenderer> INSTANCES = new ArrayList<>();
 	protected final Map<ModelLayerLocation, Lazy<ModelPart>> ARMOR_MODELS = new HashMap<>();
 	protected final EquipmentLayerRenderer equipmentRenderer;
 
@@ -35,7 +35,7 @@ public abstract class TFArmorRenderer implements ArmorRenderer {
 	}
 
 	public static void resetAllModelCache() {
-		INSTANCES.forEach(TFSimpleArmorRenderer::resetModelCache);
+		INSTANCES.forEach(TFArmorRenderer::resetModelCache);
 	}
 
 	protected ModelPart getModelPart(ModelLayerLocation layerLocation) {
