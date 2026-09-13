@@ -9,9 +9,17 @@ public final class RenderHooks {
 	public static final RenderStateDataKey<Boolean> HIDE_HEAD_KEY = RenderStateDataKey.create(() -> "hide_head");
 
 	public static void applyHeadVisibility(SubmitNodeStorage.ModelSubmit<?> submit) {
-		if (!(submit.model() instanceof HeadedModel headed) || !(submit.state() instanceof EntityRenderState state))
+		setHeadVisibility(submit, false);
+	}
+
+	public static void restoreHeadVisibility(SubmitNodeStorage.ModelSubmit<?> submit) {
+		setHeadVisibility(submit, true);
+	}
+
+	private static void setHeadVisibility(SubmitNodeStorage.ModelSubmit<?> submit, boolean visible) {
+		if (!(submit.model() instanceof HeadedModel headed) || !(submit.state() instanceof EntityRenderState state) || !Boolean.TRUE.equals(state.getData(HIDE_HEAD_KEY)))
 			return;
 
-		headed.getHead().visible = !Boolean.TRUE.equals(state.getData(HIDE_HEAD_KEY));
+		headed.getHead().visible = visible;
 	}
 }
