@@ -6,11 +6,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.TravellersGearLogic;
-
-import java.util.function.BiPredicate;
 
 public final class EntityHooks {
 	public static boolean processWaterWalking(boolean o, LivingEntity livingEntity, FluidState fluidState) {
@@ -20,10 +19,17 @@ public final class EntityHooks {
 		if (!TravellersModifiersManager.isModifierActive(livingEntity, TravellersModifiersManager.WATER_WALK_MODIFIER))
 			return o;
 
-		boolean isWaterWalking = TravellersGearLogic.isBelowMaxWaterWalkingSubmergedHeight(livingEntity) && !livingEntity.isShiftKeyDown();
+		boolean isWaterWalking = TravellersGearLogic.isWaterWalking(livingEntity);
 		if (livingEntity.getFluidHeight(FluidTags.WATER) > 0 && isWaterWalking && livingEntity.level().getGameTime() % 3 == 1)
 			TravellersGearLogic.waterWalkingSplashEffect(livingEntity);
 		return isWaterWalking;
+	}
+
+	public static VoxelShape processLiquidCollisionShape(VoxelShape o, LivingEntity livingEntity) {
+		if (!TravellersModifiersManager.isModifierActive(livingEntity, TravellersModifiersManager.WATER_WALK_MODIFIER))
+			return o;
+
+		return TravellersGearLogic.isWaterWalking(livingEntity) ? TravellersGearLogic.WATER_WALKING_COLLISION_SHAPE : o;
 	}
 
 	public static boolean unrestrainedSprintingInWater(boolean isInWater, LivingEntity livingEntity) {
@@ -32,10 +38,9 @@ public final class EntityHooks {
 		return !livingEntity.canStandOnFluid(livingEntity.level().getFluidState(livingEntity.blockPosition())) && isInWater;
 	}
 
-	public static BiPredicate<FluidType, Double> unrestrainedSwimPredicate(BiPredicate<FluidType, Double> o, LivingEntity livingEntity) {
-		return (fluidType, height) -> {
-			FluidState fs = livingEntity.level().getFluidState(livingEntity.blockPosition());
-			boolean oResult = o.test(fluidType, height);
+	public static <E extends Entity> InFluidPredicate<E> unrestrainedSwimPredicate(InFluidPredicate<E> o, LivingEntity livingEntity) {
+		return (entity, fluidType, height) -> {
+			boolean oResult = o.test(entity, fluidType, height);
 			if (fluidType != NeoForgeMod.WATER_TYPE.value())
 				return oResult;
 			return unrestrainedSprintingInWater(oResult, livingEntity);
