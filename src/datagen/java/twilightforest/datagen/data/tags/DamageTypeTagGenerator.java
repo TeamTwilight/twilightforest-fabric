@@ -22,7 +22,7 @@ public class DamageTypeTagGenerator extends KeyTagProvider<DamageType> {
 
 	@Override
 	protected void addTags(HolderLookup.Provider provider) {
-		this.tag(TFDamageTypes.GHAST_TEAR, DamageTypeTags.BYPASSES_ARMOR, DamageTypeTags.DAMAGES_HELMET, DamageTypeTags.AVOIDS_GUARDIAN_THORNS);
+		this.tag(TFDamageTypes.GHAST_TEAR, DamageTypeTags.BYPASSES_ARMOR, DamageTypeTags.DAMAGES_HELMET, DamageTypeTags.AVOIDS_GUARDIAN_THORNS, DamageTypeTags.NO_KNOCKBACK);
 		this.tag(TFDamageTypes.HYDRA_FIRE, DamageTypeTags.IS_FIRE, DamageTypeTags.IGNITES_ARMOR_STANDS, DamageTypeTags.AVOIDS_GUARDIAN_THORNS);
 		this.tag(TFDamageTypes.HYDRA_MORTAR, DamageTypeTags.IS_FIRE, DamageTypeTags.IGNITES_ARMOR_STANDS, DamageTypeTags.AVOIDS_GUARDIAN_THORNS);
 		this.tag(TFDamageTypes.LICH_BOLT, DamageTypeTags.BYPASSES_ARMOR, DamageTypeTags.IS_PROJECTILE, DamageTypeTags.WITCH_RESISTANT_TO, TFDamageTypeTags.BREAKS_LICH_SHIELDS, DamageTypeTags.BYPASSES_WOLF_ARMOR);
@@ -30,11 +30,15 @@ public class DamageTypeTagGenerator extends KeyTagProvider<DamageType> {
 		this.tag(TFDamageTypes.CHILLING_BREATH);
 		this.tag(TFDamageTypes.THROWN_AXE, DamageTypeTags.IS_PROJECTILE);
 		this.tag(TFDamageTypes.THROWN_PICKAXE, DamageTypeTags.IS_PROJECTILE);
-		this.tag(TFDamageTypes.FIERY, DamageTypeTags.IS_FIRE);
-		this.tag(TFDamageTypes.FIRE_JET, DamageTypeTags.IS_FIRE, DamageTypeTags.IGNITES_ARMOR_STANDS);
+		this.tag(TFDamageTypes.THORNS, DamageTypeTags.NO_KNOCKBACK);
+		this.tag(TFDamageTypes.OREBERRY, DamageTypeTags.NO_KNOCKBACK);
+		this.tag(TFDamageTypes.FIERY, DamageTypeTags.IS_FIRE, DamageTypeTags.NO_KNOCKBACK);
+		this.tag(TFDamageTypes.FIRE_JET, DamageTypeTags.IS_FIRE, DamageTypeTags.IGNITES_ARMOR_STANDS, DamageTypeTags.NO_KNOCKBACK);
+		this.tag(TFDamageTypes.REACTOR, DamageTypeTags.NO_KNOCKBACK);
 		this.tag(TFDamageTypes.THROWN_BLOCK, DamageTypeTags.DAMAGES_HELMET, DamageTypeTags.IS_PROJECTILE);
 		this.tag(TFDamageTypes.SLAM, DamageTypeTags.BYPASSES_ARMOR, DamageTypeTags.NO_ANGER, DamageTypeTags.AVOIDS_GUARDIAN_THORNS);
 		this.tag(TFDamageTypes.YEETED, DamageTypeTags.BYPASSES_ARMOR, DamageTypeTags.IS_FALL, DamageTypeTags.AVOIDS_GUARDIAN_THORNS);
+		this.tag(TFDamageTypes.CLAMPED, DamageTypeTags.NO_KNOCKBACK);
 		this.tag(TFDamageTypes.SCORCHED, DamageTypeTags.IS_FIRE, DamageTypeTags.IGNITES_ARMOR_STANDS);
 		this.tag(TFDamageTypes.FROZEN, DamageTypeTags.BYPASSES_WOLF_ARMOR);
 		this.tag(TFDamageTypes.LEAF_BRAIN, DamageTypeTags.BYPASSES_ARMOR, DamageTypeTags.IS_PROJECTILE, DamageTypeTags.WITCH_RESISTANT_TO, DamageTypeTags.BYPASSES_WOLF_ARMOR);
@@ -45,7 +49,8 @@ public class DamageTypeTagGenerator extends KeyTagProvider<DamageType> {
 		this.tag(TFDamageTypes.LIFEDRAIN, DamageTypeTags.BYPASSES_ARMOR, DamageTypeTags.IS_PROJECTILE, DamageTypeTags.BYPASSES_WOLF_ARMOR);
 		this.tag(TFDamageTypes.EXPIRED, DamageTypeTags.BYPASSES_ARMOR, DamageTypeTags.BYPASSES_RESISTANCE, DamageTypeTags.ALWAYS_MOST_SIGNIFICANT_FALL, DamageTypeTags.BYPASSES_INVULNERABILITY, DamageTypeTags.BYPASSES_WOLF_ARMOR);
 		this.tag(TFDamageTypes.FALLING_ICE, DamageTypeTags.BYPASSES_ENCHANTMENTS);
-		this.tag(TFDamageTypes.ACID_RAIN, DamageTypeTags.BYPASSES_ARMOR, DamageTypeTags.WITCH_RESISTANT_TO, DamageTypeTags.BYPASSES_WOLF_ARMOR);
+		this.tag(TFDamageTypes.MOONWORM, DamageTypeTags.NO_KNOCKBACK);
+		this.tag(TFDamageTypes.ACID_RAIN, DamageTypeTags.BYPASSES_ARMOR, DamageTypeTags.WITCH_RESISTANT_TO, DamageTypeTags.BYPASSES_WOLF_ARMOR, DamageTypeTags.NO_KNOCKBACK);
 		this.tag(TFDamageTypes.OMINOUS_FIRE, DamageTypeTags.BYPASSES_ARMOR, DamageTypeTags.WITHER_IMMUNE_TO, DamageTypeTags.NO_KNOCKBACK, DamageTypeTags.PANIC_ENVIRONMENTAL_CAUSES);
 
 		this.tag(DamageTypes.MAGIC, TFDamageTypeTags.BREAKS_LICH_SHIELDS);

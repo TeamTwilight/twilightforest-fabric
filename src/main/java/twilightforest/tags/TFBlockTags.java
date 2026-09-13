@@ -105,6 +105,10 @@ public class TFBlockTags {
 
 	public static final TagKey<Block> ARTIFACTS_CAMPSITE_CHESTS = createFromNamespace("artifacts", "campsite_chests");
 
+	public static final TagKey<Block> CHEST_MOUNTED_STORAGE = createFromNamespace("create", "chest_mounted_storage");
+	public static final TagKey<Block> PASSIVE_BOILER_HEATERS = createFromNamespace("create", "passive_boiler_heaters");
+	public static final TagKey<Block> TREE_ATTACHMENTS = createFromNamespace("create", "tree_attachments");
+
 	public static final TagKey<Block> FD_COMPOST_ACTIVATORS = createFromNamespace("farmersdelight", "compost_activators");
 	public static final TagKey<Block> FD_HEAT_SOURCES = createFromNamespace("farmersdelight", "heat_sources");
 

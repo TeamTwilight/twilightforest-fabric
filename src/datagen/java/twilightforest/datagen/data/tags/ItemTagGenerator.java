@@ -303,14 +303,42 @@ public class ItemTagGenerator extends IntrinsicHolderTagsProvider<Item> {
 		this.tag(TFItemTags.REPAIRS_GIANT_TOOLS).add(TFBlocks.GIANT_COBBLESTONE.asItem());
 		this.tag(TFItemTags.REPAIRS_ICE_TOOLS).add(Blocks.ICE.asItem(), Blocks.PACKED_ICE.asItem(), Blocks.BLUE_ICE.asItem());
 
-		this.tag(ItemTags.MEAT).add(TFItems.RAW_VENISON, TFItems.COOKED_VENISON, TFItems.RAW_MEEF, TFItems.COOKED_MEEF, TFItems.MEEF_STROGANOFF, TFItems.EXPERIMENT_115, TFItems.HYDRA_CHOP);
+		this.tag(ItemTags.MEAT).add(
+			TFItems.RAW_VENISON,
+			TFItems.COOKED_VENISON,
+			TFItems.RAW_MEEF,
+			TFItems.COOKED_MEEF,
+			TFItems.MEEF_STROGANOFF,
+			TFItems.EXPERIMENT_115,
+			TFItems.HYDRA_CHOP,
+			TFItems.MONSTER_JERKY,
+			TFItems.BEEF_JERKY,
+			TFItems.PORK_JERKY,
+			TFItems.CHICKEN_JERKY,
+			TFItems.RABBIT_JERKY,
+			TFItems.MUTTON_JERKY,
+			TFItems.VENISON_JERKY,
+			TFItems.MEEF_JERKY,
+			TFItems.COD_JERKY,
+			TFItems.SALMON_JERKY,
+			TFItems.TROPICAL_FISH_JERKY,
+			TFItems.FUGU_JERKY
+		);
+
 		this.tag(ItemTags.BEACON_PAYMENT_ITEMS)
 			.addTag(TFItemTags.IRONWOOD_INGOTS)
 			.addTag(TFItemTags.STEELEAF_INGOTS)
 			.addTag(TFItemTags.KNIGHTMETAL_INGOTS)
 			.addTag(TFItemTags.FIERY_INGOTS);
 
-		this.tag(ItemTags.TRIMMABLE_ARMOR).remove(TFItems.YETI_HELMET);
+		this.tag(ItemTags.TRIMMABLE_ARMOR)
+			.remove(TFItems.YETI_HELMET)
+			.remove(TFItems.TRAVELLERS_GOGGLES)
+			.remove(TFItems.TRAVELLERS_VEST)
+			.remove(TFItems.TRAVELLERS_GLOVES)
+			.remove(TFItems.TRAVELLERS_BELT)
+			.remove(TFItems.TRAVELLERS_WINGS)
+			.remove(TFItems.TRAVELLERS_BOOTS);
 
 		this.tag(ItemTags.HEAD_ARMOR).add(
 			TFItems.IRONWOOD_HELMET,
@@ -319,7 +347,8 @@ public class ItemTagGenerator extends IntrinsicHolderTagsProvider<Item> {
 			TFItems.ARCTIC_HELMET,
 			TFItems.YETI_HELMET,
 			TFItems.FIERY_HELMET,
-			TFItems.PHANTOM_HELMET);
+			TFItems.PHANTOM_HELMET,
+			TFItems.TRAVELLERS_GOGGLES);
 
 		this.tag(ItemTags.CHEST_ARMOR).add(
 			TFItems.IRONWOOD_CHESTPLATE,
@@ -329,7 +358,9 @@ public class ItemTagGenerator extends IntrinsicHolderTagsProvider<Item> {
 			TFItems.YETI_CHESTPLATE,
 			TFItems.FIERY_CHESTPLATE,
 			TFItems.PHANTOM_CHESTPLATE,
-			TFItems.NAGA_CHESTPLATE);
+			TFItems.NAGA_CHESTPLATE,
+			TFItems.TRAVELLERS_VEST,
+			TFItems.TRAVELLERS_GLOVES);
 
 		this.tag(ItemTags.LEG_ARMOR).add(
 			TFItems.IRONWOOD_LEGGINGS,
@@ -338,7 +369,9 @@ public class ItemTagGenerator extends IntrinsicHolderTagsProvider<Item> {
 			TFItems.ARCTIC_LEGGINGS,
 			TFItems.YETI_LEGGINGS,
 			TFItems.FIERY_LEGGINGS,
-			TFItems.NAGA_LEGGINGS);
+			TFItems.NAGA_LEGGINGS,
+			TFItems.TRAVELLERS_WINGS,
+			TFItems.TRAVELLERS_BELT);
 
 		this.tag(ItemTags.FOOT_ARMOR).add(
 			TFItems.IRONWOOD_BOOTS,
@@ -346,7 +379,8 @@ public class ItemTagGenerator extends IntrinsicHolderTagsProvider<Item> {
 			TFItems.KNIGHTMETAL_BOOTS,
 			TFItems.ARCTIC_BOOTS,
 			TFItems.YETI_BOOTS,
-			TFItems.FIERY_BOOTS);
+			TFItems.FIERY_BOOTS,
+			TFItems.TRAVELLERS_BOOTS);
 
 		//this.tag(ItemTags.DYEABLE).add(TFItems.ARCTIC_HELMET, TFItems.ARCTIC_CHESTPLATE, TFItems.ARCTIC_LEGGINGS, TFItems.ARCTIC_BOOTS);
 		this.tag(ItemTags.CAULDRON_CAN_REMOVE_DYE).add(TFItems.ARCTIC_HELMET, TFItems.ARCTIC_CHESTPLATE, TFItems.ARCTIC_LEGGINGS, TFItems.ARCTIC_BOOTS);
@@ -364,10 +398,23 @@ public class ItemTagGenerator extends IntrinsicHolderTagsProvider<Item> {
 		this.tag(ItemTags.EQUIPPABLE_ENCHANTABLE).remove(TFItems.PHANTOM_HELMET, TFItems.PHANTOM_CHESTPLATE);
 		this.tag(ItemTags.BREAKS_DECORATED_POTS).add(TFItems.BLOCK_AND_CHAIN);
 
-		this.tag(ConventionalItemTags.BERRY_FOODS).add(TFItems.TORCHBERRIES);
+		this.tag(ConventionalItemTags.FOODS).addTag(TFItemTags.FOODS_JERKY).add(TFItems.GELATINOUS_SLIME_DROP, TFItems.GELATINOUS_MAZE_SLIME_DROP, TFItems.BERRY_MEDLEY, TFItems.MAZE_WAFER);
+		this.tag(TFItemTags.FOODS_JERKY).add(
+			TFItems.MONSTER_JERKY, TFItems.BEEF_JERKY,
+			TFItems.PORK_JERKY, TFItems.CHICKEN_JERKY,
+			TFItems.RABBIT_JERKY, TFItems.MUTTON_JERKY,
+			TFItems.VENISON_JERKY, TFItems.MEEF_JERKY,
+			TFItems.COD_JERKY, TFItems.SALMON_JERKY,
+			TFItems.TROPICAL_FISH_JERKY, TFItems.FUGU_JERKY);
+		this.tag(ConventionalItemTags.BERRY_FOODS).add(
+			TFItems.TORCHBERRIES, TFItems.RASPBERRY,
+			TFItems.BLACKBERRY, TFItems.BLUEBERRY,
+			TFItems.MALOBERRY, TFItems.DUSKBERRY,
+			TFItems.SKYBERRY, TFItems.BLIGHTBERRY,
+			TFItems.STINGBERRY);
 		this.tag(ConventionalItemTags.RAW_MEAT_FOODS).add(TFItems.RAW_VENISON, TFItems.RAW_MEEF);
 		this.tag(ConventionalItemTags.COOKED_MEAT_FOODS).add(TFItems.COOKED_VENISON, TFItems.COOKED_MEEF, TFItems.HYDRA_CHOP);
-		this.tag(ConventionalItemTags.SOUP_FOODS).add(TFItems.MEEF_STROGANOFF);
+		this.tag(ConventionalItemTags.SOUP_FOODS).add(TFItems.MEEF_STROGANOFF, TFItems.MOSS_SOUP);
 		this.tag(ConventionalItemTags.EDIBLE_WHEN_PLACED_FOODS).add(TFItems.EXPERIMENT_115);
 		this.tag(ConventionalItemTags.ROPES).add(TFItems.ROPE);
 		this.tag(ConventionalItemTags.MUSHROOMS).add(TFBlocks.MUSHGLOOM.asItem());
@@ -376,6 +423,23 @@ public class ItemTagGenerator extends IntrinsicHolderTagsProvider<Item> {
 			TFItems.MUSIC_DISC_HOME, TFItems.MUSIC_DISC_WAYFARER, TFItems.MUSIC_DISC_FINDINGS,
 			TFItems.MUSIC_DISC_MAKER, TFItems.MUSIC_DISC_THREAD, TFItems.MUSIC_DISC_MOTION
 		);
+		this.tag(ConventionalItemTags.SLIME_BALLS).add(TFItems.MAZE_SLIME_BALL);
+
+		this.tag(TFItemTags.RENDER_LOWER_ON_DRYING_RACK)
+			.add(TFItems.GELATINOUS_SLIME_DROP, TFItems.GELATINOUS_MAZE_SLIME_DROP)
+			.add(TFItems.ZOMBIE_SKULL_CANDLE, TFItems.SKELETON_SKULL_CANDLE, TFItems.WITHER_SKELETON_SKULL_CANDLE, TFItems.CREEPER_SKULL_CANDLE, TFItems.PLAYER_SKULL_CANDLE, TFItems.PIGLIN_SKULL_CANDLE)
+			.add(Items.POINTED_DRIPSTONE, Items.RECOVERY_COMPASS, Items.CLOCK, Items.SPYGLASS, Items.TRIDENT)
+			.addTag(ItemTags.BANNERS)
+			.addTag(ConventionalItemTags.TOOLS)
+			.removeTag(ConventionalItemTags.SHIELD_TOOLS);
+
+		this.tag(TFItemTags.TROPHIES).add(
+			TFItems.NAGA_TROPHY, TFItems.LICH_TROPHY,
+			TFItems.MINOSHROOM_TROPHY, TFItems.HYDRA_TROPHY,
+			TFItems.KNIGHT_PHANTOM_TROPHY, TFItems.UR_GHAST_TROPHY,
+			TFItems.ALPHA_YETI_TROPHY, TFItems.SNOW_QUEEN_TROPHY);
+
+		this.tag(TFItemTags.EMPERORS_CLOTH_APPLICABLE).addTag(ConventionalItemTags.ARMORS).add(Items.ELYTRA);
 	}
 
 	@Override
