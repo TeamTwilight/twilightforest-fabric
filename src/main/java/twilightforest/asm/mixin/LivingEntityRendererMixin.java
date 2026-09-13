@@ -41,8 +41,8 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, S extend
 
 		if (entity.getItemBySlot(EquipmentSlot.LEGS).has(TFDataComponents.TRAVELLERS_HAS_WINGS)) {
 			TravellersWingsModel.WingsPose wingsPose = TravellersWingsModel.advanceAnimation(
-				entity.getAttached(TFDataAttachments.TRAVELLERS_WINGS_ANIM),
-				entity.getAttached(TFDataAttachments.TRAVELLERS_WINGS),
+				entity.getAttachedOrCreate(TFDataAttachments.TRAVELLERS_WINGS_ANIM),
+				entity.getAttachedOrCreate(TFDataAttachments.TRAVELLERS_WINGS),
 				state.ageInTicks,
 				state.walkAnimationSpeed
 			);

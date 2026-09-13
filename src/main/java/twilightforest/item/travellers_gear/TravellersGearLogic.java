@@ -203,7 +203,7 @@ public class TravellersGearLogic {
 		if (headStack.isEmpty())
 			return;
 
-		boolean isUsingZoom = livingEntity.getAttached(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER);
+		boolean isUsingZoom = livingEntity.getAttachedOrCreate(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER);
 		if (isUsingZoom == headStack.has(TFDataComponents.IS_USING_GOGGLES_ZOOM))
 			return;
 
