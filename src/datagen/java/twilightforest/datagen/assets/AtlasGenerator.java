@@ -15,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class AtlasGenerator extends SpriteSourceProvider {
 	public AtlasGenerator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
-		super(output, provider, TFCommon.ID);
+		super(output, provider);
 	}
 
 	@Override
@@ -29,5 +29,10 @@ public class AtlasGenerator extends SpriteSourceProvider {
 				this.atlas(MagicPaintingAtlasInfo.ATLAS_INFO_LOCATION).addSource(new SingleFile(location.withSuffix("/" + layer.path()), Optional.empty()));
 			}
 		});
+	}
+
+	@Override
+	public String getName() {
+		return "TF Atlas Generator";
 	}
 }
