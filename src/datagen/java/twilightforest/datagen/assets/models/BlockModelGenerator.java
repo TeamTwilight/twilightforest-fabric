@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import twilightforest.TFCommon;
 import twilightforest.block.*;
 import twilightforest.client.model.item.AnimatedItemModel;
+import twilightforest.client.model.item.TrollsteinnItemModel;
 import twilightforest.client.renderer.special.*;
 import twilightforest.datagen.helpers.models.BlockModelBuilders;
 import twilightforest.init.TFBlocks;
@@ -210,7 +211,16 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.createMultifaceBlock(TFBlocks.HUGE_MUSHGLOOM, mushgloomInside, false);
 		this.createMultifaceBlock(TFBlocks.HUGE_MUSHGLOOM_STEM, mushgloomInside, false);
 		Identifier trollsteinnInside = ModelTemplates.SINGLE_FACE.create(TFCommon.prefix("trollsteinn_inside"), TextureMapping.cube(new Material(TFCommon.prefix("block/trollsteinn_light"))), this.modelOutput);
-		this.createMultifaceBlock(TFBlocks.TROLLSTEINN, trollsteinnInside, true);
+		this.createMultifaceBlockWithoutItem(TFBlocks.TROLLSTEINN, trollsteinnInside, true);
+		Identifier trollsteinn_light = ModelTemplates.CUBE_ALL.create(TFCommon.prefix("item/trollsteinn_light"), TextureMapping.cube(new Material(TFCommon.prefix("block/trollsteinn_light"))) , this.modelOutput);
+		Identifier trollsteinn = ModelTemplates.CUBE_ALL.create(TFCommon.prefix("item/trollsteinn"), TextureMapping.cube(new Material(TFCommon.prefix("block/trollsteinn"))) , this.modelOutput);
+		this.itemModelOutput.accept(
+			TFBlocks.TROLLSTEINN.asItem(),
+			new TrollsteinnItemModel.Unbaked(
+				ItemModelUtils.plainModel(trollsteinn_light),
+				ItemModelUtils.plainModel(trollsteinn)
+			)
+		);
 		this.createCrossBlockWithDefaultItem(TFBlocks.TROLLVIDR, PlantType.NOT_TINTED);
 		this.createCrossBlockWithDefaultItem(TFBlocks.UNRIPE_TROLLBER, PlantType.NOT_TINTED);
 		this.createCrossBlockWithDefaultItem(TFBlocks.TROLLBER, PlantType.EMISSIVE_NOT_TINTED);

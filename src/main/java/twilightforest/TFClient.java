@@ -38,6 +38,7 @@ import twilightforest.client.model.block.patch.UnbakedPlantPatchBlockStateModel;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.item.AnimatedItemModel;
 import twilightforest.client.model.item.TravellersGearItemModel;
+import twilightforest.client.model.item.TrollsteinnItemModel;
 import twilightforest.client.particle.*;
 import twilightforest.client.renderer.TFRenderPipelines;
 import twilightforest.client.renderer.TFSkyRenderer;
@@ -141,6 +142,7 @@ public final class TFClient implements ClientModInitializer {
 
 	private static void registerItemModels() {
 		ItemModels.ID_MAPPER.put(TFCommon.prefix("travellers_gear"), TravellersGearItemModel.Unbaked.MAP_CODEC);
+		ItemModels.ID_MAPPER.put(TFCommon.prefix("trollsteinn"), TrollsteinnItemModel.Unbaked.MAP_CODEC);
 		ItemModels.ID_MAPPER.put(TFCommon.prefix("animated_item_model"), AnimatedItemModel.Unbaked.MAP_CODEC);
 	}
 
