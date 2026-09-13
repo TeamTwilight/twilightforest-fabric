@@ -4,6 +4,7 @@ import carminite.util.ConcatenatedListView;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
@@ -20,6 +21,7 @@ import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
+import net.minecraft.world.item.equipment.Equippable;
 import twilightforest.init.*;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifiable;
@@ -82,6 +84,18 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 				.build());
 	}
 
+	public static Properties undamageableArmorProperties(Properties properties, ArmorType type) {
+		ArmorMaterial material = TFArmorMaterials.TRAVELLERS_GEAR;
+		return properties
+			.attributes(defaultArmorProperties(type).build())
+			.enchantable(material.enchantmentValue())
+			.component(DataComponents.EQUIPPABLE, Equippable.builder(type.getSlot())
+				.setEquipSound(material.equipSound())
+				.setAsset(material.assetId())
+				.build())
+			.repairable(material.repairIngredient());
+	}
+
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
 		super.appendHoverText(stack, context, display, builder, flag);
@@ -138,7 +152,7 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 	}
 
 	public static boolean isTravellersArmorAndBroken(ItemStack stack) {
-		return stack.has(TFDataComponents.IS_TRAVELLERS_GEAR) && stack.isDamageableItem() && stack.getMaxDamage() - 1 <= stack.getDamageValue();
+		return stack.has(TFDataComponents.IS_TRAVELLERS_GEAR) && stack.isDamageableItem() && stack.getMaxDamage() > 0 && stack.getMaxDamage() - 1 <= stack.getDamageValue();
 	}
 
 	// [VanillaCopy] modified ArmorItem constructor to just return default attribute modifiers
