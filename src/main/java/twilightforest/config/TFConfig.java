@@ -1,17 +1,19 @@
 package twilightforest.config;
 
-import carminite.network.PacketDistributor;
 import carminite.util.ServerLifecycleHooks;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.yggdrasil.ProfileResult;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.permissions.PermissionLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -194,12 +196,14 @@ public class TFConfig {
 		//resends uncrafting settings to all players when the config is reloaded. This ensures all players have matching configs so things don't desync.
 		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
 		if (server != null && server.isDedicatedServer()) {
-			PacketDistributor.sendToAllPlayers(new SyncUncraftingTableConfigPacket(
-				uncraftingXpCostMultiplier, repairingXpCostMultiplier,
-				allowShapelessUncrafting, disableIngredientSwitching,
-				disableUncraftingOnly, disableEntireTable,
-				disableUncraftingRecipes, reverseRecipeBlacklist,
-				blacklistedUncraftingModIds, flipUncraftingModIdList));
+			for (ServerPlayer player : PlayerLookup.all(server)) {
+				ServerPlayNetworking.send(player, new SyncUncraftingTableConfigPacket(
+					uncraftingXpCostMultiplier, repairingXpCostMultiplier,
+					allowShapelessUncrafting, disableIngredientSwitching,
+					disableUncraftingOnly, disableEntireTable,
+					disableUncraftingRecipes, reverseRecipeBlacklist,
+					blacklistedUncraftingModIds, flipUncraftingModIdList));
+			}
 		}
 		//sets cached portal locking advancement to null just in case it changed
 		portalLockingAdvancement = null;

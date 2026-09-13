@@ -1,9 +1,9 @@
 package twilightforest.config;
 
-import carminite.network.PacketDistributor;
 import fuzs.forgeconfigapiport.fabric.api.v5.ConfigRegistry;
 import fuzs.forgeconfigapiport.fabric.api.v5.ModConfigEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
@@ -54,7 +54,7 @@ public final class ConfigSetup {
 	public static void syncUncraftingConfig() {
 		ServerPlayerEvents.JOIN.register(player -> {
 			TFCommon.LOGGER.info("[TwilightForest] Syncing Uncrafting Table config");
-			PacketDistributor.sendToPlayer(player, new SyncUncraftingTableConfigPacket(
+			ServerPlayNetworking.send(player, new SyncUncraftingTableConfigPacket(
 				COMMON_CONFIG.UNCRAFTING_STUFFS.uncraftingXpCostMultiplier.get(),
 				COMMON_CONFIG.UNCRAFTING_STUFFS.repairingXpCostMultiplier.get(),
 				COMMON_CONFIG.UNCRAFTING_STUFFS.allowShapelessUncrafting.get(),
