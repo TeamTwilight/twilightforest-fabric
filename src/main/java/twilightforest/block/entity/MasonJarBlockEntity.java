@@ -1,7 +1,8 @@
 package twilightforest.block.entity;
 
-import carminite.network.PacketDistributor;
 import carminite.util.ServerLifecycleHooks;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.base.SingleStackStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
@@ -13,6 +14,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.ReloadableServerRegistries;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.ChunkPos;
@@ -123,7 +125,9 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 			this.level.getLightEngine().checkBlock(pos);
 		}
 		if (this.level instanceof ServerLevel serverLevel) {
-			PacketDistributor.sendToPlayersTrackingChunk(serverLevel, ChunkPos.containing(this.getBlockPos()), new SetMasonJarItemPacket(this.getBlockPos(), this.item.getItem(), this.itemRotation));
+			for (ServerPlayer player : PlayerLookup.tracking(serverLevel, ChunkPos.containing(this.getBlockPos()))) {
+				ServerPlayNetworking.send(player, new SetMasonJarItemPacket(this.getBlockPos(), this.item.getItem(), this.itemRotation));
+			}
 		}
 	}
 
