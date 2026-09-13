@@ -5,22 +5,29 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
+import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.RegistryOps;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.profiling.ProfilerFiller;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TFCommon;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceReloadListener<JsonElement> {
 	protected final Gson gson;
 	private final Codec<T> codec;
+	private @Nullable RegistryOps<JsonElement> ops;
 
 	public CodecResourceReloadListener(String directory, Codec<T> codec) {
 		this(new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create(), directory, codec);
@@ -31,6 +38,17 @@ public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceR
 
 		this.gson = gson;
 		this.codec = codec;
+	}
+
+	@Override
+	public CompletableFuture<Void> reload(PreparableReloadListener.SharedState currentReload, Executor taskExecutor, PreparableReloadListener.PreparationBarrier preparationBarrier, Executor reloadExecutor) {
+		this.ops = currentReload.get(ResourceLoader.REGISTRY_LOOKUP_KEY).createSerializationContext(JsonOps.INSTANCE);
+		return super.reload(
+			currentReload,
+			taskExecutor,
+			preparationBarrier,
+			reloadExecutor
+		);
 	}
 
 	@Override
@@ -62,8 +80,7 @@ public abstract class CodecResourceReloadListener<T> extends SimpleJsonResourceR
 
 	protected void deserialize(ResourceManager manager, Identifier location, JsonElement jsonElement) {
 		try {
-			// FIXME If there are empty holders during deserialization then JsonOps.INSTANCE needs to be augmented with RegistryOps
-			Optional<T> checkFile = this.codec.parse(JsonOps.INSTANCE, jsonElement).result();
+			Optional<T> checkFile = this.codec.parse(this.ops, jsonElement).result();
 			if (checkFile.isPresent()) {
 				this.forLocation(manager, location, checkFile.get());
 			} else {

@@ -349,6 +349,9 @@ accessible method net/minecraft/client/data/models/model/ModelTemplates createIt
 # UnbakedConnectedTextureModel
 accessible method net/minecraft/client/resources/model/cuboid/FaceBakery defaultFaceUV (Lorg/joml/Vector3fc;Lorg/joml/Vector3fc;Lnet/minecraft/core/Direction;)Lnet/minecraft/client/resources/model/cuboid/CuboidFace$UVs;
 
+# CodecResourceReloadListener
+extendable method net/minecraft/server/packs/resources/SimplePreparableReloadListener reload (Lnet/minecraft/server/packs/resources/PreparableReloadListener$SharedState;Ljava/util/concurrent/Executor;Lnet/minecraft/server/packs/resources/PreparableReloadListener$PreparationBarrier;Ljava/util/concurrent/Executor;)Ljava/util/concurrent/CompletableFuture;
+
 # Enum Extensions
 extend-enum net/minecraft/world/damagesource/DamageEffects TWILIGHTFOREST_PINCH
 extend-enum net/minecraft/world/item/Rarity TWILIGHTFOREST_TWILIGHT
