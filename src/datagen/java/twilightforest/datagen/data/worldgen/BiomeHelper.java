@@ -1,4 +1,4 @@
-package twilightforest.world.registration.biomes;
+package twilightforest.datagen.data.worldgen;
 
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.particles.ParticleTypes;
