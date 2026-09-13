@@ -1,11 +1,13 @@
 package twilightforest.block;
 
-import carminite.network.PacketDistributor;
 import com.mojang.serialization.MapCodec;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.Util;
@@ -152,8 +154,15 @@ public class FallenLeavesBlock extends TFPlantBlock {
 					level.getRandom().nextFloat() * 0.5F + 0.25F,
 					(level.getRandom().nextFloat() * -0.5F) * entity.getDeltaMovement().z()
 				);
-			} else if (level instanceof ServerLevel)
-				PacketDistributor.sendToPlayersTrackingEntityAndSelf(entity, new SpawnFallenLeafFromPacket(pos, entity.getDeltaMovement()));
+			} else if (level instanceof ServerLevel) {
+				SpawnFallenLeafFromPacket packet = new SpawnFallenLeafFromPacket(pos, entity.getDeltaMovement());
+				for (ServerPlayer player : PlayerLookup.tracking(entity)) {
+					ServerPlayNetworking.send(player, packet);
+				}
+				if (entity instanceof ServerPlayer player) {
+					ServerPlayNetworking.send(player, packet);
+				}
+			}
 		}
 	}
 }

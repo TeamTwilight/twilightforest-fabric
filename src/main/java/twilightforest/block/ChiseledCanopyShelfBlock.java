@@ -1,12 +1,15 @@
 package twilightforest.block;
 
 import carminite.interfaces.markers.IFlammableBlock;
-import carminite.network.PacketDistributor;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -126,7 +129,9 @@ public class ChiseledCanopyShelfBlock extends ChiseledBookShelfBlock implements 
 					(double) pos.getZ() + 0.5D + level.getRandom().nextGaussian() * 0.02D * level.getRandom().nextGaussian(),
 					0.15F * level.getRandom().nextGaussian(), 0.15F * level.getRandom().nextGaussian(), 0.15F * level.getRandom().nextGaussian());
 			}
-			PacketDistributor.sendToPlayersNear(serverLevel, null, pos.getX(), pos.getY(), pos.getZ(), 32.0D, particlePacket);
+			for (ServerPlayer serverPlayer : PlayerLookup.around(serverLevel, new Vec3i(pos.getX(), pos.getY(), pos.getZ()), 32.0F)) {
+				ServerPlayNetworking.send(serverPlayer, particlePacket);
+			}
 		}
 		super.playerDestroy(level, player, pos, state, entity, stack);
 	}

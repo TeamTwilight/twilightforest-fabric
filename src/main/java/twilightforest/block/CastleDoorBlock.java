@@ -1,9 +1,13 @@
 package twilightforest.block;
 
 import carminite.network.PacketDistributor;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
@@ -159,7 +163,9 @@ public class CastleDoorBlock extends Block {
 					}
 				}
 			}
-			PacketDistributor.sendToPlayersNear(serverLevel, null, pos.getX(), pos.getY(), pos.getZ(), 32.0, particlePacket);
+			for (ServerPlayer player : PlayerLookup.around(serverLevel, new Vec3i(pos.getX(), pos.getY(), pos.getZ()), 32.0)) {
+				ServerPlayNetworking.send(player, particlePacket);
+			}
 		}
 	}
 }

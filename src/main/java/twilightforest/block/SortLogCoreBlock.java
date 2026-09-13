@@ -1,6 +1,7 @@
 package twilightforest.block;
 
-import carminite.network.PacketDistributor;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.transfer.v1.item.ContainerStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
@@ -9,7 +10,9 @@ import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
@@ -168,15 +171,9 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 									new Vec3(x, y, z).scale(1D / diff.length())
 								);
 
-								PacketDistributor.sendToPlayersNear(
-									level,
-									null,
-									xyz.x(),
-									xyz.y(),
-									xyz.z(),
-									64.0D,
-									particlePacket
-								);
+								for (ServerPlayer player : PlayerLookup.around(level, new Vec3i((int) xyz.x(), (int) xyz.y(), (int) xyz.z()), 64.0D)) {
+									ServerPlayNetworking.send(player, particlePacket);
+								}
 
 								break;
 							}

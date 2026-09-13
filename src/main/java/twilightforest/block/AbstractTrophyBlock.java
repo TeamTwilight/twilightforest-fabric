@@ -1,9 +1,12 @@
 package twilightforest.block;
 
-import carminite.network.PacketDistributor;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.*;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -231,7 +234,9 @@ public abstract class AbstractTrophyBlock extends BaseEntityBlock {
 					break;
 			}
 
-			PacketDistributor.sendToPlayersNear(server, null, pos.getX(), pos.getY(), pos.getZ(), 32.0F, particlePacket);
+			for (ServerPlayer player : PlayerLookup.around(server, new Vec3i(pos.getX(), pos.getY(), pos.getZ()), 32.0F)) {
+				ServerPlayNetworking.send(player, particlePacket);
+			}
 		}
 	}
 }

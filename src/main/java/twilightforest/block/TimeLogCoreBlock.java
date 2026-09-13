@@ -1,9 +1,12 @@
 package twilightforest.block;
 
-import carminite.network.PacketDistributor;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
@@ -67,7 +70,9 @@ public class TimeLogCoreBlock extends SpecialMagicLogBlock {
 					ParticlePacket particlePacket = new ParticlePacket();
 					double yOffset = state.getOcclusionShape().max(Direction.Axis.Y);
 					particlePacket.queueParticle(TFParticleType.LOG_CORE_PARTICLE, false, false, xyz.add(0.0, yOffset - 0.5, 0.0), new Vec3(0.953, 0.698, 0.0));
-					PacketDistributor.sendToPlayersNear(level, null, xyz.x(), xyz.y(), xyz.z(), 64.0D, particlePacket);
+					for (ServerPlayer player : PlayerLookup.around(level, new Vec3i((int) xyz.x(), (int) xyz.y(), (int) xyz.z()), 64.0D)) {
+						ServerPlayNetworking.send(player, particlePacket);
+					}
 				}
 			}
 		}

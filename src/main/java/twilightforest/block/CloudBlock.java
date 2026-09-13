@@ -2,9 +2,11 @@ package twilightforest.block;
 
 import carminite.interfaces.markers.ISpecialLandingEffectsBlock;
 import carminite.interfaces.markers.ISpecialRunningEffectsBlock;
-import carminite.network.PacketDistributor;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -153,7 +155,9 @@ public class CloudBlock extends Block implements ISpecialLandingEffectsBlock, IS
 			particlePacket.queueParticle(TFParticleType.CLOUD_PUFF, false, false, x, y, z, xSpeed, ySpeed, zSpeed);
 		}
 
-		PacketDistributor.sendToPlayersTrackingChunk(level, ChunkPos.containing(pos), particlePacket);
+		for (ServerPlayer player : PlayerLookup.tracking(level, ChunkPos.containing(pos))) {
+			ServerPlayNetworking.send(player, particlePacket);
+		}
 
 		return true;
 	}

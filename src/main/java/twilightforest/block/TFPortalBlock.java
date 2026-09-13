@@ -1,7 +1,7 @@
 package twilightforest.block;
 
 import carminite.events.hooks.EventHooks;
-import carminite.network.PacketDistributor;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.BlockPos;
@@ -219,7 +219,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 					if (!TFPortalBlock.isPlayerNotifiedOfRequirement(player)) {
 						// .doesPlayerHaveRequiredAdvancement null-checks already, so we can skip null-checking the `requirement`
 						DisplayInfo info = requirement.value().display().orElse(null);
-						PacketDistributor.sendToPlayer(player, info == null ? new MissingAdvancementToastPacket(Component.translatable("twilightforest.ui.advancement.no_title"), new ItemStackTemplate(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.asItem())) : new MissingAdvancementToastPacket(info.getTitle(), info.getIcon()));
+						ServerPlayNetworking.send(player, info == null ? new MissingAdvancementToastPacket(Component.translatable("twilightforest.ui.advancement.no_title"), new ItemStackTemplate(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.asItem())) : new MissingAdvancementToastPacket(info.getTitle(), info.getIcon()));
 						TFPortalBlock.playerNotifiedOfRequirement(player);
 					}
 
