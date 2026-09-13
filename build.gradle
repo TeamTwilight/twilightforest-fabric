@@ -117,6 +117,9 @@ dependencies {
 	modLocalRuntime "com.terraformersmc:modmenu:${modmenu_version}"
 	modCompileOnly "maven.modrinth:jade:${jade_version}"
 	modLocalRuntime "maven.modrinth:jade:${jade_version}"
+
+	// For compatibility mixins (Kilt)
+	modCompileOnly "maven.modrinth:t87XZEqv:h52BsZ5F"
 }
 
 fabricApi {

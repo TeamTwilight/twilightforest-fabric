@@ -1,29 +1,28 @@
-package twilightforest.mixin;
+package twilightforest.mixin.compat;
 
 import com.mojang.datafixers.util.Pair;
-import io.github.fabricators_of_create.porting_lib.client.entity.CustomBoatModel;
 import net.minecraft.client.model.ListModel;
 import net.minecraft.client.renderer.entity.BoatRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.vehicle.Boat;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 import twilightforest.TwilightForestMod;
 import twilightforest.asmhooks.BoatHooks;
+import xyz.bluspring.kilt.injections.client.renderer.entity.BoatRendererInjection;
 
 import java.util.Map;
 
+@Implements(value = @Interface(iface = BoatRendererInjection.class, prefix = "tf$"))
 @Mixin(BoatRenderer.class)
-public class BoatRendererMixin implements CustomBoatModel {
+public class KiltBoatRendererCompatibilityMixin {
 
 	@Shadow
 	@Final
 	private Map<Boat.Type, Pair<ResourceLocation, ListModel<Boat>>> boatResources;
 
-	@Override
-	public Pair<ResourceLocation, ListModel<Boat>> getModelWithLocation(Boat boat) {
+	@Intrinsic
+	public Pair<ResourceLocation, ListModel<Boat>> tf$getModelWithLocation(Boat boat) {
 		Boat.Type type = boat.getVariant();
 		String name = BoatHooks.TWILIGHTFOREST_BOAT_TEXTURES.get(type);
 		if (name == null) {

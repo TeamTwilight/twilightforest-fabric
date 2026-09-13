@@ -23,6 +23,7 @@
     "GrindstoneMenuAccessor",
     "GrindstoneMenuMixin",
     "HangingEntityAccessor",
+    "Item$TooltipContext$2Accessor",
     "ItemCombinerMenuAccessor",
     "ItemStackMixin",
     "LeashFenceKnotEntityMixin",
@@ -46,7 +47,6 @@
     "SlimeBlockMixin",
     "SnowyDirtBlockMixin",
     "StructureStartMixin",
-    "Item$TooltipContext$2Accessor",
     "UtilMixin",
     "WalkNodeEvaluatorMixin",
     "WoodTypeAccessor",
@@ -67,7 +67,9 @@
     "MapInstanceMixin",
     "MinecraftMixin",
     "ModelBakeryMixin",
-    "SplashRendererMixin"
+    "SplashRendererMixin",
+    "compat.KiltBoatRendererCompatibilityMixin",
+    "compat.KiltBoatRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

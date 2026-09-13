@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 public class TFMixinPlugin implements IMixinConfigPlugin {
+	private static final FabricLoader LOADER = FabricLoader.getInstance();
 
 	@Override
 	public void onLoad(String mixinPackage) {}
@@ -20,7 +21,17 @@ public class TFMixinPlugin implements IMixinConfigPlugin {
 
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-		return !mixinClassName.equals("twilightforest.mixin.UtilMixin") || !FabricLoader.getInstance().isModLoaded("kilt");
+		return switch (mixinClassName) {
+			case "twilightforest.mixin.UtilMixin",
+				 "twilightforest.mixin.BoatRendererMixin"
+				-> !LOADER.isModLoaded("kilt");
+
+			case "twilightforest.mixin.compat.KiltBoatRendererMixin",
+				 "twilightforest.mixin.compat.KiltBoatRendererCompatibilityMixin"
+				-> LOADER.isModLoaded("kilt");
+
+			default -> true;
+		};
 	}
 
 	@Override
