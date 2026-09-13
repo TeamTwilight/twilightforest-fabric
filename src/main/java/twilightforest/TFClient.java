@@ -24,6 +24,7 @@ import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.renderer.item.ItemModels;
 import net.minecraft.client.renderer.special.SpecialModelRenderers;
 import net.minecraft.client.resources.model.sprite.AtlasManager;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
@@ -90,6 +91,7 @@ public final class TFClient implements ClientModInitializer {
 		registerLayerDefinitions();
 		registerParticleFactories();
 		registerMapDecorators();
+		registerMapDecorationTypes();
 		registerRenderLayers();
 		registerArmorRenderers();
 	}
@@ -421,17 +423,32 @@ public final class TFClient implements ClientModInitializer {
 	}
 
 	private static void registerMapDecorators() {
-		MapDecorationManager.addDecoration(MapDecorationTypes.PLAYER.value(), new MagicMapPlayerIconRenderer());
-		MapDecorationManager.addDecoration(TFMapDecorations.QUEST_GROVE, new ConqueredMapIconRenderer());
-		MapDecorationManager.addDecoration(TFMapDecorations.NAGA_COURTYARD, new ConqueredMapIconRenderer());
-		MapDecorationManager.addDecoration(TFMapDecorations.LICH_TOWER, new ConqueredMapIconRenderer());
-		MapDecorationManager.addDecoration(TFMapDecorations.LABYRINTH, new ConqueredMapIconRenderer());
-		MapDecorationManager.addDecoration(TFMapDecorations.HYDRA_LAIR, new ConqueredMapIconRenderer());
-		MapDecorationManager.addDecoration(TFMapDecorations.KNIGHT_STRONGHOLD, new ConqueredMapIconRenderer());
-		MapDecorationManager.addDecoration(TFMapDecorations.DARK_TOWER, new ConqueredMapIconRenderer());
-		MapDecorationManager.addDecoration(TFMapDecorations.YETI_LAIR, new ConqueredMapIconRenderer());
-		MapDecorationManager.addDecoration(TFMapDecorations.AURORA_PALACE, new ConqueredMapIconRenderer());
-		MapDecorationManager.addDecoration(TFMapDecorations.FINAL_CASTLE, new ConqueredMapIconRenderer());
+		MapDecorationManager.addRenderer(MapDecorationTypes.PLAYER.value(), new MagicMapPlayerIconRenderer());
+		MapDecorationManager.addRenderer(TFMapDecorations.QUEST_GROVE, new ConqueredMapIconRenderer());
+		MapDecorationManager.addRenderer(TFMapDecorations.NAGA_COURTYARD, new ConqueredMapIconRenderer());
+		MapDecorationManager.addRenderer(TFMapDecorations.LICH_TOWER, new ConqueredMapIconRenderer());
+		MapDecorationManager.addRenderer(TFMapDecorations.LABYRINTH, new ConqueredMapIconRenderer());
+		MapDecorationManager.addRenderer(TFMapDecorations.HYDRA_LAIR, new ConqueredMapIconRenderer());
+		MapDecorationManager.addRenderer(TFMapDecorations.KNIGHT_STRONGHOLD, new ConqueredMapIconRenderer());
+		MapDecorationManager.addRenderer(TFMapDecorations.DARK_TOWER, new ConqueredMapIconRenderer());
+		MapDecorationManager.addRenderer(TFMapDecorations.YETI_LAIR, new ConqueredMapIconRenderer());
+		MapDecorationManager.addRenderer(TFMapDecorations.AURORA_PALACE, new ConqueredMapIconRenderer());
+		MapDecorationManager.addRenderer(TFMapDecorations.FINAL_CASTLE, new ConqueredMapIconRenderer());
+	}
+
+	private static void registerMapDecorationTypes() {
+		MapDecorationManager.addMap(new MagicMapPlayerIconRenderer());
+		ConqueredMapIconRenderer conquered = new ConqueredMapIconRenderer();
+		MapDecorationManager.addDecoration(BuiltInRegistries.MAP_DECORATION_TYPE.getResourceKey(TFMapDecorations.QUEST_GROVE).orElseThrow(), conquered);
+		MapDecorationManager.addDecoration(BuiltInRegistries.MAP_DECORATION_TYPE.getResourceKey(TFMapDecorations.NAGA_COURTYARD).orElseThrow(), conquered);
+		MapDecorationManager.addDecoration(BuiltInRegistries.MAP_DECORATION_TYPE.getResourceKey(TFMapDecorations.LICH_TOWER).orElseThrow(), conquered);
+		MapDecorationManager.addDecoration(BuiltInRegistries.MAP_DECORATION_TYPE.getResourceKey(TFMapDecorations.LABYRINTH).orElseThrow(), conquered);
+		MapDecorationManager.addDecoration(BuiltInRegistries.MAP_DECORATION_TYPE.getResourceKey(TFMapDecorations.HYDRA_LAIR).orElseThrow(), conquered);
+		MapDecorationManager.addDecoration(BuiltInRegistries.MAP_DECORATION_TYPE.getResourceKey(TFMapDecorations.KNIGHT_STRONGHOLD).orElseThrow(), conquered);
+		MapDecorationManager.addDecoration(BuiltInRegistries.MAP_DECORATION_TYPE.getResourceKey(TFMapDecorations.DARK_TOWER).orElseThrow(), conquered);
+		MapDecorationManager.addDecoration(BuiltInRegistries.MAP_DECORATION_TYPE.getResourceKey(TFMapDecorations.YETI_LAIR).orElseThrow(), conquered);
+		MapDecorationManager.addDecoration(BuiltInRegistries.MAP_DECORATION_TYPE.getResourceKey(TFMapDecorations.AURORA_PALACE).orElseThrow(), conquered);
+		MapDecorationManager.addDecoration(BuiltInRegistries.MAP_DECORATION_TYPE.getResourceKey(TFMapDecorations.FINAL_CASTLE).orElseThrow(), conquered);
 	}
 
 	private static boolean bakedMultiPartRenderers = false;

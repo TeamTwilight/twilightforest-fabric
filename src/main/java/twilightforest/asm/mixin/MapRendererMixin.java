@@ -11,8 +11,11 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.MapRenderState;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.MapTextureManager;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.saveddata.maps.MapDecoration;
+import net.minecraft.world.level.saveddata.maps.MapId;
+import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -25,11 +28,18 @@ import twilightforest.client.renderer.map.MapDecorationManager;
 import java.util.Objects;
 
 @Mixin(MapRenderer.class)
-public class MapRendererMixin {
+public abstract class MapRendererMixin {
 
 	@Shadow
 	@Final
 	private TextureAtlas decorationSprites;
+
+	@Shadow
+	@Final
+	private MapTextureManager mapTextureManager;
+
+	@Shadow
+	protected abstract MapRenderState.MapDecorationRenderState extractDecorationRenderState(MapDecoration decoration);
 
 	/**
 	 * @author Autumn
@@ -86,6 +96,21 @@ public class MapRendererMixin {
 			}
 		}
 
+	}
+
+	/**
+	 * @author Autumn
+	 * @reason ...
+	 */
+	@Overwrite
+	public void extractRenderState(final MapId mapId, final MapItemSavedData mapData, final MapRenderState mapRenderState) {
+		mapRenderState.texture = this.mapTextureManager.prepareMapTexture(mapId, mapData);
+		mapRenderState.decorations.clear();
+		MapDecorationManager.onUpdateMapRenderState(mapData, mapRenderState);
+
+		for(MapDecoration decoration : mapData.getDecorations()) {
+			MapDecorationManager.onUpdateMapDecorationRenderState(decoration.type(), mapData, mapRenderState, this.extractDecorationRenderState(decoration));
+		}
 	}
 
 	@Inject(
