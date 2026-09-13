@@ -67,6 +67,8 @@ public class TFModelTemplates extends ModelTemplates {
 		TFTextureSlot.NORTH2, TFTextureSlot.SOUTH2, TFTextureSlot.EAST2, TFTextureSlot.WEST2, //glow
 		TFTextureSlot.NORTH3, TFTextureSlot.SOUTH3, TFTextureSlot.EAST3, TFTextureSlot.WEST3); //boss face
 
+	public static final ModelTemplate TINTED_CUBE_ALL = create("twilightforest:util/tinted_cube_all", TextureSlot.ALL);
+	public static final ModelTemplate TWO_LAYER_BLOCK_TINTED_15 = create("twilightforest:util/two_layer_block_tinted_15", TextureSlot.ALL, TFTextureSlot.ALL_2);
 	public static final ModelTemplate GIANT_BLOCK_BASE = createItem("twilightforest:giant_block_base", TextureSlot.NORTH, TextureSlot.SOUTH, TextureSlot.EAST, TextureSlot.WEST, TextureSlot.UP, TextureSlot.DOWN);
 	public static final ModelTemplate GIANT_BLOCK_GUI = createItem("twilightforest:giant_block_gui", TextureSlot.NORTH, TextureSlot.SOUTH, TextureSlot.EAST, TextureSlot.WEST, TextureSlot.UP, TextureSlot.DOWN);
 	public static final ModelTemplate GIANT_TOOL = createItem("twilightforest:giant_tool_base", TextureSlot.LAYER0);

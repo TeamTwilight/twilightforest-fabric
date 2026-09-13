@@ -346,6 +346,9 @@ accessible method net/minecraft/client/renderer/item/CuboidItemModelWrapper <ini
 # TFModelTemplates
 accessible method net/minecraft/client/data/models/model/ModelTemplates createItem (Ljava/lang/String;Ljava/lang/String;[Lnet/minecraft/client/data/models/model/TextureSlot;)Lnet/minecraft/client/data/models/model/ModelTemplate;
 
+# UnbakedConnectedTextureModel
+accessible method net/minecraft/client/resources/model/cuboid/FaceBakery defaultFaceUV (Lorg/joml/Vector3fc;Lorg/joml/Vector3fc;Lnet/minecraft/core/Direction;)Lnet/minecraft/client/resources/model/cuboid/CuboidFace$UVs;
+
 # Enum Extensions
 extend-enum net/minecraft/world/damagesource/DamageEffects TWILIGHTFOREST_PINCH
 extend-enum net/minecraft/world/item/Rarity TWILIGHTFOREST_TWILIGHT
