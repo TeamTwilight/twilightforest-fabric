@@ -1,8 +1,9 @@
 package twilightforest.item.travellers_gear;
 
-import carminite.network.PacketDistributor;
 import carminite.util.ServerLifecycleHooks;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
@@ -86,8 +87,11 @@ public class TravellersGearLogic {
 			}
 		}
 
-		if (!level.isClientSide())
-			PacketDistributor.sendToPlayersTrackingEntity(livingEntity, particlePacket);
+		if (!level.isClientSide()) {
+			for (ServerPlayer player : PlayerLookup.tracking(livingEntity)) {
+				ServerPlayNetworking.send(player, particlePacket);
+			}
+		}
 	}
 
 	public static boolean isBelowMaxWaterWalkingSubmergedHeight(LivingEntity livingEntity) {
@@ -249,7 +253,13 @@ public class TravellersGearLogic {
 		attachment.sidestepTimer = 0;
 
 		if (player.level() instanceof ServerLevel) {
-			PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, new TravellersWingsStatePacket(player.getId(), newState, isLeftSidestep, attachment.doubleJumpTimer, attachment.sidestepTimer));
+			TravellersWingsStatePacket packet = new TravellersWingsStatePacket(player.getId(), newState, isLeftSidestep, attachment.doubleJumpTimer, attachment.sidestepTimer);
+			for (ServerPlayer serverPlayer : PlayerLookup.tracking(player)) {
+				ServerPlayNetworking.send(serverPlayer, packet);
+			}
+			if (player instanceof ServerPlayer serverPlayer) {
+				ServerPlayNetworking.send(serverPlayer, packet);
+			}
 		}
 	}
 
@@ -292,9 +302,20 @@ public class TravellersGearLogic {
 				Vec3 wingsPosition = player.position().add(Math.sin(Math.toRadians(player.yBodyRot)) / 3, 1.2, -Math.cos(Math.toRadians(player.yBodyRot)) / 3);
 				particlePacket.queueParticle(type, false, false, wingsPosition, particleVelocity.multiply(0.25, -0.5, 0.25).add(deltaMovement));
 			}
-			PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, particlePacket);
+			for (ServerPlayer serverPlayer : PlayerLookup.tracking(player)) {
+				ServerPlayNetworking.send(serverPlayer, particlePacket);
+			}
+			if (player instanceof ServerPlayer serverPlayer) {
+				ServerPlayNetworking.send(serverPlayer, particlePacket);
+			}
 			TravellersWingsAttachment attachment = player.getAttached(TFDataAttachments.TRAVELLERS_WINGS);
-			PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, new TravellersWingsStatePacket(player.getId(), TravellersWingsAttachment.WingState.DOUBLE_JUMP, attachment.sidestepLeft, attachment.doubleJumpTimer, attachment.sidestepTimer));
+			TravellersWingsStatePacket packet = new TravellersWingsStatePacket(player.getId(), TravellersWingsAttachment.WingState.DOUBLE_JUMP, attachment.sidestepLeft, attachment.doubleJumpTimer, attachment.sidestepTimer);
+			for (ServerPlayer serverPlayer : PlayerLookup.tracking(player)) {
+				ServerPlayNetworking.send(serverPlayer, packet);
+			}
+			if (player instanceof ServerPlayer serverPlayer) {
+				ServerPlayNetworking.send(serverPlayer, packet);
+			}
 		}
 		return true;
 	}
@@ -426,7 +447,13 @@ public class TravellersGearLogic {
 
 		if (newState != attachment.state) {
 			attachment.state = newState;
-			PacketDistributor.sendToPlayersTrackingEntityAndSelf(livingEntity, new TravellersWingsStatePacket(livingEntity.getId(), newState, attachment.sidestepLeft, attachment.doubleJumpTimer, attachment.sidestepTimer));
+			TravellersWingsStatePacket packet =  new TravellersWingsStatePacket(livingEntity.getId(), newState, attachment.sidestepLeft, attachment.doubleJumpTimer, attachment.sidestepTimer);
+			for (ServerPlayer serverPlayer : PlayerLookup.tracking(livingEntity)) {
+				ServerPlayNetworking.send(serverPlayer, packet);
+			}
+			if (livingEntity instanceof ServerPlayer serverPlayer) {
+				ServerPlayNetworking.send(serverPlayer, packet);
+			}
 		}
 	}
 }
