@@ -8,6 +8,7 @@
     "ItemContainerContentsAccessor",
     "LivingEntityGetDeathSoundAccessor",
     "ServerPlayerGameModeMixin",
+    "coremod.LivingEntityMixin",
     "enums.DamageEffectsMixin",
     "enums.GrassColorModifierMixin",
     "enums.ItemDisplayContextMixin",
@@ -20,7 +21,10 @@
     "LivingEntityRendererMixin",
     "MapRendererMixin",
     "WeatherEffectRendererMixin",
-    "coremod.ModelFeatureRendererMixin"
+    "coremod.CapeLayerMixin",
+    "coremod.HumanoidArmorLayerMixin",
+    "coremod.ModelFeatureRendererMixin",
+    "coremod.WingsLayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
