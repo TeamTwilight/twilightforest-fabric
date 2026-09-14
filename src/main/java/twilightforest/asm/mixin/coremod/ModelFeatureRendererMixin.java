@@ -19,7 +19,8 @@ public class ModelFeatureRendererMixin {
 		method = "renderModel(Lnet/minecraft/client/renderer/SubmitNodeStorage$ModelSubmit;Lnet/minecraft/client/renderer/rendertype/RenderType;Lcom/mojang/blaze3d/vertex/VertexConsumer;Lnet/minecraft/client/renderer/OutlineBufferSource;Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;)V",
 		at = @At(
 			value = "INVOKE",
-			target = "Lnet/minecraft/client/model/Model;setupAnim(Ljava/lang/Object;)V"
+			target = "Lnet/minecraft/client/model/Model;setupAnim(Ljava/lang/Object;)V",
+			shift = At.Shift.AFTER
 		)
 	)
 	private <S> void twilightforest$applyHeadVisibility(
@@ -37,8 +38,7 @@ public class ModelFeatureRendererMixin {
 		method = "renderModel(Lnet/minecraft/client/renderer/SubmitNodeStorage$ModelSubmit;Lnet/minecraft/client/renderer/rendertype/RenderType;Lcom/mojang/blaze3d/vertex/VertexConsumer;Lnet/minecraft/client/renderer/OutlineBufferSource;Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;)V",
 		at = @At(
 			value = "INVOKE",
-			target = "Lcom/mojang/blaze3d/vertex/PoseStack;popPose()V",
-			shift = At.Shift.BEFORE
+			target = "Lcom/mojang/blaze3d/vertex/PoseStack;popPose()V"
 		)
 	)
 	private <S> void twilightforest$restoreHeadVisibility(
