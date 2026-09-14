@@ -11,6 +11,7 @@
     "coremod.ChunkStatusTasksMixin",
     "coremod.LivingEntityMixin",
     "coremod.NoiseBasedChunkGeneratorMixin",
+    "coremod.StructureStartMixin",
     "enums.DamageEffectsMixin",
     "enums.GrassColorModifierMixin",
     "enums.ItemDisplayContextMixin",
