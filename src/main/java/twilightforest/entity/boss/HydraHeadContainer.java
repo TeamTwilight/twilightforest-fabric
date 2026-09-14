@@ -1,6 +1,5 @@
 package twilightforest.entity.boss;
 
-import carminite.network.PacketDistributor;
 import com.google.common.collect.ImmutableMap;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
