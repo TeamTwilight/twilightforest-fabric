@@ -1,6 +1,8 @@
 package twilightforest.item;
 
-import carminite.network.PacketDistributor;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -25,6 +27,8 @@ public class IceSwordItem extends Item {
 				target.getZ() + (target.getRandom().nextGaussian() * target.getBbWidth() * 0.5),
 				0, 0, 0);
 		}
-		PacketDistributor.sendToPlayersTrackingEntity(target, particlePacket);
+		for (ServerPlayer player : PlayerLookup.tracking(target)) {
+			ServerPlayNetworking.send(player, particlePacket);
+		}
 	}
 }

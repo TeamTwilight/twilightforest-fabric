@@ -1,7 +1,7 @@
 package twilightforest.item;
 
-import carminite.network.PacketDistributor;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -61,7 +61,7 @@ public class PeacockFanItem extends Item {
 								fanBox.minZ + level.getRandom().nextFloat() * (fanBox.maxZ - fanBox.minZ),
 								lookVec.x(), lookVec.y(), lookVec.z());
 						}
-						PacketDistributor.sendToPlayer(serverplayer, packet);
+						ServerPlayNetworking.send(serverplayer, packet);
 					}
 				}
 			}
@@ -118,7 +118,7 @@ public class PeacockFanItem extends Item {
 			}
 
 			if (entity instanceof ServerPlayer pushedPlayer && pushedPlayer != player && !pushedPlayer.isShiftKeyDown()) {
-				PacketDistributor.sendToPlayer(pushedPlayer, new MovePlayerPacket(moveVec.x(), moveVec.y(), moveVec.z()));
+				ServerPlayNetworking.send(pushedPlayer, new MovePlayerPacket(moveVec.x(), moveVec.y(), moveVec.z()));
 				player.getCooldowns().addCooldown(player.getUseItem(), 40);
 				fannedEntities += 2;
 			}

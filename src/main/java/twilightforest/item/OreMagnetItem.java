@@ -1,6 +1,6 @@
 package twilightforest.item;
 
-import carminite.network.PacketDistributor;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -160,7 +160,7 @@ public class OreMagnetItem extends Item {
 									Vec3 offset = new Vec3((level.getRandom().nextDouble() - 0.5D) * 1.25D, (level.getRandom().nextDouble() - 0.5D) * 1.25D, (level.getRandom().nextDouble() - 0.5D) * 1.25D);
 									particlePacket.queueParticle(TFParticleType.LOG_CORE_PARTICLE, false, false, xyz.add(offset), new Vec3(0.8, 0.9, 0.2));
 								}
-								PacketDistributor.sendToPlayer(serverplayer, particlePacket);
+								ServerPlayNetworking.send(serverplayer, particlePacket);
 							}
 						}
 					}

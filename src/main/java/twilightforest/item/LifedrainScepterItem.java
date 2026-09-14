@@ -1,7 +1,8 @@
 package twilightforest.item;
 
 import carminite.interfaces.markers.IContinuousUseItem;
-import carminite.network.PacketDistributor;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalEntityTypeTags;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ColorParticleOption;
@@ -9,6 +10,7 @@ import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -79,7 +81,9 @@ public class LifedrainScepterItem extends ScepterItem implements IContinuousUseI
 			particlePacket.queueParticle(options, false, false, target.getX() + x, target.getY() + y, target.getZ() + z, x * speed, y * speed, z * speed);
 		}
 
-		PacketDistributor.sendToPlayersTrackingEntity(target, particlePacket);
+		for (ServerPlayer player : PlayerLookup.tracking(target)) {
+			ServerPlayNetworking.send(player, particlePacket);
+		}
 	}
 
 	/**
@@ -135,7 +139,13 @@ public class LifedrainScepterItem extends ScepterItem implements IContinuousUseI
 
 			if (pointedEntity instanceof LivingEntity target && !(target instanceof ArmorStand) && target.isPickable()) {
 				if (!target.isDeadOrDying()) {
-					PacketDistributor.sendToPlayersTrackingEntityAndSelf(living, new LifedrainParticlePacket(living.getId(), target.getEyePosition()));
+					LifedrainParticlePacket packet = new LifedrainParticlePacket(living.getId(), target.getEyePosition());
+					for (ServerPlayer player : PlayerLookup.tracking(living)) {
+						ServerPlayNetworking.send(player, packet);
+					}
+					if (living instanceof ServerPlayer player) {
+						ServerPlayNetworking.send(player, packet);
+					}
 					level.playSound(null, living.blockPosition(), TFSounds.LIFE_SCEPTER_DRAIN.value(), SoundSource.PLAYERS);
 				}
 

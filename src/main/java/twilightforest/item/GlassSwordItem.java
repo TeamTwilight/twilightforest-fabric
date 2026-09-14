@@ -1,6 +1,7 @@
 package twilightforest.item;
 
-import carminite.network.PacketDistributor;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -41,7 +42,9 @@ public class GlassSwordItem extends Item {
 				target.getZ() + target.getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth(),
 				0, 0, 0);
 			}
-			PacketDistributor.sendToPlayersTrackingEntity(target, particlePacket);
+			for (ServerPlayer player : PlayerLookup.tracking(target)) {
+				ServerPlayNetworking.send(player, particlePacket);
+			}
 		}
 
 		this.hurtAndBreak(stack, attacker, (user) -> {
