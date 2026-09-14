@@ -8,6 +8,7 @@
     "ItemContainerContentsAccessor",
     "LivingEntityGetDeathSoundAccessor",
     "ServerPlayerGameModeMixin",
+    "coremod.ChunkStatusTasksMixin",
     "coremod.LivingEntityMixin",
     "coremod.NoiseBasedChunkGeneratorMixin",
     "enums.DamageEffectsMixin",
