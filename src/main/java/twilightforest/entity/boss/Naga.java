@@ -3,6 +3,7 @@ package twilightforest.entity.boss;
 import carminite.multipart.IMultiPartEntity;
 import carminite.multipart.PartEntity;
 import carminite.network.PacketDistributor;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -372,7 +373,7 @@ public class Naga extends BaseTFBoss implements IMultiPartEntity {
 				this.push(motion.x() * -1.25D, 0.5D, motion.z() * -1.25D);
 				if (toAttack instanceof ServerPlayer player) {
 					player.getUseItem().hurtAndBreak(5, player, player.getUsedItemHand());
-					PacketDistributor.sendToPlayer(player, new MovePlayerPacket(motion.x() * 3.0D, motion.y() + 0.75D, motion.z() * 3.0D));
+					ServerPlayNetworking.send(player, new MovePlayerPacket(motion.x() * 3.0D, motion.y() + 0.75D, motion.z() * 3.0D));
 				}
 				this.hurt(this.damageSources().generic(), 2.0F);
 				this.level().playSound(null, toAttack.blockPosition(), SoundEvents.SHIELD_BLOCK.value(), SoundSource.PLAYERS, 1.0F, 0.8F + this.level().getRandom().nextFloat() * 0.4F);

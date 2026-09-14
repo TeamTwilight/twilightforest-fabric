@@ -1,9 +1,10 @@
 package twilightforest.entity.boss;
 
-import carminite.network.PacketDistributor;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
@@ -122,8 +123,13 @@ public class KnightPhantom extends BaseTFBoss {
 
 	@Override
 	public void startSeenByPlayer(ServerPlayer player) {
-		if (this.isDeadOrDying()) PacketDistributor.sendToPlayersTrackingEntity(this, new UpdateDeathTimePacket(this.getId(), this.deathTime));
-		else if (this.getNumber() == 0) this.getBossBar().addPlayer(player);
+		if (this.isDeadOrDying()) {
+			for (ServerPlayer serverPlayer : PlayerLookup.tracking(this)) {
+				ServerPlayNetworking.send(serverPlayer, new UpdateDeathTimePacket(this.getId(), this.deathTime));
+			}
+		} else if (this.getNumber() == 0){
+			this.getBossBar().addPlayer(player);
+		}
 	}
 
 	@Override
@@ -269,7 +275,9 @@ public class KnightPhantom extends BaseTFBoss {
 				// tell the other knights to reset their animation
 				for (KnightPhantom phantom : this.level().getEntitiesOfClass(KnightPhantom.class, this.getBoundingBox().inflate(64.0D), LivingEntity::isDeadOrDying)) {
 					phantom.deathTime = 1;
-					PacketDistributor.sendToPlayersTrackingEntity(phantom, new UpdateDeathTimePacket(phantom.getId(), 1));
+					for (ServerPlayer player : PlayerLookup.tracking(phantom)) {
+						ServerPlayNetworking.send(player, new UpdateDeathTimePacket(phantom.getId(), 1));
+					}
 				}
 				this.getEntityData().set(IT_IS_OVER, true);
 			}

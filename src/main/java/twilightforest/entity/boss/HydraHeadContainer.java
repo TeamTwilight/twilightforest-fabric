@@ -2,6 +2,7 @@ package twilightforest.entity.boss;
 
 import carminite.network.PacketDistributor;
 import com.google.common.collect.ImmutableMap;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -686,7 +687,7 @@ public class HydraHeadContainer {
 						//add cooldown and knockback
 						player.getCooldowns().addCooldown(player.getUseItem(), 200);
 						player.stopUsingItem();
-						PacketDistributor.sendToPlayer((ServerPlayer) player, new MovePlayerPacket(-this.headEntity.getDirection().getStepX() * 0.5F, 0.15F, -this.headEntity.getDirection().getStepZ() * 0.5F));
+						ServerPlayNetworking.send((ServerPlayer) player, new MovePlayerPacket(-this.headEntity.getDirection().getStepX() * 0.5F, 0.15F, -this.headEntity.getDirection().getStepZ() * 0.5F));
 					}
 
 					// bite it!
@@ -694,7 +695,7 @@ public class HydraHeadContainer {
 
 					//knockback!
 					if (living instanceof Player player) {
-						PacketDistributor.sendToPlayer((ServerPlayer) player, new MovePlayerPacket(-this.headEntity.getDirection().getStepX() * 0.5F, 0.1F, -this.headEntity.getDirection().getStepZ() * 0.5F));
+						ServerPlayNetworking.send((ServerPlayer) player, new MovePlayerPacket(-this.headEntity.getDirection().getStepX() * 0.5F, 0.1F, -this.headEntity.getDirection().getStepZ() * 0.5F));
 					} else {
 						living.knockback(-this.headEntity.getDirection().getStepX(), 0.1F, -this.headEntity.getDirection().getStepZ());
 					}

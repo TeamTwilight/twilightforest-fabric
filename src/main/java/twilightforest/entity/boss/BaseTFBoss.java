@@ -1,6 +1,7 @@
 package twilightforest.entity.boss;
 
-import carminite.network.PacketDistributor;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
@@ -76,7 +77,11 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 	public void startSeenByPlayer(ServerPlayer player) {
 		super.startSeenByPlayer(player);
 		this.getBossBar().addPlayer(player);
-		if (this.deathTime > 0) PacketDistributor.sendToPlayersTrackingEntity(this, new UpdateDeathTimePacket(this.getId(), this.deathTime));
+		if (this.deathTime > 0) {
+			for (ServerPlayer serverPlayer : PlayerLookup.tracking(this)) {
+				ServerPlayNetworking.send(serverPlayer, new UpdateDeathTimePacket(this.getId(), this.deathTime));
+			}
+		}
 	}
 
 	@Override
