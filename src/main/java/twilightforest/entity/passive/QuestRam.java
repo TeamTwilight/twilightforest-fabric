@@ -1,7 +1,7 @@
 package twilightforest.entity.passive;
 
-import carminite.network.PacketDistributor;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.particles.ColorParticleOption;
@@ -225,7 +225,7 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 							0.0F, 0.0F, 0.0F);
 					}
 
-					PacketDistributor.sendToPlayer(serverplayer, packet);
+					ServerPlayNetworking.send(serverplayer, packet);
 				}
 			}
 		}
