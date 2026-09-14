@@ -26,20 +26,13 @@
   "icon": "icon.png",
   "environment": "*",
   "entrypoints": {
-    "main": [
-      "twilightforest.TFCommon"
-    ],
-    "client": [
-      "twilightforest.TFClient"
-    ],
-    "jade": [
-      "twilightforest.compat.jade.JadeCompat"
-    ]
+    "main": ["twilightforest.TFCommon"],
+    "client": ["twilightforest.TFClient"],
+    "modmenu": ["twilightforest.compat.modmenu.ModMenuCompat"],
+    "jade": ["twilightforest.compat.jade.JadeCompat"]
   },
   "accessWidener": "twilightforest.classtweaker",
-  "mixins": [
-    "twilightforest.mixins.json"
-  ],
+  "mixins": ["twilightforest.mixins.json"],
   "depends": {
     "fabricloader": ">=${loader_version}",
     "minecraft": "~${minecraft_version}",
@@ -47,6 +40,7 @@
     "fabric-api": ">=${fabric_api_version}"
   },
   "suggests": {
+    "modmenu": "*",
     "jade": "*"
   }
 }

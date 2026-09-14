@@ -77,6 +77,10 @@ repositories {
 		name = "Fuzs Mod Resources" // Forge Config API Port
 		url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
 	}
+	maven {
+		name = "Terraformers" // ModMenu
+		url = "https://maven.terraformersmc.com/"
+	}
 	maven { url = "https://api.modrinth.com/maven" } // Jade
 }
 
@@ -93,6 +97,7 @@ dependencies {
 	implementation(include(project(":carminite-lib")))
 
 	// Compatibility
+	implementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
 	implementation "maven.modrinth:jade:${project.jade_version}"
 }
 
