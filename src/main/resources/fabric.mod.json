@@ -31,6 +31,9 @@
     ],
     "client": [
       "twilightforest.TFClient"
+    ],
+    "jade": [
+      "twilightforest.compat.jade.JadeCompat"
     ]
   },
   "accessWidener": "twilightforest.classtweaker",
@@ -42,5 +45,8 @@
     "minecraft": "~${minecraft_version}",
     "java": ">=${java_version}",
     "fabric-api": ">=${fabric_api_version}"
+  },
+  "suggests": {
+    "jade": "*"
   }
 }

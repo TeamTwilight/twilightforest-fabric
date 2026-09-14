@@ -77,6 +77,7 @@ repositories {
 		name = "Fuzs Mod Resources" // Forge Config API Port
 		url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
 	}
+	maven { url = "https://api.modrinth.com/maven" } // Jade
 }
 
 dependencies {
@@ -85,11 +86,14 @@ dependencies {
 	implementation "net.fabricmc:fabric-loader:${loader_version}"
 	implementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
 
-	// NeoForge Compatibility
+	// NeoForge Config API
 	include(implementation "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forge_config_api_port_version}")
 
 	// Built-in library
 	implementation(include(project(":carminite-lib")))
+
+	// Compatibility
+	implementation "maven.modrinth:jade:${project.jade_version}"
 }
 
 processResources {
