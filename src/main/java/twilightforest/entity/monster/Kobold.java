@@ -1,6 +1,7 @@
 package twilightforest.entity.monster;
 
-import carminite.network.PacketDistributor;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
@@ -9,6 +10,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -169,7 +171,9 @@ public class Kobold extends Monster {
 						vec31.z() + vec3.z() * this.random.nextGaussian(),
 						0.0D, 0.0D, 0.0D));
 			}
-			PacketDistributor.sendToPlayersTrackingEntity(this, particlePacket);
+			for (ServerPlayer player : PlayerLookup.tracking(this)) {
+				ServerPlayNetworking.send(player, particlePacket);
+			}
 		}
 	}
 
