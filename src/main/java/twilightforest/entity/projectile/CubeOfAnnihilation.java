@@ -1,6 +1,6 @@
 package twilightforest.entity.projectile;
 
-import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
+import carminite.events.neoforge.BreakBlockEvent;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
@@ -102,7 +102,7 @@ public class CubeOfAnnihilation extends ThrowableProjectile {
 			BlockState state = this.level().getBlockState(pos);
 			if (!state.isAir()) {
 				if (this.getOwner() instanceof ServerPlayer player) {
-					if (PlayerBlockBreakEvents.BEFORE.invoker().beforeBlockBreak(this.level(), player, pos, state, this.level().getBlockEntity(pos))) {
+					if (!new BreakBlockEvent(this.level(), pos, state, player).post().isCanceled()) {
 						if (this.canAnnihilate(pos, state, player.gameMode.getGameModeForPlayer().isBlockPlacingRestricted())) {
 							this.level().removeBlock(pos, false);
 							this.playSound(TFSounds.BLOCK_ANNIHILATED.value(), 0.125f, this.random.nextFloat() * 0.25F + 0.75F);

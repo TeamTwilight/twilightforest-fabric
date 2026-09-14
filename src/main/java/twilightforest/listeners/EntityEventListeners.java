@@ -41,7 +41,6 @@ import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-import org.jspecify.annotations.Nullable;
 import twilightforest.TFCommon;
 import twilightforest.advancements.DrinkFromFlaskTrigger;
 import twilightforest.block.*;
@@ -159,9 +158,10 @@ public final class EntityEventListeners {
 	}
 
 	//if our casket is owned by someone and that player isnt the one breaking it, stop them
-	public static boolean onCasketBreak(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity) {
-		if (state.getBlock() instanceof SkullChestBlock) {
-			BlockEntity te = level.getBlockEntity(pos);
+	public static void onCasketBreak(BreakBlockEvent event) {
+		Player player = event.getPlayer();
+		if (event.getState().getBlock() instanceof SkullChestBlock) {
+			BlockEntity te = event.getLevel().getBlockEntity(event.getPos());
 			if (te instanceof SkullChestBlockEntity casket) {
 				ResolvableProfile checker = casket.owner;
 				if (checker != null && !casket.isEmpty()) {
@@ -171,7 +171,6 @@ public final class EntityEventListeners {
 				}
 			}
 		}
-		return true;
 	}
 
 	/*private void reduceFrostedEffectIfOnFire(LivingIncomingDamageEvent event) {

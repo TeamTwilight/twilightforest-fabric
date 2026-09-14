@@ -1,5 +1,7 @@
 package twilightforest.listeners;
 
+import carminite.events.hooks.EventHooks;
+import carminite.events.neoforge.BreakBlockEvent;
 import carminite.events.neoforge.ProjectileImpactEvent;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalEntityTypeTags;
 import net.minecraft.core.BlockPos;
@@ -19,7 +21,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
@@ -81,32 +82,34 @@ public final class ToolEventListeners {
 		return true;
 	}
 
-	public static boolean damageNonMazebreakerToolsMore(Player player, BlockState state) {
-		ItemStack stack = player.getMainHandItem();
-		if (state.is(TFBlockTags.MAZEBREAKER_ACCELERATED)) {
+	public static void damageNonMazebreakerToolsMore(BreakBlockEvent event) {
+		ItemStack stack = event.getPlayer().getMainHandItem();
+		if (event.getState().is(TFBlockTags.MAZEBREAKER_ACCELERATED)) {
 			if (stack.isDamageableItem() && !(stack.getItem() instanceof MazebreakerPickItem)) {
-				stack.hurtAndBreak(16, player, EquipmentSlot.MAINHAND);
+				stack.hurtAndBreak(16, event.getPlayer(), EquipmentSlot.MAINHAND);
 			}
 		}
-		return true;
 	}
 
 	public static boolean preventFatigueWithPocketWatch(MobEffectInstance effectInstance, LivingEntity entity) {
 		return !effectInstance.is(MobEffects.MINING_FATIGUE) || !entity.isHolding(TFItems.POCKET_WATCH);
 	}
 
-	public static boolean handleGiantPickaxeMining(Level level, Player player, BlockPos pos, BlockState state) {
-		if (player instanceof ServerPlayer serverPlayer && canHarvestWithGiantPick(player, state)) {
-			var attachment = serverPlayer.getAttached(TFDataAttachments.GIANT_PICKAXE_MINING);
+	public static void handleGiantPickaxeMining(BreakBlockEvent event) {
+		BlockPos pos = event.getPos();
+		BlockState state = event.getState();
 
-			if (shouldBreakGiantBlock(serverPlayer, attachment)) {
+		if (event.getPlayer() instanceof ServerPlayer player && canHarvestWithGiantPick(player, state, pos)) {
+			var attachment = player.getAttached(TFDataAttachments.GIANT_PICKAXE_MINING);
+
+			if (shouldBreakGiantBlock(player, attachment)) {
 				attachment.setBreaking(true); // Tell the capability that a block breaking loop is happening, so it knows to fail the if check above. Otherwise, this would go on forever
 
-				LootParams.Builder builder = new LootParams.Builder(serverPlayer.level())
+				LootParams.Builder builder = new LootParams.Builder(player.level())
 					.withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
 					.withParameter(LootContextParams.BLOCK_STATE, state)
-					.withOptionalParameter(LootContextParams.THIS_ENTITY, serverPlayer)
-					.withParameter(LootContextParams.TOOL, serverPlayer.getMainHandItem());
+					.withOptionalParameter(LootContextParams.THIS_ENTITY, player)
+					.withParameter(LootContextParams.TOOL, player.getMainHandItem());
 
 				List<ItemStack> drops = state.getDrops(builder);
 
@@ -114,7 +117,7 @@ public final class ToolEventListeners {
 					boolean allTheSame = LootEventListeners.GIANT_BLOCK_CONVERSIONS.containsKey(block.getBlock()); //check if the block drops can be converted instead of the block itself so things like stone can make giant cobble
 					if (allTheSame) {
 						for (BlockPos offsetPos : GiantBlock.getVolume(pos)) {
-							if (!serverPlayer.level().getBlockState(offsetPos).is(state.getBlock())) {
+							if (!player.level().getBlockState(offsetPos).is(state.getBlock())) {
 								allTheSame = false;
 								break; //end early: we have determined we arent getting a giant block from this. No need to keep checking positions
 							}
@@ -122,27 +125,25 @@ public final class ToolEventListeners {
 					}
 					attachment.setGiantBlockConversion(allTheSame ? 64 : 0); // NO IN-BETWEEN! Either the whole 64 get converted, or none do
 				}
-				serverPlayer.level().levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, pos, Block.getId(state));
-				serverPlayer.gameMode.destroyBlock(pos); // Break the block we broke, for real this time
+				event.setCanceled(true); // We cancel this event, since we want to break the block we're looking at first
+				player.level().levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, pos, Block.getId(state));
+				player.gameMode.destroyBlock(pos); // Break the block we broke, for real this time
 
 				// Break all the other blocks, if they're the same type
 				for (BlockPos offsetPos : GiantBlock.getVolume(pos)) {
-					if (!offsetPos.equals(pos) && serverPlayer.level().getBlockState(offsetPos).is(state.getBlock())) {
+					if (!offsetPos.equals(pos) && player.level().getBlockState(offsetPos).is(state.getBlock())) {
 						BlockPos newPos = new BlockPos(offsetPos); // This feels dumb, but without it, the client thinks the last block in the iterator is broken too
-						serverPlayer.level().levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, newPos, Block.getId(serverPlayer.level().getBlockState(newPos)));
-						serverPlayer.gameMode.destroyBlock(newPos);
+						player.level().levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, newPos, Block.getId(player.level().getBlockState(newPos)));
+						player.gameMode.destroyBlock(newPos);
 					}
 				}
 				attachment.setBreaking(false); // Tell the capability that the loop is over, and all is good in the world
-				return false;
 			}
 		}
-		return true;
 	}
 
-	private static boolean canHarvestWithGiantPick(Player player, BlockState state) {
-		return player.getMainHandItem().getItem() instanceof GiantPickItem
-			&& player.hasCorrectToolForDrops(state);
+	private static boolean canHarvestWithGiantPick(Player player, BlockState state, BlockPos pos) {
+		return player.getMainHandItem().getItem() instanceof GiantPickItem && EventHooks.doPlayerHarvestCheck(player, state, player.level(), pos);
 	}
 
 	private static boolean shouldBreakGiantBlock(Player player, GiantPickaxeMiningAttachment attachment) {

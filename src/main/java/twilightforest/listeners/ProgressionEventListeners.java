@@ -1,5 +1,6 @@
 package twilightforest.listeners;
 
+import carminite.events.neoforge.BreakBlockEvent;
 import carminite.events.neoforge.PlayerInteractEvent;
 import carminite.events.neoforge.PlayerTickEvent;
 import carminite.util.ServerLifecycleHooks;
@@ -71,10 +72,13 @@ public final class ProgressionEventListeners {
 	/**
 	 * Check if the player is trying to break a block in a structure that's considered unbreakable for progression reasons
 	 */
-	public static boolean preventLockedAreaBlockBreaking(Level level, Player player, BlockPos pos) {
-		if (!(level instanceof ServerLevel serverLevel)) return true;
+	public static void preventLockedAreaBlockBreaking(BreakBlockEvent event) {
+		if (!(event.getLevel() instanceof ServerLevel level) || event.isCanceled()) return;
 
-		return !isBlockProtectedFromBreaking(level, pos) || !isAreaProtected(serverLevel, player, pos);
+		BlockPos pos = event.getPos();
+		if (isBlockProtectedFromBreaking(level, pos) && isAreaProtected(level, event.getPlayer(), pos)) {
+			event.setCanceled(true);
+		}
 	}
 
 	/**

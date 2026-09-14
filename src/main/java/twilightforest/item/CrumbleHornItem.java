@@ -1,8 +1,8 @@
 package twilightforest.item;
 
+import carminite.events.neoforge.BreakBlockEvent;
 import carminite.interfaces.markers.IContinuousUseItem;
 import com.mojang.datafixers.util.Pair;
-import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -168,10 +168,9 @@ public class CrumbleHornItem extends Item implements IContinuousUseItem {
 
 		if (state.isAir() || crumbleMap == null) return false;
 
-		if (living instanceof Player player) {
-			if (!PlayerBlockBreakEvents.BEFORE.invoker().beforeBlockBreak(serverLevel, player, pos, state, serverLevel.getBlockEntity(pos))) {
+		if (living instanceof Player) {
+			if (new BreakBlockEvent(serverLevel, pos, state, (Player) living).post().isCanceled())
 				return false;
-			}
 		}
 
 		if (crumbleMap.getFirst() == Blocks.AIR) {

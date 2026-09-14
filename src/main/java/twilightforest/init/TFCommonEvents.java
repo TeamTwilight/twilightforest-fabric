@@ -7,7 +7,6 @@ import net.fabricmc.fabric.api.entity.event.v1.effect.ServerMobEffectEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleEvents;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
@@ -63,15 +62,15 @@ public final class TFCommonEvents {
 	private static void setupToolEvents() {
 		EntityEvents.PROJECTILE_IMPACT.register(ToolEventListeners::onEnderBowHit);
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, _) -> ToolEventListeners.fieryToolSetFire(entity, source));
-		PlayerBlockBreakEvents.BEFORE.register((_, player, _, state, _) -> ToolEventListeners.damageNonMazebreakerToolsMore(player, state));
+		BlockEvents.BREAK_BLOCK.register(ToolEventListeners::damageNonMazebreakerToolsMore);
 		ServerMobEffectEvents.ALLOW_ADD.register((effectInstance, entity, _) -> ToolEventListeners.preventFatigueWithPocketWatch(effectInstance, entity));
-		PlayerBlockBreakEvents.BEFORE.register((level, player, pos, state, _) -> ToolEventListeners.handleGiantPickaxeMining(level, player, pos, state));
+		BlockEvents.BREAK_BLOCK.register(ToolEventListeners::handleGiantPickaxeMining);
 		CommonLifecycleEvents.TAGS_LOADED.register((_, _) -> ToolEventListeners.refreshOreMagnetCache());
 	}
 
 	private static void setupProgressionEvents() {
 		GameRuleEvents.changeCallback(TFGameRules.ENFORCED_PROGRESSION_RULE).register(ProgressionEventListeners::gameRuleChanged);
-		PlayerBlockBreakEvents.BEFORE.register((level, player, pos, _, _) -> ProgressionEventListeners.preventLockedAreaBlockBreaking(level, player, pos));
+		BlockEvents.BREAK_BLOCK.register(ProgressionEventListeners::preventLockedAreaBlockBreaking);
 		PlayerEvents.RIGHT_CLICK_BLOCK.register(ProgressionEventListeners::preventLockedAreaBlockPlacing);
 		PlayerEvents.RIGHT_CLICK_BLOCK.register(ProgressionEventListeners::preventLockedAreaBlockInteracting);
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, _) -> ProgressionEventListeners.preventLockedAreaEntityDamage(entity, source));
@@ -106,7 +105,7 @@ public final class TFCommonEvents {
 		PlayerEvents.RIGHT_CLICK_BLOCK.register(EntityEventListeners::attachLeadToWroughtFence);
 		PlayerEvents.LEFT_CLICK_EMPTY.register(EntityEventListeners::wipeOreMeterOnLeftClick);
 		ServerLivingEntityEvents.AFTER_DAMAGE.register(EntityEventListeners::entityHurts);
-		PlayerBlockBreakEvents.BEFORE.register(EntityEventListeners::onCasketBreak);
+		BlockEvents.BREAK_BLOCK.register(EntityEventListeners::onCasketBreak);
 		EntityEvents.PROJECTILE_IMPACT.register(EntityEventListeners::onParryProjectile);
 		PlayerEvents.RIGHT_CLICK_BLOCK.register(EntityEventListeners::createSkullCandle);
 		LivingEvents.LIVING_JUMP.register(EntityEventListeners::addCloudJumpParticles);
