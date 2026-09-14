@@ -19,7 +19,8 @@
     "LevelRendererMixin",
     "LivingEntityRendererMixin",
     "MapRendererMixin",
-    "WeatherEffectRendererMixin"
+    "WeatherEffectRendererMixin",
+    "coremod.ModelFeatureRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
