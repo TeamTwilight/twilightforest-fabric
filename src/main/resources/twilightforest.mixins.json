@@ -9,6 +9,7 @@
     "LivingEntityGetDeathSoundAccessor",
     "ServerPlayerGameModeMixin",
     "coremod.LivingEntityMixin",
+    "coremod.NoiseBasedChunkGeneratorMixin",
     "enums.DamageEffectsMixin",
     "enums.GrassColorModifierMixin",
     "enums.ItemDisplayContextMixin",
