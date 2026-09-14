@@ -1,7 +1,7 @@
 package twilightforest.listeners;
 
-import carminite.network.PacketDistributor;
 import net.fabricmc.fabric.api.entity.FakePlayer;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -106,7 +106,7 @@ public final class CharmEventListeners {
 			}
 
 			if (player instanceof ServerPlayer serverPlayer) {
-				PacketDistributor.sendToPlayer(serverPlayer, new SpawnCharmPacket(new ItemStack(charm1 ? TFItems.CHARM_OF_LIFE_1 : TFItems.CHARM_OF_LIFE_2), BuiltInRegistries.SOUND_EVENT.getResourceKey(TFSounds.CHARM_LIFE.value()).orElseThrow()));
+				ServerPlayNetworking.send(serverPlayer, new SpawnCharmPacket(new ItemStack(charm1 ? TFItems.CHARM_OF_LIFE_1 : TFItems.CHARM_OF_LIFE_2), BuiltInRegistries.SOUND_EVENT.getResourceKey(TFSounds.CHARM_LIFE.value()).orElseThrow()));
 				serverPlayer.awardStat(TFStats.LIFE_CHARMS_ACTIVATED);
 			}
 
@@ -332,7 +332,7 @@ public final class CharmEventListeners {
 					.orElse(ItemStack.EMPTY);
 				if (!charm.isEmpty()) {
 					TFCommon.LOGGER.warn("CHARM IS NOT EMPTY");
-					PacketDistributor.sendToPlayer(serverPlayer, new SpawnCharmPacket(charm, BuiltInRegistries.SOUND_EVENT.getResourceKey(TFSounds.CHARM_KEEP.value()).orElseThrow()));
+					ServerPlayNetworking.send(serverPlayer, new SpawnCharmPacket(charm, BuiltInRegistries.SOUND_EVENT.getResourceKey(TFSounds.CHARM_KEEP.value()).orElseThrow()));
 				}
 				serverPlayer.awardStat(TFStats.KEEPING_CHARMS_ACTIVATED);
 			}

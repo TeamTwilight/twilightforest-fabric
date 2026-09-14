@@ -2,14 +2,16 @@ package twilightforest.listeners;
 
 import carminite.events.neoforge.PlayerInteractEvent;
 import carminite.events.neoforge.PlayerTickEvent;
-import carminite.network.PacketDistributor;
 import carminite.util.ServerLifecycleHooks;
 import com.mojang.datafixers.util.Pair;
 import net.fabricmc.fabric.api.entity.FakePlayer;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
+import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SpellParticleOption;
 import net.minecraft.resources.Identifier;
@@ -61,7 +63,9 @@ public final class ProgressionEventListeners {
 	 * Notify all players' clients of gamerule change if progression is the change.
 	 */
 	public static void gameRuleChanged(Boolean progressionEnforced, MinecraftServer server) {
-		PacketDistributor.sendToAllPlayers(new EnforceProgressionStatusPacket(progressionEnforced));
+		for (ServerPlayer player : PlayerLookup.all(server)) {
+			ServerPlayNetworking.send(player, new EnforceProgressionStatusPacket(progressionEnforced));
+		}
 	}
 
 	/**
@@ -220,7 +224,7 @@ public final class ProgressionEventListeners {
 					if (!TFPortalBlock.isPlayerNotifiedOfRequirement(player)) {
 						// .doesPlayerHaveRequiredAdvancement null-checks already, so we can skip null-checking the `requirement`
 						DisplayInfo info = requirement.value().display().orElse(null);
-						PacketDistributor.sendToPlayer(player, info == null ? new MissingAdvancementToastPacket(net.minecraft.network.chat.Component.translatable("twilightforest.ui.advancement.no_title"), new ItemStackTemplate(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.asItem())) : new MissingAdvancementToastPacket(info.getTitle(), info.getIcon()));
+						ServerPlayNetworking.send(player, info == null ? new MissingAdvancementToastPacket(net.minecraft.network.chat.Component.translatable("twilightforest.ui.advancement.no_title"), new ItemStackTemplate(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE.asItem())) : new MissingAdvancementToastPacket(info.getTitle(), info.getIcon()));
 
 						TFPortalBlock.playerNotifiedOfRequirement(player);
 					}
@@ -257,18 +261,20 @@ public final class ProgressionEventListeners {
 	}
 
 	private static void sendAreaProtectionPacket(ServerLevel level, BlockPos pos, List<BoundingBox> sbb) {
-		PacketDistributor.sendToPlayersNear(level, null, pos.getX(), pos.getY(), pos.getZ(), 64, new AreaProtectionPacket(sbb, pos));
+		for (ServerPlayer player : PlayerLookup.around(level, new Vec3i(pos.getX(), pos.getY(), pos.getZ()), 64)) {
+			ServerPlayNetworking.send(player, new AreaProtectionPacket(sbb, pos));
+		}
 	}
 
 	private static void sendStructureProtectionPacket(Player player, List<Pair<BoundingBox, Boolean>> sbbData) {
 		if (player instanceof ServerPlayer sp) {
-			PacketDistributor.sendToPlayer(sp, new StructureProtectionPacket(Optional.of(sbbData)));
+			ServerPlayNetworking.send(sp, new StructureProtectionPacket(Optional.of(sbbData)));
 		}
 	}
 
 	private static void sendAllClearPacket(Player player) {
 		if (player instanceof ServerPlayer sp) {
-			PacketDistributor.sendToPlayer(sp, new StructureProtectionPacket(Optional.empty()));
+			ServerPlayNetworking.send(sp, new StructureProtectionPacket(Optional.empty()));
 		}
 	}
 
@@ -277,6 +283,6 @@ public final class ProgressionEventListeners {
 	 */
 	public static void syncProgressionGameRuleStatus(ServerPlayer player) {
         boolean progressionEnforced = ServerLifecycleHooks.getCurrentServer().getGameRules().get(TFGameRules.ENFORCED_PROGRESSION_RULE);
-		PacketDistributor.sendToPlayer(player, new EnforceProgressionStatusPacket(progressionEnforced));
+		ServerPlayNetworking.send(player, new EnforceProgressionStatusPacket(progressionEnforced));
 	}
 }

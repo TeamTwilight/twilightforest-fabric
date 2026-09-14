@@ -1,9 +1,10 @@
 package twilightforest.listeners;
 
 import carminite.events.neoforge.*;
-import carminite.network.PacketDistributor;
 import carminite.util.ServerLifecycleHooks;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponentType;
@@ -104,7 +105,12 @@ public final class TravellersGearEventListeners {
 			ParticleOptions type = TFParticleType.PERFECT_DODGE;
 			particlePacket.queueParticle(type, false, false, hitPosition, particleVelocity);
 		}
-		PacketDistributor.sendToPlayersTrackingEntityAndSelf(livingEntity, particlePacket);
+		for (ServerPlayer player : PlayerLookup.tracking(livingEntity)) {
+			ServerPlayNetworking.send(player, particlePacket);
+		}
+		if (livingEntity instanceof ServerPlayer player) {
+			ServerPlayNetworking.send(player, particlePacket);
+		}
 	}
 
 	public static void reduceSlimySolesFallDamage(LivingFallEvent event) {
@@ -157,7 +163,13 @@ public final class TravellersGearEventListeners {
 			boolean modifierActive = TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.GRADUAL_GLIDE_MODIFIER);
 			if (!modifierActive && player.getAttachedOrCreate(TFDataAttachments.IS_GRADUALLY_GLIDING)) {
 				player.setAttached(TFDataAttachments.IS_GRADUALLY_GLIDING, false);
-				PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, new GradualGlidePacket(false, player.getUUID()));
+				GradualGlidePacket packet = new GradualGlidePacket(false, player.getUUID());
+				for (ServerPlayer serverPlayer : PlayerLookup.tracking(player)) {
+					ServerPlayNetworking.send(serverPlayer, packet);
+				}
+				if (player instanceof ServerPlayer serverPlayer) {
+					ServerPlayNetworking.send(serverPlayer, packet);
+				}
 			}
 		}
 

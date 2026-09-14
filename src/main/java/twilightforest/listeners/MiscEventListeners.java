@@ -1,9 +1,11 @@
 package twilightforest.listeners;
 
-import carminite.network.PacketDistributor;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -66,7 +68,13 @@ public final class MiscEventListeners {
 		 }
 
 		if (!livingEntity.level().isClientSide() && equipmentSlot == EquipmentSlot.HEAD && currentStack.is(TFBlocks.CICADA.asItem())) {
-			PacketDistributor.sendToPlayersTrackingEntityAndSelf(livingEntity, new CreateMovingCicadaSoundPacket(livingEntity.getId()));
+			CreateMovingCicadaSoundPacket packet = new CreateMovingCicadaSoundPacket(livingEntity.getId());
+			for (ServerPlayer player : PlayerLookup.tracking(livingEntity)) {
+				ServerPlayNetworking.send(player, packet);
+			}
+			if (livingEntity instanceof ServerPlayer player) {
+				ServerPlayNetworking.send(player, packet);
+			}
 		}
 	}
 

@@ -1,8 +1,8 @@
 package twilightforest.listeners;
 
 import carminite.events.neoforge.*;
-import carminite.network.PacketDistributor;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -422,7 +422,7 @@ public final class EntityEventListeners {
 	}
 
 	public static void handleQuestSyncing(ServerPlayer player) {
-		PacketDistributor.sendToPlayer(player, new SyncQuestsPacket(QuestingRamCurrentContext.INSTANCE.getContext()));
+		ServerPlayNetworking.send(player, new SyncQuestsPacket(QuestingRamCurrentContext.INSTANCE.getContext()));
 	}
 
 	public static void resetFlaskLogic(AdvancementEvent.AdvancementEarnEvent event) {
