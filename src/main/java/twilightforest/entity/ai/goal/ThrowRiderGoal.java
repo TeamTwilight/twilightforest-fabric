@@ -1,6 +1,6 @@
 package twilightforest.entity.ai.goal;
 
-import carminite.network.PacketDistributor;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalEntityTypeTags;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -88,7 +88,7 @@ public class ThrowRiderGoal extends MeleeAttackGoal {
 				player.push(throwVec.x(), throwVec.y(), throwVec.z());
 
 				if (player instanceof ServerPlayer server) {
-					PacketDistributor.sendToPlayer(server, new MovePlayerPacket(throwVec.x(), throwVec.y(), throwVec.z()));
+					ServerPlayNetworking.send(server, new MovePlayerPacket(throwVec.x(), throwVec.y(), throwVec.z()));
 				}
 			} else rider.push(throwVec.x(), throwVec.y(), throwVec.z());
 		}
