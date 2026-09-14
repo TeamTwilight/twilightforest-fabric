@@ -22,6 +22,9 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.renderer.item.ItemModels;
+import net.minecraft.client.renderer.item.properties.conditional.ConditionalItemModelProperties;
+import net.minecraft.client.renderer.item.properties.numeric.RangeSelectItemModelProperties;
+import net.minecraft.client.renderer.item.properties.select.SelectItemModelProperties;
 import net.minecraft.client.renderer.special.SpecialModelRenderers;
 import net.minecraft.client.resources.model.sprite.AtlasManager;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -41,6 +44,7 @@ import twilightforest.client.model.item.AnimatedItemModel;
 import twilightforest.client.model.item.TravellersGearItemModel;
 import twilightforest.client.model.item.TrollsteinnItemModel;
 import twilightforest.client.particle.*;
+import twilightforest.client.properties.*;
 import twilightforest.client.renderer.TFRenderPipelines;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.armor.TFArmorRenderer;
@@ -82,6 +86,9 @@ public final class TFClient implements ClientModInitializer {
 		registerTooltips();
 		registerBlockStateModels();
 		registerItemModels();
+		registerConditionalProperties();
+		registerRangeProperties();
+		registerSelectProperties();
 		registerSpecialModelRenderers();
 		registerAtlases();
 		registerClientReloadListeners();
@@ -146,6 +153,20 @@ public final class TFClient implements ClientModInitializer {
 		ItemModels.ID_MAPPER.put(TFCommon.prefix("travellers_gear"), TravellersGearItemModel.Unbaked.MAP_CODEC);
 		ItemModels.ID_MAPPER.put(TFCommon.prefix("trollsteinn"), TrollsteinnItemModel.Unbaked.MAP_CODEC);
 		ItemModels.ID_MAPPER.put(TFCommon.prefix("animated_item_model"), AnimatedItemModel.Unbaked.MAP_CODEC);
+	}
+
+	private static void registerConditionalProperties() {
+		ConditionalItemModelProperties.ID_MAPPER.put(TFCommon.prefix("moonworm_queen_pulse"), MoonwormQueenPulse.TYPE);
+		ConditionalItemModelProperties.ID_MAPPER.put(TFCommon.prefix("ore_meter_flash"), OreMeterFlash.TYPE);
+	}
+
+	private static void registerRangeProperties() {
+		RangeSelectItemModelProperties.ID_MAPPER.put(TFCommon.prefix("potion_flask_dosage"), PotionFlaskDosage.TYPE);
+		RangeSelectItemModelProperties.ID_MAPPER.put(TFCommon.prefix("potion_flask_damage"), PotionFlaskDamage.TYPE);
+	}
+
+	private static void registerSelectProperties() {
+		SelectItemModelProperties.ID_MAPPER.put(TFCommon.prefix("experiment_115_variant"), Experiment115Type.TYPE);
 	}
 
 	private static void registerSpecialModelRenderers() {
