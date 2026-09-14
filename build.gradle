@@ -153,22 +153,6 @@ publishing {
 
 			groupId = 'team-twilight'
 			artifactId = project.mod_id
-
-			pom {
-				withXml {
-					def dependenciesNode = asNode().appendNode('dependencies')
-
-					def addDep = { String group, String name, String version ->
-						def depNode = dependenciesNode.appendNode('dependency')
-						depNode.appendNode('groupId', group)
-						depNode.appendNode('artifactId', name)
-						depNode.appendNode('version', version)
-						depNode.appendNode('scope', 'compile')
-					}
-
-					addDep('tamaized', 'beanification', project.beanification_version)
-				}
-			}
 		}
 	}
 
