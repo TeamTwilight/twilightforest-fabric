@@ -79,28 +79,28 @@ public class TFLootTables {
 	public static final ResourceKey<LootTable> CAMP_POT = register("camp_pot");
 
 	// Sheep wool drops
-	public static final ResourceKey<LootTable> BIGHORN_SHEEP_WHITE = register("entities/bighorn_sheep/white");
-	public static final ResourceKey<LootTable> BIGHORN_SHEEP_ORANGE = register("entities/bighorn_sheep/orange");
-	public static final ResourceKey<LootTable> BIGHORN_SHEEP_MAGENTA = register("entities/bighorn_sheep/magenta");
-	public static final ResourceKey<LootTable> BIGHORN_SHEEP_LIGHT_BLUE = register("entities/bighorn_sheep/light_blue");
-	public static final ResourceKey<LootTable> BIGHORN_SHEEP_YELLOW = register("entities/bighorn_sheep/yellow");
-	public static final ResourceKey<LootTable> BIGHORN_SHEEP_LIME = register("entities/bighorn_sheep/lime");
-	public static final ResourceKey<LootTable> BIGHORN_SHEEP_PINK = register("entities/bighorn_sheep/pink");
-	public static final ResourceKey<LootTable> BIGHORN_SHEEP_GRAY = register("entities/bighorn_sheep/gray");
-	public static final ResourceKey<LootTable> BIGHORN_SHEEP_LIGHT_GRAY = register("entities/bighorn_sheep/light_gray");
-	public static final ResourceKey<LootTable> BIGHORN_SHEEP_CYAN = register("entities/bighorn_sheep/cyan");
-	public static final ResourceKey<LootTable> BIGHORN_SHEEP_PURPLE = register("entities/bighorn_sheep/purple");
-	public static final ResourceKey<LootTable> BIGHORN_SHEEP_BLUE = register("entities/bighorn_sheep/blue");
-	public static final ResourceKey<LootTable> BIGHORN_SHEEP_BROWN = register("entities/bighorn_sheep/brown");
-	public static final ResourceKey<LootTable> BIGHORN_SHEEP_GREEN = register("entities/bighorn_sheep/green");
-	public static final ResourceKey<LootTable> BIGHORN_SHEEP_RED = register("entities/bighorn_sheep/red");
-	public static final ResourceKey<LootTable> BIGHORN_SHEEP_BLACK = register("entities/bighorn_sheep/black");
+	public static final ResourceKey<LootTable> BIGHORN_SHEEP_WHITE = registerOutsideOfSet("entities/bighorn_sheep/white");
+	public static final ResourceKey<LootTable> BIGHORN_SHEEP_ORANGE = registerOutsideOfSet("entities/bighorn_sheep/orange");
+	public static final ResourceKey<LootTable> BIGHORN_SHEEP_MAGENTA = registerOutsideOfSet("entities/bighorn_sheep/magenta");
+	public static final ResourceKey<LootTable> BIGHORN_SHEEP_LIGHT_BLUE = registerOutsideOfSet("entities/bighorn_sheep/light_blue");
+	public static final ResourceKey<LootTable> BIGHORN_SHEEP_YELLOW = registerOutsideOfSet("entities/bighorn_sheep/yellow");
+	public static final ResourceKey<LootTable> BIGHORN_SHEEP_LIME = registerOutsideOfSet("entities/bighorn_sheep/lime");
+	public static final ResourceKey<LootTable> BIGHORN_SHEEP_PINK = registerOutsideOfSet("entities/bighorn_sheep/pink");
+	public static final ResourceKey<LootTable> BIGHORN_SHEEP_GRAY = registerOutsideOfSet("entities/bighorn_sheep/gray");
+	public static final ResourceKey<LootTable> BIGHORN_SHEEP_LIGHT_GRAY = registerOutsideOfSet("entities/bighorn_sheep/light_gray");
+	public static final ResourceKey<LootTable> BIGHORN_SHEEP_CYAN = registerOutsideOfSet("entities/bighorn_sheep/cyan");
+	public static final ResourceKey<LootTable> BIGHORN_SHEEP_PURPLE = registerOutsideOfSet("entities/bighorn_sheep/purple");
+	public static final ResourceKey<LootTable> BIGHORN_SHEEP_BLUE = registerOutsideOfSet("entities/bighorn_sheep/blue");
+	public static final ResourceKey<LootTable> BIGHORN_SHEEP_BROWN = registerOutsideOfSet("entities/bighorn_sheep/brown");
+	public static final ResourceKey<LootTable> BIGHORN_SHEEP_GREEN = registerOutsideOfSet("entities/bighorn_sheep/green");
+	public static final ResourceKey<LootTable> BIGHORN_SHEEP_RED = registerOutsideOfSet("entities/bighorn_sheep/red");
+	public static final ResourceKey<LootTable> BIGHORN_SHEEP_BLACK = registerOutsideOfSet("entities/bighorn_sheep/black");
 
 	// Special loot
-	public static final ResourceKey<LootTable> QUESTING_RAM_REWARDS = register("entities/questing_ram_rewards");
-	public static final ResourceKey<LootTable> QUESTING_RAM_REWARD_BLOCKS = register("entities/questing_ram_reward_blocks");
-	public static final ResourceKey<LootTable> DEATH_TOME_HURT = register("entities/death_tome_hurt");
-	public static final ResourceKey<LootTable> DEATH_TOME_BOOKS = register("entities/death_tome_books");
+	public static final ResourceKey<LootTable> QUESTING_RAM_REWARDS = registerOutsideOfSet("entities/questing_ram_rewards");
+	public static final ResourceKey<LootTable> QUESTING_RAM_REWARD_BLOCKS = registerOutsideOfSet("entities/questing_ram_reward_blocks");
+	public static final ResourceKey<LootTable> DEATH_TOME_HURT = registerOutsideOfSet("entities/death_tome_hurt");
+	public static final ResourceKey<LootTable> DEATH_TOME_BOOKS = registerOutsideOfSet("entities/death_tome_books");
 	public static final ResourceKey<LootTable> LIFEDRAIN_SCEPTER_KILL_BONUS = register("items/lifedrain_scepter_kill_bonus");
 	public static final ResourceKey<LootTable> KNIGHT_PHANTOM_DEFEATED = register("entities/knight_phantom_defeated");
 
@@ -148,6 +148,10 @@ public class TFLootTables {
 
 	public static void generateChestContents(LevelAccessor level, BlockPos pos, long seed, ResourceKey<LootTable> lootTable) {
 		if (level.getBlockEntity(pos) instanceof RandomizableContainerBlockEntity lootContainer) lootContainer.setLootTable(lootTable, seed);
+	}
+
+	private static ResourceKey<LootTable> registerOutsideOfSet(String id) {
+		return ResourceKey.create(Registries.LOOT_TABLE, TFCommon.prefix(id));
 	}
 
 	private static ResourceKey<LootTable> register(String id) {

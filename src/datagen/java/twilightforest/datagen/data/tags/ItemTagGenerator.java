@@ -135,7 +135,7 @@ public class ItemTagGenerator extends IntrinsicHolderTagsProvider<Item> {
 		this.tag(TFItemTags.RAW_MATERIALS_KNIGHTMETAL).add(TFItems.ARMOR_SHARD_CLUSTER);
 		this.tag(ConventionalItemTags.RAW_MATERIALS).addTag(TFItemTags.RAW_MATERIALS_IRONWOOD).addTag(TFItemTags.RAW_MATERIALS_KNIGHTMETAL);
 
-		this.tag(TFItemTags.PORTAL_ACTIVATOR).addTag(ConventionalItemTags.DIAMOND_GEMS);
+		this.tag(TFItemTags.PORTAL_ACTIVATOR).forceAddTag(ConventionalItemTags.DIAMOND_GEMS);
 
 		this.tag(ItemTags.BOATS).add(
 			TFItems.TWILIGHT_OAK_BOAT, TFItems.CANOPY_BOAT,
@@ -181,13 +181,13 @@ public class ItemTagGenerator extends IntrinsicHolderTagsProvider<Item> {
 		);
 
 		this.tag(TFItemTags.KOBOLD_PACIFICATION_BREADS).add(Items.BREAD);
-		this.tag(TFItemTags.BOAR_TEMPT_ITEMS).addTag(ConventionalItemTags.CARROT_CROPS).addTag(ConventionalItemTags.POTATO_CROPS).addTag(ConventionalItemTags.BEETROOT_CROPS);
-		this.tag(TFItemTags.DEER_TEMPT_ITEMS).addTag(ConventionalItemTags.WHEAT_CROPS).add(Items.APPLE);
-		this.tag(TFItemTags.DWARF_RABBIT_TEMPT_ITEMS).addTag(ConventionalItemTags.CARROT_CROPS).add(Items.GOLDEN_CARROT).add(Items.DANDELION);
-		this.tag(TFItemTags.PENGUIN_TEMPT_ITEMS).addTag(ItemTags.FISHES);
-		this.tag(TFItemTags.RAVEN_TEMPT_ITEMS).addTag(ConventionalItemTags.SEEDS);
-		this.tag(TFItemTags.SQUIRREL_TEMPT_ITEMS).addTag(ConventionalItemTags.SEEDS);
-		this.tag(TFItemTags.TINY_BIRD_TEMPT_ITEMS).addTag(ConventionalItemTags.SEEDS);
+		this.tag(TFItemTags.BOAR_TEMPT_ITEMS).forceAddTag(ConventionalItemTags.CARROT_CROPS).forceAddTag(ConventionalItemTags.POTATO_CROPS).forceAddTag(ConventionalItemTags.BEETROOT_CROPS);
+		this.tag(TFItemTags.DEER_TEMPT_ITEMS).forceAddTag(ConventionalItemTags.WHEAT_CROPS).add(Items.APPLE);
+		this.tag(TFItemTags.DWARF_RABBIT_TEMPT_ITEMS).forceAddTag(ConventionalItemTags.CARROT_CROPS).add(Items.GOLDEN_CARROT).add(Items.DANDELION);
+		this.tag(TFItemTags.PENGUIN_TEMPT_ITEMS).forceAddTag(ItemTags.FISHES);
+		this.tag(TFItemTags.RAVEN_TEMPT_ITEMS).forceAddTag(ConventionalItemTags.SEEDS);
+		this.tag(TFItemTags.SQUIRREL_TEMPT_ITEMS).forceAddTag(ConventionalItemTags.SEEDS);
+		this.tag(TFItemTags.TINY_BIRD_TEMPT_ITEMS).forceAddTag(ConventionalItemTags.SEEDS);
 
 		this.tag(TFItemTags.BANNED_UNCRAFTING_INGREDIENTS).add(
 			TFBlocks.INFESTED_TOWERWOOD.asItem(),
@@ -199,7 +199,7 @@ public class ItemTagGenerator extends IntrinsicHolderTagsProvider<Item> {
 			TFItems.TRANSFORMATION_POWDER);
 
 		this.tag(TFItemTags.BANNED_UNCRAFTABLES).add(TFBlocks.GIANT_LOG.asItem());
-		this.tag(TFItemTags.UNCRAFTING_IGNORES_COST).addTag(ConventionalItemTags.WOODEN_RODS);
+		this.tag(TFItemTags.UNCRAFTING_IGNORES_COST).forceAddTag(ConventionalItemTags.WOODEN_RODS);
 
 		this.tag(TFItemTags.KEPT_ON_DEATH).add(TFItems.TOWER_KEY, TFItems.PHANTOM_HELMET, TFItems.PHANTOM_CHESTPLATE);
 
@@ -429,8 +429,8 @@ public class ItemTagGenerator extends IntrinsicHolderTagsProvider<Item> {
 			.add(TFItems.GELATINOUS_SLIME_DROP, TFItems.GELATINOUS_MAZE_SLIME_DROP)
 			.add(TFItems.ZOMBIE_SKULL_CANDLE, TFItems.SKELETON_SKULL_CANDLE, TFItems.WITHER_SKELETON_SKULL_CANDLE, TFItems.CREEPER_SKULL_CANDLE, TFItems.PLAYER_SKULL_CANDLE, TFItems.PIGLIN_SKULL_CANDLE)
 			.add(Items.POINTED_DRIPSTONE, Items.RECOVERY_COMPASS, Items.CLOCK, Items.SPYGLASS, Items.TRIDENT)
-			.addTag(ItemTags.BANNERS)
-			.addTag(ConventionalItemTags.TOOLS)
+			.forceAddTag(ItemTags.BANNERS)
+			.forceAddTag(ConventionalItemTags.TOOLS)
 			.removeTag(ConventionalItemTags.SHIELD_TOOLS);
 
 		this.tag(TFItemTags.TROPHIES).add(
@@ -439,7 +439,7 @@ public class ItemTagGenerator extends IntrinsicHolderTagsProvider<Item> {
 			TFItems.KNIGHT_PHANTOM_TROPHY, TFItems.UR_GHAST_TROPHY,
 			TFItems.ALPHA_YETI_TROPHY, TFItems.SNOW_QUEEN_TROPHY);
 
-		this.tag(TFItemTags.EMPERORS_CLOTH_APPLICABLE).addTag(ConventionalItemTags.ARMORS).add(Items.ELYTRA);
+		this.tag(TFItemTags.EMPERORS_CLOTH_APPLICABLE).forceAddTag(ConventionalItemTags.ARMORS).add(Items.ELYTRA);
 	}
 
 	@Override

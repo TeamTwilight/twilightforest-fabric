@@ -127,11 +127,11 @@ processResources {
 		fileTree(dir: getOutputs().getFiles().getAsPath(), includes: ["**/*.json", "**/*.mcmeta"])
 	}
 
-	doLast {
+	/*doLast { // TODO: Uncomment this after fixing datagen
 		lazyTree.get().each { File file ->
 			file.setText(JsonOutput.toJson(new JsonSlurper().parse(file)))
 		}
-	}
+	}*/
 }
 
 jar {

@@ -1,15 +1,15 @@
 package twilightforest.datagen.data.loot;
 
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricEntityLootSubProvider;
 import net.minecraft.advancements.criterion.EntityPredicate;
 import net.minecraft.advancements.criterion.MinMaxBounds;
 import net.minecraft.advancements.criterion.SlimePredicate;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.loot.EntityLootSubProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
@@ -34,10 +34,11 @@ import twilightforest.loot.MultiplayerBasedNumberProvider;
 import twilightforest.loot.TFLootTables;
 import twilightforest.loot.conditions.IsMinionCondition;
 
-public class EntityLootTables extends EntityLootSubProvider {
+import java.util.concurrent.CompletableFuture;
 
-	protected EntityLootTables(HolderLookup.Provider provider) {
-		super(FeatureFlags.REGISTRY.allFlags(), provider);
+public class EntityLootTables extends FabricEntityLootSubProvider {
+	public EntityLootTables(FabricPackOutput packOutput, CompletableFuture<HolderLookup.Provider> provider) {
+		super(packOutput, provider);
 	}
 
 	@Override

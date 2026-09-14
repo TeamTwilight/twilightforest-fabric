@@ -70,6 +70,6 @@ public class DryingRecipeBuilder implements RecipeBuilder {
 	@Override
 	public void save(RecipeOutput output, ResourceKey<Recipe<?>> id) {
 		DryingRecipe recipe = new DryingRecipe(RecipeBuilder.createCraftingCommonInfo(false), this.input, this.result, this.time);
-		output.accept(id, recipe, this.hasCriteria ? this.advancementBuilder.build(output, id, RecipeCategory.valueOf("drying")) : null);
+		output.accept(id, recipe, this.hasCriteria ? this.advancementBuilder.build(output, id, RecipeCategory.MISC) : null);
 	}
 }

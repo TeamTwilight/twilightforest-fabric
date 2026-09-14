@@ -1,10 +1,11 @@
 package twilightforest.datagen.generator;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.minecraft.client.Minecraft;
 import twilightforest.datagen.data.*;
 import twilightforest.datagen.data.custom.QuestGenerator;
 import twilightforest.datagen.data.custom.stalactites.StalactiteGenerator;
+import twilightforest.datagen.data.loot.BlockLootTables;
+import twilightforest.datagen.data.loot.EntityLootTables;
 import twilightforest.datagen.data.loot.LootGenerator;
 import twilightforest.datagen.data.recipes.CraftingGeneratorRunner;
 import twilightforest.datagen.data.tags.*;
@@ -27,10 +28,11 @@ public class DataGenerator {
 
 		pack.addProvider(DynamicRegistryProvider::new);
 		pack.addProvider(CraftingGeneratorRunner::new);
+		pack.addProvider(BlockLootTables::new);
+		pack.addProvider(EntityLootTables::new);
 		pack.addProvider(LootGenerator::new);
 		pack.addProvider(QuestGenerator::new);
 		pack.addProvider(StalactiteGenerator::new);
 		pack.addProvider(TFAdvancementProvider::new);
-		pack.addProvider((output, _) -> new TFStructureUpdater("structures", output, Minecraft.getInstance().getResourceManager()));
 	}
 }

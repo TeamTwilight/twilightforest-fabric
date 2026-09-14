@@ -1,12 +1,12 @@
 package twilightforest.datagen.data.loot;
 
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootSubProvider;
 import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -33,15 +33,15 @@ import twilightforest.init.TFItems;
 import twilightforest.loot.TFLootTables;
 
 import java.util.List;
-import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
-public class BlockLootTables extends BlockLootSubProvider {
+public class BlockLootTables extends FabricBlockLootSubProvider {
 	// [VanillaCopy] of BlockLoot fields, just changed shears to work with modded ones
 	private static final float[] DEFAULT_SAPLING_DROP_RATES = new float[]{0.05F, 0.0625F, 0.083333336F, 0.1F};
 	private static final float[] RARE_SAPLING_DROP_RATES = new float[]{0.025F, 0.027777778F, 0.03125F, 0.041666668F, 0.1F};
 
-	public BlockLootTables(HolderLookup.Provider provider) {
-		super(Set.of(), FeatureFlags.REGISTRY.allFlags(), provider);
+	public BlockLootTables(FabricPackOutput packOutput, CompletableFuture<HolderLookup.Provider> provider) {
+		super(packOutput, provider);
 	}
 
 	@Override
