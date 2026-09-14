@@ -81,6 +81,10 @@ repositories {
 		name = "Terraformers" // ModMenu
 		url = "https://maven.terraformersmc.com/"
 	}
+	maven {
+		name = "Jared's maven" // JEI
+		url = "https://maven.blamejared.com/"
+	}
 	maven { url = "https://api.modrinth.com/maven" } // Jade
 }
 
@@ -99,6 +103,7 @@ dependencies {
 	// Compatibility
 	implementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
 	implementation "maven.modrinth:jade:${project.jade_version}"
+	implementation "mezz.jei:jei-${minecraft_version}-fabric:${jei_version}"
 }
 
 processResources {

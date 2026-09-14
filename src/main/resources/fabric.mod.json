@@ -29,6 +29,7 @@
     "main": ["twilightforest.TFCommon"],
     "client": ["twilightforest.TFClient"],
     "modmenu": ["twilightforest.compat.modmenu.ModMenuCompat"],
+    "jei_mod_plugin": ["twilightforest.compat.jei.JEICompat"],
     "jade": ["twilightforest.compat.jade.JadeCompat"]
   },
   "accessWidener": "twilightforest.classtweaker",
