@@ -1,5 +1,6 @@
 package twilightforest.init;
 
+import net.fabricmc.fabric.api.recipe.v1.sync.RecipeSynchronization;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.crafting.Recipe;
@@ -49,5 +50,7 @@ public class TFRecipes {
 
 	public static void init() {
 		TFCommon.LOGGER.info("Initializing recipe types...");
+		RecipeSynchronization.synchronizeRecipeSerializer(UNCRAFTING_SERIALIZER);
+		RecipeSynchronization.synchronizeRecipeSerializer(DRYING_SERIALIZER);
 	}
 }
