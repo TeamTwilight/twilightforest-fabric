@@ -28,6 +28,7 @@
   "entrypoints": {
     "main": ["twilightforest.TFCommon"],
     "client": ["twilightforest.TFClient"],
+    "fabric-datagen": ["twilightforest.datagen.TFData"],
     "modmenu": ["twilightforest.compat.modmenu.ModMenuCompat"],
     "jei_mod_plugin": ["twilightforest.compat.jei.JEICompat"],
     "jade": ["twilightforest.compat.jade.JadeCompat"]

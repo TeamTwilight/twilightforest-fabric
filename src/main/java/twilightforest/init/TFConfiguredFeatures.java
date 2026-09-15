@@ -237,6 +237,7 @@ public final class TFConfiguredFeatures {
 	}
 
 	public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
+		TFCommon.LOGGER.info("Bootstrap called for configured features...");
 		HolderGetter<ConfiguredFeature<?, ?>> features = context.lookup(Registries.CONFIGURED_FEATURE);
 		context.register(LAKE_LAVA, new ConfiguredFeature<>(TFFeatures.SMALL_LAKE, new TFSmallLakeFeature.Configuration(BlockStateProvider.simple(Blocks.LAVA), BlockStateProvider.simple(Blocks.STONE), null)));
 		context.register(LAKE_WATER, new ConfiguredFeature<>(TFFeatures.SMALL_LAKE, new TFSmallLakeFeature.Configuration(BlockStateProvider.simple(Blocks.WATER), null, null)));

@@ -17,6 +17,7 @@ import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.timeline.Timeline;
 import net.minecraft.world.timeline.Timelines;
+import twilightforest.TFCommon;
 import twilightforest.init.*;
 import twilightforest.init.custom.BiomeLayerStack;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
@@ -27,6 +28,7 @@ import java.util.Optional;
 
 public class TFDimensionGenerator {
 	public static void bootstrapType(BootstrapContext<DimensionType> context) {
+		TFCommon.LOGGER.info("Bootstrap called for dimension type...");
 		HolderGetter<Timeline> timelines = context.lookup(Registries.TIMELINE);
 		context.register(TFDimensionData.TWILIGHT_DIM_TYPE, new DimensionType(
 			true, //fixed time
@@ -104,11 +106,13 @@ public class TFDimensionGenerator {
 	}
 
 	public static void bootstrapNoise(BootstrapContext<NoiseGeneratorSettings> context) {
+		TFCommon.LOGGER.info("Bootstrap called for noise settings...");
 		context.register(TFDimensionData.TWILIGHT_NOISE_GEN, makeNoiseSettings(context, false));
 		context.register(TFDimensionData.SKYLIGHT_NOISE_GEN, makeNoiseSettings(context, true));
 	}
 
 	public static void bootstrapStem(BootstrapContext<LevelStem> context) {
+		TFCommon.LOGGER.info("Bootstrap called for level stem...");
 		HolderGetter<DimensionType> dimTypes = context.lookup(Registries.DIMENSION_TYPE);
 		HolderGetter<NoiseGeneratorSettings> noiseGenSettings = context.lookup(Registries.NOISE_SETTINGS);
 

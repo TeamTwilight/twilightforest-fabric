@@ -37,6 +37,7 @@ public class Restrictions {
 	}
 
 	public static void bootstrap(BootstrapContext<Restriction> context) {
+		TFCommon.LOGGER.info("Bootstrap called for restrictions...");
 		context.register(DARK_FOREST, new Restriction(TFStructures.KNIGHT_STRONGHOLD, Enforcements.DARKNESS_KEY, 0.0F, asStack(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE), List.of(TFCommon.prefix("progress_lich"))));
 		context.register(DARK_FOREST_CENTER, new Restriction(TFStructures.DARK_TOWER, Enforcements.DARKNESS_KEY, 0.0F, asStack(TFBlocks.KNIGHT_PHANTOM_TROPHY), List.of(TFCommon.prefix("progress_knights"))));
 		context.register(FINAL_PLATEAU, new Restriction(TFStructures.FINAL_CASTLE, Enforcements.ACID_RAIN_KEY, 1.5F, asStack(TFItems.LAMP_OF_CINDERS), List.of(TFCommon.prefix("progress_troll"))));

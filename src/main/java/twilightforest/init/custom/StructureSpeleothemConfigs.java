@@ -7,6 +7,7 @@ import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
+import twilightforest.TFCommon;
 import twilightforest.init.TFRegistries;
 import twilightforest.init.TFStructures;
 import twilightforest.util.iterators.RectangleLatticeIterator;
@@ -27,6 +28,7 @@ public class StructureSpeleothemConfigs {
 	}
 
 	public static void bootstrap(BootstrapContext<StructureSpeleothemConfig> context) {
+		TFCommon.LOGGER.info("Bootstrap called for structure speleothem configurations...");
 		bootstrapRegister(context, SMALL_HILL, RectangleLatticeIterator.TriangularLatticeConfig.DEFAULT);
 		bootstrapRegister(context, MEDIUM_HILL, RectangleLatticeIterator.TriangularLatticeConfig.DEFAULT);
 		bootstrapRegister(context, LARGE_HILL, RectangleLatticeIterator.TriangularLatticeConfig.DEFAULT);

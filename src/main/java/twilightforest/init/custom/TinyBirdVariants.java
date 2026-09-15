@@ -19,6 +19,7 @@ public class TinyBirdVariants {
 	}
 
 	public static void bootstrap(BootstrapContext<TinyBirdVariant> context) {
+		TFCommon.LOGGER.info("Bootstrap called for tiny bird variants...");
 		context.register(BLUE, new TinyBirdVariant(TFCommon.getModelTexture("tinybirdblue.png")));
 		context.register(BROWN, new TinyBirdVariant(TFCommon.getModelTexture("tinybirdbrown.png")));
 		context.register(GOLD, new TinyBirdVariant(TFCommon.getModelTexture("tinybirdgold.png")));

@@ -52,6 +52,7 @@ public class TFStructureSets {
 	}
 
 	public static void bootstrap(BootstrapContext<StructureSet> context) {
+		TFCommon.LOGGER.info("Bootstrap called for structure sets...");
 		HolderGetter<Structure> structures = context.lookup(Registries.STRUCTURE);
 		HolderGetter<StructureSet> structureSets = context.lookup(Registries.STRUCTURE_SET);
 

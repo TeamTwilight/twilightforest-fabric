@@ -27,6 +27,7 @@ public class TFJukeboxSongs {
 	}
 
 	public static void bootstrap(BootstrapContext<JukeboxSong> context) {
+		TFCommon.LOGGER.info("Bootstrap called for jukebox songs...");
 		register(context, RADIANCE, TFSounds.MUSIC_DISC_RADIANCE, 123, 15);
 		register(context, STEPS, TFSounds.MUSIC_DISC_STEPS, 195, 15);
 		register(context, SUPERSTITIOUS, TFSounds.MUSIC_DISC_SUPERSTITIOUS, 192, 15);

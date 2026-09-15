@@ -31,6 +31,7 @@ public class TFEnchantments {
 	}
 
 	public static void bootstrap(BootstrapContext<Enchantment> context) {
+		TFCommon.LOGGER.info("Bootstrap called for enchantments...");
 		HolderGetter<Enchantment> enchantments = context.lookup(Registries.ENCHANTMENT);
 		HolderGetter<Item> items = context.lookup(Registries.ITEM);
 		HolderGetter<Block> blocks = context.lookup(Registries.BLOCK);

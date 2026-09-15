@@ -69,6 +69,7 @@ public class TravellersModifiersManager {
 	}
 
 	public static void bootstrap(BootstrapContext<TravellersModifier> context) {
+		TFCommon.LOGGER.info("Bootstrap called for travellers modifiers...");
 		context.register(AUTO_REPAIR_MODIFIER, new TravellersComponentModifier(EquipmentSlotGroup.ARMOR, TFDataComponents.AUTO_REPAIR_PROBABILITY, 0.001F, componentText(AUTO_REPAIR_MODIFIER)));
 		context.register(ZOOM_ABILITY, new BuiltinTravellersComponentModifier(EquipmentSlotGroup.HEAD, TFDataComponents.ZOOM_ABILITY_MODIFIER));
 		context.register(AQUATIC_AGILITY_MODIFIER, new TravellersEntryModifier(EquipmentSlotGroup.HEAD, List.of(

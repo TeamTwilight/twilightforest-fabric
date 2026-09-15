@@ -201,6 +201,7 @@ public class TFPlacedFeatures {
 	}
 
 	public static void bootstrap(BootstrapContext<PlacedFeature> context) {
+		TFCommon.LOGGER.info("Bootstrap called for placed features...");
 		HolderGetter<ConfiguredFeature<?, ?>> features = context.lookup(Registries.CONFIGURED_FEATURE);
 		HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
 		AvoidLandmarkModifier avoidLichTower = AvoidLandmarkModifier.checkVegetation();

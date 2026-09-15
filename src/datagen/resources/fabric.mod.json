@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "twilightforest-data",
+  "id": "twilightforest",
   "version": "${version}",
   "name": "The Twilight Forest",
   "license": "LGPL-2.1",

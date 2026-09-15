@@ -6,10 +6,12 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import twilightforest.TFCommon;
 import twilightforest.init.TFBiomes;
 
 public class TFBiomeGenerator {
 	public static void bootstrap(BootstrapContext<Biome> context) {
+		TFCommon.LOGGER.info("Bootstrap called for biomes...");
 		HolderGetter<PlacedFeature> featureGetter = context.lookup(Registries.PLACED_FEATURE);
 		HolderGetter<ConfiguredWorldCarver<?>> carverGetter = context.lookup(Registries.CONFIGURED_CARVER);
 

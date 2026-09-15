@@ -49,6 +49,7 @@ public final class ChunkBlanketProcessors {
 	}
 
 	public static void bootstrap(BootstrapContext<ChunkBlanketProcessor> context) {
+		TFCommon.LOGGER.info("Bootstrap called for chunk blanket processors...");
 		HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
 		HolderGetter<Structure> structures = context.lookup(Registries.STRUCTURE);
 

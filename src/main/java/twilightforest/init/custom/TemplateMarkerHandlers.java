@@ -59,6 +59,7 @@ public class TemplateMarkerHandlers {
 	//    Spawner handler
 
 	public static void bootstrap(BootstrapContext<TemplateMarkerHandlerList> context) {
+		TFCommon.LOGGER.info("Bootstrap called for template marker handler lists...");
 		BlockPlaceMarkerHandler campfireSeat = new BlockPlaceMarkerHandler(new WeightedStateProvider(WeightedList.<BlockState>builder()
 			.add(TFBlocks.TWILIGHT_OAK_SLAB.defaultBlockState(), 1)
 			.add(Blocks.AIR.defaultBlockState(), 3)

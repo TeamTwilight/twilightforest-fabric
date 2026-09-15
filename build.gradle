@@ -56,7 +56,6 @@ loom {
 
 fabricApi {
 	configureDataGeneration {
-		modId = "twilightforest-data"
 		client = true
 		createSourceSet = true
 	}

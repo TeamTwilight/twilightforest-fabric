@@ -50,6 +50,7 @@ public class MagicPaintingVariants {
 	}
 
 	public static void bootstrap(BootstrapContext<MagicPaintingVariant> context) {
+		TFCommon.LOGGER.info("Bootstrap called for magic painting variants...");
 		register(context, DARKNESS, "Darkness", /* Name omitted by choice */ "???", 4, 2, MagicPaintingAtlasInfo.BACK_SPRITE_LOCATION, List.of(
 			new Layer("background", null, null, true, true),
 			new Layer("sky", new Parallax(Parallax.Type.VIEW_ANGLE, 0.01F, 128, 32), new OpacityModifier(OpacityModifier.Type.SINE_TIME, 0.03F, false, 0.0F, 1.0F), true, true),

@@ -74,6 +74,7 @@ public class TFDamageTypes {
 	}
 
 	public static void bootstrap(BootstrapContext<DamageType> context) {
+		TFCommon.LOGGER.info("Bootstrap called for damage types...");
 		context.register(GHAST_TEAR, new DamageType("twilightforest.ghastTear", 0.0F));
 		context.register(HYDRA_BITE, new DamageType("twilightforest.hydraBite", 0.0F));
 		context.register(HYDRA_FIRE, new DamageType("twilightforest.hydraFire", 0.0F));

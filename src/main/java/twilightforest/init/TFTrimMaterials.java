@@ -23,6 +23,7 @@ public class TFTrimMaterials {
 	}
 
 	public static void bootstrap(BootstrapContext<TrimMaterial> context) {
+		TFCommon.LOGGER.info("Bootstrap called for trim materials...");
 		register(context, IRONWOOD, TFMaterialAssetGroup.IRONWOOD, Style.EMPTY.withColor(7037281));
 		register(context, STEELEAF, TFMaterialAssetGroup.STEELEAF, Style.EMPTY.withColor(4814643));
 		register(context, KNIGHTMETAL, TFMaterialAssetGroup.KNIGHTMETAL, Style.EMPTY.withColor(8424562));

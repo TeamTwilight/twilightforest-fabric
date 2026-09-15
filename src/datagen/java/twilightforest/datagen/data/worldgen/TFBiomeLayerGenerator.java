@@ -7,6 +7,7 @@ import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.world.level.biome.Biome;
+import twilightforest.TFCommon;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFRegistries;
 import twilightforest.init.custom.BiomeLayerStack;
@@ -19,6 +20,7 @@ import java.util.List;
 
 public class TFBiomeLayerGenerator {
 	public static void bootstrap(BootstrapContext<BiomeLayerFactory> context) {
+		TFCommon.LOGGER.info("Bootstrap called for biome layers...");
 		BiomeLayerFactory biomes = new RandomBiomeLayer.Factory(1L, 15, ImmutableList.of(
 			TFBiomes.FOREST,
 			TFBiomes.DENSE_FOREST,
@@ -68,6 +70,7 @@ public class TFBiomeLayerGenerator {
 	}
 
 	public static void bootstrapData(BootstrapContext<BiomeDensitySource> context) {
+		TFCommon.LOGGER.info("Bootstrap called for biome density sources...");
 		HolderGetter<Biome> biomeRegistry = context.lookup(Registries.BIOME);
 
 		context.register(BiomeLayerStack.BIOME_GRID, new BiomeDensitySource(

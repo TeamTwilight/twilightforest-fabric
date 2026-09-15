@@ -22,6 +22,7 @@ public class TFBannerPatterns {
 	}
 
 	public static void bootstrap(BootstrapContext<BannerPattern> context) {
+		TFCommon.LOGGER.info("Bootstrap called for banner patterns...");
 		context.register(NAGA, new BannerPattern(TFCommon.prefix("naga"), "block.minecraft.banner.twilightforest.naga"));
 		context.register(LICH, new BannerPattern(TFCommon.prefix("lich"), "block.minecraft.banner.twilightforest.lich"));
 		context.register(MINOSHROOM, new BannerPattern(TFCommon.prefix("minoshroom"), "block.minecraft.banner.twilightforest.minoshroom"));

@@ -43,6 +43,7 @@ public class TFStructures {
 	}
 
 	public static void bootstrap(BootstrapContext<Structure> context) {
+		TFCommon.LOGGER.info("Bootstrap called for structures...");
 		context.register(FALLEN_TRUNK, FallenTrunkStructure.buildStructureConfig(context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_HOLLOW_TREE_BIOMES)));
 		context.register(HOLLOW_TREE, HollowTreeStructure.buildStructureConfig(false, context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_HOLLOW_TREE_BIOMES)));
 		context.register(SWAMP_HOLLOW_TREE, HollowTreeStructure.buildStructureConfig(true, HolderSet.direct(context.lookup(Registries.BIOME).getOrThrow(TFBiomes.SWAMP))));

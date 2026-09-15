@@ -78,6 +78,7 @@ public class TFCaveCarvers {
 	}
 
 	public static void bootstrap(BootstrapContext<ConfiguredWorldCarver<?>> context) {
+		TFCommon.LOGGER.info("Bootstrap called for cave carvers...");
 		HolderGetter<Block> blocks = context.lookup(Registries.BLOCK);
 		context.register(TFCAVES_CONFIGURED, TF_CAVES.configured(new CaveCarverConfiguration(
 			0.1F,

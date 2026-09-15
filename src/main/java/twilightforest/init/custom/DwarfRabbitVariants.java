@@ -18,6 +18,7 @@ public class DwarfRabbitVariants {
 
 
 	public static void bootstrap(BootstrapContext<DwarfRabbitVariant> context) {
+		TFCommon.LOGGER.info("Bootstrap called for dwarf rabbit variants...");
 		context.register(BROWN, new DwarfRabbitVariant(TFCommon.getModelTexture("bunnybrown.png")));
 		context.register(DUTCH, new DwarfRabbitVariant(TFCommon.getModelTexture("bunnydutch.png")));
 		context.register(WHITE, new DwarfRabbitVariant(TFCommon.getModelTexture("bunnywhite.png")));

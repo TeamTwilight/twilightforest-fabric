@@ -42,6 +42,7 @@ public class TFDensityFunctions {
 	}
 
 	public static void bootstrap(BootstrapContext<DensityFunction> context) {
+		TFCommon.LOGGER.info("Bootstrap called for density functions...");
 		Holder.Reference<BiomeDensitySource> biomeGrid = context.lookup(TFRegistries.Keys.BIOME_TERRAIN_DATA).getOrThrow(BiomeLayerStack.BIOME_GRID);
 		DensityFunction referencedBiomeDensity = makeBiomeDensityRaw(context, biomeGrid);
 		DensityFunction ambientTerrainNoise = makeAmbientNoise2D(context);
