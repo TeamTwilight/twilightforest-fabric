@@ -58,6 +58,7 @@ fabricApi {
 	configureDataGeneration {
 		client = true
 		createSourceSet = true
+		outputDirectory = file("src/main/generated/resources")
 	}
 }
 
