@@ -62,7 +62,7 @@ public class TFAdvancementGenerator implements AdvancementSubProvider {
 				TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE,
 				Component.translatable("advancement.twilightforest.root"),
 				Component.translatable("advancement.twilightforest.root.desc"),
-				TFCommon.prefix("textures/block/mazestone_large_brick.png"),
+				TFCommon.prefix("block/mazestone_large_brick"),
 				AdvancementType.TASK,
 				true, false, false)
 			.requirements(AdvancementRequirements.Strategy.OR)
