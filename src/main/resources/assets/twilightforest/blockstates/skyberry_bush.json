@@ -4,7 +4,7 @@
       "model": "twilightforest:block/skyberry_bush_small"
     },
     "age=0,layers=1": {
-      "type": "neoforge:composite",
+      "fabric:type": "fabric:composite",
       "models": [
         {
           "model": "twilightforest:block/skyberry_bush_small"
@@ -15,7 +15,7 @@
       ]
     },
     "age=0,layers=2": {
-      "type": "neoforge:composite",
+      "fabric:type": "fabric:composite",
       "models": [
         {
           "model": "twilightforest:block/skyberry_bush_small"
@@ -26,7 +26,7 @@
       ]
     },
     "age=0,layers=3": {
-      "type": "neoforge:composite",
+      "fabric:type": "fabric:composite",
       "models": [
         {
           "model": "twilightforest:block/skyberry_bush_small"
@@ -55,7 +55,7 @@
       "model": "twilightforest:block/skyberry_bush"
     },
     "age=1,layers=1": {
-      "type": "neoforge:composite",
+      "fabric:type": "fabric:composite",
       "models": [
         {
           "model": "twilightforest:block/skyberry_bush"
@@ -66,7 +66,7 @@
       ]
     },
     "age=1,layers=2": {
-      "type": "neoforge:composite",
+      "fabric:type": "fabric:composite",
       "models": [
         {
           "model": "twilightforest:block/skyberry_bush"
@@ -77,7 +77,7 @@
       ]
     },
     "age=1,layers=3": {
-      "type": "neoforge:composite",
+      "fabric:type": "fabric:composite",
       "models": [
         {
           "model": "twilightforest:block/skyberry_bush"
@@ -88,7 +88,7 @@
       ]
     },
     "age=1,layers=4": {
-      "type": "neoforge:composite",
+      "fabric:type": "fabric:composite",
       "models": [
         {
           "model": "twilightforest:block/skyberry_bush"
@@ -99,7 +99,7 @@
       ]
     },
     "age=1,layers=5": {
-      "type": "neoforge:composite",
+      "fabric:type": "fabric:composite",
       "models": [
         {
           "model": "twilightforest:block/skyberry_bush"
@@ -122,7 +122,7 @@
       "model": "twilightforest:block/skyberry_bush_large"
     },
     "age=2,layers=1": {
-      "type": "neoforge:composite",
+      "fabric:type": "fabric:composite",
       "models": [
         {
           "model": "twilightforest:block/skyberry_bush_large_1"
@@ -133,7 +133,7 @@
       ]
     },
     "age=2,layers=2": {
-      "type": "neoforge:composite",
+      "fabric:type": "fabric:composite",
       "models": [
         {
           "model": "twilightforest:block/skyberry_bush_large_2"
@@ -144,7 +144,7 @@
       ]
     },
     "age=2,layers=3": {
-      "type": "neoforge:composite",
+      "fabric:type": "fabric:composite",
       "models": [
         {
           "model": "twilightforest:block/skyberry_bush_large_3"
@@ -155,7 +155,7 @@
       ]
     },
     "age=2,layers=4": {
-      "type": "neoforge:composite",
+      "fabric:type": "fabric:composite",
       "models": [
         {
           "model": "twilightforest:block/skyberry_bush_large_4"
@@ -166,7 +166,7 @@
       ]
     },
     "age=2,layers=5": {
-      "type": "neoforge:composite",
+      "fabric:type": "fabric:composite",
       "models": [
         {
           "model": "twilightforest:block/skyberry_bush_large_5"
@@ -177,7 +177,7 @@
       ]
     },
     "age=2,layers=6": {
-      "type": "neoforge:composite",
+      "fabric:type": "fabric:composite",
       "models": [
         {
           "model": "twilightforest:block/skyberry_bush_large_6"
@@ -188,7 +188,7 @@
       ]
     },
     "age=2,layers=7": {
-      "type": "neoforge:composite",
+      "fabric:type": "fabric:composite",
       "models": [
         {
           "model": "twilightforest:block/skyberry_bush_large_7"
@@ -205,7 +205,7 @@
       "model": "twilightforest:block/skyberry_bush_ripe"
     },
     "age=3,layers=1": {
-      "type": "neoforge:composite",
+      "fabric:type": "fabric:composite",
       "models": [
         {
           "model": "twilightforest:block/skyberry_bush_ripe_1"
@@ -216,7 +216,7 @@
       ]
     },
     "age=3,layers=2": {
-      "type": "neoforge:composite",
+      "fabric:type": "fabric:composite",
       "models": [
         {
           "model": "twilightforest:block/skyberry_bush_ripe_2"
@@ -227,7 +227,7 @@
       ]
     },
     "age=3,layers=3": {
-      "type": "neoforge:composite",
+      "fabric:type": "fabric:composite",
       "models": [
         {
           "model": "twilightforest:block/skyberry_bush_ripe_3"
@@ -238,7 +238,7 @@
       ]
     },
     "age=3,layers=4": {
-      "type": "neoforge:composite",
+      "fabric:type": "fabric:composite",
       "models": [
         {
           "model": "twilightforest:block/skyberry_bush_ripe_4"
@@ -249,7 +249,7 @@
       ]
     },
     "age=3,layers=5": {
-      "type": "neoforge:composite",
+      "fabric:type": "fabric:composite",
       "models": [
         {
           "model": "twilightforest:block/skyberry_bush_ripe_5"
@@ -260,7 +260,7 @@
       ]
     },
     "age=3,layers=6": {
-      "type": "neoforge:composite",
+      "fabric:type": "fabric:composite",
       "models": [
         {
           "model": "twilightforest:block/skyberry_bush_ripe_6"
@@ -271,7 +271,7 @@
       ]
     },
     "age=3,layers=7": {
-      "type": "neoforge:composite",
+      "fabric:type": "fabric:composite",
       "models": [
         {
           "model": "twilightforest:block/skyberry_bush_ripe_7"

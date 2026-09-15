@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "type": "twilightforest:connected_texture_block",
+      "fabric:type": "twilightforest:connected_texture_block",
       "connectable_blocks": [
         "twilightforest:auroralized_glass"
       ],
