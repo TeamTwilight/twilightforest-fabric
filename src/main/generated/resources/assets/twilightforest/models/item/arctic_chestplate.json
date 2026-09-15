@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "twilightforest:item/arctic_chestplate",
-    "layer1": "twilightforest:item/arctic_chestplate_0"
-  }
-}

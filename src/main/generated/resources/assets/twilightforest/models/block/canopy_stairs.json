@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/stairs",
-  "textures": {
-    "bottom": "twilightforest:block/canopy_planks",
-    "side": "twilightforest:block/canopy_planks",
-    "top": "twilightforest:block/canopy_planks"
-  }
-}

@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "twilightforest:item/spawn_egg_base",
-    "layer1": "twilightforest:item/spawn_egg_overlay"
-  }
-}

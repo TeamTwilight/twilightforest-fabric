@@ -1,9 +1,0 @@
-{
-  "variants": {
-    "": {
-      "type": "twilightforest:plant_patch",
-      "shaggify": false,
-      "texture": "twilightforest:block/cloverpatch"
-    }
-  }
-}

@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/door_bottom_left",
-  "textures": {
-    "bottom": "twilightforest:block/transformation_door_bottom",
-    "top": "twilightforest:block/transformation_door_top"
-  }
-}

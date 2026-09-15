@@ -1,7 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": "twilightforest:terrorcotta_curves",
-  "result": {
-    "id": "twilightforest:terrorcotta_lines"
-  }
-}

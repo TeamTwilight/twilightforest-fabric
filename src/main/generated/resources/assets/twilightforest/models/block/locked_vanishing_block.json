@@ -1,8 +1,0 @@
-{
-  "parent": "twilightforest:block/util/three_layer_block",
-  "textures": {
-    "all": "twilightforest:block/locked_vanishing_block",
-    "all2": "twilightforest:block/locked_vanishing_block_layer_1",
-    "all3": "twilightforest:block/locked_vanishing_block_layer_2"
-  }
-}

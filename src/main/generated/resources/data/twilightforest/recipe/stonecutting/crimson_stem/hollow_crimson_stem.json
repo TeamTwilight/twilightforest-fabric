@@ -1,7 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": "minecraft:crimson_stem",
-  "result": {
-    "id": "twilightforest:hollow_crimson_stem"
-  }
-}

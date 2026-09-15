@@ -1,7 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": "twilightforest:mining_log",
-  "result": {
-    "id": "twilightforest:hollow_mining_log"
-  }
-}

@@ -1,8 +1,0 @@
-{
-  "parent": "twilightforest:block/tinted_cube_bottom_top",
-  "textures": {
-    "bottom": "minecraft:block/black_concrete_powder",
-    "side": "twilightforest:block/fire_jet_side",
-    "top": "twilightforest:block/fire_jet_top"
-  }
-}

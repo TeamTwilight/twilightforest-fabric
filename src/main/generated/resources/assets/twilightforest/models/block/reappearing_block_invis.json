@@ -1,6 +1,0 @@
-{
-  "parent": "twilightforest:block/util/small_cube",
-  "textures": {
-    "all": "twilightforest:block/reappearing_block_invis"
-  }
-}

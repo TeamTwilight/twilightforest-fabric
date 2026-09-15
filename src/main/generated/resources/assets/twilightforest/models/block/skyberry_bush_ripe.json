@@ -1,6 +1,0 @@
-{
-  "parent": "twilightforest:block/util/large_bush",
-  "textures": {
-    "all": "twilightforest:block/skyberry_bush_ripe"
-  }
-}

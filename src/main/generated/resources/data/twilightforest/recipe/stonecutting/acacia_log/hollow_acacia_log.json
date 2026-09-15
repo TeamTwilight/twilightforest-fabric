@@ -1,7 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": "minecraft:acacia_log",
-  "result": {
-    "id": "twilightforest:hollow_acacia_log"
-  }
-}
