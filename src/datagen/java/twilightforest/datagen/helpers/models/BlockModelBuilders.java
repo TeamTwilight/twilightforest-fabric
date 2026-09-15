@@ -1,10 +1,13 @@
 package twilightforest.datagen.helpers.models;
 
 import com.mojang.math.Quadrant;
+import net.fabricmc.fabric.api.client.model.loading.v1.CustomUnbakedBlockStateModel;
 import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.*;
 import net.minecraft.client.data.models.model.*;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModelDispatcher;
 import net.minecraft.client.renderer.block.dispatch.Variant;
 import net.minecraft.client.renderer.block.dispatch.VariantMutator;
 import net.minecraft.client.renderer.item.ClientItem;
@@ -23,6 +26,9 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TFCommon;
 import twilightforest.block.*;
+import twilightforest.client.model.block.connected.UnbakedConnectedTextureModel;
+import twilightforest.client.model.block.forcefield.ForceFieldModel;
+import twilightforest.client.model.block.forcefield.UnbakedForceFieldBlockStateModel;
 import twilightforest.client.model.item.AnimatedItemModel;
 import twilightforest.client.renderer.special.SkullCandleSpecialRenderer;
 import twilightforest.client.renderer.special.TrophySpecialRenderer;
@@ -33,8 +39,7 @@ import twilightforest.enums.BossVariant;
 import twilightforest.enums.NagastoneVariant;
 import twilightforest.init.TFBlocks;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -78,6 +83,58 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		TextureMapping texturemapping = TextureMapping.cube(new Material(TFCommon.prefix(texture)));
 		this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(ModelTemplates.CUBE_ALL_INNER_FACES.create(block, texturemapping, this.modelOutput))));
 		this.generateBlockItem(block);
+	}
+
+	public void basicCtmBlock(Block block) {
+		this.blockStateOutput.accept(ctmVariant(block, UnbakedConnectedTextureModel.builder(TextureMapping.getBlockTexture(block)).connectsTo(block).build()));
+
+		// make a plain cube for the block's item since registering the ctm model is overkill
+		ModelTemplates.CUBE_ALL.create(block, TextureMapping.cube(block), this.modelOutput);
+		this.generateBlockItem(block);
+	}
+
+	public static BlockModelDefinitionGenerator ctmVariant(Block block, CustomUnbakedBlockStateModel model) {
+		return new BlockModelDefinitionGenerator() {
+			@Override
+			public Block block() {
+				return block;
+			}
+
+			@Override
+			public BlockStateModelDispatcher create() {
+				return new BlockStateModelDispatcher(Optional.of(new BlockStateModelDispatcher.SimpleModelSelectors(Map.of("", model))), Optional.empty());
+			}
+		};
+	}
+
+	public static BlockModelDefinitionGenerator ctmVariant(Block block, CustomPropertyDispatch<BlockStateModel.Unbaked> dispatch) {
+		return new BlockModelDefinitionGenerator() {
+			@Override
+			public Block block() {
+				return block;
+			}
+
+			@Override
+			public BlockStateModelDispatcher create() {
+				Map<String, BlockStateModel.Unbaked> variants = new HashMap<>();
+				dispatch.getEntries().forEach((properties, model) -> variants.put(properties.getKey(), model));
+				return new BlockStateModelDispatcher(Optional.of(new BlockStateModelDispatcher.SimpleModelSelectors(variants)), Optional.empty());
+			}
+		};
+	}
+
+	public void castleDoor(Block block, int tint) {
+		Material runes = new Material(TFCommon.prefix("block/castle_door_rune_corners"));
+		Material runesCtm = new Material(TFCommon.prefix("block/castle_door_rune_ctm"));
+		Function<Boolean, BlockStateModel.Unbaked> door = vanished -> UnbakedConnectedTextureModel.builder(runes, runesCtm)
+				.base(new Material(TFCommon.prefix("block/castle_door" + (vanished ? "_vanished" : ""))))
+				.connectsTo(TFBlocks.BLUE_CASTLE_DOOR, TFBlocks.PINK_CASTLE_DOOR, TFBlocks.VIOLET_CASTLE_DOOR, TFBlocks.YELLOW_CASTLE_DOOR)
+				.overlayEmissivity(15)
+				.overlayTintIndex(0)
+				.build();
+		this.blockStateOutput.accept(ctmVariant(block, CustomPropertyDispatch.initial(CastleDoorBlock.VANISHED).select(true, door.apply(true)).select(false, door.apply(false))));
+		Identifier itemModel = TFModelTemplates.TWO_LAYER_BLOCK_TINTED_15.create(block, new TextureMapping().put(TextureSlot.ALL, new Material(TFCommon.prefix("block/castle_door"))).put(TFTextureSlot.ALL_2, runes), this.modelOutput);
+		this.registerSimpleTintedItemModel(block, itemModel, ItemModelUtils.constantTint(tint));
 	}
 
 	public void generateGiantBlockItem(Block giantBlock, TextureMapping mapping) {
@@ -462,6 +519,144 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 				.select(Direction.WEST, plainVariant(identifier).with(Y_ROT_90).with(X_ROT_270))
 				.select(Direction.EAST, plainVariant(identifier).with(Y_ROT_90).with(X_ROT_90))
 		));
+	}
+
+	public void forcefield(Block block, int tint) {
+		this.blockStateOutput.accept(ctmVariant(block, new UnbakedForceFieldBlockStateModel(new Material(TFCommon.prefix("block/forcefield_white")), false, ForceFieldModelBuilder.begin()
+			.tintAll(0).brightnessOverride(15).disableShade()
+			//WEST
+			.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.WEST, true).from(0, 7, 7).to(7, 9, 9).face(Direction.WEST).cullface(Direction.WEST).uvs(7, 7, 9, 9).end()
+				.ifElse().from(7, 7, 7).to(9, 9, 9).face(Direction.WEST).uvs(7, 7, 9, 9).end().end()
+
+				//EAST
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.EAST, true).from(9, 7, 7).to(16, 9, 9).face(Direction.EAST).cullface(Direction.EAST).uvs(7, 7, 9, 9).end()
+				.ifElse().from(7, 7, 7).to(9, 9, 9).face(Direction.EAST).uvs(7, 7, 9, 9).end().end()
+
+				//DOWN
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.DOWN, true).from(7, 0, 7).to(9, 7, 9).face(Direction.DOWN).cullface(Direction.DOWN).uvs(7, 7, 9, 9).end()
+				.ifElse().from(7, 7, 7).to(9, 9, 9).face(Direction.DOWN).uvs(7, 7, 9, 9).end().end()
+
+				//UP
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.UP, true).from(7, 9, 7).to(9, 16, 9).face(Direction.UP).cullface(Direction.UP).uvs(7, 7, 9, 9).end()
+				.ifElse().from(7, 7, 7).to(9, 9, 9).face(Direction.UP).uvs(7, 7, 9, 9).end().end()
+
+				//NORTH
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.NORTH, true).from(7, 7, 0).to(9, 9, 7).face(Direction.NORTH).cullface(Direction.NORTH).uvs(7, 7, 9, 9).end()
+				.ifElse().from(7, 7, 7).to(9, 9, 9).face(Direction.NORTH).uvs(7, 7, 9, 9).end().end()
+
+				//SOUTH
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.SOUTH, true).from(7, 7, 9).to(9, 9, 16).face(Direction.SOUTH).cullface(Direction.SOUTH).uvs(7, 7, 9, 9).end()
+				.ifElse().from(7, 7, 7).to(9, 9, 9).face(Direction.SOUTH).uvs(7, 7, 9, 9).end().end()
+
+				//DOWN WEST
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.DOWN_WEST, true).parents(ForceFieldModel.ExtraDirection.DOWN, ForceFieldModel.ExtraDirection.WEST).from(0, 0, 7).to(7, 7, 9)
+					.face(Direction.DOWN).cullface(Direction.DOWN).uvs(0, 7, 7, 9).end()
+					.face(Direction.WEST).cullface(Direction.WEST).uvs(7, 0, 9, 7).end()
+					.face(Direction.NORTH).uvs(0, 0, 7, 7).end()
+					.face(Direction.SOUTH).uvs(9, 0, 16, 7).end()
+				.ifElse().from(7, 0, 7).to(9, 7, 9).parents(ForceFieldModel.ExtraDirection.DOWN).face(Direction.WEST).uvs(7, 0, 9, 7).end()
+				.ifSame().from(0, 7, 7).to(7, 9, 9).parents(ForceFieldModel.ExtraDirection.WEST).face(Direction.DOWN).uvs(0, 7, 7, 9).end().end()
+
+				//DOWN EAST
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.DOWN_EAST, true).parents(ForceFieldModel.ExtraDirection.DOWN, ForceFieldModel.ExtraDirection.EAST).from(9, 0, 7).to(16, 7, 9)
+					.face(Direction.DOWN).cullface(Direction.DOWN).uvs(9, 7, 16, 9).end()
+					.face(Direction.EAST).cullface(Direction.EAST).uvs(7, 0, 9, 7).end()
+					.face(Direction.NORTH).uvs(9, 0, 16, 7).end()
+					.face(Direction.SOUTH).uvs(0, 0, 7, 7).end()
+				.ifElse().from(7, 0, 7).to(9, 7, 9).parents(ForceFieldModel.ExtraDirection.DOWN).face(Direction.EAST).uvs(7, 0, 9, 7).end()
+				.ifSame().from(9, 7, 7).to(16, 9, 9).parents(ForceFieldModel.ExtraDirection.EAST).face(Direction.DOWN).uvs(9, 7, 16, 9).end().end()
+
+				//DOWN NORTH
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.DOWN_NORTH, true).from(7, 0, 0).to(9, 7, 7).parents(ForceFieldModel.ExtraDirection.DOWN, ForceFieldModel.ExtraDirection.NORTH)
+					.face(Direction.DOWN).cullface(Direction.DOWN).uvs(7, 0, 9, 7).end()
+					.face(Direction.NORTH).cullface(Direction.NORTH).uvs(7, 0, 9, 7).end()
+					.face(Direction.WEST).uvs(0, 0, 7, 7).end()
+					.face(Direction.EAST).uvs(9, 9, 16, 16).end()
+				.ifElse().from(7, 0, 7).to(9, 7, 9).parents(ForceFieldModel.ExtraDirection.DOWN).face(Direction.NORTH).uvs(7, 0, 9, 7).end()
+				.ifSame().from(7, 7, 0).to(9, 9, 7).parents(ForceFieldModel.ExtraDirection.NORTH).face(Direction.DOWN).uvs(7, 0, 9, 7).end().end()
+
+				//DOWN SOUTH
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.DOWN_SOUTH, true).from(7, 0, 9).to(9, 7, 16).parents(ForceFieldModel.ExtraDirection.DOWN, ForceFieldModel.ExtraDirection.SOUTH)
+					.face(Direction.DOWN).cullface(Direction.DOWN).uvs(7, 9, 9, 16).end()
+					.face(Direction.SOUTH).cullface(Direction.SOUTH).uvs(7, 0, 9, 7).end()
+					.face(Direction.WEST).uvs(9, 0, 16, 7).end()
+					.face(Direction.EAST).uvs(0, 0, 7, 7).end()
+				.ifElse().from(7, 0, 7).to(9, 7, 9).parents(ForceFieldModel.ExtraDirection.DOWN).face(Direction.SOUTH).uvs(7, 0, 9, 7).end()
+				.ifSame().from(7, 7, 9).to(9, 9, 16).parents(ForceFieldModel.ExtraDirection.SOUTH).face(Direction.DOWN).uvs(7, 9, 9, 16).end().end()
+
+				//UP WEST
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.UP_WEST, true).from(0, 9, 7).to(7, 16, 9).parents(ForceFieldModel.ExtraDirection.UP, ForceFieldModel.ExtraDirection.WEST)
+					.face(Direction.UP).cullface(Direction.UP).uvs(0, 7, 7, 9).end()
+					.face(Direction.WEST).cullface(Direction.WEST).uvs(7, 9, 9, 16).end()
+					.face(Direction.NORTH).uvs(0, 9, 7, 16).end()
+					.face(Direction.SOUTH).uvs(9, 9, 16, 16).end()
+				.ifElse().from(7, 9, 7).to(9, 16, 9).parents(ForceFieldModel.ExtraDirection.UP).face(Direction.WEST).uvs(7, 9, 9, 16).end()
+				.ifSame().from(0, 7, 7).to(7, 9, 9).parents(ForceFieldModel.ExtraDirection.WEST).face(Direction.UP).uvs(0, 7, 7, 9).end().end()
+
+				//UP EAST
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.UP_EAST, true).from(9, 9, 7).to(16, 16, 9).parents(ForceFieldModel.ExtraDirection.UP, ForceFieldModel.ExtraDirection.EAST)
+					.face(Direction.UP).cullface(Direction.UP).uvs(9, 7, 16, 9).end()
+					.face(Direction.EAST).cullface(Direction.EAST).uvs(7, 9, 9, 16).end()
+					.face(Direction.NORTH).uvs(9, 9, 16, 16).end()
+					.face(Direction.SOUTH).uvs(0, 9, 7, 16).end()
+				.ifElse().from(7, 9, 7).to(9, 16, 9).parents(ForceFieldModel.ExtraDirection.UP).face(Direction.EAST).uvs(7, 9, 9, 16).end()
+				.ifSame().from(9, 7, 7).to(16, 9, 9).parents(ForceFieldModel.ExtraDirection.EAST).face(Direction.UP).uvs(9, 7, 16, 9).end().end()
+
+				//UP NORTH
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.UP_NORTH, true).from(7, 9, 0).to(9, 16, 7).parents(ForceFieldModel.ExtraDirection.UP, ForceFieldModel.ExtraDirection.NORTH)
+					.face(Direction.UP).cullface(Direction.UP).uvs(7, 0, 9, 7).end()
+					.face(Direction.NORTH).cullface(Direction.NORTH).uvs(7, 9, 9, 16).end()
+					.face(Direction.WEST).uvs(0, 9, 7, 16).end()
+					.face(Direction.EAST).uvs(9, 9, 16, 16).end()
+				.ifElse().from(7, 9, 7).to(9, 16, 9).parents(ForceFieldModel.ExtraDirection.UP).face(Direction.NORTH).uvs(7, 9, 9, 16).end()
+				.ifSame().from(7, 7, 0).to(9, 9, 7).parents(ForceFieldModel.ExtraDirection.NORTH).face(Direction.UP).uvs(7, 0, 9, 7).end().end()
+
+				//UP SOUTH
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.UP_SOUTH, true).from(7, 9, 9).to(9, 16, 16).parents(ForceFieldModel.ExtraDirection.UP, ForceFieldModel.ExtraDirection.SOUTH)
+					.face(Direction.UP).cullface(Direction.UP).uvs(7, 9, 9, 16).end()
+					.face(Direction.SOUTH).cullface(Direction.SOUTH).uvs(7, 9, 9, 16).end()
+					.face(Direction.WEST).uvs(9, 9, 16, 16).end()
+					.face(Direction.EAST).uvs(0, 9, 7, 16).end()
+				.ifElse().from(7, 9, 7).to(9, 16, 9).parents(ForceFieldModel.ExtraDirection.UP).face(Direction.SOUTH).uvs(7, 9, 9, 16).end()
+				.ifSame().from(7, 7, 9).to(9, 9, 16).parents(ForceFieldModel.ExtraDirection.SOUTH).face(Direction.UP).uvs(7, 9, 9, 16).end().end()
+
+				//NORTH WEST
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.NORTH_WEST, true).from(0, 7, 0).to(7, 9, 7).parents(ForceFieldModel.ExtraDirection.NORTH, ForceFieldModel.ExtraDirection.WEST)
+					.face(Direction.NORTH).cullface(Direction.NORTH).uvs(0, 7, 7, 9).end()
+					.face(Direction.WEST).cullface(Direction.WEST).uvs(9, 7, 16, 9).end()
+					.face(Direction.DOWN).uvs(0, 9, 7, 16).end()
+					.face(Direction.UP).uvs(9, 9, 16, 16).end()
+				.ifElse().from(7, 7, 0).to(9, 9, 7).parents(ForceFieldModel.ExtraDirection.NORTH).face(Direction.WEST).uvs(9, 7, 16, 9).end()
+				.ifSame().from(0, 7, 7).to(7, 9, 9).parents(ForceFieldModel.ExtraDirection.WEST).face(Direction.NORTH).uvs(0, 7, 7, 9).end().end()
+
+				//NORTH EAST
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.NORTH_EAST, true).from(9, 7, 0).to(16, 9, 7).parents(ForceFieldModel.ExtraDirection.NORTH, ForceFieldModel.ExtraDirection.EAST)
+					.face(Direction.NORTH).cullface(Direction.NORTH).uvs(9, 7, 16, 9).end()
+					.face(Direction.EAST).cullface(Direction.EAST).uvs(0, 7, 7, 9).end()
+					.face(Direction.DOWN).uvs(9, 9, 16, 16).end()
+					.face(Direction.UP).uvs(0, 9, 7, 16).end()
+				.ifElse().from(7, 7, 0).to(9, 9, 7).parents(ForceFieldModel.ExtraDirection.NORTH).face(Direction.EAST).uvs(0, 7, 7, 9).end()
+				.ifSame().from(9, 7, 7).to(16, 9, 9).parents(ForceFieldModel.ExtraDirection.EAST).face(Direction.NORTH).uvs(9, 7, 16, 9).end().end()
+
+				//SOUTH WEST
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.SOUTH_WEST, true).from(0, 7, 9).to(7, 9, 16).parents(ForceFieldModel.ExtraDirection.SOUTH, ForceFieldModel.ExtraDirection.WEST)
+					.face(Direction.SOUTH).cullface(Direction.SOUTH).uvs(0, 7, 7, 9).end()
+					.face(Direction.WEST).cullface(Direction.WEST).uvs(9, 7, 16, 9).end()
+					.face(Direction.DOWN).uvs(0, 9, 7, 16).end()
+					.face(Direction.UP).uvs(9, 9, 16, 16).end()
+				.ifElse().from(7, 7, 9).to(9, 9, 16).parents(ForceFieldModel.ExtraDirection.SOUTH).face(Direction.WEST).uvs(9, 7, 16, 9).end()
+				.ifSame().from(0, 7, 7).to(7, 9, 9).parents(ForceFieldModel.ExtraDirection.WEST).face(Direction.SOUTH).uvs(0, 7, 7, 9).end().end()
+
+				//SOUTH EAST
+				.forceFieldElement().ifState(ForceFieldModel.ExtraDirection.SOUTH_EAST, true).from(9, 7, 9).to(16, 9, 16).parents(ForceFieldModel.ExtraDirection.SOUTH, ForceFieldModel.ExtraDirection.EAST)
+					.face(Direction.SOUTH).cullface(Direction.SOUTH).uvs(0, 7, 7, 9).end()
+					.face(Direction.EAST).cullface(Direction.EAST).uvs(9, 7, 16, 9).end()
+					.face(Direction.DOWN).uvs(9, 9, 16, 16).end()
+					.face(Direction.UP).uvs(0, 9, 7, 16).end()
+				.ifElse().from(7, 7, 9).to(9, 9, 16).parents(ForceFieldModel.ExtraDirection.SOUTH).face(Direction.EAST).uvs(9, 7, 16, 9).end()
+				.ifSame().from(9, 7, 7).to(16, 9, 9).parents(ForceFieldModel.ExtraDirection.EAST).face(Direction.SOUTH).uvs(0, 7, 7, 9).end().end()
+			.build())));
+		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(block.asItem()), TextureMapping.layer0(new Material(TFCommon.prefix("block/forcefield_white"))), this.modelOutput), ItemModelUtils.constantTint(tint)));
 	}
 
 	public void generatePaneBlock(Block glassBlock, Block paneBlock) {

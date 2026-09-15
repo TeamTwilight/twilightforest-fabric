@@ -13,8 +13,11 @@ import net.minecraft.util.random.Weighted;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import org.joml.Vector3f;
 import twilightforest.TFCommon;
 import twilightforest.block.*;
+import twilightforest.client.model.block.connected.UnbakedConnectedTextureModel;
+import twilightforest.client.model.block.patch.UnbakedPlantPatchBlockStateModel;
 import twilightforest.client.model.item.AnimatedItemModel;
 import twilightforest.client.model.item.TrollsteinnItemModel;
 import twilightforest.client.renderer.special.*;
@@ -61,7 +64,9 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.MAYAPPLE, plainVariant(ModelLocationUtils.getModelLocation(TFBlocks.MAYAPPLE))));
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.POTTED_MAYAPPLE, plainVariant(ModelLocationUtils.getModelLocation(TFBlocks.POTTED_MAYAPPLE))));
 		this.registerSimpleFlatItemModel(TFBlocks.MAYAPPLE);
-        this.registerSimpleItemModel(TFBlocks.CLOVER_PATCH.asItem(), ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(TFBlocks.CLOVER_PATCH.asItem()), TextureMapping.layer0(new Material(TFCommon.prefix("block/patch/clover"))), this.modelOutput));
+		this.blockStateOutput.accept(ctmVariant(TFBlocks.CLOVER_PATCH, new UnbakedPlantPatchBlockStateModel(new Material(TFCommon.prefix("block/cloverpatch")), false)));
+		this.registerSimpleItemModel(TFBlocks.CLOVER_PATCH.asItem(), ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(TFBlocks.CLOVER_PATCH.asItem()), TextureMapping.layer0(new Material(TFCommon.prefix("block/patch/clover"))), this.modelOutput));
+		this.blockStateOutput.accept(ctmVariant(TFBlocks.MOSS_PATCH, new UnbakedPlantPatchBlockStateModel(new Material(TFCommon.prefix("block/mosspatch")), true)));
 		this.registerSimpleItemModel(TFBlocks.MOSS_PATCH.asItem(), ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(TFBlocks.MOSS_PATCH.asItem()), TextureMapping.layer0(new Material(TFCommon.prefix("block/patch/moss"))), this.modelOutput));
 		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(TFBlocks.TORCHBERRY_PLANT).with(createBooleanModelDispatch(TorchberryPlantBlock.HAS_BERRIES,
 			plainVariant(ModelTemplates.CROSS_EMISSIVE.createWithSuffix(TFBlocks.TORCHBERRY_PLANT, "_berries", TextureMapping.crossEmissive(TFBlocks.TORCHBERRY_PLANT), this.modelOutput)),
@@ -85,6 +90,10 @@ public class BlockModelGenerator extends BlockModelBuilders {
 
 		this.wrapBlockItem(TFBlocks.TWISTED_STONE, block -> this.createRotatedPillarWithHorizontalVariant(block, TexturedModel.COLUMN_ALT, TexturedModel.COLUMN_HORIZONTAL_ALT));
 		this.wrapBlockItem(TFBlocks.BOLD_STONE_PILLAR, block -> this.createRotatedPillarWithHorizontalVariant(block, TexturedModel.COLUMN_ALT, TexturedModel.COLUMN_HORIZONTAL_ALT));
+		this.wrapBlockItem(TFBlocks.CORONATION_CARPET, block -> {
+			this.blockStateOutput.accept(ctmVariant(block, UnbakedConnectedTextureModel.builder(TextureMapping.getBlockTexture(block)).connectsTo(block).connectionFaces(Direction.UP, Direction.DOWN).element(new Vector3f(0, 0, 0), new Vector3f(16, 1, 16)).build()));
+			ModelTemplates.CARPET.create(block, TextureMapping.wool(block), this.modelOutput);
+		});
 		this.stonePillar();
 		this.wroughtIronFence();
 		this.terrorcotta();
@@ -251,6 +260,16 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateRuneBlock(TFBlocks.BLUE_CASTLE_RUNE_BRICK, 65535);
 		this.generateRuneBlock(TFBlocks.VIOLET_CASTLE_RUNE_BRICK, 4915330);
 
+		this.castleDoor(TFBlocks.PINK_CASTLE_DOOR, 16711935);
+		this.castleDoor(TFBlocks.YELLOW_CASTLE_DOOR, 16776960);
+		this.castleDoor(TFBlocks.BLUE_CASTLE_DOOR, 65535);
+		this.castleDoor(TFBlocks.VIOLET_CASTLE_DOOR, 4915330);
+		this.forcefield(TFBlocks.PINK_FORCE_FIELD, 0xFFFA057E);
+		this.forcefield(TFBlocks.ORANGE_FORCE_FIELD, 0xFFFF5B02);
+		this.forcefield(TFBlocks.GREEN_FORCE_FIELD, 0xFF89E701);
+		this.forcefield(TFBlocks.BLUE_FORCE_FIELD, 0xFF0DDEFF);
+		this.forcefield(TFBlocks.VIOLET_FORCE_FIELD, 0xFF5C1074);
+
 		this.generateSpecialModel(TFBlocks.KEEPSAKE_CASKET, Blocks.NETHERITE_BLOCK, block -> ItemModelUtils.specialModel(TFCommon.prefix("item/keepsake_casket"), new KeepsakeCasketSpecialRenderer.Unbaked()));
 		this.generateSpecialModel(TFBlocks.SKULL_CHEST, Blocks.LIGHT_GRAY_CONCRETE_POWDER, block -> ItemModelUtils.specialModel(TFCommon.prefix("item/skull_chest"), new SkullChestSpecialRenderer.Unbaked()));
 		this.generateSpecialModel(TFBlocks.CICADA, Blocks.SLIME_BLOCK, block -> ItemModelUtils.specialModel(TFCommon.prefix("item/cicada"), new CicadaSpecialRenderer.Unbaked()));
@@ -303,6 +322,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.itemModelOutput.accept(TFBlocks.ROPE.asItem(), ItemModelUtils.plainModel(this.createFlatItemModelWithBlockTexture(TFBlocks.ROPE.asItem(), TFBlocks.ROPE)));
 
 		this.wrapBlockItem(TFBlocks.UNCRAFTING_TABLE, block -> this.blockStateOutput.accept(MultiVariantGenerator.dispatch(block).with(createBooleanModelDispatch(UncraftingTableBlock.POWERED, plainVariant(TFModelTemplates.TWO_LAYER_COLUMN_NO_BOTTOM.createWithSuffix(block, "_activated", TFTextureMapping.uncraftingTableOn(block), this.modelOutput)), plainVariant(TFModelTemplates.CUBE_BOTTOM_2_LAYER_TOP.create(block, TFTextureMapping.uncraftingTable(block), this.modelOutput))))));
+		this.basicCtmBlock(TFBlocks.ARCTIC_FUR_BLOCK);
 		this.wrapBlockItem(TFBlocks.STEELEAF_BLOCK, this::createTrivialCube);
 		this.wrapBlockItem(TFBlocks.IRONWOOD_BLOCK, this::createTrivialCube);
 		this.wrapBlockItem(TFBlocks.KNIGHTMETAL_BLOCK, block -> this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(ModelLocationUtils.getModelLocation(block)))));
