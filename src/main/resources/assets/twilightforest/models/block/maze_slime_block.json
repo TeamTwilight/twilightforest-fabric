@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/slime_block",
+  "textures": {
+    "particle": "twilightforest:block/maze_slime_block",
+    "texture": "twilightforest:block/maze_slime_block"
+  }
+}
