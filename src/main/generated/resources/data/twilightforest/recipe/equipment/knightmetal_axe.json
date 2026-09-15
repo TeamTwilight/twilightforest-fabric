@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": "#c:ingots/knightmetal",
+    "X": "#c:rods/wooden"
+  },
+  "pattern": [
+    "##",
+    "#X",
+    " X"
+  ],
+  "result": {
+    "id": "twilightforest:knightmetal_axe"
+  }
+}

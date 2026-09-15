@@ -1,0 +1,11 @@
+{
+  "type": "twilightforest:fire_jet",
+  "config": {
+    "state": {
+      "Name": "twilightforest:fire_jet",
+      "Properties": {
+        "state": "idle"
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": "minecraft:iron_bars",
+    "-": "#c:nuggets/iron"
+  },
+  "pattern": [
+    "-#-",
+    "-#-"
+  ],
+  "result": {
+    "count": 3,
+    "id": "twilightforest:iron_ladder"
+  }
+}

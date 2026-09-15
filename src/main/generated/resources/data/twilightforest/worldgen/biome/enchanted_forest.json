@@ -1,0 +1,153 @@
+{
+  "attributes": {
+    "minecraft:visual/ambient_particles": [
+      {
+        "particle": {
+          "type": "twilightforest:wandering_firefly"
+        },
+        "probability": 2.5E-4
+      }
+    ],
+    "minecraft:visual/fog_color": "#c0ffd8",
+    "minecraft:visual/sky_color": "#20224a",
+    "minecraft:visual/water_fog_color": "#050533"
+  },
+  "carvers": "twilightforest:tf_caves",
+  "creature_spawn_probability": 0.15,
+  "downfall": 0.0,
+  "effects": {
+    "foliage_color": "#00ffff",
+    "grass_color": "#00ffff",
+    "grass_color_modifier": "twilightforest:enchanted_forest",
+    "water_color": "#3f76e4"
+  },
+  "features": [
+    [],
+    [
+      "twilightforest:dense_water_lake"
+    ],
+    [],
+    [],
+    [
+      "twilightforest:druid_hut",
+      "twilightforest:well_placer",
+      "twilightforest:foundation"
+    ],
+    [],
+    [
+      "minecraft:disk_sand",
+      "minecraft:disk_clay",
+      "minecraft:disk_gravel",
+      "twilightforest:wood_roots",
+      "twilightforest:legacy_coal_ore",
+      "twilightforest:legacy_iron_ore",
+      "twilightforest:legacy_gold_ore",
+      "twilightforest:legacy_redstone_ore",
+      "twilightforest:legacy_diamond_ore",
+      "twilightforest:legacy_lapis_ore",
+      "twilightforest:legacy_copper_ore",
+      "twilightforest:small_andesite",
+      "twilightforest:small_diorite",
+      "twilightforest:small_granite"
+    ],
+    [
+      "twilightforest:plant_roots",
+      "twilightforest:torch_berries",
+      "twilightforest:iron_oreberries_enchanted_forest",
+      "twilightforest:gold_oreberries_enchanted_forest",
+      "twilightforest:copper_oreberries_enchanted_forest",
+      "twilightforest:essence_oreberries_enchanted_forest"
+    ],
+    [],
+    [
+      "minecraft:patch_grass_badlands",
+      "minecraft:patch_sugar_cane",
+      "twilightforest:dense_ferns",
+      "twilightforest:dense_large_ferns",
+      "twilightforest:flower_placer",
+      "twilightforest:grove_ruins",
+      "twilightforest:stone_circle",
+      "twilightforest:outside_stalagmite",
+      "twilightforest:monolith",
+      "twilightforest:hollow_stump",
+      "twilightforest:hollow_log",
+      "twilightforest:tree/selector/enchanted_forest_trees",
+      "twilightforest:tree/selector/dense_canopy_trees",
+      "twilightforest:fiddlehead",
+      "twilightforest:tree/selector/canopy_trees",
+      "twilightforest:default_fallen_logs"
+    ],
+    [
+      "minecraft:freeze_top_layer",
+      "twilightforest:enchanted_forest_vines"
+    ]
+  ],
+  "has_precipitation": false,
+  "spawn_costs": {},
+  "spawners": {
+    "ambient": [],
+    "axolotls": [],
+    "creature": [
+      {
+        "type": "twilightforest:bighorn_sheep",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 12
+      },
+      {
+        "type": "twilightforest:boar",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      },
+      {
+        "type": "minecraft:chicken",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      },
+      {
+        "type": "twilightforest:deer",
+        "maxCount": 5,
+        "minCount": 4,
+        "weight": 15
+      },
+      {
+        "type": "minecraft:wolf",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 5
+      },
+      {
+        "type": "twilightforest:tiny_bird",
+        "maxCount": 8,
+        "minCount": 4,
+        "weight": 15
+      },
+      {
+        "type": "twilightforest:squirrel",
+        "maxCount": 4,
+        "minCount": 2,
+        "weight": 10
+      },
+      {
+        "type": "twilightforest:dwarf_rabbit",
+        "maxCount": 5,
+        "minCount": 4,
+        "weight": 10
+      },
+      {
+        "type": "twilightforest:raven",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 10
+      }
+    ],
+    "misc": [],
+    "monster": [],
+    "underground_water_creature": [],
+    "water_ambient": [],
+    "water_creature": []
+  },
+  "temperature": 0.5
+}

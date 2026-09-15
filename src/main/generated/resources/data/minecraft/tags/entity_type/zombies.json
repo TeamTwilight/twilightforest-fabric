@@ -1,0 +1,16 @@
+{
+  "values": [
+    "minecraft:zombie_horse",
+    "minecraft:camel_husk",
+    "minecraft:zombie",
+    "minecraft:zombie_villager",
+    "minecraft:zombified_piglin",
+    "minecraft:zoglin",
+    "minecraft:drowned",
+    "minecraft:husk",
+    "minecraft:zombie_nautilus",
+    "twilightforest:lich_minion",
+    "twilightforest:loyal_zombie",
+    "twilightforest:rising_zombie"
+  ]
+}

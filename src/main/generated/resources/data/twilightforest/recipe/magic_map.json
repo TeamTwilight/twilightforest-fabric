@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": "#c:paper",
+    "•": "twilightforest:magic_map_focus"
+  },
+  "pattern": [
+    "###",
+    "#•#",
+    "###"
+  ],
+  "result": {
+    "id": "twilightforest:magic_map"
+  }
+}

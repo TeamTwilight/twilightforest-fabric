@@ -1,0 +1,62 @@
+{
+  "attributes": {
+    "minecraft:visual/fog_color": "#493000",
+    "minecraft:visual/sky_color": "#000000",
+    "minecraft:visual/sky_light_factor": 0.24
+  },
+  "carvers": "twilightforest:tf_caves",
+  "downfall": 0.8,
+  "effects": {
+    "foliage_color": "#f9821e",
+    "grass_color": "#667540",
+    "grass_color_modifier": "twilightforest:dark_forest_center",
+    "water_color": "#3f76e4"
+  },
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [
+      "twilightforest:legacy_coal_ore",
+      "twilightforest:legacy_iron_ore",
+      "twilightforest:legacy_gold_ore",
+      "twilightforest:legacy_redstone_ore",
+      "twilightforest:legacy_diamond_ore",
+      "twilightforest:legacy_lapis_ore",
+      "twilightforest:legacy_copper_ore"
+    ],
+    [
+      "twilightforest:plant_roots",
+      "twilightforest:torch_berries"
+    ],
+    [],
+    [
+      "minecraft:patch_grass_normal",
+      "twilightforest:tree/selector/dark_forest_tree_mix",
+      "twilightforest:tree/selector/dark_forest_trees",
+      "twilightforest:tree/darkwood_tree",
+      "twilightforest:dark_grass",
+      "twilightforest:dark_dead_bushes",
+      "twilightforest:dark_pumpkins",
+      "twilightforest:dark_mushglooms",
+      "twilightforest:dark_brown_mushrooms",
+      "twilightforest:dark_red_mushrooms"
+    ]
+  ],
+  "has_precipitation": true,
+  "spawn_costs": {},
+  "spawners": {
+    "ambient": [],
+    "axolotls": [],
+    "creature": [],
+    "misc": [],
+    "monster": [],
+    "underground_water_creature": [],
+    "water_ambient": [],
+    "water_creature": []
+  },
+  "temperature": 0.7
+}

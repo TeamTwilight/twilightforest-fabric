@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cross_emissive",
+  "textures": {
+    "cross": "twilightforest:block/trollber",
+    "cross_emissive": "twilightforest:block/trollber_emissive"
+  }
+}

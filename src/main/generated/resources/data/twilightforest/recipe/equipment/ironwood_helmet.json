@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": "#c:ingots/ironwood"
+  },
+  "pattern": [
+    "###",
+    "# #"
+  ],
+  "result": {
+    "id": "twilightforest:ironwood_helmet"
+  }
+}

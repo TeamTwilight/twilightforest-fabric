@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "#c:paper",
+    "twilightforest:knight_phantom_trophy"
+  ],
+  "result": {
+    "id": "twilightforest:knight_phantom_banner_pattern"
+  }
+}

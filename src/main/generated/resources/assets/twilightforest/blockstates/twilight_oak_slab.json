@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "twilightforest:block/twilight_oak_slab"
+    },
+    "type=double": {
+      "model": "twilightforest:block/twilight_oak_planks"
+    },
+    "type=top": {
+      "model": "twilightforest:block/twilight_oak_slab_top"
+    }
+  }
+}

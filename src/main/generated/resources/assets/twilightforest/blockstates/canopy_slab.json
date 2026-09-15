@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "twilightforest:block/canopy_slab"
+    },
+    "type=double": {
+      "model": "twilightforest:block/canopy_planks"
+    },
+    "type=top": {
+      "model": "twilightforest:block/canopy_slab_top"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "values": [
+    "minecraft:chest_minecart",
+    "minecraft:hopper_minecart",
+    "minecraft:llama",
+    "minecraft:trader_llama",
+    "minecraft:donkey",
+    "minecraft:mule"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "minecraft:birch_log",
+  "result": {
+    "id": "twilightforest:hollow_birch_log"
+  }
+}

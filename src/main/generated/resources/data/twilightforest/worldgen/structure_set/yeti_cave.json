@@ -1,0 +1,11 @@
+{
+  "placement": {
+    "type": "twilightforest:landmark_grid"
+  },
+  "structures": [
+    {
+      "structure": "twilightforest:yeti_cave",
+      "weight": 1
+    }
+  ]
+}

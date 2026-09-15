@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    [
+      "minecraft:vine",
+      "minecraft:moss_block"
+    ],
+    "twilightforest:castle_brick"
+  ],
+  "result": {
+    "id": "twilightforest:mossy_castle_brick"
+  }
+}

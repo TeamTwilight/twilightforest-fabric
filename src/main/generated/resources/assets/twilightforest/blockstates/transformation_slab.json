@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "twilightforest:block/transformation_slab"
+    },
+    "type=double": {
+      "model": "twilightforest:block/transformation_planks"
+    },
+    "type=top": {
+      "model": "twilightforest:block/transformation_slab_top"
+    }
+  }
+}

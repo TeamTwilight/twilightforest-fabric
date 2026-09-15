@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:random_selector",
+  "config": {
+    "default": {
+      "feature": "twilightforest:tree/darkwood_tree",
+      "placement": []
+    },
+    "features": [
+      {
+        "chance": 0.2,
+        "feature": {
+          "feature": "twilightforest:tree/dark_forest_birch_tree",
+          "placement": []
+        }
+      },
+      {
+        "chance": 0.2,
+        "feature": {
+          "feature": "twilightforest:tree/dark_forest_oak_tree",
+          "placement": []
+        }
+      },
+      {
+        "chance": 0.4,
+        "feature": {
+          "feature": "twilightforest:tree/dark_oak_bush",
+          "placement": []
+        }
+      }
+    ]
+  }
+}

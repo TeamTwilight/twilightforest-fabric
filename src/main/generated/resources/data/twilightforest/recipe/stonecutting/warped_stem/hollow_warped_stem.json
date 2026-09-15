@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "minecraft:warped_stem",
+  "result": {
+    "id": "twilightforest:hollow_warped_stem"
+  }
+}

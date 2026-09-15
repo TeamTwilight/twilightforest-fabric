@@ -1,0 +1,12 @@
+{
+  "placement": {
+    "type": "twilightforest:landmark_grid",
+    "structure_grid_lock": "twilightforest:hedge_maze"
+  },
+  "structures": [
+    {
+      "structure": "twilightforest:hedge_maze",
+      "weight": 1
+    }
+  ]
+}

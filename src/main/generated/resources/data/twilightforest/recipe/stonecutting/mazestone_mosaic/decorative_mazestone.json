@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "twilightforest:mazestone_mosaic",
+  "result": {
+    "id": "twilightforest:decorative_mazestone"
+  }
+}

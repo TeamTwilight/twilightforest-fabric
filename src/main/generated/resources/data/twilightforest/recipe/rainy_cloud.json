@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "b": "minecraft:water_bucket",
+    "c": "twilightforest:fluffy_cloud"
+  },
+  "pattern": [
+    "ccc",
+    "cbc",
+    "ccc"
+  ],
+  "result": {
+    "count": 8,
+    "id": "twilightforest:rainy_cloud"
+  }
+}

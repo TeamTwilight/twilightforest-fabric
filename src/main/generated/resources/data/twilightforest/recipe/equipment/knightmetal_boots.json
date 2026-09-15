@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": "#c:ingots/knightmetal"
+  },
+  "pattern": [
+    "# #",
+    "# #"
+  ],
+  "result": {
+    "id": "twilightforest:knightmetal_boots"
+  }
+}

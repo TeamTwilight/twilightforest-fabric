@@ -1,0 +1,10 @@
+{
+  "banister": "twilightforest:canopy_banister",
+  "button": "twilightforest:canopy_button",
+  "fence": "twilightforest:canopy_fence",
+  "gate": "twilightforest:canopy_fence_gate",
+  "planks": "twilightforest:canopy_planks",
+  "plate": "twilightforest:canopy_pressure_plate",
+  "slab": "twilightforest:canopy_slab",
+  "stairs": "twilightforest:canopy_stairs"
+}

@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "twilightforest:twilight_oak_log",
+  "result": {
+    "id": "twilightforest:hollow_twilight_oak_log"
+  }
+}

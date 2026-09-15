@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "#": "twilightforest:encased_towerwood",
+    "6": "#c:gems/carminite",
+    "w": "#twilightforest:towerwood"
+  },
+  "pattern": [
+    "#w#",
+    "w6w",
+    "#w#"
+  ],
+  "result": {
+    "count": 8,
+    "id": "twilightforest:vanishing_block"
+  }
+}

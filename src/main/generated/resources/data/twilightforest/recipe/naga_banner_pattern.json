@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "#c:paper",
+    "twilightforest:naga_trophy"
+  ],
+  "result": {
+    "id": "twilightforest:naga_banner_pattern"
+  }
+}

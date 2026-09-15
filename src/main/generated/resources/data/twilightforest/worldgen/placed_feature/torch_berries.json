@@ -1,0 +1,39 @@
+{
+  "feature": "twilightforest:torch_berries",
+  "placement": [
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
+    },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "minecraft:uniform",
+        "max_inclusive": {
+          "absolute": 60
+        },
+        "min_inclusive": {
+          "above_bottom": 0
+        }
+      }
+    },
+    {
+      "type": "minecraft:count",
+      "count": 8
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "twilightforest:no_structure",
+      "additional_clearance": 0,
+      "occupies_surface": false,
+      "occupies_underground": true,
+      "occupies_vegetation": false,
+      "structures_allowed": []
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

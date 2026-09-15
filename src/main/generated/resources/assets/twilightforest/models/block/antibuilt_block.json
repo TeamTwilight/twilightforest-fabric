@@ -1,0 +1,7 @@
+{
+  "parent": "twilightforest:block/util/two_layer_block_10",
+  "textures": {
+    "all": "twilightforest:block/antibuilt_block",
+    "all2": "twilightforest:block/antibuilt_block_layer_1"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "twilightforest:raven_feather",
+    "twilightforest:torchberries",
+    "#c:dusts/glowstone"
+  ],
+  "result": {
+    "id": "twilightforest:magic_map_focus"
+  }
+}
