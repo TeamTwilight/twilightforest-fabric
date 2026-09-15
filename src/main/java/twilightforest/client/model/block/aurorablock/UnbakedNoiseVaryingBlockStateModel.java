@@ -1,10 +1,10 @@
-/*package twilightforest.client.model.block.aurorablock;
+package twilightforest.client.model.block.aurorablock;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.fabricmc.fabric.api.client.model.loading.v1.CustomUnbakedBlockStateModel;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.resources.model.ModelBaker;
-import net.neoforged.neoforge.client.model.block.CustomUnbakedBlockStateModel;
 
 import java.util.List;
 
@@ -35,4 +35,4 @@ public record UnbakedNoiseVaryingBlockStateModel(List<BlockStateModel.Unbaked> m
 	public MapCodec<? extends CustomUnbakedBlockStateModel> codec() {
 		return MAP_CODEC;
 	}
-}*/
+}

@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "type": "twilightforest:noise_varying",
+      "fabric:type": "twilightforest:noise_varying",
       "models": [
         {
           "model": "twilightforest:block/aurora_block_0"

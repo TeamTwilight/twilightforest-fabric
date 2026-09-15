@@ -26,6 +26,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
 import twilightforest.TFCommon;
 import twilightforest.block.*;
+import twilightforest.client.model.block.aurorablock.UnbakedNoiseVaryingBlockStateModel;
 import twilightforest.client.model.block.connected.UnbakedConnectedTextureModel;
 import twilightforest.client.model.block.forcefield.ForceFieldModel;
 import twilightforest.client.model.block.forcefield.UnbakedForceFieldBlockStateModel;
@@ -787,6 +788,38 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 			.with(condition(BlockStateProperties.UP, invertConditions), plainVariant(inside).with(X_ROT_270).with(VariantMutator.UV_LOCK.withValue(false)))
 			.with(condition(BlockStateProperties.DOWN, invertConditions), plainVariant(inside).with(X_ROT_90).with(VariantMutator.UV_LOCK.withValue(false)))
 		);
+	}
+
+	public void generateAuroraBlocks() {
+		Block base = TFBlocks.AURORA_BLOCK;
+		Identifier[] auroras = new Identifier[16];
+		for (int i = 0; i < auroras.length; i++) {
+			auroras[i] = TFModelTemplates.TINTED_BLOCK.createWithSuffix(TFBlocks.AURORA_BLOCK, "_" + i, TextureMapping.cube(TextureMapping.getBlockTexture(base, "_" + i)), this.modelOutput);
+		}
+		this.blockStateOutput.accept(ctmVariant(base, new UnbakedNoiseVaryingBlockStateModel(Arrays.stream(auroras).map(aurora -> plainVariant(aurora).toUnbaked()).toList())));
+		this.registerSimpleTintedItemModel(base, auroras[0], ItemModelUtils.constantTint(-16711758));
+
+		Block pillar = TFBlocks.AURORA_PILLAR;
+		this.wrapTintedBlockItem(pillar, ItemModelUtils.constantTint(-9181501), block -> this.blockStateOutput.accept(createAxisAlignedPillarBlock(block, plainVariant(TexturedModel.createDefault(block1 -> new TextureMapping()
+				.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block))
+				.put(TextureSlot.TOP, TextureMapping.getBlockTexture(block, "_top"))
+				.put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block, "_top")), TFModelTemplates.TINTED_CUBE_BOTTOM_TOP)
+			.create(block, this.modelOutput)))));
+
+		Block slab = TFBlocks.AURORA_SLAB;
+		TextureMapping slabMap = new TextureMapping()
+			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(pillar))
+			.put(TextureSlot.TOP, TextureMapping.getBlockTexture(pillar, "_top"))
+			.put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(pillar, "_top"));
+
+		Identifier bottom = TFModelTemplates.TINTED_SLAB_BOTTOM.create(slab, slabMap, this.modelOutput);
+		Identifier top = TFModelTemplates.TINTED_SLAB_TOP.create(slab, slabMap, this.modelOutput);
+		this.wrapTintedBlockItem(slab, ItemModelUtils.constantTint(-9181501), block -> this.blockStateOutput.accept(createSlab(block, plainVariant(bottom), plainVariant(top), plainVariant(ModelLocationUtils.getModelLocation(pillar)))));
+
+		this.wrapTintedBlockItem(TFBlocks.AURORALIZED_GLASS, ItemModelUtils.constantTint(-9181501), block -> {
+			this.blockStateOutput.accept(ctmVariant(block, UnbakedConnectedTextureModel.builder(TextureMapping.getBlockTexture(block), "_ct").overlayTintIndex(0).connectsTo(block).build()));
+			TFModelTemplates.TINTED_CUBE_ALL.create(block, TextureMapping.cube(block), this.modelOutput);
+		});
 	}
 
 	public void createTFChest(Block chestBlock, Block particleBlock, Identifier texture) {

@@ -213,6 +213,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 			return plainVariant(model);
 		})));
 
+		this.generateAuroraBlocks();
 		this.wrapBlockItem(TFBlocks.HUGE_STALK, block -> this.createRotatedPillarWithHorizontalVariant(block, TexturedModel.COLUMN_ALT, TexturedModel.COLUMN_HORIZONTAL_ALT));
 		this.createParticleOnlyBlock(TFBlocks.BEANSTALK_GROWER, TFBlocks.HUGE_STALK);
 		this.wrapBlockItem(TFBlocks.BEANSTALK_LEAVES, block -> this.createTrivialBlock(block, TexturedModel.createDefault(leaves -> TextureMapping.cube(Blocks.AZALEA_LEAVES), ModelTemplates.LEAVES)));
