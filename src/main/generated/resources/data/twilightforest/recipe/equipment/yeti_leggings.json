@@ -10,6 +10,11 @@
     "# #"
   ],
   "result": {
+    "components": {
+      "minecraft:enchantments": {
+        "minecraft:protection": 2
+      }
+    },
     "id": "twilightforest:yeti_leggings"
   }
 }

@@ -11,6 +11,11 @@
     " X"
   ],
   "result": {
+    "components": {
+      "minecraft:enchantments": {
+        "minecraft:fortune": 1
+      }
+    },
     "id": "twilightforest:ironwood_axe"
   }
 }

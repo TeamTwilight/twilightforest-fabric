@@ -9,6 +9,11 @@
     "# #"
   ],
   "result": {
+    "components": {
+      "minecraft:enchantments": {
+        "minecraft:aqua_affinity": 1
+      }
+    },
     "id": "twilightforest:ironwood_helmet"
   }
 }

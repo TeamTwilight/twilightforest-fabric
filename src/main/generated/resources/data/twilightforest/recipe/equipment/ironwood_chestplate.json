@@ -10,6 +10,11 @@
     "###"
   ],
   "result": {
+    "components": {
+      "minecraft:enchantments": {
+        "minecraft:protection": 1
+      }
+    },
     "id": "twilightforest:ironwood_chestplate"
   }
 }

@@ -13,6 +13,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -101,7 +102,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 	}
 
 	protected final void helmetItem(HolderGetter<Item> getter, Item result, TagKey<Item> material, DataComponentPatch.Builder component) {
-		ShapedRecipeBuilder.shaped(getter, RecipeCategory.COMBAT, result, 1)
+		shapedWithComponents(getter, RecipeCategory.COMBAT, new ItemStackTemplate(BuiltInRegistries.ITEM.wrapAsHolder(result), 1, component.build()))
 			.pattern("###")
 			.pattern("# #")
 			.define('#', material)
@@ -114,7 +115,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 	}
 
 	protected final void chestplateItem(HolderGetter<Item> getter, Item result, TagKey<Item> material, DataComponentPatch.Builder component) {
-		ShapedRecipeBuilder.shaped(getter, RecipeCategory.COMBAT, result, 1)
+		shapedWithComponents(getter, RecipeCategory.COMBAT, new ItemStackTemplate(BuiltInRegistries.ITEM.wrapAsHolder(result), 1, component.build()))
 			.pattern("# #")
 			.pattern("###")
 			.pattern("###")
@@ -128,7 +129,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 	}
 
 	protected final void leggingsItem(HolderGetter<Item> getter, Item result, TagKey<Item> material, DataComponentPatch.Builder component) {
-		ShapedRecipeBuilder.shaped(getter, RecipeCategory.COMBAT, result, 1)
+		shapedWithComponents(getter, RecipeCategory.COMBAT, new ItemStackTemplate(BuiltInRegistries.ITEM.wrapAsHolder(result), 1, component.build()))
 			.pattern("###")
 			.pattern("# #")
 			.pattern("# #")
@@ -142,7 +143,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 	}
 
 	protected final void bootsItem(HolderGetter<Item> getter, Item result, TagKey<Item> material, DataComponentPatch.Builder component) {
-		ShapedRecipeBuilder.shaped(getter, RecipeCategory.COMBAT, result, 1)
+		shapedWithComponents(getter, RecipeCategory.COMBAT, new ItemStackTemplate(BuiltInRegistries.ITEM.wrapAsHolder(result), 1, component.build()))
 			.pattern("# #")
 			.pattern("# #")
 			.define('#', material)
@@ -155,7 +156,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 	}
 
 	protected final void pickaxeItem(HolderGetter<Item> getter, Item result, TagKey<Item> material, TagKey<Item> handle, DataComponentPatch.Builder component) {
-		ShapedRecipeBuilder.shaped(getter, RecipeCategory.TOOLS, result, 1)
+		shapedWithComponents(getter, RecipeCategory.TOOLS, new ItemStackTemplate(BuiltInRegistries.ITEM.wrapAsHolder(result), 1, component.build()))
 			.pattern("###")
 			.pattern(" X ")
 			.pattern(" X ")
@@ -170,7 +171,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 	}
 
 	protected final void swordItem(HolderGetter<Item> getter, Item result, TagKey<Item> material, TagKey<Item> handle, DataComponentPatch.Builder component) {
-		ShapedRecipeBuilder.shaped(getter, RecipeCategory.COMBAT, result, 1)
+		shapedWithComponents(getter, RecipeCategory.COMBAT, new ItemStackTemplate(BuiltInRegistries.ITEM.wrapAsHolder(result), 1, component.build()))
 			.pattern("#")
 			.pattern("#")
 			.pattern("X")
@@ -185,7 +186,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 	}
 
 	protected final void axeItem(HolderGetter<Item> getter, Item result, TagKey<Item> material, TagKey<Item> handle, DataComponentPatch.Builder component) {
-		ShapedRecipeBuilder.shaped(getter, RecipeCategory.TOOLS, result, 1)
+		shapedWithComponents(getter, RecipeCategory.TOOLS, new ItemStackTemplate(BuiltInRegistries.ITEM.wrapAsHolder(result), 1, component.build()))
 			.pattern("##")
 			.pattern("#X")
 			.pattern(" X")
@@ -196,7 +197,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 	}
 
 	protected final void shovelItem(HolderGetter<Item> getter, Item result, TagKey<Item> material, TagKey<Item> handle, DataComponentPatch.Builder component) {
-		ShapedRecipeBuilder.shaped(getter, RecipeCategory.TOOLS, result, 1)
+		shapedWithComponents(getter, RecipeCategory.TOOLS, new ItemStackTemplate(BuiltInRegistries.ITEM.wrapAsHolder(result), 1, component.build()))
 			.pattern("#")
 			.pattern("X")
 			.pattern("X")
@@ -207,7 +208,7 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 	}
 
 	protected final void hoeItem(HolderGetter<Item> getter, Item result, TagKey<Item> material, TagKey<Item> handle, DataComponentPatch.Builder component) {
-		ShapedRecipeBuilder.shaped(getter, RecipeCategory.TOOLS, result, 1)
+		shapedWithComponents(getter, RecipeCategory.TOOLS, new ItemStackTemplate(BuiltInRegistries.ITEM.wrapAsHolder(result), 1, component.build()))
 			.pattern("##")
 			.pattern(" X")
 			.pattern(" X")
@@ -225,6 +226,10 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 			itemEnchants.set(lookup.getOrThrow(pair.getFirst()), pair.getSecond());
 		}
 		return DataComponentPatch.builder().set(DataComponents.ENCHANTMENTS, itemEnchants.toImmutable());
+	}
+
+	protected static ShapedRecipeBuilder shapedWithComponents(HolderGetter<Item> items, RecipeCategory category, ItemStackTemplate result) {
+		return new ShapedRecipeBuilder(items, category, result);
 	}
 
 	protected final void buttonBlock(HolderGetter<Item> getter, String name, Block result, Block material) {

@@ -10,6 +10,11 @@
     "# #"
   ],
   "result": {
+    "components": {
+      "minecraft:enchantments": {
+        "minecraft:protection": 3
+      }
+    },
     "id": "twilightforest:naga_leggings"
   }
 }

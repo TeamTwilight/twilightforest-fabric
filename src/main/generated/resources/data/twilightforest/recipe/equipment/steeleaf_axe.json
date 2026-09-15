@@ -11,6 +11,11 @@
     " X"
   ],
   "result": {
+    "components": {
+      "minecraft:enchantments": {
+        "minecraft:efficiency": 2
+      }
+    },
     "id": "twilightforest:steeleaf_axe"
   }
 }

@@ -10,6 +10,11 @@
     "###"
   ],
   "result": {
+    "components": {
+      "minecraft:enchantments": {
+        "minecraft:fire_protection": 3
+      }
+    },
     "id": "twilightforest:naga_chestplate"
   }
 }

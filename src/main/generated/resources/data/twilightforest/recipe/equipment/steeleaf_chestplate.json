@@ -10,6 +10,11 @@
     "###"
   ],
   "result": {
+    "components": {
+      "minecraft:enchantments": {
+        "minecraft:blast_protection": 2
+      }
+    },
     "id": "twilightforest:steeleaf_chestplate"
   }
 }

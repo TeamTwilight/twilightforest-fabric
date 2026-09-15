@@ -13,6 +13,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Unit;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -435,7 +436,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.group("fiery_sword")
 			.save(this.output, locEquip(BuiltInRegistries.ITEM.getKey(TFItems.FIERY_SWORD).getPath()));
 
-		ShapedRecipeBuilder.shaped(getter, RecipeCategory.COMBAT, TFItems.NAGA_CHESTPLATE, 1)
+		shapedWithComponents(getter, RecipeCategory.COMBAT, new ItemStackTemplate(BuiltInRegistries.ITEM.wrapAsHolder(TFItems.NAGA_CHESTPLATE), 1, this.buildEnchants(provider, Pair.of(Enchantments.FIRE_PROTECTION, 3)).build()))
 			.pattern("# #")
 			.pattern("###")
 			.pattern("###")
@@ -443,7 +444,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_item", has(TFItems.NAGA_SCALE))
 			.save(this.output, locEquip(BuiltInRegistries.ITEM.getKey(TFItems.NAGA_CHESTPLATE).getPath()));
 
-		ShapedRecipeBuilder.shaped(getter, RecipeCategory.COMBAT, TFItems.NAGA_LEGGINGS, 1)
+		shapedWithComponents(getter, RecipeCategory.COMBAT, new ItemStackTemplate(BuiltInRegistries.ITEM.wrapAsHolder(TFItems.NAGA_LEGGINGS), 1, this.buildEnchants(provider, Pair.of(Enchantments.PROTECTION, 3)).build()))
 			.pattern("###")
 			.pattern("# #")
 			.pattern("# #")
@@ -451,14 +452,14 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_item", has(TFItems.NAGA_SCALE))
 			.save(this.output, locEquip(BuiltInRegistries.ITEM.getKey(TFItems.NAGA_LEGGINGS).getPath()));
 
-		ShapedRecipeBuilder.shaped(getter, RecipeCategory.COMBAT, TFItems.YETI_HELMET, 1)
+		shapedWithComponents(getter, RecipeCategory.COMBAT, new ItemStackTemplate(BuiltInRegistries.ITEM.wrapAsHolder(TFItems.YETI_HELMET), 1, this.buildEnchants(provider, Pair.of(Enchantments.PROTECTION, 2)).build()))
 			.pattern("###")
 			.pattern("# #")
 			.define('#', TFItems.ALPHA_YETI_FUR)
 			.unlockedBy("has_item", has(TFItems.ALPHA_YETI_FUR))
 			.save(this.output, locEquip(BuiltInRegistries.ITEM.getKey(TFItems.YETI_HELMET).getPath()));
 
-		ShapedRecipeBuilder.shaped(getter, RecipeCategory.COMBAT, TFItems.YETI_CHESTPLATE, 1)
+		shapedWithComponents(getter, RecipeCategory.COMBAT, new ItemStackTemplate(BuiltInRegistries.ITEM.wrapAsHolder(TFItems.YETI_CHESTPLATE), 1, this.buildEnchants(provider, Pair.of(Enchantments.PROTECTION, 2)).build()))
 			.pattern("# #")
 			.pattern("###")
 			.pattern("###")
@@ -466,7 +467,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_item", has(TFItems.ALPHA_YETI_FUR))
 			.save(this.output, locEquip(BuiltInRegistries.ITEM.getKey(TFItems.YETI_CHESTPLATE).getPath()));
 
-		ShapedRecipeBuilder.shaped(getter, RecipeCategory.COMBAT, TFItems.YETI_LEGGINGS, 1)
+		shapedWithComponents(getter, RecipeCategory.COMBAT, new ItemStackTemplate(BuiltInRegistries.ITEM.wrapAsHolder(TFItems.YETI_LEGGINGS), 1, this.buildEnchants(provider, Pair.of(Enchantments.PROTECTION, 2)).build()))
 			.pattern("###")
 			.pattern("# #")
 			.pattern("# #")
@@ -474,7 +475,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_item", has(TFItems.ALPHA_YETI_FUR))
 			.save(this.output, locEquip(BuiltInRegistries.ITEM.getKey(TFItems.YETI_LEGGINGS).getPath()));
 
-		ShapedRecipeBuilder.shaped(getter, RecipeCategory.COMBAT, TFItems.YETI_BOOTS, 1)
+		shapedWithComponents(getter, RecipeCategory.COMBAT, new ItemStackTemplate(BuiltInRegistries.ITEM.wrapAsHolder(TFItems.YETI_BOOTS), 1, this.buildEnchants(provider, Pair.of(Enchantments.PROTECTION, 2), Pair.of(Enchantments.FEATHER_FALLING, 4)).build()))
 			.pattern("# #")
 			.pattern("# #")
 			.define('#', TFItems.ALPHA_YETI_FUR)

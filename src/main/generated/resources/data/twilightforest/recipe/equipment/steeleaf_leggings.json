@@ -10,6 +10,11 @@
     "# #"
   ],
   "result": {
+    "components": {
+      "minecraft:enchantments": {
+        "minecraft:fire_protection": 2
+      }
+    },
     "id": "twilightforest:steeleaf_leggings"
   }
 }

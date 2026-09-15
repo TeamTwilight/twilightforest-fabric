@@ -9,6 +9,11 @@
     "# #"
   ],
   "result": {
+    "components": {
+      "minecraft:enchantments": {
+        "minecraft:projectile_protection": 2
+      }
+    },
     "id": "twilightforest:steeleaf_helmet"
   }
 }
