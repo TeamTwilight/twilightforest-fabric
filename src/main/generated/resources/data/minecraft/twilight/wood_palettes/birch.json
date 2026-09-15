@@ -1,0 +1,10 @@
+{
+  "banister": "twilightforest:birch_banister",
+  "button": "minecraft:birch_button",
+  "fence": "minecraft:birch_fence",
+  "gate": "minecraft:birch_fence_gate",
+  "planks": "minecraft:birch_planks",
+  "plate": "minecraft:birch_pressure_plate",
+  "slab": "minecraft:birch_slab",
+  "stairs": "minecraft:birch_stairs"
+}

@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import twilightforest.init.TFRegistries;
+import twilightforest.init.custom.WoodPalettes;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -29,6 +30,7 @@ public class DynamicRegistryProvider extends FabricDynamicRegistryProvider {
 		entries.addAll(registries.lookupOrThrow(Registries.LEVEL_STEM));
 		entries.addAll(registries.lookupOrThrow(Registries.BIOME));
 		entries.addAll(registries.lookupOrThrow(TFRegistries.Keys.WOOD_PALETTES));
+		addVanillaWoodPalettes(registries, entries);
 		entries.addAll(registries.lookupOrThrow(Registries.DAMAGE_TYPE));
 		entries.addAll(registries.lookupOrThrow(Registries.TRIM_MATERIAL));
 		entries.addAll(registries.lookupOrThrow(TFRegistries.Keys.RESTRICTIONS));
@@ -41,6 +43,19 @@ public class DynamicRegistryProvider extends FabricDynamicRegistryProvider {
 		entries.addAll(registries.lookupOrThrow(Registries.JUKEBOX_SONG));
 		entries.addAll(registries.lookupOrThrow(Registries.ENCHANTMENT));
 		entries.addAll(registries.lookupOrThrow(TFRegistries.Keys.TEMPLATE_MARKER_HANDLER_LIST));
+	}
+
+	private static void addVanillaWoodPalettes(HolderLookup.Provider registries, Entries entries) {
+		var palettes = registries.lookupOrThrow(TFRegistries.Keys.WOOD_PALETTES);
+		entries.add(palettes.getOrThrow(WoodPalettes.OAK));
+		entries.add(palettes.getOrThrow(WoodPalettes.SPRUCE));
+		entries.add(palettes.getOrThrow(WoodPalettes.BIRCH));
+		entries.add(palettes.getOrThrow(WoodPalettes.JUNGLE));
+		entries.add(palettes.getOrThrow(WoodPalettes.ACACIA));
+		entries.add(palettes.getOrThrow(WoodPalettes.DARK_OAK));
+		entries.add(palettes.getOrThrow(WoodPalettes.CRIMSON));
+		entries.add(palettes.getOrThrow(WoodPalettes.WARPED));
+		entries.add(palettes.getOrThrow(WoodPalettes.VANGROVE));
 	}
 
 	@Override

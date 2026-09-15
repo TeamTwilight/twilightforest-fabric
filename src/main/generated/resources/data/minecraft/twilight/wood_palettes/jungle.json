@@ -1,0 +1,10 @@
+{
+  "banister": "twilightforest:jungle_banister",
+  "button": "minecraft:jungle_button",
+  "fence": "minecraft:jungle_fence",
+  "gate": "minecraft:jungle_fence_gate",
+  "planks": "minecraft:jungle_planks",
+  "plate": "minecraft:jungle_pressure_plate",
+  "slab": "minecraft:jungle_slab",
+  "stairs": "minecraft:jungle_stairs"
+}
