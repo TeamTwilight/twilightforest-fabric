@@ -1,6 +1,7 @@
 package twilightforest.network;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -43,6 +44,7 @@ public record MagicMapPacket(ClientboundMapItemDataPacket inner, List<String> co
 		//TF: sync conquered structures for map
 		mapdata.conqueredStructures.clear();
 		mapdata.conqueredStructures.addAll(message.conqueredStructures());
+		Minecraft.getInstance().getMapTextureManager().update(mapId, mapdata);
 
 		MapItemSavedData saved = clientLevel.getMapData(message.inner.mapId());
 
