@@ -4,10 +4,14 @@ import net.fabricmc.fabric.api.client.model.loading.v1.ExtraModelKey;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.model.loading.v1.SimpleUnbakedExtraModel;
 import net.minecraft.client.renderer.block.dispatch.BlockModelRotation;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
 import net.minecraft.client.resources.model.SimpleModelWrapper;
+import net.minecraft.world.level.block.Blocks;
+import twilightforest.client.model.block.ReactorDebrisModel;
 import twilightforest.client.renderer.block.JarRenderer;
 import twilightforest.client.renderer.entity.layers.ShieldLayer;
+import twilightforest.init.TFBlocks;
 
 public class TFModelLoadingPlugin implements ModelLoadingPlugin {
 
@@ -32,5 +36,13 @@ public class TFModelLoadingPlugin implements ModelLoadingPlugin {
 				));
 			}
 		}
+
+		pluginContext.modifyBlockModelAfterBake().register((model, context) -> {
+			if (context.state().is(TFBlocks.REACTOR_DEBRIS)) {
+				BlockStateModel airModel = context.sourceModel().bake(Blocks.AIR.defaultBlockState(), context.baker());
+				return new ReactorDebrisModel(airModel);
+			}
+			return model;
+		});
 	}
 }
