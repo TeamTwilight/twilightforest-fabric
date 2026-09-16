@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class FoliageColorHandler {
-
 	public static final FoliageColorHandler INSTANCE = new FoliageColorHandler();
 
 	private final BiomeColorAlgorithms biomeColorAlgorithms = BiomeColorAlgorithms.INSTANCE;
@@ -26,10 +25,10 @@ public final class FoliageColorHandler {
 		put(TFBiomes.SWAMP, (o, x, z) -> biomeColorAlgorithms.swamp(BiomeColorAlgorithms.Type.Foliage));
 	}};
 
-	private final Map<Biome, Handler> HANDLES = new MapMaker().weakKeys().makeMap(); // Concurrent + Weak + Hash
+	private static final Map<Biome, Handler> HANDLES = new MapMaker().weakKeys().makeMap(); // Concurrent + Weak + Hash
 
-	public void init() {
-		ClientEntityEvents.ENTITY_UNLOAD.register((entity, level) -> HANDLES.clear());
+	public static void init() {
+		ClientEntityEvents.ENTITY_UNLOAD.register((_, _) -> HANDLES.clear());
 	}
 
 	public int get(int o, Biome biome, double x, double z) {

@@ -90,6 +90,7 @@ public final class TFClient implements ClientModInitializer {
 		TFSkyRenderer.init();
 		MapDataManager.init();
 		MultipartRenderDispatcher.init();
+		FoliageColorHandler.init();
 
 		ModelLoadingPlugin.register(new TFModelLoadingPlugin());
 
