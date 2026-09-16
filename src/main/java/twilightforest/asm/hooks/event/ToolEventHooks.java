@@ -1,54 +1,58 @@
 package twilightforest.asm.hooks.event;
 
-// TODO [Fabric] : Integrate these hooks into mixins and validate each one of them once the project compiles
+import net.minecraft.network.protocol.game.ClientboundAnimatePacket;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import twilightforest.init.TFItems;
+import twilightforest.item.MinotaurAxeItem;
+
 public final class ToolEventHooks {
-	/*
 	private static final int KNIGHTMETAL_BONUS_DAMAGE = 2;
 	private static final int MINOTAUR_AXE_BONUS_DAMAGE = 7;
-	*/
 
-	/*
-	private void doKnightmetalToolLogic(LivingIncomingDamageEvent event) {
-		if (!event.isCanceled()) {
-			LivingEntity target = event.getEntity();
-
-			DamageContainer container = event.getContainer();
-			if (!target.level().isClientSide() && container.getSource().getDirectEntity() instanceof LivingEntity living) {
-				ItemStack weapon = living.getMainHandItem();
-
-				if (!weapon.isEmpty()) {
-					if (target.getArmorValue() > 0 && (weapon.is(TFItems.KNIGHTMETAL_PICKAXE.get()) || weapon.is(TFItems.KNIGHTMETAL_SWORD.get()))) {
-						if (target.getArmorCoverPercentage() > 0) {
-							int moreBonus = (int) (KNIGHTMETAL_BONUS_DAMAGE * target.getArmorCoverPercentage());
-							container.setNewDamage(container.getNewDamage() + moreBonus);
-						} else {
-							container.setNewDamage(container.getNewDamage() + KNIGHTMETAL_BONUS_DAMAGE);
-						}
-						// enchantment attack sparkles
-						((ServerLevel) target.level()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
-					} else if (target.getArmorValue() == 0 && weapon.is(TFItems.KNIGHTMETAL_AXE.get())) {
-						container.setNewDamage(container.getOriginalDamage() + KNIGHTMETAL_BONUS_DAMAGE);
-						// enchantment attack sparkles
-						((ServerLevel) target.level()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
-					}
-				}
-			}
+	public static float doKnightmetalToolLogic(LivingEntity target, DamageSource source, float originalDamage, float newDamage) {
+		if (target.level().isClientSide() || !(source.getDirectEntity() instanceof LivingEntity living)) {
+			return newDamage;
 		}
+
+		ItemStack weapon = living.getMainHandItem();
+		if (target.getArmorValue() > 0) {
+			if (!weapon.is(TFItems.KNIGHTMETAL_PICKAXE) && !weapon.is(TFItems.KNIGHTMETAL_SWORD)) {
+				return newDamage;
+			}
+
+			int bonusDamage;
+			if (target.getArmorCoverPercentage() > 0) {
+				bonusDamage = (int) (KNIGHTMETAL_BONUS_DAMAGE * target.getArmorCoverPercentage());
+			} else {
+				bonusDamage = KNIGHTMETAL_BONUS_DAMAGE;
+			}
+
+			((ServerLevel) target.level()).getChunkSource().sendToTrackingPlayers(target, new ClientboundAnimatePacket(target, 5));
+			return newDamage + bonusDamage;
+		}
+
+		if (weapon.is(TFItems.KNIGHTMETAL_AXE)) {
+			((ServerLevel) target.level()).getChunkSource().sendToTrackingPlayers(target, new ClientboundAnimatePacket(target, 5));
+			return originalDamage + KNIGHTMETAL_BONUS_DAMAGE;
+		}
+
+		return newDamage;
 	}
 
-	private void addExtraAxeChargingDamage(LivingIncomingDamageEvent event) {
-		if (!event.isCanceled()) {
-			LivingEntity target = event.getEntity();
-			DamageContainer container = event.getContainer();
-			if (!target.level().isClientSide() && container.getSource().getDirectEntity() instanceof LivingEntity living && living.isSprinting()) {
-				ItemStack weapon = living.getMainHandItem();
-				if (!weapon.isEmpty() && weapon.getItem() instanceof MinotaurAxeItem) {
-					container.setNewDamage(container.getNewDamage() + MINOTAUR_AXE_BONUS_DAMAGE);
-					// enchantment attack sparkles
-					((ServerLevel) target.level()).getChunkSource().broadcastAndSend(target, new ClientboundAnimatePacket(target, 5));
-				}
-			}
+	public static float addExtraAxeChargingDamage(LivingEntity target, DamageSource source, float newDamage) {
+		if (target.level().isClientSide() || !(source.getDirectEntity() instanceof LivingEntity attacker) || !attacker.isSprinting()) {
+			return newDamage;
 		}
+
+		ItemStack weapon = attacker.getMainHandItem();
+		if (!(weapon.getItem() instanceof MinotaurAxeItem)) {
+			return newDamage;
+		}
+
+		((ServerLevel) target.level()).getChunkSource().sendToTrackingPlayers(target, new ClientboundAnimatePacket(target, 5));
+		return newDamage + MINOTAUR_AXE_BONUS_DAMAGE;
 	}
-	 */
 }
