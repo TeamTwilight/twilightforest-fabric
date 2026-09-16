@@ -48,6 +48,7 @@ import twilightforest.client.model.block.BrazierModel;
 import twilightforest.client.model.block.aurorablock.UnbakedNoiseVaryingBlockStateModel;
 import twilightforest.client.model.block.connected.UnbakedConnectedTextureModel;
 import twilightforest.client.model.block.forcefield.UnbakedForceFieldBlockStateModel;
+import twilightforest.client.model.block.giantblock.UnbakedGiantBlockStateModel;
 import twilightforest.client.model.block.patch.UnbakedPlantPatchBlockStateModel;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.item.AnimatedItemModel;
@@ -221,6 +222,7 @@ public final class TFClient implements ClientModInitializer {
 	private static void registerBlockStateModels() {
 		CustomUnbakedBlockStateModelRegistry.register(TFCommon.prefix("connected_texture_block"), UnbakedConnectedTextureModel.MAP_CODEC);
 		CustomUnbakedBlockStateModelRegistry.register(TFCommon.prefix("force_field"), UnbakedForceFieldBlockStateModel.MAP_CODEC);
+		CustomUnbakedBlockStateModelRegistry.register(TFCommon.prefix("giant_block"), UnbakedGiantBlockStateModel.MAP_CODEC);
 		CustomUnbakedBlockStateModelRegistry.register(TFCommon.prefix("noise_varying"), UnbakedNoiseVaryingBlockStateModel.MAP_CODEC);
 		CustomUnbakedBlockStateModelRegistry.register(TFCommon.prefix("plant_patch"), UnbakedPlantPatchBlockStateModel.MAP_CODEC);
 	}

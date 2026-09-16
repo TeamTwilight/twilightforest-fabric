@@ -138,18 +138,6 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		this.registerSimpleTintedItemModel(block, itemModel, ItemModelUtils.constantTint(tint));
 	}
 
-	public void generateGiantBlockItem(Block giantBlock, TextureMapping mapping) {
-		ItemModel.Unbaked base = ItemModelUtils.plainModel(TFModelTemplates.GIANT_BLOCK_BASE.createWithSuffix(giantBlock, "_item", mapping, this.modelOutput));
-		ItemModel.Unbaked gui = ItemModelUtils.plainModel(TFModelTemplates.GIANT_BLOCK_GUI.createWithSuffix(giantBlock, "_gui", mapping, this.modelOutput));
-		this.itemModelOutput.accept(giantBlock.asItem(), ItemModelUtils.select(new DisplayContext(), base, ItemModelUtils.when(ItemDisplayContext.GUI, gui)));
-	}
-
-	public void generateGiantBlockItem(Block giantBlock, TextureMapping mapping, int tint) {
-		ItemModel.Unbaked base = ItemModelUtils.tintedModel(TFModelTemplates.GIANT_BLOCK_BASE.createWithSuffix(giantBlock, "_item", mapping, this.modelOutput), ItemModelUtils.constantTint(tint));
-		ItemModel.Unbaked gui = ItemModelUtils.tintedModel(TFModelTemplates.GIANT_BLOCK_GUI.createWithSuffix(giantBlock, "_gui", mapping, this.modelOutput), ItemModelUtils.constantTint(tint));
-		this.itemModelOutput.accept(giantBlock.asItem(), ItemModelUtils.select(new DisplayContext(), base, ItemModelUtils.when(ItemDisplayContext.GUI, gui)));
-	}
-
 	public void nagaStone() {
 		TextureMapping mapping = TextureMapping.cube(TFBlocks.NAGASTONE);
 

@@ -59,7 +59,7 @@ public class PatchModel implements BlockStateModel {
 
 	@Override
 	public void collectParts(RandomSource random, List<BlockStateModelPart> output) {
-
+		// This method will not do anything as this is a Fabric model
 	}
 
 	@Override

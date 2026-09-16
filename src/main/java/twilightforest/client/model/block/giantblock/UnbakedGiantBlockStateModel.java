@@ -1,11 +1,13 @@
-/*package twilightforest.client.model.block.giantblock;
+package twilightforest.client.model.block.giantblock;
 
 import com.mojang.math.Quadrant;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.fabricmc.fabric.api.client.model.loading.v1.CustomUnbakedBlockStateModel;
 import net.minecraft.client.renderer.block.dispatch.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.ModelBaker;
+import net.minecraft.client.resources.model.ResolvableModel;
 import net.minecraft.client.resources.model.SimpleModelWrapper;
 import net.minecraft.client.resources.model.cuboid.CuboidFace;
 import net.minecraft.client.resources.model.cuboid.CuboidRotation;
@@ -16,7 +18,6 @@ import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
-import net.neoforged.neoforge.client.model.block.CustomUnbakedBlockStateModel;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import twilightforest.block.GiantBlock;
@@ -25,7 +26,6 @@ import twilightforest.util.Vec2i;
 import java.util.ArrayList;
 
 public record UnbakedGiantBlockStateModel(BlockStateModel.Unbaked sourceModel) implements CustomUnbakedBlockStateModel {
-
 	public static final MapCodec<UnbakedGiantBlockStateModel> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 		BlockStateModel.Unbaked.CODEC.fieldOf("source_model").forGetter(UnbakedGiantBlockStateModel::sourceModel)
 	).apply(instance, UnbakedGiantBlockStateModel::new));
@@ -39,7 +39,6 @@ public record UnbakedGiantBlockStateModel(BlockStateModel.Unbaked sourceModel) i
 		BlockStateModel[] giantSubBlocks = new BlockStateModel[4 * 4 * 4];
 
 		ArrayList<BlockStateModelPart> list = new ArrayList<>();
-		// noinspection deprecation
 		bakedSourceModel.collectParts(RandomSource.create(0L), list);
 		BlockStateModelPart firstModelPart = list.getFirst(); // TODO support actual slicing of BakedQuad collection into 4x4x4, given customized source block models. But testing is not possible at this moment as this was written mid-port
 
@@ -126,7 +125,7 @@ public record UnbakedGiantBlockStateModel(BlockStateModel.Unbaked sourceModel) i
 	}
 
 	@Override
-	public void resolveDependencies(Resolver resolver) {
+	public void resolveDependencies(ResolvableModel.Resolver resolver) {
 		this.sourceModel.resolveDependencies(resolver);
 	}
 
@@ -134,4 +133,4 @@ public record UnbakedGiantBlockStateModel(BlockStateModel.Unbaked sourceModel) i
 	public MapCodec<? extends CustomUnbakedBlockStateModel> codec() {
 		return UnbakedGiantBlockStateModel.MAP_CODEC;
 	}
-}*/
+}
