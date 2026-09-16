@@ -146,6 +146,11 @@ public abstract class TFLangProvider extends LanguageProvider {
 	public void addMusicDisc(Item disc, ResourceKey<JukeboxSong> song, String description) {
 		this.addItem(disc, "Music Disc");
 		this.add(Util.makeDescriptionId("jukebox_song", song.identifier()), description);
+		this.addToastMusicName(song.identifier().getPath(), description);
+	}
+
+	public void addToastMusicName(String name, String description) {
+		this.add("%s.music.%s".formatted(TFCommon.ID, name), description);
 	}
 
 	public void addStructure(ResourceKey<Structure> biome, String name) {

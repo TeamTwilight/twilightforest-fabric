@@ -173,7 +173,6 @@ public final class TFClient implements ClientModInitializer {
 		ClientEvents.CARMINITE_RENDER_LEVEL_AFTER_WEATHER.register(ClientGameEventListeners::renderAurora);
 		ClientEvents.CUSTOMIZE_BOSS_HEALTH_OVERLAY.register(ClientGameEventListeners::renderCustomBossbars);
 		LevelRenderEvents.BEFORE_BLOCK_OUTLINE.register(ClientGameEventListeners::renderGiantBlockOutlines);
-		ClientEvents.SELECT_MUSIC.register(ClientGameEventListeners::setMusicInDimension);
 		ClientEvents.COMPUTE_CAMERA_ANGLES.register(ClientGameEventListeners::shakeCamera);
 		ItemTooltipCallback.EVENT.register((stack, _, _, lines) -> ClientGameEventListeners.translateBookAuthor(stack, lines));
 		ClientEvents.COMPUTE_FOV_MODIFIER.register(ClientGameEventListeners::updateBowFOV);

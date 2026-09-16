@@ -23,8 +23,6 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.sounds.Music;
-import net.minecraft.sounds.Musics;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
@@ -86,13 +84,6 @@ public final class ClientGameEventListeners {
 
 	public static void clearEntityRenderUtilMap() {
 		EntityCache.clearCache();
-	}
-
-	public static void setMusicInDimension(SelectMusicEvent event) {
-		Music music = event.getOriginalMusic(); // FIXME, why is this commented out?
-		if (Minecraft.getInstance().level != null && Minecraft.getInstance().player != null && (music == Musics.CREATIVE || music == Musics.UNDER_WATER) && TFDimension.isTwilightWorldOnClient(Minecraft.getInstance().level)) {
-//			event.setMusic(Minecraft.getInstance().level.getBiomeManager().getNoiseBiomeAtPosition(Minecraft.getInstance().player.blockPosition()).value().getBackgroundMusic().orElse(Musics.GAME));
-		}
 	}
 
 	/**
