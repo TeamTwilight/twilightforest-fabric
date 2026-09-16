@@ -67,7 +67,7 @@ public class KnightStrongholdStructure extends ControlledSpawningStructure {
 			),
 			new AdvancementLockConfig(List.of(TFCommon.prefix("progress_trophy_pedestal"))),
 			Optional.of(new HintConfig(HintConfig.book("tfstronghold", 4), TFEntities.KOBOLD)),
-			Optional.of(new DecorationConfig(3, true, false, false)),
+			Optional.of(new DecorationConfig(0, true, false, false, false)),
 			true, Optional.of(BuiltInRegistries.MAP_DECORATION_TYPE.wrapAsHolder(TFMapDecorations.KNIGHT_STRONGHOLD)),
 			new StructureSettings(
 				context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_KNIGHT_STRONGHOLD_BIOMES),
