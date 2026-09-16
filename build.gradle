@@ -114,9 +114,9 @@ processResources {
 	filesMatching("fabric.mod.json") {
 		expand([
 			"version"             : ver,
-			"loader_version"      : loader_version,
+			"loader_version"      : minimum_loader_version,
 			"minecraft_version"   : base_minecraft_version,
-			"fabric_api_version"  : fabric_api_version,
+			"fabric_api_version"  : minimum_fabric_api_version,
 			"java_version"        : java.toolchain.languageVersion.get().asInt()
 		])
 	}
