@@ -63,6 +63,7 @@ import twilightforest.world.components.structures.util.ControlledSpawns;
 import twilightforest.world.components.structures.util.ValidatedSpawnLocations;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -349,7 +350,7 @@ public final class EntityEventListeners {
 		}
 	}
 
-	/*private void structureSpecialSpawns(LevelEvent.PotentialSpawns event) {
+	public static void structureSpecialSpawns(LevelEvent.PotentialSpawns event) {
 		if (!(event.getLevel() instanceof ServerLevel serverLevel))
 			return;
 
@@ -366,7 +367,7 @@ public final class EntityEventListeners {
 			List.copyOf(event.getSpawnerDataList()).forEach(event::removeSpawnerData);
 			potentialStructureSpawns.forEach(event::addSpawnerData);
 		}
-	}*/
+	}
 
 	public static void removeCastleTextIfAttacked(AttackEntityEvent event) {
 		// For clearing our Display text entities at the Final Castle Gazebo, there's no other way to remove them otherwise

@@ -254,6 +254,7 @@ public final class TFCommon implements ModInitializer {
 		EntityEvents.PROJECTILE_IMPACT.register(EntityEventListeners::onParryProjectile);
 		PlayerEvents.RIGHT_CLICK_BLOCK.register(EntityEventListeners::createSkullCandle);
 		LivingEvents.LIVING_JUMP.register(EntityEventListeners::addCloudJumpParticles);
+		LevelEvents.POTENTIAL_SPAWNS.register(EntityEventListeners::structureSpecialSpawns);
 		PlayerEvents.ATTACK_ENTITY.register(EntityEventListeners::removeCastleTextIfAttacked);
 		ServerLivingEntityEvents.AFTER_DAMAGE.register(EntityEventListeners::addQualifiedGroupPlayerIfNeeded);
 		LivingEvents.LIVING_DEATH.register(EntityEventListeners::grantGroupAdvancementIfNeeded);
