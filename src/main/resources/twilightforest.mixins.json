@@ -7,7 +7,6 @@
     "EnderManMixin",
     "ItemContainerContentsAccessor",
     "LivingEntityGetDeathSoundAccessor",
-    "event.LivingEntityMixin",
     "ServerPlayerGameModeMixin",
     "coremod.ChunkStatusTasksMixin",
     "coremod.LivingEntityMixin",
@@ -16,7 +15,9 @@
     "enums.DamageEffectsMixin",
     "enums.GrassColorModifierMixin",
     "enums.ItemDisplayContextMixin",
-    "enums.RarityMixin"
+    "enums.RarityMixin",
+    "event.BaseSpawnerMixin",
+    "event.LivingEntityMixin"
   ],
   "client": [
     "ChestRendererMixin",

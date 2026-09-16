@@ -15,7 +15,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.random.Weighted;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -378,26 +377,6 @@ public final class EntityEventListeners {
 //			level.getEntities(interaction, bounds, e -> e instanceof Display).forEach(Entity::discard);
 //			interaction.discard();
 //		}
-	}
-
-	/*private void adjustEntityHealthInMultiplayerFights(FinalizeSpawnEvent event) {
-		if (event.getEntity().is(TFEntityTypeTags.MULTIPLAYER_INCLUSIVE_ENTITIES)) {
-			if (TFConfig.multiplayerFightAdjuster.adjustsHealth()) {
-				List<ServerPlayer> nearbyPlayers = event.getLevel().getEntitiesOfClass(ServerPlayer.class, event.getEntity().getBoundingBox().inflate(32, 10, 32), player -> EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.ENTITY_STILL_ALIVE).test(player));
-				if (nearbyPlayers.size() > 1 && event.getEntity().getAttribute(Attributes.MAX_HEALTH) != null) {
-					event.getEntity().getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(TwilightForestMod.prefix("group_health_boost"), getHealthBasedOnDifficulty(event.getDifficulty().getDifficulty()) * (nearbyPlayers.size() - 1), AttributeModifier.Operation.ADD_VALUE));
-				}
-			}
-		}
-	}*/
-
-	private static double getHealthBasedOnDifficulty(Difficulty difficulty) {
-		return switch (difficulty) {
-			case EASY -> 20.0D;
-			case NORMAL -> 40.0D;
-			case HARD -> 60.0D;
-			default -> 0.0D;
-		};
 	}
 
 	public static void addQualifiedGroupPlayerIfNeeded(LivingEntity entity, DamageSource source, float baseDamageTaken, float damageTaken, boolean blocked) {
