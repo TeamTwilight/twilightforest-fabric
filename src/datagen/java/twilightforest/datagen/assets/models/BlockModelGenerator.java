@@ -182,9 +182,9 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.CARMINITE_REACTOR, block -> this.createTrivialBlock(block, TexturedModel.createDefault(block1 -> TFTextureMapping.threeLayerBlock(block, ""), TFModelTemplates.THREE_LAYER_BLOCK)));
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.REACTOR_DEBRIS, plainVariant(ModelTemplates.PARTICLE_ONLY.create(TFBlocks.REACTOR_DEBRIS, TextureMapping.particle(new Material(TFCommon.prefix("block/blank"))), this.modelOutput))));
 		this.wrapBlockItem(TFBlocks.LOCKED_VANISHING_BLOCK, block -> this.blockStateOutput.accept(MultiVariantGenerator.dispatch(block)
-			.with(PropertyDispatch.initial(VanishingBlock.ACTIVE).generate(active -> plainVariant(active ?
-				TFModelTemplates.THREE_LAYER_BLOCK.createWithSuffix(block, "_on", TFTextureMapping.threeLayerBlock(block, "_on"), this.modelOutput) :
-				TFModelTemplates.THREE_LAYER_BLOCK.create(block, TFTextureMapping.threeLayerBlock(block, ""), this.modelOutput))))));
+			.with(PropertyDispatch.initial(LockedVanishingBlock.LOCKED).generate(active -> plainVariant(active ?
+				TFModelTemplates.THREE_LAYER_BLOCK.create(block, TFTextureMapping.threeLayerBlock(block, ""), this.modelOutput) :
+				TFModelTemplates.THREE_LAYER_BLOCK.createWithSuffix(block, "_on", TFTextureMapping.threeLayerBlock(block, "_on"), this.modelOutput))))));
 		this.wrapBlockItem(TFBlocks.VANISHING_BLOCK, block -> this.blockStateOutput.accept(MultiVariantGenerator.dispatch(block)
 			.with(PropertyDispatch.initial(VanishingBlock.ACTIVE).generate(active -> plainVariant(active ?
 				TFModelTemplates.THREE_LAYER_BLOCK.createWithSuffix(block, "_on", TFTextureMapping.threeLayerBlock(block, "_on"), this.modelOutput) :
