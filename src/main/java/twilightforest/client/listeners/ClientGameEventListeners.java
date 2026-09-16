@@ -23,7 +23,6 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
@@ -257,10 +256,12 @@ public final class ClientGameEventListeners {
 				BlockPos offsetPos = new BlockPos(pos.getX() & ~0b11, pos.getY() & ~0b11, pos.getZ() & ~0b11);
 				VertexConsumer consumer = context.bufferSource().getBuffer(RenderTypes.lines());
 				Vec3 xyz = Vec3.atLowerCornerOf(offsetPos).subtract(context.gameRenderer().getMainCamera().position());
-				ShapeRenderer.renderShape(context.poseStack(), consumer, GIANT_BLOCK, xyz.x(), xyz.y(), xyz.z(), ARGB.colorFromFloat(0.0F, 0.0F, 0.0F, 0.45F), Minecraft.getInstance().gameRenderer.getGameRenderState().windowRenderState.appropriateLineWidth);
+				int outlineColor = outlineState.highContrast() ? 0xff_57_ff_e1 : 0x66_00_00_00;
+				ShapeRenderer.renderShape(context.poseStack(), consumer, GIANT_BLOCK, xyz.x(), xyz.y(), xyz.z(), outlineColor, Minecraft.getInstance().gameRenderer.getGameRenderState().windowRenderState.appropriateLineWidth);
 			}
 			return false;
 		}
+
 		return true;
 	}
 
