@@ -7,7 +7,7 @@
     "EnderManMixin",
     "ItemContainerContentsAccessor",
     "LivingEntityGetDeathSoundAccessor",
-    "LivingEntityMixin",
+    "event.LivingEntityMixin",
     "ServerPlayerGameModeMixin",
     "coremod.ChunkStatusTasksMixin",
     "coremod.LivingEntityMixin",

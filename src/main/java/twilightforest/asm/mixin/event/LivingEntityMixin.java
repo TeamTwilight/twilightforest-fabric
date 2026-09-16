@@ -1,4 +1,4 @@
-package twilightforest.asm.mixin;
+package twilightforest.asm.mixin.event;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
