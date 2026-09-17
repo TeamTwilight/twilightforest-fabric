@@ -35,7 +35,7 @@ public class ArmorUtil {
 		return armorSlots > 0 ? (float) shroudedArmor / (float) armorSlots : 0.0F;
 	}
 
-	public static void updateEmperorsClothEquippable(ItemStack stack) {
+	public void updateEmperorsClothEquippable(ItemStack stack) {
 		Equippable equippable = stack.get(DataComponents.EQUIPPABLE);
 
 		if (equippable == null)

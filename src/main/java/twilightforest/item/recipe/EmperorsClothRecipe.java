@@ -26,6 +26,8 @@ public class EmperorsClothRecipe extends CustomRecipe {
 	public static final RecipeSerializer<EmperorsClothRecipe> SERIALIZER =
 		new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
 
+	private static final ArmorUtil armorUtil = ArmorUtil.INSTANCE;
+
 	private EmperorsClothRecipe() {
 	}
 
@@ -66,7 +68,7 @@ public class EmperorsClothRecipe extends CustomRecipe {
 
 		ItemStack copy = item.copy();
 		copy.set(TFDataComponents.EMPERORS_CLOTH, Unit.INSTANCE);
-		ArmorUtil.updateEmperorsClothEquippable(copy);
+		armorUtil.updateEmperorsClothEquippable(copy);
 		return copy;
 	}
 

@@ -44,6 +44,8 @@ public class NoTemplateSmithingRecipe extends SimpleSmithingRecipe {
 
 	public static final RecipeSerializer<NoTemplateSmithingRecipe> SERIALIZER = new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
 
+	private static final ArmorUtil armorUtil = ArmorUtil.INSTANCE;
+
 	private final Ingredient base;
 	private final Ingredient addition;
 	private final List<TypedDataComponent<?>> additionalData;
@@ -105,7 +107,7 @@ public class NoTemplateSmithingRecipe extends SimpleSmithingRecipe {
 		for (TypedDataComponent<?> data : this.additionalData)
 			setComponent(data, itemstack);
 
-		ArmorUtil.updateEmperorsClothEquippable(itemstack);
+		armorUtil.updateEmperorsClothEquippable(itemstack);
 	}
 
 	private static <T> void setComponent(TypedDataComponent<T> data, ItemStack stack) {

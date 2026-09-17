@@ -37,6 +37,8 @@ import twilightforest.network.CreateMovingCicadaSoundPacket;
 import twilightforest.util.ArmorUtil;
 
 public final class MiscEventListeners {
+	private static final ArmorUtil armorUtil = ArmorUtil.INSTANCE;
+
 	public static void addPrey(Entity entity) {
 		if (entity instanceof Mob mob) {
 			EntityType<?> type = mob.getType();
@@ -126,7 +128,7 @@ public final class MiscEventListeners {
 		if (usedItem.has(TFDataComponents.EMPERORS_CLOTH)) {
 			LayeredCauldronBlock.lowerFillLevel(state, level, pos);
 			usedItem.remove(TFDataComponents.EMPERORS_CLOTH);
-			ArmorUtil.updateEmperorsClothEquippable(usedItem);
+			armorUtil.updateEmperorsClothEquippable(usedItem);
 			player.awardStat(Stats.CLEAN_ARMOR);
 			return InteractionResult.SUCCESS;
 		}
