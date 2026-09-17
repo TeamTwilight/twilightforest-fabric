@@ -1,8 +1,10 @@
 package twilightforest.asm.hooks.coremod;
 
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.init.TFDataAttachments;
@@ -37,5 +39,18 @@ public final class EntityHooks {
 		if (!TravellersModifiersManager.isModifierActive(livingEntity, TravellersModifiersManager.UNRESTRAINED_MODIFIER))
 			return isInWater;
 		return !livingEntity.canStandOnFluid(livingEntity.level().getFluidState(livingEntity.blockPosition())) && isInWater;
+	}
+
+	public static boolean processWaterWalking(boolean o, LivingEntity livingEntity, FluidState fluidState) {
+		if (!fluidState.is(FluidTags.WATER))
+			return o;
+
+		if (!TravellersModifiersManager.isModifierActive(livingEntity, TravellersModifiersManager.WATER_WALK_MODIFIER))
+			return o;
+
+		boolean isWaterWalking = TravellersGearLogic.isWaterWalking(livingEntity);
+		if (livingEntity.getFluidHeight(FluidTags.WATER) > 0 && isWaterWalking && livingEntity.level().getGameTime() % 3 == 1)
+			TravellersGearLogic.waterWalkingSplashEffect(livingEntity);
+		return isWaterWalking;
 	}
 }

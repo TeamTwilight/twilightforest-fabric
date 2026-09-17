@@ -2,7 +2,9 @@ package twilightforest.asm.mixin.coremod;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -41,5 +43,16 @@ public class LivingEntityMixin {
 	)
 	private VoxelShape twilightforest$processLiquidCollisionShape(VoxelShape original) {
 		return EntityHooks.processLiquidCollisionShape(original, (LivingEntity) (Object) this);
+	}
+
+	@ModifyReturnValue(
+		method = "canStandOnFluid",
+		at = @At("RETURN")
+	)
+	private boolean twilightforest$processWaterWalking(
+		boolean original,
+		@Local(argsOnly = true, name = "fluid") FluidState fluid
+	) {
+		return EntityHooks.processWaterWalking(original, (LivingEntity) (Object) this, fluid);
 	}
 }
