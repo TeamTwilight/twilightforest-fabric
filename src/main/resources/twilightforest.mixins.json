@@ -15,6 +15,7 @@
     "coremod.LevelMixin",
     "coremod.LivingEntityMixin",
     "coremod.MapItemSavedDataMixin",
+    "coremod.MushroomBlockMixin",
     "coremod.NoiseBasedChunkGeneratorMixin",
     "coremod.PathfinderMobMixin",
     "coremod.ServerEntityMixin",

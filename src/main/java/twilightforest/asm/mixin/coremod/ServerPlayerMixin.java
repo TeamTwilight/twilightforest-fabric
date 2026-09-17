@@ -19,7 +19,7 @@ public class ServerPlayerMixin {
 			target = "Lnet/minecraft/server/level/ServerPlayer;causeFoodExhaustion(F)V"
 		)
 	)
-	private float twilightforest$getServerPlayerFoodExhaustion(float par1) {
+	private float twilightforest$getFoodExhaustion(float par1) {
 		return PlayerHooks.getFoodExhaustion(par1, (ServerPlayer) (Object) this);
 	}
 }
