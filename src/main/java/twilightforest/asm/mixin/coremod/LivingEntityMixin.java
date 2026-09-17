@@ -46,7 +46,7 @@ public class LivingEntityMixin {
 	}
 
 	@ModifyReturnValue(
-		method = "canStandOnFluid",
+		method = "canStandOnFluid(Lnet/minecraft/world/level/material/FluidState;)Z",
 		at = @At("RETURN")
 	)
 	private boolean twilightforest$processWaterWalking(

@@ -2,6 +2,7 @@ package twilightforest.asm.hooks.coremod;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
@@ -9,8 +10,10 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.block.CloudBlock;
+import twilightforest.block.WroughtIronFenceBlock;
 import twilightforest.client.FoliageColorHandler;
 import twilightforest.config.TFConfig;
+import twilightforest.init.TFBlocks;
 import twilightforest.init.custom.TravellersModifiersManager;
 
 public final class BlockHooks {
@@ -52,5 +55,12 @@ public final class BlockHooks {
 
 	public static int resolveFoliageColor(int o, Biome biome, double x, double z) {
 		return foliageColorHandler.get(o, biome, x, z);
+	}
+
+	public static boolean leashFenceKnotSurvives(boolean o, LeashFenceKnotEntity entity) {
+		if (o)
+			return true;
+		BlockState fenceState = entity.level().getBlockState(entity.getPos());
+		return fenceState.is(TFBlocks.WROUGHT_IRON_FENCE) && fenceState.getValue(WroughtIronFenceBlock.POST) != WroughtIronFenceBlock.PostState.NONE;
 	}
 }

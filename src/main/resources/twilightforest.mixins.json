@@ -10,6 +10,7 @@
     "ServerPlayerGameModeMixin",
     "coremod.ChunkStatusTasksMixin",
     "coremod.EntityMixin",
+    "coremod.LeashFenceKnotEntityMixin",
     "coremod.LevelMixin",
     "coremod.LivingEntityMixin",
     "coremod.NoiseBasedChunkGeneratorMixin",
