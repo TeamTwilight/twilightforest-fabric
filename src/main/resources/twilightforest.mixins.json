@@ -26,10 +26,7 @@
     "LivingEntityRendererMixin",
     "MapRendererMixin",
     "WeatherEffectRendererMixin",
-    "coremod.CapeLayerMixin",
-    "coremod.HumanoidArmorLayerMixin",
-    "coremod.ModelFeatureRendererMixin",
-    "coremod.WingsLayerMixin"
+    "coremod.ModelFeatureRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
