@@ -12,6 +12,7 @@
     "coremod.LevelMixin",
     "coremod.LivingEntityMixin",
     "coremod.NoiseBasedChunkGeneratorMixin",
+    "coremod.PathfinderMobMixin",
     "coremod.SlimeBlockMixin",
     "coremod.StructureStartMixin",
     "enums.DamageEffectsMixin",
