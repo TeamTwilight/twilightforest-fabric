@@ -68,6 +68,24 @@ public final class TravellersClientEventListeners {
 		input.moveVector = new Vec2((float) (input.getMoveVector().x / multiplier), input.getMoveVector().y);
 	}
 
+	public static void excludeStraightAheadFromFov(ComputeFovModifierEvent event) {
+		Player player = event.getPlayer();
+		AttributeInstance attributeInstance = player.getAttributes().getInstance(Attributes.MOVEMENT_SPEED);
+		if (attributeInstance == null)
+			return;
+		AttributeModifier modifier = attributeInstance.getModifier(TFAttributeModifiers.STRAIGHT_AHEAD_ATTRIBUTE_MODIFIER_LOCATION);
+		if (modifier == null || modifier.amount() == 0)
+			return;
+		float walkingSpeed = player.getAbilities().getWalkingSpeed();
+		if (walkingSpeed == 0)
+			return;
+
+		float speed = (float) attributeInstance.getValue();
+		float speedWithoutModifier = speed / (1.0F + (float) modifier.amount());
+		float ratio = (speedWithoutModifier / walkingSpeed + 1.0F) / (speed / walkingSpeed + 1.0F);
+		event.setNewFovModifier(event.getNewFovModifier() + event.getFovScale() * event.getFovModifier() * (ratio - 1.0F));
+	}
+
 	public static void speedUpControlledWhileSneaking(MovementInputUpdateEvent event) {
 		if (!(event.getEntity() instanceof LocalPlayer localPlayer) || !localPlayer.getAttachedOrCreate(TFDataAttachments.IS_GRADUALLY_GLIDING) || !localPlayer.isShiftKeyDown())
 			return;
@@ -124,8 +142,8 @@ public final class TravellersClientEventListeners {
 	}
 
 	public static void updateZoomState(ComputeFovModifierEvent event) {
-		LocalPlayer player = Minecraft.getInstance().player;
-		if (player == null) return;
+		if (!(event.getPlayer() instanceof LocalPlayer player))
+			return;
 		boolean wasUsingZoom = player.getAttachedOrCreate(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER);
 		ItemStack headStack = player.getItemBySlot(EquipmentSlot.HEAD);
 		Float zoomModifier = headStack.get(TFDataComponents.ZOOM_ABILITY_MODIFIER);

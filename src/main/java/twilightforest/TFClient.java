@@ -151,6 +151,7 @@ public final class TFClient implements ClientModInitializer {
 		ClientEvents.INPUT_KEY.register(TravellersClientEventListeners::handleDoubleJump);
 		ClientEvents.MOVEMENT_INPUT_UPDATE.register(TravellersClientEventListeners::handleAgileRanger);
 		ClientEvents.MOVEMENT_INPUT_UPDATE.register(TravellersClientEventListeners::handleStraightAhead);
+		ClientEvents.COMPUTE_FOV_MODIFIER.register(TravellersClientEventListeners::excludeStraightAheadFromFov);
 		ClientEvents.MOVEMENT_INPUT_UPDATE.register(TravellersClientEventListeners::speedUpControlledWhileSneaking);
 		ClientEvents.MOVEMENT_INPUT_UPDATE.register(TravellersClientEventListeners::handleSidestep);
 		ClientEvents.RENDER_FRAME_PRE.register(TravellersClientEventListeners::handleStealth);

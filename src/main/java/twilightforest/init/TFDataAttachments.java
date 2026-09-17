@@ -36,7 +36,6 @@ public class TFDataAttachments {
 	public static final AttachmentType<Boolean> HAS_DOUBLE_JUMP = AttachmentRegistry.create(TFCommon.prefix("has_double_jump"), b -> b.initializer(() -> false).persistent(Codec.BOOL));
 	public static final AttachmentType<Integer> DOUBLE_JUMP_VALIDATOR = AttachmentRegistry.create(TFCommon.prefix("double_jump_validator"), b -> b.initializer(() -> 0).persistent(Codec.INT));
 	public static final AttachmentType<Integer> DOUBLE_JUMP_VALIDATOR_LAST_CHECK = AttachmentRegistry.create(TFCommon.prefix("double_jump_validator_last_check"), b -> b.initializer(() -> 0).persistent(Codec.INT));
-	public static final AttachmentType<Double> TEMPORARY_SAVED_STRAIGHT_AHEAD = AttachmentRegistry.create(TFCommon.prefix("temporary_saved_straight_ahead"), b -> b.initializer(() -> 1D).persistent(Codec.DOUBLE));
 	public static final AttachmentType<Long> LAST_DAMAGE_ARMOR_TIME = AttachmentRegistry.create(TFCommon.prefix("last_damage_armor_time"), b -> b.initializer(() -> 0L).persistent(Codec.LONG));
 	public static final AttachmentType<Integer> LAST_JUMP_KEY_PRESS_TIME = AttachmentRegistry.create(TFCommon.prefix("last_jump_key_press_time"), b -> b.initializer(() -> 0).persistent(Codec.INT));
 	public static final AttachmentType<Float> LAST_HORIZONTAL_IMPULSE = AttachmentRegistry.create(TFCommon.prefix("last_horizontal_impulse"), b -> b.initializer(() -> 0F).persistent(Codec.FLOAT));
