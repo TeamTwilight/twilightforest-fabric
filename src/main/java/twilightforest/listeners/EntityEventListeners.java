@@ -40,6 +40,7 @@ import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
+import net.minecraft.world.phys.AABB;
 import twilightforest.TFCommon;
 import twilightforest.advancements.DrinkFromFlaskTrigger;
 import twilightforest.block.*;
@@ -57,6 +58,7 @@ import twilightforest.network.WipeOreMeterPacket;
 import twilightforest.util.entities.EntityUtil;
 import twilightforest.util.entities.OminousFireDamageSource;
 import twilightforest.world.components.structures.SpawnIndexProvider;
+import twilightforest.world.components.structures.finalcastle.FinalCastleBossGazeboComponent;
 import twilightforest.world.components.structures.start.TFStructureStart;
 import twilightforest.world.components.structures.util.ControlledSpawns;
 import twilightforest.world.components.structures.util.ValidatedSpawnLocations;
@@ -371,12 +373,11 @@ public final class EntityEventListeners {
 	public static void removeCastleTextIfAttacked(AttackEntityEvent event) {
 		// For clearing our Display text entities at the Final Castle Gazebo, there's no other way to remove them otherwise
 		// The tag distinguishes our Interaction entities from other Mods' utilization
-//		if (event.getTarget().level() instanceof ServerLevel level && event.getTarget() instanceof Interaction interaction
-//			&& interaction.getTags().contains(FinalCastleBossGazeboComponent.INTERACTION_TAG)) {
-//			AABB bounds = interaction.getBoundingBox();
-//			level.getEntities(interaction, bounds, e -> e instanceof Display).forEach(Entity::discard);
-//			interaction.discard();
-//		}
+		if (event.getTarget().level() instanceof ServerLevel level && event.getTarget() instanceof Interaction interaction && interaction.entityTags().contains(FinalCastleBossGazeboComponent.INTERACTION_TAG)) {
+			AABB bounds = interaction.getBoundingBox();
+			level.getEntities(interaction, bounds, e -> e instanceof Display).forEach(Entity::discard);
+			interaction.discard();
+		}
 	}
 
 	public static void addQualifiedGroupPlayerIfNeeded(LivingEntity entity, DamageSource source, float baseDamageTaken, float damageTaken, boolean blocked) {
