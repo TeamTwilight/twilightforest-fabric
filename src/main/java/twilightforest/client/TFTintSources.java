@@ -1,4 +1,4 @@
-package twilightforest.init;
+package twilightforest.client;
 
 import it.unimi.dsi.fastutil.ints.Int2IntFunction;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockColorRegistry;
@@ -18,6 +18,7 @@ import twilightforest.TFCommon;
 import twilightforest.block.ClimbableHollowLogBlock;
 import twilightforest.client.properties.PotionFlaskTintSource;
 import twilightforest.enums.HollowLogVariants;
+import twilightforest.init.TFBlocks;
 import twilightforest.util.ColorUtil;
 import twilightforest.util.SimplexNoiseHelper;
 
