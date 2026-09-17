@@ -30,6 +30,7 @@
     "LivingEntityRendererMixin",
     "MapRendererMixin",
     "WeatherEffectRendererMixin",
+    "coremod.LocalPlayerMixin",
     "coremod.ModelFeatureRendererMixin"
   ],
   "injectors": {

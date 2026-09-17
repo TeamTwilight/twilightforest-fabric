@@ -32,4 +32,10 @@ public final class EntityHooks {
 
 		return TravellersGearLogic.isWaterWalking(livingEntity) ? TravellersGearLogic.WATER_WALKING_COLLISION_SHAPE : o;
 	}
+
+	public static boolean unrestrainedSprintingInWater(boolean isInWater, LivingEntity livingEntity) {
+		if (!TravellersModifiersManager.isModifierActive(livingEntity, TravellersModifiersManager.UNRESTRAINED_MODIFIER))
+			return isInWater;
+		return !livingEntity.canStandOnFluid(livingEntity.level().getFluidState(livingEntity.blockPosition())) && isInWater;
+	}
 }
