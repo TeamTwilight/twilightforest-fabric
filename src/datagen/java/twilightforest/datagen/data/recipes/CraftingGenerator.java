@@ -27,15 +27,12 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Blocks;
 import twilightforest.datagen.data.custom.*;
 import twilightforest.datagen.helpers.CraftingDataHelper;
-import twilightforest.init.TFRegistries;
+import twilightforest.init.*;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.recipe.travellers.TravellersVestGlovesMergeRecipe;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifiable;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 import twilightforest.tags.TFItemTags;
-import twilightforest.init.TFBlocks;
-import twilightforest.init.TFDataComponents;
-import twilightforest.init.TFItems;
 import twilightforest.item.recipe.*;
 
 import java.util.function.Predicate;
@@ -1194,7 +1191,10 @@ public class CraftingGenerator extends CraftingDataHelper {
 
 		this.dryingRackCoralRecipes();
 
-		DryingRecipeBuilder.drying(Items.BREAD, TFItems.STALE_BREAD).save(this.output);
+		DryingRecipeBuilder.drying(Ingredient.of(Items.BREAD), new ItemStackTemplate(BuiltInRegistries.ITEM.wrapAsHolder(TFItems.STALE_BREAD), 1, DataComponentPatch.builder()
+			.set(DataComponents.DAMAGE_TYPE, this.registries.lookupOrThrow(Registries.DAMAGE_TYPE).getOrThrow(TFDamageTypes.STALE_SANDWICH))
+			.build()
+		)).save(this.output);
 	}
 
 	private void dryingRackCoralRecipes() {
