@@ -17,6 +17,7 @@
     "coremod.MapItemSavedDataMixin",
     "coremod.NoiseBasedChunkGeneratorMixin",
     "coremod.PathfinderMobMixin",
+    "coremod.ServerEntityMixin",
     "coremod.SlimeBlockMixin",
     "coremod.StructureStartMixin",
     "enums.DamageEffectsMixin",
