@@ -33,7 +33,7 @@ java {
 }
 
 tasks.withType(JavaCompile).configureEach {
-	options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation,-this-escape" << "-Werror" << "-Xmaxerrs" << "10000" // Remove max errors flag before publishing
+	options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation,-this-escape" << "-Werror"
 	options.encoding = 'UTF-8'
 }
 
@@ -59,15 +59,6 @@ fabricApi {
 		client = true
 		createSourceSet = true
 		outputDirectory = file("src/main/generated/resources")
-	}
-}
-
-sourceSets {
-	main {
-		resources {
-			srcDir 'src/main/generated/resources'
-			exclude '.cache'
-		}
 	}
 }
 
