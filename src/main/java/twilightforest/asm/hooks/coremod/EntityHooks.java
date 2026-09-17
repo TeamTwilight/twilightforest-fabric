@@ -19,4 +19,8 @@ public final class EntityHooks {
 
 		return entity;
 	}
+
+	public static float resetFactorWithUnrestrained(float o, Entity entity) {
+		return TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.UNRESTRAINED_MODIFIER) ? 1.0F : o;
+	}
 }

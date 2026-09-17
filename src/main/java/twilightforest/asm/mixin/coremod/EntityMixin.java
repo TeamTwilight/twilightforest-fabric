@@ -1,6 +1,7 @@
 package twilightforest.asm.mixin.coremod;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import org.objectweb.asm.Opcodes;
@@ -21,5 +22,16 @@ public class EntityMixin {
 	)
 	private Vec3 twilightforest$resetStuckUnrestrained(Vec3 original) {
 		return EntityHooks.resetStuckUnrestrained((Entity) (Object) this).stuckSpeedMultiplier;
+	}
+
+	@ModifyReturnValue(
+		method = {
+			"getBlockJumpFactor()F",
+			"getBlockSpeedFactor()F"
+		},
+		at = @At("RETURN")
+	)
+	private float twilightforest$resetSpeedFactorWithUnrestrained(float original) {
+		return EntityHooks.resetFactorWithUnrestrained(original, (Entity) (Object) this);
 	}
 }
