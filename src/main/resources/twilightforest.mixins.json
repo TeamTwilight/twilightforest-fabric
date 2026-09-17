@@ -30,6 +30,7 @@
     "LivingEntityRendererMixin",
     "MapRendererMixin",
     "WeatherEffectRendererMixin",
+    "coremod.BiomeColorsMixin",
     "coremod.LocalPlayerMixin",
     "coremod.ModelFeatureRendererMixin"
   ],
