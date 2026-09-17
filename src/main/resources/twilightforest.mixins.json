@@ -21,6 +21,7 @@
     "coremod.ServerEntityMixin",
     "coremod.ServerPlayerMixin",
     "coremod.SlimeBlockMixin",
+    "coremod.SnowyBlockMixin",
     "coremod.StructureStartMixin",
     "enums.DamageEffectsMixin",
     "enums.GrassColorModifierMixin",

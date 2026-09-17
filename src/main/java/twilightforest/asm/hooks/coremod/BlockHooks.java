@@ -11,6 +11,7 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.block.CloudBlock;
+import twilightforest.block.SnowLoggable;
 import twilightforest.block.WroughtIronFenceBlock;
 import twilightforest.client.FoliageColorHandler;
 import twilightforest.config.TFConfig;
@@ -77,5 +78,9 @@ public final class BlockHooks {
 			}
 		}
 		return false;
+	}
+
+	public static boolean keepSnowyStateForSnowloggableBlocks(boolean o, BlockState state) {
+		return o || (state.getBlock() instanceof SnowLoggable && state.getValue(SnowLoggable.SNOW_LAYERS) > 0);
 	}
 }
