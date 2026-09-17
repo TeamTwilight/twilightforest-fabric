@@ -18,6 +18,7 @@
     "coremod.NoiseBasedChunkGeneratorMixin",
     "coremod.PathfinderMobMixin",
     "coremod.ServerEntityMixin",
+    "coremod.ServerPlayerMixin",
     "coremod.SlimeBlockMixin",
     "coremod.StructureStartMixin",
     "enums.DamageEffectsMixin",
