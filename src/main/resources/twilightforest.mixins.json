@@ -9,6 +9,7 @@
     "LivingEntityGetDeathSoundAccessor",
     "ServerPlayerGameModeMixin",
     "coremod.ChunkStatusTasksMixin",
+    "coremod.EntityMixin",
     "coremod.LevelMixin",
     "coremod.LivingEntityMixin",
     "coremod.NoiseBasedChunkGeneratorMixin",
