@@ -4,8 +4,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.custom.TravellersModifiersManager;
+import twilightforest.item.travellers_gear.TravellersGearLogic;
 
 public final class EntityHooks {
 	public static boolean overrideStayCloseToHolder(boolean prior, PathfinderMob mob) {
@@ -22,5 +24,12 @@ public final class EntityHooks {
 
 	public static float resetFactorWithUnrestrained(float o, Entity entity) {
 		return TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.UNRESTRAINED_MODIFIER) ? 1.0F : o;
+	}
+
+	public static VoxelShape processLiquidCollisionShape(VoxelShape o, LivingEntity livingEntity) {
+		if (!TravellersModifiersManager.isModifierActive(livingEntity, TravellersModifiersManager.WATER_WALK_MODIFIER))
+			return o;
+
+		return TravellersGearLogic.isWaterWalking(livingEntity) ? TravellersGearLogic.WATER_WALKING_COLLISION_SHAPE : o;
 	}
 }

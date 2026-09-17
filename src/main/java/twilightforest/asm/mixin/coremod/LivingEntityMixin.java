@@ -1,11 +1,14 @@
 package twilightforest.asm.mixin.coremod;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import twilightforest.asm.hooks.coremod.ArmorHooks;
 import twilightforest.asm.hooks.coremod.BlockHooks;
+import twilightforest.asm.hooks.coremod.EntityHooks;
 
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
@@ -30,5 +33,13 @@ public class LivingEntityMixin {
 	)
 	private float twilightforest$resetBlockFrictionWithUnrestrained(float original) {
 		return BlockHooks.resetBlockFrictionWithUnrestrained(original, (LivingEntity) (Object) this);
+	}
+
+	@ModifyReturnValue(
+		method = "getLiquidCollisionShape()Lnet/minecraft/world/phys/shapes/VoxelShape;",
+		at = @At("RETURN")
+	)
+	private VoxelShape twilightforest$processLiquidCollisionShape(VoxelShape original) {
+		return EntityHooks.processLiquidCollisionShape(original, (LivingEntity) (Object) this);
 	}
 }
