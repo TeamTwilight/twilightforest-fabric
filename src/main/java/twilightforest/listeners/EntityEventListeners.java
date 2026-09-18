@@ -181,22 +181,6 @@ public final class EntityEventListeners {
 		}
 	}
 
-	/*private void reduceFrostedEffectIfOnFire(LivingIncomingDamageEvent event) {
-		if (!event.isCanceled()) {
-			LivingEntity living = event.getEntity();
-			Optional.ofNullable(living.getEffect(TFMobEffects.FROSTY)).ifPresent(mobEffectInstance -> {
-				DamageContainer container = event.getContainer();
-				if (container.getSource().typeHolder().is(DamageTypes.FREEZE)) {
-					container.setNewDamage(container.getOriginalDamage() + (float) (mobEffectInstance.getAmplifier() / 2));
-				} else if (container.getSource().typeHolder().is(DamageTypeTags.IS_FIRE)) {
-					living.removeEffect(TFMobEffects.FROSTY);
-					mobEffectInstance.amplifier -= 1;
-					if (mobEffectInstance.amplifier >= 0) living.addEffect(mobEffectInstance);
-				}
-			});
-		}
-	}*/
-
 	// Parrying
 	public static void onParryProjectile(ProjectileImpactEvent event) {
 		final Projectile projectile = event.getProjectile();
