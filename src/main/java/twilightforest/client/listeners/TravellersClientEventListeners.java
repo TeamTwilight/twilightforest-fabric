@@ -5,13 +5,23 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.ClientInput;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.player.AvatarRenderer;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.protocol.common.ServerboundCustomPayloadPacket;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -21,6 +31,8 @@ import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.component.UseEffects;
 import net.minecraft.world.phys.Vec2;
+import twilightforest.TFCommon;
+import twilightforest.client.renderer.armor.TravellersArmorRenderer;
 import twilightforest.config.TFConfig;
 import twilightforest.init.*;
 import twilightforest.init.custom.TravellersModifiersManager;
@@ -229,7 +241,7 @@ public final class TravellersClientEventListeners {
 		return !key.matches(event.getKeyEvent()) || event.getAction() != InputConstants.PRESS || Minecraft.getInstance().screen != null;
 	}
 
-	/*private void renderGlovesInFirstPerson(RenderArmEvent event) {
+	public static void renderGlovesInFirstPerson(RenderArmEvent event) {
 		if (!TFConfig.firstPersonGloveOverlay)
 			return;
 
@@ -242,8 +254,11 @@ public final class TravellersClientEventListeners {
 		if (!(renderer instanceof AvatarRenderer<?> avatarRenderer))
 			return;
 
-		if (!(IClientItemExtensions.of(TFItems.TRAVELLERS_GLOVES.get()).getHumanoidArmorModel(chestStack, EquipmentClientInfo.LayerType.HUMANOID, avatarRenderer.getModel()) instanceof HumanoidModel<?> model))
+		TravellersArmorRenderer armorRenderer = TravellersArmorRenderer.getInstance();
+		if (armorRenderer == null)
 			return;
+
+		HumanoidModel<HumanoidRenderState> model = armorRenderer.getChestModel(chestStack, avatarRenderer.getModel());
 
 		boolean rightArm = event.getArm() == HumanoidArm.RIGHT;
 		ModelPart armPart = rightArm ? model.rightArm : model.leftArm;
@@ -251,7 +266,7 @@ public final class TravellersClientEventListeners {
 		armPart.visible = true;
 		armPart.zRot = rightArm ? 0.1F : -0.1F;
 
-		Identifier gloveLocation = TwilightForestMod.prefix("textures/entity/equipment/humanoid/travellers.png");
+		Identifier gloveLocation = TFCommon.prefix("textures/entity/equipment/humanoid/travellers.png");
 		event.getSubmitNodeCollector().submitModelPart(armPart, event.getPoseStack(), RenderTypes.armorCutoutNoCull(gloveLocation), event.getPackedLight(), OverlayTexture.NO_OVERLAY, null);
-	}*/
+	}
 }

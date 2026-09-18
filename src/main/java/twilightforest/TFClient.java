@@ -161,6 +161,7 @@ public final class TFClient implements ClientModInitializer {
 		ClientEvents.CALCULATE_PLAYER_TURN.register(TravellersClientEventListeners::slowZoomSensitivity);
 		ClientEvents.INPUT_KEY.register(TravellersClientEventListeners::swapHotbar);
 		ClientEvents.INPUT_KEY.register(TravellersClientEventListeners::toggleRedThreadVision);
+		ClientEvents.RENDER_ARM.register(TravellersClientEventListeners::renderGlovesInFirstPerson);
 	}
 
 	private static void setupClientGameEvents() {

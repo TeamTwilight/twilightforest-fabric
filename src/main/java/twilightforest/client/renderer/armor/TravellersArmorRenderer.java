@@ -17,6 +17,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.equipment.Equippable;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TFCommon;
 import twilightforest.client.model.TFModelLayers;
 import twilightforest.client.model.armor.TFArmorModel;
@@ -90,6 +91,31 @@ public final class TravellersArmorRenderer extends TFArmorRenderer {
 		} else {
 			equipmentRenderer.renderLayers(layerType, equippable.assetId().orElseThrow(), model, state, stack, poseStack, submitNodeCollector, light, state.outlineColor);
 		}
+	}
+
+	public HumanoidModel<HumanoidRenderState> getChestModel(ItemStack stack, HumanoidModel<?> contextModel) {
+		ModelPart chestLayer = this.getModelPart(this.isModelSlim(contextModel) ? TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES_SLIM : TFModelLayers.TRAVELLERS_ARMOR_CHEST_GLOVES);
+		chestLayer.getAllParts().forEach(part -> part.skipDraw = true);
+
+		boolean hasChestplate = stack.has(TFDataComponents.TRAVELLERS_HAS_CHESTPLATE);
+		boolean hasGloves = stack.has(TFDataComponents.TRAVELLERS_HAS_GLOVES);
+
+		chestLayer.getChild("body").skipDraw = !hasChestplate;
+		chestLayer.getChild("left_arm").skipDraw = !hasGloves;
+		chestLayer.getChild("right_arm").skipDraw = !hasGloves;
+
+		TFArmorModel model = new TFArmorModel(chestLayer);
+		model.setSlot(EquipmentSlot.CHEST);
+
+		return model;
+	}
+
+	public static @Nullable TravellersArmorRenderer getInstance() {
+		return INSTANCES.stream()
+			.filter(TravellersArmorRenderer.class::isInstance)
+			.map(TravellersArmorRenderer.class::cast)
+			.findFirst()
+			.orElse(null);
 	}
 
 	private void renderGogglesZoom(HumanoidModel<HumanoidRenderState> model, HumanoidRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int light, int outlineColor) {
