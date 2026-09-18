@@ -54,6 +54,7 @@
     "WrittenBookItemMixin"
   ],
   "client": [
+    "BiomeColorsMixin",
     "BoatRendererMixin",
     "BossHealthOverlayMixin",
     "CapeLayerMixin",
