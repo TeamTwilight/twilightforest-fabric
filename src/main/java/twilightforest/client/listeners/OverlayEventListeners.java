@@ -2,7 +2,9 @@ package twilightforest.client.listeners;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudStatusBarHeightRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -19,6 +21,8 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameType;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFCommon;
+import twilightforest.client.overlay.ItemDisplayOverlay;
+import twilightforest.client.overlay.PortalOverlay;
 import twilightforest.components.item.OreScannerData;
 import twilightforest.config.TFConfig;
 import twilightforest.entity.passive.QuestRam;
@@ -46,6 +50,17 @@ public final class OverlayEventListeners {
 	private static final Identifier QUESTING_RAM_X_SPRITE = TFCommon.prefix("questing_ram_x");
 	private static final Identifier FORTIFICATION_SHIELD_SPRITE = TFCommon.prefix("fortification_shield");
 	private static final QuestingRamCurrentContext questingRamCurrentContext = QuestingRamCurrentContext.INSTANCE;
+
+	public static void init() {
+		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, OverlayEventListeners.QUEST_RAM_INDICATOR, (graphics, _) -> OverlayEventListeners.renderIndicator(graphics, graphics.guiWidth(), graphics.guiHeight()));
+		HudElementRegistry.attachElementAfter(VanillaHudElements.MOUNT_HEALTH, OverlayEventListeners.HOSTILE_MOUNT_HUNGER_BAR, (graphics, _) -> OverlayEventListeners.renderHostileMountHungerBar(graphics));
+		HudStatusBarHeightRegistry.addRight(OverlayEventListeners.HOSTILE_MOUNT_HUNGER_BAR, _ -> 10);
+		HudElementRegistry.addLast(OverlayEventListeners.ORE_METER_STATS, (graphics, _) -> OverlayEventListeners.renderOreMeterStats(graphics));
+		HudElementRegistry.attachElementAfter(VanillaHudElements.ARMOR_BAR, OverlayEventListeners.FORTIFICATION_SHIELD_COUNT, (graphics, _) -> OverlayEventListeners.renderShieldCount(graphics, graphics.guiWidth(), graphics.guiHeight()));
+		HudStatusBarHeightRegistry.addLeft(OverlayEventListeners.FORTIFICATION_SHIELD_COUNT, _ -> 10);
+		HudElementRegistry.addLast(OverlayEventListeners.PORTAL_OVERLAY, (graphics, _) -> PortalOverlay.render(graphics));
+		HudElementRegistry.addLast(OverlayEventListeners.ITEM_DISPLAY_OVERLAY, (graphics, _) -> ItemDisplayOverlay.render(graphics, OverlayEventListeners.getCameraPlayer()));
+	}
 
 	public static void renderIndicator(GuiGraphicsExtractor graphics, int screenWidth, int screenHeight) {
 		Minecraft minecraft = Minecraft.getInstance();

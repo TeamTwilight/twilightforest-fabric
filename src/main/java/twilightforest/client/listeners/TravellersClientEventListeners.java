@@ -1,5 +1,6 @@
 package twilightforest.client.listeners;
 
+import carminite.events.api.ClientEvents;
 import carminite.events.neoforge.*;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
@@ -45,6 +46,23 @@ import twilightforest.tags.TFItemTags;
 public final class TravellersClientEventListeners {
 	private static boolean isZoomKeyHeld(Player player) {
 		return TFKeyBinds.ZOOM_KEY.isDown() && !player.isScoping();
+	}
+
+	public static void init() {
+		ClientEvents.INPUT_KEY.register(TravellersClientEventListeners::handleDoubleJump);
+		ClientEvents.MOVEMENT_INPUT_UPDATE.register(TravellersClientEventListeners::handleAgileRanger);
+		ClientEvents.MOVEMENT_INPUT_UPDATE.register(TravellersClientEventListeners::handleStraightAhead);
+		ClientEvents.COMPUTE_FOV_MODIFIER.register(TravellersClientEventListeners::excludeStraightAheadFromFov);
+		ClientEvents.MOVEMENT_INPUT_UPDATE.register(TravellersClientEventListeners::speedUpControlledWhileSneaking);
+		ClientEvents.MOVEMENT_INPUT_UPDATE.register(TravellersClientEventListeners::handleSidestep);
+		ClientEvents.RENDER_FRAME_PRE.register(TravellersClientEventListeners::handleStealth);
+		ClientEvents.COMPUTE_FOV_MODIFIER.register(TravellersClientEventListeners::updateZoomState);
+		ClientEvents.RENDER_FRAME_PRE.register(TravellersClientEventListeners::updateGradualGlideState);
+		ClientEvents.INPUT_KEY.register(TravellersClientEventListeners::cycleItemDisplayMap);
+		ClientEvents.CALCULATE_PLAYER_TURN.register(TravellersClientEventListeners::slowZoomSensitivity);
+		ClientEvents.INPUT_KEY.register(TravellersClientEventListeners::swapHotbar);
+		ClientEvents.INPUT_KEY.register(TravellersClientEventListeners::toggleRedThreadVision);
+		ClientEvents.RENDER_ARM.register(TravellersClientEventListeners::renderGlovesInFirstPerson);
 	}
 
 	public static void handleAgileRanger(MovementInputUpdateEvent event) {

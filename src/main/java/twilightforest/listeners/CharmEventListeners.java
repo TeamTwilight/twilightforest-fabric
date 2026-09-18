@@ -1,6 +1,8 @@
 package twilightforest.listeners;
 
 import net.fabricmc.fabric.api.entity.FakePlayer;
+import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.BlockPos;
@@ -51,6 +53,12 @@ public final class CharmEventListeners {
 		EquipmentSlot.HEAD.getIndex(Inventory.INVENTORY_SIZE),
 		Inventory.SLOT_OFFHAND
 	};
+
+	public static void init() {
+		ServerLivingEntityEvents.ALLOW_DEATH.register((entity, _, _) -> CharmEventListeners.applyCharmOfLife(entity));
+		ServerLivingEntityEvents.ALLOW_DEATH.register((entity, _, _) -> CharmEventListeners.applyKeepingAndCasket(entity));
+		ServerPlayerEvents.AFTER_RESPAWN.register((_, newPlayer, alive) -> CharmEventListeners.returnItemsOnRespawn(newPlayer, alive));
+	}
 
 	// Check for charm of life first to stop a player from dying
 	public static boolean applyCharmOfLife(LivingEntity entity) {

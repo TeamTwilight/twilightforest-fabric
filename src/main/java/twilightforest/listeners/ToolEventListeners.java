@@ -1,8 +1,13 @@
 package twilightforest.listeners;
 
+import carminite.events.api.BlockEvents;
+import carminite.events.api.EntityEvents;
 import carminite.events.hooks.EventHooks;
 import carminite.events.neoforge.BreakBlockEvent;
 import carminite.events.neoforge.ProjectileImpactEvent;
+import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+import net.fabricmc.fabric.api.entity.event.v1.effect.ServerMobEffectEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalEntityTypeTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -40,6 +45,15 @@ import twilightforest.item.*;
 import java.util.List;
 
 public final class ToolEventListeners {
+	public static void init() {
+		EntityEvents.PROJECTILE_IMPACT.register(ToolEventListeners::onEnderBowHit);
+		ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, _) -> ToolEventListeners.fieryToolSetFire(entity, source));
+		BlockEvents.BREAK_BLOCK.register(ToolEventListeners::damageNonMazebreakerToolsMore);
+		ServerMobEffectEvents.ALLOW_ADD.register((effectInstance, entity, _) -> ToolEventListeners.preventFatigueWithPocketWatch(effectInstance, entity));
+		BlockEvents.BREAK_BLOCK.register(ToolEventListeners::handleGiantPickaxeMining);
+		CommonLifecycleEvents.TAGS_LOADED.register((_, _) -> ToolEventListeners.refreshOreMagnetCache());
+	}
+
 	public static void onEnderBowHit(ProjectileImpactEvent evt) {
 		Projectile arrow = evt.getProjectile();
 		if (arrow.getOwner() instanceof Player player

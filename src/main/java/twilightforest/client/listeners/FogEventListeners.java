@@ -1,5 +1,6 @@
 package twilightforest.client.listeners;
 
+import carminite.events.api.ClientEvents;
 import carminite.events.modified.CarminiteComputeFogColorEvent;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
@@ -9,6 +10,10 @@ import twilightforest.init.TFDimension;
 
 public final class FogEventListeners {
 	private static float spookyPercent = 0.0F;
+
+	public static void init() {
+		ClientEvents.CARMINITE_COMPUTE_FOG_COLOR.register(FogEventListeners::colorFog);
+	}
 
 	public static void colorFog(CarminiteComputeFogColorEvent event) {
 		if (event.getCamera().entity() instanceof LocalPlayer player && player.level() instanceof ClientLevel client && client.dimension() == TFDimension.DIMENSION_KEY) {

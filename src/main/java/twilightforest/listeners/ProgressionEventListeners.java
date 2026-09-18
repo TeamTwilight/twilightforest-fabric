@@ -1,11 +1,17 @@
 package twilightforest.listeners;
 
+import carminite.events.api.BlockEvents;
+import carminite.events.api.PlayerEvents;
+import carminite.events.api.TickEvents;
 import carminite.events.neoforge.BreakBlockEvent;
 import carminite.events.neoforge.PlayerInteractEvent;
 import carminite.events.neoforge.PlayerTickEvent;
 import carminite.util.ServerLifecycleHooks;
 import com.mojang.datafixers.util.Pair;
 import net.fabricmc.fabric.api.entity.FakePlayer;
+import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.fabricmc.fabric.api.gamerule.v1.GameRuleEvents;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.advancements.AdvancementHolder;
@@ -59,6 +65,15 @@ import java.util.*;
  * A class to store events relating to progression
  */
 public final class ProgressionEventListeners {
+	public static void init() {
+		GameRuleEvents.changeCallback(TFGameRules.ENFORCED_PROGRESSION_RULE).register(ProgressionEventListeners::gameRuleChanged);
+		BlockEvents.BREAK_BLOCK.register(ProgressionEventListeners::preventLockedAreaBlockBreaking);
+		PlayerEvents.RIGHT_CLICK_BLOCK.register(ProgressionEventListeners::preventLockedAreaBlockPlacing);
+		PlayerEvents.RIGHT_CLICK_BLOCK.register(ProgressionEventListeners::preventLockedAreaBlockInteracting);
+		ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, _) -> ProgressionEventListeners.preventLockedAreaEntityDamage(entity, source));
+		TickEvents.PLAYER_TICK_POST.register(ProgressionEventListeners::performProtectionAndPortalChecks);
+		ServerPlayerEvents.JOIN.register(ProgressionEventListeners::syncProgressionGameRuleStatus);
+	}
 
 	/**
 	 * Notify all players' clients of gamerule change if progression is the change.

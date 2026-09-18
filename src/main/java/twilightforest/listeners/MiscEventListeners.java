@@ -1,5 +1,7 @@
 package twilightforest.listeners;
 
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
@@ -38,6 +40,13 @@ import twilightforest.util.ArmorUtil;
 
 public final class MiscEventListeners {
 	private static final ArmorUtil armorUtil = ArmorUtil.INSTANCE;
+
+	public static void init() {
+		ServerEntityEvents.ENTITY_LOAD.register((entity, _) -> MiscEventListeners.addPrey(entity));
+		ServerEntityEvents.EQUIPMENT_CHANGE.register((livingEntity, equipmentSlot, _, currentStack) -> MiscEventListeners.updateCicadaSoundsOnHead(livingEntity, equipmentSlot, currentStack));
+		UseBlockCallback.EVENT.register(MiscEventListeners::addTomesToLecterns);
+		UseBlockCallback.EVENT.register(MiscEventListeners::washOffCloth);
+	}
 
 	public static void addPrey(Entity entity) {
 		if (entity instanceof Mob mob) {

@@ -1,8 +1,11 @@
 package twilightforest.listeners;
 
+import carminite.events.api.EntityEvents;
+import carminite.events.api.TickEvents;
 import carminite.events.modified.CarminiteEntityTeleportEvent;
 import carminite.events.neoforge.EntityMountEvent;
 import carminite.events.neoforge.EntityTickEvent;
+import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
@@ -14,6 +17,13 @@ import twilightforest.init.TFDataAttachments;
 
 public final class HostileMountEventListeners {
 	public static volatile boolean allowDismount = false;
+
+	public static void init() {
+		ServerLivingEntityEvents.ALLOW_DAMAGE.register(HostileMountEventListeners::handleMountDamage);
+		EntityEvents.CARMINITE_ENTITY_TELEPORT.register(HostileMountEventListeners::preventTeleportingOffHostileMounts);
+		EntityEvents.ENTITY_MOUNT.register(HostileMountEventListeners::preventMountDismount);
+		TickEvents.ENTITY_TICK_POST.register(HostileMountEventListeners::preventHostileMountCrouching);
+	}
 
 	public static boolean handleMountDamage(LivingEntity entity, DamageSource source, float amount) {
 		// lets not make the player take suffocation damage if riding something

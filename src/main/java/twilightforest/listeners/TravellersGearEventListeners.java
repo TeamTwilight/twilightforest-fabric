@@ -1,8 +1,10 @@
 package twilightforest.listeners;
 
+import carminite.events.api.*;
 import carminite.events.neoforge.*;
 import carminite.util.ServerLifecycleHooks;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.Holder;
@@ -52,6 +54,26 @@ public final class TravellersGearEventListeners {
 	private static final List<AttachmentType<?>> ATTACHMENTS_TO_PRESERVE_ON_DEATH = List.of(
 		TFDataAttachments.TRAVELLERS_GOGGLES_RED_THREAD_VISION
 	);
+
+	public static void init() {
+		EntityEvents.PROJECTILE_IMPACT.register(TravellersGearEventListeners::magnetizeArrows);
+		EntityEvents.PROJECTILE_IMPACT.register(TravellersGearEventListeners::performPerfectDodge);
+		LivingEvents.LIVING_FALL.register(TravellersGearEventListeners::reduceSlimySolesFallDamage);
+		LivingEvents.LIVING_JUMP.register(TravellersGearEventListeners::cancelSlimySolesJump);
+		LevelEvents.ITEM_ATTRIBUTE_MODIFIERS.register(TravellersGearEventListeners::activateAndDeactivateTravellersModifiers);
+		TickEvents.PLAYER_TICK_PRE.register(TravellersGearEventListeners::tickMovementModifiers);
+		TickEvents.PLAYER_TICK_POST.register(TravellersGearEventListeners::performStealth);
+		TickEvents.PLAYER_TICK_PRE.register(TravellersGearEventListeners::disableHighStepWhileSneaking);
+		TickEvents.ENTITY_TICK_POST.register(TravellersGearEventListeners::updateOtherModifiers);
+		LivingEvents.ARMOR_HURT.register(TravellersGearEventListeners::stopDamagingTravellersGear);
+		LivingEvents.ARMOR_HURT.register(TravellersGearEventListeners::setLastDamageArmorTime);
+		WorkstationEvents.ANVIL_UPDATE.register(TravellersGearEventListeners::cancelCombiningTravellersGear);
+		PlayerEvents.SPAWN_PHANTOMS.register(TravellersGearEventListeners::cancelPhantomSpawns);
+		WorkstationEvents.GRINDSTONE_PLACE.register(TravellersGearEventListeners::removeModifiersFromTravellersGear);
+		WorkstationEvents.GRINDSTONE_TAKE.register(TravellersGearEventListeners::extractItemsFromSwapHotbarModifier);
+		PlayerEvents.ITEM_CRAFTED.register(TravellersGearEventListeners::fireCraftingModifierTrigger);
+		ServerPlayerEvents.COPY_FROM.register(TravellersGearEventListeners::keepAttachmentsOnDeath);
+	}
 
 	public static void magnetizeArrows(ProjectileImpactEvent event) {
 		Projectile projectile = event.getProjectile();

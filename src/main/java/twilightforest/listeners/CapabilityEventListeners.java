@@ -1,7 +1,10 @@
 package twilightforest.listeners;
 
+import carminite.events.api.TickEvents;
 import carminite.events.neoforge.EntityTickEvent;
 import carminite.events.neoforge.PlayerTickEvent;
+import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -19,6 +22,14 @@ import twilightforest.world.NoReturnTeleporter;
 import twilightforest.world.TFTeleporter;
 
 public final class CapabilityEventListeners {
+	public static void init() {
+		TickEvents.ENTITY_TICK_POST.register(CapabilityEventListeners::updateShields);
+		TickEvents.PLAYER_TICK_POST.register(CapabilityEventListeners::updatePlayerCaps);
+		ServerLivingEntityEvents.ALLOW_DAMAGE.register(CapabilityEventListeners::absorbShieldHits);
+		ServerPlayerEvents.AFTER_RESPAWN.register((_, newPlayer, _) -> CapabilityEventListeners.spawnInTFIfNecessary(newPlayer));
+		ServerPlayerEvents.JOIN.register(CapabilityEventListeners::playerLogsIn);
+	}
+
 	public static void updateShields(EntityTickEvent.Post event) {
 		if (event.getEntity() instanceof LivingEntity living && !living.level().isClientSide() && living.hasAttached(TFDataAttachments.FORTIFICATION_SHIELDS)) {
 			event.getEntity().getAttached(TFDataAttachments.FORTIFICATION_SHIELDS).tick(living);

@@ -1,7 +1,9 @@
 package twilightforest.client.listeners;
 
 import com.mojang.blaze3d.vertex.*;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderContext;
+import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -38,6 +40,11 @@ public final class CloudEventListeners {
 	private static final List<PrecipitationRenderHelper> RENDER_HELPER = new ArrayList<>();
 
 	record PrecipitationRenderHelper(BlockPos cloudPos, Biome.Precipitation precipitation, float precipitationLevel, int rainOnY) { }
+
+	public static void init() {
+		ClientTickEvents.END_CLIENT_TICK.register(CloudEventListeners::tickWeatherEffects);
+		LevelRenderEvents.AFTER_TRANSLUCENT_TERRAIN.register(CloudEventListeners::renderPrecipitation);
+	}
 
 	public static void tickWeatherEffects(Minecraft mc) {
 		if (!mc.isPaused()) {

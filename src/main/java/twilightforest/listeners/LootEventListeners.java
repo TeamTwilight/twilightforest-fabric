@@ -1,5 +1,6 @@
 package twilightforest.listeners;
 
+import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -24,6 +25,11 @@ public final class LootEventListeners {
 	public static Map<Block, Item> GIANT_BLOCK_CONVERSIONS = new HashMap<>();
 
 	private static final GiantPickUsedCondition GIANT_PICK_USED = new GiantPickUsedCondition(LootContext.EntityTarget.THIS);
+
+	public static void init() {
+		LootTableEvents.MODIFY_DROPS.register((_, context, drops) -> LootEventListeners.handleFieryToolDrops(context, drops));
+		LootTableEvents.MODIFY_DROPS.register((_, context, drops) -> LootEventListeners.handleGiantToolGrouping(context, drops));
+	}
 
 	public static void handleFieryToolDrops(LootContext context, List<ItemStack> drops) {
 		ItemInstance tool = context.getOptionalParameter(LootContextParams.TOOL);

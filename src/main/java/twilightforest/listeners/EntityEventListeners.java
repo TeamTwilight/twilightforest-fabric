@@ -1,7 +1,10 @@
 package twilightforest.listeners;
 
+import carminite.events.api.*;
 import carminite.events.neoforge.*;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
@@ -76,6 +79,28 @@ import java.util.function.Consumer;
 
 public final class EntityEventListeners {
 	private static final boolean SHIELD_PARRY_MOD_LOADED = FabricLoader.getInstance().isModLoaded("parry");
+
+	public static void init() {
+		LivingEvents.LIVING_DEATH.register(EntityEventListeners::ominousFireConversion);
+		ServerLivingEntityEvents.ALLOW_DAMAGE.register(EntityEventListeners::zombifiedPlayerAttacks);
+		PlayerEvents.ADVANCEMENT_EARNED.register(EntityEventListeners::alertPlayerCastleIsWIP);
+		PlayerEvents.RIGHT_CLICK_BLOCK.register(EntityEventListeners::attachLeadToWroughtFence);
+		PlayerEvents.LEFT_CLICK_EMPTY.register(EntityEventListeners::wipeOreMeterOnLeftClick);
+		ServerLivingEntityEvents.AFTER_DAMAGE.register(EntityEventListeners::entityHurts);
+		BlockEvents.BREAK_BLOCK.register(EntityEventListeners::onCasketBreak);
+		EntityEvents.PROJECTILE_IMPACT.register(EntityEventListeners::onParryProjectile);
+		PlayerEvents.RIGHT_CLICK_BLOCK.register(EntityEventListeners::createSkullCandle);
+		LivingEvents.LIVING_JUMP.register(EntityEventListeners::addCloudJumpParticles);
+		LevelEvents.POTENTIAL_SPAWNS.register(EntityEventListeners::structureSpecialSpawns);
+		PlayerEvents.ATTACK_ENTITY.register(EntityEventListeners::removeCastleTextIfAttacked);
+		ServerLivingEntityEvents.AFTER_DAMAGE.register(EntityEventListeners::addQualifiedGroupPlayerIfNeeded);
+		LivingEvents.LIVING_DEATH.register(EntityEventListeners::grantGroupAdvancementIfNeeded);
+		LevelEvents.DETONATE.register(EntityEventListeners::lichBombsDontBlowUpItems);
+		ServerLifecycleEvents.SYNC_DATA_PACK_CONTENTS.register((player, _) -> EntityEventListeners.handleQuestSyncing(player));
+		PlayerEvents.ADVANCEMENT_EARNED.register(EntityEventListeners::resetFlaskLogic);
+		EntityEvents.JOIN_LEVEL.register(EntityEventListeners::handleLeashPathingOverrides);
+		EntityEvents.JOIN_LEVEL.register(EntityEventListeners::stopEndermenFromGrabbingBlocksInTF);
+	}
 
 	public static void ominousFireConversion(LivingDeathEvent event) {
 		if (!event.isCanceled() && event.getSource().is(TFDamageTypes.OMINOUS_FIRE)) {

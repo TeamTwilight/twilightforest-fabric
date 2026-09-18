@@ -1,11 +1,18 @@
 package twilightforest.client.listeners;
 
+import carminite.events.api.ClientEvents;
 import carminite.events.modified.CarminiteRenderLevelStageEvent;
 import carminite.events.neoforge.*;
 import com.ibm.icu.text.RuleBasedNumberFormat;
 import com.mojang.blaze3d.vertex.*;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderContext;
+import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -67,6 +74,24 @@ public final class ClientGameEventListeners {
 	private static int aurora = 0;
 	private static int lastAurora = 0;
 	private static final AuroraRenderer auroraRenderer = new AuroraRenderer();
+
+	public static void init() {
+		ItemTooltipCallback.EVENT.register((stack, _, _, lines) -> ClientGameEventListeners.addCustomTooltips(stack, lines));
+		ClientTickEvents.END_CLIENT_TICK.register(ClientGameEventListeners::clientTick);
+		ScreenEvents.AFTER_INIT.register((_, screen, _, _) -> {
+			ClientGameEventListeners.customizeSplashes(screen);
+			ScreenEvents.remove(screen).register(_ -> ClientGameEventListeners.clearEntityRenderUtilMap());
+		});
+		ClientEvents.RENDER_FRAME_POST.register(ClientGameEventListeners::endAuroraFrame);
+		ClientEvents.RENDER_FRAME_PRE.register(ClientGameEventListeners::killVignette);
+		HudElementRegistry.replaceElement(VanillaHudElements.MOUNT_HEALTH, hudElement -> (graphics, deltaTracker) -> ClientGameEventListeners.removeHostileMountHealth(hudElement, graphics, deltaTracker));
+		ClientEvents.CARMINITE_RENDER_LEVEL_AFTER_WEATHER.register(ClientGameEventListeners::renderAurora);
+		ClientEvents.CUSTOMIZE_BOSS_HEALTH_OVERLAY.register(ClientGameEventListeners::renderCustomBossbars);
+		LevelRenderEvents.BEFORE_BLOCK_OUTLINE.register(ClientGameEventListeners::renderGiantBlockOutlines);
+		ClientEvents.COMPUTE_CAMERA_ANGLES.register(ClientGameEventListeners::shakeCamera);
+		ItemTooltipCallback.EVENT.register((stack, _, _, lines) -> ClientGameEventListeners.translateBookAuthor(stack, lines));
+		ClientEvents.COMPUTE_FOV_MODIFIER.register(ClientGameEventListeners::updateBowFOV);
+	}
 
 	public static void customizeSplashes(Screen screen) {
 		if (screen instanceof TitleScreen title) {
