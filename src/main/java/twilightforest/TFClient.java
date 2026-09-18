@@ -1,6 +1,7 @@
 package twilightforest;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.model.loading.v1.CustomUnbakedBlockStateModel;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.particle.v1.FabricSpriteSet;
@@ -157,11 +158,11 @@ public final class TFClient implements ClientModInitializer {
 	}
 
 	private static void registerBlockStateModels() {
-		CustomUnbakedBlockStateModelRegistry.register(TFCommon.prefix("connected_texture_block"), UnbakedConnectedTextureModel.MAP_CODEC);
-		CustomUnbakedBlockStateModelRegistry.register(TFCommon.prefix("force_field"), UnbakedForceFieldBlockStateModel.MAP_CODEC);
-		CustomUnbakedBlockStateModelRegistry.register(TFCommon.prefix("giant_block"), UnbakedGiantBlockStateModel.MAP_CODEC);
-		CustomUnbakedBlockStateModelRegistry.register(TFCommon.prefix("noise_varying"), UnbakedNoiseVaryingBlockStateModel.MAP_CODEC);
-		CustomUnbakedBlockStateModelRegistry.register(TFCommon.prefix("plant_patch"), UnbakedPlantPatchBlockStateModel.MAP_CODEC);
+		CustomUnbakedBlockStateModel.register(TFCommon.prefix("connected_texture_block"), UnbakedConnectedTextureModel.MAP_CODEC);
+		CustomUnbakedBlockStateModel.register(TFCommon.prefix("force_field"), UnbakedForceFieldBlockStateModel.MAP_CODEC);
+		CustomUnbakedBlockStateModel.register(TFCommon.prefix("giant_block"), UnbakedGiantBlockStateModel.MAP_CODEC);
+		CustomUnbakedBlockStateModel.register(TFCommon.prefix("noise_varying"), UnbakedNoiseVaryingBlockStateModel.MAP_CODEC);
+		CustomUnbakedBlockStateModel.register(TFCommon.prefix("plant_patch"), UnbakedPlantPatchBlockStateModel.MAP_CODEC);
 	}
 
 	private static void registerItemModels() {
