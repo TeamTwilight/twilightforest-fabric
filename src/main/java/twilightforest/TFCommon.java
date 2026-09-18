@@ -331,8 +331,6 @@ public final class TFCommon implements ModInitializer {
 	}
 
 	private static void registerConfig() {
-		ConfigSetup.loadConfigs();
-		ConfigSetup.reloadConfigs();
 		ConfigSetup.syncUncraftingConfig();
 	}
 

@@ -18,36 +18,36 @@ public final class ConfigSetup {
 	static final TFCommonConfig COMMON_CONFIG;
 
 	static {
-		{
-			final Pair<TFCommonConfig, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(TFCommonConfig::new);
-			ConfigRegistry.INSTANCE.register(TFCommon.ID, ModConfig.Type.COMMON, COMMON_SPEC = specPair.getRight());
-			COMMON_CONFIG = specPair.getLeft();
-		}
-		{
-			final Pair<TFClientConfig, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(TFClientConfig::new);
-			ConfigRegistry.INSTANCE.register(TFCommon.ID, ModConfig.Type.CLIENT, CLIENT_SPEC = specPair.getRight());
-			CLIENT_CONFIG = specPair.getLeft();
+		final Pair<TFCommonConfig, ModConfigSpec> specPairCommon = new ModConfigSpec.Builder().configure(TFCommonConfig::new);
+		final Pair<TFClientConfig, ModConfigSpec> specPairClient = new ModConfigSpec.Builder().configure(TFClientConfig::new);
+
+		COMMON_CONFIG = specPairCommon.getLeft();
+		CLIENT_CONFIG = specPairClient.getLeft();
+		COMMON_SPEC = specPairCommon.getRight();
+		CLIENT_SPEC = specPairClient.getRight();
+
+		// Register these listeners before registering the configs, or else defaults persist until the file is changed
+		ModConfigEvents.loading(TFCommon.ID).register(ConfigSetup::loadConfigs);
+		ModConfigEvents.reloading(TFCommon.ID).register(ConfigSetup::reloadConfigs);
+
+		ConfigRegistry.INSTANCE.register(TFCommon.ID, ModConfig.Type.COMMON, COMMON_SPEC);
+		ConfigRegistry.INSTANCE.register(TFCommon.ID, ModConfig.Type.CLIENT, CLIENT_SPEC);
+	}
+
+	public static void loadConfigs(ModConfig config) {
+		if (config.getSpec() == CLIENT_SPEC) {
+			TFConfig.rebakeClientOptions(CLIENT_CONFIG);
+		} else if (config.getSpec() == COMMON_SPEC) {
+			TFConfig.rebakeCommonOptions(COMMON_CONFIG);
 		}
 	}
 
-	public static void loadConfigs() {
-		ModConfigEvents.loading(TFCommon.ID).register(modConfig -> {
-			if (modConfig.getSpec() == CLIENT_SPEC) {
-				TFConfig.rebakeClientOptions(CLIENT_CONFIG);
-			} else if (modConfig.getSpec() == COMMON_SPEC) {
-				TFConfig.rebakeCommonOptions(COMMON_CONFIG);
-			}
-		});
-	}
-
-	public static void reloadConfigs() {
-		ModConfigEvents.reloading(TFCommon.ID).register(modConfig -> {
-			if (modConfig.getSpec() == CLIENT_SPEC) {
-				TFConfig.rebakeClientOptions(CLIENT_CONFIG);
-			} else if (modConfig.getSpec() == COMMON_SPEC) {
-				TFConfig.rebakeCommonOptions(COMMON_CONFIG);
-			}
-		});
+	public static void reloadConfigs(ModConfig config) {
+		if (config.getSpec() == CLIENT_SPEC) {
+			TFConfig.rebakeClientOptions(CLIENT_CONFIG);
+		} else if (config.getSpec() == COMMON_SPEC) {
+			TFConfig.rebakeCommonOptions(COMMON_CONFIG);
+		}
 	}
 
 	//sends uncrafting settings to a player on a server when they log in. This prevents desyncs when the configs dont match up between the player and the server.
