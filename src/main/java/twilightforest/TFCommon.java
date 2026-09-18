@@ -1,6 +1,5 @@
 package twilightforest;
 
-import carminite.events.api.*;
 import com.google.common.reflect.Reflection;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -104,6 +103,7 @@ public final class TFCommon implements ModInitializer {
 		ItemDisplays.init();
 		TFMenuTypes.init();
 		TFRecipes.init();
+		TFResourceConditionTypes.init();
 		TFEntities.init();
 		TFAttributes.init();
 		TFAdvancements.init();
