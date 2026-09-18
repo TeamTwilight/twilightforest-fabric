@@ -48,6 +48,8 @@ import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.block.entity.SkullChestBlockEntity;
 import twilightforest.components.item.SkullCandles;
 import twilightforest.config.TFConfig;
+import twilightforest.item.FieryArmorItem;
+import twilightforest.item.YetiArmorItem;
 import twilightforest.network.SyncQuestsPacket;
 import twilightforest.tags.TFEntityTypeTags;
 import twilightforest.enchantment.ApplyFrostedEffect;
@@ -288,11 +290,12 @@ public final class EntityEventListeners {
 	public static int getGearCoverage(LivingEntity entity, boolean yeti) {
 		int amount = 0;
 
-//		for (ItemStack armor : entity.getArmorSlots()) {
-//			if (!armor.isEmpty() && (yeti ? armor.getItem() instanceof YetiArmorItem : armor.getItem() instanceof FieryArmorItem)) {
-//				amount++;
-//			}
-//		}
+		for (EquipmentSlot slot : EquipmentSlotGroup.ARMOR) {
+			ItemStack armor = entity.getItemBySlot(slot);
+			if (!armor.isEmpty() && (yeti ? armor.getItem() instanceof YetiArmorItem : armor.getItem() instanceof FieryArmorItem)) {
+				amount++;
+			}
+		}
 
 		return amount;
 	}
