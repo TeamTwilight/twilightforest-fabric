@@ -2,6 +2,7 @@ package twilightforest.mixin;
 
 import java.util.function.BiConsumer;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerPlayer;
@@ -11,19 +12,30 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
+import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
+import twilightforest.asmhooks.StackSizeItemExtension;
 import twilightforest.init.TFDataComponents;
 import twilightforest.item.travellers_gear.TravellersArmorItem;
 
 @Mixin(ItemStack.class)
 public class ItemStackMixin {
+
+	@Shadow
+	@Final
+	@Deprecated
+	@Nullable
+	private Item item;
 
 	@ModifyArgs(
 		method = "hurtAndBreak(ILnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;)V",
@@ -106,5 +118,16 @@ public class ItemStackMixin {
 	) {
 		if (TravellersArmorItem.isTravellersArmorAndBroken((ItemStack) (Object) this))
 			ci.cancel();
+	}
+
+	@ModifyReturnValue(
+		method = "getMaxStackSize()I",
+		at = @At("RETURN")
+	)
+	private int twilightforest$maxStackSizeExtension(int original) {
+		ItemStack self = (ItemStack) (Object) this;
+		Item item = self.getItem();
+		StackSizeItemExtension extension = (StackSizeItemExtension) item;
+		return extension.twilightforest$getMaxStackSize(self);
 	}
 }

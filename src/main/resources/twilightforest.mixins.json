@@ -25,6 +25,7 @@
     "HangingEntityAccessor",
     "Item$TooltipContext$2Accessor",
     "ItemCombinerMenuAccessor",
+    "ItemMixin",
     "ItemStackMixin",
     "LeashFenceKnotEntityMixin",
     "LivingEntityAccessor",

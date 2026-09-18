@@ -17,6 +17,7 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.Level;
+import twilightforest.asmhooks.StackSizeItemExtension;
 import twilightforest.components.item.PotionFlaskComponent;
 import twilightforest.init.TFDamageTypes;
 import twilightforest.init.TFDataAttachments;
@@ -26,7 +27,7 @@ import twilightforest.init.TFSounds;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public class BrittleFlaskItem extends Item {
+public class BrittleFlaskItem extends Item implements StackSizeItemExtension {
 
 	public static final int DOSES = 3;
 
@@ -41,8 +42,10 @@ public class BrittleFlaskItem extends Item {
 		return itemstack;
 	}
 
-	// maxStackSize is now set via Item.Properties.stacksTo(1) in TFItems registration
-	// getMaxStackSize() is final in 1.21.1
+	@Override
+	public int twilightforest$getMaxStackSize(ItemStack stack) {
+		return stack.getOrDefault(TFDataComponents.POTION_FLASK_CONTENTS.get(), PotionFlaskComponent.EMPTY).potion().potion().isPresent() ? 1 : StackSizeItemExtension.super.twilightforest$getMaxStackSize(stack);
+	}
 
 	@Override
 	public boolean isBarVisible(ItemStack stack) {
