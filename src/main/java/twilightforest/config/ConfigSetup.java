@@ -22,35 +22,37 @@ public final class ConfigSetup {
 
 	static {
 		{
-			final Pair<TFCommonConfig, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(TFCommonConfig::new);
-			NeoForgeConfigRegistry.INSTANCE.register(TwilightForestMod.ID, ModConfig.Type.COMMON, COMMON_SPEC = specPair.getRight());
-			COMMON_CONFIG = specPair.getLeft();
-		}
-		{
-			final Pair<TFClientConfig, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(TFClientConfig::new);
-			NeoForgeConfigRegistry.INSTANCE.register(TwilightForestMod.ID, ModConfig.Type.CLIENT, CLIENT_SPEC = specPair.getRight());
-			CLIENT_CONFIG = specPair.getLeft();
+			final Pair<TFCommonConfig, ModConfigSpec> specPairCommon = new ModConfigSpec.Builder().configure(TFCommonConfig::new);
+			final Pair<TFClientConfig, ModConfigSpec> specPairClient = new ModConfigSpec.Builder().configure(TFClientConfig::new);
+
+			COMMON_CONFIG = specPairCommon.getLeft();
+			CLIENT_CONFIG = specPairClient.getLeft();
+			COMMON_SPEC = specPairCommon.getRight();
+			CLIENT_SPEC = specPairClient.getRight();
+
+			// Register these listeners before registering the configs, or else defaults persist until the file is changed
+			NeoForgeModConfigEvents.loading(TwilightForestMod.ID).register(ConfigSetup::loadConfigs);
+			NeoForgeModConfigEvents.reloading(TwilightForestMod.ID).register(ConfigSetup::reloadConfigs);
+
+			NeoForgeConfigRegistry.INSTANCE.register(TwilightForestMod.ID, ModConfig.Type.COMMON, COMMON_SPEC);
+			NeoForgeConfigRegistry.INSTANCE.register(TwilightForestMod.ID, ModConfig.Type.CLIENT, CLIENT_SPEC);
 		}
 	}
 
-	public static void loadConfigs() {
-		NeoForgeModConfigEvents.loading(TwilightForestMod.ID).register(config -> {
-			if (config.getSpec() == CLIENT_SPEC) {
-				TFConfig.rebakeClientOptions(CLIENT_CONFIG);
-			} else if (config.getSpec() == COMMON_SPEC) {
-				TFConfig.rebakeCommonOptions(COMMON_CONFIG);
-			}
-		});
+	private static void loadConfigs(ModConfig config) {
+		if (config.getSpec() == CLIENT_SPEC) {
+			TFConfig.rebakeClientOptions(CLIENT_CONFIG);
+		} else if (config.getSpec() == COMMON_SPEC) {
+			TFConfig.rebakeCommonOptions(COMMON_CONFIG);
+		}
 	}
 
-	public static void reloadConfigs() {
-		NeoForgeModConfigEvents.reloading(TwilightForestMod.ID).register(config -> {
-			if (config.getSpec() == CLIENT_SPEC) {
-				TFConfig.rebakeClientOptions(CLIENT_CONFIG);
-			} else if (config.getSpec() == COMMON_SPEC) {
-				TFConfig.rebakeCommonOptions(COMMON_CONFIG);
-			}
-		});
+	private static void reloadConfigs(ModConfig config) {
+		if (config.getSpec() == CLIENT_SPEC) {
+			TFConfig.rebakeClientOptions(CLIENT_CONFIG);
+		} else if (config.getSpec() == COMMON_SPEC) {
+			TFConfig.rebakeCommonOptions(COMMON_CONFIG);
+		}
 	}
 
 	//sends uncrafting settings to a player on a server when they log in. This prevents desyncs when the configs dont match up between the player and the server.

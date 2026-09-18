@@ -66,8 +66,6 @@ public class RegistrationEvents {
 		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(StalactiteReloadListener.INSTANCE);
 		AddReloadListenersEvent.EVENT.register(INSTANCE.structureTemplateDefinitions::registerListener);
 
-		ConfigSetup.loadConfigs();
-		ConfigSetup.reloadConfigs();
 		ConfigSetup.syncUncraftingConfig();
 	}
 
