@@ -78,6 +78,7 @@ public final class ProgressionEventListeners {
 		BlockPos pos = event.getPos();
 		if (isBlockProtectedFromBreaking(level, pos) && isAreaProtected(level, event.getPlayer(), pos)) {
 			event.setCanceled(true);
+			event.setNotifyClient(true);
 		}
 	}
 
