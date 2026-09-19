@@ -382,7 +382,6 @@ public class ItemTagGenerator extends IntrinsicHolderTagsProvider<Item> {
 			TFItems.FIERY_BOOTS,
 			TFItems.TRAVELLERS_BOOTS);
 
-		//this.tag(ItemTags.DYEABLE).add(TFItems.ARCTIC_HELMET, TFItems.ARCTIC_CHESTPLATE, TFItems.ARCTIC_LEGGINGS, TFItems.ARCTIC_BOOTS);
 		this.tag(ItemTags.CAULDRON_CAN_REMOVE_DYE).add(TFItems.ARCTIC_HELMET, TFItems.ARCTIC_CHESTPLATE, TFItems.ARCTIC_LEGGINGS, TFItems.ARCTIC_BOOTS);
 
 		this.tag(TFItemTags.BLOCK_AND_CHAIN_ENCHANTABLE).add(TFItems.BLOCK_AND_CHAIN);

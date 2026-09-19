@@ -22,8 +22,7 @@ public record ItemColorPredicate(int color) implements SingleComponentItemPredic
 
 	@Override
 	public boolean matches(DyedItemColor value) {
-//		if (stack.has(DataComponents.DYED_COLOR) && this.color() == -1) return true;
-		return value.rgb() == this.color();
+		return color() == -1 || value.rgb() == color();
 	}
 
 	public static ItemColorPredicate anyColor() {
