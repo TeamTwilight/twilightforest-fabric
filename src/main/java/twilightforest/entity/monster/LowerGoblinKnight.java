@@ -153,14 +153,7 @@ public class LowerGoblinKnight extends Monster {
 	@Override
 	public boolean hurtServer(ServerLevel server, DamageSource source, float amount) {
 		// check the angle of attack, if applicable
-		Entity attacker = null;
-		if (source.getEntity() != null) {
-			attacker = source.getEntity();
-		}
-
-		if (source.getEntity() != null) {
-			attacker = source.getEntity();
-		}
+		Entity attacker = source.getEntity();
 
 		if (attacker != null) {
 			// determine angle
@@ -216,7 +209,7 @@ public class LowerGoblinKnight extends Monster {
 	}
 
 	private void breakArmor() {
-		this.level().broadcastEntityEvent(this, (byte) 5);
+		this.level().broadcastEntityEvent(this, EntityEvent.STOP_ATTACKING);
 		this.setHasArmor(false);
 	}
 }
