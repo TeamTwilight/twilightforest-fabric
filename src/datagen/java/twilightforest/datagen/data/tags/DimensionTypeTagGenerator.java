@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.tags.KeyTagProvider;
+import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.dimension.DimensionType;
 import twilightforest.init.TFDimensionData;
 import twilightforest.tags.TFDimensionTypeTags;
@@ -19,6 +20,10 @@ public class DimensionTypeTagGenerator extends KeyTagProvider<DimensionType> {
 	@Override
 	protected void addTags(HolderLookup.Provider provider) {
 		this.tag(TFDimensionTypeTags.ALLOWS_MAGIC_MAP_CHARTING).add(TFDimensionData.TWILIGHT_DIM_TYPE);
+		this.tag(TFDimensionTypeTags.MOON_DIAL_INDETERMINATE)
+			.add(TFDimensionData.TWILIGHT_DIM_TYPE)
+			.add(BuiltinDimensionTypes.NETHER)
+			.add(BuiltinDimensionTypes.END);
 	}
 
 	@Override

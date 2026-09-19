@@ -8,7 +8,6 @@ import net.fabricmc.fabric.api.client.particle.v1.FabricSpriteSet;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.*;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
-import net.fabricmc.fabric.impl.client.model.loading.CustomUnbakedBlockStateModelRegistry;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.animal.wolf.AdultWolfModel;
@@ -179,6 +178,7 @@ public final class TFClient implements ClientModInitializer {
 	private static void registerRangeProperties() {
 		RangeSelectItemModelProperties.ID_MAPPER.put(TFCommon.prefix("potion_flask_dosage"), PotionFlaskDosage.TYPE);
 		RangeSelectItemModelProperties.ID_MAPPER.put(TFCommon.prefix("potion_flask_damage"), PotionFlaskDamage.TYPE);
+		RangeSelectItemModelProperties.ID_MAPPER.put(TFCommon.prefix("moon_dial_phase"), MoonDialPhaseProperty.MAP_CODEC);
 	}
 
 	private static void registerSelectProperties() {
