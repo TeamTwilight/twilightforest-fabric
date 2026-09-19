@@ -355,7 +355,7 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 			.add(TFBlocks.MAYAPPLE);
 
 		this.tag(TFBlockTags.TF_BERRY_BUSHES_SURVIVE)
-			.forceAddTag(BlockTags.DIRT)
+			.forceAddTag(BlockTags.SUBSTRATE_OVERWORLD)
 			.add(Blocks.SNOW_BLOCK);
 
 		this.tag(TFBlockTags.DARK_TOWER_BERRY_BUSHES_SURVIVE)
