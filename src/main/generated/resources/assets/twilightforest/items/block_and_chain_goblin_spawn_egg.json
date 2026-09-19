@@ -1,7 +1,7 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "minecraft:item/air",
+    "model": "twilightforest:item/block_and_chain_goblin_spawn_egg",
     "tints": [
       {
         "type": "minecraft:constant",

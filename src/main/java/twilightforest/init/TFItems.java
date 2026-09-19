@@ -328,7 +328,7 @@ public class TFItems {
 	public static final SpawnEggItem ALPHA_YETI_SPAWN_EGG = registerSpawnEgg("alpha_yeti_spawn_egg", TFEntities.ALPHA_YETI);
 	public static final SpawnEggItem ARMORED_GIANT_SPAWN_EGG = registerSpawnEgg("armored_giant_spawn_egg", TFEntities.ARMORED_GIANT);
 	public static final SpawnEggItem BIGHORN_SHEEP_SPAWN_EGG = registerSpawnEgg("bighorn_sheep_spawn_egg", TFEntities.BIGHORN_SHEEP);
-	public static final SpawnEggItem BLOCKCHAIN_GOBLIN_SPAWN_EGG = registerSpawnEgg("blockchain_goblin_spawn_egg", TFEntities.BLOCKCHAIN_GOBLIN);
+	public static final SpawnEggItem BLOCKCHAIN_GOBLIN_SPAWN_EGG = registerSpawnEgg("block_and_chain_goblin_spawn_egg", TFEntities.BLOCKCHAIN_GOBLIN);
 	public static final SpawnEggItem BOAR_SPAWN_EGG = registerSpawnEgg("boar_spawn_egg", TFEntities.BOAR);
 	public static final SpawnEggItem CARMINITE_BROODLING_SPAWN_EGG = registerSpawnEgg("carminite_broodling_spawn_egg", TFEntities.CARMINITE_BROODLING);
 	public static final SpawnEggItem CARMINITE_GHASTGUARD_SPAWN_EGG = registerSpawnEgg("carminite_ghastguard_spawn_egg", TFEntities.CARMINITE_GHASTGUARD);
