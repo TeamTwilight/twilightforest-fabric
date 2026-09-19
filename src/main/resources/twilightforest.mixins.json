@@ -32,10 +32,12 @@
   ],
   "client": [
     "ChestRendererMixin",
+    "ClientLevelMixin",
     "DebugRendererMixin",
     "LevelRendererMixin",
     "LivingEntityRendererMixin",
     "MapRendererMixin",
+    "MinecraftMixin",
     "WeatherEffectRendererMixin",
     "coremod.BiomeColorsMixin",
     "coremod.LocalPlayerMixin",
