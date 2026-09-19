@@ -52,6 +52,7 @@ import twilightforest.client.particle.*;
 import twilightforest.client.properties.*;
 import twilightforest.client.renderer.TFRenderPipelines;
 import twilightforest.client.renderer.TFSkyRenderer;
+import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.armor.TFArmorRenderer;
 import twilightforest.client.renderer.armor.TFSimpleArmorRenderer;
 import twilightforest.client.renderer.armor.TravellersArmorRenderer;
@@ -107,6 +108,7 @@ public final class TFClient implements ClientModInitializer {
 
 	private static void setupClientEvents() {
 		TFSkyRenderer.init();
+		TFWeatherRenderer.init();
 		MapDataManager.init();
 		MultipartRenderDispatcher.init();
 		FoliageColorHandler.init();

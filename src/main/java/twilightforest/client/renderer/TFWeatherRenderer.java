@@ -2,12 +2,16 @@ package twilightforest.client.renderer;
 
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.datafixers.util.Pair;
+import net.fabricmc.fabric.api.client.rendering.v1.level.LevelExtractionContext;
+import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.WeatherEffectRenderer;
+import net.minecraft.client.renderer.state.level.WeatherRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
@@ -33,6 +37,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFCommon;
+import twilightforest.init.TFDimension;
 import twilightforest.init.custom.Enforcements;
 import twilightforest.util.IntervalUtils;
 import twilightforest.util.RenderTypeUtil;
@@ -80,6 +85,10 @@ public class TFWeatherRenderer {
 				rainzs[i << 5 | j] = f / f2;
 			}
 		}
+	}
+
+	public static void init() {
+		LevelRenderEvents.END_EXTRACTION.register(TFWeatherRenderer::extractUrGhastRain);
 	}
 
 	public static boolean renderSnowAndRain(ClientLevel level, int ticks, float partialTicks, Vec3 camera, MultiBufferSource buffer) {
@@ -433,6 +442,46 @@ public class TFWeatherRenderer {
 
 		}
 		return true;
+	}
+
+	// Magic numbers taken from WeatherEffectRenderer#extractRenderState
+	public static void extractUrGhastRain(LevelExtractionContext context) {
+		ClientLevel level = context.level();
+		if (!(context.level().dimension().equals(TFDimension.DIMENSION_KEY)))
+			return;
+
+		WeatherRenderState renderState = context.levelState().weatherRenderState;
+		if (urGhastRain <= renderState.intensity)
+			return;
+
+		int ticks = context.levelRenderer().ticks;
+		float partialTicks = context.deltaTracker().getGameTimeDeltaPartialTick(false);
+		Vec3 cameraPos = context.camera().position();
+
+		renderState.intensity = urGhastRain;
+		renderState.radius = Minecraft.getInstance().options.weatherRadius().get();
+		int cameraBlockX = Mth.floor(cameraPos.x);
+		int cameraBlockY = Mth.floor(cameraPos.y);
+		int cameraBlockZ = Mth.floor(cameraPos.z);
+		BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+		RandomSource columnRandom = RandomSource.createThreadLocalInstance();
+
+		for (int z = cameraBlockZ - renderState.radius; z <= cameraBlockZ + renderState.radius; z++) {
+			for (int x = cameraBlockX - renderState.radius; x <= cameraBlockX + renderState.radius; x++) {
+				int terrainHeight = level.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z);
+				int y0 = Math.max(cameraBlockY - renderState.radius, terrainHeight);
+				int y1 = Math.max(cameraBlockY + renderState.radius, terrainHeight);
+				if (y1 - y0 != 0 && getPrecipitationAt(level, mutablePos.set(x, cameraBlockY, z)) == Biome.Precipitation.RAIN) {
+					columnRandom.setSeed(x * x * 3121L + x * 45238971L ^ z * z * 418711L + z * 13761L);
+					int lightCoords = LevelRenderer.getLightCoords(level, mutablePos.set(x, Math.max(cameraBlockY, terrainHeight), z));
+					int wrappedTicks = ticks & 131071;
+					int tickOffset = x * x * 3121 + x * 45238971 + z * z * 418711 + z * 13761 & 0xFF;
+					float blockPosRainSpeed = 3.0F + columnRandom.nextFloat();
+					float textureOffset = -(wrappedTicks + tickOffset + partialTicks) / 32.0F * blockPosRainSpeed;
+					renderState.rainColumns.add(new WeatherEffectRenderer.ColumnInstance(x, z, y0, y1, 0.0F, textureOffset % 32.0F, lightCoords));
+				}
+			}
+		}
 	}
 
 	public static Biome.Precipitation getPrecipitationAt(Level level, BlockPos pos) {
