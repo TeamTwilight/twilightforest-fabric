@@ -4,6 +4,7 @@ import carminite.interfaces.markers.ISpecialStickyBlock;
 import net.minecraft.world.level.block.SlimeBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.init.TFBlocks;
+import twilightforest.tags.TFBlockTags;
 
 public class MazeSlimeBlock extends SlimeBlock implements ISpecialStickyBlock {
 	public MazeSlimeBlock(Properties properties) {
@@ -12,7 +13,7 @@ public class MazeSlimeBlock extends SlimeBlock implements ISpecialStickyBlock {
 
 	@Override
 	public boolean canStickTo(BlockState state, BlockState other) {
-		return other.is(TFBlocks.MAZE_SLIME_BLOCK) || other.is(TFBlocks.MAZESTONE);
+		return other.is(TFBlockTags.STORAGE_BLOCKS_MAZE_SLIME) || other.is(TFBlocks.MAZESTONE);
 	}
 
 	@Override
