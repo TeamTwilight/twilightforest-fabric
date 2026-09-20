@@ -97,6 +97,11 @@ dependencies {
 	implementation "mezz.jei:jei-${minecraft_version}-fabric:${jei_version}"
 }
 
+def minimum_loader_version = project.property("minimum_loader_version")
+def base_minecraft_version = project.property("base_minecraft_version")
+def minimum_fabric_api_version = project.property("minimum_fabric_api_version")
+def java_version = java.toolchain.languageVersion.get().asInt()
+
 processResources {
 	def ver = project.version
 	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
@@ -108,7 +113,7 @@ processResources {
 			"loader_version"      : minimum_loader_version,
 			"minecraft_version"   : base_minecraft_version,
 			"fabric_api_version"  : minimum_fabric_api_version,
-			"java_version"        : java.toolchain.languageVersion.get().asInt()
+			"java_version"        : java_version
 		])
 	}
 
