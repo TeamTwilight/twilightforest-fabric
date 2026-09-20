@@ -179,6 +179,25 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.unlockedBy("has_item", has(TFItems.TORCHBERRIES))
 			.save(this.output, this.createKey("berry_torch"));
 
+		ShapelessRecipeBuilder.shapeless(getter, RecipeCategory.FOOD, TFItems.MOSS_SOUP)
+			.requires(TFBlocks.MOSS_PATCH)
+			.requires(Items.BOWL)
+			.requires(new ComponentsIngredient(Ingredient.of(Items.POTION), DataComponentPatch.builder().set(DataComponents.POTION_CONTENTS, new PotionContents(Potions.WATER)).build()).toVanilla())
+			.unlockedBy("has_moss", this.has(TFBlocks.MOSS_PATCH))
+			.save(this.output);
+
+		ShapelessRecipeBuilder.shapeless(getter, RecipeCategory.FOOD, TFItems.BERRY_MEDLEY)
+			.requires(Items.BOWL)
+			.requires(TFItems.RASPBERRY)
+			.requires(TFItems.BLUEBERRY)
+			.requires(TFItems.BLACKBERRY)
+			.requires(TFItems.MALOBERRY)
+			.unlockedBy("has_raspberry", this.has(TFItems.RASPBERRY))
+			.unlockedBy("has_blueberry", this.has(TFItems.BLUEBERRY))
+			.unlockedBy("has_blackberry", this.has(TFItems.BLACKBERRY))
+			.unlockedBy("has_maloberry", this.has(TFItems.MALOBERRY))
+			.save(this.output);
+
 		cookingRecipes("smelted", SmeltingRecipe::new, 200);
 		cookingRecipes("smoked", SmokingRecipe::new, 100);
 		cookingRecipes("campfired", CampfireCookingRecipe::new, 600);
