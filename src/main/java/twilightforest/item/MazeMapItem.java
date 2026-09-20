@@ -7,8 +7,10 @@ import com.google.common.collect.Multiset;
 import com.google.common.collect.Multisets;
 import com.mojang.datafixers.util.Either;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -17,6 +19,8 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,6 +36,7 @@ import twilightforest.item.mapdata.MapDataManager;
 import twilightforest.item.mapdata.TFMazeMapData;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
 public class MazeMapItem extends MapItem implements ICustomMapItem {
@@ -93,6 +98,7 @@ public class MazeMapItem extends MapItem implements ICustomMapItem {
 		mapdata.ore = ore;
 		MapDataManager.saveServerMazeMapData(level, freeMapId, mapdata); // call our own save method
 		stack.set(DataComponents.MAP_ID, freeMapId);
+		stack.set(DataComponents.TOOLTIP_DISPLAY, stack.getOrDefault(DataComponents.TOOLTIP_DISPLAY, TooltipDisplay.DEFAULT).withHidden(DataComponents.MAP_ID, true));
 		return mapdata;
 	}
 
@@ -238,6 +244,24 @@ public class MazeMapItem extends MapItem implements ICustomMapItem {
 					this.update(level, owner, mapdata);
 				}
 			}
+		}
+	}
+
+	@Override
+	public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
+		MapId mapId = stack.get(DataComponents.MAP_ID);
+		if (mapId != null) {
+			if (flag.isAdvanced()) {
+				TFMazeMapData data = MapDataManager.getClientMazeMapData(mapId);
+				if (data != null) {
+					builder.accept(Component.translatable("item.twilightforest.maze_map.y_level", data.yCenter).withStyle(ChatFormatting.GRAY));
+					builder.accept(Component.translatable("filled_map.id", mapId.id()).withStyle(ChatFormatting.GRAY));
+					builder.accept(Component.translatable("filled_map.scale", 1 << data.scale).withStyle(ChatFormatting.GRAY));
+					builder.accept(Component.translatable("filled_map.level", data.scale, 4).withStyle(ChatFormatting.GRAY));
+				} else {
+					builder.accept(Component.translatable("filled_map.unknown").withStyle(ChatFormatting.GRAY));
+				}
+			} else builder.accept(Component.translatable("filled_map.id", mapId.id()).withStyle(ChatFormatting.GRAY));
 		}
 	}
 }
