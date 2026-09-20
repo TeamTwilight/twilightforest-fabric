@@ -182,7 +182,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		ShapelessRecipeBuilder.shapeless(getter, RecipeCategory.FOOD, TFItems.MOSS_SOUP)
 			.requires(TFBlocks.MOSS_PATCH)
 			.requires(Items.BOWL)
-			.requires(new ComponentsIngredient(Ingredient.of(Items.POTION), DataComponentPatch.builder().set(DataComponents.POTION_CONTENTS, new PotionContents(Potions.WATER)).build()).toVanilla())
+			.requires(this.potionIngredient(Potions.WATER))
 			.unlockedBy("has_moss", this.has(TFBlocks.MOSS_PATCH))
 			.save(this.output);
 
