@@ -73,7 +73,10 @@ public final class BlockHooks {
 			for (int z = -1; z <= 1; z++) {
 				if (x == 0 && z == 0)
 					continue;
-				if (level.getBlockState(pos.offset(x, -1, z)).is(TFBlocks.TWILIGHT_PORTAL))
+				BlockPos checkPos = pos.offset(x, -1, z);
+				if (!level.hasChunkAt(checkPos))
+					continue;
+				if (level.getBlockState(checkPos).is(TFBlocks.TWILIGHT_PORTAL))
 					return true;
 			}
 		}

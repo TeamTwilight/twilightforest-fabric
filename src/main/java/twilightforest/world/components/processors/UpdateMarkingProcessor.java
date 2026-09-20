@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.chunk.ProtoChunk;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
@@ -30,7 +31,9 @@ public class UpdateMarkingProcessor extends StructureProcessor {
 	@Override
 	public StructureTemplate.@Nullable StructureBlockInfo processBlock(LevelReader level, BlockPos targetPosition, BlockPos referencePos, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo processedBlockInfo, StructurePlaceSettings settings) {
 		if (this.blocksToMarkUpdate.contains(processedBlockInfo.state().getBlock())) {
-			level.getChunk(processedBlockInfo.pos()).markPosForPostprocessing(processedBlockInfo.pos());
+			if (level.getChunk(processedBlockInfo.pos()) instanceof ProtoChunk protoChunk) {
+				protoChunk.markPosForPostprocessing(processedBlockInfo.pos());
+			}
 		}
 
 		return processedBlockInfo;
