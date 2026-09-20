@@ -781,6 +781,7 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 			TFBlocks.STRIPPED_TIME_WOOD, TFBlocks.STRIPPED_TRANSFORMATION_WOOD,
 			TFBlocks.STRIPPED_MINING_WOOD, TFBlocks.STRIPPED_SORTING_WOOD);
 
+		this.tag(TFBlockTags.STORAGE_BLOCKS_MAZE_SLIME).add(TFBlocks.MAZE_SLIME_BLOCK);
 		this.tag(ConventionalBlockTags.STORAGE_BLOCKS_SLIME).add(TFBlocks.MAZE_SLIME_BLOCK);
 	}
 

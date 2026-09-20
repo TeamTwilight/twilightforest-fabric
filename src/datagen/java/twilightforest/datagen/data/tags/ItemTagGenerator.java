@@ -422,7 +422,11 @@ public class ItemTagGenerator extends IntrinsicHolderTagsProvider<Item> {
 			TFItems.MUSIC_DISC_HOME, TFItems.MUSIC_DISC_WAYFARER, TFItems.MUSIC_DISC_FINDINGS,
 			TFItems.MUSIC_DISC_MAKER, TFItems.MUSIC_DISC_THREAD, TFItems.MUSIC_DISC_MOTION
 		);
+		this.tag(TFItemTags.MAZE_SLIME_BALLS).add(TFItems.MAZE_SLIME_BALL);
+		this.tag(TFItemTags.STORAGE_BLOCKS_MAZE_SLIME).add(TFBlocks.MAZE_SLIME_BLOCK.asItem());
+
 		this.tag(ConventionalItemTags.SLIME_BALLS).add(TFItems.MAZE_SLIME_BALL);
+		this.tag(ConventionalItemTags.STORAGE_BLOCKS_SLIME).add(TFBlocks.MAZE_SLIME_BLOCK.asItem());
 
 		this.tag(TFItemTags.RENDER_LOWER_ON_DRYING_RACK)
 			.add(TFItems.GELATINOUS_SLIME_DROP, TFItems.GELATINOUS_MAZE_SLIME_DROP)
