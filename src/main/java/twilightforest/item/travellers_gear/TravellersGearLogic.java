@@ -66,7 +66,7 @@ public class TravellersGearLogic {
 	}
 
 	public static void waterWalkingSplashEffect(LivingEntity livingEntity) {
-		Long lastTickWaterWalking = livingEntity.getAttached(TFDataAttachments.LAST_TICK_WATER_WALKING);
+		Long lastTickWaterWalking = livingEntity.getAttachedOrCreate(TFDataAttachments.LAST_TICK_WATER_WALKING);
 		Level level = livingEntity.level();
 		Vec3 livingEntityVelocity = livingEntity.getKnownMovement();
 		if (lastTickWaterWalking + 1 == level.getGameTime() || livingEntityVelocity.horizontalDistance() < 0.01)
