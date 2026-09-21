@@ -99,6 +99,10 @@ public class CandleDispenseBehavior extends OptionalDispenseItemBehavior {
 					if (wall) makeWallSkull(level, pos, TFBlocks.CREEPER_WALL_SKULL_CANDLE, candle);
 					else makeFloorSkull(level, pos, TFBlocks.CREEPER_SKULL_CANDLE, candle);
 				}
+				case PIGLIN -> {
+					if (wall) makeWallSkull(level, pos, TFBlocks.PIGLIN_WALL_SKULL_CANDLE, candle);
+					else makeFloorSkull(level, pos, TFBlocks.PIGLIN_SKULL_CANDLE, candle);
+				}
 				default -> {
 					return false;
 				}
