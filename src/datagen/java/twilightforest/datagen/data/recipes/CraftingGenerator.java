@@ -2,9 +2,8 @@ package twilightforest.datagen.data.recipes;
 
 import carminite.crafting.CompoundIngredient;
 import com.mojang.datafixers.util.Pair;
+import net.fabricmc.fabric.api.recipe.v1.ingredient.DefaultCustomIngredients;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
-import net.fabricmc.fabric.impl.recipe.ingredient.builtin.ComponentsIngredient;
-import net.fabricmc.fabric.impl.recipe.ingredient.builtin.DifferenceIngredient;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
@@ -606,9 +605,9 @@ public class CraftingGenerator extends CraftingDataHelper {
 
 		ScepterRecipeBuilder.repairFor(getter, TFItems.ZOMBIE_SCEPTER, 9)
 			.addRepairIngredient(CompoundIngredient.of(
-				new ComponentsIngredient(Ingredient.of(Items.POTION), DataComponentPatch.builder().set(DataComponents.POTION_CONTENTS, new PotionContents(Potions.STRENGTH)).build()).toVanilla(),
-				new ComponentsIngredient(Ingredient.of(Items.POTION), DataComponentPatch.builder().set(DataComponents.POTION_CONTENTS, new PotionContents(Potions.LONG_STRENGTH)).build()).toVanilla(),
-				new ComponentsIngredient(Ingredient.of(Items.POTION), DataComponentPatch.builder().set(DataComponents.POTION_CONTENTS, new PotionContents(Potions.STRONG_STRENGTH)).build()).toVanilla()
+				DefaultCustomIngredients.components(Ingredient.of(Items.POTION), DataComponentPatch.builder().set(DataComponents.POTION_CONTENTS, new PotionContents(Potions.STRENGTH)).build()),
+				DefaultCustomIngredients.components(Ingredient.of(Items.POTION), DataComponentPatch.builder().set(DataComponents.POTION_CONTENTS, new PotionContents(Potions.LONG_STRENGTH)).build()),
+				DefaultCustomIngredients.components(Ingredient.of(Items.POTION), DataComponentPatch.builder().set(DataComponents.POTION_CONTENTS, new PotionContents(Potions.STRONG_STRENGTH)).build())
 			))
 			.addRepairIngredient(Items.ROTTEN_FLESH)
 			.save(this.output, locEquip(BuiltInRegistries.ITEM.getKey(TFItems.ZOMBIE_SCEPTER).getPath()));
@@ -862,7 +861,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 			.pattern("ixi")
 			.pattern("lll")
 			.define('l', TFItems.TANNED_LEATHER)
-			.define('x', new DifferenceIngredient(Ingredient.of(getter.getOrThrow(ConventionalItemTags.WOODEN_CHESTS)), Ingredient.of(getter.getOrThrow(ConventionalItemTags.TRAPPED_CHESTS))).toVanilla())
+			.define('x', DefaultCustomIngredients.difference(Ingredient.of(getter.getOrThrow(ConventionalItemTags.WOODEN_CHESTS)), Ingredient.of(getter.getOrThrow(ConventionalItemTags.TRAPPED_CHESTS))))
 			.define('i', ConventionalItemTags.IRON_NUGGETS)
 			.unlockedBy("has_leather", has(TFItems.TANNED_LEATHER))
 			.save(this.output, locEquip(BuiltInRegistries.ITEM.getKey(TFItems.TRAVELLERS_BELT).getPath()));
@@ -887,7 +886,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 
 	private Ingredient potionIngredient(Holder<Potion> potion) {
 		DataComponentPatch components = DataComponentPatch.builder().set(DataComponents.POTION_CONTENTS, new PotionContents(potion)).build();
-		return new ComponentsIngredient(Ingredient.of(Items.POTION), components).toVanilla();
+		return DefaultCustomIngredients.components(Ingredient.of(Items.POTION), components);
 	}
 
 	private void blockCompressionRecipes(HolderGetter<Item> getter) {
