@@ -1,6 +1,6 @@
 package twilightforest.asm.mixin.coremod;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.MushroomBlock;
@@ -12,12 +12,9 @@ import twilightforest.asm.hooks.coremod.BlockHooks;
 @Mixin(MushroomBlock.class)
 public class MushroomBlockMixin {
 
-	@ModifyExpressionValue(
+	@ModifyReturnValue(
         method = "canSurvive(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/LevelReader;Lnet/minecraft/core/BlockPos;)Z",
-        at = @At(
-			value = "INVOKE",
-            target = "Lnet/minecraft/world/level/block/MushroomBlock;mayPlaceOn(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)Z"
-        )
+        at = @At("RETURN")
     )
     private boolean twilightforest$modifySoilDecisionForMushroomBlockSurvivability(
         boolean original,
