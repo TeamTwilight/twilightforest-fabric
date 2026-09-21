@@ -60,6 +60,7 @@ import twilightforest.client.renderer.block.*;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.client.renderer.entity.layers.IceLayer;
 import twilightforest.client.renderer.entity.layers.ShieldLayer;
+import twilightforest.client.renderer.gui.GuiBlockRenderer;
 import twilightforest.client.renderer.map.ConqueredMapIconRenderer;
 import twilightforest.client.renderer.map.MagicMapPlayerIconRenderer;
 import twilightforest.client.renderer.map.MapDecorationManager;
@@ -104,6 +105,7 @@ public final class TFClient implements ClientModInitializer {
 		registerMapDecorationTypes();
 		registerRenderLayers();
 		registerArmorRenderers();
+		registerPictureInPictureRenderers();
 	}
 
 	private static void setupClientEvents() {
@@ -538,5 +540,10 @@ public final class TFClient implements ClientModInitializer {
 			new TFSimpleArmorRenderer(context, YetiArmorModel::new, TFModelLayers.YETI_ARMOR_INNER, TFModelLayers.YETI_ARMOR_OUTER),
 			TFItems.YETI_HELMET, TFItems.YETI_CHESTPLATE, TFItems.YETI_LEGGINGS, TFItems.YETI_BOOTS
 		);
+	}
+
+	private static void registerPictureInPictureRenderers() {
+		PictureInPictureRendererRegistry.register(ctx -> new GuiBlockRenderer(ctx.bufferSource()));
+
 	}
 }
