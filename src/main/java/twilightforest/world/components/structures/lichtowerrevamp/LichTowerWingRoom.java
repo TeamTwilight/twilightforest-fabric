@@ -87,7 +87,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements IPie
 		this.ladderIndex = compoundTag.getIntOr("ladder_index", 0);
 		this.jigsawLadderTarget = this.shouldLadderUpwards() ? this.getSpareJigsaws().get(this.ladderIndex).target() : "";
 		this.roofFallback = compoundTag.getIntOr("roof_index", 0);
-		this.allowedCeilingPlacements = compoundTag.getIntArray("allowed_ceiling_placements").orElse(new int[]{0});
+		this.allowedCeilingPlacements = compoundTag.getIntArray("allowed_ceiling_placements").get();
 	}
 
 	public LichTowerWingRoom(StructureTemplateManager structureManager, int genDepth, JigsawPlaceContext jigsawContext, Identifier roomId, int roomSize, boolean generateGround, boolean canGenerateLadder, RandomSource random) {
@@ -162,7 +162,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements IPie
 		if (nbt.isEmpty() || !nbt.contains("metadata"))
 			return true;
 
-		String metadata = nbt.getStringOr("metadata", "").split("%", 1)[0];
+		String metadata = nbt.getString("metadata").get().split("%", 1)[0];
 		String chance = metadata.startsWith("rope") ? metadata.substring("rope".length()) : metadata.substring("chain".length());
 
 		return chance.isBlank() || StringUtils.isNumeric(chance) && random.nextFloat() > Integer.parseInt(chance) * 0.01f;
@@ -742,9 +742,9 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements IPie
 
 	private BlockState blockFromLabel(String label) {
 		if (label.contains(".")) {
-			return BuiltInRegistries.BLOCK.get(Identifier.bySeparator(label, '.')).orElseThrow().value().defaultBlockState();
+			return BuiltInRegistries.BLOCK.get(Identifier.bySeparator(label, '.')).get().value().defaultBlockState();
 		} else {
-			return BuiltInRegistries.BLOCK.get(Identifier.parse(label)).orElseThrow().value().defaultBlockState();
+			return BuiltInRegistries.BLOCK.get(Identifier.parse(label)).get().value().defaultBlockState();
 		}
 	}
 
