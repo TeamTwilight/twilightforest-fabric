@@ -465,7 +465,7 @@ public final class EntityEventListeners {
 
 		@Override
 		public boolean canUse() {
-			return this.delegate.canUse() && !this.enderman.level().dimensionTypeRegistration().is(TFDimensionData.TWILIGHT_DIM_TYPE);
+			return this.delegate.canUse() && !this.enderman.level().dimensionTypeRegistration().is(TFDimension.TWILIGHT_DIM_TYPE);
 		}
 
 		@Override

@@ -16,7 +16,6 @@ import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.timeline.Timeline;
-import net.minecraft.world.timeline.Timelines;
 import twilightforest.TFCommon;
 import twilightforest.init.*;
 import twilightforest.init.custom.BiomeLayerStack;
@@ -30,7 +29,7 @@ public class TFDimensionGenerator {
 	public static void bootstrapType(BootstrapContext<DimensionType> context) {
 		TFCommon.LOGGER.info("Bootstrap called for dimension type...");
 		HolderGetter<Timeline> timelines = context.lookup(Registries.TIMELINE);
-		context.register(TFDimensionData.TWILIGHT_DIM_TYPE, new DimensionType(
+		context.register(TFDimension.TWILIGHT_DIM_TYPE, new DimensionType(
 			true, //fixed time
 			true, //skylight
 			false, //ceiling
@@ -97,7 +96,7 @@ public class TFDimensionGenerator {
 			),
 			TFSurfaceRules.tfSurface(),
 			List.of(),
-			TFDimensionData.SEALEVEL,
+			TFDimension.SEALEVEL,
 			false,
 			false,
 			false,
@@ -107,8 +106,8 @@ public class TFDimensionGenerator {
 
 	public static void bootstrapNoise(BootstrapContext<NoiseGeneratorSettings> context) {
 		TFCommon.LOGGER.info("Bootstrap called for noise settings...");
-		context.register(TFDimensionData.TWILIGHT_NOISE_GEN, makeNoiseSettings(context, false));
-		context.register(TFDimensionData.SKYLIGHT_NOISE_GEN, makeNoiseSettings(context, true));
+		context.register(TFDimension.TWILIGHT_NOISE_GEN, makeNoiseSettings(context, false));
+		context.register(TFDimension.SKYLIGHT_NOISE_GEN, makeNoiseSettings(context, true));
 	}
 
 	public static void bootstrapStem(BootstrapContext<LevelStem> context) {
@@ -120,14 +119,14 @@ public class TFDimensionGenerator {
 
 		NoiseBasedChunkGenerator twilightChunkGenerator = new NoiseBasedChunkGenerator(
 			new TFBiomeProvider(biomeDataRegistry.getOrThrow(BiomeLayerStack.BIOME_GRID)),
-			noiseGenSettings.getOrThrow(TFDimensionData.TWILIGHT_NOISE_GEN)
+			noiseGenSettings.getOrThrow(TFDimension.TWILIGHT_NOISE_GEN)
 		);
 
 		LevelStem stem = new LevelStem(
-			dimTypes.getOrThrow(TFDimensionData.TWILIGHT_DIM_TYPE),
+			dimTypes.getOrThrow(TFDimension.TWILIGHT_DIM_TYPE),
 			twilightChunkGenerator
 		);
 
-		context.register(TFDimensionData.TWILIGHT_LEVEL_STEM, stem);
+		context.register(TFDimension.TWILIGHT_LEVEL_STEM, stem);
 	}
 }
