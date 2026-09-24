@@ -1,5 +1,8 @@
 package twilightforest.client.renderer.map;
 
+import carminite.client.map.IMapDecorationRenderStateModifier;
+import carminite.client.map.IMapDecorationRenderer;
+import carminite.client.map.MapRendererManager;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.fabricmc.fabric.api.client.rendering.v1.RenderStateDataKey;
@@ -13,13 +16,13 @@ import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import twilightforest.item.MagicMapItem;
 import twilightforest.item.mapdata.TFMagicMapData;
 
-public class ConqueredMapIconRenderer implements TFMapDecorationRenderer, TFMapDecorationRenderStateModifier {
+public class ConqueredMapIconRenderer implements IMapDecorationRenderer, IMapDecorationRenderStateModifier {
 	public static final RenderStateDataKey<Boolean> CONQUERED_KEY = RenderStateDataKey.create(() -> "conquered");
 
 	@Override
 	public void accept(MapItemSavedData mapData, MapRenderState mapRenderState, MapRenderState.MapDecorationRenderState decoration) {
 		if (mapData instanceof TFMagicMapData map)
-			decoration.setData(CONQUERED_KEY, map.conqueredStructures.contains(MagicMapItem.makeName(mapRenderState.getData(MapDecorationManager.DECORATION_TYPE), decoration.x, decoration.y)));
+			decoration.setData(CONQUERED_KEY, map.conqueredStructures.contains(MagicMapItem.makeName(decoration.getData(MapRendererManager.DECORATION_TYPE_KEY), decoration.x, decoration.y)));
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package twilightforest.client.renderer.map;
 
+import carminite.client.map.IMapDecorationRenderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.fabricmc.fabric.api.client.rendering.v1.RenderStateDataKey;
@@ -13,7 +14,7 @@ import twilightforest.item.mapdata.TFMagicMapData;
 
 import java.util.function.BiConsumer;
 
-public class MagicMapPlayerIconRenderer implements TFMapDecorationRenderer, BiConsumer<MapItemSavedData, MapRenderState> {
+public class MagicMapPlayerIconRenderer implements IMapDecorationRenderer, BiConsumer<MapItemSavedData, MapRenderState> {
 	public static final RenderStateDataKey<Boolean> IS_MAGIC_MAP_KEY = RenderStateDataKey.create(() -> "is_magic_map");
 
 	@Override

@@ -36,7 +36,6 @@
     "DebugRendererMixin",
     "LevelRendererMixin",
     "LivingEntityRendererMixin",
-    "MapRendererMixin",
     "MinecraftMixin",
     "WeatherEffectRendererMixin",
     "coremod.BiomeColorsMixin",
