@@ -23,7 +23,9 @@ public record SyncQuestsPacket(QuestingRamContext ram) implements CustomPacketPa
 		return TYPE;
 	}
 
-	public static void handle(SyncQuestsPacket packet, ClientPlayNetworking.Context context) {
-		questingRamCurrentContext.setContext(packet.ram());
+	public static void handle(SyncQuestsPacket packet, ClientPlayNetworking.Context ctx) {
+		ctx.client().execute(() -> {
+			questingRamCurrentContext.setContext(packet.ram());
+		});
 	}
 }

@@ -40,22 +40,28 @@ public record SpawnCharmPacket(ItemStack charm, ResourceKey<SoundEvent> event) i
 		return TYPE;
 	}
 
+	@SuppressWarnings("Convert2Lambda")
 	public static void handle(SpawnCharmPacket packet, ClientPlayNetworking.Context ctx) {
-		Player player = ctx.player();
-		ClientLevel level = ctx.client().level;
-		Entity camera = Minecraft.getInstance().getCameraEntity();
-		if (TFConfig.spawnCharmAnimationAsTotem) {
-			Minecraft.getInstance().gameRenderer.displayItemActivation(packet.charm());
-			//prefer the camera pos over the player as the player position isnt quite synced to the client yet
-			Minecraft.getInstance().particleEngine.createTrackingEmitter(camera != null ? camera : player, new ItemParticleOption(ParticleTypes.ITEM, packet.charm().getItem()), 20);
-		} else {
-			CharmEffect effect = new CharmEffect(TFEntities.CHARM_EFFECT, player.level(), player, packet.charm());
-			effect.offset = (float) Math.PI;
-			level.addEntity(effect);
-		}
-		SoundEvent event = BuiltInRegistries.SOUND_EVENT.get(packet.event()).map(Holder.Reference::value).orElse(null);
-		if (camera != null && event != null) {
-			level.playLocalSound(camera.getX(), camera.getY(), camera.getZ(), event, player.getSoundSource(), 1.5F, 1.0F, false);
-		}
+		ctx.client().execute(new Runnable() {
+			@Override
+			public void run() {
+				Player player = ctx.player();
+				ClientLevel level = ctx.client().level;
+				Entity camera = Minecraft.getInstance().getCameraEntity();
+				if (TFConfig.spawnCharmAnimationAsTotem) {
+					Minecraft.getInstance().gameRenderer.displayItemActivation(packet.charm());
+					//prefer the camera pos over the player as the player position isnt quite synced to the client yet
+					Minecraft.getInstance().particleEngine.createTrackingEmitter(camera != null ? camera : player, new ItemParticleOption(ParticleTypes.ITEM, packet.charm().getItem()), 20);
+				} else {
+					CharmEffect effect = new CharmEffect(TFEntities.CHARM_EFFECT, player.level(), player, packet.charm());
+					effect.offset = (float) Math.PI;
+					level.addEntity(effect);
+				}
+				SoundEvent event = BuiltInRegistries.SOUND_EVENT.get(packet.event()).map(Holder.Reference::value).orElse(null);
+				if (camera != null && event != null) {
+					level.playLocalSound(camera.getX(), camera.getY(), camera.getZ(), event, player.getSoundSource(), 1.5F, 1.0F, false);
+				}
+			}
+		});
 	}
 }

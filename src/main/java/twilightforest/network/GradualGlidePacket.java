@@ -22,20 +22,24 @@ public record GradualGlidePacket(boolean isGraduallyGliding, UUID playerUUID) im
 	}
 
 	public static void handleServer(GradualGlidePacket packet, ServerPlayNetworking.Context ctx) {
-		Player player = ctx.player().level().getPlayerByUUID(packet.playerUUID);
-		if (player == null)
-			return;
-		player.setAttached(TFDataAttachments.IS_GRADUALLY_GLIDING, packet.isGraduallyGliding);
-		for (ServerPlayer serverPlayer : PlayerLookup.tracking(player)) {
-			ServerPlayNetworking.send(serverPlayer, new GradualGlidePacket(packet.isGraduallyGliding, player.getUUID()));
-		}
+		ctx.server().execute(() -> {
+			Player player = ctx.player().level().getPlayerByUUID(packet.playerUUID);
+			if (player == null)
+				return;
+			player.setAttached(TFDataAttachments.IS_GRADUALLY_GLIDING, packet.isGraduallyGliding);
+			for (ServerPlayer serverPlayer : PlayerLookup.tracking(player)) {
+				ServerPlayNetworking.send(serverPlayer, new GradualGlidePacket(packet.isGraduallyGliding, player.getUUID()));
+			}
+		});
 	}
 
 	public static void handleClient(GradualGlidePacket packet, ClientPlayNetworking.Context ctx) {
-		Player player = ctx.client().level.getPlayerByUUID(packet.playerUUID);
-		if (player == null)
-			return;
-		player.setAttached(TFDataAttachments.IS_GRADUALLY_GLIDING, packet.isGraduallyGliding);
+		ctx.client().execute(() -> {
+			Player player = ctx.client().level.getPlayerByUUID(packet.playerUUID);
+			if (player == null)
+				return;
+			player.setAttached(TFDataAttachments.IS_GRADUALLY_GLIDING, packet.isGraduallyGliding);
+		});
 	}
 
 	private void write(RegistryFriendlyByteBuf registryFriendlyByteBuf) {

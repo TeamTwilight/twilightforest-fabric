@@ -37,7 +37,7 @@ public record StructureProtectionPacket(Optional<List<Pair<BoundingBox, Boolean>
 		if (level == null) {
 			TFCommon.LOGGER.warn("ctx.client().level was null in StructureProtectionPacket, skipping logic");
 		} else if (level.dimension().equals(TFDimension.DIMENSION_KEY)) {
-			TFWeatherRenderer.setProtectedBoxes(message.boxes().orElse(null));
+			ctx.client().execute(() -> TFWeatherRenderer.setProtectedBoxes(message.boxes().orElse(null)));
 		}
 	}
 }

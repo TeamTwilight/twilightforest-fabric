@@ -45,15 +45,17 @@ public record SyncUncraftingTableConfigPacket(
 	}
 
 	public static void handle(SyncUncraftingTableConfigPacket message, ClientPlayNetworking.Context ctx) {
-		TFConfig.uncraftingXpCostMultiplier = message.uncraftingMultiplier();
-		TFConfig.repairingXpCostMultiplier = message.repairingMultiplier();
-		TFConfig.allowShapelessUncrafting = message.allowShapeless();
-		TFConfig.disableIngredientSwitching = message.disableIngredientSwitching();
-		TFConfig.disableUncraftingOnly = message.disabledUncrafting();
-		TFConfig.disableEntireTable = message.disabledTable();
-		TFConfig.disableUncraftingRecipes = message.disabledRecipes();
-		TFConfig.reverseRecipeBlacklist = message.flipRecipeList();
-		TFConfig.blacklistedUncraftingModIds = message.disabledModids();
-		TFConfig.flipUncraftingModIdList = message.flipModidList();
+		ctx.client().execute(() -> {
+			TFConfig.uncraftingXpCostMultiplier = message.uncraftingMultiplier();
+			TFConfig.repairingXpCostMultiplier = message.repairingMultiplier();
+			TFConfig.allowShapelessUncrafting = message.allowShapeless();
+			TFConfig.disableIngredientSwitching = message.disableIngredientSwitching();
+			TFConfig.disableUncraftingOnly = message.disabledUncrafting();
+			TFConfig.disableEntireTable = message.disabledTable();
+			TFConfig.disableUncraftingRecipes = message.disabledRecipes();
+			TFConfig.reverseRecipeBlacklist = message.flipRecipeList();
+			TFConfig.blacklistedUncraftingModIds = message.disabledModids();
+			TFConfig.flipUncraftingModIdList = message.flipModidList();
+		});
 	}
 }

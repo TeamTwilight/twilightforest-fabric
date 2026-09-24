@@ -24,7 +24,13 @@ public record MissingAdvancementToastPacket(Component title, ItemStackTemplate i
 		return TYPE;
 	}
 
+	@SuppressWarnings("Convert2Lambda")
 	public static void handle(MissingAdvancementToastPacket packet, ClientPlayNetworking.Context ctx) {
-		Minecraft.getInstance().getToastManager().addToast(new MissingAdvancementToast(packet.title(), packet.icon()));
+		ctx.client().execute(new Runnable() {
+			@Override
+			public void run() {
+				Minecraft.getInstance().getToastManager().addToast(new MissingAdvancementToast(packet.title(), packet.icon()));
+			}
+		});
 	}
 }

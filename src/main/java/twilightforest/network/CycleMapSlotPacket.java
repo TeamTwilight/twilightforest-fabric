@@ -19,22 +19,24 @@ public record CycleMapSlotPacket() implements CustomPacketPayload {
 	public static final StreamCodec<RegistryFriendlyByteBuf, CycleMapSlotPacket> STREAM_CODEC = StreamCodec.unit(INSTANCE);
 
 	public static void handle(CycleMapSlotPacket message, ServerPlayNetworking.Context ctx) {
-		ServerPlayer serverPlayer = ctx.player();
-		ItemStack headStack = serverPlayer.getItemBySlot(EquipmentSlot.HEAD);
-		ItemDisplayContents contents = headStack.get(TFDataComponents.ITEM_DISPLAY);
-		if (contents == null || contents.isEmpty() || !TravellersModifiersManager.isModifierActive(serverPlayer, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER))
-			return;
+		ctx.server().execute(() -> {
+			ServerPlayer serverPlayer = ctx.player();
+			ItemStack headStack = serverPlayer.getItemBySlot(EquipmentSlot.HEAD);
+			ItemDisplayContents contents = headStack.get(TFDataComponents.ITEM_DISPLAY);
+			if (contents == null || contents.isEmpty() || !TravellersModifiersManager.isModifierActive(serverPlayer, TravellersModifiersManager.ITEM_DISPLAY_MODIFIER))
+				return;
 
-		ItemDisplayContents.Mutable mutable = new ItemDisplayContents.Mutable(contents);
-		int oldIndex = mutable.chosenMapSlot();
-		int newIndex = mutable.cycleChosenMapSlot();
+			ItemDisplayContents.Mutable mutable = new ItemDisplayContents.Mutable(contents);
+			int oldIndex = mutable.chosenMapSlot();
+			int newIndex = mutable.cycleChosenMapSlot();
 
-		if (oldIndex != newIndex) {
-			ItemDisplayContents updatedContents = mutable.toImmutable();
-			headStack.set(TFDataComponents.ITEM_DISPLAY, updatedContents);
-			serverPlayer.getInventory().setChanged();
-			serverPlayer.playSound(newIndex == -1 ? TFSounds.CYCLE_MAPS_EMPTY.value() : TFSounds.CYCLE_MAPS.value(), 1F, 1F);
-		}
+			if (oldIndex != newIndex) {
+				ItemDisplayContents updatedContents = mutable.toImmutable();
+				headStack.set(TFDataComponents.ITEM_DISPLAY, updatedContents);
+				serverPlayer.getInventory().setChanged();
+				serverPlayer.playSound(newIndex == -1 ? TFSounds.CYCLE_MAPS_EMPTY.value() : TFSounds.CYCLE_MAPS.value(), 1F, 1F);
+			}
+		});
 	}
 
 	@Override

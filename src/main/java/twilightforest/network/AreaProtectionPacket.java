@@ -56,31 +56,37 @@ public class AreaProtectionPacket implements CustomPacketPayload {
 		return TYPE;
 	}
 
+	@SuppressWarnings("Convert2Lambda")
 	public static void handle(AreaProtectionPacket message, ClientPlayNetworking.Context ctx) {
-		ClientLevel level = ctx.client().level;
-		message.sbb.forEach(box -> {
-			for (Entity entity : level.entitiesForRendering()) {
-				if (entity instanceof ProtectionBox prot) {
-					if (prot.lifeTime > 0 && prot.matches(box)) {
-						prot.resetLifetime();
-						return;
+		ctx.client().execute(new Runnable() {
+			@Override
+			public void run() {
+				ClientLevel level = ctx.client().level;
+				message.sbb.forEach(box -> {
+					for (Entity entity : level.entitiesForRendering()) {
+						if (entity instanceof ProtectionBox prot) {
+							if (prot.lifeTime > 0 && prot.matches(box)) {
+								prot.resetLifetime();
+								return;
+							}
+						}
 					}
+
+					level.addEntity(new ProtectionBox(level, box));
+				});
+
+				for (int i = 0; i < 20; i++) {
+					double vx = level.getRandom().nextGaussian() * 0.02D;
+					double vy = level.getRandom().nextGaussian() * 0.02D;
+					double vz = level.getRandom().nextGaussian() * 0.02D;
+
+					double x = message.pos.getX() + 0.5D + level.getRandom().nextFloat() - level.getRandom().nextFloat();
+					double y = message.pos.getY() + 0.5D + level.getRandom().nextFloat() - level.getRandom().nextFloat();
+					double z = message.pos.getZ() + 0.5D + level.getRandom().nextFloat() - level.getRandom().nextFloat();
+
+					level.addParticle(TFParticleType.PROTECTION, x, y, z, vx, vy, vz);
 				}
 			}
-
-			level.addEntity(new ProtectionBox(level, box));
 		});
-
-		for (int i = 0; i < 20; i++) {
-			double vx = level.getRandom().nextGaussian() * 0.02D;
-			double vy = level.getRandom().nextGaussian() * 0.02D;
-			double vz = level.getRandom().nextGaussian() * 0.02D;
-
-			double x = message.pos.getX() + 0.5D + level.getRandom().nextFloat() - level.getRandom().nextFloat();
-			double y = message.pos.getY() + 0.5D + level.getRandom().nextFloat() - level.getRandom().nextFloat();
-			double z = message.pos.getZ() + 0.5D + level.getRandom().nextFloat() - level.getRandom().nextFloat();
-
-			level.addParticle(TFParticleType.PROTECTION, x, y, z, vx, vy, vz);
-		}
 	}
 }

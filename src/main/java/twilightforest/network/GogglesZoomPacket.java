@@ -29,24 +29,28 @@ public record GogglesZoomPacket(boolean isUsingZoom, UUID playerUUID) implements
 	}
 
 	public static void handleServer(GogglesZoomPacket packet, ServerPlayNetworking.Context ctx) {
-		Player player = ctx.player().level().getPlayerByUUID(packet.playerUUID);
-		if (player == null)
-			return;
-		boolean canChangeZoomState = TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.ZOOM_ABILITY);
-		if (canChangeZoomState) {
-			player.setAttached(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER, packet.isUsingZoom);
-			player.playSound(packet.isUsingZoom ? TFSounds.GOGGLES_ZOOM_IN.value() : TFSounds.GOGGLES_ZOOM_OUT.value());
-			for (ServerPlayer serverPlayer : PlayerLookup.tracking(player)) {
-				ServerPlayNetworking.send(serverPlayer, new GogglesZoomPacket(packet.isUsingZoom, player.getUUID()));
+		ctx.server().execute(() -> {
+			Player player = ctx.player().level().getPlayerByUUID(packet.playerUUID);
+			if (player == null)
+				return;
+			boolean canChangeZoomState = TravellersModifiersManager.isModifierActive(player, TravellersModifiersManager.ZOOM_ABILITY);
+			if (canChangeZoomState) {
+				player.setAttached(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER, packet.isUsingZoom);
+				player.playSound(packet.isUsingZoom ? TFSounds.GOGGLES_ZOOM_IN.value() : TFSounds.GOGGLES_ZOOM_OUT.value());
+				for (ServerPlayer serverPlayer : PlayerLookup.tracking(player)) {
+					ServerPlayNetworking.send(serverPlayer, new GogglesZoomPacket(packet.isUsingZoom, player.getUUID()));
+				}
 			}
-		}
+		});
 	}
 
 	public static void handleClient(GogglesZoomPacket packet, ClientPlayNetworking.Context ctx) {
-		Player player = ctx.client().level.getPlayerByUUID(packet.playerUUID);
-		if (player == null)
-			return;
-		player.setAttached(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER, packet.isUsingZoom);
+		ctx.client().execute(() -> {
+			Player player = ctx.client().level.getPlayerByUUID(packet.playerUUID);
+			if (player == null)
+				return;
+			player.setAttached(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER, packet.isUsingZoom);
+		});
 	}
 
 	@Override

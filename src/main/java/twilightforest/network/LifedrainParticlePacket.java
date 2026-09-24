@@ -31,10 +31,16 @@ public record LifedrainParticlePacket(int entityID, Vec3 victimPos) implements C
 		return TYPE;
 	}
 
+	@SuppressWarnings("Convert2Lambda")
 	public static void handle(LifedrainParticlePacket packet, ClientPlayNetworking.Context ctx) {
-		Entity entity = ctx.client().level.getEntity(packet.entityID());
-		if (entity instanceof LivingEntity living) {
-			LifedrainScepterItem.makeRedMagicTrail(living.level(), living, packet.victimPos());
-		}
+		ctx.client().execute(new Runnable() {
+			@Override
+			public void run() {
+				Entity entity = ctx.client().level.getEntity(packet.entityID());
+				if (entity instanceof LivingEntity living) {
+					LifedrainScepterItem.makeRedMagicTrail(living.level(), living, packet.victimPos());
+				}
+			}
+		});
 	}
 }

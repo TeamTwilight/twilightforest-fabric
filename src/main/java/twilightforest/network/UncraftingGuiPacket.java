@@ -29,30 +29,32 @@ public record UncraftingGuiPacket(int operationType) implements CustomPacketPayl
 	}
 
 	public static void handle(UncraftingGuiPacket message, ServerPlayNetworking.Context ctx) {
-		AbstractContainerMenu container = ctx.player().containerMenu;
-		if (container instanceof UncraftingMenu uncrafting) {
-			switch (message.operationType()) {
-				case 0 -> uncrafting.unrecipeInCycle++;
-				case 1 -> uncrafting.unrecipeInCycle--;
-				case 2 -> {
-					if (!TFConfig.disableIngredientSwitching) {
-						uncrafting.ingredientsInCycle++;
+		ctx.server().execute(() -> {
+			AbstractContainerMenu container = ctx.player().containerMenu;
+			if (container instanceof UncraftingMenu uncrafting) {
+				switch (message.operationType()) {
+					case 0 -> uncrafting.unrecipeInCycle++;
+					case 1 -> uncrafting.unrecipeInCycle--;
+					case 2 -> {
+						if (!TFConfig.disableIngredientSwitching) {
+							uncrafting.ingredientsInCycle++;
+						}
 					}
-				}
-				case 3 -> {
-					if (!TFConfig.disableIngredientSwitching) {
-						uncrafting.ingredientsInCycle--;
+					case 3 -> {
+						if (!TFConfig.disableIngredientSwitching) {
+							uncrafting.ingredientsInCycle--;
+						}
 					}
+					case 4 -> uncrafting.recipeInCycle++;
+					case 5 -> uncrafting.recipeInCycle--;
 				}
-				case 4 -> uncrafting.recipeInCycle++;
-				case 5 -> uncrafting.recipeInCycle--;
+
+				if (message.operationType() < 4)
+					uncrafting.slotsChanged(uncrafting.tinkerInput);
+
+				if (message.operationType() >= 4)
+					uncrafting.slotsChanged(uncrafting.getCraftSlots());
 			}
-
-			if (message.operationType() < 4)
-				uncrafting.slotsChanged(uncrafting.tinkerInput);
-
-			if (message.operationType() >= 4)
-				uncrafting.slotsChanged(uncrafting.getCraftSlots());
-		}
+		});
 	}
 }

@@ -24,7 +24,9 @@ public record PerformSidestepPacket(boolean isLeftStepSide) implements CustomPac
 	}
 
 	public static void handle(twilightforest.network.PerformSidestepPacket message, ServerPlayNetworking.Context ctx) {
-		if (!TravellersGearLogic.tryPerformSidestep(ctx.player(), message.isLeftStepSide))
-			TravellersGearLogic.handleSidestepAbuse(ctx.player());
+		ctx.server().execute(() -> {
+			if (!TravellersGearLogic.tryPerformSidestep(ctx.player(), message.isLeftStepSide))
+				TravellersGearLogic.handleSidestepAbuse(ctx.player());
+		});
 	}
 }

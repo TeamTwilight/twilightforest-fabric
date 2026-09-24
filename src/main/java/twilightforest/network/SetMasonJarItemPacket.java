@@ -37,12 +37,18 @@ public record SetMasonJarItemPacket(BlockPos pos, boolean empty, ItemStack stack
 		return TYPE;
 	}
 
+	@SuppressWarnings("Convert2Lambda")
 	public static void handle(SetMasonJarItemPacket packet, ClientPlayNetworking.Context ctx) {
-		ClientLevel clientLevel = ctx.client().level;
-		if (clientLevel.getBlockEntity(packet.pos()) instanceof MasonJarBlockEntity blockEntity) {
-			blockEntity.getItemHandler().setItem(packet.stack());
-			blockEntity.setItemRotation(packet.rotation());
-			blockEntity.setChanged();
-		}
+		ctx.client().execute(new Runnable() {
+			@Override
+			public void run() {
+				ClientLevel clientLevel = ctx.client().level;
+				if (clientLevel.getBlockEntity(packet.pos()) instanceof MasonJarBlockEntity blockEntity) {
+					blockEntity.getItemHandler().setItem(packet.stack());
+					blockEntity.setItemRotation(packet.rotation());
+					blockEntity.setChanged();
+				}
+			}
+		});
 	}
 }

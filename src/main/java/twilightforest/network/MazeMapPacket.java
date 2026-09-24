@@ -33,33 +33,39 @@ public record MazeMapPacket(ClientboundMapItemDataPacket inner, boolean ore, int
 		return TYPE;
 	}
 
+	@SuppressWarnings("Convert2Lambda")
 	public static void handle(MazeMapPacket message, ClientPlayNetworking.Context ctx) {
-		ClientLevel clientLevel = ctx.client().level;
-		MapId mapId = message.inner.mapId();
-		TFMazeMapData mapdata = MapDataManager.getClientMazeMapData(mapId);
-		if (mapdata == null) {
-			mapdata = new TFMazeMapData(
-				0, 0,
-				message.inner().scale(),
-				false,
-				false,
-				message.inner().locked(),
-				clientLevel.dimension()
-			);
-			MapDataManager.saveClientMazeMapData(mapId, mapdata);
-		}
+		ctx.client().execute(new Runnable() {
+			@Override
+			public void run() {
+				ClientLevel clientLevel = ctx.client().level;
+				MapId mapId = message.inner.mapId();
+				TFMazeMapData mapdata = MapDataManager.getClientMazeMapData(mapId);
+				if (mapdata == null) {
+					mapdata = new TFMazeMapData(
+						0, 0,
+						message.inner().scale(),
+						false,
+						false,
+						message.inner().locked(),
+						clientLevel.dimension()
+					);
+					MapDataManager.saveClientMazeMapData(mapId, mapdata);
+				}
 
-		mapdata.ore = message.ore();
-		mapdata.yCenter = message.yCenter();
-		message.inner().applyToMap(mapdata);
-		Minecraft.getInstance().getMapTextureManager().update(mapId, mapdata);
+				mapdata.ore = message.ore();
+				mapdata.yCenter = message.yCenter();
+				message.inner().applyToMap(mapdata);
+				Minecraft.getInstance().getMapTextureManager().update(mapId, mapdata);
 
-		MapItemSavedData saved = clientLevel.getMapData(message.inner().mapId());
+				MapItemSavedData saved = clientLevel.getMapData(message.inner().mapId());
 
-		if (saved != null) {
-			saved.addClientSideDecorations(
-				StreamSupport.stream(mapdata.getDecorations().spliterator(), false).toList()
-			);
-		}
+				if (saved != null) {
+					saved.addClientSideDecorations(
+						StreamSupport.stream(mapdata.getDecorations().spliterator(), false).toList()
+					);
+				}
+			}
+		});
 	}
 }

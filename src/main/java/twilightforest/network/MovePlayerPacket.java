@@ -28,6 +28,8 @@ public record MovePlayerPacket(double motionX, double motionY, double motionZ) i
 	}
 
 	public static void handle(MovePlayerPacket message, ClientPlayNetworking.Context ctx) {
-		ctx.player().push(message.motionX(), message.motionY(), message.motionZ());
+		ctx.client().execute(() -> {
+			ctx.player().push(message.motionX(), message.motionY(), message.motionZ());
+		});
 	}
 }

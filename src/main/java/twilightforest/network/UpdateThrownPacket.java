@@ -34,13 +34,15 @@ public record UpdateThrownPacket(int entityID, boolean thrown, int thrower, int 
 	}
 
 	public static void handle(UpdateThrownPacket message, ClientPlayNetworking.Context ctx) {
-		ClientLevel level = ctx.client().level;
-		Entity entity = level.getEntity(message.entityID());
-		if (entity instanceof Player player) {
-			var attachment = player.getAttached(TFDataAttachments.YETI_THROWING);
-			LivingEntity thrower = message.thrower() != 0 ? (LivingEntity) level.getEntity(message.thrower()) : null;
-			attachment.setThrown(player, message.thrown(), thrower);
-			attachment.setThrowCooldown(player, message.throwCooldown());
-		}
+		ctx.client().execute(() -> {
+			ClientLevel level = ctx.client().level;
+			Entity entity = level.getEntity(message.entityID());
+			if (entity instanceof Player player) {
+				var attachment = player.getAttached(TFDataAttachments.YETI_THROWING);
+				LivingEntity thrower = message.thrower() != 0 ? (LivingEntity) level.getEntity(message.thrower()) : null;
+				attachment.setThrown(player, message.thrown(), thrower);
+				attachment.setThrowCooldown(player, message.throwCooldown());
+			}
+		});
 	}
 }
