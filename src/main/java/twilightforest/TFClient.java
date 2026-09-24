@@ -62,6 +62,7 @@ import twilightforest.client.renderer.entity.*;
 import twilightforest.client.renderer.entity.layers.IceLayer;
 import twilightforest.client.renderer.entity.layers.ShieldLayer;
 import twilightforest.client.renderer.gui.GuiBlockRenderer;
+import twilightforest.client.renderer.gui.GuiMapRenderer;
 import twilightforest.client.renderer.map.ConqueredMapIconRenderer;
 import twilightforest.client.renderer.map.MagicMapPlayerIconRenderer;
 import twilightforest.client.renderer.special.*;
@@ -544,6 +545,6 @@ public final class TFClient implements ClientModInitializer {
 
 	private static void registerPictureInPictureRenderers() {
 		PictureInPictureRendererRegistry.register(ctx -> new GuiBlockRenderer(ctx.bufferSource()));
-
+		PictureInPictureRendererRegistry.register(ctx -> new GuiMapRenderer(ctx.bufferSource()));
 	}
 }
