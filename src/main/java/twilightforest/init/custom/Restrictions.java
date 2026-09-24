@@ -2,22 +2,12 @@ package twilightforest.init.custom;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
-import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStackTemplate;
-import net.minecraft.world.level.block.Block;
-import twilightforest.TFCommon;
 import twilightforest.init.TFRegistries;
 import twilightforest.init.TFBiomes;
-import twilightforest.init.TFBlocks;
-import twilightforest.init.TFItems;
-import twilightforest.init.TFStructures;
 import twilightforest.util.Restriction;
-
-import java.util.List;
 
 public class Restrictions {
 	public static final Codec<Holder<Restriction>> CODEC = RegistryFileCodec.create(TFRegistries.Keys.RESTRICTIONS, Restriction.CODEC, false);
@@ -34,26 +24,5 @@ public class Restrictions {
 
 	private static ResourceKey<Restriction> makeKey(Identifier name) {
 		return ResourceKey.create(TFRegistries.Keys.RESTRICTIONS, name);
-	}
-
-	public static void bootstrap(BootstrapContext<Restriction> context) {
-		TFCommon.LOGGER.info("Bootstrap called for restrictions...");
-		context.register(DARK_FOREST, new Restriction(TFStructures.KNIGHT_STRONGHOLD, Enforcements.DARKNESS_KEY, 0.0F, asStack(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE), List.of(TFCommon.prefix("progress_lich"))));
-		context.register(DARK_FOREST_CENTER, new Restriction(TFStructures.DARK_TOWER, Enforcements.DARKNESS_KEY, 0.0F, asStack(TFBlocks.KNIGHT_PHANTOM_TROPHY), List.of(TFCommon.prefix("progress_knights"))));
-		context.register(FINAL_PLATEAU, new Restriction(TFStructures.FINAL_CASTLE, Enforcements.ACID_RAIN_KEY, 1.5F, asStack(TFItems.LAMP_OF_CINDERS), List.of(TFCommon.prefix("progress_troll"))));
-		context.register(FIRE_SWAMP, new Restriction(TFStructures.HYDRA_LAIR, Enforcements.FIRE_KEY, 8.0F, asStack(TFItems.MEEF_STROGANOFF), List.of(TFCommon.prefix("progress_labyrinth"))));
-		context.register(GLACIER, new Restriction(TFStructures.AURORA_PALACE, Enforcements.FROST_KEY, 1.0F, asStack(TFItems.ALPHA_YETI_FUR), List.of(TFCommon.prefix("progress_yeti"))));
-		context.register(HIGHLANDS, new Restriction(TFStructures.TROLL_CAVE, Enforcements.ACID_RAIN_KEY, 0.5F, asStack(TFBlocks.UBEROUS_SOIL), List.of(TFCommon.prefix("progress_merge"))));
-		context.register(SNOWY_FOREST, new Restriction(TFStructures.YETI_CAVE, Enforcements.FROST_KEY, 0.0F, asStack(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE), List.of(TFCommon.prefix("progress_lich"))));
-		context.register(SWAMP, new Restriction(TFStructures.LABYRINTH, Enforcements.HUNGER_KEY, 1.0F, asStack(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE), List.of(TFCommon.prefix("progress_lich"))));
-		context.register(THORNLANDS, new Restriction(TFStructures.FINAL_CASTLE, Enforcements.ACID_RAIN_KEY, 1.0F, asStack(TFItems.LAMP_OF_CINDERS), List.of(TFCommon.prefix("progress_troll"))));
-	}
-
-	private static ItemStackTemplate asStack(Block blockHolder) {
-		return new ItemStackTemplate(blockHolder.asItem());
-	}
-
-	private static ItemStackTemplate asStack(Item itemHolder) {
-		return new ItemStackTemplate(itemHolder);
 	}
 }

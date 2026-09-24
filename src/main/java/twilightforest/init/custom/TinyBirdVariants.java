@@ -1,6 +1,5 @@
 package twilightforest.init.custom;
 
-import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import twilightforest.TFCommon;
@@ -16,13 +15,5 @@ public class TinyBirdVariants {
 
 	private static ResourceKey<TinyBirdVariant> makeKey(Identifier name) {
 		return ResourceKey.create(TFRegistries.Keys.TINY_BIRD_VARIANT, name);
-	}
-
-	public static void bootstrap(BootstrapContext<TinyBirdVariant> context) {
-		TFCommon.LOGGER.info("Bootstrap called for tiny bird variants...");
-		context.register(BLUE, new TinyBirdVariant(TFCommon.getModelTexture("tinybirdblue.png")));
-		context.register(BROWN, new TinyBirdVariant(TFCommon.getModelTexture("tinybirdbrown.png")));
-		context.register(GOLD, new TinyBirdVariant(TFCommon.getModelTexture("tinybirdgold.png")));
-		context.register(RED, new TinyBirdVariant(TFCommon.getModelTexture("tinybirdred.png")));
 	}
 }

@@ -4,26 +4,14 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.random.WeightedList;
-import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.DensityFunctions;
-import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFCommon;
-import twilightforest.init.TFRegistries;
-import twilightforest.tags.TFBiomeTags;
-import twilightforest.init.TFEntities;
-import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.init.custom.StructureSpeleothemConfigs;
 import twilightforest.world.components.chunkgenerators.FocusedDensityFunction;
@@ -33,10 +21,7 @@ import twilightforest.world.components.structures.HydraLairComponent;
 import twilightforest.world.components.structures.StructureSpeleothemConfig;
 import twilightforest.world.components.structures.util.ProgressionStructure;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class HydraLairStructure extends ProgressionStructure implements CustomDensitySource {
 	public static final MapCodec<HydraLairStructure> CODEC = RecordCodecBuilder.mapCodec(instance ->
@@ -61,22 +46,6 @@ public class HydraLairStructure extends ProgressionStructure implements CustomDe
 	@Override
 	public StructureType<?> type() {
 		return TFStructureTypes.HYDRA_LAIR;
-	}
-
-	public static HydraLairStructure buildHydraLairConfig(BootstrapContext<Structure> context) {
-		return new HydraLairStructure(
-			new AdvancementLockConfig(List.of(TFCommon.prefix("progress_labyrinth"))),
-			Optional.of(new HintConfig(HintConfig.book("hydralair", 4), TFEntities.KOBOLD)),
-			Optional.of(new DecorationConfig(2, false, false, false)),
-			true, Optional.of(BuiltInRegistries.MAP_DECORATION_TYPE.wrapAsHolder(TFMapDecorations.HYDRA_LAIR)),
-			new StructureSettings(
-				context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_HYDRA_LAIR_BIOMES),
-				Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning
-				GenerationStep.Decoration.SURFACE_STRUCTURES,
-				TerrainAdjustment.NONE
-			),
-			context.lookup(TFRegistries.Keys.STRUCTURE_SPELEOTHEM_SETTINGS).getOrThrow(StructureSpeleothemConfigs.HYDRA_LAIR)
-		);
 	}
 
 	@Override

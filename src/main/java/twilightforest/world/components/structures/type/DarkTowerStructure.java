@@ -3,31 +3,16 @@ package twilightforest.world.components.structures.type;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.random.WeightedList;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.biome.MobSpawnSettings;
-import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.saveddata.maps.MapDecorationType;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.TFCommon;
-import twilightforest.tags.TFBiomeTags;
-import twilightforest.init.TFEntities;
-import twilightforest.init.TFMapDecorations;
 import twilightforest.init.TFStructureTypes;
 import twilightforest.world.components.structures.darktower.DarkTowerMainComponent;
 import twilightforest.world.components.structures.util.ControlledSpawningStructure;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class DarkTowerStructure extends ControlledSpawningStructure {
 	public static final MapCodec<DarkTowerStructure> CODEC = RecordCodecBuilder.mapCodec(instance ->
@@ -46,39 +31,5 @@ public class DarkTowerStructure extends ControlledSpawningStructure {
 	@Override
 	public StructureType<?> type() {
 		return TFStructureTypes.DARK_TOWER;
-	}
-
-	public static DarkTowerStructure buildDarkTowerConfig(BootstrapContext<Structure> context) {
-		return new DarkTowerStructure(
-			ControlledSpawningConfig.create(List.of(WeightedList.<MobSpawnSettings.SpawnerData>builder()
-				.add(new MobSpawnSettings.SpawnerData(TFEntities.CARMINITE_GOLEM, 1, 2), 10)
-				.add(new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 1, 2), 10)
-				.add(new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 1, 1), 5)
-				.add(new MobSpawnSettings.SpawnerData(EntityType.ENDERMAN, 1, 2), 2)
-				.add(new MobSpawnSettings.SpawnerData(EntityType.WITCH, 1, 1), 1)
-				.add(new MobSpawnSettings.SpawnerData(TFEntities.CARMINITE_GHASTLING, 1, 2), 10)
-				.add(new MobSpawnSettings.SpawnerData(TFEntities.CARMINITE_BROODLING, 4, 4), 10)
-				.add(new MobSpawnSettings.SpawnerData(TFEntities.PINCH_BEETLE, 1, 1), 10)
-				.build(),
-				// roof ghasts
-				WeightedList.<MobSpawnSettings.SpawnerData>builder()
-				.add(new MobSpawnSettings.SpawnerData(TFEntities.CARMINITE_GHASTGUARD, 1, 2), 10)
-				.build()
-			), WeightedList.of(), WeightedList.<MobSpawnSettings.SpawnerData>builder()
-				// aquarium squids (only in aquariums between y = 35 and y = 64. :/)
-				.add(new MobSpawnSettings.SpawnerData(EntityType.SQUID, 4, 4), 10)
-				.build()
-			),
-			new AdvancementLockConfig(List.of(TFCommon.prefix("progress_knights"))),
-			Optional.of(new HintConfig(HintConfig.book("darktower", 3), TFEntities.KOBOLD)),
-			Optional.of(new DecorationConfig(1, false, true, true)),
-			true, Optional.of(BuiltInRegistries.MAP_DECORATION_TYPE.wrapAsHolder(TFMapDecorations.DARK_TOWER)),
-			new StructureSettings(
-				context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_DARK_TOWER_BIOMES),
-				Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning
-				GenerationStep.Decoration.SURFACE_STRUCTURES,
-				TerrainAdjustment.BEARD_THIN
-			)
-		);
 	}
 }

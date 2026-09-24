@@ -1,6 +1,5 @@
 package twilightforest.init.custom;
 
-import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import twilightforest.TFCommon;
@@ -14,13 +13,5 @@ public class DwarfRabbitVariants {
 
 	private static ResourceKey<DwarfRabbitVariant> makeKey(Identifier name) {
 		return ResourceKey.create(TFRegistries.Keys.DWARF_RABBIT_VARIANT, name);
-	}
-
-
-	public static void bootstrap(BootstrapContext<DwarfRabbitVariant> context) {
-		TFCommon.LOGGER.info("Bootstrap called for dwarf rabbit variants...");
-		context.register(BROWN, new DwarfRabbitVariant(TFCommon.getModelTexture("bunnybrown.png")));
-		context.register(DUTCH, new DwarfRabbitVariant(TFCommon.getModelTexture("bunnydutch.png")));
-		context.register(WHITE, new DwarfRabbitVariant(TFCommon.getModelTexture("bunnywhite.png")));
 	}
 }
