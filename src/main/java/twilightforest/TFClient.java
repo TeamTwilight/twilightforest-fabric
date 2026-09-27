@@ -20,6 +20,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.monster.silverfish.SilverfishModel;
 import net.minecraft.client.model.monster.slime.SlimeModel;
 import net.minecraft.client.model.monster.spider.SpiderModel;
+import net.minecraft.client.model.object.boat.BoatModel;
 import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
@@ -300,6 +301,22 @@ public final class TFClient implements ClientModInitializer {
 		EntityRenderers.register(TFEntities.SLIDER, SlideBlockRenderer::new);
 		EntityRenderers.register(TFEntities.SEEKER_ARROW, DefaultArrowRenderer::new);
 		EntityRenderers.register(TFEntities.ICE_ARROW, DefaultArrowRenderer::new);
+		EntityRenderers.register(TFEntities.TWILIGHT_OAK_BOAT, context -> new BoatRenderer(context, TFModelLayers.TWILIGHT_OAK_BOAT));
+		EntityRenderers.register(TFEntities.TWILIGHT_OAK_CHEST_BOAT, context -> new BoatRenderer(context, TFModelLayers.TWILIGHT_OAK_CHEST_BOAT));
+		EntityRenderers.register(TFEntities.CANOPY_BOAT, context -> new BoatRenderer(context, TFModelLayers.CANOPY_BOAT));
+		EntityRenderers.register(TFEntities.CANOPY_CHEST_BOAT, context -> new BoatRenderer(context, TFModelLayers.CANOPY_CHEST_BOAT));
+		EntityRenderers.register(TFEntities.MANGROVE_BOAT, context -> new BoatRenderer(context, TFModelLayers.MANGROVE_BOAT));
+		EntityRenderers.register(TFEntities.MANGROVE_CHEST_BOAT, context -> new BoatRenderer(context, TFModelLayers.MANGROVE_CHEST_BOAT));
+		EntityRenderers.register(TFEntities.DARK_BOAT, context -> new BoatRenderer(context, TFModelLayers.DARK_BOAT));
+		EntityRenderers.register(TFEntities.DARK_CHEST_BOAT, context -> new BoatRenderer(context, TFModelLayers.DARK_CHEST_BOAT));
+		EntityRenderers.register(TFEntities.TIME_BOAT, context -> new BoatRenderer(context, TFModelLayers.TIME_BOAT));
+		EntityRenderers.register(TFEntities.TIME_CHEST_BOAT, context -> new BoatRenderer(context, TFModelLayers.TIME_CHEST_BOAT));
+		EntityRenderers.register(TFEntities.TRANSFORMATION_BOAT, context -> new BoatRenderer(context, TFModelLayers.TRANSFORMATION_BOAT));
+		EntityRenderers.register(TFEntities.TRANSFORMATION_CHEST_BOAT, context -> new BoatRenderer(context, TFModelLayers.TRANSFORMATION_CHEST_BOAT));
+		EntityRenderers.register(TFEntities.MINING_BOAT, context -> new BoatRenderer(context, TFModelLayers.MINING_BOAT));
+		EntityRenderers.register(TFEntities.MINING_CHEST_BOAT, context -> new BoatRenderer(context, TFModelLayers.MINING_CHEST_BOAT));
+		EntityRenderers.register(TFEntities.SORTING_BOAT, context -> new BoatRenderer(context, TFModelLayers.SORTING_BOAT));
+		EntityRenderers.register(TFEntities.SORTING_CHEST_BOAT, context -> new BoatRenderer(context, TFModelLayers.SORTING_CHEST_BOAT));
 	}
 
 	private static void registerBlockEntityRenderers() {
@@ -435,6 +452,24 @@ public final class TFClient implements ClientModInitializer {
 		ModelLayerRegistry.registerModelLayer(TFModelLayers.BRAZIER, BrazierModel::create);
 		ModelLayerRegistry.registerModelLayer(TFModelLayers.RED_THREAD, RedThreadModel::create);
 		ModelLayerRegistry.registerModelLayer(TFModelLayers.KNIGHTMETAL_SHIELD, KnightmetalShieldModel::create);
+		LayerDefinition boatModel = BoatModel.createBoatModel();
+		LayerDefinition chestBoatModel = BoatModel.createChestBoatModel();
+		ModelLayerRegistry.registerModelLayer(TFModelLayers.TWILIGHT_OAK_BOAT, () -> boatModel);
+		ModelLayerRegistry.registerModelLayer(TFModelLayers.TWILIGHT_OAK_CHEST_BOAT, () -> chestBoatModel);
+		ModelLayerRegistry.registerModelLayer(TFModelLayers.CANOPY_BOAT, () -> boatModel);
+		ModelLayerRegistry.registerModelLayer(TFModelLayers.CANOPY_CHEST_BOAT, () -> chestBoatModel);
+		ModelLayerRegistry.registerModelLayer(TFModelLayers.MANGROVE_BOAT, () -> boatModel);
+		ModelLayerRegistry.registerModelLayer(TFModelLayers.MANGROVE_CHEST_BOAT, () -> chestBoatModel);
+		ModelLayerRegistry.registerModelLayer(TFModelLayers.DARK_BOAT, () -> boatModel);
+		ModelLayerRegistry.registerModelLayer(TFModelLayers.DARK_CHEST_BOAT, () -> chestBoatModel);
+		ModelLayerRegistry.registerModelLayer(TFModelLayers.TIME_BOAT, () -> boatModel);
+		ModelLayerRegistry.registerModelLayer(TFModelLayers.TIME_CHEST_BOAT, () -> chestBoatModel);
+		ModelLayerRegistry.registerModelLayer(TFModelLayers.TRANSFORMATION_BOAT, () -> boatModel);
+		ModelLayerRegistry.registerModelLayer(TFModelLayers.TRANSFORMATION_CHEST_BOAT, () -> chestBoatModel);
+		ModelLayerRegistry.registerModelLayer(TFModelLayers.MINING_BOAT, () -> boatModel);
+		ModelLayerRegistry.registerModelLayer(TFModelLayers.MINING_CHEST_BOAT, () -> chestBoatModel);
+		ModelLayerRegistry.registerModelLayer(TFModelLayers.SORTING_BOAT, () -> boatModel);
+		ModelLayerRegistry.registerModelLayer(TFModelLayers.SORTING_CHEST_BOAT, () -> chestBoatModel);
 	}
 
 	private static void registerParticleFactories() {
