@@ -130,7 +130,7 @@ public class PotionFlaskItem extends Item {
 				}
 			}
 			if (!player.hasInfiniteMaterials() && !player.isSpectator()) {
-				flaskContents.potion().potion().ifPresent(potion -> player.getAttached(TFDataAttachments.FLASK_DOSES).trackDrink(potion, player));
+				flaskContents.potion().potion().ifPresent(potion -> player.getAttachedOrCreate(TFDataAttachments.FLASK_DOSES).trackDrink(potion, player));
 			}
 		}
 
