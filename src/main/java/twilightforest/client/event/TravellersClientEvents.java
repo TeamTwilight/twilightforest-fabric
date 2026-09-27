@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -51,26 +52,23 @@ public class TravellersClientEvents {
 
 	public static void init() {
 		InputEvent.Key.EVENT.register(INSTANCE::handleDoubleJump);
+		MovementInputUpdateCallback.EVENT.register(INSTANCE::handleAgileRanger);
+		MovementInputUpdateCallback.EVENT.register(INSTANCE::handleStraightAhead);
+		MovementInputUpdateCallback.EVENT.register(INSTANCE::speedUpControlledWhileSneaking);
+		MovementInputUpdateCallback.EVENT.register(INSTANCE::handleSidestep);
 		InputEvent.Key.EVENT.register(INSTANCE::cycleItemDisplayMap);
 		InputEvent.Key.EVENT.register(INSTANCE::swapHotbar);
 		InputEvent.Key.EVENT.register(INSTANCE::toggleRedThreadVision);
 		ComputeFovModifierEvent.EVENT.register(INSTANCE::updateZoomState);
 		RenderArmEvent.EVENT.register(INSTANCE::renderGlovesInFirstPerson);
-		MovementInputUpdateCallback.EVENT.register(INSTANCE::handleMovementInput);
 		ClientTickEvents.END_CLIENT_TICK.register(INSTANCE::handleStealth);
 		ClientTickEvents.END_CLIENT_TICK.register(INSTANCE::updateGradualGlideState);
 		// slowZoomSensitivity needs CalculatePlayerTurnEvent - not available in Porting-Lib
 	}
 
-	private void handleMovementInput(Player player, Input input) {
-		if (!(player instanceof LocalPlayer localPlayer)) return;
-		handleAgileRanger(localPlayer, input);
-		handleStraightAhead(localPlayer, input);
-		speedUpControlledWhileSneaking(localPlayer, input);
-		handleSidestep(localPlayer, input);
-	}
-
-	private void handleAgileRanger(LocalPlayer localPlayer, Input input) {
+	private void handleAgileRanger(Player player, Input input) {
+		if (!(player instanceof LocalPlayer localPlayer))
+			return;
 		ItemStack leggingsStack = localPlayer.getItemBySlot(EquipmentSlot.LEGS);
 		Float agileRangerModifier = leggingsStack.get(TFDataComponents.AGILE_RANGER_MODIFIER.get());
 		if (!TravellersModifiersManager.isModifierActive(localPlayer, leggingsStack, TravellersModifiersManager.AGILE_RANGER_MODIFIER) || agileRangerModifier == null)
@@ -83,49 +81,49 @@ public class TravellersClientEvents {
 		}
 	}
 
-	private void handleStraightAhead(LocalPlayer localPlayer, Input input) {
+	private void handleStraightAhead(Player player, Input input) {
+		if (!(player instanceof LocalPlayer localPlayer))
+			return;
 		ItemStack bootsStack = localPlayer.getItemBySlot(EquipmentSlot.FEET);
 		Double multiplier = bootsStack.get(TFDataComponents.STRAIGHT_AHEAD_MULTIPLIER.get());
 		AttributeInstance attributeInstance = localPlayer.getAttributes().getInstance(Attributes.MOVEMENT_SPEED);
 		if (attributeInstance == null)
 			return;
 
-		Input localInput = localPlayer.input;
-		if (!TravellersModifiersManager.isModifierActive(localPlayer, bootsStack, TravellersModifiersManager.STRAIGHT_AHEAD_MODIFIER) || multiplier == null || localInput.forwardImpulse <= 0)
+		if (!TravellersModifiersManager.isModifierActive(localPlayer, bootsStack, TravellersModifiersManager.STRAIGHT_AHEAD_MODIFIER) || multiplier == null || input.forwardImpulse <= 0)
 			multiplier = 1D;
 		attributeInstance.addOrUpdateTransientModifier(new AttributeModifier(TFAttributeModifiers.STRAIGHT_AHEAD_ATTRIBUTE_MODIFIER_LOCATION, multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 		input.leftImpulse /= multiplier;
 	}
 
-	private void speedUpControlledWhileSneaking(LocalPlayer localPlayer, Input input) {
-		if (!localPlayer.getAttachedOrCreate(TFDataAttachments.IS_GRADUALLY_GLIDING) || !localPlayer.isShiftKeyDown())
+	private void speedUpControlledWhileSneaking(Player player, Input input) {
+		if (!(player instanceof LocalPlayer localPlayer) || !localPlayer.getAttached(TFDataAttachments.IS_GRADUALLY_GLIDING) || !localPlayer.isShiftKeyDown())
 			return;
 		localPlayer.input.forwardImpulse /= 0.2F;
 		localPlayer.input.leftImpulse /= 0.2F;
 	}
 
-	private void handleSidestep(LocalPlayer localPlayer, Input input) {
-		if (!localPlayer.onGround())
+	private void handleSidestep(Player player, Input input) {
+		if (!(player instanceof LocalPlayer localPlayer) || !localPlayer.onGround())
 			return;
 
-		Input localInput = localPlayer.input;
 		boolean lastImpulseZero = localPlayer.getAttachedOrCreate(TFDataAttachments.LAST_HORIZONTAL_IMPULSE) == 0;
-		boolean sameImpulseDirection = Math.signum(localPlayer.getAttachedOrCreate(TFDataAttachments.LAST_NON_ZERO_HORIZONTAL_IMPULSE)) == Math.signum(localInput.leftImpulse);
+		boolean sameImpulseDirection = Math.signum(localPlayer.getAttachedOrCreate(TFDataAttachments.LAST_NON_ZERO_HORIZONTAL_IMPULSE)) == Math.signum(input.leftImpulse);
 		int currentTime = localPlayer.tickCount;
 		int lastWalkingTime = localPlayer.getAttachedOrCreate(TFDataAttachments.LAST_HORIZONTAL_WALKING_TIME);
 		boolean hasDoubleTapped = currentTime - lastWalkingTime < 4;
 
-		if (lastImpulseZero && sameImpulseDirection && hasDoubleTapped && localInput.leftImpulse != 0) {
-			boolean isLeftSidestep = localInput.leftImpulse > 0;
+		if (lastImpulseZero && sameImpulseDirection && hasDoubleTapped && input.leftImpulse != 0) {
+			boolean isLeftSidestep = input.leftImpulse > 0;
 			if (TravellersGearLogic.tryPerformSidestep(localPlayer, isLeftSidestep)) {
-				ClientPlayNetworking.send(new PerformSidestepPacket(isLeftSidestep));
+				localPlayer.connection.send(new ClientboundCustomPayloadPacket(new PerformSidestepPacket(isLeftSidestep)));
 			}
 		}
 
-		localPlayer.setAttached(TFDataAttachments.LAST_HORIZONTAL_IMPULSE, localInput.leftImpulse);
-		if (localInput.leftImpulse != 0) {
+		localPlayer.setAttached(TFDataAttachments.LAST_HORIZONTAL_IMPULSE, input.leftImpulse);
+		if (input.leftImpulse != 0) {
 			localPlayer.setAttached(TFDataAttachments.LAST_HORIZONTAL_WALKING_TIME, currentTime);
-			localPlayer.setAttached(TFDataAttachments.LAST_NON_ZERO_HORIZONTAL_IMPULSE, localInput.leftImpulse);
+			localPlayer.setAttached(TFDataAttachments.LAST_NON_ZERO_HORIZONTAL_IMPULSE, input.leftImpulse);
 		}
 	}
 
@@ -167,7 +165,7 @@ public class TravellersClientEvents {
 
 		player.setAttached(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER, isUsingZoom);
 		player.playSound(isUsingZoom ? TFSounds.GOGGLES_ZOOM_IN.get() : TFSounds.GOGGLES_ZOOM_OUT.get());
-		ClientPlayNetworking.send(new GogglesZoomPacket(isUsingZoom, player.getUUID()));
+		player.connection.send(new ClientboundCustomPayloadPacket(new GogglesZoomPacket(isUsingZoom, player.getUUID())));
 	}
 
 	private void updateGradualGlideState(Minecraft client) {
