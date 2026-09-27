@@ -97,7 +97,7 @@ public class TravellersClientEvents {
 	}
 
 	private void speedUpControlledWhileSneaking(Player player, Input input) {
-		if (!(player instanceof LocalPlayer localPlayer) || !localPlayer.getAttached(TFDataAttachments.IS_GRADUALLY_GLIDING) || !localPlayer.isShiftKeyDown())
+		if (!(player instanceof LocalPlayer localPlayer) || !localPlayer.getAttachedOrCreate(TFDataAttachments.IS_GRADUALLY_GLIDING) || !localPlayer.isShiftKeyDown())
 			return;
 		localPlayer.input.forwardImpulse /= 0.2F;
 		localPlayer.input.leftImpulse /= 0.2F;
