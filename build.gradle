@@ -119,7 +119,7 @@ dependencies {
 	modLocalRuntime "maven.modrinth:jade:${jade_version}"
 
 	// For compatibility mixins (Kilt)
-	modCompileOnly "maven.modrinth:t87XZEqv:h52BsZ5F"
+	modCompileOnly "maven.modrinth:t87XZEqv:1Z2VE3M8"
 }
 
 fabricApi {
