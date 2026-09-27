@@ -8,12 +8,12 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityEquipment;
@@ -55,30 +55,28 @@ public final class CharmEventListeners {
 	};
 
 	public static void init() {
-		ServerLivingEntityEvents.ALLOW_DEATH.register((entity, _, _) -> CharmEventListeners.applyCharmOfLife(entity));
-		ServerLivingEntityEvents.ALLOW_DEATH.register((entity, _, _) -> CharmEventListeners.applyKeepingAndCasket(entity));
-		ServerPlayerEvents.AFTER_RESPAWN.register((_, newPlayer, alive) -> CharmEventListeners.returnItemsOnRespawn(newPlayer, alive));
+		ServerLivingEntityEvents.ALLOW_DEATH.register(CharmEventListeners::applyCharmOfLife);
+		ServerLivingEntityEvents.ALLOW_DEATH.register(CharmEventListeners::applyKeepingAndCasket);
+		ServerPlayerEvents.AFTER_RESPAWN.register(CharmEventListeners::returnItemsOnRespawn);
+		ServerPlayerEvents.COPY_FROM.register(CharmEventListeners::copyPlayerData);
 	}
 
 	// Check for charm of life first to stop a player from dying
-	public static boolean applyCharmOfLife(LivingEntity entity) {
+	public static boolean applyCharmOfLife(LivingEntity entity, DamageSource damageSource, float damageAmount) {
 		// Ensure our player is real and in survival before attempting anything
-		if (entity.level().isClientSide() || !(entity instanceof Player player) || player instanceof FakePlayer || player.isCreative() || player.isSpectator()) {
-			return true;
-		}
+		if (entity.level().isClientSide() || !(entity instanceof Player player) || entity instanceof FakePlayer ||
+			player.isCreative() || player.isSpectator()) return true;
 
-		// Executes if the player had charms
-		return !handleCharmOfLife(player);
+		return !handleCharmOfLife(player); // Executes if the player had charms
 	}
 
 	// Then check if the player should keep any items through death
-	public static boolean applyKeepingAndCasket(LivingEntity entity) {
+	public static boolean applyKeepingAndCasket(LivingEntity entity, DamageSource damageSource, float damageAmount) {
 		// Ensure our player is real and in survival before attempting anything
-		if (entity.level().isClientSide() || !(entity instanceof Player player) || player instanceof FakePlayer || player.isCreative() || player.isSpectator()) {
-			return true;
-		}
+		if (entity.level().isClientSide() || !(entity instanceof Player player) || entity instanceof FakePlayer ||
+			player.isCreative() || player.isSpectator()) return true;
 
-		if (player.level() instanceof ServerLevel server && !server.getGameRules().get(GameRules.KEEP_INVENTORY)) {
+		if (entity.level() instanceof ServerLevel server && !server.getGameRules().get(GameRules.KEEP_INVENTORY)) {
 			// Did the player recover? No? Let's give them their stuff based on the keeping charms
 			handleCharmOfKeeping(player);
 
@@ -89,15 +87,33 @@ public final class CharmEventListeners {
 		return true;
 	}
 
-	public static void returnItemsOnRespawn(ServerPlayer newPlayer, boolean alive) {
+	private static void copyPlayerData(ServerPlayer oldPlayer, ServerPlayer newPlayer, boolean alive) {
+		if (!alive) {
+			if (oldPlayer.hasAttached(TFDataAttachments.CHARM_INVENTORY)) {
+				newPlayer.setAttached(
+					TFDataAttachments.CHARM_INVENTORY,
+					oldPlayer.getAttached(TFDataAttachments.CHARM_INVENTORY)
+				);
+			}
+
+			if (oldPlayer.hasAttached(TFDataAttachments.CHARM_DATA)) {
+				newPlayer.setAttached(
+					TFDataAttachments.CHARM_DATA,
+					oldPlayer.getAttached(TFDataAttachments.CHARM_DATA)
+				);
+			}
+		}
+	}
+
+	public static void returnItemsOnRespawn(ServerPlayer oldPlayer, ServerPlayer newPlayer, boolean alive) {
 		if (!alive) {
 			returnStoredItems(newPlayer);
 		}
 	}
 
 	private static boolean handleCharmOfLife(Player player) {
-		boolean charm2 = TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_LIFE_2, getPlayerData(player), false) || hasCharmTrinket(TFItems.CHARM_OF_LIFE_2, player, false);
-		boolean charm1 = !charm2 && (TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_LIFE_1, getPlayerData(player), false) || hasCharmTrinket(TFItems.CHARM_OF_LIFE_1, player, false));
+		boolean charm2 = TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_LIFE_2, getPlayerData(player), false) || hasCharmCurio(TFItems.CHARM_OF_LIFE_2, player, false);
+		boolean charm1 = !charm2 && (TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_LIFE_1, getPlayerData(player), false) || hasCharmCurio(TFItems.CHARM_OF_LIFE_1, player, false));
 
 		if (charm2 || charm1) {
 			if (charm1) {
@@ -114,7 +130,7 @@ public final class CharmEventListeners {
 			}
 
 			if (player instanceof ServerPlayer serverPlayer) {
-				ServerPlayNetworking.send(serverPlayer, new SpawnCharmPacket(new ItemStack(charm1 ? TFItems.CHARM_OF_LIFE_1 : TFItems.CHARM_OF_LIFE_2), BuiltInRegistries.SOUND_EVENT.getResourceKey(TFSounds.CHARM_LIFE.value()).orElseThrow()));
+				ServerPlayNetworking.send(serverPlayer, new SpawnCharmPacket(new ItemStack(charm1 ? TFItems.CHARM_OF_LIFE_1 : TFItems.CHARM_OF_LIFE_2), TFSounds.CHARM_LIFE.unwrapKey().orElseThrow()));
 				serverPlayer.awardStat(TFStats.LIFE_CHARMS_ACTIVATED);
 			}
 
@@ -175,7 +191,7 @@ public final class CharmEventListeners {
 		}
 
 		// Stop operation if there is no charm present
-		if (!TFItemStackUtils.consumeInventoryItem(player, charm, getPlayerData(player), true) && !hasCharmTrinket(charm, player, true)) {
+		if (!TFItemStackUtils.consumeInventoryItem(player, charm, getPlayerData(player), true) && !hasCharmCurio(charm, player, true)) {
 			return false;
 		}
 
@@ -318,7 +334,6 @@ public final class CharmEventListeners {
 	 * Maybe we kept some stuff for the player!
 	 */
 	private static void returnStoredItems(Player player) {
-		TFCommon.LOGGER.warn("METHOD CALLED");
 		TFCommon.LOGGER.debug("Player {} ({}) respawned and received items held in storage", player.getName().getString(), player.getUUID());
 
 		if (!player.level().isClientSide() && player.hasAttached(TFDataAttachments.CHARM_INVENTORY)) {
@@ -331,16 +346,13 @@ public final class CharmEventListeners {
 
 		CompoundTag playerData = getPlayerData(player);
 		if (playerData.contains(CONSUMED_CHARM_TAG)) {
-			TFCommon.LOGGER.warn("PLAYER IS ON SERVER");
 			if (player instanceof ServerPlayer serverPlayer) {
-				TFCommon.LOGGER.warn("PLAYER IS ON SERVER");
 				ItemStack charm = ItemStack.CODEC
 					.parse(player.registryAccess().createSerializationContext(NbtOps.INSTANCE), playerData.get(CONSUMED_CHARM_TAG))
 					.resultOrPartial(TFCommon.LOGGER::error)
 					.orElse(ItemStack.EMPTY);
 				if (!charm.isEmpty()) {
-					TFCommon.LOGGER.warn("CHARM IS NOT EMPTY");
-					ServerPlayNetworking.send(serverPlayer, new SpawnCharmPacket(charm, BuiltInRegistries.SOUND_EVENT.getResourceKey(TFSounds.CHARM_KEEP.value()).orElseThrow()));
+					ServerPlayNetworking.send(serverPlayer, new SpawnCharmPacket(charm, TFSounds.CHARM_KEEP.unwrapKey().orElseThrow()));
 				}
 				serverPlayer.awardStat(TFStats.KEEPING_CHARMS_ACTIVATED);
 			}
@@ -349,10 +361,13 @@ public final class CharmEventListeners {
 	}
 
 	public static CompoundTag getPlayerData(Player player) {
-		return player.getAttachedOrCreate(TFDataAttachments.CHARM_DATA);
+		if (!player.hasAttached(TFDataAttachments.CHARM_DATA)) {
+			player.setAttached(TFDataAttachments.CHARM_DATA, new CompoundTag());
+		}
+		return player.getAttached(TFDataAttachments.CHARM_DATA);
 	}
 
-	private static boolean hasCharmTrinket(Item item, Player player, boolean saveItemToTag) {
+	private static boolean hasCharmCurio(Item item, Player player, boolean saveItemToTag) {
 		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
 			//return CuriosCompat.findAndConsumeCurio(item, player, saveItemToTag);
 		}
