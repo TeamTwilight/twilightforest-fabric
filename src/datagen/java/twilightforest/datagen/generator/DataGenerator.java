@@ -4,6 +4,10 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import twilightforest.datagen.data.*;
 import twilightforest.datagen.data.custom.QuestGenerator;
 import twilightforest.datagen.data.custom.stalactites.StalactiteGenerator;
+import twilightforest.datagen.data.custom.structuredefinitions.CampStructureDefinitionGenerator;
+import twilightforest.datagen.data.custom.structuredefinitions.FinalCastleStructureDefinitionGenerator;
+import twilightforest.datagen.data.custom.structuredefinitions.LichTowerStructureDefinitionGenerator;
+import twilightforest.datagen.data.custom.structuredefinitions.NagaCourtyardStructureDefinitionGenerator;
 import twilightforest.datagen.data.loot.BlockLootTables;
 import twilightforest.datagen.data.loot.EntityLootTables;
 import twilightforest.datagen.data.loot.LootGenerator;
@@ -33,6 +37,10 @@ public class DataGenerator {
 		pack.addProvider(LootGenerator::new);
 		pack.addProvider(QuestGenerator::new);
 		pack.addProvider(StalactiteGenerator::new);
+		pack.addProvider(CampStructureDefinitionGenerator::new);
+		pack.addProvider(FinalCastleStructureDefinitionGenerator::new);
+		pack.addProvider(LichTowerStructureDefinitionGenerator::new);
+		pack.addProvider(NagaCourtyardStructureDefinitionGenerator::new);
 		pack.addProvider(TFAdvancementProvider::new);
 	}
 }
