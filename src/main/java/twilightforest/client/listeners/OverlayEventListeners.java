@@ -113,7 +113,7 @@ public final class OverlayEventListeners {
 		Minecraft minecraft = Minecraft.getInstance();
 		LocalPlayer player = minecraft.player;
 		Gui gui = minecraft.gui;
-		if (player != null && !minecraft.options.hideGui && !gui.getDebugOverlay().showDebugScreen() && minecraft.screen == null) {
+		if (player != null && !minecraft.options.hideGui && !minecraft.debugEntries.isOverlayVisible()) {
 			if (player.isHolding(TFItems.ORE_METER)) {
 				InteractionHand handToUse = player.getItemInHand(InteractionHand.MAIN_HAND).is(TFItems.ORE_METER) ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
 				ItemStack selectedMeter = player.getItemInHand(handToUse);
@@ -123,7 +123,7 @@ public final class OverlayEventListeners {
 					for (int i = 0; i <= dots; i++) {
 						component = component.copy().append(".");
 					}
-					graphics.fill(0, 0, 56, 16, 0x9b000000);
+					graphics.fill(0, 0, 56, 16, 0x9B000000);
 					graphics.text(Minecraft.getInstance().font, component, 4, 4, 0xFFFFFFFF, false);
 				} else {
 					OreScannerData oreScannerData = selectedMeter.get(TFDataComponents.ORE_DATA);
@@ -248,8 +248,7 @@ public final class OverlayEventListeners {
 		return ComponentColumn.build(toList.build(), ComponentAlignment.RIGHT);
 	}
 
-	public record ComponentColumn(List<? extends Component> textRows, int maxPixelWidth,
-								  ComponentAlignment textAlignment) {
+	public record ComponentColumn(List<? extends Component> textRows, int maxPixelWidth, ComponentAlignment textAlignment) {
 		public static ComponentColumn build(List<? extends Component> rowTexts, ComponentAlignment textAlignment) {
 			int maxColumnPixelWidth = rowTexts.stream().mapToInt(c -> Minecraft.getInstance().font.width(c)).max().orElse(0);
 			return new ComponentColumn(rowTexts, maxColumnPixelWidth, textAlignment);
@@ -263,7 +262,7 @@ public final class OverlayEventListeners {
 			for (Component rowText : column.textRows) {
 				int textPixelWidth = Minecraft.getInstance().font.width(rowText);
 				int textXPos = xOff + this.textAlignment.getTextOffset(textPixelWidth, this.maxPixelWidth);
-				graphics.text(Minecraft.getInstance().font, rowText, textXPos, yOff, 0xff_ff_ff_00, false);
+				graphics.text(Minecraft.getInstance().font, rowText, textXPos, yOff, 0xFFFFFFFF, false);
 				yOff += verticalTextPixelsAdvance;
 			}
 
@@ -288,13 +287,13 @@ public final class OverlayEventListeners {
 		public void renderData(GuiGraphicsExtractor graphics) {
 			int verticalTextPixelsAdvance = Minecraft.getInstance().font.lineHeight + 1;
 
-			graphics.fill(0, 0, this.totalPixelWidth + 8, this.totalRowCount * verticalTextPixelsAdvance + 6, 0x9b_00_00_00);
+			graphics.fill(0, 0, this.totalPixelWidth + 8, this.totalRowCount * verticalTextPixelsAdvance + 6, 0x9B000000);
 
 			int xOff = 4;
 			int yOff = 4;
 
 			for (Component headerRowText : this.headerRows) {
-				graphics.text(Minecraft.getInstance().font, headerRowText, xOff, yOff, 0xff_ff_ff_00, false);
+				graphics.text(Minecraft.getInstance().font, headerRowText, xOff, yOff, 0xFFFFFFFF, false);
 				yOff += verticalTextPixelsAdvance;
 			}
 
