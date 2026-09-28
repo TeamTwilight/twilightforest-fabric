@@ -206,6 +206,7 @@ public class ItemTagGenerator extends IntrinsicHolderTagsProvider<Item> {
 		this.tag(TFItemTags.SCEPTERS).add(TFItems.TWILIGHT_SCEPTER, TFItems.LIFEDRAIN_SCEPTER, TFItems.ZOMBIE_SCEPTER, TFItems.FORTIFICATION_SCEPTER);
 		this.tag(TFItemTags.SCEPTER_MAX_REPAIR_ITEMS).add(TFItems.EXANIMATE_ESSENCE);
 		this.tag(TFItemTags.MOONWORM_QUEEN_REPAIR_ITEMS).add(TFItems.TORCHBERRIES);
+		this.tag(TFItemTags.KEEPSAKE_CASKET_REPAIR_ITEMS).add(TFItems.CHARM_OF_KEEPING_3);
 
 		this.tag(TFItemTags.IMMUNE_TO_THORNS).add(TFBlocks.THORN_LEAVES.asItem(), TFBlocks.THORN_ROSE.asItem());
 
