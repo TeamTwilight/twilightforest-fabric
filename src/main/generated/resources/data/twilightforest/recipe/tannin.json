@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "fabric:type": "fabric:components",
+      "base": "minecraft:potion",
+      "components": {
+        "minecraft:potion_contents": {
+          "potion": "minecraft:water"
+        }
+      }
+    },
+    "twilightforest:twilight_oak_sapling",
+    "twilightforest:root_strand",
+    "twilightforest:twilight_oak_leaves"
+  ],
+  "result": {
+    "id": "twilightforest:tannin"
+  }
+}
