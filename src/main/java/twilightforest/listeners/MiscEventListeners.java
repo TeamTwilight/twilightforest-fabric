@@ -1,5 +1,7 @@
 package twilightforest.listeners;
 
+import carminite.events.api.PlayerEvents;
+import carminite.events.neoforge.PlayerEvent;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
@@ -35,6 +37,7 @@ import twilightforest.entity.passive.TinyBird;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFEntities;
+import twilightforest.init.TFItems;
 import twilightforest.network.CreateMovingCicadaSoundPacket;
 import twilightforest.util.ArmorUtil;
 
@@ -46,6 +49,7 @@ public final class MiscEventListeners {
 		ServerEntityEvents.EQUIPMENT_CHANGE.register((livingEntity, equipmentSlot, _, currentStack) -> MiscEventListeners.updateCicadaSoundsOnHead(livingEntity, equipmentSlot, currentStack));
 		UseBlockCallback.EVENT.register(MiscEventListeners::addTomesToLecterns);
 		UseBlockCallback.EVENT.register(MiscEventListeners::washOffCloth);
+		PlayerEvents.ITEM_CRAFTED.register(MiscEventListeners::playQueenRefillSound);
 	}
 
 	public static void addPrey(Entity entity) {
@@ -67,6 +71,12 @@ public final class MiscEventListeners {
 				mob.targetSelector.addGoal(7, new NonTameRandomTargetGoal<>((TamableAnimal) mob, Squirrel.class, true, null));
 				mob.targetSelector.addGoal(7, new NonTameRandomTargetGoal<>((TamableAnimal) mob, Bighorn.class, true, null));
 			}
+		}
+	}
+
+	public static void playQueenRefillSound(PlayerEvent.ItemCraftedEvent event) {
+		if (event.getCrafting().is(TFItems.MOONWORM_QUEEN)) {
+			event.getEntity().level().playLocalSound(event.getEntity().blockPosition(), SoundEvents.CAMEL_EAT, SoundSource.PLAYERS, 0.75F, 1.5F + (event.getEntity().getRandom().nextFloat() * 0.25F), false);
 		}
 	}
 
