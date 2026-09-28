@@ -1,6 +1,5 @@
 package twilightforest.entity.ai.goal;
 
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
@@ -95,7 +94,6 @@ public class YetiRampageGoal extends Goal {
 			Vec3 vec = new Vec3(0.5F + this.yeti.getRandom().nextFloat() * 0.5F, 0.5F + this.yeti.getRandom().nextFloat() * 0.3F, 0).yRot(this.yeti.getRandom().nextFloat() * 360F);
 			ice.shoot(vec.x(), vec.y(), vec.z(), 0.4F + yeti.getRandom().nextFloat() * 0.3F, 0);
 			this.yeti.playSound(TFSounds.ALPHA_YETI_ICE.value(), 1.0F, 1.0F / (this.yeti.getRandom().nextFloat() * 0.4F + 0.8F));
-			this.yeti.gameEvent(GameEvent.PROJECTILE_SHOOT);
 			this.yeti.level().addFreshEntity(ice);
 		}
 	}

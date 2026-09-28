@@ -32,7 +32,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.LootParams;
@@ -262,7 +261,6 @@ public class DeathTome extends Monster implements RangedAttackMob {
 		double tz = target.getZ() - this.getZ();
 		float heightOffset = Mth.sqrt((float) (tx * tx + tz * tz)) * 0.2F;
 		projectile.shoot(tx, ty + heightOffset, tz, 0.6F, 6.0F);
-		this.gameEvent(GameEvent.PROJECTILE_SHOOT);
 		this.level().addFreshEntity(projectile);
 	}
 
