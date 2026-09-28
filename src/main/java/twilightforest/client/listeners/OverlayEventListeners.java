@@ -58,7 +58,7 @@ public final class OverlayEventListeners {
 		HudElementRegistry.addLast(OverlayEventListeners.ORE_METER_STATS, (graphics, _) -> OverlayEventListeners.renderOreMeterStats(graphics));
 		HudElementRegistry.attachElementAfter(VanillaHudElements.ARMOR_BAR, OverlayEventListeners.FORTIFICATION_SHIELD_COUNT, (graphics, _) -> OverlayEventListeners.renderShieldCount(graphics, graphics.guiWidth(), graphics.guiHeight()));
 		HudStatusBarHeightRegistry.addLeft(OverlayEventListeners.FORTIFICATION_SHIELD_COUNT, _ -> 10);
-		HudElementRegistry.addLast(OverlayEventListeners.PORTAL_OVERLAY, (graphics, _) -> PortalOverlay.render(graphics));
+		HudElementRegistry.addLast(OverlayEventListeners.PORTAL_OVERLAY, (graphics, _) -> OverlayEventListeners.renderPortalOverlay(graphics));
 		HudElementRegistry.addLast(OverlayEventListeners.ITEM_DISPLAY_OVERLAY, (graphics, _) -> ItemDisplayOverlay.render(graphics, OverlayEventListeners.getCameraPlayer()));
 	}
 
@@ -145,6 +145,11 @@ public final class OverlayEventListeners {
 				}
 			}
 		}
+	}
+
+	public static void renderPortalOverlay(GuiGraphicsExtractor graphics) {
+		Minecraft minecraft = Minecraft.getInstance();
+		PortalOverlay.render(graphics, minecraft, minecraft.player);
 	}
 
 	private static final DecimalFormat FORMAT = new DecimalFormat("0.000");
