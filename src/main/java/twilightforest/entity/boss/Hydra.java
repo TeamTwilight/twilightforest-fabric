@@ -31,11 +31,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.entity.Entity;
-import twilightforest.util.TFEventHooks;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.entity.TFPart;
 import twilightforest.init.*;
+import twilightforest.util.TFEventHooks;
 import twilightforest.util.entities.EntityUtil;
 import twilightforest.util.WorldUtil;
 
@@ -258,7 +257,7 @@ public class Hydra extends BaseTFBoss implements MultiPartEntity {
 		}
 	}
 
-	// 现代化旧 AI
+	// TODO modernize this more (old AI copypasta still kind of here)
 	private int numTicksToChaseTarget;
 
 	@Override
@@ -346,7 +345,7 @@ public class Hydra extends BaseTFBoss implements MultiPartEntity {
 			this.setYRot(this.getYRot() + this.randomYawVelocity);
 			this.setXRot(0);
 
-			// 空闲时对被动生物喷火
+			// TODO: while we are idle, consider having the heads breathe fire on passive mobs
 
 			// set idle heads to no target
 			for (int i = 0; i < MAX_HEADS; i++) {

@@ -1,6 +1,7 @@
 package twilightforest.client;
 
 import io.github.fabricators_of_create.porting_lib.client.armor.ArmorRendererRegistry;
+import io.github.fabricators_of_create.porting_lib.client_events.event.client.EntityRenderersEvent;
 import io.github.fabricators_of_create.porting_lib.client_extensions.ClientExtensionsRegistry;
 import io.github.fabricators_of_create.porting_lib.client_extensions.IClientBlockExtensions;
 import io.github.fabricators_of_create.porting_lib.models.geometry.RegisterGeometryLoadersCallback;
@@ -37,7 +38,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
@@ -92,6 +95,7 @@ import twilightforest.item.travellers_gear.TravellersGogglesItem;
 import twilightforest.mixin.WoodTypeAccessor;
 import twilightforest.util.woods.TFWoodTypes;
 
+import java.util.Objects;
 import java.util.function.Predicate;
 
 public class TFClientSetup implements ClientModInitializer {
@@ -135,6 +139,7 @@ public class TFClientSetup implements ClientModInitializer {
 		registerMapDecorators();
 		registerTooltipComponents();
 		registerRenderLayers();
+		attachRenderLayers();
 
 		// Shaders
 		TFShaders.registerShaders();
@@ -916,12 +921,6 @@ public class TFClientSetup implements ClientModInitializer {
 			|| modelPath.startsWith("trollber");
 	}
 
-	/**
-	 * Checks whether a block model uses translucent rendering
-	 * ({@code render_type: minecraft:translucent}) and therefore needs
-	 * {@link BlendMode#TRANSLUCENT} instead of {@link BlendMode#CUTOUT}
-	 * in its emissive wrapper material.
-	 */
 	private static boolean needsTranslucentBlend(String modelPath) {
 		if (modelPath.startsWith("block/")) {
 			modelPath = modelPath.substring("block/".length());
@@ -929,5 +928,27 @@ public class TFClientSetup implements ClientModInitializer {
 
 		return modelPath.startsWith("uncrafting_table")
 			|| modelPath.startsWith("trophy_pedestal_active");
+	}
+
+	private void attachRenderLayers() {
+		EntityRenderersEvent.AddLayers.EVENT.register(event -> {
+			BakedMultiPartRenderers.bakeMultiPartRenderers(event.getContext());
+			for (EntityType<?> type : event.getEntityTypes()) {
+				var renderer = event.getRenderer(type);
+				if (renderer instanceof LivingEntityRenderer<?, ?> living) {
+					attachRenderLayers(living);
+				}
+			}
+
+			event.getSkins().forEach(renderer -> {
+				LivingEntityRenderer<Player, EntityModel<Player>> skin = event.getSkin(renderer);
+				attachRenderLayers(Objects.requireNonNull(skin));
+			});
+		});
+	}
+
+	private <T extends LivingEntity, M extends EntityModel<T>> void attachRenderLayers(LivingEntityRenderer<T, M> renderer) {
+		renderer.addLayer(new ShieldLayer<>(renderer));
+		renderer.addLayer(new IceLayer<>(renderer));
 	}
 }

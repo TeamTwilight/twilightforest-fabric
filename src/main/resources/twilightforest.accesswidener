@@ -303,3 +303,6 @@ extendable method net/minecraft/world/level/levelgen/carver/WorldCarver getCarve
 
 # TFPoiTypes (To match NeoForge behavior)
 accessible method net/minecraft/world/entity/ai/village/poi/PoiTypes register (Lnet/minecraft/core/Registry;Lnet/minecraft/resources/ResourceKey;Ljava/util/Set;II)Lnet/minecraft/world/entity/ai/village/poi/PoiType;
+
+# TFClientSetup
+accessible method net/minecraft/client/renderer/entity/LivingEntityRenderer addLayer (Lnet/minecraft/client/renderer/entity/layers/RenderLayer;)Z

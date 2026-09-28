@@ -1,5 +1,7 @@
 package twilightforest.entity;
 
+import io.github.fabricators_of_create.porting_lib.entity.MultiPartEntity;
+import io.github.fabricators_of_create.porting_lib.entity.PartEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -9,8 +11,6 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import io.github.fabricators_of_create.porting_lib.entity.MultiPartEntity;
-import io.github.fabricators_of_create.porting_lib.entity.PartEntity;
 import twilightforest.TwilightForestMod;
 import twilightforest.network.UpdateTFMultipartPacket;
 
@@ -126,9 +126,9 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 			this.getZ(),
 			this.getYRot(),
 			this.getXRot(),
-			this.getBbWidth(),
-			this.getBbHeight(),
-			this.getDimensions(this.getPose()).fixed(),
+			this.dimensions.width(),
+			this.dimensions.height(),
+			this.dimensions.fixed(),
 			getEntityData().packDirty());
 
 	}
@@ -145,8 +145,8 @@ public abstract class TFPart<T extends Entity> extends PartEntity<T> {
 	}
 
 	public static void assignPartIDs(Entity parent) {
-		if (parent instanceof MultiPartEntity mpe) {
-			PartEntity<?>[] parts = mpe.getParts();
+		if (parent instanceof MultiPartEntity multiPartEntity) {
+			PartEntity<?>[] parts = multiPartEntity.getParts();
 			for (int i = 0, partsLength = Objects.requireNonNull(parts).length; i < partsLength; i++) {
 				PartEntity<?> part = parts[i];
 				part.setId(parent.getId() + i);

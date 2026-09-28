@@ -1,7 +1,6 @@
 package twilightforest.mixin;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
@@ -10,9 +9,6 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
-import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.BlockItem;
@@ -33,10 +29,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import twilightforest.asmhooks.MultipartHooks;
 import twilightforest.block.GiantBlock;
 import twilightforest.block.MiniatureStructureBlock;
-import twilightforest.client.BakedMultiPartRenderers;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
-import twilightforest.entity.TFPart;
 import twilightforest.init.TFDimension;
 import twilightforest.item.GiantPickItem;
 
@@ -51,57 +45,15 @@ public abstract class LevelRendererMixin {
 	@Shadow
 	private ClientLevel level;
 
-	@WrapOperation(
-		method = "renderLevel",
+	@ModifyExpressionValue(
+		method = "renderLevel(Lnet/minecraft/client/DeltaTracker;ZLnet/minecraft/client/Camera;Lnet/minecraft/client/renderer/GameRenderer;Lnet/minecraft/client/renderer/LightTexture;Lorg/joml/Matrix4f;Lorg/joml/Matrix4f;)V",
 		at = @At(
 			value = "INVOKE",
-			target = "Lnet/minecraft/client/multiplayer/ClientLevel;entitiesForRendering()Ljava/lang/Iterable;"
+			target = "Ljava/lang/Iterable;iterator()Ljava/util/Iterator;"
 		)
 	)
-	private Iterable<Entity> twilightforest$resolveEntitiesForRendering(
-		ClientLevel level,
-		Operation<Iterable<Entity>> original
-	) {
-		Iterable<Entity> originalIterable = original.call(level);
-		Iterator<Entity> iterator = originalIterable.iterator();
-		Iterator<Entity> resolvedIterator = MultipartHooks.resolveEntitiesForRendering(iterator);
-
-		return () -> resolvedIterator;
-	}
-
-	@WrapOperation(
-		method = "renderEntity",
-		at = @At(
-			value = "INVOKE",
-			target = "Lnet/minecraft/client/renderer/entity/EntityRenderDispatcher;render(Lnet/minecraft/world/entity/Entity;DDDFFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V"
-		)
-	)
-	@SuppressWarnings({"rawtypes", "unchecked"})
-	private void twilightforest$redirectRenderEntity(
-		EntityRenderDispatcher dispatcher,
-		Entity entity,
-		double x,
-		double y,
-		double z,
-		float rotationYaw,
-		float partialTicks,
-		PoseStack poseStack,
-		MultiBufferSource buffer,
-		int packedLight,
-		Operation<Void> original
-	) {
-		if (entity instanceof TFPart<?> part) {
-			EntityRenderer renderer = BakedMultiPartRenderers.lookup(part.renderer());
-			if (renderer != null) {
-				Vec3 offset = renderer.getRenderOffset(entity, partialTicks);
-				poseStack.pushPose();
-				poseStack.translate(x + offset.x, y + offset.y, z + offset.z);
-				renderer.render(entity, rotationYaw, partialTicks, poseStack, buffer, packedLight);
-				poseStack.popPose();
-				return;
-			}
-		}
-		original.call(dispatcher, entity, x, y, z, rotationYaw, partialTicks, poseStack, buffer, packedLight);
+	private Iterator<Entity> twilightforest$resolveEntitiesForRendering(Iterator<Entity> iterator) {
+		return MultipartHooks.resolveEntitiesForRendering(iterator);
 	}
 
 	@Inject(

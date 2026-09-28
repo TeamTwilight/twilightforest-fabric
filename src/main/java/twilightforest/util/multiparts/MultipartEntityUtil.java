@@ -3,10 +3,10 @@ package twilightforest.util.multiparts;
 import io.github.fabricators_of_create.porting_lib.entity.MultiPartEntity;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.world.entity.Entity;
-import twilightforest.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.client.BakedMultiPartRenderers;
 import twilightforest.entity.TFPart;
+import twilightforest.network.PacketDistributor;
 import twilightforest.network.UpdateTFMultipartPacket;
 
 import java.util.Iterator;
@@ -20,17 +20,14 @@ public class MultipartEntityUtil {
 
 	@Nullable
 	public EntityRenderer<?> tryLookupTFPartRenderer(@Nullable EntityRenderer<?> renderer, Entity entity) {
-		if (entity instanceof TFPart<?> part) {
-			EntityRenderer<?> partRenderer = BakedMultiPartRenderers.lookup(part.renderer());
-			return partRenderer != null ? partRenderer : renderer;
-		}
+		if (entity instanceof TFPart<?> part)
+			return BakedMultiPartRenderers.lookup(part.renderer());
 		return renderer;
 	}
 
 	public Entity sendDirtyMultipartEntityData(Entity entity) {
-		if (entity instanceof MultiPartEntity)
+		if (entity instanceof MultiPartEntity multiPartEntity && multiPartEntity.isMultipartEntity())
 			PacketDistributor.sendToPlayersTrackingEntity(entity, new UpdateTFMultipartPacket(entity));
 		return entity;
 	}
-
 }

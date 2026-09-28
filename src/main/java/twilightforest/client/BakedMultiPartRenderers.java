@@ -32,7 +32,6 @@ public class BakedMultiPartRenderers {
 	}
 
 	public static EntityRenderer<?> lookup(ResourceLocation location) {
-		LazyLoadedValue<EntityRenderer<?>> value = renderers.get(location);
-		return value != null ? value.get() : null;
+		return renderers.get(location).get();
 	}
 }

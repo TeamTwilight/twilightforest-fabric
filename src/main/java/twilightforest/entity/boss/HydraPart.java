@@ -133,12 +133,12 @@ public abstract class HydraPart extends TFPart<Hydra> {
 	}
 
 	public void activate() {
-		this.setSize(this.cacheSize);
+		this.dimensions = this.cacheSize;
 		this.getEntityData().set(DATA_SIZEACTIVE, true);
 	}
 
 	public void deactivate() {
-		this.setSize(EntityDimensions.scalable(0, 0));
+		this.dimensions = EntityDimensions.scalable(0, 0);
 		this.getEntityData().set(DATA_SIZEACTIVE, false);
 	}
 }
