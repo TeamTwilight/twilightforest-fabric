@@ -783,6 +783,9 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 
 		this.tag(TFBlockTags.STORAGE_BLOCKS_MAZE_SLIME).add(TFBlocks.MAZE_SLIME_BLOCK);
 		this.tag(ConventionalBlockTags.STORAGE_BLOCKS_SLIME).add(TFBlocks.MAZE_SLIME_BLOCK);
+
+		this.tag(TFBlockTags.SUPPLEMENTARIES_MAP_FOLIAGE).add(TFBlocks.TWILIGHT_OAK_LEAVES, TFBlocks.DARK_LEAVES, TFBlocks.HARDENED_DARK_LEAVES, TFBlocks.GIANT_LEAVES, TFBlocks.FALLEN_LEAVES);
+		this.tag(TFBlockTags.SUPPLEMENTARIES_MAP_GRASS).add(TFBlocks.FIDDLEHEAD);
 	}
 
 	@Override

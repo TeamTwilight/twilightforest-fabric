@@ -113,6 +113,9 @@ public class TFBlockTags {
 	public static final TagKey<Block> FD_COMPOST_ACTIVATORS = createFromNamespace("farmersdelight", "compost_activators");
 	public static final TagKey<Block> FD_HEAT_SOURCES = createFromNamespace("farmersdelight", "heat_sources");
 
+	public static final TagKey<Block> SUPPLEMENTARIES_MAP_FOLIAGE = createFromNamespace("supplementaries", "map_tint_foliage_color");
+	public static final TagKey<Block> SUPPLEMENTARIES_MAP_GRASS = createFromNamespace("supplementaries", "map_tint_grass_color");
+
 	public static TagKey<Block> makeCommonTag(String tagName) {
 		return createFromNamespace("c", tagName);
 	}
