@@ -5,9 +5,13 @@ import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
+import net.minecraft.data.tags.TagAppender;
+import net.minecraft.data.tags.VanillaItemTagsProvider;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFItems;
@@ -23,94 +27,12 @@ public class ItemTagGenerator extends IntrinsicHolderTagsProvider<Item> {
 
 	@Override
 	protected void addTags(HolderLookup.Provider provider) {
-		this.tag(TFItemTags.TWILIGHT_OAK_LOGS).add(TFBlocks.TWILIGHT_OAK_LOG.asItem(), TFBlocks.STRIPPED_TWILIGHT_OAK_LOG.asItem(), TFBlocks.TWILIGHT_OAK_WOOD.asItem(), TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD.asItem());
-		this.tag(TFItemTags.CANOPY_LOGS).add(TFBlocks.CANOPY_LOG.asItem(), TFBlocks.STRIPPED_CANOPY_LOG.asItem(), TFBlocks.CANOPY_WOOD.asItem(), TFBlocks.STRIPPED_CANOPY_WOOD.asItem());
-		this.tag(TFItemTags.MANGROVE_LOGS).add(TFBlocks.MANGROVE_LOG.asItem(), TFBlocks.STRIPPED_MANGROVE_LOG.asItem(), TFBlocks.MANGROVE_WOOD.asItem(), TFBlocks.STRIPPED_MANGROVE_WOOD.asItem());
-		this.tag(TFItemTags.DARKWOOD_LOGS).add(TFBlocks.DARK_LOG.asItem(), TFBlocks.STRIPPED_DARK_LOG.asItem(), TFBlocks.DARK_WOOD.asItem(), TFBlocks.STRIPPED_DARK_WOOD.asItem());
-		this.tag(TFItemTags.TIME_LOGS).add(TFBlocks.TIME_LOG.asItem(), TFBlocks.STRIPPED_TIME_LOG.asItem(), TFBlocks.TIME_WOOD.asItem(), TFBlocks.STRIPPED_TIME_WOOD.asItem());
-		this.tag(TFItemTags.TRANSFORMATION_LOGS).add(TFBlocks.TRANSFORMATION_LOG.asItem(), TFBlocks.STRIPPED_TRANSFORMATION_LOG.asItem(), TFBlocks.TRANSFORMATION_WOOD.asItem(), TFBlocks.STRIPPED_TRANSFORMATION_WOOD.asItem());
-		this.tag(TFItemTags.MINING_LOGS).add(TFBlocks.MINING_LOG.asItem(), TFBlocks.STRIPPED_MINING_LOG.asItem(), TFBlocks.MINING_WOOD.asItem(), TFBlocks.STRIPPED_MINING_WOOD.asItem());
-		this.tag(TFItemTags.SORTING_LOGS).add(TFBlocks.SORTING_LOG.asItem(), TFBlocks.STRIPPED_SORTING_LOG.asItem(), TFBlocks.SORTING_WOOD.asItem(), TFBlocks.STRIPPED_SORTING_WOOD.asItem());
-		this.tag(TFItemTags.TWILIGHT_LOGS)
-			.addTag(TFItemTags.TWILIGHT_OAK_LOGS)
-			.addTag(TFItemTags.CANOPY_LOGS)
-			.addTag(TFItemTags.MANGROVE_LOGS)
-			.addTag(TFItemTags.DARKWOOD_LOGS)
-			.addTag(TFItemTags.TIME_LOGS)
-			.addTag(TFItemTags.TRANSFORMATION_LOGS)
-			.addTag(TFItemTags.MINING_LOGS)
-			.addTag(TFItemTags.SORTING_LOGS);
-		this.tag(ItemTags.LOGS).addTag(TFItemTags.TWILIGHT_LOGS);
-		this.tag(ItemTags.LOGS_THAT_BURN)
-			.addTag(TFItemTags.TWILIGHT_OAK_LOGS).addTag(TFItemTags.CANOPY_LOGS).addTag(TFItemTags.MANGROVE_LOGS)
-			.addTag(TFItemTags.TIME_LOGS).addTag(TFItemTags.TRANSFORMATION_LOGS).addTag(TFItemTags.MINING_LOGS).addTag(TFItemTags.SORTING_LOGS);
-
-		this.tag(ItemTags.SAPLINGS).add(TFBlocks.TWILIGHT_OAK_SAPLING.asItem(), TFBlocks.CANOPY_SAPLING.asItem(), TFBlocks.MANGROVE_SAPLING.asItem(), TFBlocks.DARKWOOD_SAPLING.asItem(), TFBlocks.TIME_SAPLING.asItem(), TFBlocks.TRANSFORMATION_SAPLING.asItem(), TFBlocks.MINING_SAPLING.asItem(), TFBlocks.SORTING_SAPLING.asItem(), TFBlocks.HOLLOW_OAK_SAPLING.asItem(), TFBlocks.RAINBOW_OAK_SAPLING.asItem());
-		this.tag(ItemTags.LEAVES).add(TFBlocks.RAINBOW_OAK_LEAVES.asItem(), TFBlocks.TWILIGHT_OAK_LEAVES.asItem(), TFBlocks.CANOPY_LEAVES.asItem(), TFBlocks.MANGROVE_LEAVES.asItem(), TFBlocks.DARK_LEAVES.asItem(), TFBlocks.TIME_LEAVES.asItem(), TFBlocks.TRANSFORMATION_LEAVES.asItem(), TFBlocks.MINING_LEAVES.asItem(), TFBlocks.SORTING_LEAVES.asItem(), TFBlocks.THORN_LEAVES.asItem(), TFBlocks.BEANSTALK_LEAVES.asItem());
-
-		this.tag(ItemTags.PLANKS).add(TFBlocks.TWILIGHT_OAK_PLANKS.asItem(), TFBlocks.CANOPY_PLANKS.asItem(), TFBlocks.MANGROVE_PLANKS.asItem(), TFBlocks.DARK_PLANKS.asItem(), TFBlocks.TIME_PLANKS.asItem(), TFBlocks.TRANSFORMATION_PLANKS.asItem(), TFBlocks.MINING_PLANKS.asItem(), TFBlocks.SORTING_PLANKS.asItem()).addTag(TFItemTags.TOWERWOOD);
-
-		this.tag(ItemTags.WOODEN_FENCES).add(TFBlocks.TWILIGHT_OAK_FENCE.asItem(), TFBlocks.CANOPY_FENCE.asItem(), TFBlocks.MANGROVE_FENCE.asItem(), TFBlocks.DARK_FENCE.asItem(), TFBlocks.TIME_FENCE.asItem(), TFBlocks.TRANSFORMATION_FENCE.asItem(), TFBlocks.MINING_FENCE.asItem(), TFBlocks.SORTING_FENCE.asItem());
-		this.tag(ItemTags.FENCE_GATES).add(TFBlocks.TWILIGHT_OAK_GATE.asItem(), TFBlocks.CANOPY_GATE.asItem(), TFBlocks.MANGROVE_GATE.asItem(), TFBlocks.DARK_GATE.asItem(), TFBlocks.TIME_GATE.asItem(), TFBlocks.TRANSFORMATION_GATE.asItem(), TFBlocks.MINING_GATE.asItem(), TFBlocks.SORTING_GATE.asItem());
-
-		this.tag(ItemTags.WOODEN_SLABS).add(TFBlocks.TWILIGHT_OAK_SLAB.asItem(), TFBlocks.CANOPY_SLAB.asItem(), TFBlocks.MANGROVE_SLAB.asItem(), TFBlocks.DARK_SLAB.asItem(), TFBlocks.TIME_SLAB.asItem(), TFBlocks.TRANSFORMATION_SLAB.asItem(), TFBlocks.MINING_SLAB.asItem(), TFBlocks.SORTING_SLAB.asItem());
-		this.tag(ItemTags.SLABS).add(TFBlocks.AURORA_SLAB.asItem());
-		this.tag(ItemTags.WOODEN_STAIRS).add(TFBlocks.TWILIGHT_OAK_STAIRS.asItem(), TFBlocks.CANOPY_STAIRS.asItem(), TFBlocks.MANGROVE_STAIRS.asItem(), TFBlocks.DARK_STAIRS.asItem(), TFBlocks.TIME_STAIRS.asItem(), TFBlocks.TRANSFORMATION_STAIRS.asItem(), TFBlocks.MINING_STAIRS.asItem(), TFBlocks.SORTING_STAIRS.asItem());
-		this.tag(ItemTags.STAIRS).add(TFBlocks.CASTLE_BRICK_STAIRS.asItem(), TFBlocks.WORN_CASTLE_BRICK_STAIRS.asItem(), TFBlocks.CRACKED_CASTLE_BRICK_STAIRS.asItem(), TFBlocks.MOSSY_CASTLE_BRICK_STAIRS.asItem(), TFBlocks.ENCASED_CASTLE_BRICK_STAIRS.asItem(), TFBlocks.BOLD_CASTLE_BRICK_STAIRS.asItem(), TFBlocks.NAGASTONE_STAIRS_LEFT.asItem(), TFBlocks.NAGASTONE_STAIRS_RIGHT.asItem(), TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT.asItem(), TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT.asItem(), TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT.asItem(), TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT.asItem());
-
-		this.tag(ItemTags.WOODEN_BUTTONS).add(TFBlocks.TWILIGHT_OAK_BUTTON.asItem(), TFBlocks.CANOPY_BUTTON.asItem(), TFBlocks.MANGROVE_BUTTON.asItem(), TFBlocks.DARK_BUTTON.asItem(), TFBlocks.TIME_BUTTON.asItem(), TFBlocks.TRANSFORMATION_BUTTON.asItem(), TFBlocks.MINING_BUTTON.asItem(), TFBlocks.SORTING_BUTTON.asItem());
-		this.tag(ItemTags.WOODEN_PRESSURE_PLATES).add(TFBlocks.TWILIGHT_OAK_PLATE.asItem(), TFBlocks.CANOPY_PLATE.asItem(), TFBlocks.MANGROVE_PLATE.asItem(), TFBlocks.DARK_PLATE.asItem(), TFBlocks.TIME_PLATE.asItem(), TFBlocks.TRANSFORMATION_PLATE.asItem(), TFBlocks.MINING_PLATE.asItem(), TFBlocks.SORTING_PLATE.asItem());
-
-		this.tag(ItemTags.WOODEN_TRAPDOORS).add(TFBlocks.TWILIGHT_OAK_TRAPDOOR.asItem(), TFBlocks.CANOPY_TRAPDOOR.asItem(), TFBlocks.MANGROVE_TRAPDOOR.asItem(), TFBlocks.DARK_TRAPDOOR.asItem(), TFBlocks.TIME_TRAPDOOR.asItem(), TFBlocks.TRANSFORMATION_TRAPDOOR.asItem(), TFBlocks.MINING_TRAPDOOR.asItem(), TFBlocks.SORTING_TRAPDOOR.asItem());
-		this.tag(ItemTags.WOODEN_DOORS).add(TFBlocks.TWILIGHT_OAK_DOOR.asItem(), TFBlocks.CANOPY_DOOR.asItem(), TFBlocks.MANGROVE_DOOR.asItem(), TFBlocks.DARK_DOOR.asItem(), TFBlocks.TIME_DOOR.asItem(), TFBlocks.TRANSFORMATION_DOOR.asItem(), TFBlocks.MINING_DOOR.asItem(), TFBlocks.SORTING_DOOR.asItem());
-
-		this.tag(ItemTags.HANGING_SIGNS).add(
-			TFBlocks.TWILIGHT_OAK_HANGING_SIGN.asItem(), TFBlocks.CANOPY_HANGING_SIGN.asItem(),
-			TFBlocks.MANGROVE_HANGING_SIGN.asItem(), TFBlocks.DARK_HANGING_SIGN.asItem(),
-			TFBlocks.TIME_HANGING_SIGN.asItem(), TFBlocks.TRANSFORMATION_HANGING_SIGN.asItem(),
-			TFBlocks.MINING_HANGING_SIGN.asItem(), TFBlocks.SORTING_HANGING_SIGN.asItem());
-		this.tag(ItemTags.SIGNS).add(
-			TFBlocks.TWILIGHT_OAK_SIGN.asItem(), TFBlocks.CANOPY_SIGN.asItem(),
-			TFBlocks.MANGROVE_SIGN.asItem(), TFBlocks.DARK_SIGN.asItem(),
-			TFBlocks.TIME_SIGN.asItem(), TFBlocks.TRANSFORMATION_SIGN.asItem(),
-			TFBlocks.MINING_SIGN.asItem(), TFBlocks.SORTING_SIGN.asItem());
-
-		this.tag(TFItemTags.STORAGE_BLOCKS_ARCTIC_FUR).add(TFBlocks.ARCTIC_FUR_BLOCK.asItem());
-		this.tag(TFItemTags.STORAGE_BLOCKS_CARMINITE).add(TFBlocks.CARMINITE_BLOCK.asItem());
-		this.tag(TFItemTags.STORAGE_BLOCKS_FIERY).add(TFBlocks.FIERY_BLOCK.asItem());
-		this.tag(TFItemTags.STORAGE_BLOCKS_IRONWOOD).add(TFBlocks.IRONWOOD_BLOCK.asItem());
-		this.tag(TFItemTags.STORAGE_BLOCKS_KNIGHTMETAL).add(TFBlocks.KNIGHTMETAL_BLOCK.asItem());
-		this.tag(TFItemTags.STORAGE_BLOCKS_STEELEAF).add(TFBlocks.STEELEAF_BLOCK.asItem());
-
-		this.tag(ConventionalItemTags.STORAGE_BLOCKS)
-			.addTag(TFItemTags.STORAGE_BLOCKS_FIERY).addTag(TFItemTags.STORAGE_BLOCKS_ARCTIC_FUR)
-			.addTag(TFItemTags.STORAGE_BLOCKS_CARMINITE).addTag(TFItemTags.STORAGE_BLOCKS_IRONWOOD)
-			.addTag(TFItemTags.STORAGE_BLOCKS_KNIGHTMETAL).addTag(TFItemTags.STORAGE_BLOCKS_STEELEAF);
-
-		this.tag(TFItemTags.TOWERWOOD).add(TFBlocks.TOWERWOOD.asItem(), TFBlocks.MOSSY_TOWERWOOD.asItem(), TFBlocks.CRACKED_TOWERWOOD.asItem(), TFBlocks.INFESTED_TOWERWOOD.asItem());
-		this.tag(TFItemTags.BANISTERS).add(
-			TFBlocks.OAK_BANISTER.asItem(),
-			TFBlocks.SPRUCE_BANISTER.asItem(),
-			TFBlocks.BIRCH_BANISTER.asItem(),
-			TFBlocks.JUNGLE_BANISTER.asItem(),
-			TFBlocks.ACACIA_BANISTER.asItem(),
-			TFBlocks.DARK_OAK_BANISTER.asItem(),
-			TFBlocks.CRIMSON_BANISTER.asItem(),
-			TFBlocks.WARPED_BANISTER.asItem(),
-			TFBlocks.VANGROVE_BANISTER.asItem(),
-			TFBlocks.BAMBOO_BANISTER.asItem(),
-			TFBlocks.CHERRY_BANISTER.asItem(),
-			TFBlocks.PALE_OAK_BANISTER.asItem(),
-
-			TFBlocks.TWILIGHT_OAK_BANISTER.asItem(),
-			TFBlocks.CANOPY_BANISTER.asItem(),
-			TFBlocks.MANGROVE_BANISTER.asItem(),
-			TFBlocks.DARK_BANISTER.asItem(),
-			TFBlocks.TIME_BANISTER.asItem(),
-			TFBlocks.TRANSFORMATION_BANISTER.asItem(),
-			TFBlocks.MINING_BANISTER.asItem(),
-			TFBlocks.SORTING_BANISTER.asItem()
-		);
+		new BlockItemTagGenerator() {
+			@Override
+			protected TagAppender<Block, Block> tag(TagKey<Block> blockTag, TagKey<Item> itemTag) {
+				return new VanillaItemTagsProvider.BlockToItemConverter(ItemTagGenerator.this.tag(itemTag));
+			}
+		}.run();
 
 		this.tag(TFItemTags.PAPER).add(Items.PAPER);
 		this.tag(ConventionalItemTags.FEATHERS).add(TFItems.RAVEN_FEATHER);
@@ -163,7 +85,9 @@ public class ItemTagGenerator extends IntrinsicHolderTagsProvider<Item> {
 			TFItems.YETI_HELMET,
 			TFItems.YETI_CHESTPLATE,
 			TFItems.YETI_LEGGINGS,
-			TFItems.YETI_BOOTS
+			TFItems.YETI_BOOTS,
+			TFItems.TRAVELLERS_VEST,
+			TFItems.TRAVELLERS_BOOTS
 		);
 
 		this.tag(TFItemTags.WIP).add(
@@ -176,13 +100,12 @@ public class ItemTagGenerator extends IntrinsicHolderTagsProvider<Item> {
 			TFBlocks.CINDER_LOG.asItem(),
 			TFBlocks.CINDER_WOOD.asItem(),
 			TFBlocks.SLIDER.asItem(),
-			TFBlocks.BRAZIER.asItem(),
-			TFBlocks.MAZE_SLIME_BLOCK.asItem()
+			TFBlocks.BRAZIER.asItem()
 		);
 
 		this.tag(TFItemTags.KOBOLD_PACIFICATION_BREADS).add(Items.BREAD);
 		this.tag(TFItemTags.BOAR_TEMPT_ITEMS).forceAddTag(ConventionalItemTags.CARROT_CROPS).forceAddTag(ConventionalItemTags.POTATO_CROPS).forceAddTag(ConventionalItemTags.BEETROOT_CROPS);
-		this.tag(TFItemTags.DEER_TEMPT_ITEMS).forceAddTag(ConventionalItemTags.WHEAT_CROPS).add(Items.APPLE);
+		this.tag(TFItemTags.DEER_TEMPT_ITEMS).forceAddTag(ConventionalItemTags.WHEAT_CROPS).add(Items.APPLE).add(TFItems.SHIKA_SENBEI);
 		this.tag(TFItemTags.DWARF_RABBIT_TEMPT_ITEMS).forceAddTag(ConventionalItemTags.CARROT_CROPS).add(Items.GOLDEN_CARROT).add(Items.DANDELION);
 		this.tag(TFItemTags.PENGUIN_TEMPT_ITEMS).forceAddTag(ItemTags.FISHES);
 		this.tag(TFItemTags.RAVEN_TEMPT_ITEMS).forceAddTag(ConventionalItemTags.SEEDS);
@@ -298,6 +221,8 @@ public class ItemTagGenerator extends IntrinsicHolderTagsProvider<Item> {
 		this.tag(ItemTags.SMALL_FLOWERS).add(TFBlocks.THORN_ROSE.asItem());
 
 		this.tag(ItemTags.TRIM_MATERIALS).add(TFItems.IRONWOOD_INGOT, TFItems.STEELEAF_INGOT, TFItems.KNIGHTMETAL_INGOT, TFItems.NAGA_SCALE, TFItems.CARMINITE, TFItems.FIERY_INGOT);
+		this.tag(TFItemTags.TRAVELLERS_AGILE_RANGER_WHITELISTED)
+			.add(TFItems.MOONWORM_QUEEN);
 
 		this.tag(TFItemTags.REPAIRS_IRONWOOD_TOOLS).addTag(TFItemTags.IRONWOOD_INGOTS);
 		this.tag(TFItemTags.REPAIRS_STEELEAF_TOOLS).addTag(TFItemTags.STEELEAF_INGOTS);
@@ -425,11 +350,10 @@ public class ItemTagGenerator extends IntrinsicHolderTagsProvider<Item> {
 			TFItems.MUSIC_DISC_HOME, TFItems.MUSIC_DISC_WAYFARER, TFItems.MUSIC_DISC_FINDINGS,
 			TFItems.MUSIC_DISC_MAKER, TFItems.MUSIC_DISC_THREAD, TFItems.MUSIC_DISC_MOTION
 		);
+
 		this.tag(TFItemTags.MAZE_SLIME_BALLS).add(TFItems.MAZE_SLIME_BALL);
-		this.tag(TFItemTags.STORAGE_BLOCKS_MAZE_SLIME).add(TFBlocks.MAZE_SLIME_BLOCK.asItem());
 
 		this.tag(ConventionalItemTags.SLIME_BALLS).add(TFItems.MAZE_SLIME_BALL);
-		this.tag(ConventionalItemTags.STORAGE_BLOCKS_SLIME).add(TFBlocks.MAZE_SLIME_BLOCK.asItem());
 
 		this.tag(TFItemTags.RENDER_LOWER_ON_DRYING_RACK)
 			.add(TFItems.GELATINOUS_SLIME_DROP, TFItems.GELATINOUS_MAZE_SLIME_DROP)
