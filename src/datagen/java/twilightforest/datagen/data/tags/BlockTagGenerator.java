@@ -176,26 +176,28 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 			.addTag(TFBlockTags.STORAGE_BLOCKS_KNIGHTMETAL)
 			.addTag(TFBlockTags.STORAGE_BLOCKS_STEELEAF);
 
-		this.tag(TFBlockTags.PORTAL_EDGE).add(Blocks.FARMLAND, Blocks.DIRT_PATH).forceAddTag(BlockTags.SUBSTRATE_OVERWORLD);
 		this.tag(TFBlockTags.PORTAL_POOL).add(Blocks.WATER);
+
+		//GUIDELINE: The portal frame requires dirt. The blocks we use are all essentially that with their nature unchanged (e.g unlike Mud) and remain similar-looking.
+		this.tag(TFBlockTags.PORTAL_EDGE).add(Blocks.FARMLAND).forceAddTag(BlockTags.DIRT).forceAddTag(BlockTags.GRASS_BLOCKS);
+
+		//GUIDELINE: Organic vegetation. No vegetation from alien, hostile worlds like the Nether or End.
+		//Vegetation from dimensions more similar to the Overworld (e.g. The Aether, Tropics, etc.) would logically work.
+		//Must be placed on top of the frame blocks and/or supported by them (e.g. no Cocoa Beans that float above it/are grown from another block).
 		this.tag(TFBlockTags.PORTAL_DECO).add(
-				Blocks.BAMBOO,
+				Blocks.BAMBOO, Blocks.BAMBOO_SAPLING,
 				Blocks.SHORT_GRASS, Blocks.TALL_GRASS,
 				Blocks.FERN, Blocks.LARGE_FERN,
-				Blocks.DEAD_BUSH,
+				Blocks.DEAD_BUSH, Blocks.BUSH, Blocks.FIREFLY_BUSH,
 				Blocks.SUGAR_CANE,
-				Blocks.CHORUS_PLANT, Blocks.CHORUS_FLOWER,
 				Blocks.SWEET_BERRY_BUSH,
-				Blocks.NETHER_WART,
-				Blocks.COCOA,
-				Blocks.VINE, Blocks.GLOW_LICHEN,
+				Blocks.GLOW_LICHEN,
 				Blocks.RED_MUSHROOM, Blocks.BROWN_MUSHROOM,
-				Blocks.WARPED_FUNGUS, Blocks.CRIMSON_FUNGUS,
 				Blocks.ATTACHED_MELON_STEM, Blocks.ATTACHED_PUMPKIN_STEM,
-				Blocks.MOSS_CARPET,
-				Blocks.PINK_PETALS,
-				Blocks.BIG_DRIPLEAF,
-				Blocks.BIG_DRIPLEAF_STEM,
+				Blocks.PINK_PETALS, Blocks.WILDFLOWERS,
+				Blocks.LEAF_LITTER,
+				Blocks.SHORT_DRY_GRASS, Blocks.TALL_DRY_GRASS,
+				Blocks.BIG_DRIPLEAF, Blocks.BIG_DRIPLEAF_STEM,
 				Blocks.SMALL_DRIPLEAF,
 				TFBlocks.FIDDLEHEAD,
 				TFBlocks.MOSS_PATCH,
@@ -204,8 +206,15 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 				TFBlocks.MUSHGLOOM,
 				TFBlocks.FALLEN_LEAVES,
 				TFBlocks.GIANT_LEAVES,
-				TFBlocks.STEELEAF_BLOCK,
-				TFBlocks.HARDENED_DARK_LEAVES)
+				TFBlocks.HARDENED_DARK_LEAVES,
+				TFBlocks.RASPBERRY_BUSH,
+				TFBlocks.BLACKBERRY_BUSH,
+				TFBlocks.BLUEBERRY_BUSH,
+				TFBlocks.MALOBERRY_BUSH,
+				TFBlocks.COPPER_OREBERRY_BUSH,
+				TFBlocks.IRON_OREBERRY_BUSH,
+				TFBlocks.GOLD_OREBERRY_BUSH,
+				TFBlocks.ESSENCE_OREBERRY_BUSH)
 			.forceAddTag(BlockTags.FLOWERS).forceAddTag(BlockTags.LEAVES).forceAddTag(BlockTags.SAPLINGS).forceAddTag(BlockTags.CROPS);
 
 		this.tag(TFBlockTags.GENERATED_PORTAL_DECO)
