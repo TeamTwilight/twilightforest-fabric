@@ -335,15 +335,15 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.registerSimpleItemModel(TFBlocks.CINDER_FURNACE, Identifier.withDefaultNamespace("block/furnace"));
 		this.woodProvider(TFBlocks.CINDER_LOG).logWithHorizontal(TFBlocks.CINDER_LOG).wood(TFBlocks.CINDER_WOOD);
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE, plainVariant(TFCommon.prefix("block/miniature/portal"))));
-		this.registerSimpleTintedItemModel(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE, TFCommon.prefix("block/miniature/portal"), new GrassColorSource());
+		this.generateMiniatureStructure(TFBlocks.TWILIGHT_PORTAL_MINIATURE_STRUCTURE, TFCommon.prefix("block/miniature/portal"), new GrassColorSource(), true);
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE, plainVariant(TFCommon.prefix("block/miniature/naga_courtyard"))));
-		this.registerSimpleTintedItemModel(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE, TFCommon.prefix("block/miniature/naga_courtyard"), new GrassColorSource());
+		this.generateMiniatureStructure(TFBlocks.NAGA_COURTYARD_MINIATURE_STRUCTURE, TFCommon.prefix("block/miniature/naga_courtyard"), new GrassColorSource(), true);
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE, plainVariant(TFCommon.prefix("block/miniature/lich_tower"))));
-		this.registerSimpleItemModel(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE, TFCommon.prefix("block/miniature/lich_tower"));
+		this.generateMiniatureStructure(TFBlocks.LICH_TOWER_MINIATURE_STRUCTURE, TFCommon.prefix("block/miniature/lich_tower"), false);
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.MINOTAUR_LABYRINTH_MINIATURE_STRUCTURE, plainVariant(TFCommon.prefix("block/miniature/labyrinth"))));
-		this.registerSimpleItemModel(TFBlocks.MINOTAUR_LABYRINTH_MINIATURE_STRUCTURE, TFCommon.prefix("block/miniature/labyrinth"));
+		this.generateMiniatureStructure(TFBlocks.MINOTAUR_LABYRINTH_MINIATURE_STRUCTURE, TFCommon.prefix("block/miniature/labyrinth"), true);
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.DARK_TOWER_MINIATURE_STRUCTURE, plainVariant(TFCommon.prefix("block/miniature/dark_tower"))));
-		this.registerSimpleItemModel(TFBlocks.DARK_TOWER_MINIATURE_STRUCTURE, TFCommon.prefix("block/miniature/dark_tower"));
+		this.generateMiniatureStructure(TFBlocks.DARK_TOWER_MINIATURE_STRUCTURE, TFCommon.prefix("block/miniature/dark_tower"), false);
 	}
 
 	private void generateWoodBlocks() {
