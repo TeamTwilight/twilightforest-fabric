@@ -12,6 +12,16 @@
     "minecraft:tadpole",
     "minecraft:creaking",
     "minecraft:nautilus",
-    "minecraft:zombie_nautilus"
+    "minecraft:zombie_nautilus",
+    "twilightforest:adherent",
+    "twilightforest:carminite_ghastling",
+    "twilightforest:carminite_ghastguard",
+    "twilightforest:death_tome",
+    "twilightforest:mosquito_swarm",
+    "twilightforest:quest_ram",
+    "twilightforest:rising_zombie",
+    "twilightforest:snow_guardian",
+    "twilightforest:wraith",
+    "#twilightforest:bosses"
   ]
 }

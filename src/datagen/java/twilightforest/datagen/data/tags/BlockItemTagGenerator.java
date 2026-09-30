@@ -164,6 +164,7 @@ public abstract class BlockItemTagGenerator {
 			TFBlocks.MINING_TRAPDOOR,
 			TFBlocks.SORTING_TRAPDOOR);
 
+		this.tag(BlockTags.SMALL_FLOWERS, ItemTags.SMALL_FLOWERS).add(TFBlocks.THORN_ROSE);
 		this.tag(BlockTags.DAMPENS_VIBRATIONS, ItemTags.DAMPENS_VIBRATIONS).addTag(TFBlockTags.CLOUDS).add(TFBlocks.ARCTIC_FUR_BLOCK);
 		this.tag(BlockTags.DIRT, ItemTags.DIRT).add(TFBlocks.UBEROUS_SOIL);
 		this.tag(BlockTags.STANDING_SIGNS, ItemTags.SIGNS).add(
