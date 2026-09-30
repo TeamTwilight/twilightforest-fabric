@@ -343,7 +343,6 @@ public class ItemTagGenerator extends IntrinsicHolderTagsProvider<Item> {
 		this.tag(ConventionalItemTags.COOKED_MEAT_FOODS).add(TFItems.COOKED_VENISON, TFItems.COOKED_MEEF, TFItems.HYDRA_CHOP);
 		this.tag(ConventionalItemTags.SOUP_FOODS).add(TFItems.MEEF_STROGANOFF, TFItems.MOSS_SOUP);
 		this.tag(ConventionalItemTags.EDIBLE_WHEN_PLACED_FOODS).add(TFItems.EXPERIMENT_115);
-		this.tag(ConventionalItemTags.ROPES).add(TFItems.ROPE);
 		this.tag(ConventionalItemTags.MUSHROOMS).add(TFBlocks.MUSHGLOOM.asItem());
 		this.tag(ConventionalItemTags.MUSIC_DISCS).add(
 			TFItems.MUSIC_DISC_RADIANCE, TFItems.MUSIC_DISC_STEPS, TFItems.MUSIC_DISC_SUPERSTITIOUS,

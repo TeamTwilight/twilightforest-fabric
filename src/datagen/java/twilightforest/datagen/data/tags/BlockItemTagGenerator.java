@@ -238,6 +238,25 @@ public abstract class BlockItemTagGenerator {
 			.addTag(TFBlockTags.STORAGE_BLOCKS_MAZE_SLIME);
 
 		this.tag(ConventionalBlockTags.STORAGE_BLOCKS_SLIME, ConventionalItemTags.STORAGE_BLOCKS_SLIME).add(TFBlocks.MAZE_SLIME_BLOCK);
+		this.tag(ConventionalBlockTags.NATURAL_LOGS, ConventionalItemTags.NATURAL_LOGS).add(
+			TFBlocks.TWILIGHT_OAK_LOG,
+			TFBlocks.CANOPY_LOG,
+			TFBlocks.MANGROVE_LOG,
+			TFBlocks.DARK_LOG,
+			TFBlocks.TIME_LOG,
+			TFBlocks.TRANSFORMATION_LOG,
+			TFBlocks.MINING_LOG,
+			TFBlocks.SORTING_LOG);
+		this.tag(ConventionalBlockTags.NATURAL_WOODS, ConventionalItemTags.NATURAL_WOODS).add(
+			TFBlocks.TWILIGHT_OAK_WOOD,
+			TFBlocks.CANOPY_WOOD,
+			TFBlocks.MANGROVE_WOOD,
+			TFBlocks.DARK_WOOD,
+			TFBlocks.TIME_WOOD,
+			TFBlocks.TRANSFORMATION_WOOD,
+			TFBlocks.MINING_WOOD,
+			TFBlocks.SORTING_WOOD);
+
 		this.tag(ConventionalBlockTags.STRIPPED_LOGS, ConventionalItemTags.STRIPPED_LOGS).add(
 			TFBlocks.STRIPPED_TWILIGHT_OAK_LOG,
 			TFBlocks.STRIPPED_CANOPY_LOG,
@@ -257,6 +276,11 @@ public abstract class BlockItemTagGenerator {
 			TFBlocks.STRIPPED_TRANSFORMATION_WOOD,
 			TFBlocks.STRIPPED_MINING_WOOD,
 			TFBlocks.STRIPPED_SORTING_WOOD);
+
+		this.tag(ConventionalBlockTags.BOOKSHELVES, ConventionalItemTags.BOOKSHELVES).add(TFBlocks.CANOPY_BOOKSHELF);
+		this.tag(ConventionalBlockTags.GLASS_BLOCKS, ConventionalItemTags.GLASS_BLOCKS).add(TFBlocks.AURORALIZED_GLASS);
+		this.tag(ConventionalBlockTags.PLAYER_WORKSTATIONS_CRAFTING_TABLES, ConventionalItemTags.PLAYER_WORKSTATIONS_CRAFTING_TABLES).add(TFBlocks.UNCRAFTING_TABLE);
+		this.tag(ConventionalBlockTags.ROPES, ConventionalItemTags.ROPES).add(TFBlocks.ROPE);
 
 		//-----------
 		//  TF TAGS
