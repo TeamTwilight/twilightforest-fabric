@@ -7,8 +7,8 @@
       "F": "twilightforest:raven_feather",
       "H": "minecraft:rabbit_hide",
       "P": {
-        "fabric:type": "carminite-lib:compound",
-        "children": [
+        "fabric:type": "fabric:any",
+        "ingredients": [
           {
             "fabric:type": "fabric:components",
             "base": "minecraft:potion",

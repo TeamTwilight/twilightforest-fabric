@@ -8,8 +8,8 @@
       "g": "twilightforest:travellers_goggles",
       "s": "#c:slime_balls",
       "w": {
-        "fabric:type": "carminite-lib:compound",
-        "children": [
+        "fabric:type": "fabric:any",
+        "ingredients": [
           {
             "fabric:type": "fabric:components",
             "base": "minecraft:potion",

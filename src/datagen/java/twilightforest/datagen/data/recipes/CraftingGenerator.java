@@ -1,6 +1,5 @@
 package twilightforest.datagen.data.recipes;
 
-import carminite.crafting.CompoundIngredient;
 import com.mojang.datafixers.util.Pair;
 import net.fabricmc.fabric.api.recipe.v1.ingredient.DefaultCustomIngredients;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
@@ -647,7 +646,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		SpecialRecipeBuilder.special(() -> new ComplexRepairRecipe(Ingredient.of(TFItems.ZOMBIE_SCEPTER),
 				List.of(
 					Ingredient.of(Items.ROTTEN_FLESH),
-					CompoundIngredient.of(
+					DefaultCustomIngredients.any(
 						DefaultCustomIngredients.components(Ingredient.of(Items.POTION), DataComponentPatch.builder().set(DataComponents.POTION_CONTENTS, new PotionContents(Potions.STRENGTH)).build()),
 						DefaultCustomIngredients.components(Ingredient.of(Items.POTION), DataComponentPatch.builder().set(DataComponents.POTION_CONTENTS, new PotionContents(Potions.LONG_STRENGTH)).build()),
 						DefaultCustomIngredients.components(Ingredient.of(Items.POTION), DataComponentPatch.builder().set(DataComponents.POTION_CONTENTS, new PotionContents(Potions.STRONG_STRENGTH)).build())
@@ -924,7 +923,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		for (int i = 0; i < potions.length; i++) {
 			ingredients[i] = this.potionIngredient(potions[i]);
 		}
-		return CompoundIngredient.of(ingredients);
+		return DefaultCustomIngredients.any(ingredients);
 	}
 
 	private Ingredient potionIngredient(Holder<Potion> potion) {
