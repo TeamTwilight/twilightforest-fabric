@@ -574,7 +574,7 @@ public final class LichTowerWingRoom extends TwilightJigsawPiece implements IPie
 						.get(itemId)
 						.map(Holder.Reference::value)
 						.map(ItemStack::new)
-						.ifPresent(jarEntity.getItemHandler()::setItem);
+						.ifPresent(jarEntity.getItemHandler()::setStack);
 				}
 
 				int itemRotation = this.placeSettings.getRotation().ordinal() * 4 + (parameters.length == 3 ? this.getHeadRotation(parameters[2], random) : 0);

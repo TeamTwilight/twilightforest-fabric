@@ -72,7 +72,7 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 	}
 
 	private static void handleEmptyHand(ServerLevel server, BlockPos pos, Player player, InteractionHand hand, MasonJarBlockEntity jar, MasonJarBlockEntity.MasonJarItemStorage storage) {
-		ItemStack contained = storage.getItem();
+		ItemStack contained = storage.getStack().copy();
 		if (contained.isEmpty()) {
 			wiggle(server, pos, jar);
 			return;
@@ -153,7 +153,7 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 			params = params.withDynamicDrop(
 				ShulkerBoxBlock.CONTENTS,
 				stackConsumer -> stackConsumer.accept(
-					jarBlockEntity.getItemHandler().getItem()
+					jarBlockEntity.getItemHandler().getStack().copy()
 				)
 			);
 		}
@@ -170,7 +170,7 @@ public class MasonJarBlock extends JarBlock implements SimpleWaterloggedBlock {
 	) {
 		if (level.getBlockEntity(pos)
 			instanceof MasonJarBlockEntity jarBlockEntity) {
-			ItemStack itemStack = jarBlockEntity.getItemHandler().getItem();
+			ItemStack itemStack = jarBlockEntity.getItemHandler().getStack().copy();
 			return Mth.lerpDiscrete(itemStack.isEmpty() ? 0 : (float) itemStack.getCount() / itemStack.getMaxStackSize(), 0, 15);
 		}
 		return 0;

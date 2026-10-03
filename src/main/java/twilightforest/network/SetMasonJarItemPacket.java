@@ -44,7 +44,7 @@ public record SetMasonJarItemPacket(BlockPos pos, boolean empty, ItemStack stack
 			public void run() {
 				ClientLevel clientLevel = ctx.client().level;
 				if (clientLevel.getBlockEntity(packet.pos()) instanceof MasonJarBlockEntity blockEntity) {
-					blockEntity.getItemHandler().setItem(packet.stack());
+					blockEntity.getItemHandler().setStack(packet.stack());
 					blockEntity.setItemRotation(packet.rotation());
 					blockEntity.setChanged();
 				}

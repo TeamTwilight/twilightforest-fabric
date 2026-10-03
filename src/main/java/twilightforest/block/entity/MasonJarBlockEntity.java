@@ -39,7 +39,6 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 	private static final String TAG_ITEM = "item";
 	public static final String TAG_ANGLE = "rotation";
 
-	protected ItemStack itemStack = ItemStack.EMPTY;
 	protected final MasonJarItemStorage item;
 	protected int itemRotation = 0;
 
@@ -55,14 +54,16 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 	@Override
 	protected void saveAdditional(ValueOutput output) {
 		super.saveAdditional(output);
-		output.store(TAG_ITEM, ItemStack.CODEC, this.itemStack);
+		if (!this.item.isEmpty()) {
+			output.store(TAG_ITEM, ItemStack.CODEC, this.item.getStack());
+		}
 		output.putInt(TAG_ANGLE, this.itemRotation);
 	}
 
 	@Override
 	protected void loadAdditional(ValueInput input) {
 		super.loadAdditional(input);
-		this.itemStack = input.read(TAG_ITEM, ItemStack.CODEC).orElse(ItemStack.EMPTY);
+		this.item.setStack(input.read(TAG_ITEM, ItemStack.CODEC).orElse(ItemStack.EMPTY));
 		this.itemRotation = input.getIntOr(TAG_ANGLE, 0);
 	}
 
@@ -82,17 +83,14 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 	}
 
 	private void acceptLootTable(ItemStack stack) {
-		ItemStack contained = this.item.getItem();
-
-		if (contained.isEmpty()) {
-			this.item.setItem(stack);
-		} else if (ItemStack.isSameItemSameComponents(contained, stack)) {
-			contained.setCount(Math.min(
-				contained.getCount() + stack.getCount(),
-				contained.getMaxStackSize()
-			));
-
-			this.item.setItem(contained);
+		if (item.isEmpty()) {
+			item.setStack(stack);
+		} else {
+			ItemStack contained = item.getStack();
+			// Merge stack in if there's already an item inside
+			if (ItemStack.isSameItemSameComponents(contained, stack)) {
+				contained.setCount(Math.min(contained.getCount() + stack.getCount(), contained.getMaxStackSize()));
+			}
 		}
 	}
 
@@ -103,13 +101,13 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 	@Override
 	protected void collectImplicitComponents(DataComponentMap.Builder builder) {
 		super.collectImplicitComponents(builder);
-		builder.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(List.of(this.item.getItem())));
+		builder.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(List.of(this.item.getStack().copy())));
 	}
 
 	@Override
 	protected void applyImplicitComponents(DataComponentGetter components) {
 		super.applyImplicitComponents(components);
-		this.item.setItem(components.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).copyOne());
+		this.item.setStack(components.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).copyOne());
 	}
 
 	@Override
@@ -126,7 +124,7 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 		}
 		if (this.level instanceof ServerLevel serverLevel) {
 			for (ServerPlayer player : PlayerLookup.tracking(serverLevel, ChunkPos.containing(this.getBlockPos()))) {
-				ServerPlayNetworking.send(player, new SetMasonJarItemPacket(this.getBlockPos(), this.item.getItem(), this.itemRotation));
+				ServerPlayNetworking.send(player, new SetMasonJarItemPacket(this.getBlockPos(), this.item.getStack().copy(), this.itemRotation));
 			}
 		}
 	}
@@ -141,27 +139,20 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 
 	public static class MasonJarItemStorage extends SingleStackStorage {
 		private final MasonJarBlockEntity jarEntity;
+		private ItemStack itemStack = ItemStack.EMPTY;
 
 		public MasonJarItemStorage(MasonJarBlockEntity jarEntity) {
 			this.jarEntity = jarEntity;
 		}
 
-		public ItemStack getItem() {
-			return this.getStack().copy();
-		}
-
-		public void setItem(ItemStack stack) {
-			this.setStack(stack.copy());
+		@Override
+		public ItemStack getStack() {
+			return this.itemStack;
 		}
 
 		@Override
-		protected ItemStack getStack() {
-			return this.jarEntity.itemStack;
-		}
-
-		@Override
-		protected void setStack(ItemStack stack) {
-			this.jarEntity.itemStack = stack;
+		public void setStack(ItemStack stack) {
+			this.itemStack = stack;
 		}
 
 		@Override
@@ -170,13 +161,8 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 		}
 
 		@Override
-		public long insert(
-			ItemVariant resource,
-			long maxAmount,
-			TransactionContext transaction
-		) {
+		public long insert(ItemVariant resource, long maxAmount, TransactionContext transaction) {
 			long inserted = super.insert(resource, maxAmount, transaction);
-
 			if (inserted > 0) {
 				transaction.addOuterCloseCallback(result -> {
 					if (result.wasCommitted()) {
@@ -185,18 +171,12 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 					}
 				});
 			}
-
 			return inserted;
 		}
 
 		@Override
-		public long extract(
-			ItemVariant resource,
-			long maxAmount,
-			TransactionContext transaction
-		) {
+		public long extract(ItemVariant resource, long maxAmount, TransactionContext transaction) {
 			long extracted = super.extract(resource, maxAmount, transaction);
-
 			if (extracted > 0) {
 				transaction.addOuterCloseCallback(result -> {
 					if (result.wasCommitted()) {
@@ -205,8 +185,11 @@ public class MasonJarBlockEntity extends JarBlockEntity {
 					}
 				});
 			}
-
 			return extracted;
+		}
+
+		public boolean isEmpty() {
+			return this.getStack().isEmpty();
 		}
 	}
 }

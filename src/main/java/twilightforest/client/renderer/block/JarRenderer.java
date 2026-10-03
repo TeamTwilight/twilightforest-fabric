@@ -194,7 +194,7 @@ public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRendere
 		public void extractRenderState(MasonJarBlockEntity blockEntity, JarRenderState state, float partialTicks, Vec3 cameraPosition, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
 			super.extractRenderState(blockEntity, state, partialTicks, cameraPosition, breakProgress);
 			state.itemRotation = RotationSegment.convertToDegrees(blockEntity.getItemRotation());
-			this.resolver.updateForTopItem(state.item, blockEntity.getItemHandler().getItem(), ItemDisplayContext.TWILIGHTFOREST_JARRED, blockEntity.getLevel(), null, 0);
+			this.resolver.updateForTopItem(state.item, blockEntity.getItemHandler().getStack().copy(), ItemDisplayContext.TWILIGHTFOREST_JARRED, blockEntity.getLevel(), null, 0);
 		}
 
 		@Override
