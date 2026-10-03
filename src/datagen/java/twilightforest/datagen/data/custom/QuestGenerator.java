@@ -1,34 +1,24 @@
 package twilightforest.datagen.data.custom;
 
-import com.google.common.collect.ImmutableList;
-import com.mojang.serialization.JsonOps;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
-import net.minecraft.data.CachedOutput;
-import net.minecraft.data.DataProvider;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricCodecDataProvider;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.Identifier;
 import twilightforest.TFCommon;
 import twilightforest.entity.passive.quest.ram.QuestingRamContext;
 
-import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Function;
+import java.util.function.BiConsumer;
 
-public class QuestGenerator implements DataProvider {
-
-	private final PackOutput output;
-
-	public QuestGenerator(FabricPackOutput output) {
-		this.output = output;
+public class QuestGenerator extends FabricCodecDataProvider<QuestingRamContext> {
+	public QuestGenerator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+		super(output, registriesFuture, PackOutput.Target.DATA_PACK, "twilight/quests", QuestingRamContext.CODEC);
 	}
 
 	@Override
-	public CompletableFuture<?> run(CachedOutput output) {
-		Function<String, Path> questPath = (s) -> this.output.getOutputFolder().resolve(String.format("data/%s/%s/%s/%s.json", TFCommon.ID, "twilight", "quests", s));
-
-		ImmutableList.Builder<CompletableFuture<?>> futuresBuilder = new ImmutableList.Builder<>();
-
-		futuresBuilder.add(DataProvider.saveStable(output, QuestingRamContext.CODEC.encodeStart(JsonOps.INSTANCE, QuestingRamContext.FALLBACK).resultOrPartial(TFCommon.LOGGER::error).orElseThrow(), questPath.apply("questing_ram")));
-		return CompletableFuture.allOf(futuresBuilder.build().toArray(CompletableFuture[]::new));
+	protected void configure(BiConsumer<Identifier, QuestingRamContext> provider, HolderLookup.Provider registryLookup) {
+		provider.accept(TFCommon.prefix("questing_ram"), QuestingRamContext.FALLBACK);
 	}
 
 	@Override

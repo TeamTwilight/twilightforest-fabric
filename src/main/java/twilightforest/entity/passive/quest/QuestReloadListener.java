@@ -1,38 +1,37 @@
 package twilightforest.entity.passive.quest;
 
-import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import twilightforest.TFCommon;
 import twilightforest.entity.passive.quest.ram.QuestingRamContext;
 import twilightforest.entity.passive.quest.ram.QuestingRamCurrentContext;
+import twilightforest.world.components.structures.util.CodecResourceReloadListener;
 
-import java.util.Map;
-
-public class QuestReloadListener extends SimpleJsonResourceReloadListener<QuestingRamContext> {
-
+public class QuestReloadListener extends CodecResourceReloadListener<QuestingRamContext> {
 	private static final QuestingRamCurrentContext questingRamCurrentContext = QuestingRamCurrentContext.INSTANCE;
+	private boolean found;
 
 	public QuestReloadListener() {
-		super(QuestingRamContext.CODEC, FileToIdConverter.json("twilight/quests"));
+		super("twilight/quests", QuestingRamContext.CODEC);
 	}
 
 	@Override
-	protected void apply(Map<Identifier, QuestingRamContext> object, ResourceManager resourceManager, ProfilerFiller profiler) {
-		boolean found = false;
-		for (var entry : object.entrySet()) {
-			if (entry.getKey().getPath().equals("questing_ram")) {
-				questingRamCurrentContext.setContext(entry.getValue());
-				TFCommon.LOGGER.debug("Questing Ram quest set by mod {}", entry.getKey().getNamespace());
-				found = true;
-			}
+	protected void forLocation(ResourceManager manager, Identifier location, QuestingRamContext context) {
+		if (location.getPath().equals("questing_ram")) {
+			questingRamCurrentContext.setContext(context);
+			TFCommon.LOGGER.debug("Questing Ram quest set by mod {}", location.getNamespace());
+			found = true;
 		}
+	}
 
+	@Override
+	protected void afterApply(ResourceManager manager, ProfilerFiller profiler) {
 		if (!found) {
 			TFCommon.LOGGER.error("Questing Ram quest file not found. Defaulting to fallback");
 			questingRamCurrentContext.setContext(QuestingRamContext.FALLBACK);
 		}
+
+		found = false;
 	}
 }
