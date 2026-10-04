@@ -54,12 +54,20 @@ public final class OverlayEventListeners {
 	public static void init() {
 		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, OverlayEventListeners.QUEST_RAM_INDICATOR, (graphics, _) -> OverlayEventListeners.renderIndicator(graphics, graphics.guiWidth(), graphics.guiHeight()));
 		HudElementRegistry.attachElementAfter(VanillaHudElements.MOUNT_HEALTH, OverlayEventListeners.HOSTILE_MOUNT_HUNGER_BAR, (graphics, _) -> OverlayEventListeners.renderHostileMountHungerBar(graphics));
-		HudStatusBarHeightRegistry.addRight(OverlayEventListeners.HOSTILE_MOUNT_HUNGER_BAR, _ -> 10);
+		HudStatusBarHeightRegistry.addRight(HOSTILE_MOUNT_HUNGER_BAR, player -> shouldRenderHostileMountHunger(player, Minecraft.getInstance()) ? 10 : 0);
 		HudElementRegistry.addLast(OverlayEventListeners.ORE_METER_STATS, (graphics, _) -> OverlayEventListeners.renderOreMeterStats(graphics));
 		HudElementRegistry.attachElementAfter(VanillaHudElements.ARMOR_BAR, OverlayEventListeners.FORTIFICATION_SHIELD_COUNT, (graphics, _) -> OverlayEventListeners.renderShieldCount(graphics, graphics.guiWidth(), graphics.guiHeight()));
-		HudStatusBarHeightRegistry.addLeft(OverlayEventListeners.FORTIFICATION_SHIELD_COUNT, _ -> 10);
+		HudStatusBarHeightRegistry.addLeft(OverlayEventListeners.FORTIFICATION_SHIELD_COUNT, player -> shouldRenderShields(player, Minecraft.getInstance()) ? 10 : 0);
 		HudElementRegistry.addLast(OverlayEventListeners.PORTAL_OVERLAY, (graphics, _) -> OverlayEventListeners.renderPortalOverlay(graphics));
 		HudElementRegistry.addLast(OverlayEventListeners.ITEM_DISPLAY_OVERLAY, (graphics, _) -> ItemDisplayOverlay.render(graphics, OverlayEventListeners.getCameraPlayer()));
+	}
+
+	private static boolean shouldRenderHostileMountHunger(Player player, Minecraft minecraft) {
+		return !minecraft.options.hideGui && minecraft.gameMode.canHurtPlayer() && player != null && HostileMountEventListeners.isRidingUnfriendly(player);
+	}
+
+	private static boolean shouldRenderShields(Player player, Minecraft minecraft) {
+		return player != null && !minecraft.options.hideGui && (minecraft.gameMode.canHurtPlayer() || TFConfig.showFortificationShieldIndicatorInCreative) && player.hasAttached(TFDataAttachments.FORTIFICATION_SHIELDS) && player.getAttached(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft() > 0 && TFConfig.showFortificationShieldIndicator;
 	}
 
 	public static void renderIndicator(GuiGraphicsExtractor graphics, int screenWidth, int screenHeight) {
@@ -91,7 +99,7 @@ public final class OverlayEventListeners {
 		Minecraft minecraft = Minecraft.getInstance();
 		LocalPlayer player = minecraft.player;
 		Gui gui = minecraft.gui;
-		if (!minecraft.options.hideGui && minecraft.gameMode.canHurtPlayer() && player != null && HostileMountEventListeners.isRidingUnfriendly(player)) {
+		if (shouldRenderShields(player, minecraft)) {
 			int xPos = graphics.guiWidth() / 2 + 91;
 			int yPos = graphics.guiHeight() - HudStatusBarHeightRegistry.getHeight(HOSTILE_MOUNT_HUNGER_BAR);
 			gui.extractFood(graphics, player, yPos, xPos);
@@ -102,7 +110,7 @@ public final class OverlayEventListeners {
 		Minecraft minecraft = Minecraft.getInstance();
 		LocalPlayer player = minecraft.player;
 		int shieldCount = player.getAttachedOrCreate(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft();
-		if (player != null && !minecraft.options.hideGui && (minecraft.gameMode.canHurtPlayer() || TFConfig.showFortificationShieldIndicatorInCreative) && player.hasAttached(TFDataAttachments.FORTIFICATION_SHIELDS) && player.getAttached(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft() > 0 && TFConfig.showFortificationShieldIndicator) {
+		if (shouldRenderShields(player, minecraft)) {
 			for (int i = 0; i < Math.min(shieldCount, 10); i++) {
 				graphics.blitSprite(RenderPipelines.GUI_TEXTURED, FORTIFICATION_SHIELD_SPRITE, screenWidth / 2 - 91 + (i * 8), screenHeight - HudStatusBarHeightRegistry.getHeight(FORTIFICATION_SHIELD_COUNT), 9, 9);
 			}
