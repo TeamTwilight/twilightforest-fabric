@@ -23,8 +23,11 @@ public interface ResolvedModelMixin {
 		ItemTransforms original,
 		@Local(argsOnly = true, name = "top") ResolvedModel top
 	) {
-		ItemTransform transform = findTopTransform(top, ItemDisplayContext.TWILIGHTFOREST_JARRED);
-		((JarTransformsDuck) (Object) original).twilightforest$setJarredTransform(transform);
+		ItemTransform jarred = findTopTransform(top, ItemDisplayContext.TWILIGHTFOREST_JARRED);
+		if (jarred == ItemTransform.NO_TRANSFORM) {
+			jarred = findTopTransform(top, ItemDisplayContext.FIXED);
+		}
+		((JarTransformsDuck) (Object) original).twilightforest$setJarredTransform(jarred);
 		return original;
 	}
 }

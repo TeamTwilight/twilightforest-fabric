@@ -31,7 +31,15 @@ public class ItemTransformsMixin implements JarTransformsDuck {
 		ItemTransform original,
 		@Local(argsOnly = true, name = "type") ItemDisplayContext type
 	) {
-		return type == ItemDisplayContext.TWILIGHTFOREST_JARRED ? this.twilightforest$jarredTransform : original;
+		if (type != ItemDisplayContext.TWILIGHTFOREST_JARRED) {
+			return original;
+		}
+
+		if (this.twilightforest$jarredTransform != ItemTransform.NO_TRANSFORM) {
+			return this.twilightforest$jarredTransform;
+		}
+
+		return ((ItemTransforms) (Object) this).fixed();
 	}
 
 	@Override
@@ -53,8 +61,23 @@ public class ItemTransformsMixin implements JarTransformsDuck {
 			CallbackInfoReturnable<ItemTransforms> cir
 		) {
 			JsonObject object = json.getAsJsonObject();
+
+			ItemTransform transform;
 			if (object.has("twilightforest:jarred")) {
-				ItemTransform transform = context.deserialize(object.get("twilightforest:jarred"), ItemTransform.class);
+				transform = context.deserialize(
+					object.get("twilightforest:jarred"),
+					ItemTransform.class
+				);
+			} else if (object.has("fixed")) {
+				transform = context.deserialize(
+					object.get("fixed"),
+					ItemTransform.class
+				);
+			} else {
+				transform = ItemTransform.NO_TRANSFORM;
+			}
+
+			if (object.has("twilightforest:jarred")) {
 				((JarTransformsDuck) (Object) cir.getReturnValue()).twilightforest$setJarredTransform(transform);
 			}
 		}
