@@ -28,6 +28,7 @@ public class DataGenerator {
 		pack.addProvider(ItemTagGenerator::new);
 		pack.addProvider(PaintingVariantTagGenerator::new);
 		pack.addProvider(StructureTagGenerator::new);
+		pack.addProvider(TimelineTagGenerator::new);
 		pack.addProvider(WoodPaletteTagGenerator::new);
 
 		pack.addProvider(DynamicRegistryProvider::new);

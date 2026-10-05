@@ -5,11 +5,11 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.sounds.Music;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TimelineTags;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.TriState;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.attribute.*;
+import net.minecraft.world.clock.WorldClock;
 import net.minecraft.world.level.CardinalLighting;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.dimension.DimensionType;
@@ -17,8 +17,10 @@ import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.timeline.Timeline;
 import twilightforest.TFCommon;
+import twilightforest.datagen.data.TFWorldClockGenerator;
 import twilightforest.init.*;
 import twilightforest.init.custom.BiomeLayerStack;
+import twilightforest.tags.TFTimelineTags;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
 import twilightforest.world.components.layer.BiomeDensitySource;
 
@@ -29,6 +31,7 @@ public class TFDimensionGenerator {
 	public static void bootstrapType(BootstrapContext<DimensionType> context) {
 		TFCommon.LOGGER.info("Bootstrap called for dimension type...");
 		HolderGetter<Timeline> timelines = context.lookup(Registries.TIMELINE);
+		HolderGetter<WorldClock> clocks = context.lookup(Registries.WORLD_CLOCK);
 		context.register(TFDimension.TWILIGHT_DIM_TYPE, new DimensionType(
 			true, //fixed time
 			true, //skylight
@@ -56,9 +59,10 @@ public class TFDimensionGenerator {
 				.set(EnvironmentAttributes.SKY_LIGHT_LEVEL, 9.0F)
 				.set(EnvironmentAttributes.SKY_LIGHT_FACTOR, 0.35F)
 				.set(EnvironmentAttributes.SKY_LIGHT_COLOR, ARGB.colorFromFloat(1.0F, 0.65F, 0.65F, 1.0F))
+				.set(EnvironmentAttributes.AMBIENT_LIGHT_COLOR, -16119286)
 				.build(),
-			timelines.getOrThrow(TimelineTags.UNIVERSAL), //timelines
-			Optional.empty() //clock
+			timelines.getOrThrow(TFTimelineTags.IN_TWILIGHT), //timelines
+			Optional.of(clocks.getOrThrow(TFWorldClockGenerator.TWILIGHT_FOREST)) //clock
 		));
 	}
 

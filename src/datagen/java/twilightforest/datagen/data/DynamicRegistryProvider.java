@@ -43,6 +43,8 @@ public class DynamicRegistryProvider extends FabricDynamicRegistryProvider {
 		entries.addAll(registries.lookupOrThrow(Registries.JUKEBOX_SONG));
 		entries.addAll(registries.lookupOrThrow(Registries.ENCHANTMENT));
 		entries.addAll(registries.lookupOrThrow(TFRegistries.Keys.TEMPLATE_MARKER_HANDLER_LIST));
+		entries.addAll(registries.lookupOrThrow(Registries.TIMELINE));
+		entries.addAll(registries.lookupOrThrow(Registries.WORLD_CLOCK));
 	}
 
 	private static void addVanillaWoodPalettes(HolderLookup.Provider registries, Entries entries) {
