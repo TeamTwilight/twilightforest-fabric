@@ -37,7 +37,7 @@ public interface IPayloadContext {
 
 			@Override
 			public void enqueueWork(Runnable runnable) {
-				net.minecraft.client.Minecraft.getInstance().execute(runnable);
+				context.client().execute(runnable);
 			}
 
 			@Override
@@ -56,7 +56,7 @@ public interface IPayloadContext {
 
 			@Override
 			public void enqueueWork(Runnable runnable) {
-				context.player().getServer().execute(runnable);
+				context.server().execute(runnable);
 			}
 
 			@Override
