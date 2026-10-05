@@ -100,7 +100,7 @@ public class EntityEvents {
 		AdvancementEvent.EARN.register(INSTANCE::alertPlayerCastleIsWIP);
 		PlayerInteractEvent.RightClickBlock.EVENT.register(INSTANCE::attachLeadToWroughtFence);
 		PlayerInteractEvent.LeftClickEmpty.EVENT.register(INSTANCE::wipeOreMeterOnLeftClick);
-		LivingDamageEvent.DAMAGE.register(INSTANCE::entityHurts);
+		LivingHurtEvent.EVENT.register(INSTANCE::entityHurts);
 		BlockEvent.BreakEvent.EVENT.register(INSTANCE::onCasketBreak);
 		LivingHurtEvent.EVENT.register(INSTANCE::reduceFrostedEffectIfOnFire);
 		ProjectileImpactEvent.EVENT.register(INSTANCE::onParryProjectile);
@@ -168,7 +168,7 @@ public class EntityEvents {
 		}
 	}
 
-	private void entityHurts(LivingDamageEvent event) {
+	private void entityHurts(LivingHurtEvent event) {
 		LivingEntity living = event.getEntity();
 		DamageSource source = event.getSource();
 		Entity trueSource = source.getEntity();
@@ -184,6 +184,14 @@ public class EntityEvents {
 
 			if (trueSource instanceof LivingEntity target) {
 				ApplyFrostedEffect.doChillAuraEffect(target, chillLevel * 5 + 5, chillLevel, chillLevel > 0);
+			}
+		}
+
+		// triple bow strips invulnerableTime
+		if (source.getMsgId().equals("arrow") && trueSource instanceof Player player) {
+
+			if (player.getItemInHand(player.getUsedItemHand()).is(TFItems.TRIPLE_BOW.get())) {
+				living.invulnerableTime = 0;
 			}
 		}
 	}
