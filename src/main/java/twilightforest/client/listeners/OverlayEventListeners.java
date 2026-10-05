@@ -99,7 +99,7 @@ public final class OverlayEventListeners {
 		Minecraft minecraft = Minecraft.getInstance();
 		LocalPlayer player = minecraft.player;
 		Gui gui = minecraft.gui;
-		if (shouldRenderShields(player, minecraft)) {
+		if (shouldRenderHostileMountHunger(player, minecraft)) {
 			int xPos = graphics.guiWidth() / 2 + 91;
 			int yPos = graphics.guiHeight() - HudStatusBarHeightRegistry.getHeight(HOSTILE_MOUNT_HUNGER_BAR);
 			gui.extractFood(graphics, player, yPos, xPos);

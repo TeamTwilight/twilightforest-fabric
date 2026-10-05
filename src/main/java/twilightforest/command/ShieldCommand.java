@@ -32,14 +32,14 @@ public class ShieldCommand {
 
 	private int add(Entity e, int num, boolean temporary) {
 		if (e instanceof LivingEntity living) {
-			living.getAttached(TFDataAttachments.FORTIFICATION_SHIELDS).addShields(living, num, temporary);
+			living.getAttachedOrCreate(TFDataAttachments.FORTIFICATION_SHIELDS).addShields(living, num, temporary);
 		}
 		return Command.SINGLE_SUCCESS;
 	}
 
 	private int set(Entity e, int num, boolean temporary) {
 		if (e instanceof LivingEntity living) {
-			living.getAttached(TFDataAttachments.FORTIFICATION_SHIELDS).setShields(living, num, temporary);
+			living.getAttachedOrCreate(TFDataAttachments.FORTIFICATION_SHIELDS).setShields(living, num, temporary);
 		}
 		return Command.SINGLE_SUCCESS;
 	}

@@ -17,7 +17,7 @@ public class FortificationWandItem extends ScepterItem {
 	@Override
 	public InteractionResult performScepterAction(Level level, ItemStack stack, Player player, InteractionHand hand) {
 		if (!level.isClientSide()) {
-			player.getAttached(TFDataAttachments.FORTIFICATION_SHIELDS).setShields(player, 5, true);
+			player.getAttachedOrCreate(TFDataAttachments.FORTIFICATION_SHIELDS).setShields(player, 5, true);
 			if (!player.isCreative()) {
 				stack.hurtWithoutBreaking(1, player);
 			}
