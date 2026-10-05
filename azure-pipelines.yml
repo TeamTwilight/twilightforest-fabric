@@ -43,21 +43,21 @@ steps:
 
   - task: Cache@2
     inputs:
-      key: 'gradle | "$(Agent.OS)" | build.gradle | settings.gradle | gradle.properties | src/main/resources/twilightforest.classtweaker'
+      key: 'gradle | "$(Agent.OS)" | build.gradle | settings.gradle | gradle.properties | src/main/resources/twilightforest.classtweaker | carminite-lib/src/main/resources/carminite-lib.classtweaker'
       path: $(GRADLE_USER_HOME)
     displayName: Restore Gradle Cache
     condition: eq(variables.SKIP_BUILD, 'false')
 
   - task: Cache@2
     inputs:
-      key: 'gradleLocal | "$(Agent.OS)" | build.gradle | settings.gradle | gradle.properties | src/main/resources/twilightforest.classtweaker'
+      key: 'gradleLocal | "$(Agent.OS)" | build.gradle | settings.gradle | gradle.properties | src/main/resources/twilightforest.classtweaker | carminite-lib/src/main/resources/carminite-lib.classtweaker'
       path: .gradle
     displayName: Restore Project Level Gradle Cache
     condition: eq(variables.SKIP_BUILD, 'false')
 
   - task: Cache@2
     inputs:
-      key: 'gradleBuildTmpLocal | "$(Agent.OS)" | build.gradle | settings.gradle | gradle.properties | src/main/resources/twilightforest.classtweaker'
+      key: 'gradleBuildTmpLocal | "$(Agent.OS)" | build.gradle | settings.gradle | gradle.properties | src/main/resources/twilightforest.classtweaker | carminite-lib/src/main/resources/carminite-lib.classtweaker'
       path: build/tmp
     displayName: Restore Project Level build/tmp Cache
     condition: eq(variables.SKIP_BUILD, 'false')
