@@ -116,7 +116,7 @@ public class TravellersClientEvents {
 		if (lastImpulseZero && sameImpulseDirection && hasDoubleTapped && input.leftImpulse != 0) {
 			boolean isLeftSidestep = input.leftImpulse > 0;
 			if (TravellersGearLogic.tryPerformSidestep(localPlayer, isLeftSidestep)) {
-				localPlayer.connection.send(new ClientboundCustomPayloadPacket(new PerformSidestepPacket(isLeftSidestep)));
+				ClientPlayNetworking.send(new PerformSidestepPacket(isLeftSidestep));
 			}
 		}
 
@@ -165,7 +165,7 @@ public class TravellersClientEvents {
 
 		player.setAttached(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER, isUsingZoom);
 		player.playSound(isUsingZoom ? TFSounds.GOGGLES_ZOOM_IN.get() : TFSounds.GOGGLES_ZOOM_OUT.get());
-		player.connection.send(new ClientboundCustomPayloadPacket(new GogglesZoomPacket(isUsingZoom, player.getUUID())));
+		ClientPlayNetworking.send(new GogglesZoomPacket(isUsingZoom, player.getUUID()));
 	}
 
 	private void updateGradualGlideState(Minecraft client) {
