@@ -2,6 +2,7 @@ package twilightforest.item.travellers_gear;
 
 import carminite.util.ConcatenatedListView;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
@@ -98,6 +99,9 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flag) {
 		super.appendHoverText(stack, context, display, builder, flag);
+		Minecraft minecraft = Minecraft.getInstance();
+		boolean shiftDown = minecraft.hasShiftDown();
+
 		HolderLookup.Provider registries = context.registries();
 		if (registries == null)
 			return;
@@ -110,7 +114,7 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 		List<Holder.Reference<TravellersModifier>> insertableModifiers = TravellersModifiersManager.findAllInsertableModifiers(registries, stack);
 		for (Holder.Reference<TravellersModifier> modifier : insertableModifiers) {
 			builder.accept(Component.literal("- ").append(TravellersModifiersManager.getModifierTooltipComponent(modifier).withStyle(ChatFormatting.GRAY)));
-			if (flag.carminite$hasShiftDown()) {
+			if (shiftDown) {
 				for (Component description : modifier.value().getDescription()) {
 					// FIXME There has to be a better way to bold only the indent and arrow and not the information component
 					builder.accept(Component.literal("").append(Component.translatable("travellers_gear.info_indent").withStyle(ChatFormatting.BOLD)).append(description));
@@ -126,7 +130,7 @@ public class TravellersArmorItem extends Item implements TravellersModifiable {
 			builder.accept(GLOVES_TOOLTIP);
 		}
 
-		if (!flag.carminite$hasShiftDown()) {
+		if (!shiftDown) {
 			ConcatenatedListView<Holder.Reference<TravellersModifier>> modifiers = ConcatenatedListView.of(abilityModifiers, insertableModifiers);
 			boolean hasHiddenDescriptions = modifiers.stream().map(Holder::value).map(TravellersModifier::getDescription).anyMatch(Predicate.not(List::isEmpty));
 			if (hasHiddenDescriptions) {
