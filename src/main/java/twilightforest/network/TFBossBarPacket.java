@@ -8,7 +8,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.protocol.game.ClientboundBossEventPacket;
 import net.minecraft.world.BossEvent;
-import twilightforest.network.IPayloadContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.boss.bar.ClientTFBossBar;
 import twilightforest.entity.boss.bar.ServerTFBossBar;

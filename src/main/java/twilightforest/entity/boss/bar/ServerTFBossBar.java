@@ -1,9 +1,9 @@
 package twilightforest.entity.boss.bar;
 
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
-import twilightforest.network.PacketDistributor;
 import twilightforest.network.TFBossBarPacket;
 
 public class ServerTFBossBar extends ServerBossEvent {
@@ -21,7 +21,7 @@ public class ServerTFBossBar extends ServerBossEvent {
 	@Override
 	public void addPlayer(ServerPlayer player) {
 		if (this.players.add(player) && this.visible) {
-			PacketDistributor.sendToPlayer(player, new TFBossBarPacket.AddTFBossBarPacket(this));
+			ServerPlayNetworking.send(player, new TFBossBarPacket.AddTFBossBarPacket(this));
 		}
 	}
 
@@ -35,6 +35,6 @@ public class ServerTFBossBar extends ServerBossEvent {
 			this.overlay = overlay;
 			change = true;
 		}
-		if (change) this.players.forEach(serverPlayer -> PacketDistributor.sendToPlayer(serverPlayer, new TFBossBarPacket.UpdateTFBossBarStylePacket(this, allowLerp)));
+		if (change) this.players.forEach(serverPlayer -> ServerPlayNetworking.send(serverPlayer, new TFBossBarPacket.UpdateTFBossBarStylePacket(this, allowLerp)));
 	}
 }
