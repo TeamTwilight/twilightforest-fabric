@@ -37,7 +37,11 @@ public interface IPayloadContext {
 
 			@Override
 			public void enqueueWork(Runnable runnable) {
-				context.client().execute(runnable);
+				if (context.client().isSameThread()) {
+					runnable.run();
+				} else {
+					context.client().execute(runnable);
+				}
 			}
 
 			@Override
@@ -56,7 +60,11 @@ public interface IPayloadContext {
 
 			@Override
 			public void enqueueWork(Runnable runnable) {
-				context.server().execute(runnable);
+				if (context.server().isSameThread()) {
+					runnable.run();
+				} else {
+					context.server().execute(runnable);
+				}
 			}
 
 			@Override
