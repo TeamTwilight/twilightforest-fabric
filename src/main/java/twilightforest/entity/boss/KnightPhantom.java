@@ -3,6 +3,8 @@ package twilightforest.entity.boss;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
@@ -46,7 +48,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import twilightforest.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.control.NoClipMoveControl;
@@ -117,7 +118,11 @@ public class KnightPhantom extends BaseTFBoss {
 
 	@Override
 	public void startSeenByPlayer(ServerPlayer player) {
-		if (this.isDeadOrDying()) PacketDistributor.sendToPlayersTrackingEntity(this, new UpdateDeathTimePacket(this.getId(), this.deathTime));
+		if (this.isDeadOrDying()) {
+			for (ServerPlayer serverPlayer : PlayerLookup.tracking(this)) {
+				ServerPlayNetworking.send(serverPlayer, new UpdateDeathTimePacket(this.getId(), this.deathTime));
+			}
+		}
 		else if (this.getNumber() == 0) this.getBossBar().addPlayer(player);
 	}
 
@@ -255,7 +260,9 @@ public class KnightPhantom extends BaseTFBoss {
 			// tell the other knights to reset their animation
 			for (KnightPhantom phantom : this.level().getEntitiesOfClass(KnightPhantom.class, this.getBoundingBox().inflate(64.0D), LivingEntity::isDeadOrDying)) {
 				phantom.deathTime = 1;
-				PacketDistributor.sendToPlayersTrackingEntity(phantom, new UpdateDeathTimePacket(phantom.getId(), 1));
+				for (ServerPlayer serverPlayer : PlayerLookup.tracking(phantom)) {
+					ServerPlayNetworking.send(serverPlayer, new UpdateDeathTimePacket(phantom.getId(), 1));
+				}
 			}
 			this.getEntityData().set(IT_IS_OVER, true);
 		}
@@ -578,8 +585,8 @@ public class KnightPhantom extends BaseTFBoss {
 	@Override
 	protected void tickDeath() {
 		super.tickDeath();
-		if (this.deathTime >= DYING_TICKS && this.getDimensions(this.getPose()) != UNTOUCHABLE) { // Remove the mob's hitbox if it enters a certain part of it's dying animation
-			EntityDimensions oldDimensions = this.getDimensions(this.getPose());
+		if (this.deathTime >= DYING_TICKS && this.dimensions != UNTOUCHABLE) { // Remove the mob's hitbox if it enters a certain part of it's dying animation
+			EntityDimensions oldDimensions = this.dimensions;
 			this.dimensions = UNTOUCHABLE;
 			this.reapplyPosition();
 			boolean flag = (double) UNTOUCHABLE.width() <= 4.0 && (double) UNTOUCHABLE.height() <= 4.0;
@@ -650,12 +657,10 @@ public class KnightPhantom extends BaseTFBoss {
 		}
 	}
 
-	/*
 	@Override
 	public void makePoofParticles() {
 		// We poof before the mob gets removed, so blank this out.
 	}
-	*/
 
 	@Override
 	public Component getBossBarTitle() {

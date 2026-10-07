@@ -306,3 +306,6 @@ accessible method net/minecraft/world/entity/ai/village/poi/PoiTypes register (L
 
 # TFClientSetup
 accessible method net/minecraft/client/renderer/entity/LivingEntityRenderer addLayer (Lnet/minecraft/client/renderer/entity/layers/RenderLayer;)Z
+
+# KnightPhantom
+extendable method net/minecraft/world/entity/LivingEntity makePoofParticles ()V
