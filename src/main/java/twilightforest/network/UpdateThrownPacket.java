@@ -34,7 +34,7 @@ public record UpdateThrownPacket(int entityID, boolean thrown, int thrower, int 
 	}
 
 	public static void handle(UpdateThrownPacket message, ClientPlayNetworking.Context ctx) {
-		ctx.client().execute(() -> {
+		Runnable task = () -> {
 			ClientLevel level = ctx.client().level;
 			Entity entity = level.getEntity(message.entityID());
 			if (entity instanceof Player player) {
@@ -43,6 +43,12 @@ public record UpdateThrownPacket(int entityID, boolean thrown, int thrower, int 
 				attachment.setThrown(player, message.thrown(), thrower);
 				attachment.setThrowCooldown(player, message.throwCooldown());
 			}
-		});
+		};
+
+		if (ctx.client().isSameThread()) {
+			task.run();
+		} else {
+			ctx.client().schedule(task);
+		}
 	}
 }

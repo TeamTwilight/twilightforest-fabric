@@ -43,7 +43,7 @@ public class TravellersWingsStatePacket implements CustomPacketPayload {
 	}
 
 	public static void handle(TravellersWingsStatePacket message, ClientPlayNetworking.Context ctx) {
-		ctx.client().execute(() -> {
+		Runnable task = () -> {
 			Player player = ctx.player();
 			if (player != null && player.level() != null) {
 				Entity entity = player.level().getEntity(message.entityId);
@@ -55,7 +55,13 @@ public class TravellersWingsStatePacket implements CustomPacketPayload {
 					attachment.sidestepTimer = message.sidestepTimer;
 				}
 			}
-		});
+		};
+
+		if (ctx.client().isSameThread()) {
+			task.run();
+		} else {
+			ctx.client().schedule(task);
+		}
 	}
 
 	public void write(RegistryFriendlyByteBuf buf) {

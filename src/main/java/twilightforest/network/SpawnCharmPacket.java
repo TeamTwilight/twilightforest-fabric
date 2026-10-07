@@ -1,7 +1,6 @@
 package twilightforest.network;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ItemParticleOption;
@@ -42,16 +41,16 @@ public record SpawnCharmPacket(ItemStack charm, ResourceKey<SoundEvent> event) i
 
 	@SuppressWarnings("Convert2Lambda")
 	public static void handle(SpawnCharmPacket packet, ClientPlayNetworking.Context ctx) {
-		ctx.client().execute(new Runnable() {
+		Runnable task = new Runnable() {
 			@Override
 			public void run() {
 				Player player = ctx.player();
 				ClientLevel level = ctx.client().level;
-				Entity camera = Minecraft.getInstance().getCameraEntity();
+				Entity camera = ctx.client().getCameraEntity();
 				if (TFConfig.spawnCharmAnimationAsTotem) {
-					Minecraft.getInstance().gameRenderer.displayItemActivation(packet.charm());
+					ctx.client().gameRenderer.displayItemActivation(packet.charm());
 					//prefer the camera pos over the player as the player position isnt quite synced to the client yet
-					Minecraft.getInstance().particleEngine.createTrackingEmitter(camera != null ? camera : player, new ItemParticleOption(ParticleTypes.ITEM, packet.charm().getItem()), 20);
+					ctx.client().particleEngine.createTrackingEmitter(camera != null ? camera : player, new ItemParticleOption(ParticleTypes.ITEM, packet.charm().getItem()), 20);
 				} else {
 					CharmEffect effect = new CharmEffect(TFEntities.CHARM_EFFECT, player.level(), player, packet.charm());
 					effect.offset = (float) Math.PI;
@@ -62,6 +61,12 @@ public record SpawnCharmPacket(ItemStack charm, ResourceKey<SoundEvent> event) i
 					level.playLocalSound(camera.getX(), camera.getY(), camera.getZ(), event, player.getSoundSource(), 1.5F, 1.0F, false);
 				}
 			}
-		});
+		};
+
+		if (ctx.client().isSameThread()) {
+			task.run();
+		} else {
+			ctx.client().schedule(task);
+		}
 	}
 }

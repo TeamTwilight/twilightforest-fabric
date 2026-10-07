@@ -29,7 +29,7 @@ public record GogglesZoomPacket(boolean isUsingZoom, UUID playerUUID) implements
 	}
 
 	public static void handleServer(GogglesZoomPacket packet, ServerPlayNetworking.Context ctx) {
-		ctx.server().execute(() -> {
+		Runnable task = () -> {
 			Player player = ctx.player().level().getPlayerByUUID(packet.playerUUID);
 			if (player == null)
 				return;
@@ -41,16 +41,28 @@ public record GogglesZoomPacket(boolean isUsingZoom, UUID playerUUID) implements
 					ServerPlayNetworking.send(serverPlayer, new GogglesZoomPacket(packet.isUsingZoom, player.getUUID()));
 				}
 			}
-		});
+		};
+
+		if (ctx.server().isSameThread()) {
+			task.run();
+		} else {
+			ctx.server().execute(task);
+		}
 	}
 
 	public static void handleClient(GogglesZoomPacket packet, ClientPlayNetworking.Context ctx) {
-		ctx.client().execute(() -> {
+		Runnable task = () -> {
 			Player player = ctx.client().level.getPlayerByUUID(packet.playerUUID);
 			if (player == null)
 				return;
 			player.setAttached(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER, packet.isUsingZoom);
-		});
+		};
+
+		if (ctx.client().isSameThread()) {
+			task.run();
+		} else {
+			ctx.client().schedule(task);
+		}
 	}
 
 	@Override

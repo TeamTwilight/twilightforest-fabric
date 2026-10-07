@@ -29,11 +29,17 @@ public record UpdateDeathTimePacket(int entityID, int deathTime) implements Cust
 	}
 
 	public static void handle(UpdateDeathTimePacket message, ClientPlayNetworking.Context ctx) {
-		ctx.client().execute(() -> {
+		Runnable task = () -> {
 			ClientLevel level = ctx.client().level;
 			if (level != null && Minecraft.getInstance().level.getEntity(message.entityID) instanceof LivingEntity living) {
 				living.deathTime = message.deathTime();
 			}
-		});
+		};
+
+		if (ctx.client().isSameThread()) {
+			task.run();
+		} else {
+			ctx.client().schedule(task);
+		}
 	}
 }

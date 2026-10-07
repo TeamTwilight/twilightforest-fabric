@@ -1,7 +1,6 @@
 package twilightforest.network;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -39,16 +38,21 @@ public record SetMasonJarItemPacket(BlockPos pos, boolean empty, ItemStack stack
 
 	@SuppressWarnings("Convert2Lambda")
 	public static void handle(SetMasonJarItemPacket packet, ClientPlayNetworking.Context ctx) {
-		ctx.client().execute(new Runnable() {
+		Runnable task = new Runnable() {
 			@Override
 			public void run() {
-				ClientLevel clientLevel = ctx.client().level;
-				if (clientLevel.getBlockEntity(packet.pos()) instanceof MasonJarBlockEntity blockEntity) {
+				if (ctx.client().level.getBlockEntity(packet.pos()) instanceof MasonJarBlockEntity blockEntity) {
 					blockEntity.getItemHandler().setStack(packet.stack());
 					blockEntity.setItemRotation(packet.rotation());
 					blockEntity.setChanged();
 				}
 			}
-		});
+		};
+
+		if (ctx.client().isSameThread()) {
+			task.run();
+		} else {
+			ctx.client().schedule(task);
+		}
 	}
 }

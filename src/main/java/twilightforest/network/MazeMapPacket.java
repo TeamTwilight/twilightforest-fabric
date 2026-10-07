@@ -35,7 +35,7 @@ public record MazeMapPacket(ClientboundMapItemDataPacket inner, boolean ore, int
 
 	@SuppressWarnings("Convert2Lambda")
 	public static void handle(MazeMapPacket message, ClientPlayNetworking.Context ctx) {
-		ctx.client().execute(new Runnable() {
+		Runnable task = new Runnable() {
 			@Override
 			public void run() {
 				ClientLevel clientLevel = ctx.client().level;
@@ -66,6 +66,12 @@ public record MazeMapPacket(ClientboundMapItemDataPacket inner, boolean ore, int
 					);
 				}
 			}
-		});
+		};
+
+		if (ctx.client().isSameThread()) {
+			task.run();
+		} else {
+			ctx.client().schedule(task);
+		}
 	}
 }

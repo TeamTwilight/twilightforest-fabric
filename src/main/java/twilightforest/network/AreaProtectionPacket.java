@@ -58,7 +58,7 @@ public class AreaProtectionPacket implements CustomPacketPayload {
 
 	@SuppressWarnings("Convert2Lambda")
 	public static void handle(AreaProtectionPacket message, ClientPlayNetworking.Context ctx) {
-		ctx.client().execute(new Runnable() {
+		Runnable task = new Runnable() {
 			@Override
 			public void run() {
 				ClientLevel level = ctx.client().level;
@@ -87,6 +87,12 @@ public class AreaProtectionPacket implements CustomPacketPayload {
 					level.addParticle(TFParticleType.PROTECTION, x, y, z, vx, vy, vz);
 				}
 			}
-		});
+		};
+
+		if (ctx.client().isSameThread()) {
+			task.run();
+		} else {
+			ctx.client().schedule(task);
+		}
 	}
 }

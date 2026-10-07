@@ -29,9 +29,15 @@ public record EnforceProgressionStatusPacket(boolean enforce) implements CustomP
 
 	public static void handle(EnforceProgressionStatusPacket message, ClientPlayNetworking.Context ctx) {
 		boolean enforce = message.enforce;
-		ctx.client().execute(() -> {
+		Runnable task = () -> {
 			TFWeatherRenderer.setProgressionEnforced(enforce);
 			LockedBiomeToastEventListeners.setProgressionEnforced(enforce);
-		});
+		};
+
+		if (ctx.client().isSameThread()) {
+			task.run();
+		} else {
+			ctx.client().schedule(task);
+		}
 	}
 }

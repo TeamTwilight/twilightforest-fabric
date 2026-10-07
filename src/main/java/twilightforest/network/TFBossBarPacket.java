@@ -1,7 +1,6 @@
 package twilightforest.network;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
@@ -81,10 +80,15 @@ public abstract class TFBossBarPacket implements CustomPacketPayload {
 		}
 
 		public static void handle(AddTFBossBarPacket packet, ClientPlayNetworking.Context ctx) {
-			ctx.client().execute(() -> {
-				Minecraft minecraft = Minecraft.getInstance();
-				minecraft.gui.getBossOverlay().events.put(packet.id, new ClientTFBossBar(packet.id, packet.name, packet.progress, packet.color, packet.overlay, packet.darkenScreen, packet.playMusic, packet.createWorldFog));
-			});
+			Runnable task = () -> {
+				ctx.client().gui.getBossOverlay().events.put(packet.id, new ClientTFBossBar(packet.id, packet.name, packet.progress, packet.color, packet.overlay, packet.darkenScreen, packet.playMusic, packet.createWorldFog));
+			};
+
+			if (ctx.client().isSameThread()) {
+				task.run();
+			} else {
+				ctx.client().schedule(task);
+			}
 		}
 	}
 
@@ -124,14 +128,19 @@ public abstract class TFBossBarPacket implements CustomPacketPayload {
 		}
 
 		public static void handle(UpdateTFBossBarStylePacket packet, ClientPlayNetworking.Context ctx) {
-			ctx.client().execute(() -> {
-				Minecraft minecraft = Minecraft.getInstance();
-				if (minecraft.gui.getBossOverlay().events.get(packet.id) instanceof ClientTFBossBar bossEvent) {
+			Runnable task = () -> {
+				if (ctx.client().gui.getBossOverlay().events.get(packet.id) instanceof ClientTFBossBar bossEvent) {
 					bossEvent.setBarColor(packet.color);
 					bossEvent.setOverlay(packet.overlay);
 					if (!packet.allowLerp) bossEvent.setSetTime(bossEvent.getSetTime() - 200L); // Boss bars lerp over 100 milliseconds, we sometimes don't want that
 				}
-			});
+			};
+
+			if (ctx.client().isSameThread()) {
+				task.run();
+			} else {
+				ctx.client().schedule(task);
+			}
 		}
 	}
 }

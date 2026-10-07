@@ -29,7 +29,7 @@ public record UncraftingGuiPacket(int operationType) implements CustomPacketPayl
 	}
 
 	public static void handle(UncraftingGuiPacket message, ServerPlayNetworking.Context ctx) {
-		ctx.server().execute(() -> {
+		Runnable task = () -> {
 			AbstractContainerMenu container = ctx.player().containerMenu;
 			if (container instanceof UncraftingMenu uncrafting) {
 				switch (message.operationType()) {
@@ -55,6 +55,12 @@ public record UncraftingGuiPacket(int operationType) implements CustomPacketPayl
 				if (message.operationType() >= 4)
 					uncrafting.slotsChanged(uncrafting.getCraftSlots());
 			}
-		});
+		};
+
+		if (ctx.server().isSameThread()) {
+			task.run();
+		} else {
+			ctx.server().execute(task);
+		}
 	}
 }

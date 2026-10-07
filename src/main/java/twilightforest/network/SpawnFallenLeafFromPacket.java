@@ -37,7 +37,7 @@ public record SpawnFallenLeafFromPacket(BlockPos pos, Vec3 motion) implements Cu
 	}
 
 	public static void handle(SpawnFallenLeafFromPacket message, ClientPlayNetworking.Context ctx) {
-		ctx.client().execute(() -> {
+		Runnable task = () -> {
 			ClientLevel level = ctx.client().level;
 			Random rand = new Random();
 			// I think this is the correct replacement for getColor(...), but there may be a better option I missed
@@ -53,6 +53,12 @@ public record SpawnFallenLeafFromPacket(BlockPos pos, Vec3 motion) implements Cu
 				level.getRandom().nextFloat() * 0.5F + 0.25F,
 				(level.getRandom().nextFloat() * -0.5F) * message.motion().z()
 			);
-		});
+		};
+
+		if (ctx.client().isSameThread()) {
+			task.run();
+		} else {
+			ctx.client().schedule(task);
+		}
 	}
 }

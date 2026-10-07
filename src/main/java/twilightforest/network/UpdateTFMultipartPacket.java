@@ -54,7 +54,7 @@ public record UpdateTFMultipartPacket(int entityId, @Nullable Entity entity, @Nu
 	}
 
 	public static void handle(UpdateTFMultipartPacket message, ClientPlayNetworking.Context ctx) {
-		ctx.client().execute(() -> {
+		Runnable task = () -> {
 			int eId = message.entity != null && message.entityId <= 0 ? message.entity.getId() : message.entityId; // Account for Singleplayer
 			Entity ent = ctx.player().level().getEntity(eId);
 			if (ent != null && message.data != null) {
@@ -64,7 +64,13 @@ public record UpdateTFMultipartPacket(int entityId, @Nullable Entity entity, @Nu
 						part.readData(data);
 				});
 			}
-		});
+		};
+
+		if (ctx.client().isSameThread()) {
+			task.run();
+		} else {
+			ctx.client().schedule(task);
+		}
 	}
 
 	public record PartDataHolder(double x, double y, double z,

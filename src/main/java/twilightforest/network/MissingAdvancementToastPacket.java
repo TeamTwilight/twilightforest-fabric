@@ -1,7 +1,6 @@
 package twilightforest.network;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
@@ -26,11 +25,17 @@ public record MissingAdvancementToastPacket(Component title, ItemStackTemplate i
 
 	@SuppressWarnings("Convert2Lambda")
 	public static void handle(MissingAdvancementToastPacket packet, ClientPlayNetworking.Context ctx) {
-		ctx.client().execute(new Runnable() {
+		Runnable task = new Runnable() {
 			@Override
 			public void run() {
-				Minecraft.getInstance().getToastManager().addToast(new MissingAdvancementToast(packet.title(), packet.icon()));
+				ctx.client().getToastManager().addToast(new MissingAdvancementToast(packet.title(), packet.icon()));
 			}
-		});
+		};
+
+		if (ctx.client().isSameThread()) {
+			task.run();
+		} else {
+			ctx.client().schedule(task);
+		}
 	}
 }

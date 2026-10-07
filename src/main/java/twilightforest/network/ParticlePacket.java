@@ -69,10 +69,16 @@ public class ParticlePacket implements CustomPacketPayload {
 	}
 
 	public static void handle(ParticlePacket message, ClientPlayNetworking.Context ctx) {
-		ctx.client().execute(() -> {
+		Runnable task = () -> {
 			for (QueuedParticle queuedParticle : message.queuedParticles) {
 				ctx.client().level.addParticle(queuedParticle.particleOptions, queuedParticle.overrideLimiter, queuedParticle.alwaysShow, queuedParticle.x, queuedParticle.y, queuedParticle.z, queuedParticle.x2, queuedParticle.y2, queuedParticle.z2);
 			}
-		});
+		};
+
+		if (ctx.client().isSameThread()) {
+			task.run();
+		} else {
+			ctx.client().schedule(task);
+		}
 	}
 }

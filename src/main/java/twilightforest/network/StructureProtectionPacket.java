@@ -33,11 +33,16 @@ public record StructureProtectionPacket(Optional<List<Pair<BoundingBox, Boolean>
 	}
 
 	public static void handle(StructureProtectionPacket message, ClientPlayNetworking.Context ctx) {
+		Runnable task = () -> TFWeatherRenderer.setProtectedBoxes(message.boxes().orElse(null));
 		ClientLevel level = ctx.client().level;
 		if (level == null) {
 			TFCommon.LOGGER.warn("ctx.client().level was null in StructureProtectionPacket, skipping logic");
 		} else if (level.dimension().equals(TFDimension.DIMENSION_KEY)) {
-			ctx.client().execute(() -> TFWeatherRenderer.setProtectedBoxes(message.boxes().orElse(null)));
+			if (ctx.client().isSameThread()) {
+				task.run();
+			} else {
+				ctx.client().schedule(task);
+			}
 		}
 	}
 }

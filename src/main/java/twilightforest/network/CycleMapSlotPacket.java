@@ -19,7 +19,7 @@ public record CycleMapSlotPacket() implements CustomPacketPayload {
 	public static final StreamCodec<RegistryFriendlyByteBuf, CycleMapSlotPacket> STREAM_CODEC = StreamCodec.unit(INSTANCE);
 
 	public static void handle(CycleMapSlotPacket message, ServerPlayNetworking.Context ctx) {
-		ctx.server().execute(() -> {
+		Runnable task = () -> {
 			ServerPlayer serverPlayer = ctx.player();
 			ItemStack headStack = serverPlayer.getItemBySlot(EquipmentSlot.HEAD);
 			ItemDisplayContents contents = headStack.get(TFDataComponents.ITEM_DISPLAY);
@@ -36,7 +36,13 @@ public record CycleMapSlotPacket() implements CustomPacketPayload {
 				serverPlayer.getInventory().setChanged();
 				serverPlayer.playSound(newIndex == -1 ? TFSounds.CYCLE_MAPS_EMPTY.value() : TFSounds.CYCLE_MAPS.value(), 1F, 1F);
 			}
-		});
+		};
+
+		if (ctx.server().isSameThread()) {
+			task.run();
+		} else {
+			ctx.server().execute(task);
+		}
 	}
 
 	@Override
