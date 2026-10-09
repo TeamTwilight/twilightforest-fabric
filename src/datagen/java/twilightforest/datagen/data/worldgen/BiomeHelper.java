@@ -573,8 +573,7 @@ public abstract class BiomeHelper {
 				.addSpawn(MobCategory.MONSTER, 5, new MobSpawnSettings.SpawnerData(TFEntities.YETI, 1, 1))
 				.addMobCharge(TFEntities.YETI, 0.6D, 0.15D)
 				.build())
-			.generationSettings(biome.build())
-			.temperatureAdjustment(Biome.TemperatureModifier.FROZEN);
+			.generationSettings(biome.build());
 	}
 
 	public static Biome.BiomeBuilder glacier(HolderGetter<PlacedFeature> featureGetter, HolderGetter<ConfiguredWorldCarver<?>> carverGetter) {
@@ -596,8 +595,7 @@ public abstract class BiomeHelper {
 				.creatureGenerationProbability(0.15f)
 				.addSpawn(MobCategory.CREATURE, 10, new MobSpawnSettings.SpawnerData(TFEntities.PENGUIN, 2, 4))
 				.build())
-			.generationSettings(biome.build())
-			.temperatureAdjustment(Biome.TemperatureModifier.FROZEN);
+			.generationSettings(biome.build());
 	}
 
 	public static Biome.BiomeBuilder underground(HolderGetter<PlacedFeature> featureGetter, HolderGetter<ConfiguredWorldCarver<?>> carverGetter) {
