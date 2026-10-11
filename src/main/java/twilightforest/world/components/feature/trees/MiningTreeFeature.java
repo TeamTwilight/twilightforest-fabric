@@ -2,12 +2,10 @@ package twilightforest.world.components.feature.trees;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import twilightforest.init.TFBlocks;
 import twilightforest.util.features.FeaturePlacers;
