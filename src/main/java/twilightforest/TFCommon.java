@@ -536,6 +536,22 @@ public final class TFCommon implements ModInitializer {
 		CompostableRegistry.INSTANCE.add(TFBlocks.HUGE_MUSHGLOOM.asItem(), 0.85F);
 		CompostableRegistry.INSTANCE.add(TFItems.EXPERIMENT_115, 0.85F);
 		CompostableRegistry.INSTANCE.add(TFItems.MAGIC_BEANS, 0.85F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.RASPBERRY_BUSH.asItem(), 0.5F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.BLUEBERRY_BUSH.asItem(), 0.5F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.BLACKBERRY_BUSH.asItem(), 0.5F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.MALOBERRY_BUSH.asItem(), 0.5F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.BLIGHTBERRY_BUSH.asItem(), 0.5F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.DUSKBERRY_BUSH.asItem(), 0.5F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.SKYBERRY_BUSH.asItem(), 0.5F);
+		CompostableRegistry.INSTANCE.add(TFBlocks.STINGBERRY_BUSH.asItem(), 0.5F);
+		CompostableRegistry.INSTANCE.add(TFItems.RASPBERRY, 0.3F);
+		CompostableRegistry.INSTANCE.add(TFItems.BLUEBERRY, 0.3F);
+		CompostableRegistry.INSTANCE.add(TFItems.BLACKBERRY, 0.3F);
+		CompostableRegistry.INSTANCE.add(TFItems.MALOBERRY, 0.3F);
+		CompostableRegistry.INSTANCE.add(TFItems.BLIGHTBERRY, 0.3F);
+		CompostableRegistry.INSTANCE.add(TFItems.DUSKBERRY, 0.3F);
+		CompostableRegistry.INSTANCE.add(TFItems.SKYBERRY, 0.3F);
+		CompostableRegistry.INSTANCE.add(TFItems.STINGBERRY, 0.3F);
 	}
 
 	private static void registerFuels() {
