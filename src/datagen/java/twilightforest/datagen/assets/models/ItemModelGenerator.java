@@ -26,6 +26,7 @@ import net.minecraft.world.item.equipment.EquipmentAsset;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
 import org.jspecify.annotations.Nullable;
 import twilightforest.TFCommon;
+import twilightforest.client.model.item.EmissiveItemModel;
 import twilightforest.client.model.item.TravellersGearItemModel;
 import twilightforest.client.properties.*;
 import twilightforest.client.renderer.special.*;
@@ -51,7 +52,7 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateFlatItem(TFItems.FILLED_MAGIC_MAP, ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.FILLED_MAZE_MAP, ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.FILLED_ORE_MAP, ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.TORCHBERRIES, ModelTemplates.FLAT_ITEM);
+		this.generateEmissiveFlatItem(TFItems.TORCHBERRIES, 15);
 		this.generateFlatItem(TFItems.RAVEN_FEATHER, ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.MAGIC_MAP_FOCUS, ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.MAZE_MAP_FOCUS, ModelTemplates.FLAT_ITEM);
@@ -83,21 +84,27 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateFlatItem(TFItems.KNIGHTMETAL_RING, ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.FIERY_BLOOD, ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.FIERY_TEARS, ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.FIERY_INGOT, ModelTemplates.FLAT_ITEM);
+		this.generateEmissiveFlatItem(TFItems.FIERY_INGOT, 15);
 		this.generateFlatItem(TFItems.ARCTIC_FUR, ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.ALPHA_YETI_FUR, ModelTemplates.FLAT_ITEM);
 		Identifier empty = ModelTemplates.FLAT_ITEM.create(TFCommon.prefix("item/potion_flask_empty"), TextureMapping.layer0(new Material(TFCommon.prefix("block/blank"))), this.modelOutput);
 		this.generatePotionFlask(TFItems.BRITTLE_FLASK, true, empty);
 		this.generatePotionFlask(TFItems.GREATER_FLASK, false, empty);
-		this.generateTwoLayerItem(TFItems.EXANIMATE_ESSENCE, "_flames", ModelTemplates.TWO_LAYERED_ITEM);
+		this.itemModelOutput.accept(
+			TFItems.EXANIMATE_ESSENCE,
+			new EmissiveItemModel.Unbaked(
+				ItemModelUtils.plainModel(this.twoLayerItem(TFItems.EXANIMATE_ESSENCE, "_flames", ModelTemplates.TWO_LAYERED_ITEM)),
+				15
+			)
+		);
 		this.generateFlatItem(TFItems.CROWN_SPLINTER, ModelTemplates.FLAT_ITEM);
 		this.itemModelOutput.accept(TFBlocks.RED_THREAD.asItem(), ItemModelUtils.rangeSelect(new Count(true), ItemModelUtils.plainModel(this.createFlatItemModel(TFBlocks.RED_THREAD.asItem(), ModelTemplates.FLAT_ITEM)), List.of(
 			ItemModelUtils.override(ItemModelUtils.plainModel(this.createFlatItemModel(TFBlocks.RED_THREAD.asItem(), "_bundle_0", ModelTemplates.FLAT_ITEM)), 4.0F / 64.0F),
 			ItemModelUtils.override(ItemModelUtils.plainModel(this.createFlatItemModel(TFBlocks.RED_THREAD.asItem(), "_bundle_1", ModelTemplates.FLAT_ITEM)), 16.0F / 64.0F),
 			ItemModelUtils.override(ItemModelUtils.plainModel(this.createFlatItemModel(TFBlocks.RED_THREAD.asItem(), "_bundle_2", ModelTemplates.FLAT_ITEM)), 32.0F / 64.0F))));
 		this.generateTwoLayerItem(TFItems.BORER_ESSENCE, "_particles", ModelTemplates.TWO_LAYERED_ITEM);
-		this.generateFlatItem(TFItems.CARMINITE, ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.TOWER_KEY, ModelTemplates.FLAT_ITEM);
+		this.generateEmissiveFlatItem(TFItems.CARMINITE, 7);
+		this.generateEmissiveFlatItem(TFItems.TOWER_KEY, 15);
 		this.generateFlatItem(TFItems.MAGIC_BEANS, ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.MUSIC_DISC_THREAD, ModelTemplates.MUSIC_DISC);
 		this.generateFlatItem(TFItems.MUSIC_DISC_FINDINGS, ModelTemplates.MUSIC_DISC);
@@ -169,12 +176,12 @@ public class ItemModelGenerator extends ItemModelBuilders {
 			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.BLOCK_AND_CHAIN, ModelTemplates.FLAT_HANDHELD_ITEM))));
 		this.generateKnightmetalShield(TFItems.KNIGHTMETAL_SHIELD);
 
-		this.generateDynamicTrimmableItem(TFItems.FIERY_HELMET, TFEquipmentAssets.FIERY, ItemModelGenerators.TRIM_PREFIX_HELMET, false, null);
-		this.generateDynamicTrimmableItem(TFItems.FIERY_CHESTPLATE, TFEquipmentAssets.FIERY, ItemModelGenerators.TRIM_PREFIX_CHESTPLATE, false, null);
-		this.generateDynamicTrimmableItem(TFItems.FIERY_LEGGINGS, TFEquipmentAssets.FIERY, ItemModelGenerators.TRIM_PREFIX_LEGGINGS, false, null);
-		this.generateDynamicTrimmableItem(TFItems.FIERY_BOOTS, TFEquipmentAssets.FIERY, ItemModelGenerators.TRIM_PREFIX_BOOTS, false, null);
-		this.generateFlatItem(TFItems.FIERY_SWORD, ModelTemplates.FLAT_HANDHELD_ITEM);
-		this.generateFlatItem(TFItems.FIERY_PICKAXE, ModelTemplates.FLAT_HANDHELD_ITEM);
+		this.generateFullbrightTrimmableItem(TFItems.FIERY_HELMET, TFEquipmentAssets.FIERY, ItemModelGenerators.TRIM_PREFIX_HELMET);
+		this.generateFullbrightTrimmableItem(TFItems.FIERY_CHESTPLATE, TFEquipmentAssets.FIERY, ItemModelGenerators.TRIM_PREFIX_CHESTPLATE);
+		this.generateFullbrightTrimmableItem(TFItems.FIERY_LEGGINGS, TFEquipmentAssets.FIERY, ItemModelGenerators.TRIM_PREFIX_LEGGINGS);
+		this.generateFullbrightTrimmableItem(TFItems.FIERY_BOOTS, TFEquipmentAssets.FIERY, ItemModelGenerators.TRIM_PREFIX_BOOTS);
+		this.generateEmissiveFlatHandheldItem(TFItems.FIERY_SWORD, 15);
+		this.generateEmissiveFlatHandheldItem(TFItems.FIERY_PICKAXE, 15);
 
 		this.generateDynamicTrimmableItem(TFItems.ARCTIC_HELMET, TFEquipmentAssets.ARCTIC, ItemModelGenerators.TRIM_PREFIX_HELMET, true, new Dye(ArcticArmorItem.DEFAULT_COLOR));
 		this.generateDynamicTrimmableItem(TFItems.ARCTIC_CHESTPLATE, TFEquipmentAssets.ARCTIC, ItemModelGenerators.TRIM_PREFIX_CHESTPLATE, true, new Dye(ArcticArmorItem.DEFAULT_COLOR));
@@ -226,8 +233,15 @@ public class ItemModelGenerator extends ItemModelBuilders {
 			ItemModelUtils.plainModel(ModelTemplates.createItem(Identifier.withDefaultNamespace("goat_horn").toString(), TextureSlot.LAYER0).create(TFItems.CRUMBLE_HORN, TextureMapping.layer0(TFItems.CRUMBLE_HORN), this.modelOutput)));
 		this.generateFlatItem(TFItems.PEACOCK_FEATHER_FAN, ModelTemplates.FLAT_HANDHELD_ITEM);
 		this.itemModelOutput.accept(TFItems.MOONWORM_QUEEN, ItemModelUtils.conditional(new MoonwormQueenPulse(),
-			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.MOONWORM_QUEEN, "_alt", ModelTemplates.FLAT_HANDHELD_ITEM)),
-			ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.MOONWORM_QUEEN, ModelTemplates.FLAT_HANDHELD_ITEM))));
+			new EmissiveItemModel.Unbaked(
+				ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.MOONWORM_QUEEN, "_alt", ModelTemplates.FLAT_HANDHELD_ITEM)),
+				15
+			),
+			new EmissiveItemModel.Unbaked(
+				ItemModelUtils.plainModel(this.createFlatItemModel(TFItems.MOONWORM_QUEEN, ModelTemplates.FLAT_HANDHELD_ITEM)),
+				15
+			))
+		);
 		this.generateFlatItem(TFItems.MAGIC_PAINTING, ModelTemplates.FLAT_ITEM);
 
 		this.generateFlatItem(TFItems.CUBE_TALISMAN, ModelTemplates.FLAT_ITEM);
@@ -247,7 +261,7 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		this.generateFlatItem(TFItems.COPPER_BERRY, ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.IRON_BERRY, ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.GOLD_BERRY, ModelTemplates.FLAT_ITEM);
-		this.generateFlatItem(TFItems.ESSENCE_BERRY, ModelTemplates.FLAT_ITEM);
+		this.generateEmissiveFlatItem(TFItems.ESSENCE_BERRY, 15);
 
 		this.generateFlatItem(TFItems.BEEF_JERKY, ModelTemplates.FLAT_ITEM);
 		this.generateFlatItem(TFItems.CHICKEN_JERKY, ModelTemplates.FLAT_ITEM);
@@ -486,5 +500,46 @@ public class ItemModelGenerator extends ItemModelBuilders {
 		}
 
 		this.itemModelOutput.accept(armor, ItemModelUtils.select(new TrimMaterialProperty(), untrimmedModel, cases));
+	}
+
+	public final void generateFullbrightTrimmableItem(final Item armor, final ResourceKey<EquipmentAsset> equipmentAssetId, final Identifier slotTrimPrefix) {
+		Identifier modelLocation = ModelLocationUtils.getModelLocation(armor);
+		Material itemTexture = TextureMapping.getItemTexture(armor);
+		List<SelectItemModel.SwitchCase<ResourceKey<TrimMaterial>>> cases = new ArrayList<>(TRIM_MATERIAL_MODELS.size());
+
+		for(TrimMaterialData material : TRIM_MATERIAL_MODELS) {
+			Identifier trimModelLocation = modelLocation.withSuffix("_" + material.assets().base().suffix() + "_trim");
+			String var10003 = material.assets().assetId(equipmentAssetId).suffix();
+			Material trimOverlayTexture = new Material(slotTrimPrefix.withSuffix("_" + var10003));
+			ItemModel.Unbaked trimModel;
+			this.generateLayeredItem(trimModelLocation, itemTexture, trimOverlayTexture);
+			trimModel = new EmissiveItemModel.Unbaked(ItemModelUtils.plainModel(trimModelLocation), 15);
+
+			cases.add(ItemModelUtils.when(material.materialKey(), trimModel));
+		}
+
+		ItemModel.Unbaked untrimmedModel;
+		ModelTemplates.FLAT_ITEM.create(modelLocation, TextureMapping.layer0(itemTexture), this.modelOutput);
+		untrimmedModel = new EmissiveItemModel.Unbaked(ItemModelUtils.plainModel(modelLocation), 15);
+
+		this.itemModelOutput.accept(armor, ItemModelUtils.select(new TrimMaterialProperty(), untrimmedModel, cases));
+	}
+
+	public void generateEmissiveFlatItem(Item item, int lightEmission) {
+		this.itemModelOutput.accept(item,
+			new EmissiveItemModel.Unbaked(
+				ItemModelUtils.plainModel(this.createFlatItemModel(item, ModelTemplates.FLAT_ITEM)),
+				lightEmission
+			)
+		);
+	}
+
+	public void generateEmissiveFlatHandheldItem(Item item, int lightEmission) {
+		this.itemModelOutput.accept(item,
+			new EmissiveItemModel.Unbaked(
+				ItemModelUtils.plainModel(this.createFlatItemModel(item, ModelTemplates.FLAT_HANDHELD_ITEM)),
+				lightEmission
+			)
+		);
 	}
 }

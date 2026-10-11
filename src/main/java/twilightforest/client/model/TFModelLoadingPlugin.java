@@ -18,6 +18,7 @@ public class TFModelLoadingPlugin implements ModelLoadingPlugin {
 	@Override
 	public void initialize(Context pluginContext) {
 		registerExtraModels(pluginContext);
+		registerDebrisModel(pluginContext);
 	}
 
 	private static void registerExtraModels(Context pluginContext) {
@@ -36,7 +37,9 @@ public class TFModelLoadingPlugin implements ModelLoadingPlugin {
 				));
 			}
 		}
+	}
 
+	private static void registerDebrisModel(Context pluginContext) {
 		pluginContext.modifyBlockModelAfterBake().register((model, context) -> {
 			if (context.state().is(TFBlocks.REACTOR_DEBRIS)) {
 				BlockStateModel airModel = context.sourceModel().bake(Blocks.AIR.defaultBlockState(), context.baker());

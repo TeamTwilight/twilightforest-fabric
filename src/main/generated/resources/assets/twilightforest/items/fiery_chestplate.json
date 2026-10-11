@@ -4,85 +4,133 @@
     "cases": [
       {
         "model": {
-          "type": "minecraft:model",
-          "model": "twilightforest:item/fiery_chestplate_quartz_trim"
+          "type": "twilightforest:emissive_item_model",
+          "base_model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/fiery_chestplate_quartz_trim"
+          },
+          "light_emission": 15
         },
         "when": "minecraft:quartz"
       },
       {
         "model": {
-          "type": "minecraft:model",
-          "model": "twilightforest:item/fiery_chestplate_iron_trim"
+          "type": "twilightforest:emissive_item_model",
+          "base_model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/fiery_chestplate_iron_trim"
+          },
+          "light_emission": 15
         },
         "when": "minecraft:iron"
       },
       {
         "model": {
-          "type": "minecraft:model",
-          "model": "twilightforest:item/fiery_chestplate_netherite_trim"
+          "type": "twilightforest:emissive_item_model",
+          "base_model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/fiery_chestplate_netherite_trim"
+          },
+          "light_emission": 15
         },
         "when": "minecraft:netherite"
       },
       {
         "model": {
-          "type": "minecraft:model",
-          "model": "twilightforest:item/fiery_chestplate_redstone_trim"
+          "type": "twilightforest:emissive_item_model",
+          "base_model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/fiery_chestplate_redstone_trim"
+          },
+          "light_emission": 15
         },
         "when": "minecraft:redstone"
       },
       {
         "model": {
-          "type": "minecraft:model",
-          "model": "twilightforest:item/fiery_chestplate_copper_trim"
+          "type": "twilightforest:emissive_item_model",
+          "base_model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/fiery_chestplate_copper_trim"
+          },
+          "light_emission": 15
         },
         "when": "minecraft:copper"
       },
       {
         "model": {
-          "type": "minecraft:model",
-          "model": "twilightforest:item/fiery_chestplate_gold_trim"
+          "type": "twilightforest:emissive_item_model",
+          "base_model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/fiery_chestplate_gold_trim"
+          },
+          "light_emission": 15
         },
         "when": "minecraft:gold"
       },
       {
         "model": {
-          "type": "minecraft:model",
-          "model": "twilightforest:item/fiery_chestplate_emerald_trim"
+          "type": "twilightforest:emissive_item_model",
+          "base_model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/fiery_chestplate_emerald_trim"
+          },
+          "light_emission": 15
         },
         "when": "minecraft:emerald"
       },
       {
         "model": {
-          "type": "minecraft:model",
-          "model": "twilightforest:item/fiery_chestplate_diamond_trim"
+          "type": "twilightforest:emissive_item_model",
+          "base_model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/fiery_chestplate_diamond_trim"
+          },
+          "light_emission": 15
         },
         "when": "minecraft:diamond"
       },
       {
         "model": {
-          "type": "minecraft:model",
-          "model": "twilightforest:item/fiery_chestplate_lapis_trim"
+          "type": "twilightforest:emissive_item_model",
+          "base_model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/fiery_chestplate_lapis_trim"
+          },
+          "light_emission": 15
         },
         "when": "minecraft:lapis"
       },
       {
         "model": {
-          "type": "minecraft:model",
-          "model": "twilightforest:item/fiery_chestplate_amethyst_trim"
+          "type": "twilightforest:emissive_item_model",
+          "base_model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/fiery_chestplate_amethyst_trim"
+          },
+          "light_emission": 15
         },
         "when": "minecraft:amethyst"
       },
       {
         "model": {
-          "type": "minecraft:model",
-          "model": "twilightforest:item/fiery_chestplate_resin_trim"
+          "type": "twilightforest:emissive_item_model",
+          "base_model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/fiery_chestplate_resin_trim"
+          },
+          "light_emission": 15
         },
         "when": "minecraft:resin"
       }
     ],
     "fallback": {
-      "type": "minecraft:model",
-      "model": "twilightforest:item/fiery_chestplate"
+      "type": "twilightforest:emissive_item_model",
+      "base_model": {
+        "type": "minecraft:model",
+        "model": "twilightforest:item/fiery_chestplate"
+      },
+      "light_emission": 15
     },
     "property": "minecraft:trim_material"
   }

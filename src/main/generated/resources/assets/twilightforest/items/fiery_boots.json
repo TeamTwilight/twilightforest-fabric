@@ -4,85 +4,133 @@
     "cases": [
       {
         "model": {
-          "type": "minecraft:model",
-          "model": "twilightforest:item/fiery_boots_quartz_trim"
+          "type": "twilightforest:emissive_item_model",
+          "base_model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/fiery_boots_quartz_trim"
+          },
+          "light_emission": 15
         },
         "when": "minecraft:quartz"
       },
       {
         "model": {
-          "type": "minecraft:model",
-          "model": "twilightforest:item/fiery_boots_iron_trim"
+          "type": "twilightforest:emissive_item_model",
+          "base_model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/fiery_boots_iron_trim"
+          },
+          "light_emission": 15
         },
         "when": "minecraft:iron"
       },
       {
         "model": {
-          "type": "minecraft:model",
-          "model": "twilightforest:item/fiery_boots_netherite_trim"
+          "type": "twilightforest:emissive_item_model",
+          "base_model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/fiery_boots_netherite_trim"
+          },
+          "light_emission": 15
         },
         "when": "minecraft:netherite"
       },
       {
         "model": {
-          "type": "minecraft:model",
-          "model": "twilightforest:item/fiery_boots_redstone_trim"
+          "type": "twilightforest:emissive_item_model",
+          "base_model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/fiery_boots_redstone_trim"
+          },
+          "light_emission": 15
         },
         "when": "minecraft:redstone"
       },
       {
         "model": {
-          "type": "minecraft:model",
-          "model": "twilightforest:item/fiery_boots_copper_trim"
+          "type": "twilightforest:emissive_item_model",
+          "base_model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/fiery_boots_copper_trim"
+          },
+          "light_emission": 15
         },
         "when": "minecraft:copper"
       },
       {
         "model": {
-          "type": "minecraft:model",
-          "model": "twilightforest:item/fiery_boots_gold_trim"
+          "type": "twilightforest:emissive_item_model",
+          "base_model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/fiery_boots_gold_trim"
+          },
+          "light_emission": 15
         },
         "when": "minecraft:gold"
       },
       {
         "model": {
-          "type": "minecraft:model",
-          "model": "twilightforest:item/fiery_boots_emerald_trim"
+          "type": "twilightforest:emissive_item_model",
+          "base_model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/fiery_boots_emerald_trim"
+          },
+          "light_emission": 15
         },
         "when": "minecraft:emerald"
       },
       {
         "model": {
-          "type": "minecraft:model",
-          "model": "twilightforest:item/fiery_boots_diamond_trim"
+          "type": "twilightforest:emissive_item_model",
+          "base_model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/fiery_boots_diamond_trim"
+          },
+          "light_emission": 15
         },
         "when": "minecraft:diamond"
       },
       {
         "model": {
-          "type": "minecraft:model",
-          "model": "twilightforest:item/fiery_boots_lapis_trim"
+          "type": "twilightforest:emissive_item_model",
+          "base_model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/fiery_boots_lapis_trim"
+          },
+          "light_emission": 15
         },
         "when": "minecraft:lapis"
       },
       {
         "model": {
-          "type": "minecraft:model",
-          "model": "twilightforest:item/fiery_boots_amethyst_trim"
+          "type": "twilightforest:emissive_item_model",
+          "base_model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/fiery_boots_amethyst_trim"
+          },
+          "light_emission": 15
         },
         "when": "minecraft:amethyst"
       },
       {
         "model": {
-          "type": "minecraft:model",
-          "model": "twilightforest:item/fiery_boots_resin_trim"
+          "type": "twilightforest:emissive_item_model",
+          "base_model": {
+            "type": "minecraft:model",
+            "model": "twilightforest:item/fiery_boots_resin_trim"
+          },
+          "light_emission": 15
         },
         "when": "minecraft:resin"
       }
     ],
     "fallback": {
-      "type": "minecraft:model",
-      "model": "twilightforest:item/fiery_boots"
+      "type": "twilightforest:emissive_item_model",
+      "base_model": {
+        "type": "minecraft:model",
+        "model": "twilightforest:item/fiery_boots"
+      },
+      "light_emission": 15
     },
     "property": "minecraft:trim_material"
   }

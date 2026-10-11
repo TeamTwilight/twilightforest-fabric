@@ -32,6 +32,7 @@ import twilightforest.client.model.block.connected.UnbakedConnectedTextureModel;
 import twilightforest.client.model.block.forcefield.ForceFieldModel;
 import twilightforest.client.model.block.forcefield.UnbakedForceFieldBlockStateModel;
 import twilightforest.client.model.item.AnimatedItemModel;
+import twilightforest.client.model.item.EmissiveItemModel;
 import twilightforest.client.renderer.special.KeepsakeCasketSpecialRenderer;
 import twilightforest.client.renderer.special.SkullCandleSpecialRenderer;
 import twilightforest.client.renderer.special.SkullChestSpecialRenderer;
@@ -679,7 +680,7 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 				.ifElse().from(7, 7, 9).to(9, 9, 16).parents(ForceFieldModel.ExtraDirection.SOUTH).face(Direction.EAST).uvs(9, 7, 16, 9).end()
 				.ifSame().from(9, 7, 7).to(16, 9, 9).parents(ForceFieldModel.ExtraDirection.EAST).face(Direction.SOUTH).uvs(0, 7, 7, 9).end().end()
 			.build())));
-		this.itemModelOutput.accept(block.asItem(), ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(block.asItem()), TextureMapping.layer0(new Material(TFCommon.prefix("block/forcefield_white"))), this.modelOutput), ItemModelUtils.constantTint(tint)));
+		this.itemModelOutput.accept(block.asItem(), new EmissiveItemModel.Unbaked(ItemModelUtils.tintedModel(ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(block.asItem()), TextureMapping.layer0(new Material(TFCommon.prefix("block/forcefield_white"))), this.modelOutput), ItemModelUtils.constantTint(tint)), 15));
 	}
 
 	public void generatePaneBlock(Block glassBlock, Block paneBlock) {

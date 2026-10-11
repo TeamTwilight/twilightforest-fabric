@@ -1,6 +1,10 @@
 {
   "model": {
-    "type": "minecraft:model",
-    "model": "twilightforest:item/fiery_pickaxe"
+    "type": "twilightforest:emissive_item_model",
+    "base_model": {
+      "type": "minecraft:model",
+      "model": "twilightforest:item/fiery_pickaxe"
+    },
+    "light_emission": 15
   }
 }

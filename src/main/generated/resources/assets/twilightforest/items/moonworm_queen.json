@@ -2,12 +2,20 @@
   "model": {
     "type": "minecraft:condition",
     "on_false": {
-      "type": "minecraft:model",
-      "model": "twilightforest:item/moonworm_queen"
+      "type": "twilightforest:emissive_item_model",
+      "base_model": {
+        "type": "minecraft:model",
+        "model": "twilightforest:item/moonworm_queen"
+      },
+      "light_emission": 15
     },
     "on_true": {
-      "type": "minecraft:model",
-      "model": "twilightforest:item/moonworm_queen_alt"
+      "type": "twilightforest:emissive_item_model",
+      "base_model": {
+        "type": "minecraft:model",
+        "model": "twilightforest:item/moonworm_queen_alt"
+      },
+      "light_emission": 15
     },
     "property": "twilightforest:moonworm_queen_pulse"
   }
