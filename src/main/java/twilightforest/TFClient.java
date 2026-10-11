@@ -20,6 +20,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.monster.silverfish.SilverfishModel;
 import net.minecraft.client.model.monster.slime.SlimeModel;
 import net.minecraft.client.model.monster.spider.SpiderModel;
+import net.minecraft.client.model.monster.zombie.BabyZombieModel;
 import net.minecraft.client.model.object.boat.BoatModel;
 import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -403,6 +404,7 @@ public final class TFClient implements ClientModInitializer {
 		ModelLayerRegistry.registerModelLayer(TFModelLayers.LICH, LichModel::create);
 		ModelLayerRegistry.registerModelLayer(TFModelLayers.LOWER_GOBLIN_KNIGHT, LowerGoblinKnightModel::create);
 		ModelLayerRegistry.registerModelLayer(TFModelLayers.LOYAL_ZOMBIE, () -> LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 64, 64));
+		ModelLayerRegistry.registerModelLayer(TFModelLayers.LOYAL_ZOMBIE_BABY, () -> BabyZombieModel.createBodyLayer(CubeDeformation.NONE));
 		ModelLayerRegistry.registerModelLayer(TFModelLayers.MAZE_SLIME, SlimeModel::createInnerBodyLayer);
 		ModelLayerRegistry.registerModelLayer(TFModelLayers.MAZE_SLIME_OUTER, SlimeModel::createOuterBodyLayer);
 		ModelLayerRegistry.registerModelLayer(TFModelLayers.MINOSHROOM, MinoshroomModel::create);
