@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import com.mojang.serialization.MapCodec;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
@@ -10,6 +11,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -24,8 +26,15 @@ import twilightforest.util.WorldUtil;
 
 public class TimeLogCoreBlock extends SpecialMagicLogBlock {
 
+	private static final MapCodec<SpecialMagicLogBlock> CODEC = simpleCodec(TimeLogCoreBlock::new);
+
 	public TimeLogCoreBlock(Properties properties) {
 		super(properties);
+	}
+
+	@Override
+	protected MapCodec<? extends DirectionalBlock> codec() {
+		return CODEC;
 	}
 
 	@Override

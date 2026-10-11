@@ -358,6 +358,9 @@ accessible method net/minecraft/data/recipes/ShapedRecipeBuilder <init> (Lnet/mi
 # BlockTagGenerator
 accessible class net/minecraft/data/tags/VanillaItemTagsProvider$BlockToItemConverter
 
+# WoodBlockBuilders
+accessible field net/minecraft/client/data/models/BlockModelGenerators ROTATIONS_COLUMN_WITH_FACING Lnet/minecraft/client/data/models/blockstates/PropertyDispatch;
+
 # Enum Extensions
 extend-enum net/minecraft/world/damagesource/DamageEffects TWILIGHTFOREST_PINCH
 extend-enum net/minecraft/world/item/Rarity TWILIGHTFOREST_TWILIGHT
