@@ -2,6 +2,7 @@ package twilightforest.datagen.data.custom;
 
 import net.minecraft.advancements.Criterion;
 import net.minecraft.core.HolderGetter;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -64,7 +65,7 @@ public class DryingRecipeBuilder implements RecipeBuilder {
 
 	@Override
 	public ResourceKey<Recipe<?>> defaultId() {
-		return RecipeBuilder.getDefaultRecipeId(this.result);
+		return ResourceKey.create(Registries.RECIPE, this.result.typeHolder().unwrapKey().orElseThrow().identifier().withPrefix("drying/"));
 	}
 
 	@Override

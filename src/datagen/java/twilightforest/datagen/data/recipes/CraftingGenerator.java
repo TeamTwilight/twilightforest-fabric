@@ -1257,7 +1257,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		DryingRecipeBuilder.drying(Ingredient.of(Items.BREAD), new ItemStackTemplate(BuiltInRegistries.ITEM.wrapAsHolder(TFItems.STALE_BREAD), 1, DataComponentPatch.builder()
 			.set(DataComponents.DAMAGE_TYPE, this.registries.lookupOrThrow(Registries.DAMAGE_TYPE).getOrThrow(TFDamageTypes.STALE_SANDWICH))
 			.build()
-		)).save(this.output);
+		)).save(this.output, this.createKey("drying/stale_bread"));
 	}
 
 	private void dryingRackCoralRecipes() {
@@ -1273,7 +1273,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		Item liveItem = BuiltInRegistries.ITEM.getValue(live);
 		DryingRecipeBuilder.drying(liveItem, BuiltInRegistries.ITEM.getValue(live.withPrefix("dead_")), 1 / 30F)
 			.unlockedBy("has_coral", has(liveItem))
-			.save(this.output);
+			.save(this.output, this.createKey("drying/" + coral));
 	}
 
 	private void nagastoneRecipes(HolderGetter<Item> getter) {
