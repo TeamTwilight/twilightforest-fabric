@@ -9,6 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -45,6 +46,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
+import twilightforest.TFCommon;
 import twilightforest.block.entity.CandelabraBlockEntity;
 import twilightforest.components.item.CandelabraData;
 import twilightforest.inventory.InventoryUtil;
@@ -59,6 +61,7 @@ import java.util.Optional;
 @SuppressWarnings("deprecation")
 public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, SimpleWaterloggedBlock, IRedstoneConnectableBlock {
 
+	public static final Identifier CANDLE_DYNAMIC_DROP_ID = TFCommon.prefix("candles");
 	public static final BooleanProperty ON_WALL = BooleanProperty.create("on_wall");
 	public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final List<BooleanProperty> CANDLES = List.of(BooleanProperty.create("has_candle_1"), BooleanProperty.create("has_candle_2"), BooleanProperty.create("has_candle_3"));
@@ -340,24 +343,14 @@ public class CandelabraBlock extends BaseEntityBlock implements LightableBlock, 
 
 	@Override
 	public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
-		List<ItemStack> drops = super.getDrops(state, builder);
-		Optional<ItemStack> base = drops.stream().filter(item -> item.is(this.asItem())).findFirst();
-		if (base.isPresent()) {
-			BlockEntity blockEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-			if (blockEntity instanceof CandelabraBlockEntity candelabra) {
-				RegistryAccess access = blockEntity.getLevel().registryAccess();
-				if (builder.getOptionalParameter(LootContextParams.TOOL) != null && EnchantmentHelper.getItemEnchantmentLevel(access.carminite$holderOrThrow(Enchantments.SILK_TOUCH), builder.getParameter(LootContextParams.TOOL)) > 0) {
-					ItemStack newStack = new ItemStack(this);
-					newStack.applyComponents(candelabra.collectComponents());
-					drops.remove(base.get());
-					drops.add(newStack);
-				} else {
-					candelabra.getCandles().ordered().forEach(block -> drops.add(new ItemStack(block)));
-				}
-			}
+		BlockEntity maybeEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+		if (maybeEntity instanceof CandelabraBlockEntity entity) {
+			builder.withDynamicDrop(CANDLE_DYNAMIC_DROP_ID, output -> {
+				entity.getCandles().ordered().forEach(block -> output.accept(new ItemStack(block)));
+			});
 		}
 
-		return drops;
+		return super.getDrops(state, builder);
 	}
 
 	@Override
