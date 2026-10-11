@@ -27,8 +27,12 @@ public class IceSwordItem extends Item {
 				target.getZ() + (target.getRandom().nextGaussian() * target.getBbWidth() * 0.5),
 				0, 0, 0);
 		}
-		for (ServerPlayer player : PlayerLookup.tracking(target)) {
-			ServerPlayNetworking.send(player, particlePacket);
+		for (ServerPlayer serverPlayer : PlayerLookup.tracking(target)) {
+			ServerPlayNetworking.send(serverPlayer, particlePacket);
+		}
+
+		if (target instanceof ServerPlayer serverPlayer) {
+			ServerPlayNetworking.send(serverPlayer, particlePacket);
 		}
 	}
 }
