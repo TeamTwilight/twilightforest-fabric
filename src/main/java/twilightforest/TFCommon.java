@@ -4,6 +4,7 @@ import com.google.common.reflect.Reflection;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
+import net.fabricmc.fabric.api.item.v1.ItemComponentTooltipProviderRegistry;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
@@ -18,6 +19,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
 import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteractions;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.core.dispenser.EquipmentDispenseItemBehavior;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -151,6 +153,7 @@ public final class TFCommon implements ModInitializer {
 		registerReloadListeners();
 		registerCauldronInteractions();
 		registerItemStorage();
+		registerComponentTooltips();
 	}
 
 	private static void setupCommonEvents() {
@@ -862,6 +865,10 @@ public final class TFCommon implements ModInitializer {
 			(entity, side) -> entity.getBlockState().getValue(ChiseledCanopyShelfBlock.SPAWNER) ? null : ContainerStorage.of(entity, side),
 			TFBlockEntities.CHISELED_CANOPY_BOOKSHELF
 		);
+	}
+
+	private static void registerComponentTooltips() {
+		ItemComponentTooltipProviderRegistry.addLast(TFDataComponents.SKULL_CANDLES);
 	}
 
 	public static Identifier prefix(String name) {
