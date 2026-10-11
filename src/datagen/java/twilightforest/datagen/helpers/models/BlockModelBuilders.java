@@ -188,10 +188,10 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		TextureMapping faceMapping = TextureMapping.cube(TFBlocks.NAGASTONE_HEAD)
 			.put(TextureSlot.UP, new Material(TFCommon.prefix("block/nagastone_top_tip")))
 			.put(TextureSlot.DOWN, new Material(TFCommon.prefix("block/nagastone_bottom_tip")))
-			.put(TextureSlot.SOUTH, new Material(TFCommon.prefix("block/nagastone_face_left")))
-			.put(TextureSlot.NORTH, new Material(TFCommon.prefix("block/nagastone_face_right")))
-			.put(TextureSlot.WEST, new Material(TFCommon.prefix("block/nagastone_face_front")))
-			.put(TextureSlot.EAST, new Material(TFCommon.prefix("block/nagastone_cross_section")))
+			.put(TextureSlot.SOUTH, new Material(TFCommon.prefix("block/nagastone_cross_section")))
+			.put(TextureSlot.NORTH, new Material(TFCommon.prefix("block/nagastone_face_front")))
+			.put(TextureSlot.WEST, new Material(TFCommon.prefix("block/nagastone_face_left")))
+			.put(TextureSlot.EAST, new Material(TFCommon.prefix("block/nagastone_face_right")))
 			.put(TextureSlot.PARTICLE, new Material(TFCommon.prefix("block/nagastone_face_front")));
 		Identifier model = TFModelTemplates.CUBE.create(TFBlocks.NAGASTONE_HEAD, faceMapping, this.modelOutput);
 
