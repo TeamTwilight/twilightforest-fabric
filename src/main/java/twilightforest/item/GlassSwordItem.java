@@ -42,8 +42,12 @@ public class GlassSwordItem extends Item {
 				target.getZ() + target.getRandom().nextFloat() * target.getBbWidth() * 2.0F - target.getBbWidth(),
 				0, 0, 0);
 			}
-			for (ServerPlayer player : PlayerLookup.tracking(target)) {
-				ServerPlayNetworking.send(player, particlePacket);
+			for (ServerPlayer serverPlayer : PlayerLookup.tracking(target)) {
+				ServerPlayNetworking.send(serverPlayer, particlePacket);
+			}
+
+			if (target instanceof ServerPlayer serverPlayer) {
+				ServerPlayNetworking.send(serverPlayer, particlePacket);
 			}
 		}
 
