@@ -5,16 +5,21 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.fabricmc.fabric.api.client.model.loading.v1.ExtraModelKey;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.block.BlockModelRenderState;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
 import net.minecraft.client.renderer.block.dispatch.SingleVariant;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.item.ItemModelResolver;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.geometry.BakedQuad;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
@@ -176,11 +181,19 @@ public class JarRenderer<T extends JarBlockEntity> implements BlockEntityRendere
 			return;
 
 		boolean translucent = (part.materialFlags() & BakedQuad.FLAG_TRANSLUCENT) != 0;
-		collector.carminite$submitMultiLayerBlockModel(poseStack, List.of(part), translucent, BlockModelRenderState.EMPTY_TINTS, lightCoords, OverlayTexture.NO_OVERLAY, 0);
+		collector.submitBlockModel(poseStack, JarRenderer::getRenderType, translucent, List.of(part), null, BlockModelRenderState.EMPTY_TINTS, lightCoords, OverlayTexture.NO_OVERLAY, 0);
 
 		if (crumblingOverlay != null) {
 			collector.submitBreakingBlockModel(poseStack, new SingleVariant(part), 0L, crumblingOverlay.progress());
 		}
+	}
+
+	private static RenderType getRenderType(ChunkSectionLayer layer) {
+		return switch (layer) {
+			case SOLID -> RenderTypes.entitySolid(TextureAtlas.LOCATION_BLOCKS);
+			case CUTOUT -> Sheets.cutoutBlockSheet();
+			case TRANSLUCENT -> Sheets.translucentBlockSheet();
+		};
 	}
 
 	public void submitContents(JarRenderState state, PoseStack poseStack, SubmitNodeCollector collector) {
