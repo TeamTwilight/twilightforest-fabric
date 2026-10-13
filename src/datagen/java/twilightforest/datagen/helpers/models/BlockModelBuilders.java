@@ -152,51 +152,75 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 	}
 
 	public void nagaStone() {
-		TextureMapping mapping = TextureMapping.cube(TFBlocks.NAGASTONE);
-
 		TextureMapping solidMapping = TextureMapping.cube(TFBlocks.NAGASTONE)
 			.put(TextureSlot.SIDE, new Material(TFCommon.prefix("block/nagastone_long_side")))
 			.put(TextureSlot.BOTTOM, new Material(TFCommon.prefix("block/nagastone_bottom_long")))
 			.put(TextureSlot.TOP, new Material(TFCommon.prefix("block/nagastone_turn_top")));
+		Identifier solidModel = TFModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(TFBlocks.NAGASTONE, "_solid", solidMapping, this.modelOutput);
 
-		Identifier solid = TFModelTemplates.CUBE_BOTTOM_TOP.createWithSuffix(TFBlocks.NAGASTONE, "_solid", solidMapping, this.modelOutput);
-		// todo 1.21.x cleanup: generate these models as well
-		Identifier down = TFCommon.prefix("block/naga_segment/down");
-		Identifier up = TFCommon.prefix("block/naga_segment/up");
-		Identifier horizontal = TFCommon.prefix("block/naga_segment/horizontal");
-		Identifier vertical = TFCommon.prefix("block/naga_segment/vertical");
+		TextureMapping downMapping = new TextureMapping()
+			.put(TextureSlot.PARTICLE, new Material(TFCommon.prefix("block/nagastone_cross_section")))
+			.put(TextureSlot.NORTH, new Material(TFCommon.prefix("block/nagastone_left_down")))
+			.put(TextureSlot.SOUTH, new Material(TFCommon.prefix("block/nagastone_right_down")))
+			.put(TextureSlot.EAST, new Material(TFCommon.prefix("block/nagastone_cross_section")))
+			.put(TextureSlot.WEST, new Material(TFCommon.prefix("block/nagastone_tip_up")))
+			.put(TextureSlot.UP, new Material(TFCommon.prefix("block/nagastone_top_tip")))
+			.put(TextureSlot.DOWN, new Material(TFCommon.prefix("block/nagastone_cross_section")));
+		Identifier downModel = ModelTemplates.CUBE.create(TFCommon.prefix("block/naga_segment/down"), downMapping, this.modelOutput);
 
-		this.itemModelOutput.accept(TFBlocks.NAGASTONE.asItem(), ItemModelUtils.plainModel(solid));
+		TextureMapping upMapping = new TextureMapping()
+			.put(TextureSlot.PARTICLE, new Material(TFCommon.prefix("block/nagastone_cross_section")))
+			.put(TextureSlot.NORTH, new Material(TFCommon.prefix("block/nagastone_left_up")))
+			.put(TextureSlot.SOUTH, new Material(TFCommon.prefix("block/nagastone_right_up")))
+			.put(TextureSlot.EAST, new Material(TFCommon.prefix("block/nagastone_cross_section")))
+			.put(TextureSlot.WEST, new Material(TFCommon.prefix("block/nagastone_tip_down")))
+			.put(TextureSlot.UP, new Material(TFCommon.prefix("block/nagastone_cross_section")))
+			.put(TextureSlot.DOWN, new Material(TFCommon.prefix("block/nagastone_bottom_tip")));
+		Identifier upModel = ModelTemplates.CUBE.create(TFCommon.prefix("block/naga_segment/up"), upMapping, this.modelOutput);
+
+		TextureMapping horizontalMapping = new TextureMapping()
+			.put(TextureSlot.PARTICLE, new Material(TFCommon.prefix("block/nagastone_cross_section")))
+			.put(TextureSlot.NORTH, new Material(TFCommon.prefix("block/nagastone_long_side")))
+			.put(TextureSlot.SOUTH, new Material(TFCommon.prefix("block/nagastone_long_side")))
+			.put(TextureSlot.EAST, new Material(TFCommon.prefix("block/nagastone_cross_section")))
+			.put(TextureSlot.WEST, new Material(TFCommon.prefix("block/nagastone_cross_section")))
+			.put(TextureSlot.UP, new Material(TFCommon.prefix("block/nagastone_tip_long")))
+			.put(TextureSlot.DOWN, new Material(TFCommon.prefix("block/nagastone_bottom_long")));
+		Identifier horizontalModel = ModelTemplates.CUBE.create(TFCommon.prefix("block/naga_segment/horizontal"), horizontalMapping, this.modelOutput);
+
+		Identifier verticalModel = TFCommon.prefix("block/naga_segment/vertical");
+
+		TextureMapping headMapping = TextureMapping.cube(TFBlocks.NAGASTONE_HEAD)
+			.put(TextureSlot.PARTICLE, new Material(TFCommon.prefix("block/nagastone_face_front")))
+			.put(TextureSlot.NORTH, new Material(TFCommon.prefix("block/nagastone_face_front")))
+			.put(TextureSlot.SOUTH, new Material(TFCommon.prefix("block/nagastone_cross_section")))
+			.put(TextureSlot.EAST, new Material(TFCommon.prefix("block/nagastone_face_right")))
+			.put(TextureSlot.WEST, new Material(TFCommon.prefix("block/nagastone_face_left")))
+			.put(TextureSlot.UP, new Material(TFCommon.prefix("block/nagastone_top_tip")))
+			.put(TextureSlot.DOWN, new Material(TFCommon.prefix("block/nagastone_bottom_tip")));
+		Identifier headModel = TFModelTemplates.CUBE.create(TFBlocks.NAGASTONE_HEAD, headMapping, this.modelOutput);
+
+		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(TFBlocks.NAGASTONE_HEAD, plainVariant(headModel)).with(ROTATION_HORIZONTAL_FACING));
+		this.itemModelOutput.accept(TFBlocks.NAGASTONE_HEAD.asItem(), ItemModelUtils.plainModel(headModel));
+
+		this.itemModelOutput.accept(TFBlocks.NAGASTONE.asItem(), ItemModelUtils.plainModel(solidModel));
 		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(TFBlocks.NAGASTONE).with(
 			PropertyDispatch.initial(NagastoneBlock.VARIANT)
-				.select(NagastoneVariant.NORTH_DOWN, plainVariant(down).with(Y_ROT_270))
-				.select(NagastoneVariant.SOUTH_DOWN, plainVariant(down).with(Y_ROT_90))
-				.select(NagastoneVariant.WEST_DOWN, plainVariant(down).with(Y_ROT_180))
-				.select(NagastoneVariant.EAST_DOWN, plainVariant(down))
+				.select(NagastoneVariant.NORTH_DOWN, plainVariant(downModel).with(Y_ROT_270))
+				.select(NagastoneVariant.SOUTH_DOWN, plainVariant(downModel).with(Y_ROT_90))
+				.select(NagastoneVariant.WEST_DOWN, plainVariant(downModel).with(Y_ROT_180))
+				.select(NagastoneVariant.EAST_DOWN, plainVariant(downModel))
 
-				.select(NagastoneVariant.NORTH_UP, plainVariant(up).with(Y_ROT_270))
-				.select(NagastoneVariant.SOUTH_UP, plainVariant(up).with(Y_ROT_90))
-				.select(NagastoneVariant.WEST_UP, plainVariant(up).with(Y_ROT_180))
-				.select(NagastoneVariant.EAST_UP, plainVariant(up))
+				.select(NagastoneVariant.NORTH_UP, plainVariant(upModel).with(Y_ROT_270))
+				.select(NagastoneVariant.SOUTH_UP, plainVariant(upModel).with(Y_ROT_90))
+				.select(NagastoneVariant.WEST_UP, plainVariant(upModel).with(Y_ROT_180))
+				.select(NagastoneVariant.EAST_UP, plainVariant(upModel))
 
-				.select(NagastoneVariant.AXIS_X, plainVariant(horizontal))
-				.select(NagastoneVariant.AXIS_Y, plainVariant(vertical))
-				.select(NagastoneVariant.AXIS_Z, plainVariant(horizontal).with(Y_ROT_90))
-				.select(NagastoneVariant.SOLID, plainVariant(solid))
+				.select(NagastoneVariant.AXIS_X, plainVariant(horizontalModel))
+				.select(NagastoneVariant.AXIS_Y, plainVariant(verticalModel))
+				.select(NagastoneVariant.AXIS_Z, plainVariant(horizontalModel).with(Y_ROT_90))
+				.select(NagastoneVariant.SOLID, plainVariant(solidModel))
 		));
-
-		TextureMapping faceMapping = TextureMapping.cube(TFBlocks.NAGASTONE_HEAD)
-			.put(TextureSlot.UP, new Material(TFCommon.prefix("block/nagastone_top_tip")))
-			.put(TextureSlot.DOWN, new Material(TFCommon.prefix("block/nagastone_bottom_tip")))
-			.put(TextureSlot.SOUTH, new Material(TFCommon.prefix("block/nagastone_cross_section")))
-			.put(TextureSlot.NORTH, new Material(TFCommon.prefix("block/nagastone_face_front")))
-			.put(TextureSlot.WEST, new Material(TFCommon.prefix("block/nagastone_face_left")))
-			.put(TextureSlot.EAST, new Material(TFCommon.prefix("block/nagastone_face_right")))
-			.put(TextureSlot.PARTICLE, new Material(TFCommon.prefix("block/nagastone_face_front")));
-		Identifier model = TFModelTemplates.CUBE.create(TFBlocks.NAGASTONE_HEAD, faceMapping, this.modelOutput);
-
-		this.blockStateOutput.accept(MultiVariantGenerator.dispatch(TFBlocks.NAGASTONE_HEAD, plainVariant(model)).with(ROTATION_HORIZONTAL_FACING));
-		this.itemModelOutput.accept(TFBlocks.NAGASTONE_HEAD.asItem(), ItemModelUtils.plainModel(model));
 
 		nagastonePillar(TFBlocks.NAGASTONE_PILLAR, "");
 		nagastonePillar(TFBlocks.MOSSY_NAGASTONE_PILLAR, "_mossy");
