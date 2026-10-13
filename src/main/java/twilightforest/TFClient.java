@@ -150,6 +150,7 @@ public final class TFClient implements ClientModInitializer {
 		ClientPlayNetworking.registerGlobalReceiver(SetMasonJarItemPacket.TYPE, SetMasonJarItemPacket::handle);
 		ClientPlayNetworking.registerGlobalReceiver(SyncQuestsPacket.TYPE, SyncQuestsPacket::handle);
 		ClientPlayNetworking.registerGlobalReceiver(TravellersWingsStatePacket.TYPE, TravellersWingsStatePacket::handle);
+		ClientPlayNetworking.registerGlobalReceiver(CreatePortalItemEmitterPacket.TYPE, CreatePortalItemEmitterPacket::handle);
 	}
 
 	private static void registerRenderPipelines() {

@@ -1,0 +1,45 @@
+package twilightforest.network;
+
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
+import twilightforest.TFCommon;
+import twilightforest.client.particle.emitter.PortalItemEmitter;
+
+public record CreatePortalItemEmitterPacket(int entityID, int lifetime) implements CustomPacketPayload {
+
+	public static final CustomPacketPayload.Type<CreatePortalItemEmitterPacket> TYPE = new CustomPacketPayload.Type<>(TFCommon.prefix("create_portal_item_emitter_packet"));
+	public static final StreamCodec<RegistryFriendlyByteBuf, CreatePortalItemEmitterPacket> STREAM_CODEC = CustomPacketPayload.codec(CreatePortalItemEmitterPacket::write, CreatePortalItemEmitterPacket::new);
+
+	public CreatePortalItemEmitterPacket(FriendlyByteBuf buf) {
+		this(buf.readInt(), buf.readInt());
+	}
+
+	public void write(FriendlyByteBuf buf) {
+		buf.writeInt(entityID());
+		buf.writeInt(lifetime());
+	}
+
+	@Override
+	public CustomPacketPayload.Type<? extends CustomPacketPayload> type() {
+		return TYPE;
+	}
+
+	public static void handle(CreatePortalItemEmitterPacket message, ClientPlayNetworking.Context ctx) {
+		ctx.client().execute(() -> {
+			ClientLevel level = Minecraft.getInstance().level;
+			if (level == null)
+				return;
+
+			Entity entity = level.getEntity(message.entityID());
+			if (entity instanceof ItemEntity item)
+				Minecraft.getInstance().particleEngine.add(new PortalItemEmitter(level, item, message.lifetime()));
+		});
+	}
+}

@@ -192,6 +192,7 @@ public final class TFCommon implements ModInitializer {
 		PayloadTypeRegistry.clientboundPlay().register(SetMasonJarItemPacket.TYPE, SetMasonJarItemPacket.STREAM_CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(SyncQuestsPacket.TYPE, SyncQuestsPacket.STREAM_CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(TravellersWingsStatePacket.TYPE, TravellersWingsStatePacket.STREAM_CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(CreatePortalItemEmitterPacket.TYPE, CreatePortalItemEmitterPacket.STREAM_CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(GogglesZoomPacket.TYPE, GogglesZoomPacket.STREAM_CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(GradualGlidePacket.TYPE, GradualGlidePacket.STREAM_CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(PerformDoubleJumpPacket.TYPE, PerformDoubleJumpPacket.STREAM_CODEC);
