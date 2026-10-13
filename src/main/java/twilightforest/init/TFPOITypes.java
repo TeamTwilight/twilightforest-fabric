@@ -9,6 +9,8 @@ import net.minecraft.world.entity.ai.village.poi.PoiTypes;
 import twilightforest.TFCommon;
 
 public class TFPOITypes {
+	public static final ResourceKey<PoiType> TWILIGHT_PORTAL_KEY = ResourceKey.create(Registries.POINT_OF_INTEREST_TYPE, TFCommon.prefix("twilight_portal"));
+	public static final PoiType TWILIGHT_PORTAL = PoiTypes.register(BuiltInRegistries.POINT_OF_INTEREST_TYPE, TWILIGHT_PORTAL_KEY, ImmutableSet.copyOf(TFBlocks.TWILIGHT_PORTAL.getStateDefinition().getPossibleStates()), 0, 1);
 	public static final ResourceKey<PoiType> GHAST_TRAP_KEY = ResourceKey.create(Registries.POINT_OF_INTEREST_TYPE, TFCommon.prefix("ghast_trap"));
 	public static final PoiType GHAST_TRAP = PoiTypes.register(BuiltInRegistries.POINT_OF_INTEREST_TYPE, GHAST_TRAP_KEY, ImmutableSet.copyOf(TFBlocks.GHAST_TRAP.getStateDefinition().getPossibleStates()), 0, 1);
 
