@@ -91,7 +91,7 @@ public final class TravellersGearEventListeners {
 		}
 		AbstractArrow.Pickup pickup = arrow.pickup;
 		if (!player.hasInfiniteMaterials() && pickup.equals(AbstractArrow.Pickup.ALLOWED)) {
-			InventoryUtil.giveItemToPlayer(player, arrow.getPickupItemStackOrigin());
+			InventoryUtil.giveItemToPlayerAndPlaySound(player, arrow.getPickupItemStackOrigin());
 			player.getInventory().setChanged();
 		}
 		if (pickup.equals(AbstractArrow.Pickup.ALLOWED) || pickup.equals(AbstractArrow.Pickup.CREATIVE_ONLY) && player.isCreative())
@@ -344,7 +344,7 @@ public final class TravellersGearEventListeners {
 		).map(stack -> stack.get(componentType))
 			.ifPresent(component ->
 				itemStreamExtractor.apply(component)
-					.forEach(itemStack -> InventoryUtil.giveItemToPlayer(event.getPlayer(), itemStack))
+					.forEach(itemStack -> InventoryUtil.giveItemToPlayerAndPlaySound(event.getPlayer(), itemStack))
 			);
 	}
 
