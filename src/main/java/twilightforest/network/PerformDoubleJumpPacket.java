@@ -25,15 +25,9 @@ public record PerformDoubleJumpPacket() implements CustomPacketPayload {
 	}
 
 	public static void handle(PerformDoubleJumpPacket message, ServerPlayNetworking.Context ctx) {
-		Runnable task = () -> {
+		ctx.server().execute(() -> {
 			if (!TravellersGearLogic.performDoubleJump(ctx.player()))
 				TravellersGearLogic.handleDoubleJumpAbuse(ctx.player());
-		};
-
-		if (ctx.server().isSameThread()) {
-			task.run();
-		} else {
-			ctx.server().execute(task);
-		}
+		});
 	}
 }

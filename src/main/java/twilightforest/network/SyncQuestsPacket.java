@@ -24,11 +24,6 @@ public record SyncQuestsPacket(QuestingRamContext ram) implements CustomPacketPa
 	}
 
 	public static void handle(SyncQuestsPacket packet, ClientPlayNetworking.Context ctx) {
-		Runnable task = () -> questingRamCurrentContext.setContext(packet.ram());
-		if (ctx.client().isSameThread()) {
-			task.run();
-		} else {
-			ctx.client().schedule(task);
-		}
+		ctx.client().execute(() -> questingRamCurrentContext.setContext(packet.ram()));
 	}
 }

@@ -45,7 +45,7 @@ public record SyncUncraftingTableConfigPacket(
 	}
 
 	public static void handle(SyncUncraftingTableConfigPacket message, ClientPlayNetworking.Context ctx) {
-		Runnable task = () -> {
+		ctx.client().execute(() -> {
 			TFConfig.uncraftingXpCostMultiplier = message.uncraftingMultiplier();
 			TFConfig.repairingXpCostMultiplier = message.repairingMultiplier();
 			TFConfig.allowShapelessUncrafting = message.allowShapeless();
@@ -56,12 +56,6 @@ public record SyncUncraftingTableConfigPacket(
 			TFConfig.reverseRecipeBlacklist = message.flipRecipeList();
 			TFConfig.blacklistedUncraftingModIds = message.disabledModids();
 			TFConfig.flipUncraftingModIdList = message.flipModidList();
-		};
-
-		if (ctx.client().isSameThread()) {
-			task.run();
-		} else {
-			ctx.client().schedule(task);
-		}
+		});
 	}
 }

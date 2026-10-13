@@ -30,18 +30,12 @@ public record WipeOreMeterPacket(InteractionHand hand) implements CustomPacketPa
 	}
 
 	public static void handle(WipeOreMeterPacket message, ServerPlayNetworking.Context ctx) {
-		Runnable task = () -> {
+		ctx.server().execute(() -> {
 			ItemStack heldStack = ctx.player().getItemInHand(message.hand());
 			if (heldStack.is(TFItems.ORE_METER)) {
 				heldStack.remove(TFDataComponents.ORE_DATA);
 				heldStack.remove(TFDataComponents.ORE_FILTER);
 			}
-		};
-
-		if (ctx.server().isSameThread()) {
-			task.run();
-		} else {
-			ctx.server().execute(task);
-		}
+		});
 	}
 }

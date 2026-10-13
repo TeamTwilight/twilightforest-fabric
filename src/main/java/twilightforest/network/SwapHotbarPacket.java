@@ -23,17 +23,11 @@ public class SwapHotbarPacket implements CustomPacketPayload {
 	}
 
 	public static void handle(SwapHotbarPacket message, ServerPlayNetworking.Context ctx) {
-		Runnable task = () -> {
+		ctx.server().execute(() -> {
 			Player player = ctx.player();
 			TravellersArmorBeltItem.travellersTrySwapHotbar(player);
 			if (player instanceof ServerPlayer serverPlayer)
 				serverPlayer.broadcastToPlayer(serverPlayer);
-		};
-
-		if (ctx.server().isSameThread()) {
-			task.run();
-		} else {
-			ctx.server().execute(task);
-		}
+		});
 	}
 }

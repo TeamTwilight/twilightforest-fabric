@@ -38,7 +38,7 @@ public record SetMasonJarItemPacket(BlockPos pos, boolean empty, ItemStack stack
 
 	@SuppressWarnings("Convert2Lambda")
 	public static void handle(SetMasonJarItemPacket packet, ClientPlayNetworking.Context ctx) {
-		Runnable task = new Runnable() {
+		ctx.client().execute(new Runnable() {
 			@Override
 			public void run() {
 				if (ctx.client().level.getBlockEntity(packet.pos()) instanceof MasonJarBlockEntity blockEntity) {
@@ -47,12 +47,6 @@ public record SetMasonJarItemPacket(BlockPos pos, boolean empty, ItemStack stack
 					blockEntity.setChanged();
 				}
 			}
-		};
-
-		if (ctx.client().isSameThread()) {
-			task.run();
-		} else {
-			ctx.client().schedule(task);
-		}
+		});
 	}
 }

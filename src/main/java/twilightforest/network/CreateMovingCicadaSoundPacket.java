@@ -31,7 +31,7 @@ public record CreateMovingCicadaSoundPacket(int entityID) implements CustomPacke
 
 	@SuppressWarnings("Convert2Lambda")
 	public static void handle(CreateMovingCicadaSoundPacket message, ClientPlayNetworking.Context ctx) {
-		Runnable task = new Runnable() {
+		ctx.client().execute(new Runnable() {
 			@Override
 			public void run() {
 				Entity entity = ctx.client().level.getEntity(message.entityID());
@@ -39,12 +39,6 @@ public record CreateMovingCicadaSoundPacket(int entityID) implements CustomPacke
 					Minecraft.getInstance().getSoundManager().queueTickingSound(new MovingCicadaSoundInstance(living));
 				}
 			}
-		};
-
-		if (ctx.client().isSameThread()) {
-			task.run();
-		} else {
-			ctx.client().schedule(task);
-		}
+		});
 	}
 }

@@ -33,7 +33,7 @@ public record LifedrainParticlePacket(int entityID, Vec3 victimPos) implements C
 
 	@SuppressWarnings("Convert2Lambda")
 	public static void handle(LifedrainParticlePacket packet, ClientPlayNetworking.Context ctx) {
-		Runnable task = new Runnable() {
+		ctx.client().execute(new Runnable() {
 			@Override
 			public void run() {
 				Entity entity = ctx.client().level.getEntity(packet.entityID());
@@ -41,12 +41,6 @@ public record LifedrainParticlePacket(int entityID, Vec3 victimPos) implements C
 					LifedrainScepterItem.makeRedMagicTrail(living.level(), living, packet.victimPos());
 				}
 			}
-		};
-
-		if (ctx.client().isSameThread()) {
-			task.run();
-		} else {
-			ctx.client().schedule(task);
-		}
+		});
 	}
 }

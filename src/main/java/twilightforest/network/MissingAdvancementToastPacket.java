@@ -25,17 +25,11 @@ public record MissingAdvancementToastPacket(Component title, ItemStackTemplate i
 
 	@SuppressWarnings("Convert2Lambda")
 	public static void handle(MissingAdvancementToastPacket packet, ClientPlayNetworking.Context ctx) {
-		Runnable task = new Runnable() {
+		ctx.client().execute(new Runnable() {
 			@Override
 			public void run() {
 				ctx.client().getToastManager().addToast(new MissingAdvancementToast(packet.title(), packet.icon()));
 			}
-		};
-
-		if (ctx.client().isSameThread()) {
-			task.run();
-		} else {
-			ctx.client().schedule(task);
-		}
+		});
 	}
 }

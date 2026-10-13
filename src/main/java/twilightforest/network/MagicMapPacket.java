@@ -33,7 +33,7 @@ public record MagicMapPacket(ClientboundMapItemDataPacket inner, List<String> co
 
 	@SuppressWarnings("Convert2Lambda")
 	public static void handle(MagicMapPacket message, ClientPlayNetworking.Context ctx) {
-		Runnable task = new Runnable() {
+		ctx.client().execute(new Runnable() {
 			@Override
 			public void run() {
 				ClientLevel clientLevel = ctx.client().level;
@@ -58,12 +58,6 @@ public record MagicMapPacket(ClientboundMapItemDataPacket inner, List<String> co
 					);
 				}
 			}
-		};
-
-		if (ctx.client().isSameThread()) {
-			task.run();
-		} else {
-			ctx.client().schedule(task);
-		}
+		});
 	}
 }

@@ -80,15 +80,9 @@ public abstract class TFBossBarPacket implements CustomPacketPayload {
 		}
 
 		public static void handle(AddTFBossBarPacket packet, ClientPlayNetworking.Context ctx) {
-			Runnable task = () -> {
-				ctx.client().gui.getBossOverlay().events.put(packet.id, new ClientTFBossBar(packet.id, packet.name, packet.progress, packet.color, packet.overlay, packet.darkenScreen, packet.playMusic, packet.createWorldFog));
-			};
-
-			if (ctx.client().isSameThread()) {
-				task.run();
-			} else {
-				ctx.client().schedule(task);
-			}
+			ctx.client().execute(
+				() -> ctx.client().gui.getBossOverlay().events.put(packet.id, new ClientTFBossBar(packet.id, packet.name, packet.progress, packet.color, packet.overlay, packet.darkenScreen, packet.playMusic, packet.createWorldFog))
+			);
 		}
 	}
 
@@ -128,19 +122,13 @@ public abstract class TFBossBarPacket implements CustomPacketPayload {
 		}
 
 		public static void handle(UpdateTFBossBarStylePacket packet, ClientPlayNetworking.Context ctx) {
-			Runnable task = () -> {
+			ctx.client().execute(() -> {
 				if (ctx.client().gui.getBossOverlay().events.get(packet.id) instanceof ClientTFBossBar bossEvent) {
 					bossEvent.setBarColor(packet.color);
 					bossEvent.setOverlay(packet.overlay);
 					if (!packet.allowLerp) bossEvent.setSetTime(bossEvent.getSetTime() - 200L); // Boss bars lerp over 100 milliseconds, we sometimes don't want that
 				}
-			};
-
-			if (ctx.client().isSameThread()) {
-				task.run();
-			} else {
-				ctx.client().schedule(task);
-			}
+			});
 		}
 	}
 }

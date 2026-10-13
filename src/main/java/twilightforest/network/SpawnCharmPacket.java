@@ -41,7 +41,7 @@ public record SpawnCharmPacket(ItemStack charm, ResourceKey<SoundEvent> event) i
 
 	@SuppressWarnings("Convert2Lambda")
 	public static void handle(SpawnCharmPacket packet, ClientPlayNetworking.Context ctx) {
-		Runnable task = new Runnable() {
+		ctx.client().execute(new Runnable() {
 			@Override
 			public void run() {
 				Player player = ctx.player();
@@ -61,12 +61,6 @@ public record SpawnCharmPacket(ItemStack charm, ResourceKey<SoundEvent> event) i
 					level.playLocalSound(camera.getX(), camera.getY(), camera.getZ(), event, player.getSoundSource(), 1.5F, 1.0F, false);
 				}
 			}
-		};
-
-		if (ctx.client().isSameThread()) {
-			task.run();
-		} else {
-			ctx.client().schedule(task);
-		}
+		});
 	}
 }
