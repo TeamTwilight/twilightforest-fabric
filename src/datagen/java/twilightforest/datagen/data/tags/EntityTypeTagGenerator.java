@@ -209,6 +209,8 @@ public class EntityTypeTagGenerator extends EntityTypeTagsProvider {
 			TFEntities.CARMINITE_BROODLING,
 			EntityType.ITEM
 		);
+
+		this.tag(TFEntityTypeTags.PROGRESSION_LOCK_VULNERABLE).add(TFEntities.KOBOLD);
 	}
 
 
