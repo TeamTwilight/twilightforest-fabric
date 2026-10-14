@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -68,6 +69,8 @@ public class BlockLootTables extends FabricBlockLootSubProvider {
 		dropSelf(TFBlocks.MOSSY_UNDERBRICK);
 		dropSelf(TFBlocks.UNDERBRICK_FLOOR);
 		dropSelf(TFBlocks.THORN_ROSE);
+		add(TFBlocks.THORN_LEAVES, silkAndStick(TFBlocks.THORN_LEAVES, Items.STICK, RARE_SAPLING_DROP_RATES));
+		add(TFBlocks.BEANSTALK_LEAVES, silkAndStick(TFBlocks.BEANSTALK_LEAVES, TFItems.MAGIC_BEANS, RARE_SAPLING_DROP_RATES));
 		dropSelf(TFBlocks.DEADROCK);
 		dropSelf(TFBlocks.CRACKED_DEADROCK);
 		dropSelf(TFBlocks.WEATHERED_DEADROCK);
@@ -211,7 +214,9 @@ public class BlockLootTables extends FabricBlockLootSubProvider {
 		add(TFBlocks.CLOVER_PATCH, createShearsOnlyDrop(TFBlocks.CLOVER_PATCH));
 		add(TFBlocks.FIDDLEHEAD, createShearsOnlyDrop(TFBlocks.FIDDLEHEAD));
 		dropSelf(TFBlocks.MUSHGLOOM);
+		add(TFBlocks.TORCHBERRY_PLANT, torchberryPlant(TFBlocks.TORCHBERRY_PLANT));
 		add(TFBlocks.ROOT_STRAND, block -> createShearsDispatchTable(block, applyExplosionDecay(block, LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F))))));
+		add(TFBlocks.FALLEN_LEAVES, this.fallenLeaves());
 		dropSelf(TFBlocks.SMOKER);
 		dropSelf(TFBlocks.ENCASED_SMOKER);
 		dropSelf(TFBlocks.FIRE_JET);
@@ -398,7 +403,9 @@ public class BlockLootTables extends FabricBlockLootSubProvider {
 		dropSelf(TFBlocks.TWILIGHT_OAK_WOOD);
 		dropSelf(TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD);
 		dropSelf(TFBlocks.TWILIGHT_OAK_SAPLING);
+		add(TFBlocks.TWILIGHT_OAK_LEAVES, silkAndStick(TFBlocks.TWILIGHT_OAK_LEAVES, TFBlocks.TWILIGHT_OAK_SAPLING, DEFAULT_SAPLING_DROP_RATES));
 		dropSelf(TFBlocks.RAINBOW_OAK_SAPLING);
+		add(TFBlocks.RAINBOW_OAK_LEAVES, silkAndStick(TFBlocks.RAINBOW_OAK_LEAVES, TFBlocks.RAINBOW_OAK_SAPLING, RARE_SAPLING_DROP_RATES));
 		dropSelf(TFBlocks.HOLLOW_OAK_SAPLING);
 		dropSelf(TFBlocks.TWILIGHT_OAK_PLANKS);
 		dropSelf(TFBlocks.TWILIGHT_OAK_STAIRS);
@@ -423,6 +430,7 @@ public class BlockLootTables extends FabricBlockLootSubProvider {
 		dropSelf(TFBlocks.CANOPY_WOOD);
 		dropSelf(TFBlocks.STRIPPED_CANOPY_WOOD);
 		dropSelf(TFBlocks.CANOPY_SAPLING);
+		add(TFBlocks.CANOPY_LEAVES, silkAndStick(TFBlocks.CANOPY_LEAVES, TFBlocks.CANOPY_SAPLING, DEFAULT_SAPLING_DROP_RATES));
 		dropSelf(TFBlocks.CANOPY_PLANKS);
 		dropSelf(TFBlocks.CANOPY_STAIRS);
 		add(TFBlocks.CANOPY_SLAB, createSlabItemTable(TFBlocks.CANOPY_SLAB));
@@ -448,6 +456,7 @@ public class BlockLootTables extends FabricBlockLootSubProvider {
 		dropSelf(TFBlocks.MANGROVE_WOOD);
 		dropSelf(TFBlocks.STRIPPED_MANGROVE_WOOD);
 		dropSelf(TFBlocks.MANGROVE_SAPLING);
+		add(TFBlocks.MANGROVE_LEAVES, silkAndStick(TFBlocks.MANGROVE_LEAVES, TFBlocks.MANGROVE_SAPLING, DEFAULT_SAPLING_DROP_RATES));
 		dropSelf(TFBlocks.MANGROVE_PLANKS);
 		dropSelf(TFBlocks.MANGROVE_STAIRS);
 		add(TFBlocks.MANGROVE_SLAB, createSlabItemTable(TFBlocks.MANGROVE_SLAB));
@@ -471,6 +480,8 @@ public class BlockLootTables extends FabricBlockLootSubProvider {
 		dropSelf(TFBlocks.DARK_WOOD);
 		dropSelf(TFBlocks.STRIPPED_DARK_WOOD);
 		dropSelf(TFBlocks.DARKWOOD_SAPLING);
+		add(TFBlocks.DARK_LEAVES, silkAndStick(TFBlocks.DARK_LEAVES, TFBlocks.DARKWOOD_SAPLING, RARE_SAPLING_DROP_RATES));
+		add(TFBlocks.HARDENED_DARK_LEAVES, silkAndStick(TFBlocks.DARK_LEAVES, TFBlocks.DARKWOOD_SAPLING, RARE_SAPLING_DROP_RATES));
 		dropSelf(TFBlocks.DARK_PLANKS);
 		dropSelf(TFBlocks.DARK_STAIRS);
 		add(TFBlocks.DARK_SLAB, createSlabItemTable(TFBlocks.DARK_SLAB));
@@ -644,6 +655,18 @@ public class BlockLootTables extends FabricBlockLootSubProvider {
 				.add(LootItem.lootTableItem(log.asItem()).when(this.hasSilkTouch()).otherwise(LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 4.0F))).apply(ApplyBonusCount.addUniformBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE))))));
 	}
 
+	// [VanillaCopy] super.droppingWithChancesAndSticks, but non-silk touch parameter can be an item instead of a block
+	private LootTable.Builder silkAndStick(Block block, ItemLike nonSilk, float... nonSilkFortune) {
+		HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
+		return createSilkTouchOrShearsDispatchTable(block, this.applyExplosionCondition(block, LootItem.lootTableItem(nonSilk.asItem())).when(BonusLevelTableCondition.bonusLevelFlatChance(registrylookup.getOrThrow(Enchantments.FORTUNE), nonSilkFortune)))
+			.withPool(LootPool.lootPool()
+				.setRolls(ConstantValue.exactly(1))
+				.when(this.hasShears())
+				.add(applyExplosionDecay(block, LootItem.lootTableItem(Items.STICK)
+					.apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F))))
+					.when(BonusLevelTableCondition.bonusLevelFlatChance(registrylookup.getOrThrow(Enchantments.FORTUNE), 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F))));
+	}
+
 	private void addTFBush(Block block, ResourceKey<LootTable> berry) {
 		if (!(block instanceof TFBushBlock bush))
 			throw new IllegalArgumentException(block + " is not a TFBushBlock");
@@ -702,6 +725,15 @@ public class BlockLootTables extends FabricBlockLootSubProvider {
 						.apply(SetItemCountFunction.setCount(ConstantValue.exactly(layer - 1)))))));
 	}
 
+	protected LootTable.Builder torchberryPlant(Block pBlock) {
+		return LootTable.lootTable()
+			.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
+				.add(LootItem.lootTableItem(pBlock).when(this.hasShears())))
+			.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
+				.add(LootItem.lootTableItem(TFItems.TORCHBERRIES)
+					.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(pBlock).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(TorchberryPlantBlock.HAS_BERRIES, true)))));
+	}
+
 	protected LootTable.Builder redThread() {
 		return LootTable.lootTable()
 			.withPool(LootPool.lootPool()
@@ -750,6 +782,15 @@ public class BlockLootTables extends FabricBlockLootSubProvider {
 							.setProperties(StatePropertiesPredicate.Builder.properties()
 								.hasProperty(RopeBlock.Z, true))))
 					.apply(SetItemCountFunction.setCount(ConstantValue.exactly(-1.0F), true)))));
+	}
+
+	protected LootTable.Builder fallenLeaves() {
+		return LootTable.lootTable().withPool(LootPool.lootPool()
+			.add(AlternativesEntry.alternatives(AlternativesEntry.alternatives(FallenLeavesBlock.LAYERS.getPossibleValues(), layer ->
+				LootItem.lootTableItem(TFBlocks.FALLEN_LEAVES)
+					.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(TFBlocks.FALLEN_LEAVES)
+						.setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(FallenLeavesBlock.LAYERS, layer)))
+					.apply(SetItemCountFunction.setCount(ConstantValue.exactly(layer)))).when(this.hasShears()))));
 	}
 
 	protected void ominousCandle(OminousCandleBlock block) {
