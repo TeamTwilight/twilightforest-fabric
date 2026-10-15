@@ -211,6 +211,27 @@ public class EntityTypeTagGenerator extends EntityTypeTagsProvider {
 		);
 
 		this.tag(TFEntityTypeTags.PROGRESSION_LOCK_VULNERABLE).add(TFEntities.KOBOLD);
+
+		// Mod Compatibility Tags
+
+		this.tag(TFEntityTypeTags.AC_RESISTS_ACID).add(TFEntities.HYDRA, TFEntities.NAGA);
+		this.tag(TFEntityTypeTags.AC_RESISTS_MAGNETS).addTag(TFEntityTypeTags.BOSSES);
+		this.tag(TFEntityTypeTags.AC_RESISTS_TREMORSAURUS_ROAR).add(TFEntities.HYDRA, TFEntities.UR_GHAST);
+
+		this.tag(TFEntityTypeTags.AETHER_DEFLECTABLE_PROJECTILES).add(
+			TFEntities.NATURE_BOLT,
+			TFEntities.LICH_BOLT,
+			TFEntities.WAND_BOLT,
+			TFEntities.SLIME_BLOB,
+			TFEntities.ICE_SNOWBALL);
+
+		this.tag(TFEntityTypeTags.AETHER_FIRE_MOB).add(TFEntities.FIRE_BEETLE);
+		this.tag(TFEntityTypeTags.AETHER_PIGS).add(TFEntities.BOAR);
+
+		this.tag(TFEntityTypeTags.AN_JAR_BLACKLIST).addTag(TFEntityTypeTags.BOSSES);
+		this.tag(TFEntityTypeTags.AN_JAR_RELEASE_BLACKLIST).addTag(TFEntityTypeTags.BOSSES);
+
+		this.tag(TFEntityTypeTags.IE_SHADER_BLACKLIST).addTag(TFEntityTypeTags.BOSSES);
 	}
 
 

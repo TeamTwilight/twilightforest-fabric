@@ -670,6 +670,8 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 
 		this.tag(BlockTags.NEEDS_DIAMOND_TOOL).add(TFBlocks.AURORA_BLOCK).addTag(TFBlockTags.CASTLE_BLOCKS).addTag(TFBlockTags.MAZESTONE).addTag(TFBlockTags.DEADROCK);
 
+		// Mod Compatibility Tags
+
 		this.tag(TFBlockTags.INCORRECT_FOR_IRONWOOD_TOOL).forceAddTag(BlockTags.INCORRECT_FOR_IRON_TOOL);
 		this.tag(TFBlockTags.INCORRECT_FOR_FIERY_TOOL).forceAddTag(BlockTags.INCORRECT_FOR_NETHERITE_TOOL);
 		this.tag(TFBlockTags.INCORRECT_FOR_STEELEAF_TOOL).forceAddTag(BlockTags.INCORRECT_FOR_DIAMOND_TOOL);
@@ -677,6 +679,34 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 		this.tag(TFBlockTags.INCORRECT_FOR_GIANT_TOOL).forceAddTag(BlockTags.INCORRECT_FOR_STONE_TOOL);
 		this.tag(TFBlockTags.INCORRECT_FOR_ICE_TOOL).forceAddTag(BlockTags.INCORRECT_FOR_WOODEN_TOOL);
 		this.tag(TFBlockTags.INCORRECT_FOR_GLASS_TOOL).forceAddTag(BlockTags.INCORRECT_FOR_WOODEN_TOOL);
+
+		this.tag(TFBlockTags.AC_FERROMAGNETIC_BLOCKS).addTag(TFBlockTags.STORAGE_BLOCKS_IRONWOOD).addTag(TFBlockTags.STORAGE_BLOCKS_STEELEAF).addTag(TFBlockTags.STORAGE_BLOCKS_KNIGHTMETAL).add(TFBlocks.CANDELABRA).add(TFBlocks.WROUGHT_IRON_FENCE);
+		this.tag(TFBlockTags.AC_GLOOMOTH_LIGHT_SOURCES).add(TFBlocks.FIREFLY_SPAWNER, TFBlocks.FIREFLY_JAR);
+		this.tag(TFBlockTags.AC_UNDERZEALOT_LIGHT_SOURCES).add(TFBlocks.FIREFLY, TFBlocks.MOONWORM);
+
+		this.tag(TFBlockTags.ARTIFACTS_CAMPSITE_CHESTS).addTag(TFBlockTags.TF_CHESTS);
+
+		this.tag(TFBlockTags.CHEST_MOUNTED_STORAGE).addTag(TFBlockTags.TF_CHESTS).add(
+			TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST,
+			TFBlocks.CANOPY_TRAPPED_CHEST,
+			TFBlocks.MANGROVE_TRAPPED_CHEST,
+			TFBlocks.DARK_TRAPPED_CHEST,
+			TFBlocks.TIME_TRAPPED_CHEST,
+			TFBlocks.TRANSFORMATION_TRAPPED_CHEST,
+			TFBlocks.MINING_TRAPPED_CHEST,
+			TFBlocks.SORTING_TRAPPED_CHEST);
+		this.tag(TFBlockTags.PASSIVE_BOILER_HEATERS).addTag(TFBlockTags.STORAGE_BLOCKS_FIERY);
+		this.tag(TFBlockTags.TREE_ATTACHMENTS).add(
+			TFBlocks.TIME_LOG_CORE, TFBlocks.TRANSFORMATION_LOG_CORE,
+			TFBlocks.MINING_LOG_CORE, TFBlocks.SORTING_LOG_CORE,
+			TFBlocks.ROOT_BLOCK, TFBlocks.LIVEROOT_BLOCK,
+			TFBlocks.MANGROVE_ROOT, TFBlocks.FIREFLY, TFBlocks.CICADA);
+
+		this.tag(TFBlockTags.FD_COMPOST_ACTIVATORS).add(TFBlocks.UBEROUS_SOIL, TFBlocks.MUSHGLOOM);
+		this.tag(TFBlockTags.FD_HEAT_SOURCES).addTag(TFBlockTags.STORAGE_BLOCKS_FIERY);
+
+		this.tag(TFBlockTags.SUPPLEMENTARIES_MAP_FOLIAGE).add(TFBlocks.TWILIGHT_OAK_LEAVES, TFBlocks.DARK_LEAVES, TFBlocks.HARDENED_DARK_LEAVES, TFBlocks.GIANT_LEAVES, TFBlocks.FALLEN_LEAVES);
+		this.tag(TFBlockTags.SUPPLEMENTARIES_MAP_GRASS).add(TFBlocks.FIDDLEHEAD);
 	}
 
 	@Override

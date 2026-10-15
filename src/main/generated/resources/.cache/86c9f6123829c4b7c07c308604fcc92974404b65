@@ -1,5 +1,14 @@
 // 26.1.2	-999999999-01-01T00:00:00	The Twilight Forest/Twilight Forest Entity Tags
+d208fff881b5ab7116f15e79ec1b5954653479cd data/aether/tags/entity_type/deflectable_projectiles.json
+9e5f68b2faa6d767538d0f4264a7145d32a2bdda data/aether/tags/entity_type/fire_mob.json
+3ddb086fa7ad80a4f7018142796566c22407e7e4 data/aether/tags/entity_type/pigs.json
+986ee69ca972520c9ae4cf136e28d84e98d0f256 data/alexscaves/tags/entity_type/resists_acid.json
+0865b5410d11831c91b4a4164d890df4852489ff data/alexscaves/tags/entity_type/resists_magnets.json
+9b4d24dfda4f2cd65854a2383c5684509da3cea5 data/alexscaves/tags/entity_type/resists_tremorsaurus_roar.json
+0865b5410d11831c91b4a4164d890df4852489ff data/ars_nouveau/tags/entity_type/jar_blacklist.json
+0865b5410d11831c91b4a4164d890df4852489ff data/ars_nouveau/tags/entity_type/jar_release_blacklist.json
 0865b5410d11831c91b4a4164d890df4852489ff data/c/tags/entity_type/bosses.json
+0865b5410d11831c91b4a4164d890df4852489ff data/immersiveengineering/tags/entity_type/shaderbag/blacklist.json
 3f1dd0c5c67aa8c83e77cc78c3de66b29c81d5ab data/minecraft/tags/entity_type/accepts_iron_golem_gift.json
 3afabed24e89a8a510028c80f51fc32e4fd6612b data/minecraft/tags/entity_type/aquatic.json
 2af4e1516dd522dfb78a691b9c9972f5dd4d16f0 data/minecraft/tags/entity_type/arrows.json

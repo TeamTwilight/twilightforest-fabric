@@ -1,4 +1,7 @@
 // 26.1.2	-999999999-01-01T00:00:00	The Twilight Forest/Twilight Forest Item Tags
+3c5895c72cfffe09615ec2b28267a726fcbf52e8 data/alexscaves/tags/item/ferns.json
+4c5df8d60b8f068b482a22fd807ddea22e1bfe00 data/alexscaves/tags/item/ferromagnetic_items.json
+42afac82c004061587d5b1ae20c2e66c0d399c8c data/alexscaves/tags/item/raw_meats.json
 58b5e0d0eea5536fb5d46cc844c5b8b71bc34f86 data/c/tags/item/bookshelves.json
 dbb45e0d36df554b46ceb4028ec61bc7b7a6315a data/c/tags/item/chests/trapped.json
 44154bfab8aa5f48a23729d5e1312a8b8c0ae87c data/c/tags/item/chests/wooden.json
@@ -46,6 +49,12 @@ eb02dad5585025bae46b1a33a10ef57f1c33b78f data/c/tags/item/storage_blocks/slime/m
 2973abf7fe5598a763a9738ca24c06f80b1eb5b1 data/c/tags/item/tools/bow.json
 e69d5be074938c1ff9a1853ff8da6782500ff92f data/c/tags/item/tools/ranged_weapon.json
 1b205b8add451aa431d3db9121828f233c2cbad2 data/c/tags/item/tools/shield.json
+932db6906454527b9d89f0655bd6071261e0ebd3 data/createaddition/tags/item/plant_foods.json
+4dced7c5c98b183e1d94bafa23126914eb919706 data/createaddition/tags/item/plants.json
+3fd61fbbfac1e6fc37d3e6300cb548fdf13b2688 data/curios/tags/item/charm.json
+8c9bf988d87251fa01c2ebab384b3140345c0ef4 data/curios/tags/item/head.json
+42afac82c004061587d5b1ae20c2e66c0d399c8c data/farmersdelight/tags/item/cabbage_roll_ingredients.json
+b40c8354ed3ca1a2a7af96684c97bc7afdeb9f05 data/forbidden_arcanus/tags/item/modifier/eternal_incompatible.json
 a60dbce39527970b03af723b64656128b26f70e6 data/minecraft/tags/item/axes.json
 6e4052d645637e55eca3bdbaebd8fbaf2a2cfbc4 data/minecraft/tags/item/beacon_payment_items.json
 932bd2980da6d582ac5ba3cb6d86e51597a713b4 data/minecraft/tags/item/boats.json
@@ -98,6 +107,7 @@ e4144fc27ee121d3f7d17a5fdff02e93e1d7f7d8 data/minecraft/tags/item/wooden_slabs.j
 f3de4b0d6d2929c8fab124e75ff6269ca7642aa7 data/minecraft/tags/item/wooden_stairs.json
 8522d5d06fec7c30601264eb04aebaa58886a948 data/minecraft/tags/item/wooden_trapdoors.json
 8425f336c2742874f4e2c74f5faeea967993632d data/minecraft/tags/item/wool_carpets.json
+80d39c2bda904c02ce91f31f02cd1079c0c1d4ee data/randomium/tags/item/blacklist.json
 b365ad6615ef9b05f43067637b8c869c06150e9e data/twilightforest/tags/item/arctic_fur.json
 39103fb12e59c923d656b47c4e8460d351754505 data/twilightforest/tags/item/banisters.json
 03701e27c1ba9819ac4dc5865a2bd2ab3be6a7be data/twilightforest/tags/item/banned_uncraftables.json
