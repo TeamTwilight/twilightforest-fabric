@@ -199,7 +199,7 @@ public class TFItems {
 	public static final Item KEEPSAKE_CASKET = register("keepsake_casket", KeepsakeCasketItem::new, () -> new Item.Properties().useBlockDescriptionPrefix().rarity(Rarity.UNCOMMON));
 	public static final Item HUGE_LILY_PAD = register("huge_lily_pad", properties -> new HugeLilyPadItem(TFBlocks.HUGE_LILY_PAD, properties), () -> new Item.Properties().useBlockDescriptionPrefix());
 	public static final Item HUGE_WATER_LILY = register("huge_water_lily", properties -> new PlaceOnWaterBlockItem(TFBlocks.HUGE_WATER_LILY, properties), () -> new Item.Properties().useBlockDescriptionPrefix());
-	public static final Item FALLEN_LEAVES = register("fallen_leaves", properties -> new PlaceOnWaterBlockItem(TFBlocks.FALLEN_LEAVES, properties), () -> new Item.Properties().useBlockDescriptionPrefix());
+	public static final Item FALLEN_LEAVES = register("fallen_leaves", properties -> new FallenLeavesItem(TFBlocks.FALLEN_LEAVES, properties), () -> new Item.Properties().useBlockDescriptionPrefix());
 	public static final Item WROUGHT_IRON_FENCE = register("wrought_iron_fence", properties -> new WroughtIronFenceItem(TFBlocks.WROUGHT_IRON_FENCE, properties), () -> new Item.Properties().useBlockDescriptionPrefix());
 
 	public static final Item ZOMBIE_SKULL_CANDLE = register("zombie_skull_candle", properties -> new SkullCandleItem(TFBlocks.ZOMBIE_SKULL_CANDLE, TFBlocks.ZOMBIE_WALL_SKULL_CANDLE, properties), () -> new Item.Properties().useBlockDescriptionPrefix().rarity(Rarity.UNCOMMON).equippable(EquipmentSlot.HEAD));
