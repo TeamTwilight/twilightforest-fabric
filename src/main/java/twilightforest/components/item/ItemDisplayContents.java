@@ -2,6 +2,7 @@ package twilightforest.components.item;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -24,7 +25,7 @@ import java.util.OptionalInt;
 import java.util.function.BiConsumer;
 
 public class ItemDisplayContents implements TooltipComponent {
-	public static final List<ItemDisplayType> LAYOUT = List.of(ItemDisplays.MAP, ItemDisplays.MAP, ItemDisplays.MAP, ItemDisplays.COMPASS, ItemDisplays.CLOCK, ItemDisplays.MOON_DIAL);
+	public static final List<Holder<ItemDisplayType>> LAYOUT = List.of(ItemDisplays.MAP, ItemDisplays.MAP, ItemDisplays.MAP, ItemDisplays.COMPASS, ItemDisplays.CLOCK, ItemDisplays.MOON_DIAL);
 	private static final int FIRST_MAP_SLOT_INDEX = LAYOUT.indexOf(ItemDisplays.MAP);
 	public static final ItemDisplayContents EMPTY = new ItemDisplayContents(LAYOUT.size(), FIRST_MAP_SLOT_INDEX);
 	public static final Codec<ItemDisplayContents> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -142,7 +143,7 @@ public class ItemDisplayContents implements TooltipComponent {
 
 		private int findItemIndex(ItemDisplayType type) {
 			for (int i = 0; i < LAYOUT.size(); i++) {
-				if (LAYOUT.get(i) == type) {
+				if (LAYOUT.get(i).value() == type) {
 					return i;
 				}
 			}
@@ -151,7 +152,7 @@ public class ItemDisplayContents implements TooltipComponent {
 
 		private int findSwapSlot(ItemStack stack) {
 			for (int i = 0; i < LAYOUT.size(); i++) {
-				if (LAYOUT.get(i).validItems().test(stack)) {
+				if (LAYOUT.get(i).value().validItems().test(stack)) {
 					return i;
 				}
 			}
@@ -160,7 +161,7 @@ public class ItemDisplayContents implements TooltipComponent {
 
 		private int findInsertSlot(ItemStack stack) {
 			for (int i = 0; i < LAYOUT.size(); i++) {
-				if (LAYOUT.get(i).validItems().test(stack) && this.items.get(i).isEmpty()) {
+				if (LAYOUT.get(i).value().validItems().test(stack) && this.items.get(i).isEmpty()) {
 					return i;
 				}
 			}
@@ -247,7 +248,7 @@ public class ItemDisplayContents implements TooltipComponent {
 
 		/** Returns true if updated */
 		public boolean updateMoonDial(ServerLevel level, Entity owner) {
-			int itemIndex = this.findItemIndex(ItemDisplays.MOON_DIAL);
+			int itemIndex = this.findItemIndex(ItemDisplays.MOON_DIAL.value());
 
 			if (itemIndex < 0) {
 				return false;

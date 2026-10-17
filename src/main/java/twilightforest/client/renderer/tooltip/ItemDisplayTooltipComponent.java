@@ -54,7 +54,7 @@ public class ItemDisplayTooltipComponent implements ClientTooltipComponent {
 	private void renderBlankSlot(GuiGraphicsExtractor graphics, int index, int x, int y) {
 		if (index < 0 || index >= ItemDisplayContents.LAYOUT.size())
 			return;
-		ItemDisplayType type = ItemDisplayContents.LAYOUT.get(index);
+		ItemDisplayType type = ItemDisplayContents.LAYOUT.get(index).value();
 		type.slotTexture().ifPresent(identifier -> graphics.blit(RenderPipelines.GUI_TEXTURED, identifier, x + ITEM_INSET, y + ITEM_INSET, 0, 0, 16, 16, 16, 16));
 	}
 

@@ -71,11 +71,11 @@ public class ItemDisplayOverlay {
 			ItemStack stack = items.get(i);
 			if (stack.isEmpty()) continue;
 
-			ItemDisplayType type = ItemDisplayContents.LAYOUT.get(i);
-			if (type == ItemDisplays.MAP && i != activeMapSlot)
+			ItemDisplayType type = ItemDisplayContents.LAYOUT.get(i).value();
+			if (type == ItemDisplays.MAP.value() && i != activeMapSlot)
 				continue;
 
-			if (!ItemDisplayContents.LAYOUT.get(i).validItems().test(stack))
+			if (!ItemDisplayContents.LAYOUT.get(i).value().validItems().test(stack))
 				continue;
 
 			ItemDisplay display = type.display().get();
