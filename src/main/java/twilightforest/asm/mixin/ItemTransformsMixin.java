@@ -61,23 +61,17 @@ public class ItemTransformsMixin implements JarTransformsDuck {
 			CallbackInfoReturnable<ItemTransforms> cir
 		) {
 			JsonObject object = json.getAsJsonObject();
-
 			ItemTransform transform;
-			if (object.has("twilightforest:jarred")) {
-				transform = context.deserialize(
-					object.get("twilightforest:jarred"),
-					ItemTransform.class
-				);
-			} else if (object.has("fixed")) {
-				transform = context.deserialize(
-					object.get("fixed"),
-					ItemTransform.class
-				);
+
+			if (object.has(ItemDisplayContext.TWILIGHTFOREST_JARRED.getSerializedName())) {
+				transform = context.deserialize(object.get(ItemDisplayContext.TWILIGHTFOREST_JARRED.getSerializedName()), ItemTransform.class);
+			} else if (object.has(ItemDisplayContext.FIXED.getSerializedName())) {
+				transform = context.deserialize(object.get(ItemDisplayContext.FIXED.getSerializedName()), ItemTransform.class);
 			} else {
 				transform = ItemTransform.NO_TRANSFORM;
 			}
 
-			if (object.has("twilightforest:jarred")) {
+			if (object.has(ItemDisplayContext.TWILIGHTFOREST_JARRED.getSerializedName())) {
 				((JarTransformsDuck) (Object) cir.getReturnValue()).twilightforest$setJarredTransform(transform);
 			}
 		}

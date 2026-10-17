@@ -38,22 +38,18 @@ public class LevelRendererMixin {
 		@Local(name = "state") SkyRenderState state,
 		@Local(argsOnly = true, name = "skyFog") GpuBufferSlice skyFog
 	) {
-		boolean isTwilightForest = Minecraft.getInstance().level != null
-			&& Minecraft.getInstance().level.dimension().equals(TFDimension.DIMENSION_KEY);
+		if (Minecraft.getInstance().level == null || !Minecraft.getInstance().level.dimension().equals(TFDimension.DIMENSION_KEY)) {
+			operation.call(instance, original);
+			return;
+		}
 
-		Runnable replacement = () -> {
-			if (isTwilightForest) {
-				TwilightForestRenderInfo.INSTANCE.renderSky(
-					this.levelRenderState,
-					state,
-					RenderSystem.getModelViewMatrix(),
-					() -> RenderSystem.setShaderFog(skyFog)
-				);
-			} else {
-				original.run();
-			}
-		};
+		Runnable tfSkyRenderer = () -> TwilightForestRenderInfo.INSTANCE.renderSky(
+			this.levelRenderState,
+			state,
+			RenderSystem.getModelViewMatrix(),
+			() -> RenderSystem.setShaderFog(skyFog)
+		);
 
-		operation.call(instance, replacement);
+		operation.call(instance, tfSkyRenderer);
 	}
 }
