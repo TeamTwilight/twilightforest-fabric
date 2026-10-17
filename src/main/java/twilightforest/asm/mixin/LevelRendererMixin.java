@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import twilightforest.client.TwilightForestRenderInfo;
-import twilightforest.init.TFDimension;
+import twilightforest.tags.TFDimensionTypeTags;
 
 @Mixin(LevelRenderer.class)
 public class LevelRendererMixin {
@@ -38,7 +38,7 @@ public class LevelRendererMixin {
 		@Local(name = "state") SkyRenderState state,
 		@Local(argsOnly = true, name = "skyFog") GpuBufferSlice skyFog
 	) {
-		if (Minecraft.getInstance().level == null || !Minecraft.getInstance().level.dimension().equals(TFDimension.DIMENSION_KEY)) {
+		if (Minecraft.getInstance().level == null || !Minecraft.getInstance().level.dimensionTypeRegistration().is(TFDimensionTypeTags.TF_SKY_RENDERER)) {
 			operation.call(instance, original);
 			return;
 		}

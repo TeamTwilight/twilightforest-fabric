@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import twilightforest.client.TwilightForestRenderInfo;
-import twilightforest.init.TFDimension;
+import twilightforest.tags.TFDimensionTypeTags;
 
 @Mixin(WeatherEffectRenderer.class)
 public class WeatherEffectRendererMixin {
@@ -27,7 +27,10 @@ public class WeatherEffectRendererMixin {
 		WeatherRenderState renderState,
 		CallbackInfo ci
 	) {
-		if (Minecraft.getInstance().level.dimension().equals(TFDimension.DIMENSION_KEY) && TwilightForestRenderInfo.INSTANCE.renderSnowAndRain(Minecraft.getInstance().renderBuffers().bufferSource(), cameraPos)) {
+		if (Minecraft.getInstance().level != null
+			&& Minecraft.getInstance().level.dimensionTypeRegistration().is(TFDimensionTypeTags.TF_WEATHER_RENDERER)
+			&& TwilightForestRenderInfo.INSTANCE.renderSnowAndRain(Minecraft.getInstance().renderBuffers().bufferSource(), cameraPos)
+		) {
 			ci.cancel();
 		}
 	}
@@ -45,7 +48,7 @@ public class WeatherEffectRendererMixin {
 		int weatherRadius,
 		CallbackInfo ci
 	) {
-		if (level.dimension().equals(TFDimension.DIMENSION_KEY) && TwilightForestRenderInfo.INSTANCE.tickRain(level, ticks, camera)) {
+		if (level.dimensionTypeRegistration().is(TFDimensionTypeTags.TF_WEATHER_RENDERER) && TwilightForestRenderInfo.INSTANCE.tickRain(level, ticks, camera)) {
 			ci.cancel();
 		}
 	}

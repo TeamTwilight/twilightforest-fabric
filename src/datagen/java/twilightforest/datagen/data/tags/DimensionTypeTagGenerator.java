@@ -24,6 +24,8 @@ public class DimensionTypeTagGenerator extends KeyTagProvider<DimensionType> {
 			.add(TFDimension.TWILIGHT_DIM_TYPE)
 			.add(BuiltinDimensionTypes.NETHER)
 			.add(BuiltinDimensionTypes.END);
+		this.tag(TFDimensionTypeTags.TF_SKY_RENDERER).add(TFDimension.TWILIGHT_DIM_TYPE);
+		this.tag(TFDimensionTypeTags.TF_WEATHER_RENDERER).add(TFDimension.TWILIGHT_DIM_TYPE);
 	}
 
 	@Override
