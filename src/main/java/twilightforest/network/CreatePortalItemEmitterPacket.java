@@ -1,16 +1,10 @@
 package twilightforest.network;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.item.ItemEntity;
 import twilightforest.TFCommon;
-import twilightforest.client.particle.emitter.PortalItemEmitter;
 
 public record CreatePortalItemEmitterPacket(int entityID, int lifetime) implements CustomPacketPayload {
 
@@ -29,22 +23,5 @@ public record CreatePortalItemEmitterPacket(int entityID, int lifetime) implemen
 	@Override
 	public CustomPacketPayload.Type<? extends CustomPacketPayload> type() {
 		return TYPE;
-	}
-
-	public static void handle(CreatePortalItemEmitterPacket message, ClientPlayNetworking.Context ctx) {
-		@SuppressWarnings("Convert2Lambda")
-		Runnable work = new Runnable() {
-			@Override
-			public void run() {
-				ClientLevel level = Minecraft.getInstance().level;
-				if (level == null)
-					return;
-
-				Entity entity = level.getEntity(message.entityID());
-				if (entity instanceof ItemEntity item)
-					Minecraft.getInstance().particleEngine.add(new PortalItemEmitter(level, item, message.lifetime()));
-			}
-		};
-		ctx.client().execute(work);
 	}
 }

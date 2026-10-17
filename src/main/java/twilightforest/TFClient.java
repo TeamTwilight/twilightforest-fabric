@@ -8,8 +8,8 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.particle.v1.FabricSpriteSet;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.*;
-import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.animal.pig.PigModel;
@@ -23,6 +23,7 @@ import net.minecraft.client.model.monster.slime.SlimeModel;
 import net.minecraft.client.model.monster.spider.SpiderModel;
 import net.minecraft.client.model.monster.zombie.BabyZombieModel;
 import net.minecraft.client.model.object.boat.BoatModel;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
@@ -33,10 +34,23 @@ import net.minecraft.client.renderer.item.properties.numeric.RangeSelectItemMode
 import net.minecraft.client.renderer.item.properties.select.SelectItemModelProperties;
 import net.minecraft.client.renderer.special.SpecialModelRenderers;
 import net.minecraft.client.resources.model.sprite.AtlasManager;
+import net.minecraft.core.Holder;
+import net.minecraft.core.particles.ColorParticleOption;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
+import net.minecraft.world.level.saveddata.maps.MapId;
+import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
+import twilightforest.block.entity.MasonJarBlockEntity;
 import twilightforest.client.*;
 import twilightforest.client.listeners.*;
 import twilightforest.client.model.TFModelLayers;
@@ -54,6 +68,7 @@ import twilightforest.client.model.item.EmissiveItemModel;
 import twilightforest.client.model.item.TravellersGearItemModel;
 import twilightforest.client.model.item.TrollsteinnItemModel;
 import twilightforest.client.particle.*;
+import twilightforest.client.particle.emitter.PortalItemEmitter;
 import twilightforest.client.properties.*;
 import twilightforest.client.renderer.TFRenderPipelines;
 import twilightforest.client.renderer.TFSkyRenderer;
@@ -73,12 +88,25 @@ import twilightforest.client.renderer.special.*;
 import twilightforest.client.renderer.tooltip.ItemDisplayTooltipComponent;
 import twilightforest.client.renderer.tooltip.PotionFlaskTooltipComponent;
 import twilightforest.client.renderer.tooltip.TravellersBeltTooltipComponent;
+import twilightforest.components.entity.TravellersWingsAttachment;
+import twilightforest.config.TFConfig;
+import twilightforest.entity.CharmEffect;
+import twilightforest.entity.ProtectionBox;
+import twilightforest.entity.TFPart;
+import twilightforest.entity.boss.bar.ClientTFBossBar;
+import twilightforest.entity.passive.quest.ram.QuestingRamCurrentContext;
 import twilightforest.init.*;
+import twilightforest.item.LifedrainScepterItem;
 import twilightforest.item.PotionFlaskItem;
 import twilightforest.item.mapdata.MapDataManager;
+import twilightforest.item.mapdata.TFMagicMapData;
+import twilightforest.item.mapdata.TFMazeMapData;
 import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
 import twilightforest.item.travellers_gear.TravellersGogglesItem;
 import twilightforest.network.*;
+
+import java.util.Random;
+import java.util.stream.StreamSupport;
 
 public final class TFClient implements ClientModInitializer {
 
@@ -128,55 +156,321 @@ public final class TFClient implements ClientModInitializer {
 		ClientGameEventListeners.init();
 	}
 
+	@SuppressWarnings("Convert2Lambda")
 	private static void registerPackets() {
-		PayloadTypeRegistry.clientboundPlay().register(AreaProtectionPacket.TYPE, AreaProtectionPacket.STREAM_CODEC);
-		PayloadTypeRegistry.clientboundPlay().register(CreateMovingCicadaSoundPacket.TYPE, CreateMovingCicadaSoundPacket.STREAM_CODEC);
-		PayloadTypeRegistry.clientboundPlay().register(EnforceProgressionStatusPacket.TYPE, EnforceProgressionStatusPacket.STREAM_CODEC);
-		PayloadTypeRegistry.clientboundPlay().register(MagicMapPacket.TYPE, MagicMapPacket.STREAM_CODEC);
-		PayloadTypeRegistry.clientboundPlay().register(MazeMapPacket.TYPE, MazeMapPacket.STREAM_CODEC);
-		PayloadTypeRegistry.clientboundPlay().register(MissingAdvancementToastPacket.TYPE, MissingAdvancementToastPacket.STREAM_CODEC);
-		PayloadTypeRegistry.clientboundPlay().register(MovePlayerPacket.TYPE, MovePlayerPacket.STREAM_CODEC);
-		PayloadTypeRegistry.clientboundPlay().register(ParticlePacket.TYPE, ParticlePacket.STREAM_CODEC);
-		PayloadTypeRegistry.clientboundPlay().register(GogglesZoomPacket.TYPE, GogglesZoomPacket.STREAM_CODEC);
-		PayloadTypeRegistry.clientboundPlay().register(GradualGlidePacket.TYPE, GradualGlidePacket.STREAM_CODEC);
-		PayloadTypeRegistry.clientboundPlay().register(SpawnCharmPacket.TYPE, SpawnCharmPacket.STREAM_CODEC);
-		PayloadTypeRegistry.clientboundPlay().register(SpawnFallenLeafFromPacket.TYPE, SpawnFallenLeafFromPacket.STREAM_CODEC);
-		PayloadTypeRegistry.clientboundPlay().register(StructureProtectionPacket.TYPE, StructureProtectionPacket.STREAM_CODEC);
-		PayloadTypeRegistry.clientboundPlay().register(SyncUncraftingTableConfigPacket.TYPE, SyncUncraftingTableConfigPacket.STREAM_CODEC);
-		PayloadTypeRegistry.clientboundPlay().register(UpdateTFMultipartPacket.TYPE, UpdateTFMultipartPacket.STREAM_CODEC);
-		PayloadTypeRegistry.clientboundPlay().register(UpdateThrownPacket.TYPE, UpdateThrownPacket.STREAM_CODEC);
-		PayloadTypeRegistry.clientboundPlay().register(LifedrainParticlePacket.TYPE, LifedrainParticlePacket.STREAM_CODEC);
-		PayloadTypeRegistry.clientboundPlay().register(UpdateDeathTimePacket.TYPE, UpdateDeathTimePacket.STREAM_CODEC);
-		PayloadTypeRegistry.clientboundPlay().register(TFBossBarPacket.AddTFBossBarPacket.TYPE, TFBossBarPacket.AddTFBossBarPacket.STREAM_CODEC);
-		PayloadTypeRegistry.clientboundPlay().register(TFBossBarPacket.UpdateTFBossBarStylePacket.TYPE, TFBossBarPacket.UpdateTFBossBarStylePacket.STREAM_CODEC);
-		PayloadTypeRegistry.clientboundPlay().register(SetMasonJarItemPacket.TYPE, SetMasonJarItemPacket.STREAM_CODEC);
-		PayloadTypeRegistry.clientboundPlay().register(SyncQuestsPacket.TYPE, SyncQuestsPacket.STREAM_CODEC);
-		PayloadTypeRegistry.clientboundPlay().register(TravellersWingsStatePacket.TYPE, TravellersWingsStatePacket.STREAM_CODEC);
-		PayloadTypeRegistry.clientboundPlay().register(CreatePortalItemEmitterPacket.TYPE, CreatePortalItemEmitterPacket.STREAM_CODEC);
-		ClientPlayNetworking.registerGlobalReceiver(AreaProtectionPacket.TYPE, AreaProtectionPacket::handle);
-		ClientPlayNetworking.registerGlobalReceiver(CreateMovingCicadaSoundPacket.TYPE, CreateMovingCicadaSoundPacket::handle);
-		ClientPlayNetworking.registerGlobalReceiver(EnforceProgressionStatusPacket.TYPE, EnforceProgressionStatusPacket::handle);
-		ClientPlayNetworking.registerGlobalReceiver(MagicMapPacket.TYPE, MagicMapPacket::handle);
-		ClientPlayNetworking.registerGlobalReceiver(MazeMapPacket.TYPE, MazeMapPacket::handle);
-		ClientPlayNetworking.registerGlobalReceiver(MissingAdvancementToastPacket.TYPE, MissingAdvancementToastPacket::handle);
-		ClientPlayNetworking.registerGlobalReceiver(MovePlayerPacket.TYPE, MovePlayerPacket::handle);
-		ClientPlayNetworking.registerGlobalReceiver(ParticlePacket.TYPE, ParticlePacket::handle);
-		ClientPlayNetworking.registerGlobalReceiver(GogglesZoomPacket.TYPE, GogglesZoomPacket::handleClient);
-		ClientPlayNetworking.registerGlobalReceiver(GradualGlidePacket.TYPE, GradualGlidePacket::handleClient);
-		ClientPlayNetworking.registerGlobalReceiver(SpawnCharmPacket.TYPE, SpawnCharmPacket::handle);
-		ClientPlayNetworking.registerGlobalReceiver(SpawnFallenLeafFromPacket.TYPE, SpawnFallenLeafFromPacket::handle);
-		ClientPlayNetworking.registerGlobalReceiver(StructureProtectionPacket.TYPE, StructureProtectionPacket::handle);
-		ClientPlayNetworking.registerGlobalReceiver(SyncUncraftingTableConfigPacket.TYPE, SyncUncraftingTableConfigPacket::handle);
-		ClientPlayNetworking.registerGlobalReceiver(UpdateTFMultipartPacket.TYPE, UpdateTFMultipartPacket::handle);
-		ClientPlayNetworking.registerGlobalReceiver(UpdateThrownPacket.TYPE, UpdateThrownPacket::handle);
-		ClientPlayNetworking.registerGlobalReceiver(LifedrainParticlePacket.TYPE, LifedrainParticlePacket::handle);
-		ClientPlayNetworking.registerGlobalReceiver(UpdateDeathTimePacket.TYPE, UpdateDeathTimePacket::handle);
-		ClientPlayNetworking.registerGlobalReceiver(TFBossBarPacket.AddTFBossBarPacket.TYPE, TFBossBarPacket.AddTFBossBarPacket::handle);
-		ClientPlayNetworking.registerGlobalReceiver(TFBossBarPacket.UpdateTFBossBarStylePacket.TYPE, TFBossBarPacket.UpdateTFBossBarStylePacket::handle);
-		ClientPlayNetworking.registerGlobalReceiver(SetMasonJarItemPacket.TYPE, SetMasonJarItemPacket::handle);
-		ClientPlayNetworking.registerGlobalReceiver(SyncQuestsPacket.TYPE, SyncQuestsPacket::handle);
-		ClientPlayNetworking.registerGlobalReceiver(TravellersWingsStatePacket.TYPE, TravellersWingsStatePacket::handle);
-		ClientPlayNetworking.registerGlobalReceiver(CreatePortalItemEmitterPacket.TYPE, CreatePortalItemEmitterPacket::handle);
+		ClientPlayNetworking.registerGlobalReceiver(AreaProtectionPacket.TYPE, (payload, context) -> {
+			context.client().execute(new Runnable() {
+				@Override
+				public void run() {
+					ClientLevel level = context.client().level;
+					payload.sbb.forEach(box -> {
+						for (Entity entity : level.entitiesForRendering()) {
+							if (entity instanceof ProtectionBox prot) {
+								if (prot.lifeTime > 0 && prot.matches(box)) {
+									prot.resetLifetime();
+									return;
+								}
+							}
+						}
+
+						level.addEntity(new ProtectionBox(level, box));
+					});
+
+					for (int i = 0; i < 20; i++) {
+						double vx = level.getRandom().nextGaussian() * 0.02D;
+						double vy = level.getRandom().nextGaussian() * 0.02D;
+						double vz = level.getRandom().nextGaussian() * 0.02D;
+
+						double x = payload.pos.getX() + 0.5D + level.getRandom().nextFloat() - level.getRandom().nextFloat();
+						double y = payload.pos.getY() + 0.5D + level.getRandom().nextFloat() - level.getRandom().nextFloat();
+						double z = payload.pos.getZ() + 0.5D + level.getRandom().nextFloat() - level.getRandom().nextFloat();
+
+						level.addParticle(TFParticleType.PROTECTION, x, y, z, vx, vy, vz);
+					}
+				}
+			});
+		});
+		ClientPlayNetworking.registerGlobalReceiver(CreateMovingCicadaSoundPacket.TYPE, (payload, context) -> {
+			context.client().execute(new Runnable() {
+				@Override
+				public void run() {
+					Entity entity = context.client().level.getEntity(payload.entityID());
+					if (entity instanceof LivingEntity living) {
+						Minecraft.getInstance().getSoundManager().queueTickingSound(new MovingCicadaSoundInstance(living));
+					}
+				}
+			});
+		});
+		ClientPlayNetworking.registerGlobalReceiver(EnforceProgressionStatusPacket.TYPE, (payload, context) -> {
+			boolean enforce = payload.enforce();
+			context.client().execute(() -> {
+				TFWeatherRenderer.setProgressionEnforced(enforce);
+				LockedBiomeToastEventListeners.setProgressionEnforced(enforce);
+			});
+		});
+		ClientPlayNetworking.registerGlobalReceiver(MagicMapPacket.TYPE, (payload, context) -> {
+			context.client().execute(new Runnable() {
+				@Override
+				public void run() {
+					ClientLevel clientLevel = context.client().level;
+					MapId mapId = payload.inner().mapId();
+					TFMagicMapData mapdata = MapDataManager.getClientMagicMapData(mapId);
+					if (mapdata == null) {
+						mapdata = new TFMagicMapData(0, 0, payload.inner().scale(), false, false, payload.inner().locked(), clientLevel.dimension());
+						MapDataManager.saveClientMagicMapData(mapId, mapdata);
+					}
+
+					payload.inner().applyToMap(mapdata);
+					//TF: sync conquered structures for map
+					mapdata.conqueredStructures.clear();
+					mapdata.conqueredStructures.addAll(payload.conqueredStructures());
+					Minecraft.getInstance().getMapTextureManager().update(mapId, mapdata);
+
+					MapItemSavedData saved = clientLevel.getMapData(payload.inner().mapId());
+
+					if (saved != null) {
+						saved.addClientSideDecorations(
+							StreamSupport.stream(mapdata.getDecorations().spliterator(), false).toList()
+						);
+					}
+				}
+			});
+		});
+		ClientPlayNetworking.registerGlobalReceiver(MazeMapPacket.TYPE, (payload, context) -> {
+			context.client().execute(new Runnable() {
+				@Override
+				public void run() {
+					ClientLevel clientLevel = context.client().level;
+					MapId mapId = payload.inner().mapId();
+					TFMazeMapData mapdata = MapDataManager.getClientMazeMapData(mapId);
+					if (mapdata == null) {
+						mapdata = new TFMazeMapData(
+							0, 0,
+							payload.inner().scale(),
+							false,
+							false,
+							payload.inner().locked(),
+							clientLevel.dimension()
+						);
+						MapDataManager.saveClientMazeMapData(mapId, mapdata);
+					}
+
+					mapdata.ore = payload.ore();
+					mapdata.yCenter = payload.yCenter();
+					payload.inner().applyToMap(mapdata);
+					Minecraft.getInstance().getMapTextureManager().update(mapId, mapdata);
+
+					MapItemSavedData saved = clientLevel.getMapData(payload.inner().mapId());
+
+					if (saved != null) {
+						saved.addClientSideDecorations(
+							StreamSupport.stream(mapdata.getDecorations().spliterator(), false).toList()
+						);
+					}
+				}
+			});
+		});
+		ClientPlayNetworking.registerGlobalReceiver(MissingAdvancementToastPacket.TYPE,(payload, context) -> {
+			context.client().execute(new Runnable() {
+				@Override
+				public void run() {
+					context.client().getToastManager().addToast(new MissingAdvancementToast(payload.title(), payload.icon()));
+				}
+			});
+		});
+		ClientPlayNetworking.registerGlobalReceiver(MovePlayerPacket.TYPE, (payload, context) -> {
+			context.client().execute(() -> context.player().push(payload.motionX(), payload.motionY(), payload.motionZ()));
+		});
+		ClientPlayNetworking.registerGlobalReceiver(ParticlePacket.TYPE, (payload, context) -> {
+			context.client().execute(() -> {
+				for (ParticlePacket.QueuedParticle queuedParticle : payload.queuedParticles) {
+					context.client().level.addParticle(queuedParticle.particleOptions(), queuedParticle.overrideLimiter(), queuedParticle.alwaysShow(), queuedParticle.x(), queuedParticle.y(), queuedParticle.z(), queuedParticle.x2(), queuedParticle.y2(), queuedParticle.z2());
+				}
+			});
+		});
+		ClientPlayNetworking.registerGlobalReceiver(GogglesZoomPacket.TYPE, (payload, context) -> {
+			context.client().execute(() -> {
+				Player player = context.client().level.getPlayerByUUID(payload.playerUUID());
+				if (player == null)
+					return;
+				player.setAttached(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER, payload.isUsingZoom());
+			});
+		});
+		ClientPlayNetworking.registerGlobalReceiver(GradualGlidePacket.TYPE, (payload, context) -> {
+			context.client().execute(() -> {
+				Player player = context.client().level.getPlayerByUUID(payload.playerUUID());
+				if (player == null)
+					return;
+				player.setAttached(TFDataAttachments.IS_GRADUALLY_GLIDING, payload.isGraduallyGliding());
+			});
+		});
+		ClientPlayNetworking.registerGlobalReceiver(SpawnCharmPacket.TYPE, (payload, context) -> {
+			context.client().execute(new Runnable() {
+				@Override
+				public void run() {
+					Player player = context.player();
+					ClientLevel level = context.client().level;
+					Entity camera = context.client().getCameraEntity();
+					if (TFConfig.spawnCharmAnimationAsTotem) {
+						context.client().gameRenderer.displayItemActivation(payload.charm());
+						//prefer the camera pos over the player as the player position isnt quite synced to the client yet
+						context.client().particleEngine.createTrackingEmitter(camera != null ? camera : player, new ItemParticleOption(ParticleTypes.ITEM, payload.charm().getItem()), 20);
+					} else {
+						CharmEffect effect = new CharmEffect(TFEntities.CHARM_EFFECT, player.level(), player, payload.charm());
+						effect.offset = (float) Math.PI;
+						level.addEntity(effect);
+					}
+					SoundEvent event = BuiltInRegistries.SOUND_EVENT.get(payload.event()).map(Holder.Reference::value).orElse(null);
+					if (camera != null && event != null) {
+						level.playLocalSound(camera.getX(), camera.getY(), camera.getZ(), event, player.getSoundSource(), 1.5F, 1.0F, false);
+					}
+				}
+			});
+		});
+		ClientPlayNetworking.registerGlobalReceiver(SpawnFallenLeafFromPacket.TYPE, (payload, context) -> {
+			context.client().execute(() -> {
+				ClientLevel level = context.client().level;
+				Random rand = new Random();
+				// I think this is the correct replacement for getColor(...), but there may be a better option I missed
+				int color = level.getClientLeafTintColor(payload.pos());
+				int r = Mth.clamp(((color >> 16) & 0xFF) + rand.nextInt(0x22) - 0x11, 0x00, 0xFF);
+				int g = Mth.clamp(((color >> 8) & 0xFF) + rand.nextInt(0x22) - 0x11, 0x00, 0xFF);
+				int b = Mth.clamp((color & 0xFF) + rand.nextInt(0x22) - 0x11, 0x00, 0xFF);
+				level.addParticle(ColorParticleOption.create(TFParticleType.FALLEN_LEAF, r / 255F, g / 255F, b / 255F),
+					payload.pos().getX() + level.getRandom().nextFloat(),
+					payload.pos().getY(),
+					payload.pos().getZ() + level.getRandom().nextFloat(),
+					(level.getRandom().nextFloat() * -0.5F) * payload.motion().x(),
+					level.getRandom().nextFloat() * 0.5F + 0.25F,
+					(level.getRandom().nextFloat() * -0.5F) * payload.motion().z()
+				);
+			});
+		});
+		ClientPlayNetworking.registerGlobalReceiver(StructureProtectionPacket.TYPE, (payload, context) -> {
+			ClientLevel level = context.client().level;
+			if (level == null) {
+				TFCommon.LOGGER.warn("ctx.client().level was null in StructureProtectionPacket, skipping logic");
+			} else if (level.dimension().equals(TFDimension.DIMENSION_KEY)) {
+				context.client().execute(() -> TFWeatherRenderer.setProtectedBoxes(payload.boxes().orElse(null)));
+			}
+		});
+		ClientPlayNetworking.registerGlobalReceiver(SyncUncraftingTableConfigPacket.TYPE, (payload, context) -> {
+			context.client().execute(() -> {
+				TFConfig.uncraftingXpCostMultiplier = payload.uncraftingMultiplier();
+				TFConfig.repairingXpCostMultiplier = payload.repairingMultiplier();
+				TFConfig.allowShapelessUncrafting = payload.allowShapeless();
+				TFConfig.disableIngredientSwitching = payload.disableIngredientSwitching();
+				TFConfig.disableUncraftingOnly = payload.disabledUncrafting();
+				TFConfig.disableEntireTable = payload.disabledTable();
+				TFConfig.disableUncraftingRecipes = payload.disabledRecipes();
+				TFConfig.reverseRecipeBlacklist = payload.flipRecipeList();
+				TFConfig.blacklistedUncraftingModIds = payload.disabledModids();
+				TFConfig.flipUncraftingModIdList = payload.flipModidList();
+			});
+		});
+		ClientPlayNetworking.registerGlobalReceiver(UpdateTFMultipartPacket.TYPE, (payload, context) -> {
+			context.client().execute(() -> {
+				int eId = payload.entity() != null && payload.entityId() <= 0 ? payload.entity().getId() : payload.entityId(); // Account for Singleplayer
+				Entity ent = context.player().level().getEntity(eId);
+				if (ent != null && payload.data() != null) {
+					TFPart.forEachPart(ent, (part, index) -> {
+						UpdateTFMultipartPacket.PartDataHolder data = payload.data().get(index);
+						if (data != null)
+							part.readData(data);
+					});
+				}
+			});
+		});
+		ClientPlayNetworking.registerGlobalReceiver(UpdateThrownPacket.TYPE, (payload, context) -> {
+			context.client().execute(() -> {
+				ClientLevel level = context.client().level;
+				Entity entity = level.getEntity(payload.entityID());
+				if (entity instanceof Player player) {
+					var attachment = player.getAttached(TFDataAttachments.YETI_THROWING);
+					LivingEntity thrower = payload.thrower() != 0 ? (LivingEntity) level.getEntity(payload.thrower()) : null;
+					attachment.setThrown(player, payload.thrown(), thrower);
+					attachment.setThrowCooldown(player, payload.throwCooldown());
+				}
+			});
+		});
+		ClientPlayNetworking.registerGlobalReceiver(LifedrainParticlePacket.TYPE, (payload, context) -> {
+			context.client().execute(new Runnable() {
+				@Override
+				public void run() {
+					Entity entity = context.client().level.getEntity(payload.entityID());
+					if (entity instanceof LivingEntity living) {
+						LifedrainScepterItem.makeRedMagicTrail(living.level(), living, payload.victimPos());
+					}
+				}
+			});
+		});
+		ClientPlayNetworking.registerGlobalReceiver(UpdateDeathTimePacket.TYPE, (payload, context) -> {
+			context.client().execute(() -> {
+				ClientLevel level = context.client().level;
+				if (level != null && Minecraft.getInstance().level.getEntity(payload.entityID()) instanceof LivingEntity living) {
+					living.deathTime = payload.deathTime();
+				}
+			});
+		});
+		ClientPlayNetworking.registerGlobalReceiver(TFBossBarPacket.AddTFBossBarPacket.TYPE, (payload, context) -> {
+			context.client().execute(
+				() -> context.client().gui.getBossOverlay().events.put(payload.id, new ClientTFBossBar(payload.id, payload.name, payload.progress, payload.color, payload.overlay, payload.darkenScreen, payload.playMusic, payload.createWorldFog))
+			);
+		});
+		ClientPlayNetworking.registerGlobalReceiver(TFBossBarPacket.UpdateTFBossBarStylePacket.TYPE, (payload, context) -> {
+			context.client().execute(() -> {
+				if (context.client().gui.getBossOverlay().events.get(payload.id) instanceof ClientTFBossBar bossEvent) {
+					bossEvent.setBarColor(payload.color);
+					bossEvent.setOverlay(payload.overlay);
+					if (!payload.allowLerp) bossEvent.setSetTime(bossEvent.getSetTime() - 200L); // Boss bars lerp over 100 milliseconds, we sometimes don't want that
+				}
+			});
+		});
+		ClientPlayNetworking.registerGlobalReceiver(SetMasonJarItemPacket.TYPE, (payload, context) -> {
+			context.client().execute(new Runnable() {
+				@Override
+				public void run() {
+					if (context.client().level.getBlockEntity(payload.pos()) instanceof MasonJarBlockEntity blockEntity) {
+						blockEntity.getItemHandler().setStack(payload.stack());
+						blockEntity.setItemRotation(payload.rotation());
+						blockEntity.setChanged();
+					}
+				}
+			});
+		});
+		ClientPlayNetworking.registerGlobalReceiver(SyncQuestsPacket.TYPE, (payload, context) -> {
+			context.client().execute(() -> QuestingRamCurrentContext.INSTANCE.setContext(payload.ram()));
+		});
+		ClientPlayNetworking.registerGlobalReceiver(TravellersWingsStatePacket.TYPE, (payload, context) -> {
+			context.client().schedule(() -> {
+				Player player = context.player();
+				if (player != null && player.level() != null) {
+					Entity entity = player.level().getEntity(payload.entityId);
+					if (entity instanceof LivingEntity livingEntity) {
+						TravellersWingsAttachment attachment = livingEntity.getAttachedOrCreate(TFDataAttachments.TRAVELLERS_WINGS);
+						attachment.state = payload.state;
+						attachment.sidestepLeft = payload.sidestepLeft;
+						attachment.doubleJumpTimer = payload.doubleJumpTimer;
+						attachment.sidestepTimer = payload.sidestepTimer;
+					}
+				}
+			});
+		});
+		ClientPlayNetworking.registerGlobalReceiver(CreatePortalItemEmitterPacket.TYPE, (payload, context) -> {
+			Runnable work = new Runnable() {
+				@Override
+				public void run() {
+					ClientLevel level = Minecraft.getInstance().level;
+					if (level == null)
+						return;
+
+					Entity entity = level.getEntity(payload.entityID());
+					if (entity instanceof ItemEntity item)
+						Minecraft.getInstance().particleEngine.add(new PortalItemEmitter(level, item, payload.lifetime()));
+				}
+			};
+			context.client().execute(work);
+		});
 	}
 
 	private static void registerRenderPipelines() {

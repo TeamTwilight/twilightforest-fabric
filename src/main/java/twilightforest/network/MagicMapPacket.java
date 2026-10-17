@@ -1,21 +1,13 @@
 package twilightforest.network;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.protocol.game.ClientboundMapItemDataPacket;
-import net.minecraft.world.level.saveddata.maps.MapId;
-import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import twilightforest.TFCommon;
-import twilightforest.item.mapdata.MapDataManager;
-import twilightforest.item.mapdata.TFMagicMapData;
 
 import java.util.List;
-import java.util.stream.StreamSupport;
 
 // Rewraps vanilla ClientboundMapItemDataPacket to sync conquered status of structures
 public record MagicMapPacket(ClientboundMapItemDataPacket inner, List<String> conqueredStructures) implements CustomPacketPayload {
@@ -29,35 +21,5 @@ public record MagicMapPacket(ClientboundMapItemDataPacket inner, List<String> co
 	@Override
 	public Type<? extends CustomPacketPayload> type() {
 		return TYPE;
-	}
-
-	@SuppressWarnings("Convert2Lambda")
-	public static void handle(MagicMapPacket message, ClientPlayNetworking.Context ctx) {
-		ctx.client().execute(new Runnable() {
-			@Override
-			public void run() {
-				ClientLevel clientLevel = ctx.client().level;
-				MapId mapId = message.inner.mapId();
-				TFMagicMapData mapdata = MapDataManager.getClientMagicMapData(mapId);
-				if (mapdata == null) {
-					mapdata = new TFMagicMapData(0, 0, message.inner.scale(), false, false, message.inner.locked(), clientLevel.dimension());
-					MapDataManager.saveClientMagicMapData(mapId, mapdata);
-				}
-
-				message.inner.applyToMap(mapdata);
-				//TF: sync conquered structures for map
-				mapdata.conqueredStructures.clear();
-				mapdata.conqueredStructures.addAll(message.conqueredStructures());
-				Minecraft.getInstance().getMapTextureManager().update(mapId, mapdata);
-
-				MapItemSavedData saved = clientLevel.getMapData(message.inner.mapId());
-
-				if (saved != null) {
-					saved.addClientSideDecorations(
-						StreamSupport.stream(mapdata.getDecorations().spliterator(), false).toList()
-					);
-				}
-			}
-		});
 	}
 }

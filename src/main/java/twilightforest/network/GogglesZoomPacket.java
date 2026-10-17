@@ -1,6 +1,5 @@
 package twilightforest.network;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -41,15 +40,6 @@ public record GogglesZoomPacket(boolean isUsingZoom, UUID playerUUID) implements
 					ServerPlayNetworking.send(serverPlayer, new GogglesZoomPacket(packet.isUsingZoom, player.getUUID()));
 				}
 			}
-		});
-	}
-
-	public static void handleClient(GogglesZoomPacket packet, ClientPlayNetworking.Context ctx) {
-		ctx.client().execute(() -> {
-			Player player = ctx.client().level.getPlayerByUUID(packet.playerUUID);
-			if (player == null)
-				return;
-			player.setAttached(TFDataAttachments.IS_USING_GOGGLES_ZOOM_MODIFIER, packet.isUsingZoom);
 		});
 	}
 

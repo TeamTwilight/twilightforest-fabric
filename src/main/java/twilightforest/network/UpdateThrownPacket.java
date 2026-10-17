@@ -1,16 +1,10 @@
 package twilightforest.network;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import twilightforest.TFCommon;
-import twilightforest.init.TFDataAttachments;
 
 public record UpdateThrownPacket(int entityID, boolean thrown, int thrower, int throwCooldown) implements CustomPacketPayload {
 
@@ -31,18 +25,5 @@ public record UpdateThrownPacket(int entityID, boolean thrown, int thrower, int 
 	@Override
 	public Type<? extends CustomPacketPayload> type() {
 		return TYPE;
-	}
-
-	public static void handle(UpdateThrownPacket message, ClientPlayNetworking.Context ctx) {
-		ctx.client().execute(() -> {
-			ClientLevel level = ctx.client().level;
-			Entity entity = level.getEntity(message.entityID());
-			if (entity instanceof Player player) {
-				var attachment = player.getAttached(TFDataAttachments.YETI_THROWING);
-				LivingEntity thrower = message.thrower() != 0 ? (LivingEntity) level.getEntity(message.thrower()) : null;
-				attachment.setThrown(player, message.thrown(), thrower);
-				attachment.setThrowCooldown(player, message.throwCooldown());
-			}
-		});
 	}
 }

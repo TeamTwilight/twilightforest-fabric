@@ -1,13 +1,10 @@
 package twilightforest.network;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import twilightforest.TFCommon;
-import twilightforest.client.listeners.LockedBiomeToastEventListeners;
-import twilightforest.client.renderer.TFWeatherRenderer;
 
 public record EnforceProgressionStatusPacket(boolean enforce) implements CustomPacketPayload {
 
@@ -25,13 +22,5 @@ public record EnforceProgressionStatusPacket(boolean enforce) implements CustomP
 	@Override
 	public Type<? extends CustomPacketPayload> type() {
 		return TYPE;
-	}
-
-	public static void handle(EnforceProgressionStatusPacket message, ClientPlayNetworking.Context ctx) {
-		boolean enforce = message.enforce;
-		ctx.client().execute(() -> {
-			TFWeatherRenderer.setProgressionEnforced(enforce);
-			LockedBiomeToastEventListeners.setProgressionEnforced(enforce);
-		});
 	}
 }

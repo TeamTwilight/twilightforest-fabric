@@ -1,6 +1,5 @@
 package twilightforest.network;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -25,9 +24,5 @@ public record MovePlayerPacket(double motionX, double motionY, double motionZ) i
 	@Override
 	public Type<? extends CustomPacketPayload> type() {
 		return TYPE;
-	}
-
-	public static void handle(MovePlayerPacket message, ClientPlayNetworking.Context ctx) {
-		ctx.client().execute(() -> ctx.player().push(message.motionX(), message.motionY(), message.motionZ()));
 	}
 }

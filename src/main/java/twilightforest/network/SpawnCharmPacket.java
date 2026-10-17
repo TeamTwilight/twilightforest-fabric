@@ -1,24 +1,13 @@
 package twilightforest.network;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.core.Holder;
-import net.minecraft.core.particles.ItemParticleOption;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import twilightforest.TFCommon;
-import twilightforest.config.TFConfig;
-import twilightforest.entity.CharmEffect;
-import twilightforest.init.TFEntities;
 
 public record SpawnCharmPacket(ItemStack charm, ResourceKey<SoundEvent> event) implements CustomPacketPayload {
 
@@ -37,30 +26,5 @@ public record SpawnCharmPacket(ItemStack charm, ResourceKey<SoundEvent> event) i
 	@Override
 	public Type<? extends CustomPacketPayload> type() {
 		return TYPE;
-	}
-
-	@SuppressWarnings("Convert2Lambda")
-	public static void handle(SpawnCharmPacket packet, ClientPlayNetworking.Context ctx) {
-		ctx.client().execute(new Runnable() {
-			@Override
-			public void run() {
-				Player player = ctx.player();
-				ClientLevel level = ctx.client().level;
-				Entity camera = ctx.client().getCameraEntity();
-				if (TFConfig.spawnCharmAnimationAsTotem) {
-					ctx.client().gameRenderer.displayItemActivation(packet.charm());
-					//prefer the camera pos over the player as the player position isnt quite synced to the client yet
-					ctx.client().particleEngine.createTrackingEmitter(camera != null ? camera : player, new ItemParticleOption(ParticleTypes.ITEM, packet.charm().getItem()), 20);
-				} else {
-					CharmEffect effect = new CharmEffect(TFEntities.CHARM_EFFECT, player.level(), player, packet.charm());
-					effect.offset = (float) Math.PI;
-					level.addEntity(effect);
-				}
-				SoundEvent event = BuiltInRegistries.SOUND_EVENT.get(packet.event()).map(Holder.Reference::value).orElse(null);
-				if (camera != null && event != null) {
-					level.playLocalSound(camera.getX(), camera.getY(), camera.getZ(), event, player.getSoundSource(), 1.5F, 1.0F, false);
-				}
-			}
-		});
 	}
 }

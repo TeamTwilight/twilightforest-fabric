@@ -1,13 +1,11 @@
 package twilightforest.network;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.item.ItemStack;
 import twilightforest.TFCommon;
-import twilightforest.block.entity.MasonJarBlockEntity;
 
 public record SetMasonJarItemPacket(BlockPos pos, boolean empty, ItemStack stack, int rotation) implements CustomPacketPayload {
 	public static final Type<SetMasonJarItemPacket> TYPE = new Type<>(TFCommon.prefix("set_mason_jar_item"));
@@ -34,19 +32,5 @@ public record SetMasonJarItemPacket(BlockPos pos, boolean empty, ItemStack stack
 	@Override
 	public Type<? extends CustomPacketPayload> type() {
 		return TYPE;
-	}
-
-	@SuppressWarnings("Convert2Lambda")
-	public static void handle(SetMasonJarItemPacket packet, ClientPlayNetworking.Context ctx) {
-		ctx.client().execute(new Runnable() {
-			@Override
-			public void run() {
-				if (ctx.client().level.getBlockEntity(packet.pos()) instanceof MasonJarBlockEntity blockEntity) {
-					blockEntity.getItemHandler().setStack(packet.stack());
-					blockEntity.setItemRotation(packet.rotation());
-					blockEntity.setChanged();
-				}
-			}
-		});
 	}
 }

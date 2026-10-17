@@ -1,6 +1,5 @@
 package twilightforest.network;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -51,20 +50,6 @@ public record UpdateTFMultipartPacket(int entityId, @Nullable Entity entity, @Nu
 	@Override
 	public Type<? extends CustomPacketPayload> type() {
 		return TYPE;
-	}
-
-	public static void handle(UpdateTFMultipartPacket message, ClientPlayNetworking.Context ctx) {
-		ctx.client().execute(() -> {
-			int eId = message.entity != null && message.entityId <= 0 ? message.entity.getId() : message.entityId; // Account for Singleplayer
-			Entity ent = ctx.player().level().getEntity(eId);
-			if (ent != null && message.data != null) {
-				TFPart.forEachPart(ent, (part, index) -> {
-					PartDataHolder data = message.data.get(index);
-					if (data != null)
-						part.readData(data);
-				});
-			}
-		});
 	}
 
 	public record PartDataHolder(double x, double y, double z,

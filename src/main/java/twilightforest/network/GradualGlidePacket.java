@@ -1,6 +1,5 @@
 package twilightforest.network;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -30,15 +29,6 @@ public record GradualGlidePacket(boolean isGraduallyGliding, UUID playerUUID) im
 			for (ServerPlayer serverPlayer : PlayerLookup.tracking(player)) {
 				ServerPlayNetworking.send(serverPlayer, new GradualGlidePacket(packet.isGraduallyGliding, player.getUUID()));
 			}
-		});
-	}
-
-	public static void handleClient(GradualGlidePacket packet, ClientPlayNetworking.Context ctx) {
-		ctx.client().execute(() -> {
-			Player player = ctx.client().level.getPlayerByUUID(packet.playerUUID);
-			if (player == null)
-				return;
-			player.setAttached(TFDataAttachments.IS_GRADUALLY_GLIDING, packet.isGraduallyGliding);
 		});
 	}
 

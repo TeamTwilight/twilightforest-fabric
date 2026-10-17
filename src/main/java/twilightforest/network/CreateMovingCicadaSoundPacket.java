@@ -1,15 +1,10 @@
 package twilightforest.network;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import twilightforest.TFCommon;
-import twilightforest.client.MovingCicadaSoundInstance;
 
 public record CreateMovingCicadaSoundPacket(int entityID) implements CustomPacketPayload {
 
@@ -27,18 +22,5 @@ public record CreateMovingCicadaSoundPacket(int entityID) implements CustomPacke
 	@Override
 	public Type<? extends CustomPacketPayload> type() {
 		return TYPE;
-	}
-
-	@SuppressWarnings("Convert2Lambda")
-	public static void handle(CreateMovingCicadaSoundPacket message, ClientPlayNetworking.Context ctx) {
-		ctx.client().execute(new Runnable() {
-			@Override
-			public void run() {
-				Entity entity = ctx.client().level.getEntity(message.entityID());
-				if (entity instanceof LivingEntity living) {
-					Minecraft.getInstance().getSoundManager().queueTickingSound(new MovingCicadaSoundInstance(living));
-				}
-			}
-		});
 	}
 }

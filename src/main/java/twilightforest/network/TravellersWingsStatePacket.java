@@ -1,26 +1,21 @@
 package twilightforest.network;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import twilightforest.TFCommon;
 import twilightforest.components.entity.TravellersWingsAttachment;
-import twilightforest.init.TFDataAttachments;
 
 public class TravellersWingsStatePacket implements CustomPacketPayload {
 
 	public static final Type<TravellersWingsStatePacket> TYPE = new Type<>(TFCommon.prefix("travellers_wings_state"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, TravellersWingsStatePacket> STREAM_CODEC = CustomPacketPayload.codec(TravellersWingsStatePacket::write, TravellersWingsStatePacket::new);
 
-	private final int entityId;
-	private final TravellersWingsAttachment.WingState state;
-	private final boolean sidestepLeft;
-	private final int doubleJumpTimer;
-	private final int sidestepTimer;
+	public final int entityId;
+	public final TravellersWingsAttachment.WingState state;
+	public final boolean sidestepLeft;
+	public final int doubleJumpTimer;
+	public final int sidestepTimer;
 
 	public TravellersWingsStatePacket(int entityId, TravellersWingsAttachment.WingState state, boolean sidestepLeft, int doubleJumpTimer, int sidestepTimer) {
 		this.entityId = entityId;
@@ -40,22 +35,6 @@ public class TravellersWingsStatePacket implements CustomPacketPayload {
 		this.sidestepLeft = buf.readBoolean();
 		this.doubleJumpTimer = buf.readInt();
 		this.sidestepTimer = buf.readInt();
-	}
-
-	public static void handle(TravellersWingsStatePacket message, ClientPlayNetworking.Context ctx) {
-		ctx.client().schedule(() -> {
-			Player player = ctx.player();
-			if (player != null && player.level() != null) {
-				Entity entity = player.level().getEntity(message.entityId);
-				if (entity instanceof LivingEntity livingEntity) {
-					TravellersWingsAttachment attachment = livingEntity.getAttachedOrCreate(TFDataAttachments.TRAVELLERS_WINGS);
-					attachment.state = message.state;
-					attachment.sidestepLeft = message.sidestepLeft;
-					attachment.doubleJumpTimer = message.doubleJumpTimer;
-					attachment.sidestepTimer = message.sidestepTimer;
-				}
-			}
-		});
 	}
 
 	public void write(RegistryFriendlyByteBuf buf) {

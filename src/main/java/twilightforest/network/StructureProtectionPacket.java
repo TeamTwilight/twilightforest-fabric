@@ -1,16 +1,12 @@
 package twilightforest.network;
 
 import com.mojang.datafixers.util.Pair;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import twilightforest.TFCommon;
-import twilightforest.client.renderer.TFWeatherRenderer;
-import twilightforest.init.TFDimension;
 import twilightforest.util.Codecs;
 
 import java.util.List;
@@ -30,14 +26,5 @@ public record StructureProtectionPacket(Optional<List<Pair<BoundingBox, Boolean>
 	@Override
 	public Type<? extends CustomPacketPayload> type() {
 		return TYPE;
-	}
-
-	public static void handle(StructureProtectionPacket message, ClientPlayNetworking.Context ctx) {
-		ClientLevel level = ctx.client().level;
-		if (level == null) {
-			TFCommon.LOGGER.warn("ctx.client().level was null in StructureProtectionPacket, skipping logic");
-		} else if (level.dimension().equals(TFDimension.DIMENSION_KEY)) {
-			ctx.client().execute(() -> TFWeatherRenderer.setProtectedBoxes(message.boxes().orElse(null)));
-		}
 	}
 }

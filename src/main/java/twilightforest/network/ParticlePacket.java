@@ -1,6 +1,5 @@
 package twilightforest.network;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
@@ -19,7 +18,7 @@ public class ParticlePacket implements CustomPacketPayload {
 	public static final Type<ParticlePacket> TYPE = new Type<>(TFCommon.prefix("particle_queue"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, ParticlePacket> STREAM_CODEC = CustomPacketPayload.codec(ParticlePacket::write, ParticlePacket::new);
 
-	private final List<QueuedParticle> queuedParticles = new ArrayList<>();
+	public final List<QueuedParticle> queuedParticles = new ArrayList<>();
 
 	public ParticlePacket() {
 	}
@@ -64,15 +63,7 @@ public class ParticlePacket implements CustomPacketPayload {
 		this.queuedParticles.add(new QueuedParticle(particleOptions, overrideLimiter, alwaysShow, xyz.x, xyz.y, xyz.z, xyz2.x, xyz2.y, xyz2.z));
 	}
 
-	private record QueuedParticle(ParticleOptions particleOptions, boolean overrideLimiter, boolean alwaysShow, double x, double y, double z, double x2,
-								  double y2, double z2) {
-	}
-
-	public static void handle(ParticlePacket message, ClientPlayNetworking.Context ctx) {
-		ctx.client().execute(() -> {
-			for (QueuedParticle queuedParticle : message.queuedParticles) {
-				ctx.client().level.addParticle(queuedParticle.particleOptions, queuedParticle.overrideLimiter, queuedParticle.alwaysShow, queuedParticle.x, queuedParticle.y, queuedParticle.z, queuedParticle.x2, queuedParticle.y2, queuedParticle.z2);
-			}
-		});
+	public record QueuedParticle(ParticleOptions particleOptions, boolean overrideLimiter, boolean alwaysShow, double x, double y, double z, double x2,
+								 double y2, double z2) {
 	}
 }

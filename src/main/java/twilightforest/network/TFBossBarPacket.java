@@ -1,6 +1,5 @@
 package twilightforest.network;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
@@ -9,13 +8,14 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.protocol.game.ClientboundBossEventPacket;
 import net.minecraft.world.BossEvent;
 import twilightforest.TFCommon;
-import twilightforest.entity.boss.bar.ClientTFBossBar;
 import twilightforest.entity.boss.bar.ServerTFBossBar;
 
 import java.util.UUID;
 
 public abstract class TFBossBarPacket implements CustomPacketPayload {
-	protected final UUID id;
+	public final UUID id;
+	public boolean createWorldFog;
+	public boolean playMusic;
 
 	protected TFBossBarPacket(ServerTFBossBar bossEvent) {
 		this.id = bossEvent.getId();
@@ -30,13 +30,13 @@ public abstract class TFBossBarPacket implements CustomPacketPayload {
 	}
 
 	public static class AddTFBossBarPacket extends TFBossBarPacket {
-		private final Component name;
-		private final float progress;
-		private final int color;
-		private final BossEvent.BossBarOverlay overlay;
-		private final boolean darkenScreen;
-		private final boolean playMusic;
-		private final boolean createWorldFog;
+		public final Component name;
+		public final float progress;
+		public final int color;
+		public final BossEvent.BossBarOverlay overlay;
+		public final boolean darkenScreen;
+		public final boolean playMusic;
+		public final boolean createWorldFog;
 
 		public static final Type<AddTFBossBarPacket> TYPE = new Type<>(TFCommon.prefix("add_tf_boss_bar"));
 		public static final StreamCodec<RegistryFriendlyByteBuf, AddTFBossBarPacket> STREAM_CODEC = CustomPacketPayload.codec(AddTFBossBarPacket::write, AddTFBossBarPacket::new);
@@ -78,18 +78,12 @@ public abstract class TFBossBarPacket implements CustomPacketPayload {
 		public Type<? extends CustomPacketPayload> type() {
 			return TYPE;
 		}
-
-		public static void handle(AddTFBossBarPacket packet, ClientPlayNetworking.Context ctx) {
-			ctx.client().execute(
-				() -> ctx.client().gui.getBossOverlay().events.put(packet.id, new ClientTFBossBar(packet.id, packet.name, packet.progress, packet.color, packet.overlay, packet.darkenScreen, packet.playMusic, packet.createWorldFog))
-			);
-		}
 	}
 
 	public static class UpdateTFBossBarStylePacket extends TFBossBarPacket {
-		private final int color;
-		private final BossEvent.BossBarOverlay overlay;
-		private final boolean allowLerp;
+		public final int color;
+		public final BossEvent.BossBarOverlay overlay;
+		public final boolean allowLerp;
 
 		public static final Type<UpdateTFBossBarStylePacket> TYPE = new Type<>(TFCommon.prefix("update_tf_boss_bar_style"));
 		public static final StreamCodec<RegistryFriendlyByteBuf, UpdateTFBossBarStylePacket> STREAM_CODEC = CustomPacketPayload.codec(UpdateTFBossBarStylePacket::write, UpdateTFBossBarStylePacket::new);
@@ -119,16 +113,6 @@ public abstract class TFBossBarPacket implements CustomPacketPayload {
 		@Override
 		public Type<? extends CustomPacketPayload> type() {
 			return TYPE;
-		}
-
-		public static void handle(UpdateTFBossBarStylePacket packet, ClientPlayNetworking.Context ctx) {
-			ctx.client().execute(() -> {
-				if (ctx.client().gui.getBossOverlay().events.get(packet.id) instanceof ClientTFBossBar bossEvent) {
-					bossEvent.setBarColor(packet.color);
-					bossEvent.setOverlay(packet.overlay);
-					if (!packet.allowLerp) bossEvent.setSetTime(bossEvent.getSetTime() - 200L); // Boss bars lerp over 100 milliseconds, we sometimes don't want that
-				}
-			});
 		}
 	}
 }

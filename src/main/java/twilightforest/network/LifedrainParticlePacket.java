@@ -1,14 +1,10 @@
 package twilightforest.network;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import twilightforest.TFCommon;
-import twilightforest.item.LifedrainScepterItem;
 
 public record LifedrainParticlePacket(int entityID, Vec3 victimPos) implements CustomPacketPayload {
 
@@ -29,18 +25,5 @@ public record LifedrainParticlePacket(int entityID, Vec3 victimPos) implements C
 	@Override
 	public Type<? extends CustomPacketPayload> type() {
 		return TYPE;
-	}
-
-	@SuppressWarnings("Convert2Lambda")
-	public static void handle(LifedrainParticlePacket packet, ClientPlayNetworking.Context ctx) {
-		ctx.client().execute(new Runnable() {
-			@Override
-			public void run() {
-				Entity entity = ctx.client().level.getEntity(packet.entityID());
-				if (entity instanceof LivingEntity living) {
-					LifedrainScepterItem.makeRedMagicTrail(living.level(), living, packet.victimPos());
-				}
-			}
-		});
 	}
 }
