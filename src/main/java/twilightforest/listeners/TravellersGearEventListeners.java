@@ -69,7 +69,6 @@ public final class TravellersGearEventListeners {
 		LivingEvents.ARMOR_HURT.register(TravellersGearEventListeners::stopDamagingTravellersGear);
 		LivingEvents.ARMOR_HURT.register(TravellersGearEventListeners::setLastDamageArmorTime);
 		WorkstationEvents.ANVIL_UPDATE.register(TravellersGearEventListeners::cancelCombiningTravellersGear);
-		PlayerEvents.SPAWN_PHANTOMS.register(TravellersGearEventListeners::cancelPhantomSpawns);
 		WorkstationEvents.GRINDSTONE_PLACE.register(TravellersGearEventListeners::removeModifiersFromTravellersGear);
 		WorkstationEvents.GRINDSTONE_TAKE.register(TravellersGearEventListeners::extractItemsFromSwapHotbarModifier);
 		PlayerEvents.ITEM_CRAFTED.register(TravellersGearEventListeners::fireCraftingModifierTrigger);
@@ -365,12 +364,6 @@ public final class TravellersGearEventListeners {
 			.filter(predicate)
 			.toList();
 		return travellersItemStacks.size() == 1 ? Optional.of(travellersItemStacks.getFirst()) : Optional.empty();
-	}
-
-	public static void cancelPhantomSpawns(PlayerSpawnPhantomsEvent event) {
-		if (TravellersModifiersManager.isModifierActive(event.getEntity(), TravellersModifiersManager.ALL_NIGHT_GOGGLES_MODIFIER)) {
-			event.setResult(PlayerSpawnPhantomsEvent.Result.DENY);
-		}
 	}
 
 	public static void fireCraftingModifierTrigger(PlayerEvent.ItemCraftedEvent event) {
