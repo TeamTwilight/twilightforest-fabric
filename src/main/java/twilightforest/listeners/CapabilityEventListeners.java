@@ -32,7 +32,7 @@ public final class CapabilityEventListeners {
 
 	public static void updateShields(EntityTickEvent.Post event) {
 		if (event.getEntity() instanceof LivingEntity living && !living.level().isClientSide() && living.hasAttached(TFDataAttachments.FORTIFICATION_SHIELDS)) {
-			event.getEntity().getAttached(TFDataAttachments.FORTIFICATION_SHIELDS).tick(living);
+			event.getEntity().getAttachedOrCreate(TFDataAttachments.FORTIFICATION_SHIELDS).tick(living);
 		}
 	}
 

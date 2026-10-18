@@ -231,7 +231,7 @@ public final class TravellersClientEventListeners {
 		if (player == null || !TravellersModifiersManager.isModifierActive(player, modifier))
 			return;
 
-		boolean current = player.getAttached(attachment);
+		boolean current = player.getAttachedOrCreate(attachment);
 		player.setAttached(attachment, !current);
 	}
 

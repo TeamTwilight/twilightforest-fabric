@@ -407,7 +407,7 @@ public final class EntityEventListeners {
 
 	public static void grantGroupAdvancementIfNeeded(LivingDeathEvent event) {
 		if (!event.isCanceled() && event.getEntity().hasAttached(TFDataAttachments.MULTIPLAYER_FIGHT)) {
-			event.getEntity().getAttached(TFDataAttachments.MULTIPLAYER_FIGHT).grantGroupAdvancement(event.getEntity());
+			event.getEntity().getAttachedOrCreate(TFDataAttachments.MULTIPLAYER_FIGHT).grantGroupAdvancement(event.getEntity());
 		}
 	}
 
@@ -424,7 +424,7 @@ public final class EntityEventListeners {
 	public static void resetFlaskLogic(AdvancementEvent.AdvancementEarnEvent event) {
 		for (var criteria : event.getAdvancement().value().criteria().entrySet()) {
 			if (criteria.getValue().trigger() instanceof DrinkFromFlaskTrigger) {
-				event.getEntity().getAttached(TFDataAttachments.FLASK_DOSES).resetDoses();
+				event.getEntity().getAttachedOrCreate(TFDataAttachments.FLASK_DOSES).resetDoses();
 				break;
 			}
 		}

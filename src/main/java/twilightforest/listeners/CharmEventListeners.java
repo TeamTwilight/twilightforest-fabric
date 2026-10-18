@@ -92,14 +92,14 @@ public final class CharmEventListeners {
 			if (oldPlayer.hasAttached(TFDataAttachments.CHARM_INVENTORY)) {
 				newPlayer.setAttached(
 					TFDataAttachments.CHARM_INVENTORY,
-					oldPlayer.getAttached(TFDataAttachments.CHARM_INVENTORY)
+					oldPlayer.getAttachedOrCreate(TFDataAttachments.CHARM_INVENTORY)
 				);
 			}
 
 			if (oldPlayer.hasAttached(TFDataAttachments.CHARM_DATA)) {
 				newPlayer.setAttached(
 					TFDataAttachments.CHARM_DATA,
-					oldPlayer.getAttached(TFDataAttachments.CHARM_DATA)
+					oldPlayer.getAttachedOrCreate(TFDataAttachments.CHARM_DATA)
 				);
 			}
 		}
@@ -312,7 +312,7 @@ public final class CharmEventListeners {
 			getPlayerData(player).remove(CASKET_DAMAGE_TAG);
 		} else {
 			// Inventory is empty minus the casket: put the casket into the kept inventory
-			CharmAttachment attachment = player.hasAttached(TFDataAttachments.CHARM_INVENTORY) ? player.getAttached(TFDataAttachments.CHARM_INVENTORY) : new CharmAttachment();
+			CharmAttachment attachment = player.hasAttached(TFDataAttachments.CHARM_INVENTORY) ? player.getAttachedOrCreate(TFDataAttachments.CHARM_INVENTORY) : new CharmAttachment();
 			Inventory keptInventory = attachment.toInventory(player);
 			boolean keptCasket = false;
 
@@ -337,7 +337,7 @@ public final class CharmEventListeners {
 		TFCommon.LOGGER.debug("Player {} ({}) respawned and received items held in storage", player.getName().getString(), player.getUUID());
 
 		if (!player.level().isClientSide() && player.hasAttached(TFDataAttachments.CHARM_INVENTORY)) {
-			CharmAttachment attachment = player.getAttached(TFDataAttachments.CHARM_INVENTORY);
+			CharmAttachment attachment = player.getAttachedOrCreate(TFDataAttachments.CHARM_INVENTORY);
 			player.removeAttached(TFDataAttachments.CHARM_INVENTORY);
 			if (!attachment.isEmpty()) {
 				attachment.applyTo(player.getInventory());
@@ -364,7 +364,7 @@ public final class CharmEventListeners {
 		if (!player.hasAttached(TFDataAttachments.CHARM_DATA)) {
 			player.setAttached(TFDataAttachments.CHARM_DATA, new CompoundTag());
 		}
-		return player.getAttached(TFDataAttachments.CHARM_DATA);
+		return player.getAttachedOrCreate(TFDataAttachments.CHARM_DATA);
 	}
 
 	private static boolean hasCharmCurio(Item item, Player player, boolean saveItemToTag) {

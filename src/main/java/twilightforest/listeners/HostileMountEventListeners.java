@@ -32,7 +32,7 @@ public final class HostileMountEventListeners {
 		}
 
 		if (source.is(DamageTypes.FALL) && entity.getAttachedOrCreate(TFDataAttachments.YETI_THROWING).getThrown()) {
-			entity.hurt(TFDamageTypes.getEntityDamageSource(entity.level(), TFDamageTypes.YEETED, entity.getAttached(TFDataAttachments.YETI_THROWING).getThrower()), amount);
+			entity.hurt(TFDamageTypes.getEntityDamageSource(entity.level(), TFDamageTypes.YEETED, entity.getAttachedOrCreate(TFDataAttachments.YETI_THROWING).getThrower()), amount);
 			return false;
 		}
 

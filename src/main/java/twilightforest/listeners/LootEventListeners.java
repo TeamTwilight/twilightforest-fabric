@@ -69,7 +69,7 @@ public final class LootEventListeners {
 		if (context.getParameter(LootContextParams.THIS_ENTITY) instanceof Player player) {
 			if (!drops.isEmpty() && drops.getFirst().getItem() instanceof BlockItem block) {
 				if (GIANT_BLOCK_CONVERSIONS.containsKey(block.getBlock())) {
-					var attachment = player.getAttached(TFDataAttachments.GIANT_PICKAXE_MINING);
+					var attachment = player.getAttachedOrCreate(TFDataAttachments.GIANT_PICKAXE_MINING);
 					int blockConversion = attachment.getGiantBlockConversion();
 					attachment.setGiantBlockConversion(blockConversion - 1);
 					drops.clear();

@@ -141,7 +141,7 @@ public final class TravellersGearEventListeners {
 		LivingEntity livingEntity = event.getEntity();
 		ItemStack boots = livingEntity.getItemBySlot(EquipmentSlot.FEET);
 		Float coefficient = boots.get(TFDataComponents.SLIMY_SOLES_COEFFICIENT);
-		SlimySolesAttachment slimySolesAttachment = livingEntity.getAttached(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO);
+		SlimySolesAttachment slimySolesAttachment = livingEntity.getAttachedOrCreate(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO);
 		if (!livingEntity.isShiftKeyDown() && TravellersModifiersManager.isModifierActive(livingEntity, boots, TravellersModifiersManager.SLIMY_SOLES_MODIFIER) && coefficient != null && (calculateFallDamage(event) > 0 || slimySolesAttachment.forceBounce)) {
 			event.setCanceled(true);
 			slimySolesAttachment.bounceVelocity = -livingEntity.getDeltaMovement().y() * Math.sqrt(coefficient);
@@ -161,7 +161,7 @@ public final class TravellersGearEventListeners {
 
 	public static void cancelSlimySolesJump(LivingEvent.LivingJumpEvent event) {
 		LivingEntity livingEntity = event.getEntity();
-		SlimySolesAttachment slimySolesAttachment = livingEntity.getAttached(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO);
+		SlimySolesAttachment slimySolesAttachment = livingEntity.getAttachedOrCreate(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO);
 		slimySolesAttachment.bounceVelocity = 0;
 		slimySolesAttachment.forceBounce = false;
 		livingEntity.setAttached(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO, slimySolesAttachment);
@@ -175,7 +175,7 @@ public final class TravellersGearEventListeners {
 		else if (player.onGround() || player.isInLiquid() || player.onClimbable())
 			hasDoubleJump = true;
 
-		if (hasDoubleJump != null && hasDoubleJump != player.getAttached(TFDataAttachments.HAS_DOUBLE_JUMP)) {
+		if (hasDoubleJump != null && hasDoubleJump != player.getAttachedOrCreate(TFDataAttachments.HAS_DOUBLE_JUMP)) {
 			player.setAttached(TFDataAttachments.HAS_DOUBLE_JUMP, hasDoubleJump);
 			player.setAttached(TFDataAttachments.DOUBLE_JUMP_VALIDATOR, 0);
 			AttributeInstance instance = player.getAttribute(Attributes.SAFE_FALL_DISTANCE);
@@ -200,7 +200,7 @@ public final class TravellersGearEventListeners {
 		//reset double jump wing anim if on the ground
 		if (event.getEntity().level().isClientSide()) {
 			if (player.getAttachedOrCreate(TFDataAttachments.TRAVELLERS_WINGS_ANIM).doubleJump && player.onGround()) {
-				player.getAttached(TFDataAttachments.TRAVELLERS_WINGS_ANIM).doubleJump = false;
+				player.getAttachedOrCreate(TFDataAttachments.TRAVELLERS_WINGS_ANIM).doubleJump = false;
 			}
 		}
 
@@ -392,7 +392,7 @@ public final class TravellersGearEventListeners {
 
 	private static <T> void copyAttachmentData(Player source, Player target, AttachmentType<T> type) {
 		if (source.hasAttached(type)) {
-			target.setAttached(type, source.getAttached(type));
+			target.setAttached(type, source.getAttachedOrCreate(type));
 		}
 	}
 }

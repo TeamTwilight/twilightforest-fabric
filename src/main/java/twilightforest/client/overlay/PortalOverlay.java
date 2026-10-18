@@ -14,7 +14,7 @@ public class PortalOverlay {
 
 	public static void render(GuiGraphicsExtractor graphics, Minecraft minecraft, Player player) {
 		if (player != null) {
-			TFPortalAttachment portal = player.getAttached(TFDataAttachments.TF_PORTAL_COOLDOWN);
+			TFPortalAttachment portal = player.getAttachedOrCreate(TFDataAttachments.TF_PORTAL_COOLDOWN);
 			if (portal.getPortalTimer() > 0) {
 				int color = ARGB.white((float) portal.getPortalTimer() / (float) TFPortalAttachment.MAX_TICKS);
 				TextureAtlasSprite textureatlassprite = minecraft.getModelManager().getBlockStateModelSet().getParticleMaterial(TFBlocks.TWILIGHT_PORTAL.defaultBlockState()).sprite();

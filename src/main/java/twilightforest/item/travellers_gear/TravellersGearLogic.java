@@ -127,7 +127,7 @@ public class TravellersGearLogic {
 		Long cooldown = leggingsStack.get(TFDataComponents.SIDESTEP_COOLDOWN);
 		if (cooldown == null)
 			return;
-		TravellersWingsAttachment attachment = player.getAttached(TFDataAttachments.TRAVELLERS_WINGS);
+		TravellersWingsAttachment attachment = player.getAttachedOrCreate(TFDataAttachments.TRAVELLERS_WINGS);
 		long dt = player.level().getGameTime() - attachment.lastSidestepTime;
 		if (TravellersModifiersManager.isModifierActive(player, leggingsStack, TravellersModifiersManager.SIDESTEP_MODIFIER) && dt > cooldown && attachment.shouldPlaySideStepCooldownSound) {
 			player.level().playLocalSound(player.blockPosition(), TFSounds.SIDE_STEP_CHARGED.value(), player.getSoundSource(), 1F, player.getVoicePitch(), false);
@@ -142,7 +142,7 @@ public class TravellersGearLogic {
 		if (!TravellersModifiersManager.isModifierActive(livingEntity, leggingsStack, TravellersModifiersManager.GRADUAL_GLIDE_MODIFIER) || multiplier == null || deltaMovement.y() >= 0 || livingEntity.isFallFlying())
 			return;
 
-		boolean isGraduallyGliding = !(livingEntity instanceof Player player) || player.getAttached(TFDataAttachments.IS_GRADUALLY_GLIDING);
+		boolean isGraduallyGliding = !(livingEntity instanceof Player player) || player.getAttachedOrCreate(TFDataAttachments.IS_GRADUALLY_GLIDING);
 		if (!isGraduallyGliding)
 			return;
 
@@ -225,7 +225,7 @@ public class TravellersGearLogic {
 	}
 
 	public static boolean tryPerformSidestep(Player player, boolean isLeftSidestep) {
-		TravellersWingsAttachment attachment = player.getAttached(TFDataAttachments.TRAVELLERS_WINGS);
+		TravellersWingsAttachment attachment = player.getAttachedOrCreate(TFDataAttachments.TRAVELLERS_WINGS);
 		long lastSidestepTime = attachment.lastSidestepTime;
 		ItemStack leggingsStack = player.getItemBySlot(EquipmentSlot.LEGS);
 		Long cooldown = leggingsStack.get(TFDataComponents.SIDESTEP_COOLDOWN);
@@ -246,7 +246,7 @@ public class TravellersGearLogic {
 		player.push(dashDirection.scale(1.6));  // 5 blocks
 		player.playSound(TFSounds.SIDE_STEP.value(), 1.0F, player.getVoicePitch());
 
-		TravellersWingsAttachment attachment = player.getAttached(TFDataAttachments.TRAVELLERS_WINGS);
+		TravellersWingsAttachment attachment = player.getAttachedOrCreate(TFDataAttachments.TRAVELLERS_WINGS);
 		TravellersWingsAttachment.WingState newState = TravellersWingsAttachment.WingState.SIDESTEP;
 		attachment.state = newState;
 		attachment.sidestepLeft = isLeftSidestep;
@@ -264,15 +264,15 @@ public class TravellersGearLogic {
 	}
 
 	public static boolean performDoubleJump(Player player) {
-		boolean hasDoubleJump = player.getAttached(TFDataAttachments.HAS_DOUBLE_JUMP);
+		boolean hasDoubleJump = player.getAttachedOrCreate(TFDataAttachments.HAS_DOUBLE_JUMP);
 		if (!hasDoubleJump || player.isFallFlying() || player.onClimbable() || player.onGround() || player.isSwimming() || player.getAbilities().flying || player.isInLiquid() || player.isPassenger())
 			return false;
 		player.jumpFromGround();
 		Vec3 velocity = player.getDeltaMovement();
-		double boostVelocity = player.getAttached(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO).doubleJumpBoostVelocity;
+		double boostVelocity = player.getAttachedOrCreate(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO).doubleJumpBoostVelocity;
 		if (boostVelocity != 0) {
 			player.setDeltaMovement(velocity.x(), Math.sqrt(Math.pow(velocity.y(), 2) + Math.pow(boostVelocity, 2)), velocity.z());
-			player.getAttached(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO).doubleJumpBoostVelocity = 0;
+			player.getAttachedOrCreate(TFDataAttachments.SLIMY_SOLES_BOUNCE_INFO).doubleJumpBoostVelocity = 0;
 		}
 		player.resetFallDistance();
 		float pitchShift = 0.1F;
@@ -284,7 +284,7 @@ public class TravellersGearLogic {
 			instance.addOrUpdateTransientModifier(TFAttributeModifiers.TRAVELLERS_DOUBLE_JUMP_SAFE_FALL_DISTANCE);
 
 		if (player.getItemBySlot(EquipmentSlot.LEGS).is(TFItems.TRAVELLERS_WINGS)) {
-			TravellersWingsAttachment attachment = player.getAttached(TFDataAttachments.TRAVELLERS_WINGS);
+			TravellersWingsAttachment attachment = player.getAttachedOrCreate(TFDataAttachments.TRAVELLERS_WINGS);
 			attachment.state = TravellersWingsAttachment.WingState.DOUBLE_JUMP;
 			attachment.doubleJumpTimer = 0;
 		}
@@ -308,7 +308,7 @@ public class TravellersGearLogic {
 			if (player instanceof ServerPlayer serverPlayer) {
 				ServerPlayNetworking.send(serverPlayer, particlePacket);
 			}
-			TravellersWingsAttachment attachment = player.getAttached(TFDataAttachments.TRAVELLERS_WINGS);
+			TravellersWingsAttachment attachment = player.getAttachedOrCreate(TFDataAttachments.TRAVELLERS_WINGS);
 			TravellersWingsStatePacket packet = new TravellersWingsStatePacket(player.getId(), TravellersWingsAttachment.WingState.DOUBLE_JUMP, attachment.sidestepLeft, attachment.doubleJumpTimer, attachment.sidestepTimer);
 			for (ServerPlayer serverPlayer : PlayerLookup.tracking(player)) {
 				ServerPlayNetworking.send(serverPlayer, packet);
@@ -359,8 +359,8 @@ public class TravellersGearLogic {
 		MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
 		if (server == null || !server.isDedicatedServer())
 			return;
-		int count = serverPlayer.getAttached(validator);
-		int lastTick = serverPlayer.getAttached(lastCheck);
+		int count = serverPlayer.getAttachedOrCreate(validator);
+		int lastTick = serverPlayer.getAttachedOrCreate(lastCheck);
 		int currentTick = serverPlayer.tickCount;
 		int diff = currentTick - lastTick;
 		TFCommon.LOGGER.debug("{} {} check: count={}, lastTick={}, currentTick={}, diff={}",

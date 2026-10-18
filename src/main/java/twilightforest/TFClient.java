@@ -386,7 +386,7 @@ public final class TFClient implements ClientModInitializer {
 				ClientLevel level = context.client().level;
 				Entity entity = level.getEntity(payload.entityID());
 				if (entity instanceof Player player) {
-					var attachment = player.getAttached(TFDataAttachments.YETI_THROWING);
+					var attachment = player.getAttachedOrCreate(TFDataAttachments.YETI_THROWING);
 					LivingEntity thrower = payload.thrower() != 0 ? (LivingEntity) level.getEntity(payload.thrower()) : null;
 					attachment.setThrown(player, payload.thrown(), thrower);
 					attachment.setThrowCooldown(player, payload.throwCooldown());
