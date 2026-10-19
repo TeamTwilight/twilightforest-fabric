@@ -1,6 +1,6 @@
 package twilightforest.entity.monster;
 
-import carminite.multipart.IMultiPartEntity;
+import carminite.entity.IMultiPartEntity;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;

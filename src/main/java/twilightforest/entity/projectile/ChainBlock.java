@@ -1,6 +1,6 @@
 package twilightforest.entity.projectile;
 
-import carminite.multipart.PartEntity;
+import carminite.entity.PartEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
