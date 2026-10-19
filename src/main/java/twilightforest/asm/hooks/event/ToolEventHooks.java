@@ -30,12 +30,12 @@ public final class ToolEventHooks {
 				bonusDamage = KNIGHTMETAL_BONUS_DAMAGE;
 			}
 
-			((ServerLevel) target.level()).getChunkSource().sendToTrackingPlayers(target, new ClientboundAnimatePacket(target, 5));
+			((ServerLevel) target.level()).getChunkSource().sendToTrackingPlayersAndSelf(target, new ClientboundAnimatePacket(target, ClientboundAnimatePacket.MAGIC_CRITICAL_HIT));
 			return newDamage + bonusDamage;
 		}
 
 		if (weapon.is(TFItems.KNIGHTMETAL_AXE)) {
-			((ServerLevel) target.level()).getChunkSource().sendToTrackingPlayers(target, new ClientboundAnimatePacket(target, 5));
+			((ServerLevel) target.level()).getChunkSource().sendToTrackingPlayersAndSelf(target, new ClientboundAnimatePacket(target, ClientboundAnimatePacket.MAGIC_CRITICAL_HIT));
 			return originalDamage + KNIGHTMETAL_BONUS_DAMAGE;
 		}
 
@@ -52,7 +52,7 @@ public final class ToolEventHooks {
 			return newDamage;
 		}
 
-		((ServerLevel) target.level()).getChunkSource().sendToTrackingPlayers(target, new ClientboundAnimatePacket(target, 5));
+		((ServerLevel) target.level()).getChunkSource().sendToTrackingPlayersAndSelf(target, new ClientboundAnimatePacket(target, ClientboundAnimatePacket.MAGIC_CRITICAL_HIT));
 		return newDamage + MINOTAUR_AXE_BONUS_DAMAGE;
 	}
 }
