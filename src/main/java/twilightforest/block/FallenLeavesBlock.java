@@ -144,24 +144,21 @@ public class FallenLeavesBlock extends TFPlantBlock {
 		if (state.getValue(LAYERS) > 2) {
 			entity.makeStuckInBlock(state, new Vec3(1.0D - (0.05D * (state.getValue(LAYERS) - 2)), 1.0D, 1.0D - (0.05D * (state.getValue(LAYERS) - 2))));
 		}
-		if (entity instanceof LivingEntity && (entity.getDeltaMovement().x() != 0 || entity.getDeltaMovement().z() != 0) && level.getRandom().nextBoolean()) {
-			if (level.isClientSide()) {
-				level.addParticle(ColorParticleOption.create(TFParticleType.FALLEN_LEAF, level.getClientLeafTintColor(pos)),
-					pos.getX() + level.getRandom().nextFloat(),
-					pos.getY() + ((2F / 16F) * (state.getValue(LAYERS) - 1)),
-					pos.getZ() + level.getRandom().nextFloat(),
-					(level.getRandom().nextFloat() * -0.5F) * entity.getDeltaMovement().x(),
-					level.getRandom().nextFloat() * 0.5F + 0.25F,
-					(level.getRandom().nextFloat() * -0.5F) * entity.getDeltaMovement().z()
-				);
-			} else if (level instanceof ServerLevel) {
-				SpawnFallenLeafFromPacket packet = new SpawnFallenLeafFromPacket(pos, entity.getDeltaMovement());
-				for (ServerPlayer player : PlayerLookup.tracking(entity)) {
-					ServerPlayNetworking.send(player, packet);
-				}
-				if (entity instanceof ServerPlayer player) {
-					ServerPlayNetworking.send(player, packet);
-				}
+		Vec3 movement = entity.getKnownMovement();
+		if (!(entity instanceof LivingEntity) || entity.getKnownSpeed().horizontalDistanceSqr() == 0 || movement.horizontalDistanceSqr() == 0 || !level.getRandom().nextBoolean())
+			return;
+		if (level.isClientSide()) {
+			level.addParticle(ColorParticleOption.create(TFParticleType.FALLEN_LEAF, level.getClientLeafTintColor(pos)),
+				pos.getX() + level.getRandom().nextFloat(),
+				pos.getY() + ((2F / 16F) * (state.getValue(LAYERS) - 1)),
+				pos.getZ() + level.getRandom().nextFloat(),
+				(level.getRandom().nextFloat() * -0.5F) * movement.x(),
+				level.getRandom().nextFloat() * 0.5F + 0.25F,
+				(level.getRandom().nextFloat() * -0.5F) * movement.z()
+			);
+		} else if (level instanceof ServerLevel) {
+			for (ServerPlayer player : PlayerLookup.tracking(entity)) {
+				ServerPlayNetworking.send(player, new SpawnFallenLeafFromPacket(pos.immutable(), movement));
 			}
 		}
 	}
