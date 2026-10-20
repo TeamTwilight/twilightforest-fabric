@@ -28,8 +28,6 @@ public class TFSimpleArmorRenderer extends TFArmorRenderer {
 		this.INNER_ARMOR_MODEL = innerLayerLocation;
 		this.OUTER_ARMOR_MODEL = outerLayerLocation;
 		this.CREATE_MODEL_INSTANCE = createModelInstance;
-
-		INSTANCES.add(this);
 	}
 
 	@Override
