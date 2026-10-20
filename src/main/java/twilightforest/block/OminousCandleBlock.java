@@ -37,7 +37,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import twilightforest.block.entity.OminousCandleBlockEntity;
-import twilightforest.init.TFBlocks;
 import twilightforest.init.TFParticleType;
 
 import java.util.HashMap;
@@ -55,25 +54,7 @@ public class OminousCandleBlock extends BaseEntityBlock {
 	private static final VoxelShape FOUR_AABB = Block.box(5.0, 0.0, 5.0, 11.0, 6.0, 10.0);
 	public static final IntegerProperty CANDLES = BlockStateProperties.CANDLES;
 
-	public static final HashMap<Block, OminousCandleBlock> CANDLE_MAP = Util.make(new HashMap<>(), map -> {
-		map.put(Blocks.CANDLE, TFBlocks.OMINOUS_CANDLE);
-		map.put(Blocks.WHITE_CANDLE, TFBlocks.OMINOUS_WHITE_CANDLE);
-		map.put(Blocks.ORANGE_CANDLE, TFBlocks.OMINOUS_ORANGE_CANDLE);
-		map.put(Blocks.MAGENTA_CANDLE, TFBlocks.OMINOUS_MAGENTA_CANDLE);
-		map.put(Blocks.LIGHT_BLUE_CANDLE, TFBlocks.OMINOUS_LIGHT_BLUE_CANDLE);
-		map.put(Blocks.YELLOW_CANDLE, TFBlocks.OMINOUS_YELLOW_CANDLE);
-		map.put(Blocks.LIME_CANDLE, TFBlocks.OMINOUS_LIME_CANDLE);
-		map.put(Blocks.PINK_CANDLE, TFBlocks.OMINOUS_PINK_CANDLE);
-		map.put(Blocks.GRAY_CANDLE, TFBlocks.OMINOUS_GRAY_CANDLE);
-		map.put(Blocks.LIGHT_GRAY_CANDLE, TFBlocks.OMINOUS_LIGHT_GRAY_CANDLE);
-		map.put(Blocks.CYAN_CANDLE, TFBlocks.OMINOUS_CYAN_CANDLE);
-		map.put(Blocks.PURPLE_CANDLE, TFBlocks.OMINOUS_PURPLE_CANDLE);
-		map.put(Blocks.BLUE_CANDLE, TFBlocks.OMINOUS_BLUE_CANDLE);
-		map.put(Blocks.BROWN_CANDLE, TFBlocks.OMINOUS_BROWN_CANDLE);
-		map.put(Blocks.GREEN_CANDLE, TFBlocks.OMINOUS_GREEN_CANDLE);
-		map.put(Blocks.RED_CANDLE, TFBlocks.OMINOUS_RED_CANDLE);
-		map.put(Blocks.BLACK_CANDLE, TFBlocks.OMINOUS_BLACK_CANDLE);
-	});
+	public static final HashMap<Block, OminousCandleBlock> CANDLE_MAP = new HashMap<>();
 
 	public static final Int2ObjectMap<List<Vec2>> CANDLE_OFFSETS = Util.make(
 		() -> {

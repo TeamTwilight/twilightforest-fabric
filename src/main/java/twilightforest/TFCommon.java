@@ -47,6 +47,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import twilightforest.block.ChiseledCanopyShelfBlock;
+import twilightforest.block.OminousCandleBlock;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.command.TFCommand;
 import twilightforest.config.ConfigSetup;
@@ -140,6 +141,7 @@ public final class TFCommon implements ModInitializer {
 		registerBiomeSource();
 		registerConfig();
 		registerGiantToolDropConversions();
+		registerOminousCandleConversions();
 		registerJarLids();
 		registerStrippableBlocks();
 		registerFlammableBlocks();
@@ -244,6 +246,26 @@ public final class TFCommon implements ModInitializer {
 		LootEventListeners.GIANT_BLOCK_CONVERSIONS.put(Blocks.OAK_LOG, TFBlocks.GIANT_LOG.asItem());
 		LootEventListeners.GIANT_BLOCK_CONVERSIONS.put(Blocks.OAK_LEAVES, TFBlocks.GIANT_LEAVES.asItem());
 		LootEventListeners.GIANT_BLOCK_CONVERSIONS.put(Blocks.OBSIDIAN, TFBlocks.GIANT_OBSIDIAN.asItem());
+	}
+
+	private static void registerOminousCandleConversions() {
+		OminousCandleBlock.CANDLE_MAP.put(Blocks.CANDLE, TFBlocks.OMINOUS_CANDLE);
+		OminousCandleBlock.CANDLE_MAP.put(Blocks.WHITE_CANDLE, TFBlocks.OMINOUS_WHITE_CANDLE);
+		OminousCandleBlock.CANDLE_MAP.put(Blocks.ORANGE_CANDLE, TFBlocks.OMINOUS_ORANGE_CANDLE);
+		OminousCandleBlock.CANDLE_MAP.put(Blocks.MAGENTA_CANDLE, TFBlocks.OMINOUS_MAGENTA_CANDLE);
+		OminousCandleBlock.CANDLE_MAP.put(Blocks.LIGHT_BLUE_CANDLE, TFBlocks.OMINOUS_LIGHT_BLUE_CANDLE);
+		OminousCandleBlock.CANDLE_MAP.put(Blocks.YELLOW_CANDLE, TFBlocks.OMINOUS_YELLOW_CANDLE);
+		OminousCandleBlock.CANDLE_MAP.put(Blocks.LIME_CANDLE, TFBlocks.OMINOUS_LIME_CANDLE);
+		OminousCandleBlock.CANDLE_MAP.put(Blocks.PINK_CANDLE, TFBlocks.OMINOUS_PINK_CANDLE);
+		OminousCandleBlock.CANDLE_MAP.put(Blocks.GRAY_CANDLE, TFBlocks.OMINOUS_GRAY_CANDLE);
+		OminousCandleBlock.CANDLE_MAP.put(Blocks.LIGHT_GRAY_CANDLE, TFBlocks.OMINOUS_LIGHT_GRAY_CANDLE);
+		OminousCandleBlock.CANDLE_MAP.put(Blocks.CYAN_CANDLE, TFBlocks.OMINOUS_CYAN_CANDLE);
+		OminousCandleBlock.CANDLE_MAP.put(Blocks.PURPLE_CANDLE, TFBlocks.OMINOUS_PURPLE_CANDLE);
+		OminousCandleBlock.CANDLE_MAP.put(Blocks.BLUE_CANDLE, TFBlocks.OMINOUS_BLUE_CANDLE);
+		OminousCandleBlock.CANDLE_MAP.put(Blocks.BROWN_CANDLE, TFBlocks.OMINOUS_BROWN_CANDLE);
+		OminousCandleBlock.CANDLE_MAP.put(Blocks.GREEN_CANDLE, TFBlocks.OMINOUS_GREEN_CANDLE);
+		OminousCandleBlock.CANDLE_MAP.put(Blocks.RED_CANDLE, TFBlocks.OMINOUS_RED_CANDLE);
+		OminousCandleBlock.CANDLE_MAP.put(Blocks.BLACK_CANDLE, TFBlocks.OMINOUS_BLACK_CANDLE);
 	}
 
 	private static void registerJarLids() {
