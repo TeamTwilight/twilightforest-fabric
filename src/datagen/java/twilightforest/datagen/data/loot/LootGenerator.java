@@ -13,6 +13,7 @@ public class LootGenerator extends LootTableProvider {
 	public LootGenerator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
 		super(output, TFLootTables.allBuiltin(), List.of(
 			new SubProviderEntry(BlockInteractLootTables::new, LootContextParamSets.BLOCK_INTERACT),
+			new SubProviderEntry(EntityInteractLootTables::new, LootContextParamSets.ENTITY_INTERACT),
 			new SubProviderEntry(ChestLootTables::new, LootContextParamSets.CHEST),
 			new SubProviderEntry(SpecialLootTables::new, LootContextParamSets.EMPTY)
 		), provider);
