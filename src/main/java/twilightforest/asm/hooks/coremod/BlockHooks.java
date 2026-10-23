@@ -67,19 +67,27 @@ public final class BlockHooks {
 	}
 
 	public static boolean modifySoilDecisionForMushroomBlockSurvivability(boolean o, LevelReader level, BlockPos pos) {
+		if (!level.getBlockState(pos.below()).isSolidRender())
+			return false;
+
 		if (o)
 			return true;
+
 		for (int x = -1; x <= 1; x++) {
 			for (int z = -1; z <= 1; z++) {
 				if (x == 0 && z == 0)
 					continue;
+
 				BlockPos checkPos = pos.offset(x, -1, z);
+
 				if (!level.hasChunkAt(checkPos))
 					continue;
+
 				if (level.getBlockState(checkPos).is(TFBlocks.TWILIGHT_PORTAL))
 					return true;
 			}
 		}
+
 		return false;
 	}
 
