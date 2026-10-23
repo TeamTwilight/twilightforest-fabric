@@ -4,7 +4,9 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import twilightforest.TFCommon;
@@ -34,7 +36,9 @@ public record CycleMapSlotPacket() implements CustomPacketPayload {
 				ItemDisplayContents updatedContents = mutable.toImmutable();
 				headStack.set(TFDataComponents.ITEM_DISPLAY, updatedContents);
 				serverPlayer.getInventory().setChanged();
-				serverPlayer.playSound(newIndex == -1 ? TFSounds.CYCLE_MAPS_EMPTY.value() : TFSounds.CYCLE_MAPS.value(), 1F, 1F);
+				serverPlayer.connection.send(
+					new ClientboundSoundPacket(newIndex == -1 ? TFSounds.CYCLE_MAPS_EMPTY : TFSounds.CYCLE_MAPS, SoundSource.UI, serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), 1F, 1F, serverPlayer.getRandom().nextLong())
+				);
 			}
 		});
 	}
