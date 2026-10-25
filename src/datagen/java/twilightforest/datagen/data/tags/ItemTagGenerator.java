@@ -378,31 +378,6 @@ public class ItemTagGenerator extends IntrinsicHolderTagsProvider<Item> {
 
 		this.tag(TFItemTags.AC_RAW_MEATS).add(TFItems.RAW_VENISON, TFItems.RAW_MEEF);
 
-		this.tag(TFItemTags.CURIOS_CHARM).add(
-			TFItems.CHARM_OF_LIFE_1, TFItems.CHARM_OF_LIFE_2,
-			TFItems.CHARM_OF_KEEPING_1, TFItems.CHARM_OF_KEEPING_2, TFItems.CHARM_OF_KEEPING_3
-		);
-
-		this.tag(TFItemTags.CURIOS_HEAD).add(
-			TFItems.NAGA_TROPHY,
-			TFItems.LICH_TROPHY,
-			TFItems.MINOSHROOM_TROPHY,
-			TFItems.HYDRA_TROPHY,
-			TFItems.KNIGHT_PHANTOM_TROPHY,
-			TFItems.UR_GHAST_TROPHY,
-			TFItems.ALPHA_YETI_TROPHY,
-			TFItems.SNOW_QUEEN_TROPHY,
-			TFItems.QUEST_RAM_TROPHY,
-			TFBlocks.CICADA.asItem(),
-			TFBlocks.FIREFLY.asItem(),
-			TFBlocks.MOONWORM.asItem(),
-			TFItems.CREEPER_SKULL_CANDLE,
-			TFItems.PIGLIN_SKULL_CANDLE,
-			TFItems.PLAYER_SKULL_CANDLE,
-			TFItems.SKELETON_SKULL_CANDLE,
-			TFItems.WITHER_SKELETON_SKULL_CANDLE,
-			TFItems.ZOMBIE_SKULL_CANDLE);
-
 		this.tag(TFItemTags.CA_PLANT_FOODS).add(TFItems.TORCHBERRIES);
 
 		this.tag(TFItemTags.CA_PLANTS).add(TFItems.LIVEROOT, TFItems.MAGIC_BEANS,

@@ -104,9 +104,6 @@ public class TFItemTags {
 	public static final TagKey<Item> AC_FERROMAGNETIC_ITEMS = createFromNamespace("alexscaves", "ferromagnetic_items");
 	public static final TagKey<Item> AC_RAW_MEATS = createFromNamespace("alexscaves", "raw_meats");
 
-	public static final TagKey<Item> CURIOS_CHARM = createFromNamespace("curios", "charm");
-	public static final TagKey<Item> CURIOS_HEAD = createFromNamespace("curios", "head");
-
 	public static final TagKey<Item> CA_PLANTS = createFromNamespace("createaddition", "plants");
 	public static final TagKey<Item> CA_PLANT_FOODS = createFromNamespace("createaddition", "plant_foods");
 

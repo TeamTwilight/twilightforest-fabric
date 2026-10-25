@@ -4,7 +4,6 @@ import net.fabricmc.fabric.api.entity.FakePlayer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -112,8 +111,8 @@ public final class CharmEventListeners {
 	}
 
 	private static boolean handleCharmOfLife(Player player) {
-		boolean charm2 = TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_LIFE_2, getPlayerData(player), false) || hasCharmCurio(TFItems.CHARM_OF_LIFE_2, player, false);
-		boolean charm1 = !charm2 && (TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_LIFE_1, getPlayerData(player), false) || hasCharmCurio(TFItems.CHARM_OF_LIFE_1, player, false));
+		boolean charm2 = TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_LIFE_2, getPlayerData(player), false);
+		boolean charm1 = !charm2 && (TFItemStackUtils.consumeInventoryItem(player, TFItems.CHARM_OF_LIFE_1, getPlayerData(player), false));
 
 		if (charm2 || charm1) {
 			if (charm1) {
@@ -191,7 +190,7 @@ public final class CharmEventListeners {
 		}
 
 		// Stop operation if there is no charm present
-		if (!TFItemStackUtils.consumeInventoryItem(player, charm, getPlayerData(player), true) && !hasCharmCurio(charm, player, true)) {
+		if (!TFItemStackUtils.consumeInventoryItem(player, charm, getPlayerData(player), true)) {
 			return false;
 		}
 
@@ -365,13 +364,5 @@ public final class CharmEventListeners {
 			player.setAttached(TFDataAttachments.CHARM_DATA, new CompoundTag());
 		}
 		return player.getAttachedOrCreate(TFDataAttachments.CHARM_DATA);
-	}
-
-	private static boolean hasCharmCurio(Item item, Player player, boolean saveItemToTag) {
-		if (FabricLoader.getInstance().isModLoaded("trinkets")) {
-			//return CuriosCompat.findAndConsumeCurio(item, player, saveItemToTag);
-		}
-
-		return false;
 	}
 }

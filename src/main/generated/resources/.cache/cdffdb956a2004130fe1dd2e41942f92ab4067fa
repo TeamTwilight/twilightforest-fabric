@@ -51,8 +51,6 @@ e69d5be074938c1ff9a1853ff8da6782500ff92f data/c/tags/item/tools/ranged_weapon.js
 1b205b8add451aa431d3db9121828f233c2cbad2 data/c/tags/item/tools/shield.json
 932db6906454527b9d89f0655bd6071261e0ebd3 data/createaddition/tags/item/plant_foods.json
 4dced7c5c98b183e1d94bafa23126914eb919706 data/createaddition/tags/item/plants.json
-3fd61fbbfac1e6fc37d3e6300cb548fdf13b2688 data/curios/tags/item/charm.json
-8c9bf988d87251fa01c2ebab384b3140345c0ef4 data/curios/tags/item/head.json
 42afac82c004061587d5b1ae20c2e66c0d399c8c data/farmersdelight/tags/item/cabbage_roll_ingredients.json
 b40c8354ed3ca1a2a7af96684c97bc7afdeb9f05 data/forbidden_arcanus/tags/item/modifier/eternal_incompatible.json
 a60dbce39527970b03af723b64656128b26f70e6 data/minecraft/tags/item/axes.json

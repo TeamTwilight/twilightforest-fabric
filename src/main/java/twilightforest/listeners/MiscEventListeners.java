@@ -6,7 +6,6 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -83,11 +82,6 @@ public final class MiscEventListeners {
 	public static void updateCicadaSoundsOnHead(LivingEntity livingEntity, EquipmentSlot equipmentSlot, ItemStack currentStack) {
 		// from what I can see, vanilla doesn't have a hook for this in the item class. So this will have to do.
 		// we only have to check equipping, when its unequipped the sound instance handles the rest
-
-		//if we have a cicada in our curios slot, don't try to run this
-		 if (FabricLoader.getInstance().isModLoaded("trinkets")) {
-		 	//if (CuriosCompat.isCurioEquipped(living, stack -> stack.is(TFBlocks.CICADA.asItem()))) return;
-		 }
 
 		if (!livingEntity.level().isClientSide() && equipmentSlot == EquipmentSlot.HEAD && currentStack.is(TFBlocks.CICADA.asItem())) {
 			CreateMovingCicadaSoundPacket packet = new CreateMovingCicadaSoundPacket(livingEntity.getId());
