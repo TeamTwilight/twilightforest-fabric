@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -17,6 +18,7 @@ import twilightforest.entity.monster.LoyalZombie;
 import twilightforest.init.TFEntities;
 import twilightforest.init.TFItems;
 import twilightforest.init.TFSounds;
+import twilightforest.util.TFItemStackUtils;
 
 public class ZombieWandItem extends ScepterItem {
 
@@ -26,32 +28,35 @@ public class ZombieWandItem extends ScepterItem {
 
 	@Override
 	public InteractionResult performScepterAction(Level level, ItemStack stack, Player player, InteractionHand hand) {
-		if (!level.isClientSide()) {
-			// what block is the player pointing at?
-			BlockHitResult result = getPlayerPOVHitResult(level, player, ClipContext.Fluid.NONE);
-
-			if (result.getType() != HitResult.Type.MISS) {
-				LoyalZombie zombie = TFEntities.LOYAL_ZOMBIE.create(level, EntitySpawnReason.SPAWN_ITEM_USE);
-				zombie.snapTo(result.getLocation());
-				if (!level.noCollision(zombie, zombie.getBoundingBox())) {
-					return InteractionResult.PASS;
-				}
-				zombie.spawnAnim();
-				zombie.setTame(true, false);
-				zombie.setOwner(player);
-				zombie.addEffect(new MobEffectInstance(MobEffects.STRENGTH, 1200, 1));
-				if (player.getItemBySlot(EquipmentSlot.HEAD).is(TFItems.MYSTIC_CROWN) && level.getRandom().nextFloat() <= 0.1f) {
-					zombie.setBaby(true);
-				}
-				level.addFreshEntity(zombie);
-				level.gameEvent(player, GameEvent.ENTITY_PLACE, result.getBlockPos());
-
-				if (!player.isCreative()) {
-					stack.hurtWithoutBreaking(1, player);
-				}
-				zombie.playSound(TFSounds.ZOMBIE_SCEPTER_USE.value(), 1.0F, 1.0F);
-			}
+		if (!(level instanceof ServerLevel serverLevel)) {
+			return InteractionResult.SUCCESS;
 		}
+
+		// what block is the player pointing at?
+		BlockHitResult result = getPlayerPOVHitResult(level, player, ClipContext.Fluid.NONE);
+		if (result.getType() == HitResult.Type.MISS) {
+			return InteractionResult.SUCCESS;
+		}
+
+		LoyalZombie zombie = TFEntities.LOYAL_ZOMBIE.create(level, EntitySpawnReason.SPAWN_ITEM_USE);
+		zombie.snapTo(result.getLocation());
+		if (!level.noCollision(zombie, zombie.getBoundingBox())) {
+			return InteractionResult.PASS;
+		}
+		zombie.spawnAnim();
+		zombie.setTame(true, false);
+		zombie.setOwner(player);
+		zombie.addEffect(new MobEffectInstance(MobEffects.STRENGTH, 1200, 1));
+		if (player.getItemBySlot(EquipmentSlot.HEAD).is(TFItems.MYSTIC_CROWN) && level.getRandom().nextFloat() <= 0.1f) {
+			zombie.setBaby(true);
+		}
+		level.addFreshEntity(zombie);
+		level.gameEvent(player, GameEvent.ENTITY_PLACE, result.getBlockPos());
+
+		if (!player.isCreative()) {
+			TFItemStackUtils.hurtButDontBreak(stack,1, serverLevel, player);
+		}
+		zombie.playSound(TFSounds.ZOMBIE_SCEPTER_USE.value(), 1.0F, 1.0F);
 		return InteractionResult.SUCCESS;
 	}
 }
