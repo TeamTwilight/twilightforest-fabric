@@ -33,8 +33,8 @@ public record RechargeScepterEffect() implements EnchantmentEntityEffect {
 			List<ComplexRepairRecipe> recipes = level.recipeAccess().recipes.byType(RecipeType.CRAFTING).stream().filter(holder -> holder.value() instanceof ComplexRepairRecipe).map(RecipeHolder::value).map(ComplexRepairRecipe.class::cast).toList();
 			List<Integer> slotsToConsume = new ArrayList<>();
 			for (var recipe : recipes) {
-				if (recipe.getInput().test(item)) {
-					var ingredientCopy = new ArrayList<>(recipe.placementInfo().ingredients());
+				if (recipe.getInput().test(item) && !recipe.getRepairItems().isEmpty()) {
+					var ingredientCopy = new ArrayList<>(recipe.getRepairItems());
 					scepterItemsCheck:
 					for (int i = 0; i < Inventory.INVENTORY_SIZE; i++) {
 						var stack = player.getInventory().getItem(i);
@@ -44,7 +44,7 @@ public record RechargeScepterEffect() implements EnchantmentEntityEffect {
 							item.setDamageValue(0);
 							return;
 						}
-						for (var ingredient : recipe.placementInfo().ingredients()) {
+						for (var ingredient : recipe.getRepairItems()) {
 							if (ingredientCopy.contains(ingredient) && ingredient.test(stack)) {
 								ingredientCopy.remove(ingredient);
 								slotsToConsume.add(i);
@@ -53,7 +53,7 @@ public record RechargeScepterEffect() implements EnchantmentEntityEffect {
 						}
 					}
 
-					if (slotsToConsume.size() == recipe.placementInfo().ingredients().size()) {
+					if (slotsToConsume.size() == recipe.getRepairItems().size()) {
 						for (int slot : slotsToConsume) {
 							ItemStack stack = player.getInventory().getNonEquipmentItems().get(slot);
 							stack.shrink(1);
