@@ -529,6 +529,7 @@ public final class TFClient implements ClientModInitializer {
 		SpecialModelRenderers.ID_MAPPER.put(TFCommon.prefix("skull_candle"), SkullCandleSpecialRenderer.Unbaked.MAP_CODEC);
 		SpecialModelRenderers.ID_MAPPER.put(TFCommon.prefix("skull_chest"), SkullChestSpecialRenderer.Unbaked.MAP_CODEC);
 		SpecialModelRenderers.ID_MAPPER.put(TFCommon.prefix("trophy"), TrophySpecialRenderer.Unbaked.MAP_CODEC);
+		SpecialModelRenderers.ID_MAPPER.put(TFCommon.prefix("brazier"), BrazierSpecialRenderer.Unbaked.MAP_CODEC);
 	}
 
 	private static void registerAtlases() {

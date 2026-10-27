@@ -329,7 +329,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.FIERY_BLOCK, block -> this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(ModelLocationUtils.getModelLocation(block)))));
 		this.wrapBlockItem(TFBlocks.CARMINITE_BLOCK, block -> this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(ModelLocationUtils.getModelLocation(block)))));
 
-		this.createParticleOnlyBlock(TFBlocks.BRAZIER, TFBlocks.CANOPY_PLANKS);
+		this.generateSpecialModel(TFBlocks.BRAZIER, TFBlocks.CANOPY_PLANKS, _ -> ItemModelUtils.specialModel(TFCommon.prefix("item/brazier"), new BrazierSpecialRenderer.Unbaked()));
 		this.wrapBlockItem(TFBlocks.SLIDER, block -> this.blockStateOutput.accept(createRotatedPillarWithHorizontalVariant(block, plainVariant(ModelLocationUtils.getModelLocation(block)), plainVariant(ModelLocationUtils.getModelLocation(block, "_horiz")))));
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.CINDER_FURNACE, plainVariant(ModelLocationUtils.getModelLocation(Blocks.FURNACE))));
 		this.registerSimpleItemModel(TFBlocks.CINDER_FURNACE, Identifier.withDefaultNamespace("block/furnace"));
