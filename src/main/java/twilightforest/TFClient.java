@@ -354,20 +354,6 @@ public final class TFClient implements ClientModInitializer {
 				context.client().execute(() -> TFWeatherRenderer.setProtectedBoxes(payload.boxes().orElse(null)));
 			}
 		});
-		ClientPlayNetworking.registerGlobalReceiver(SyncUncraftingTableConfigPacket.TYPE, (payload, context) -> {
-			context.client().execute(() -> {
-				TFConfig.uncraftingXpCostMultiplier = payload.uncraftingMultiplier();
-				TFConfig.repairingXpCostMultiplier = payload.repairingMultiplier();
-				TFConfig.allowShapelessUncrafting = payload.allowShapeless();
-				TFConfig.disableIngredientSwitching = payload.disableIngredientSwitching();
-				TFConfig.disableUncraftingOnly = payload.disabledUncrafting();
-				TFConfig.disableEntireTable = payload.disabledTable();
-				TFConfig.disableUncraftingRecipes = payload.disabledRecipes();
-				TFConfig.reverseRecipeBlacklist = payload.flipRecipeList();
-				TFConfig.blacklistedUncraftingModIds = payload.disabledModids();
-				TFConfig.flipUncraftingModIdList = payload.flipModidList();
-			});
-		});
 		ClientPlayNetworking.registerGlobalReceiver(UpdateTFMultipartPacket.TYPE, (payload, context) -> {
 			context.client().execute(() -> {
 				int eId = payload.entity() != null && payload.entityId() <= 0 ? payload.entity().getId() : payload.entityId(); // Account for Singleplayer

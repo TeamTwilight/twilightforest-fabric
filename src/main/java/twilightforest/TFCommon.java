@@ -139,7 +139,6 @@ public final class TFCommon implements ModInitializer {
 		registerPackets();
 		registerDynamicRegistries();
 		registerBiomeSource();
-		registerConfig();
 		registerGiantToolDropConversions();
 		registerOminousCandleConversions();
 		registerJarLids();
@@ -185,7 +184,6 @@ public final class TFCommon implements ModInitializer {
 		PayloadTypeRegistry.clientboundPlay().register(SpawnCharmPacket.TYPE, SpawnCharmPacket.STREAM_CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(SpawnFallenLeafFromPacket.TYPE, SpawnFallenLeafFromPacket.STREAM_CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(StructureProtectionPacket.TYPE, StructureProtectionPacket.STREAM_CODEC);
-		PayloadTypeRegistry.clientboundPlay().register(SyncUncraftingTableConfigPacket.TYPE, SyncUncraftingTableConfigPacket.STREAM_CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(UpdateTFMultipartPacket.TYPE, UpdateTFMultipartPacket.STREAM_CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(UpdateThrownPacket.TYPE, UpdateThrownPacket.STREAM_CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(LifedrainParticlePacket.TYPE, LifedrainParticlePacket.STREAM_CODEC);
@@ -235,10 +233,6 @@ public final class TFCommon implements ModInitializer {
 			TFCommon.prefix("twilight_biomes"),
 			TFBiomeProvider.TF_CODEC
 		);
-	}
-
-	private static void registerConfig() {
-		ConfigSetup.syncUncraftingConfig();
 	}
 
 	private static void registerGiantToolDropConversions() {
