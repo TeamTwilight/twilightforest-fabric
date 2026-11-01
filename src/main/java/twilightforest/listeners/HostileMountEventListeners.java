@@ -6,6 +6,8 @@ import carminite.events.modified.CarminiteEntityTeleportEvent;
 import carminite.events.neoforge.EntityMountEvent;
 import carminite.events.neoforge.EntityTickEvent;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
@@ -23,6 +25,7 @@ public final class HostileMountEventListeners {
 		EntityEvents.CARMINITE_ENTITY_TELEPORT.register(HostileMountEventListeners::preventTeleportingOffHostileMounts);
 		EntityEvents.ENTITY_MOUNT.register(HostileMountEventListeners::preventMountDismount);
 		TickEvents.ENTITY_TICK_POST.register(HostileMountEventListeners::preventHostileMountCrouching);
+		ServerPlayerEvents.JOIN.register(HostileMountEventListeners::playerLogOut);
 	}
 
 	public static boolean handleMountDamage(LivingEntity entity, DamageSource source, float amount) {
@@ -37,6 +40,10 @@ public final class HostileMountEventListeners {
 		}
 
 		return true;
+	}
+
+	public static void playerLogOut(ServerPlayer player) {
+		hostileDismount(player);
 	}
 
 	public static void preventTeleportingOffHostileMounts(CarminiteEntityTeleportEvent event) {

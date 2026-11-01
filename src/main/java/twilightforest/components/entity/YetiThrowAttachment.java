@@ -5,37 +5,20 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.network.MovePlayerPacket;
 import twilightforest.network.UpdateThrownPacket;
 
 public class YetiThrowAttachment {
 
-	public static final int THROW_COOLDOWN = 200;
-
 	private boolean thrown;
 	@Nullable
 	private LivingEntity thrower;
-	private int throwCooldown;
-	private Vec3 throwVector = Vec3.ZERO;
 
 	public void tick(Player player) {
 		if (this.getThrown()) {
 			if (player.onGround() || player.isSwimming() || player.isInWater()) {
 				this.setThrown(player, false, null);
 			}
-		}
-		if (this.throwCooldown > 0) {
-			if (!player.level().isClientSide() && this.throwCooldown == THROW_COOLDOWN - 1) { // Actually throw the victim
-				player.push(this.throwVector.x(), this.throwVector.y(), this.throwVector.z());
-
-				if (player instanceof ServerPlayer server) {
-					ServerPlayNetworking.send(server, new MovePlayerPacket(this.throwVector.x(), this.throwVector.y(), this.throwVector.z()));
-				}
-				this.throwVector = Vec3.ZERO;
-			}
-			this.throwCooldown--;
 		}
 	}
 
@@ -53,24 +36,11 @@ public class YetiThrowAttachment {
 		return this.thrower;
 	}
 
-	public int getThrowCooldown() {
-		return this.throwCooldown;
-	}
-
-	public void setThrowCooldown(Player player, int cooldown) {
-		this.throwCooldown = cooldown;
-		this.sendUpdatePacket(player);
-	}
-
-	public void setThrowVector(Vec3 vector) {
-		this.throwVector = vector;
-	}
-
 	private void sendUpdatePacket(Player player) {
 		if (!player.level().isClientSide()) {
 			int throwerID = 0;
 			if (this.thrower != null) throwerID = this.thrower.getId();
-			UpdateThrownPacket packet = new UpdateThrownPacket(player.getId(), this.thrown, throwerID, this.throwCooldown);
+			UpdateThrownPacket packet = new UpdateThrownPacket(player.getId(), this.thrown, throwerID);
 			for (ServerPlayer serverPlayer : PlayerLookup.tracking(player)) {
 				ServerPlayNetworking.send(serverPlayer, packet);
 			}

@@ -375,7 +375,6 @@ public final class TFClient implements ClientModInitializer {
 					var attachment = player.getAttachedOrCreate(TFDataAttachments.YETI_THROWING);
 					LivingEntity thrower = payload.thrower() != 0 ? (LivingEntity) level.getEntity(payload.thrower()) : null;
 					attachment.setThrown(player, payload.thrown(), thrower);
-					attachment.setThrowCooldown(player, payload.throwCooldown());
 				}
 			});
 		});
