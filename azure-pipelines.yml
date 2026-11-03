@@ -139,7 +139,7 @@ steps:
                   value = "$($env:JAVAPROPS_FABRIC_API_VERSION)"
               },
               [Ordered]@{
-                  name = "Fabric Loader  Version"
+                  name = "Fabric Loader Version"
                   value = "$($env:JAVAPROPS_LOADER_VERSION)"
               },
               [Ordered]@{
