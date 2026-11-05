@@ -59,7 +59,6 @@ public class EntityLootTables extends FabricEntityLootSubProvider {
 		add(TFEntities.REDCAP_SAPPER, fromEntityLootTable(TFEntities.REDCAP));
 		add(TFEntities.SWARM_SPIDER, fromEntityLootTable(EntityType.SPIDER));
 		add(TFEntities.CARMINITE_BROODLING, fromEntityLootTable(EntityType.SPIDER));
-		add(TFEntities.CARMINITE_GHASTGUARD, fromEntityLootTable(EntityType.GHAST));
 		add(TFEntities.BIGHORN_SHEEP, fromEntityLootTable(EntityType.SHEEP));
 		add(TFEntities.RISING_ZOMBIE, fromEntityLootTable(EntityType.ZOMBIE));
 		add(TFEntities.BIGHORN_SHEEP, TFLootTables.BIGHORN_SHEEP_BLACK, sheepLootTableBuilderWithDrop(Blocks.BLACK_WOOL));
@@ -113,11 +112,24 @@ public class EntityLootTables extends FabricEntityLootSubProvider {
 						.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
 						.apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F))))));
 
+		add(TFEntities.CARMINITE_GHASTGUARD,
+			LootTable.lootTable()
+				.withPool(LootPool.lootPool()
+					.setRolls(ConstantValue.exactly(1.0F))
+					.add(LootItem.lootTableItem(Items.GHAST_TEAR)
+						.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F)))
+						.apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))))
+				.withPool(LootPool.lootPool()
+					.setRolls(ConstantValue.exactly(1.0F))
+					.add(LootItem.lootTableItem(Items.GUNPOWDER)
+						.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
+						.apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F))))));
+
 		add(TFEntities.CARMINITE_GHASTLING,
 			LootTable.lootTable()
 				.withPool(LootPool.lootPool()
 					.setRolls(ConstantValue.exactly(1))
-					.add(NestedLootTable.lootTableReference(EntityType.GHAST.getDefaultLootTable().orElseThrow()))
+					.add(NestedLootTable.lootTableReference(TFEntities.CARMINITE_GHASTGUARD.getDefaultLootTable().orElseThrow()))
 					.when(IsMinionCondition.builder(true))));
 
 		/*registerLootTable(TFEntities.BOGGARD,
