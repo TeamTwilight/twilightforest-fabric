@@ -56,7 +56,9 @@ public class VanishingBlock extends Block implements ISpecialExplosionBlock {
 		int limit = 512;
 		Deque<BlockPos> queue = new ArrayDeque<>();
 		Set<BlockPos> checked = new HashSet<>();
+
 		queue.offer(start);
+		checked.add(start);
 
 		for (int iter = 0; !queue.isEmpty() && iter < limit; iter++) {
 			BlockPos cur = queue.pop();
@@ -65,12 +67,10 @@ public class VanishingBlock extends Block implements ISpecialExplosionBlock {
 				return true;
 			}
 
-			checked.add(cur);
-
 			if (state.getBlock() instanceof VanishingBlock) {
 				for (Direction facing : Direction.values()) {
 					BlockPos neighbor = cur.relative(facing);
-					if (!checked.contains(neighbor)) {
+					if (checked.add(neighbor)) {
 						queue.offer(neighbor);
 					}
 				}
@@ -102,11 +102,7 @@ public class VanishingBlock extends Block implements ISpecialExplosionBlock {
 	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
 		if (!this.isVanished(state) && !state.getValue(ACTIVE)) {
-			if (areBlocksLocked(level, pos)) {
-				level.playSound(null, pos, TFSounds.LOCKED_VANISHING_BLOCK.value(), SoundSource.BLOCKS, 1.0F, 0.3F);
-			} else {
-				this.activate(level, pos);
-			}
+			this.tryActivate(level, pos, true);
 			return InteractionResult.SUCCESS;
 		}
 
@@ -129,17 +125,13 @@ public class VanishingBlock extends Block implements ISpecialExplosionBlock {
 			return;
 		}
 
-		if (!this.isVanished(state) && !state.getValue(ACTIVE) && level.hasNeighborSignal(pos) && !areBlocksLocked(level, pos)) {
-			this.activate(level, pos);
+		if (!this.isVanished(state) && !state.getValue(ACTIVE) && level.hasNeighborSignal(pos)) {
+			this.tryActivate(level, pos, false);
 		}
 	}
 
 	@Override
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-		if (level.isClientSide()) {
-			return;
-		}
-
 		if (this.isVanished(state)) {
 			if (state.getValue(ACTIVE)) {
 				level.setBlockAndUpdate(pos, state.setValue(VANISHED, false).setValue(ACTIVE, false));
@@ -161,7 +153,7 @@ public class VanishingBlock extends Block implements ISpecialExplosionBlock {
 				level.playSound(null, pos, state.getBlock() == TFBlocks.REAPPEARING_BLOCK ? TFSounds.REAPPEAR_POOF.value() : TFSounds.VANISHING_BLOCK.value(), SoundSource.BLOCKS, 0.3F, 0.5F);
 
 				for (Direction e : Direction.values()) {
-					this.activate(level, pos.relative(e));
+					this.tryActivate(level, pos.relative(e), true);
 				}
 			}
 		}
@@ -190,11 +182,20 @@ public class VanishingBlock extends Block implements ISpecialExplosionBlock {
 		}
 	}
 
-	private void activate(Level level, BlockPos pos) {
+	private void tryActivate(Level level, BlockPos pos, boolean playSoundWhenLocked) {
 		BlockState state = level.getBlockState(pos);
-		if (state.getBlock() instanceof VanishingBlock && !isVanished(state) && !state.getValue(ACTIVE)) {
-			level.setBlockAndUpdate(pos, state.setValue(ACTIVE, true));
-			level.scheduleTick(pos, state.getBlock(), 2 + level.getRandom().nextInt(5));
+		if (!(state.getBlock() instanceof VanishingBlock) || isVanished(state) || state.getValue(ACTIVE)) {
+			return;
 		}
+
+		if (areBlocksLocked(level, pos)) {
+			if (playSoundWhenLocked) {
+				level.playSound(null, pos, TFSounds.LOCKED_VANISHING_BLOCK.value(), SoundSource.BLOCKS, 1.0F, 0.3F);
+			}
+			return;
+		}
+
+		level.setBlockAndUpdate(pos, state.setValue(ACTIVE, true));
+		level.scheduleTick(pos, state.getBlock(), 2 + level.getRandom().nextInt(5));
 	}
 }
