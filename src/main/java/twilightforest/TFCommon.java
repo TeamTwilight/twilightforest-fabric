@@ -13,7 +13,6 @@ import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.fabricmc.fabric.api.registry.FuelValueEvents;
 import net.fabricmc.fabric.api.registry.StrippableBlockRegistry;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
-import net.fabricmc.fabric.api.transfer.v1.item.ContainerStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
@@ -41,6 +40,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -49,6 +49,7 @@ import org.slf4j.LoggerFactory;
 import twilightforest.block.ChiseledCanopyShelfBlock;
 import twilightforest.block.OminousCandleBlock;
 import twilightforest.block.entity.JarBlockEntity;
+import twilightforest.block.entity.TFChestBlockEntity;
 import twilightforest.command.TFCommand;
 import twilightforest.config.ConfigSetup;
 import twilightforest.dispenser.*;
@@ -875,12 +876,34 @@ public final class TFCommon implements ModInitializer {
 	}
 
 	private static void registerItemStorage() {
+		ItemStorage.SIDED.registerForBlocks(
+			(world, pos, state, _, _) ->
+				state.getBlock() instanceof ChestBlock chest
+					? chest.combine(state, world, pos, true).apply(new TFChestBlockEntity.ItemHandlerProvider()).orElse(null)
+					: null,
+			TFBlocks.TWILIGHT_OAK_CHEST,
+			TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST,
+			TFBlocks.CANOPY_CHEST,
+			TFBlocks.CANOPY_TRAPPED_CHEST,
+			TFBlocks.MANGROVE_CHEST,
+			TFBlocks.MANGROVE_TRAPPED_CHEST,
+			TFBlocks.DARK_CHEST,
+			TFBlocks.DARK_TRAPPED_CHEST,
+			TFBlocks.TIME_CHEST,
+			TFBlocks.TIME_TRAPPED_CHEST,
+			TFBlocks.TRANSFORMATION_CHEST,
+			TFBlocks.TRANSFORMATION_TRAPPED_CHEST,
+			TFBlocks.MINING_CHEST,
+			TFBlocks.MINING_TRAPPED_CHEST,
+			TFBlocks.SORTING_CHEST,
+			TFBlocks.SORTING_TRAPPED_CHEST
+		);
 		ItemStorage.SIDED.registerForBlockEntity(
-			(masonJar, side) -> side == Direction.UP ? masonJar.getItemHandler() : null,
+			(entity, side) -> side == Direction.UP ? entity.getItemHandler() : null,
 			TFBlockEntities.MASON_JAR
 		);
 		ItemStorage.SIDED.registerForBlockEntity(
-			(entity, side) -> entity.getBlockState().getValue(ChiseledCanopyShelfBlock.SPAWNER) ? null : ContainerStorage.of(entity, side),
+			(entity, _) -> entity.getBlockState().getValue(ChiseledCanopyShelfBlock.SPAWNER) ? null : entity.getItemHandler(),
 			TFBlockEntities.CHISELED_CANOPY_BOOKSHELF
 		);
 	}

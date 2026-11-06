@@ -1,6 +1,9 @@
 package twilightforest.block.entity.bookshelf;
 
 import com.mojang.datafixers.util.Either;
+import net.fabricmc.fabric.api.transfer.v1.item.ContainerStorage;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -48,6 +51,8 @@ public class ChiseledCanopyShelfBlockEntity extends ChiseledBookShelfBlockEntity
 			return Either.left(ChiseledCanopyShelfBlockEntity.this);
 		}
 	};
+
+	private final Storage<ItemVariant> itemHandler = ContainerStorage.of(this, null);
 
 	public ChiseledCanopyShelfBlockEntity(BlockPos pos, BlockState state) {
 		super(pos, state);
@@ -109,6 +114,10 @@ public class ChiseledCanopyShelfBlockEntity extends ChiseledBookShelfBlockEntity
 
 	public BookshelfSpawner getSpawner() {
 		return this.spawner;
+	}
+
+	public Storage<ItemVariant> getItemHandler() {
+		return itemHandler;
 	}
 
 	@Override
