@@ -6,12 +6,9 @@ This is the home of the Twilight Forest mod for Minecraft 1.12 and beyond.
 ## Licensing
 Everything not stated below are **All Rights Reserved** by default.
 
-Java Code specifically under these listed directories follow this [LICENSE file here](LICENSE):
+Java Code specifically under this listed directory follow this [LICENSE file here](LICENSE):
 
 - [src/main/java](src/main/java)
-- [src/asm/java](src/asm/java)
-- [src/data/java](src/data/java)
-- [src/test/java](src/test/java)
 
 ## Supported Versions
 ### Latest Minecraft Version
@@ -35,8 +32,7 @@ Keep in touch with development on our [Discord server](https://discord.gg/6v3z26
 Submitting translations for Twilight Forest can be done via our [Crowdin page](https://crowdin.com/project/twilight-forest). Consider helping us out if you're fluent in any language at all! Alternatively, translations can still be submitted via pull requests.
 
 ## Maven
-### 1.20.6+
-https://maven.tamaized.com/#/releases/team-twilight/twilightforest/
+https://maven.tamaized.com/#/releases/team-twilight/twilightforest-fabric
 
 ```
 repositories {
@@ -46,20 +42,5 @@ repositories {
 }
 
 dependencies {
-    implementation "team-twilight:twilightforest:{version}:universal"
+    implementation "team-twilight:twilightforest-fabric:{version}"
 }
-```
-### 1.20.5 and below
-https://modmaven.dev/teamtwilight/twilightforest/
-
-```
-repositories {
-    maven {
-        url = "https://modmaven.dev/"
-    }
-}
-
-dependencies {
-    implementation fg.deobf("teamtwilight:twilightforest:{version}:universal")
-}
-```
