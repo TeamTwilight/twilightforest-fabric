@@ -9,6 +9,7 @@ Everything not stated below are **All Rights Reserved** by default.
 Java Code specifically under this listed directory follow this [LICENSE file here](LICENSE):
 
 - [src/main/java](src/main/java)
+- [src/datagen/java](src/datagen/java)
 
 ## Supported Versions
 ### Latest Minecraft Version
