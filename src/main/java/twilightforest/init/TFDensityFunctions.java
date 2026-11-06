@@ -19,6 +19,7 @@ public class TFDensityFunctions {
 	public static final MapCodec<AbsoluteDifferenceFunction.Min> COORD_MIN = register("coord_min", AbsoluteDifferenceFunction.Min.CODEC);
 	public static final MapCodec<AbsoluteDifferenceFunction.Max> COORD_MAX = register("coord_max", AbsoluteDifferenceFunction.Max.CODEC);
 	public static final MapCodec<SqrtDensityFunction> SQRT = register("sqrt", SqrtDensityFunction.CODEC);
+	public static final MapCodec<OpenWaterProximityFunction> OPEN_WATER_PROXIMITY = register("open_water_proximity", OpenWaterProximityFunction.CODEC);
 
 	public static final ResourceKey<DensityFunction> BIOME_TERRAIN_RAW = ResourceKey.create(Registries.DENSITY_FUNCTION, TFCommon.prefix("raw_biome_terrain"));
 	public static final ResourceKey<DensityFunction> BIOME_NOISE_RAW = ResourceKey.create(Registries.DENSITY_FUNCTION, TFCommon.prefix("raw_biome_noise"));
