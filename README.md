@@ -6,7 +6,7 @@ This is the home of the Twilight Forest mod for Minecraft 1.12 and beyond.
 ## Licensing
 Everything not stated below are **All Rights Reserved** by default.
 
-Java Code specifically under this listed directory follow this [LICENSE file here](LICENSE):
+Java Code specifically under these listed directories follow this [LICENSE file here](LICENSE):
 
 - [src/main/java](src/main/java)
 - [src/datagen/java](src/datagen/java)
