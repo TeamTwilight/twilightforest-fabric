@@ -99,7 +99,8 @@ public class EntityTypeTagGenerator extends EntityTypeTagsProvider {
 			TFEntities.PINCH_BEETLE,
 			TFEntities.SLIME_BEETLE,
 			TFEntities.SWARM_SPIDER,
-			TFEntities.TOWERWOOD_BORER);
+			TFEntities.TOWERWOOD_BORER,
+			TFEntities.MOSQUITO_SWARM);
 
 		this.tag(EntityTypeTags.REDIRECTABLE_PROJECTILE).add(TFEntities.HYDRA_MORTAR, TFEntities.LICH_BOLT);
 		this.tag(EntityTypeTags.IMMUNE_TO_INFESTED).add(TFEntities.TOWERWOOD_BORER);
