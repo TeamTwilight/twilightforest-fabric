@@ -86,6 +86,7 @@ public class TFCreativeTabs {
 			output.insertAfter(Items.WARPED_HYPHAE, TFItems.HOLLOW_WARPED_STEM);
 			output.insertAfter(Items.MANGROVE_WOOD, TFItems.HOLLOW_VANGROVE_LOG);
 			output.insertAfter(Items.CHERRY_WOOD, TFItems.HOLLOW_CHERRY_LOG);
+			output.insertAfter(Items.PALE_OAK_WOOD, TFItems.HOLLOW_PALE_OAK_LOG);
 
 			output.insertAfter(Items.OAK_FENCE_GATE, TFBlocks.OAK_DRYING_RACK);
 			output.insertAfter(Items.SPRUCE_FENCE_GATE, TFBlocks.SPRUCE_DRYING_RACK);
@@ -98,6 +99,7 @@ public class TFCreativeTabs {
 			output.insertAfter(Items.MANGROVE_FENCE_GATE, TFBlocks.VANGROVE_DRYING_RACK);
 			output.insertAfter(Items.BAMBOO_FENCE_GATE, TFBlocks.BAMBOO_DRYING_RACK);
 			output.insertAfter(Items.CHERRY_FENCE_GATE, TFBlocks.CHERRY_DRYING_RACK);
+			output.insertAfter(Items.PALE_OAK_FENCE_GATE, TFBlocks.PALE_OAK_DRYING_RACK);
 
 			output.insertAfter(Items.OAK_FENCE_GATE, TFBlocks.OAK_BANISTER);
 			output.insertAfter(Items.SPRUCE_FENCE_GATE, TFBlocks.SPRUCE_BANISTER);
@@ -110,6 +112,7 @@ public class TFCreativeTabs {
 			output.insertAfter(Items.MANGROVE_FENCE_GATE, TFBlocks.VANGROVE_BANISTER);
 			output.insertAfter(Items.BAMBOO_FENCE_GATE, TFBlocks.BAMBOO_BANISTER);
 			output.insertAfter(Items.CHERRY_FENCE_GATE, TFBlocks.CHERRY_BANISTER);
+			output.insertAfter(Items.PALE_OAK_FENCE_GATE, TFBlocks.PALE_OAK_BANISTER);
 		});
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.OP_BLOCKS).register(output -> output.getContext().holders().lookupOrThrow(TFRegistries.Keys.MAGIC_PAINTINGS)
 			.listElements().sorted(MAGIC_COMPARATOR)
