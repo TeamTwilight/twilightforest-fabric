@@ -1,10 +1,10 @@
 package twilightforest.block;
 
 import com.mojang.serialization.MapCodec;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerBlockEntityEvents;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.transfer.v1.item.ContainerStorage;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
@@ -23,16 +23,29 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 import twilightforest.config.TFConfig;
+import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFParticleType;
 import twilightforest.network.ParticlePacket;
 import twilightforest.tags.TFEntityTypeTags;
+import twilightforest.util.BlockCapabilityDirectionalCache;
 import twilightforest.util.WorldUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
 	private static final MapCodec<SpecialMagicLogBlock> CODEC = simpleCodec(SortLogCoreBlock::new);
+
+	public static void init() {
+		ServerBlockEntityEvents.BLOCK_ENTITY_UNLOAD.register((blockEntity, level) -> {
+			BlockCapabilityDirectionalCache<Storage<ItemVariant>> cache = level.getAttached(TFDataAttachments.SORTING_CORE_CAPABILITY_CACHE);
+			if (cache != null)
+				cache.invalidate(blockEntity.getBlockPos());
+		});
+	}
 
 	public SortLogCoreBlock(Properties properties) {
 		super(properties);
@@ -53,159 +66,102 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 		Map<List<Storage<ItemVariant>>, Vec3> inputMap = new HashMap<>();
 		Map<Storage<ItemVariant>, Vec3> outputMap = new HashMap<>();
 
-		for (BlockPos blockPos : WorldUtil.getAllAround(pos, TFConfig.sortingCoreRange)) {
-			if (blockPos.equals(pos)) {
-				continue;
-			}
+		BlockCapabilityDirectionalCache<Storage<ItemVariant>> capabilityCache = level.getAttachedOrCreate(TFDataAttachments.SORTING_CORE_CAPABILITY_CACHE);
 
-			BlockEntity blockEntity = level.getBlockEntity(blockPos);
-			if (blockEntity == null) {
-				continue;
-			}
-
-			Vec3 storagePos = Vec3.upFromBottomCenterOf(blockPos, 1.9D);
-
-			if (Math.abs(blockPos.getX() - pos.getX()) <= 2
-				&& Math.abs(blockPos.getY() - pos.getY()) <= 2
-				&& Math.abs(blockPos.getZ() - pos.getZ()) <= 2) {
-
-				List<Storage<ItemVariant>> storages = new ArrayList<>(6);
-
-				for (Direction side : Direction.values()) {
-					Storage<ItemVariant> storage = ItemStorage.SIDED.find(level, blockPos, side);
-					if (storage != null) {
-						storages.add(storage);
+		for (BlockEntity blockEntity : WorldUtil.getLoadedBlockEntitiesInRange(level, pos, TFConfig.sortingCoreRange)) {
+			BlockPos blockPos = blockEntity.getBlockPos();
+			if (!blockPos.equals(pos)) {
+				List<Storage<ItemVariant>> handlers = capabilityCache.getAllSides(level, blockPos);
+				// Put it in the input if its within 2 blocks
+				if (Math.abs(blockPos.getX() - pos.getX()) <= 2 && Math.abs(blockPos.getY() - pos.getY()) <= 2 && Math.abs(blockPos.getZ() - pos.getZ()) <= 2) {
+					if (!handlers.isEmpty()) {
+						inputMap.put(handlers, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
 					}
-				}
-
-				if (!storages.isEmpty()) {
-					inputMap.put(storages, storagePos);
-				}
-			} else {
-				for (Direction side : Direction.values()) {
-					Storage<ItemVariant> storage = ItemStorage.SIDED.find(level, blockPos, side);
-					if (storage != null) {
-						outputMap.put(storage, storagePos);
+				} else { // Output if its outside that range
+					for (Storage<ItemVariant> handler : handlers) {
+						outputMap.put(handler, Vec3.upFromBottomCenterOf(blockPos, 1.9D));
 					}
 				}
 			}
 		}
 
-		List<Entity> alreadyUsedForInput = new ArrayList<>();
+		List<Entity> alreadyUsedForInput = new ArrayList<>(); // Keep track of entities we already have for inputs, so we can skip over them when looking for outputs
 
 		level.getEntities((Entity) null, new AABB(pos).inflate(2), entity -> entity.isAlive() && entity.is(TFEntityTypeTags.SORTABLE_ENTITIES)).forEach(entity -> {
-			Storage<ItemVariant> storage = getEntityStorage(entity);
-
-			if (storage != null) {
-				inputMap.put(List.of(storage), entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D));
+			List<Storage<ItemVariant>> handlers = new ArrayList<>();
+			for (Direction side : Direction.values()) {
+				Storage<ItemVariant> handler = getEntityStorage(entity, side);
+				if (handler != null) handlers.add(handler);
+			}
+			if (!handlers.isEmpty()) {
+				inputMap.put(handlers, entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D));
 				alreadyUsedForInput.add(entity);
 			}
 		});
 
-		if (inputMap.isEmpty()) {
-			return;
-		}
+		if (inputMap.isEmpty()) return; // No input
 
 		level.getEntities((Entity) null, new AABB(pos).inflate(16), entity -> entity.isAlive() && !alreadyUsedForInput.contains(entity) && entity.is(TFEntityTypeTags.SORTABLE_ENTITIES)).forEach(entity -> {
-			Storage<ItemVariant> storage = getEntityStorage(entity);
-
-			if (storage != null) {
-				outputMap.put(storage, entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D));
+			for (Direction side : Direction.values()) {
+				Storage<ItemVariant> handler = getEntityStorage(entity, side);
+				if (handler != null) outputMap.put(handler, entity.position().add(0D, entity.getBbHeight() + 0.9D, 0D));
 			}
 		});
 
-		if (outputMap.isEmpty()) {
-			return;
-		}
+		if (outputMap.isEmpty()) return; // No output
 
-		for (Map.Entry<List<Storage<ItemVariant>>, Vec3> inputEntry : inputMap.entrySet()) {
+		for (Map.Entry<List<Storage<ItemVariant>>, Vec3> inputHandlers : inputMap.entrySet()) {
 			boolean transferred = false;
-
-			for (Storage<ItemVariant> inputStorage : inputEntry.getKey()) {
-				for (Iterator<StorageView<ItemVariant>> it = inputStorage.nonEmptyIterator(); it.hasNext(); ) {
-					StorageView<ItemVariant> inputView = it.next();
-					ItemVariant itemVariant = inputView.getResource();
-
-					if (itemVariant.isBlank()) {
-						continue;
-					}
-
+			for (Storage<ItemVariant> inputIItemHandler : inputHandlers.getKey()) {
+				for (StorageView<ItemVariant> inputView : inputIItemHandler) {
+					ItemVariant itemResource = inputView.getResource();
+					if (itemResource.isBlank()) continue;
 					try (Transaction tx = Transaction.openOuter()) {
-						if (inputView.extract(itemVariant, 1, tx) != 1) {
-							continue;
+						if (inputView.extract(itemResource, 1, tx) == 0) continue;
+						Map<Storage<ItemVariant>, Integer> outputCounts = new HashMap<>();
+
+						for (Storage<ItemVariant> outputHandler : outputMap.keySet()) {
+							int count = 0;
+							for (StorageView<ItemVariant> outputView : outputHandler) {
+								if (itemResource.equals(outputView.getResource())) count += (int) outputView.getAmount();
+							}
+							if (count > 0) outputCounts.put(outputHandler, count);
 						}
 
-						Map<Storage<ItemVariant>, Long> outputCounts = new HashMap<>();
-
-						for (Storage<ItemVariant> outputStorage : outputMap.keySet()) {
-							long count = 0;
-
-							for (Iterator<StorageView<ItemVariant>> iter = outputStorage.nonEmptyIterator(); iter.hasNext(); ) {
-								StorageView<ItemVariant> outputView = iter.next();
-								if (itemVariant.equals(outputView.getResource())) {
-									count += outputView.getAmount();
-								}
-							}
-
-							if (count > 0) {
-								outputCounts.put(outputStorage, count);
-							}
-						}
-
-						List<Storage<ItemVariant>> sortedOutputs = outputCounts.entrySet()
-							.stream()
-							.sorted(Map.Entry.<Storage<ItemVariant>, Long>comparingByValue().reversed())
+						List<Storage<ItemVariant>> sortedOutputs = outputCounts.entrySet().stream()
+							.sorted(Map.Entry.<Storage<ItemVariant>, Integer>comparingByValue().reversed())
 							.map(Map.Entry::getKey)
 							.toList();
 
-						for (Storage<ItemVariant> outputStorage : sortedOutputs) {
-							if (outputStorage.insert(itemVariant, 1, tx) == 1) {
+						for (Storage<ItemVariant> outputHandler : sortedOutputs) {
+							if (outputHandler.insert(itemResource, 1, tx) == 1) {
 								tx.commit();
 								transferred = true;
 
-								Vec3 xyz = outputMap.get(outputStorage);
-								Vec3 diff = inputEntry.getValue().subtract(xyz);
+								Vec3 xyz = outputMap.get(outputHandler);
+								Vec3 diff = inputHandlers.getValue().subtract(xyz);
 
 								ParticlePacket particlePacket = new ParticlePacket();
-
 								double x = diff.x - 0.25D + rand.nextDouble() * 0.5D;
 								double y = diff.y - 1.75D + rand.nextDouble() * 0.5D;
 								double z = diff.z - 0.25D + rand.nextDouble() * 0.5D;
-
-								particlePacket.queueParticle(
-									TFParticleType.SORTING_PARTICLE,
-									false,
-									false,
-									xyz,
-									new Vec3(x, y, z).scale(1D / diff.length())
-								);
+								particlePacket.queueParticle(TFParticleType.SORTING_PARTICLE, false, false, xyz, new Vec3(x, y, z).scale(1D / diff.length()));
 
 								for (ServerPlayer player : PlayerLookup.around(level, new Vec3i((int) xyz.x(), (int) xyz.y(), (int) xyz.z()), 64.0D)) {
 									ServerPlayNetworking.send(player, particlePacket);
 								}
-
 								break;
 							}
 						}
 					}
-
-					if (transferred) {
-						break;
-					}
+					if (transferred) break;// If we transferred the item from this Entry already, we break, since all IItemHandlers in one entry come from the same source
 				}
-
-				if (transferred) {
-					break;
-				}
+				if (transferred) break; // Again, since we only transfer once per source, break
 			}
 		}
 	}
 
-	private static @Nullable Storage<ItemVariant> getEntityStorage(Entity entity) {
-		if (entity instanceof Container container) {
-			return ContainerStorage.of(container, null);
-		}
-
-		return null;
+	private static @Nullable Storage<ItemVariant> getEntityStorage(Entity entity, @Nullable Direction direction) {
+		return entity instanceof Container container ? ContainerStorage.of(container, direction) : null;
 	}
 }

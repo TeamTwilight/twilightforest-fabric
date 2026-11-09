@@ -48,6 +48,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import twilightforest.block.ChiseledCanopyShelfBlock;
 import twilightforest.block.OminousCandleBlock;
+import twilightforest.block.SortLogCoreBlock;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.block.entity.TFChestBlockEntity;
 import twilightforest.command.TFCommand;
@@ -169,6 +170,7 @@ public final class TFCommon implements ModInitializer {
 		ProgressionEventListeners.init();
 		TravellersGearEventListeners.init();
 		EntityEventListeners.init();
+		SortLogCoreBlock.init();
 	}
 
 	private static void registerPackets() {

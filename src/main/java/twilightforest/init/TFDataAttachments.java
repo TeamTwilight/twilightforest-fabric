@@ -5,12 +5,16 @@ import com.mojang.serialization.Codec;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentSyncPredicate;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.util.Unit;
 import twilightforest.TFCommon;
 import twilightforest.components.entity.*;
+import twilightforest.util.BlockCapabilityDirectionalCache;
 import twilightforest.util.Codecs;
 
 import static com.mojang.serialization.MapCodec.unitCodec;
@@ -46,6 +50,7 @@ public class TFDataAttachments {
 	public static final AttachmentType<Boolean> IS_GRADUALLY_GLIDING = AttachmentRegistry.create(TFCommon.prefix("is_gradually_gliding"), b -> b.initializer(() -> false).persistent(Codec.BOOL).syncWith(ByteBufCodecs.BOOL, AttachmentSyncPredicate.all()));
 	public static final AttachmentType<SlimySolesAttachment> SLIMY_SOLES_BOUNCE_INFO = AttachmentRegistry.create(TFCommon.prefix("slimy_soles_bounce_info"), b -> b.initializer(SlimySolesAttachment::new).persistent(SlimySolesAttachment.CODEC.codec()));
 	public static final AttachmentType<CharmAttachment> CHARM_INVENTORY = AttachmentRegistry.create(TFCommon.prefix("charm_inventory"), b -> b.initializer(CharmAttachment::new).persistent(CharmAttachment.CODEC.codec()));
+	public static final AttachmentType<BlockCapabilityDirectionalCache<Storage<ItemVariant>>> SORTING_CORE_CAPABILITY_CACHE = AttachmentRegistry.create(TFCommon.prefix("sorting_core_capability_cache"), b -> b.initializer(() -> new BlockCapabilityDirectionalCache<>(ItemStorage.SIDED)));
 
 	// Added specifically for Fabric
 	public static final AttachmentType<Boolean> ENDER_ARROW = AttachmentRegistry.create(TFCommon.prefix("is_ender_arrow"), b -> b.initializer(() -> false).persistent(Codec.BOOL));
