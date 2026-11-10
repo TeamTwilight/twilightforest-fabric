@@ -14,7 +14,7 @@ accessible field net/minecraft/world/level/chunk/status/ChunkStatus parent Lnet/
 
 # CloudEvents and TFWeatherRenderer (plays rain sounds in various scenarios)
 accessible field net/minecraft/client/renderer/LevelRenderer weatherEffectRenderer Lnet/minecraft/client/renderer/WeatherEffectRenderer;
-accessible field net/minecraft/client/renderer/WeatherEffectRenderer rainSoundTime I
+# FIXME accessible field net/minecraft/client/renderer/WeatherEffectRenderer rainSoundTime I
 
 # Codecs (for creation of a MapColor codec)
 accessible method net/minecraft/world/level/material/MapColor <init> (II)V
@@ -96,7 +96,7 @@ accessible field net/minecraft/world/level/saveddata/maps/MapItemSavedData frame
 accessible field net/minecraft/world/level/saveddata/maps/MapItemSavedData trackedDecorationCount I
 
 # TFOverlays (partially determines if the quest ram indicator should render below the crosshair, and allows the food bar to be rendered when riding hostile mounts)
-accessible method net/minecraft/client/gui/Gui canRenderCrosshairForSpectator (Lnet/minecraft/world/phys/HitResult;)Z
+# FIXME accessible method net/minecraft/client/gui/Gui canRenderCrosshairForSpectator (Lnet/minecraft/world/phys/HitResult;)Z
 
 # TFSkyRenderer (allows for rendering the sky)
 accessible field net/minecraft/client/renderer/LevelRenderer skyRenderer Lnet/minecraft/client/renderer/SkyRenderer;
@@ -275,7 +275,7 @@ extendable method net/minecraft/client/model/Model renderToBuffer (Lcom/mojang/b
 accessible method net/minecraft/world/entity/decoration/HangingEntity setDirection (Lnet/minecraft/core/Direction;)V
 
 # OverlayHandler
-accessible method net/minecraft/client/gui/Gui extractFood (Lnet/minecraft/client/gui/GuiGraphicsExtractor;Lnet/minecraft/world/entity/player/Player;II)V
+# FIXME accessible method net/minecraft/client/gui/Gui extractFood (Lnet/minecraft/client/gui/GuiGraphicsExtractor;Lnet/minecraft/world/entity/player/Player;II)V
 
 # EntityHooks
 accessible field net/minecraft/world/entity/Entity stuckSpeedMultiplier Lnet/minecraft/world/phys/Vec3;
@@ -292,10 +292,10 @@ accessible method net/minecraft/world/entity/monster/skeleton/Stray getStepSound
 accessible method net/minecraft/world/entity/monster/skeleton/WitherSkeleton getStepSound ()Lnet/minecraft/sounds/SoundEvent;
 
 # TwilightForestRenderInfo
-accessible field net/minecraft/client/renderer/LevelRenderer ticks I
+# FIXME accessible field net/minecraft/client/renderer/LevelRenderer ticks I
 
 # MultipartRenderDispatcher
-accessible method net/minecraft/client/renderer/LevelRenderer shouldShowEntityOutlines ()Z
+# FIXME accessible method net/minecraft/client/renderer/LevelRenderer shouldShowEntityOutlines ()Z
 
 # UncraftingMenu
 accessible field net/minecraft/world/item/crafting/ShapedRecipe pattern Lnet/minecraft/world/item/crafting/ShapedRecipePattern;
@@ -356,7 +356,7 @@ extendable method net/minecraft/server/packs/resources/SimplePreparableReloadLis
 accessible method net/minecraft/data/recipes/ShapedRecipeBuilder <init> (Lnet/minecraft/core/HolderGetter;Lnet/minecraft/data/recipes/RecipeCategory;Lnet/minecraft/world/item/ItemStackTemplate;)V
 
 # BlockTagGenerator
-accessible class net/minecraft/data/tags/VanillaItemTagsProvider$BlockToItemConverter
+# FIXME accessible class net/minecraft/data/tags/VanillaItemTagsProvider$BlockToItemConverter
 
 # WoodBlockBuilders
 accessible field net/minecraft/client/data/models/BlockModelGenerators ROTATIONS_COLUMN_WITH_FACING Lnet/minecraft/client/data/models/blockstates/PropertyDispatch;

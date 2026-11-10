@@ -33,7 +33,12 @@ java {
 }
 
 tasks.withType(JavaCompile).configureEach {
-	options.compilerArgs << "-Xlint:all,-classfile,-processing,-deprecation,-this-escape" << "-Werror"
+	options.compilerArgs.addAll([
+		"-Xlint:all,-classfile,-processing,-deprecation,-this-escape",
+		"-Werror",
+		"-Xmaxerrs", "1000000",
+		"-Xmaxwarns", "1000000"
+	])
 	options.encoding = 'UTF-8'
 }
 
@@ -64,18 +69,9 @@ fabricApi {
 
 repositories {
 	mavenLocal()
-	maven {
-		name = "Fuzs Mod Resources" // Forge Config API Port
-		url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
-	}
-	maven {
-		name = "Terraformers" // ModMenu
-		url = "https://maven.terraformersmc.com/"
-	}
-	maven {
-		name = "Jared's maven" // JEI
-		url = "https://maven.blamejared.com/"
-	}
+	maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // Forge Config API Port
+	maven { url = "https://maven.terraformersmc.com/" } // ModMenu
+	maven { url = "https://maven.blamejared.com/" } // JEI
 	maven { url = "https://api.modrinth.com/maven" } // Jade
 }
 
@@ -97,11 +93,6 @@ dependencies {
 	implementation "mezz.jei:jei-${minecraft_version}-fabric:${jei_version}"
 }
 
-def minimum_loader_version = project.property("minimum_loader_version")
-def base_minecraft_version = project.property("base_minecraft_version")
-def minimum_fabric_api_version = project.property("minimum_fabric_api_version")
-def java_version = java.toolchain.languageVersion.get().asInt()
-
 processResources {
 	def ver = project.version
 	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
@@ -110,10 +101,10 @@ processResources {
 	filesMatching("fabric.mod.json") {
 		expand([
 			"version"             : ver,
-			"loader_version"      : minimum_loader_version,
+			"loader_version"      : loader_version,
 			"minecraft_version"   : base_minecraft_version,
-			"fabric_api_version"  : minimum_fabric_api_version,
-			"java_version"        : java_version
+			"fabric_api_version"  : fabric_api_version,
+			"java_version"        : java.toolchain.languageVersion.get().asInt()
 		])
 	}
 
