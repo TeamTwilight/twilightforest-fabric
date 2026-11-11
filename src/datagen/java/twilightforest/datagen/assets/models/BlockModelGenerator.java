@@ -53,7 +53,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.spawner(TFBlocks.SINISTER_SPAWNER, "block/sinister_spawner");
 
 		this.directionalCrossModel(TFBlocks.THORN_ROSE, PlantType.NOT_TINTED);
-		this.createTintedLeaves(TFBlocks.THORN_LEAVES, TexturedModel.createDefault(block -> TextureMapping.cube(Blocks.SPRUCE_LEAVES), ModelTemplates.LEAVES), -10380959);
+		this.createTintedLeaves(TFBlocks.THORN_LEAVES, TexturedModel.createDefault(_ -> TextureMapping.cube(Blocks.SPRUCE_LEAVES), ModelTemplates.LEAVES), -10380959);
 		this.wrapBlockItem(TFBlocks.DEADROCK, this::createTrivialCube);
 		this.wrapBlockItem(TFBlocks.CRACKED_DEADROCK, this::createTrivialCube);
 		this.wrapBlockItem(TFBlocks.WEATHERED_DEADROCK, this::createTrivialCube);
@@ -107,22 +107,22 @@ public class BlockModelGenerator extends BlockModelBuilders {
 			.with(sideOminous.with(Y_ROT_270))
 		);
 		this.createParticleOnlyBlock(TFBlocks.OMINOUS_CANDLE, Blocks.CANDLE);
-		this.createParticleOnlyBlock(TFBlocks.OMINOUS_BROWN_CANDLE, Blocks.BROWN_CANDLE);
-		this.createParticleOnlyBlock(TFBlocks.OMINOUS_WHITE_CANDLE, Blocks.WHITE_CANDLE);
-		this.createParticleOnlyBlock(TFBlocks.OMINOUS_LIGHT_GRAY_CANDLE, Blocks.LIGHT_GRAY_CANDLE);
-		this.createParticleOnlyBlock(TFBlocks.OMINOUS_GRAY_CANDLE, Blocks.GRAY_CANDLE);
-		this.createParticleOnlyBlock(TFBlocks.OMINOUS_BLACK_CANDLE, Blocks.BLACK_CANDLE);
-		this.createParticleOnlyBlock(TFBlocks.OMINOUS_RED_CANDLE, Blocks.RED_CANDLE);
-		this.createParticleOnlyBlock(TFBlocks.OMINOUS_ORANGE_CANDLE, Blocks.ORANGE_CANDLE);
-		this.createParticleOnlyBlock(TFBlocks.OMINOUS_YELLOW_CANDLE, Blocks.YELLOW_CANDLE);
-		this.createParticleOnlyBlock(TFBlocks.OMINOUS_GREEN_CANDLE, Blocks.GREEN_CANDLE);
-		this.createParticleOnlyBlock(TFBlocks.OMINOUS_LIME_CANDLE, Blocks.LIME_CANDLE);
-		this.createParticleOnlyBlock(TFBlocks.OMINOUS_BLUE_CANDLE, Blocks.BLUE_CANDLE);
-		this.createParticleOnlyBlock(TFBlocks.OMINOUS_CYAN_CANDLE, Blocks.CYAN_CANDLE);
-		this.createParticleOnlyBlock(TFBlocks.OMINOUS_LIGHT_BLUE_CANDLE, Blocks.LIGHT_BLUE_CANDLE);
-		this.createParticleOnlyBlock(TFBlocks.OMINOUS_PURPLE_CANDLE, Blocks.PURPLE_CANDLE);
-		this.createParticleOnlyBlock(TFBlocks.OMINOUS_MAGENTA_CANDLE, Blocks.MAGENTA_CANDLE);
-		this.createParticleOnlyBlock(TFBlocks.OMINOUS_PINK_CANDLE, Blocks.PINK_CANDLE);
+		this.createParticleOnlyBlock(TFBlocks.OMINOUS_BROWN_CANDLE, Blocks.DYED_CANDLE.brown());
+		this.createParticleOnlyBlock(TFBlocks.OMINOUS_WHITE_CANDLE, Blocks.DYED_CANDLE.white());
+		this.createParticleOnlyBlock(TFBlocks.OMINOUS_LIGHT_GRAY_CANDLE, Blocks.DYED_CANDLE.lightGray());
+		this.createParticleOnlyBlock(TFBlocks.OMINOUS_GRAY_CANDLE, Blocks.DYED_CANDLE.gray());
+		this.createParticleOnlyBlock(TFBlocks.OMINOUS_BLACK_CANDLE, Blocks.DYED_CANDLE.black());
+		this.createParticleOnlyBlock(TFBlocks.OMINOUS_RED_CANDLE, Blocks.DYED_CANDLE.red());
+		this.createParticleOnlyBlock(TFBlocks.OMINOUS_ORANGE_CANDLE, Blocks.DYED_CANDLE.orange());
+		this.createParticleOnlyBlock(TFBlocks.OMINOUS_YELLOW_CANDLE, Blocks.DYED_CANDLE.yellow());
+		this.createParticleOnlyBlock(TFBlocks.OMINOUS_GREEN_CANDLE, Blocks.DYED_CANDLE.green());
+		this.createParticleOnlyBlock(TFBlocks.OMINOUS_LIME_CANDLE, Blocks.DYED_CANDLE.lime());
+		this.createParticleOnlyBlock(TFBlocks.OMINOUS_BLUE_CANDLE, Blocks.DYED_CANDLE.blue());
+		this.createParticleOnlyBlock(TFBlocks.OMINOUS_CYAN_CANDLE, Blocks.DYED_CANDLE.cyan());
+		this.createParticleOnlyBlock(TFBlocks.OMINOUS_LIGHT_BLUE_CANDLE, Blocks.DYED_CANDLE.lightBlue());
+		this.createParticleOnlyBlock(TFBlocks.OMINOUS_PURPLE_CANDLE, Blocks.DYED_CANDLE.purple());
+		this.createParticleOnlyBlock(TFBlocks.OMINOUS_MAGENTA_CANDLE, Blocks.DYED_CANDLE.magenta());
+		this.createParticleOnlyBlock(TFBlocks.OMINOUS_PINK_CANDLE, Blocks.DYED_CANDLE.pink());
 
 		this.createCrossBlockWithDefaultItem(TFBlocks.HUGE_WATER_LILY, PlantType.NOT_TINTED);
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.RED_THREAD, plainVariant(ModelTemplates.PARTICLE_ONLY.create(TFBlocks.RED_THREAD, TextureMapping.particle(new Material(TFCommon.prefix("block/blank"))), this.modelOutput))));
@@ -134,8 +134,8 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.CUT_MAZESTONE, block -> this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(ModelTemplates.CUBE_COLUMN.create(block, TextureMapping.column(TextureMapping.getBlockTexture(block), TextureMapping.getBlockTexture(TFBlocks.MAZESTONE)), this.modelOutput)))));
 		this.wrapBlockItem(TFBlocks.MAZESTONE_MOSAIC, block -> this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(ModelTemplates.CUBE_COLUMN.create(block, TextureMapping.column(TextureMapping.getBlockTexture(TFBlocks.MAZESTONE_BRICK), TextureMapping.getBlockTexture(block)), this.modelOutput)))));
 		this.wrapBlockItem(TFBlocks.MAZESTONE_BORDER, block -> this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(ModelTemplates.CUBE_COLUMN.create(block, TextureMapping.column(TextureMapping.getBlockTexture(TFBlocks.MAZESTONE_BRICK), TextureMapping.getBlockTexture(block)), this.modelOutput)))));
-		this.wrapTintedBlockItem(TFBlocks.SMOKER, new GrassColorSource(), block -> this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(TFModelTemplates.TINTED_CUBE_BOTTOM_TOP.create(block, TextureMapping.cubeTop(TFBlocks.FIRE_JET).put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(Blocks.BLACK_CONCRETE_POWDER)), this.modelOutput)))));
-		this.wrapTintedBlockItem(TFBlocks.FIRE_JET, new GrassColorSource(), block -> this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(TFModelTemplates.TINTED_CUBE_BOTTOM_TOP.create(block, TextureMapping.cubeTop(block).put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(Blocks.BLACK_CONCRETE_POWDER)), this.modelOutput)))));
+		this.wrapTintedBlockItem(TFBlocks.SMOKER, new GrassColorSource(), block -> this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(TFModelTemplates.TINTED_CUBE_BOTTOM_TOP.create(block, TextureMapping.cubeTop(TFBlocks.FIRE_JET).put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(Blocks.CONCRETE_POWDER.black())), this.modelOutput)))));
+		this.wrapTintedBlockItem(TFBlocks.FIRE_JET, new GrassColorSource(), block -> this.blockStateOutput.accept(createSimpleBlock(block, plainVariant(TFModelTemplates.TINTED_CUBE_BOTTOM_TOP.create(block, TextureMapping.cubeTop(block).put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(Blocks.CONCRETE_POWDER.black())), this.modelOutput)))));
 		this.wrapBlockItem(TFBlocks.UNDERBRICK, this::createTrivialCube);
 		this.wrapBlockItem(TFBlocks.CRACKED_UNDERBRICK, this::createTrivialCube);
 		this.wrapBlockItem(TFBlocks.MOSSY_UNDERBRICK, this::createTrivialCube);
@@ -179,7 +179,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 			.with(PropertyDispatch.initial(TranslucentBuiltBlock.ACTIVE).generate(active -> plainVariant(active ?
 				TFModelTemplates.FULLBRIGHT_BLOCK.createWithSuffix(TFBlocks.BUILT_BLOCK, "_on", TextureMapping.cube(TextureMapping.getBlockTexture(TFBlocks.BUILT_BLOCK, "_on")), this.modelOutput) :
 				TFModelTemplates.FULLBRIGHT_BLOCK.create(TFBlocks.BUILT_BLOCK, TextureMapping.cube(TFBlocks.BUILT_BLOCK), this.modelOutput)))));
-		this.wrapBlockItem(TFBlocks.CARMINITE_REACTOR, block -> this.createTrivialBlock(block, TexturedModel.createDefault(block1 -> TFTextureMapping.threeLayerBlock(block, ""), TFModelTemplates.THREE_LAYER_BLOCK)));
+		this.wrapBlockItem(TFBlocks.CARMINITE_REACTOR, block -> this.createTrivialBlock(block, TexturedModel.createDefault(_ -> TFTextureMapping.threeLayerBlock(block, ""), TFModelTemplates.THREE_LAYER_BLOCK)));
 		this.blockStateOutput.accept(createSimpleBlock(TFBlocks.REACTOR_DEBRIS, plainVariant(ModelTemplates.PARTICLE_ONLY.create(TFBlocks.REACTOR_DEBRIS, TextureMapping.particle(new Material(TFCommon.prefix("block/blank"))), this.modelOutput))));
 		this.wrapBlockItem(TFBlocks.LOCKED_VANISHING_BLOCK, block -> this.blockStateOutput.accept(MultiVariantGenerator.dispatch(block)
 			.with(PropertyDispatch.initial(LockedVanishingBlock.LOCKED).generate(active -> plainVariant(active ?
@@ -216,7 +216,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateAuroraBlocks();
 		this.wrapBlockItem(TFBlocks.HUGE_STALK, block -> this.createRotatedPillarWithHorizontalVariant(block, TexturedModel.COLUMN_ALT, TexturedModel.COLUMN_HORIZONTAL_ALT));
 		this.createParticleOnlyBlock(TFBlocks.BEANSTALK_GROWER, TFBlocks.HUGE_STALK);
-		this.wrapBlockItem(TFBlocks.BEANSTALK_LEAVES, block -> this.createTrivialBlock(block, TexturedModel.createDefault(leaves -> TextureMapping.cube(Blocks.AZALEA_LEAVES), ModelTemplates.LEAVES)));
+		this.wrapBlockItem(TFBlocks.BEANSTALK_LEAVES, block -> this.createTrivialBlock(block, TexturedModel.createDefault(_ -> TextureMapping.cube(Blocks.AZALEA_LEAVES), ModelTemplates.LEAVES)));
 		Identifier mushgloomInside = ModelTemplates.SINGLE_FACE.create(TFCommon.prefix("huge_mushgloom_inside"), TextureMapping.cube(new Material(TFCommon.prefix("block/huge_mushgloom_inside"))), this.modelOutput);
 		this.createMultifaceBlock(TFBlocks.HUGE_MUSHGLOOM, mushgloomInside, false);
 		this.createMultifaceBlock(TFBlocks.HUGE_MUSHGLOOM_STEM, mushgloomInside, false);
@@ -238,7 +238,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.wrapBlockItem(TFBlocks.WISPY_CLOUD, this::createTrivialCube);
 		this.wrapBlockItem(TFBlocks.RAINY_CLOUD, this::createTrivialCube);
 		this.wrapBlockItem(TFBlocks.SNOWY_CLOUD, this::createTrivialCube);
-		this.wrapBlockItem(TFBlocks.UBEROUS_SOIL, block -> this.createTrivialBlock(block, TexturedModel.createDefault(block1 -> new TextureMapping().put(TextureSlot.DIRT, TextureMapping.getBlockTexture(block)).put(TextureSlot.TOP, TextureMapping.getBlockTexture(block)), ModelTemplates.FARMLAND)));
+		this.wrapBlockItem(TFBlocks.UBEROUS_SOIL, block -> this.createTrivialBlock(block, TexturedModel.createDefault(_ -> new TextureMapping().put(TextureSlot.DIRT, TextureMapping.getBlockTexture(block)).put(TextureSlot.TOP, TextureMapping.getBlockTexture(block)), ModelTemplates.FARMLAND)));
 
 		this.wrapBlockItem(TFBlocks.CASTLE_BRICK, this::createTrivialCube);
 		this.wrapBlockItem(TFBlocks.WORN_CASTLE_BRICK, this::createTrivialCube);
@@ -272,7 +272,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.forcefield(TFBlocks.VIOLET_FORCE_FIELD, 0xFF5C1074);
 
 		this.skullCasketModels();
-		this.generateSpecialModel(TFBlocks.CICADA, Blocks.SLIME_BLOCK, block -> ItemModelUtils.specialModel(TFCommon.prefix("item/cicada"), new CicadaSpecialRenderer.Unbaked()));
+		this.generateSpecialModel(TFBlocks.CICADA, Blocks.SLIME_BLOCK, _ -> ItemModelUtils.specialModel(TFCommon.prefix("item/cicada"), new CicadaSpecialRenderer.Unbaked()));
 		this.generateSpecialModel(TFBlocks.FIREFLY, Blocks.SLIME_BLOCK, _ -> new AnimatedItemModel.Unbaked(ItemModelUtils.specialModel(TFCommon.prefix("item/firefly"), new FireflySpecialRenderer.Unbaked())));
 		this.generateSpecialModel(TFBlocks.MOONWORM, Blocks.SLIME_BLOCK, _ -> new AnimatedItemModel.Unbaked(ItemModelUtils.specialModel(TFCommon.prefix("item/moonworm"), new MoonwormSpecialRenderer.Unbaked())));
 
@@ -354,7 +354,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.woodProvider(TFBlocks.STRIPPED_TWILIGHT_OAK_LOG).logWithHorizontal(TFBlocks.STRIPPED_TWILIGHT_OAK_LOG).wood(TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD);
 		this.generateHollowLog(TFBlocks.TWILIGHT_OAK_LOG, TFBlocks.STRIPPED_TWILIGHT_OAK_LOG, TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_HORIZONTAL, TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_VERTICAL, TFBlocks.HOLLOW_TWILIGHT_OAK_LOG_CLIMBABLE);
 		this.generateSapling(TFBlocks.TWILIGHT_OAK_SAPLING, TFBlocks.POTTED_TWILIGHT_OAK_SAPLING, PlantType.NOT_TINTED);
-		this.createTintedLeaves(TFBlocks.TWILIGHT_OAK_LEAVES, TexturedModel.createDefault(block -> TextureMapping.cube(Blocks.OAK_LEAVES), ModelTemplates.LEAVES), -12012264);
+		this.createTintedLeaves(TFBlocks.TWILIGHT_OAK_LEAVES, TexturedModel.createDefault(_ -> TextureMapping.cube(Blocks.OAK_LEAVES), ModelTemplates.LEAVES), -12012264);
 		this.wrapBlockItem(TFBlocks.TWILIGHT_OAK_PLANKS, this::createTrivialCube);
 		TextureMapping twilightOak = TextureMapping.cube(TFBlocks.TWILIGHT_OAK_PLANKS);
 		this.generateStairs(TFBlocks.TWILIGHT_OAK_STAIRS, twilightOak);
@@ -374,7 +374,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.woodProvider(TFBlocks.STRIPPED_CANOPY_LOG).logWithHorizontal(TFBlocks.STRIPPED_CANOPY_LOG).wood(TFBlocks.STRIPPED_CANOPY_WOOD);
 		this.generateHollowLog(TFBlocks.CANOPY_LOG, TFBlocks.STRIPPED_CANOPY_LOG, TFBlocks.HOLLOW_CANOPY_LOG_HORIZONTAL, TFBlocks.HOLLOW_CANOPY_LOG_VERTICAL, TFBlocks.HOLLOW_CANOPY_LOG_CLIMBABLE);
 		this.generateSapling(TFBlocks.CANOPY_SAPLING, TFBlocks.POTTED_CANOPY_SAPLING, PlantType.NOT_TINTED);
-		this.createTintedLeaves(TFBlocks.CANOPY_LEAVES, TexturedModel.createDefault(block -> TextureMapping.cube(Blocks.SPRUCE_LEAVES), ModelTemplates.LEAVES), -10380959);
+		this.createTintedLeaves(TFBlocks.CANOPY_LEAVES, TexturedModel.createDefault(_ -> TextureMapping.cube(Blocks.SPRUCE_LEAVES), ModelTemplates.LEAVES), -10380959);
 		this.wrapBlockItem(TFBlocks.CANOPY_PLANKS, this::createTrivialCube);
 		TextureMapping canopy = TextureMapping.cube(TFBlocks.CANOPY_PLANKS);
 		this.generateStairs(TFBlocks.CANOPY_STAIRS, canopy);
@@ -398,7 +398,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.woodProvider(TFBlocks.STRIPPED_MANGROVE_LOG).logWithHorizontal(TFBlocks.STRIPPED_MANGROVE_LOG).wood(TFBlocks.STRIPPED_MANGROVE_WOOD);
 		this.generateHollowLog(TFBlocks.MANGROVE_LOG, TFBlocks.STRIPPED_MANGROVE_LOG, TFBlocks.HOLLOW_MANGROVE_LOG_HORIZONTAL, TFBlocks.HOLLOW_MANGROVE_LOG_VERTICAL, TFBlocks.HOLLOW_MANGROVE_LOG_CLIMBABLE);
 		this.generateSapling(TFBlocks.MANGROVE_SAPLING, TFBlocks.POTTED_MANGROVE_SAPLING, PlantType.NOT_TINTED);
-		this.createTintedLeaves(TFBlocks.MANGROVE_LEAVES, TexturedModel.createDefault(block -> TextureMapping.cube(Blocks.BIRCH_LEAVES), ModelTemplates.LEAVES), -8345771);
+		this.createTintedLeaves(TFBlocks.MANGROVE_LEAVES, TexturedModel.createDefault(_ -> TextureMapping.cube(Blocks.BIRCH_LEAVES), ModelTemplates.LEAVES), -8345771);
 		this.wrapBlockItem(TFBlocks.MANGROVE_ROOT, this::createTrivialCube);
 		this.wrapBlockItem(TFBlocks.MANGROVE_PLANKS, this::createTrivialCube);
 		TextureMapping mangrove = TextureMapping.cube(TFBlocks.MANGROVE_PLANKS);
@@ -517,7 +517,7 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateDryingRack(TFBlocks.SORTING_DRYING_RACK, sorting);
 
 		this.generateSapling(TFBlocks.HOLLOW_OAK_SAPLING, TFBlocks.POTTED_HOLLOW_OAK_SAPLING, PlantType.NOT_TINTED);
-		this.createTintedLeaves(TFBlocks.RAINBOW_OAK_LEAVES, TexturedModel.createDefault(block -> TextureMapping.cube(Blocks.OAK_LEAVES), ModelTemplates.LEAVES), -12012264);
+		this.createTintedLeaves(TFBlocks.RAINBOW_OAK_LEAVES, TexturedModel.createDefault(_ -> TextureMapping.cube(Blocks.OAK_LEAVES), ModelTemplates.LEAVES), -12012264);
 		this.generateSapling(TFBlocks.RAINBOW_OAK_SAPLING, TFBlocks.POTTED_RAINBOW_OAK_SAPLING, PlantType.NOT_TINTED);
 
 		this.createTFChest(TFBlocks.TWILIGHT_OAK_CHEST, TFBlocks.TWILIGHT_OAK_PLANKS, TFCommon.prefix("twilight_oak/normal"));

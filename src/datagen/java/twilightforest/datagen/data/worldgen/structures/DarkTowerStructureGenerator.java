@@ -4,7 +4,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.random.WeightedList;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
@@ -32,10 +32,10 @@ public class DarkTowerStructureGenerator {
         return new DarkTowerStructure(
             ControlledSpawns.ControlledSpawningConfig.create(List.of(WeightedList.<MobSpawnSettings.SpawnerData>builder()
                 .add(new MobSpawnSettings.SpawnerData(TFEntities.CARMINITE_GOLEM, 1, 2), 10)
-                .add(new MobSpawnSettings.SpawnerData(EntityType.SKELETON, 1, 2), 10)
-                .add(new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 1, 1), 5)
-                .add(new MobSpawnSettings.SpawnerData(EntityType.ENDERMAN, 1, 2), 2)
-                .add(new MobSpawnSettings.SpawnerData(EntityType.WITCH, 1, 1), 1)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.SKELETON, 1, 2), 10)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.CREEPER, 1, 1), 5)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.ENDERMAN, 1, 2), 2)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.WITCH, 1, 1), 1)
                 .add(new MobSpawnSettings.SpawnerData(TFEntities.CARMINITE_GHASTLING, 1, 2), 10)
                 .add(new MobSpawnSettings.SpawnerData(TFEntities.CARMINITE_BROODLING, 4, 4), 10)
                 .add(new MobSpawnSettings.SpawnerData(TFEntities.PINCH_BEETLE, 1, 1), 10)
@@ -46,7 +46,7 @@ public class DarkTowerStructureGenerator {
                 .build()
             ), WeightedList.of(), WeightedList.<MobSpawnSettings.SpawnerData>builder()
                 // aquarium squids (only in aquariums between y = 35 and y = 64. :/)
-                .add(new MobSpawnSettings.SpawnerData(EntityType.SQUID, 4, 4), 10)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.SQUID, 4, 4), 10)
                 .build()
             ),
             new AdvancementLockedStructure.AdvancementLockConfig(List.of(TFCommon.prefix("progress_knights"))),
@@ -55,7 +55,7 @@ public class DarkTowerStructureGenerator {
             true, Optional.of(BuiltInRegistries.MAP_DECORATION_TYPE.wrapAsHolder(TFMapDecorations.DARK_TOWER)),
             new Structure.StructureSettings(
                 context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_DARK_TOWER_BIOMES),
-                Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning
+                Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, _ -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning
                 GenerationStep.Decoration.SURFACE_STRUCTURES,
                 TerrainAdjustment.BEARD_THIN
             )
