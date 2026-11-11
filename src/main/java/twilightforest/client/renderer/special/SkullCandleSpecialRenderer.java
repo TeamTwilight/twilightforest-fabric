@@ -58,7 +58,7 @@ public record SkullCandleSpecialRenderer(PlayerSkinRenderCache playerSkinRenderC
 			stack.pushPose();
 			stack.mulPose(SkullCandleRenderer.CANDLE_TRANSFORMS.freeTransformations(0));
 			BlockModelRenderState state = new BlockModelRenderState();
-			SkullCandleRenderer.updateSkullCandle(skullCandles.color(), skullCandles.count(), Minecraft.getInstance().blockModelResolver, state, false);
+			SkullCandleRenderer.updateSkullCandle(skullCandles.color(), skullCandles.count(), Minecraft.getInstance().carminite$getBlockModelResolver(), state, false);
 			SkullCandleRenderer.submitCandles(state, stack, collector, light, overlay, outlineColor);
 			stack.popPose();
 		}

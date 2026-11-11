@@ -4,6 +4,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.player.Player;
@@ -20,38 +21,38 @@ import java.util.Map;
 
 public class TransformPowderItem extends Item {
 	public static final Map<EntityType<?>, EntityType<?>> TRANSFORMATION_POWDER = Map.ofEntries(
-		Map.entry(TFEntities.MINOTAUR, EntityType.ZOMBIFIED_PIGLIN),
-		Map.entry(EntityType.ZOMBIFIED_PIGLIN, TFEntities.MINOTAUR),
-		Map.entry(TFEntities.DEER, EntityType.COW),
-		Map.entry(EntityType.COW, TFEntities.DEER),
-		Map.entry(TFEntities.BOAR, EntityType.PIG),
-		Map.entry(EntityType.PIG, TFEntities.BOAR),
-		Map.entry(TFEntities.BIGHORN_SHEEP, EntityType.SHEEP),
-		Map.entry(EntityType.SHEEP, TFEntities.BIGHORN_SHEEP),
-		Map.entry(TFEntities.DWARF_RABBIT, EntityType.RABBIT),
-		Map.entry(EntityType.RABBIT, TFEntities.DWARF_RABBIT),
-		Map.entry(TFEntities.TINY_BIRD, EntityType.PARROT),
-		Map.entry(EntityType.PARROT, TFEntities.TINY_BIRD),
-		Map.entry(TFEntities.RAVEN, EntityType.BAT),
-		Map.entry(EntityType.BAT, TFEntities.RAVEN),
-		Map.entry(TFEntities.HOSTILE_WOLF, EntityType.WOLF),
-		Map.entry(EntityType.WOLF, TFEntities.HOSTILE_WOLF),
-		Map.entry(TFEntities.PENGUIN, EntityType.CHICKEN),
-		Map.entry(EntityType.CHICKEN, TFEntities.PENGUIN),
-		Map.entry(TFEntities.HEDGE_SPIDER, EntityType.SPIDER),
-		Map.entry(EntityType.SPIDER, TFEntities.HEDGE_SPIDER),
-		Map.entry(TFEntities.SWARM_SPIDER, EntityType.CAVE_SPIDER),
-		Map.entry(EntityType.CAVE_SPIDER, TFEntities.SWARM_SPIDER),
-		Map.entry(TFEntities.WRAITH, EntityType.VEX),
-		Map.entry(EntityType.VEX, TFEntities.WRAITH),
-		Map.entry(TFEntities.SKELETON_DRUID, EntityType.WITCH),
-		Map.entry(EntityType.WITCH, TFEntities.SKELETON_DRUID),
-		Map.entry(TFEntities.CARMINITE_GHASTGUARD, EntityType.GHAST),
-		Map.entry(EntityType.GHAST, TFEntities.CARMINITE_GHASTGUARD),
-		Map.entry(TFEntities.TOWERWOOD_BORER, EntityType.SILVERFISH),
-		Map.entry(EntityType.SILVERFISH, TFEntities.TOWERWOOD_BORER),
-		Map.entry(TFEntities.MAZE_SLIME, EntityType.SLIME),
-		Map.entry(EntityType.SLIME, TFEntities.MAZE_SLIME)
+		Map.entry(TFEntities.MINOTAUR, EntityTypes.ZOMBIFIED_PIGLIN),
+		Map.entry(EntityTypes.ZOMBIFIED_PIGLIN, TFEntities.MINOTAUR),
+		Map.entry(TFEntities.DEER, EntityTypes.COW),
+		Map.entry(EntityTypes.COW, TFEntities.DEER),
+		Map.entry(TFEntities.BOAR, EntityTypes.PIG),
+		Map.entry(EntityTypes.PIG, TFEntities.BOAR),
+		Map.entry(TFEntities.BIGHORN_SHEEP, EntityTypes.SHEEP),
+		Map.entry(EntityTypes.SHEEP, TFEntities.BIGHORN_SHEEP),
+		Map.entry(TFEntities.DWARF_RABBIT, EntityTypes.RABBIT),
+		Map.entry(EntityTypes.RABBIT, TFEntities.DWARF_RABBIT),
+		Map.entry(TFEntities.TINY_BIRD, EntityTypes.PARROT),
+		Map.entry(EntityTypes.PARROT, TFEntities.TINY_BIRD),
+		Map.entry(TFEntities.RAVEN, EntityTypes.BAT),
+		Map.entry(EntityTypes.BAT, TFEntities.RAVEN),
+		Map.entry(TFEntities.HOSTILE_WOLF, EntityTypes.WOLF),
+		Map.entry(EntityTypes.WOLF, TFEntities.HOSTILE_WOLF),
+		Map.entry(TFEntities.PENGUIN, EntityTypes.CHICKEN),
+		Map.entry(EntityTypes.CHICKEN, TFEntities.PENGUIN),
+		Map.entry(TFEntities.HEDGE_SPIDER, EntityTypes.SPIDER),
+		Map.entry(EntityTypes.SPIDER, TFEntities.HEDGE_SPIDER),
+		Map.entry(TFEntities.SWARM_SPIDER, EntityTypes.CAVE_SPIDER),
+		Map.entry(EntityTypes.CAVE_SPIDER, TFEntities.SWARM_SPIDER),
+		Map.entry(TFEntities.WRAITH, EntityTypes.VEX),
+		Map.entry(EntityTypes.VEX, TFEntities.WRAITH),
+		Map.entry(TFEntities.SKELETON_DRUID, EntityTypes.WITCH),
+		Map.entry(EntityTypes.WITCH, TFEntities.SKELETON_DRUID),
+		Map.entry(TFEntities.CARMINITE_GHASTGUARD, EntityTypes.GHAST),
+		Map.entry(EntityTypes.GHAST, TFEntities.CARMINITE_GHASTGUARD),
+		Map.entry(TFEntities.TOWERWOOD_BORER, EntityTypes.SILVERFISH),
+		Map.entry(EntityTypes.SILVERFISH, TFEntities.TOWERWOOD_BORER),
+		Map.entry(TFEntities.MAZE_SLIME, EntityTypes.SLIME),
+		Map.entry(EntityTypes.SLIME, TFEntities.MAZE_SLIME)
 	);
 
 	public TransformPowderItem(Properties properties) {

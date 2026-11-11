@@ -14,7 +14,7 @@ accessible field net/minecraft/world/level/chunk/status/ChunkStatus parent Lnet/
 
 # CloudEvents and TFWeatherRenderer (plays rain sounds in various scenarios)
 accessible field net/minecraft/client/renderer/LevelRenderer weatherEffectRenderer Lnet/minecraft/client/renderer/WeatherEffectRenderer;
-# FIXME accessible field net/minecraft/client/renderer/WeatherEffectRenderer rainSoundTime I
+accessible field net/minecraft/client/multiplayer/ClientLevel rainSoundTime I
 
 # Codecs (for creation of a MapColor codec)
 accessible method net/minecraft/world/level/material/MapColor <init> (II)V
@@ -96,7 +96,7 @@ accessible field net/minecraft/world/level/saveddata/maps/MapItemSavedData frame
 accessible field net/minecraft/world/level/saveddata/maps/MapItemSavedData trackedDecorationCount I
 
 # TFOverlays (partially determines if the quest ram indicator should render below the crosshair, and allows the food bar to be rendered when riding hostile mounts)
-# FIXME accessible method net/minecraft/client/gui/Gui canRenderCrosshairForSpectator (Lnet/minecraft/world/phys/HitResult;)Z
+accessible method net/minecraft/client/gui/Hud canRenderCrosshairForSpectator (Lnet/minecraft/world/phys/HitResult;)Z
 
 # TFSkyRenderer (allows for rendering the sky)
 accessible field net/minecraft/client/renderer/LevelRenderer skyRenderer Lnet/minecraft/client/renderer/SkyRenderer;
@@ -275,7 +275,7 @@ extendable method net/minecraft/client/model/Model renderToBuffer (Lcom/mojang/b
 accessible method net/minecraft/world/entity/decoration/HangingEntity setDirection (Lnet/minecraft/core/Direction;)V
 
 # OverlayHandler
-# FIXME accessible method net/minecraft/client/gui/Gui extractFood (Lnet/minecraft/client/gui/GuiGraphicsExtractor;Lnet/minecraft/world/entity/player/Player;II)V
+accessible method net/minecraft/client/gui/Hud extractFood (Lnet/minecraft/client/gui/GuiGraphicsExtractor;Lnet/minecraft/world/entity/player/Player;II)V
 
 # EntityHooks
 accessible field net/minecraft/world/entity/Entity stuckSpeedMultiplier Lnet/minecraft/world/phys/Vec3;

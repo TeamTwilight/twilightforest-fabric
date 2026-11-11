@@ -236,7 +236,7 @@ public class QuestRam extends Animal implements EnforcedHomePoint {
 	}
 
 	@Override
-	public boolean isBaby() {
+	protected boolean canBeABaby() {
 		return false;
 	}
 

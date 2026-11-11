@@ -8,6 +8,7 @@ import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -24,9 +25,9 @@ import java.util.Map;
 
 public class OminousFireBlock extends BaseFireBlock {
 	public static final Map<EntityType<?>, EntityType<?>> OMINOUS_FIRE = Map.of(
-		EntityType.VILLAGER, EntityType.ZOMBIE_VILLAGER,
-		EntityType.PIGLIN, EntityType.ZOMBIFIED_PIGLIN,
-		EntityType.HORSE, EntityType.ZOMBIE_HORSE
+		EntityTypes.VILLAGER, EntityTypes.ZOMBIE_VILLAGER,
+		EntityTypes.PIGLIN, EntityTypes.ZOMBIFIED_PIGLIN,
+		EntityTypes.HORSE, EntityTypes.ZOMBIE_HORSE
 	);
 
 	public static final MapCodec<OminousFireBlock> CODEC = simpleCodec(OminousFireBlock::new);

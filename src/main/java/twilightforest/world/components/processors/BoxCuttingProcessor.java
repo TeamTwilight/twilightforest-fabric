@@ -10,8 +10,8 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import org.jspecify.annotations.Nullable;
 import twilightforest.TFCommon;
 import twilightforest.init.TFStructureProcessors;
 import twilightforest.util.BoundingBoxUtils;
@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 // Despite the name, any facts about actual Box Cutters being involved are lies
-public final class BoxCuttingProcessor extends StructureProcessor {
+public final class BoxCuttingProcessor implements StructureProcessor {
 	public static final MapCodec<BoxCuttingProcessor> CODEC = BoundingBox.CODEC.listOf().xmap(BoxCuttingProcessor::new, p -> p.cutouts).fieldOf("boxes");
 
 	public final List<BoundingBox> cutouts;
@@ -32,7 +32,7 @@ public final class BoxCuttingProcessor extends StructureProcessor {
 	}
 
 	@Override
-	public StructureTemplate.@org.jspecify.annotations.Nullable StructureBlockInfo processBlock(LevelReader level, BlockPos targetPosition, BlockPos referencePos, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo processedBlockInfo, StructurePlaceSettings settings) {
+	public StructureTemplate.@Nullable StructureBlockInfo processBlock(LevelReader level, BlockPos targetPosition, BlockPos referencePos, BlockPos templateRelativePos, StructureTemplate.StructureBlockInfo processedBlockInfo, StructurePlaceSettings settings) {
 		for (BoundingBox cutout : this.cutouts)
 			if (cutout.isInside(processedBlockInfo.pos()))
 				return null;
@@ -41,7 +41,7 @@ public final class BoxCuttingProcessor extends StructureProcessor {
 	}
 
 	@Override
-	protected StructureProcessorType<?> getType() {
+	public MapCodec<? extends StructureProcessor> codec() {
 		return TFStructureProcessors.BOX_CUTTING_PROCESSOR;
 	}
 

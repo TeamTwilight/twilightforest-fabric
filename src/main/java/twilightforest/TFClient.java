@@ -274,7 +274,7 @@ public final class TFClient implements ClientModInitializer {
 			context.client().execute(new Runnable() {
 				@Override
 				public void run() {
-					context.client().getToastManager().addToast(new MissingAdvancementToast(payload.title(), payload.icon()));
+					context.client().gui.toastManager().addToast(new MissingAdvancementToast(payload.title(), payload.icon()));
 				}
 			});
 		});
@@ -399,12 +399,12 @@ public final class TFClient implements ClientModInitializer {
 		});
 		ClientPlayNetworking.registerGlobalReceiver(TFBossBarPacket.AddTFBossBarPacket.TYPE, (payload, context) -> {
 			context.client().execute(
-				() -> context.client().gui.getBossOverlay().events.put(payload.id, new ClientTFBossBar(payload.id, payload.name, payload.progress, payload.color, payload.overlay, payload.darkenScreen, payload.playMusic, payload.createWorldFog))
+				() -> context.client().gui.hud.getBossOverlay().events.put(payload.id, new ClientTFBossBar(payload.id, payload.name, payload.progress, payload.color, payload.overlay, payload.darkenScreen, payload.playMusic, payload.createWorldFog))
 			);
 		});
 		ClientPlayNetworking.registerGlobalReceiver(TFBossBarPacket.UpdateTFBossBarStylePacket.TYPE, (payload, context) -> {
 			context.client().execute(() -> {
-				if (context.client().gui.getBossOverlay().events.get(payload.id) instanceof ClientTFBossBar bossEvent) {
+				if (context.client().gui.hud.getBossOverlay().events.get(payload.id) instanceof ClientTFBossBar bossEvent) {
 					bossEvent.setBarColor(payload.color);
 					bossEvent.setOverlay(payload.overlay);
 					if (!payload.allowLerp) bossEvent.setSetTime(bossEvent.getSetTime() - 200L); // Boss bars lerp over 100 milliseconds, we sometimes don't want that
@@ -890,7 +890,7 @@ public final class TFClient implements ClientModInitializer {
 	}
 
 	private static void registerPictureInPictureRenderers() {
-		PictureInPictureRendererRegistry.register(ctx -> new GuiBlockRenderer(ctx.bufferSource()));
-		PictureInPictureRendererRegistry.register(ctx -> new GuiMapRenderer(ctx.bufferSource()));
+		PictureInPictureRendererRegistry.register(_ -> new GuiBlockRenderer());
+		PictureInPictureRendererRegistry.register(_ -> new GuiMapRenderer());
 	}
 }

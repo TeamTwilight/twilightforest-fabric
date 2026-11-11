@@ -18,8 +18,8 @@ public class QuestingRamIndicatorOverlay {
 	private static final Identifier QUESTING_RAM_X_SPRITE = TFCommon.prefix("questing_ram_x");
 
 	public static void render(Minecraft minecraft, GuiGraphicsExtractor graphics, Gui gui, Player player) {
-		if (player != null && !minecraft.options.hideGui && TFConfig.showQuestRamCrosshairIndicator) {
-			if (minecraft.options.getCameraType().isFirstPerson() && (minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || gui.canRenderCrosshairForSpectator(minecraft.hitResult)) && minecraft.crosshairPickEntity instanceof QuestRam ram) {
+		if (player != null && !minecraft.gui.hud.isHidden() && TFConfig.showQuestRamCrosshairIndicator) {
+			if (minecraft.options.getCameraType().isFirstPerson() && (minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || gui.hud.canRenderCrosshairForSpectator(minecraft.hitResult)) && minecraft.crosshairPickEntity instanceof QuestRam ram) {
 				ItemStack stack = player.getInventory().getItem(player.getInventory().getSelectedSlot());
 				if (!stack.isEmpty()) {
 					for (var questEntry : QuestingRamCurrentContext.INSTANCE.getContext().questItems().entrySet()) {

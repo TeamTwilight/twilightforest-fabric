@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.EquipmentClientInfo;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.equipment.Equippable;
@@ -96,7 +96,7 @@ public final class TravellersArmorRenderer extends TFArmorRenderer {
 		}
 
 		EquipmentClientInfo.LayerType layerType = humanoidRenderState.isBaby
-			&& humanoidRenderState.entityType != EntityType.ARMOR_STAND
+			&& humanoidRenderState.entityType != EntityTypes.ARMOR_STAND
 			? EquipmentClientInfo.LayerType.HUMANOID_BABY
 			: slot == EquipmentSlot.LEGS
 			? EquipmentClientInfo.LayerType.HUMANOID_LEGGINGS

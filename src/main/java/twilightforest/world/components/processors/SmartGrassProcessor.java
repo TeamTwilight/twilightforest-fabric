@@ -9,14 +9,13 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructureProcessors;
 import twilightforest.util.RotationUtil;
 
-public class SmartGrassProcessor extends StructureProcessor {
+public class SmartGrassProcessor implements StructureProcessor {
 	public static final SmartGrassProcessor INSTANCE = new SmartGrassProcessor();
 	public static final MapCodec<SmartGrassProcessor> CODEC = MapCodec.unit(() -> INSTANCE);
 
@@ -24,8 +23,8 @@ public class SmartGrassProcessor extends StructureProcessor {
 	}
 
 	@Override
-	public StructureTemplate.@Nullable StructureBlockInfo processBlock(LevelReader level, BlockPos targetPosition, BlockPos referencePos, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo processedBlockInfo, StructurePlaceSettings settings) {
-		if (originalBlockInfo.state().getBlock() != Blocks.GRASS_BLOCK)
+	public StructureTemplate.@Nullable StructureBlockInfo processBlock(LevelReader level, BlockPos targetPosition, BlockPos referencePos, BlockPos templateRelativePos, StructureTemplate.StructureBlockInfo processedBlockInfo, StructurePlaceSettings settings) {
+		if (level.getBlockState(templateRelativePos).getBlock() != Blocks.GRASS_BLOCK)
 			return processedBlockInfo;
 
 		if (level.getBlockState(processedBlockInfo.pos()).is(BlockTags.SUBSTRATE_OVERWORLD) || !level.isEmptyBlock(processedBlockInfo.pos().above()))
@@ -46,7 +45,7 @@ public class SmartGrassProcessor extends StructureProcessor {
 	}
 
 	@Override
-	protected StructureProcessorType<?> getType() {
+	public MapCodec<? extends StructureProcessor> codec() {
 		return TFStructureProcessors.SMART_GRASS;
 	}
 }

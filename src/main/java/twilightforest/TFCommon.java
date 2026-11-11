@@ -43,6 +43,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.BlockEntityTypes;
 import net.minecraft.world.level.levelgen.Heightmap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -247,22 +248,22 @@ public final class TFCommon implements ModInitializer {
 
 	private static void registerOminousCandleConversions() {
 		OminousCandleBlock.CANDLE_MAP.put(Blocks.CANDLE, TFBlocks.OMINOUS_CANDLE);
-		OminousCandleBlock.CANDLE_MAP.put(Blocks.WHITE_CANDLE, TFBlocks.OMINOUS_WHITE_CANDLE);
-		OminousCandleBlock.CANDLE_MAP.put(Blocks.ORANGE_CANDLE, TFBlocks.OMINOUS_ORANGE_CANDLE);
-		OminousCandleBlock.CANDLE_MAP.put(Blocks.MAGENTA_CANDLE, TFBlocks.OMINOUS_MAGENTA_CANDLE);
-		OminousCandleBlock.CANDLE_MAP.put(Blocks.LIGHT_BLUE_CANDLE, TFBlocks.OMINOUS_LIGHT_BLUE_CANDLE);
-		OminousCandleBlock.CANDLE_MAP.put(Blocks.YELLOW_CANDLE, TFBlocks.OMINOUS_YELLOW_CANDLE);
-		OminousCandleBlock.CANDLE_MAP.put(Blocks.LIME_CANDLE, TFBlocks.OMINOUS_LIME_CANDLE);
-		OminousCandleBlock.CANDLE_MAP.put(Blocks.PINK_CANDLE, TFBlocks.OMINOUS_PINK_CANDLE);
-		OminousCandleBlock.CANDLE_MAP.put(Blocks.GRAY_CANDLE, TFBlocks.OMINOUS_GRAY_CANDLE);
-		OminousCandleBlock.CANDLE_MAP.put(Blocks.LIGHT_GRAY_CANDLE, TFBlocks.OMINOUS_LIGHT_GRAY_CANDLE);
-		OminousCandleBlock.CANDLE_MAP.put(Blocks.CYAN_CANDLE, TFBlocks.OMINOUS_CYAN_CANDLE);
-		OminousCandleBlock.CANDLE_MAP.put(Blocks.PURPLE_CANDLE, TFBlocks.OMINOUS_PURPLE_CANDLE);
-		OminousCandleBlock.CANDLE_MAP.put(Blocks.BLUE_CANDLE, TFBlocks.OMINOUS_BLUE_CANDLE);
-		OminousCandleBlock.CANDLE_MAP.put(Blocks.BROWN_CANDLE, TFBlocks.OMINOUS_BROWN_CANDLE);
-		OminousCandleBlock.CANDLE_MAP.put(Blocks.GREEN_CANDLE, TFBlocks.OMINOUS_GREEN_CANDLE);
-		OminousCandleBlock.CANDLE_MAP.put(Blocks.RED_CANDLE, TFBlocks.OMINOUS_RED_CANDLE);
-		OminousCandleBlock.CANDLE_MAP.put(Blocks.BLACK_CANDLE, TFBlocks.OMINOUS_BLACK_CANDLE);
+		OminousCandleBlock.CANDLE_MAP.put(Blocks.DYED_CANDLE.white(), TFBlocks.OMINOUS_WHITE_CANDLE);
+		OminousCandleBlock.CANDLE_MAP.put(Blocks.DYED_CANDLE.orange(), TFBlocks.OMINOUS_ORANGE_CANDLE);
+		OminousCandleBlock.CANDLE_MAP.put(Blocks.DYED_CANDLE.magenta(), TFBlocks.OMINOUS_MAGENTA_CANDLE);
+		OminousCandleBlock.CANDLE_MAP.put(Blocks.DYED_CANDLE.lightBlue(), TFBlocks.OMINOUS_LIGHT_BLUE_CANDLE);
+		OminousCandleBlock.CANDLE_MAP.put(Blocks.DYED_CANDLE.yellow(), TFBlocks.OMINOUS_YELLOW_CANDLE);
+		OminousCandleBlock.CANDLE_MAP.put(Blocks.DYED_CANDLE.lime(), TFBlocks.OMINOUS_LIME_CANDLE);
+		OminousCandleBlock.CANDLE_MAP.put(Blocks.DYED_CANDLE.pink(), TFBlocks.OMINOUS_PINK_CANDLE);
+		OminousCandleBlock.CANDLE_MAP.put(Blocks.DYED_CANDLE.gray(), TFBlocks.OMINOUS_GRAY_CANDLE);
+		OminousCandleBlock.CANDLE_MAP.put(Blocks.DYED_CANDLE.lightGray(), TFBlocks.OMINOUS_LIGHT_GRAY_CANDLE);
+		OminousCandleBlock.CANDLE_MAP.put(Blocks.DYED_CANDLE.cyan(), TFBlocks.OMINOUS_CYAN_CANDLE);
+		OminousCandleBlock.CANDLE_MAP.put(Blocks.DYED_CANDLE.purple(), TFBlocks.OMINOUS_PURPLE_CANDLE);
+		OminousCandleBlock.CANDLE_MAP.put(Blocks.DYED_CANDLE.blue(), TFBlocks.OMINOUS_BLUE_CANDLE);
+		OminousCandleBlock.CANDLE_MAP.put(Blocks.DYED_CANDLE.brown(), TFBlocks.OMINOUS_BROWN_CANDLE);
+		OminousCandleBlock.CANDLE_MAP.put(Blocks.DYED_CANDLE.green(), TFBlocks.OMINOUS_GREEN_CANDLE);
+		OminousCandleBlock.CANDLE_MAP.put(Blocks.DYED_CANDLE.red(), TFBlocks.OMINOUS_RED_CANDLE);
+		OminousCandleBlock.CANDLE_MAP.put(Blocks.DYED_CANDLE.black(), TFBlocks.OMINOUS_BLACK_CANDLE);
 	}
 
 	private static void registerJarLids() {
@@ -683,22 +684,22 @@ public final class TFCommon implements ModInitializer {
 		DispenserBlock.registerBehavior(TFItems.TRANSFORMATION_POWDER.asItem(), new TransformationDispenseBehavior());
 		DispenserBlock.registerProjectileBehavior(TFItems.ICE_BOMB);
 		DispenserBlock.registerBehavior(Items.CANDLE, new CandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.BLACK_CANDLE, new CandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.GRAY_CANDLE, new CandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.LIGHT_GRAY_CANDLE, new CandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.WHITE_CANDLE, new CandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.RED_CANDLE, new CandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.ORANGE_CANDLE, new CandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.YELLOW_CANDLE, new CandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.GREEN_CANDLE, new CandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.LIME_CANDLE, new CandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.BLUE_CANDLE, new CandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.CYAN_CANDLE, new CandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.LIGHT_BLUE_CANDLE, new CandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.PURPLE_CANDLE, new CandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.MAGENTA_CANDLE, new CandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.PINK_CANDLE, new CandleDispenseBehavior());
-		DispenserBlock.registerBehavior(Items.BROWN_CANDLE, new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.DYED_CANDLE.black(), new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.DYED_CANDLE.gray(), new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.DYED_CANDLE.lightGray(), new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.DYED_CANDLE.white(), new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.DYED_CANDLE.red(), new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.DYED_CANDLE.orange(), new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.DYED_CANDLE.yellow(), new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.DYED_CANDLE.green(), new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.DYED_CANDLE.lime(), new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.DYED_CANDLE.blue(), new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.DYED_CANDLE.cyan(), new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.DYED_CANDLE.lightBlue(), new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.DYED_CANDLE.purple(), new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.DYED_CANDLE.magenta(), new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.DYED_CANDLE.pink(), new CandleDispenseBehavior());
+		DispenserBlock.registerBehavior(Items.DYED_CANDLE.brown(), new CandleDispenseBehavior());
 	}
 
 	private static void registerCommands() {
@@ -830,38 +831,38 @@ public final class TFCommon implements ModInitializer {
 	}
 
 	private static void registerValidBlockEntityTypes() {
-		BlockEntityType.HANGING_SIGN.addValidBlock(TFBlocks.TWILIGHT_OAK_HANGING_SIGN);
-		BlockEntityType.HANGING_SIGN.addValidBlock(TFBlocks.TWILIGHT_OAK_WALL_HANGING_SIGN);
-		BlockEntityType.HANGING_SIGN.addValidBlock(TFBlocks.CANOPY_HANGING_SIGN);
-		BlockEntityType.HANGING_SIGN.addValidBlock(TFBlocks.CANOPY_WALL_HANGING_SIGN);
-		BlockEntityType.HANGING_SIGN.addValidBlock(TFBlocks.MANGROVE_HANGING_SIGN);
-		BlockEntityType.HANGING_SIGN.addValidBlock(TFBlocks.MANGROVE_WALL_HANGING_SIGN);
-		BlockEntityType.HANGING_SIGN.addValidBlock(TFBlocks.DARK_HANGING_SIGN);
-		BlockEntityType.HANGING_SIGN.addValidBlock(TFBlocks.DARK_WALL_HANGING_SIGN);
-		BlockEntityType.HANGING_SIGN.addValidBlock(TFBlocks.TIME_HANGING_SIGN);
-		BlockEntityType.HANGING_SIGN.addValidBlock(TFBlocks.TIME_WALL_HANGING_SIGN);
-		BlockEntityType.HANGING_SIGN.addValidBlock(TFBlocks.TRANSFORMATION_HANGING_SIGN);
-		BlockEntityType.HANGING_SIGN.addValidBlock(TFBlocks.TRANSFORMATION_WALL_HANGING_SIGN);
-		BlockEntityType.HANGING_SIGN.addValidBlock(TFBlocks.MINING_HANGING_SIGN);
-		BlockEntityType.HANGING_SIGN.addValidBlock(TFBlocks.MINING_WALL_HANGING_SIGN);
-		BlockEntityType.HANGING_SIGN.addValidBlock(TFBlocks.SORTING_HANGING_SIGN);
-		BlockEntityType.HANGING_SIGN.addValidBlock(TFBlocks.SORTING_WALL_HANGING_SIGN);
-		BlockEntityType.SIGN.addValidBlock(TFBlocks.TWILIGHT_OAK_SIGN);
-		BlockEntityType.SIGN.addValidBlock(TFBlocks.TWILIGHT_WALL_SIGN);
-		BlockEntityType.SIGN.addValidBlock(TFBlocks.CANOPY_SIGN);
-		BlockEntityType.SIGN.addValidBlock(TFBlocks.CANOPY_WALL_SIGN);
-		BlockEntityType.SIGN.addValidBlock(TFBlocks.MANGROVE_SIGN);
-		BlockEntityType.SIGN.addValidBlock(TFBlocks.MANGROVE_WALL_SIGN);
-		BlockEntityType.SIGN.addValidBlock(TFBlocks.DARK_SIGN);
-		BlockEntityType.SIGN.addValidBlock(TFBlocks.DARK_WALL_SIGN);
-		BlockEntityType.SIGN.addValidBlock(TFBlocks.TIME_SIGN);
-		BlockEntityType.SIGN.addValidBlock(TFBlocks.TIME_WALL_SIGN);
-		BlockEntityType.SIGN.addValidBlock(TFBlocks.TRANSFORMATION_SIGN);
-		BlockEntityType.SIGN.addValidBlock(TFBlocks.TRANSFORMATION_WALL_SIGN);
-		BlockEntityType.SIGN.addValidBlock(TFBlocks.MINING_SIGN);
-		BlockEntityType.SIGN.addValidBlock(TFBlocks.MINING_WALL_SIGN);
-		BlockEntityType.SIGN.addValidBlock(TFBlocks.SORTING_SIGN);
-		BlockEntityType.SIGN.addValidBlock(TFBlocks.SORTING_WALL_SIGN);
+		BlockEntityTypes.HANGING_SIGN.addValidBlock(TFBlocks.TWILIGHT_OAK_HANGING_SIGN);
+		BlockEntityTypes.HANGING_SIGN.addValidBlock(TFBlocks.TWILIGHT_OAK_WALL_HANGING_SIGN);
+		BlockEntityTypes.HANGING_SIGN.addValidBlock(TFBlocks.CANOPY_HANGING_SIGN);
+		BlockEntityTypes.HANGING_SIGN.addValidBlock(TFBlocks.CANOPY_WALL_HANGING_SIGN);
+		BlockEntityTypes.HANGING_SIGN.addValidBlock(TFBlocks.MANGROVE_HANGING_SIGN);
+		BlockEntityTypes.HANGING_SIGN.addValidBlock(TFBlocks.MANGROVE_WALL_HANGING_SIGN);
+		BlockEntityTypes.HANGING_SIGN.addValidBlock(TFBlocks.DARK_HANGING_SIGN);
+		BlockEntityTypes.HANGING_SIGN.addValidBlock(TFBlocks.DARK_WALL_HANGING_SIGN);
+		BlockEntityTypes.HANGING_SIGN.addValidBlock(TFBlocks.TIME_HANGING_SIGN);
+		BlockEntityTypes.HANGING_SIGN.addValidBlock(TFBlocks.TIME_WALL_HANGING_SIGN);
+		BlockEntityTypes.HANGING_SIGN.addValidBlock(TFBlocks.TRANSFORMATION_HANGING_SIGN);
+		BlockEntityTypes.HANGING_SIGN.addValidBlock(TFBlocks.TRANSFORMATION_WALL_HANGING_SIGN);
+		BlockEntityTypes.HANGING_SIGN.addValidBlock(TFBlocks.MINING_HANGING_SIGN);
+		BlockEntityTypes.HANGING_SIGN.addValidBlock(TFBlocks.MINING_WALL_HANGING_SIGN);
+		BlockEntityTypes.HANGING_SIGN.addValidBlock(TFBlocks.SORTING_HANGING_SIGN);
+		BlockEntityTypes.HANGING_SIGN.addValidBlock(TFBlocks.SORTING_WALL_HANGING_SIGN);
+		BlockEntityTypes.SIGN.addValidBlock(TFBlocks.TWILIGHT_OAK_SIGN);
+		BlockEntityTypes.SIGN.addValidBlock(TFBlocks.TWILIGHT_WALL_SIGN);
+		BlockEntityTypes.SIGN.addValidBlock(TFBlocks.CANOPY_SIGN);
+		BlockEntityTypes.SIGN.addValidBlock(TFBlocks.CANOPY_WALL_SIGN);
+		BlockEntityTypes.SIGN.addValidBlock(TFBlocks.MANGROVE_SIGN);
+		BlockEntityTypes.SIGN.addValidBlock(TFBlocks.MANGROVE_WALL_SIGN);
+		BlockEntityTypes.SIGN.addValidBlock(TFBlocks.DARK_SIGN);
+		BlockEntityTypes.SIGN.addValidBlock(TFBlocks.DARK_WALL_SIGN);
+		BlockEntityTypes.SIGN.addValidBlock(TFBlocks.TIME_SIGN);
+		BlockEntityTypes.SIGN.addValidBlock(TFBlocks.TIME_WALL_SIGN);
+		BlockEntityTypes.SIGN.addValidBlock(TFBlocks.TRANSFORMATION_SIGN);
+		BlockEntityTypes.SIGN.addValidBlock(TFBlocks.TRANSFORMATION_WALL_SIGN);
+		BlockEntityTypes.SIGN.addValidBlock(TFBlocks.MINING_SIGN);
+		BlockEntityTypes.SIGN.addValidBlock(TFBlocks.MINING_WALL_SIGN);
+		BlockEntityTypes.SIGN.addValidBlock(TFBlocks.SORTING_SIGN);
+		BlockEntityTypes.SIGN.addValidBlock(TFBlocks.SORTING_WALL_SIGN);
 	}
 
 	private static void registerReloadListeners() {
