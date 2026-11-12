@@ -90,6 +90,9 @@ c1c4b1bbf5dca762f8c2dc1b6021bf08b541ac8f data/minecraft/tags/item/saplings.json
 c962432d898202b279bf401da90ab10b601de742 data/minecraft/tags/item/shovels.json
 0074c60e923669a4539ccbc5bd0c293f255ff5a5 data/minecraft/tags/item/signs.json
 d0c2ba230b8d0a14f4466fd4671d81843854a19a data/minecraft/tags/item/skulls.json
+bb39f860aaf80d261eee2fc6cf18ee75a411d1c1 data/minecraft/tags/item/slabs.json
+4304b5a72638ce0626ae45be178a5669cea32d38 data/minecraft/tags/item/small_flowers.json
+60d2c0021214d67e32e5edc0ee008326caa52bf7 data/minecraft/tags/item/stairs.json
 931bc115353e6c267d36d480a5891285fde13487 data/minecraft/tags/item/swords.json
 33e52f2e89c4cebba996ae0eae4b4974291b9d81 data/minecraft/tags/item/trim_materials.json
 e26ce2a530f9cac301bc65db093329677025b2e5 data/minecraft/tags/item/trimmable_armor.json

@@ -7,6 +7,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.tags.TagAppender;
 import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.tags.BlockItemTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -33,24 +34,6 @@ public class BlockTagGenerator extends TagsProvider<Block> {
 				return BlockTagGenerator.this.tag(blockTag);
 			}
 		}.run();
-
-		this.tag(BlockTags.SLABS).twilightforest$add(TFBlocks.AURORA_SLAB);
-
-		this.tag(BlockTags.STAIRS).twilightforest$add(
-			TFBlocks.CASTLE_BRICK_STAIRS,
-			TFBlocks.WORN_CASTLE_BRICK_STAIRS,
-			TFBlocks.CRACKED_CASTLE_BRICK_STAIRS,
-			TFBlocks.MOSSY_CASTLE_BRICK_STAIRS,
-			TFBlocks.ENCASED_CASTLE_BRICK_STAIRS,
-			TFBlocks.BOLD_CASTLE_BRICK_STAIRS,
-			TFBlocks.NAGASTONE_STAIRS_LEFT,
-			TFBlocks.NAGASTONE_STAIRS_RIGHT,
-			TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT,
-			TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT,
-			TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT,
-			TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT);
-
-		this.tag(BlockTags.SMALL_FLOWERS).twilightforest$add(TFBlocks.THORN_ROSE);
 
 		this.tag(BlockTags.FLOWER_POTS).twilightforest$add(
 			TFBlocks.POTTED_TWILIGHT_OAK_SAPLING,
@@ -308,27 +291,8 @@ public class BlockTagGenerator extends TagsProvider<Block> {
 				TFBlocks.COPPER_OREBERRY_BUSH,
 				TFBlocks.IRON_OREBERRY_BUSH,
 				TFBlocks.GOLD_OREBERRY_BUSH,
-				TFBlocks.ESSENCE_OREBERRY_BUSH,
-				Blocks.ACACIA_SAPLING,
-				Blocks.BIRCH_SAPLING,
-				Blocks.CHERRY_SAPLING,
-				Blocks.DARK_OAK_SAPLING,
-				Blocks.JUNGLE_SAPLING,
-				Blocks.OAK_SAPLING,
-				Blocks.PALE_OAK_SAPLING,
-				Blocks.SPRUCE_SAPLING,
-				TFBlocks.TWILIGHT_OAK_SAPLING,
-				TFBlocks.CANOPY_SAPLING,
-				TFBlocks.MANGROVE_SAPLING,
-				TFBlocks.DARKWOOD_SAPLING,
-				TFBlocks.TIME_SAPLING,
-				TFBlocks.TRANSFORMATION_SAPLING,
-				TFBlocks.MINING_SAPLING,
-				TFBlocks.SORTING_SAPLING,
-				TFBlocks.HOLLOW_OAK_SAPLING,
-				TFBlocks.RAINBOW_OAK_SAPLING
-			)
-			.forceAddTag(BlockTags.FLOWERS).forceAddTag(BlockTags.LEAVES).forceAddTag(BlockTags.CROPS);
+				TFBlocks.ESSENCE_OREBERRY_BUSH
+			).forceAddTag(BlockTags.FLOWERS).forceAddTag(BlockTags.LEAVES).forceAddTag(BlockItemTags.SAPLINGS.block()).forceAddTag(BlockTags.CROPS);
 
 		this.tag(TFBlockTags.GENERATED_PORTAL_DECO)
 			.twilightforest$add(Blocks.BROWN_MUSHROOM, Blocks.RED_MUSHROOM,
@@ -501,8 +465,8 @@ public class BlockTagGenerator extends TagsProvider<Block> {
 			.forceAddTag(BlockTags.STONE_ORE_REPLACEABLES)
 			.addTag(TFBlockTags.ROOT_GROUND);
 
-		this.tag(TFBlockTags.ORE_MAGNET_IGNORE).forceAddTag(ConventionalBlockTags.COAL_ORES);
-		this.tag(TFBlockTags.MINING_CORE_EXCLUDED).forceAddTag(ConventionalBlockTags.COAL_ORES);
+		this.tag(TFBlockTags.ORE_MAGNET_IGNORE).forceAddTag(BlockItemTags.COAL_ORES.block());
+		this.tag(TFBlockTags.MINING_CORE_EXCLUDED).forceAddTag(BlockItemTags.COAL_ORES.block());
 		this.tag(TFBlockTags.ROOT_GROUND).twilightforest$add(TFBlocks.ROOT_BLOCK);
 		this.tag(TFBlockTags.ROOT_ORES).twilightforest$add(TFBlocks.LIVEROOT_BLOCK);
 		this.tag(TFBlockTags.TF_CHESTS).twilightforest$add(

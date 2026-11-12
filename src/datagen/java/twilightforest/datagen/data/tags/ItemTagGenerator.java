@@ -35,29 +35,6 @@ public class ItemTagGenerator extends TagsProvider<Item> {
 			}
 		}.run();
 
-		this.tag(ItemTags.SAPLINGS).twilightforest$add(
-			TFBlocks.TWILIGHT_OAK_SAPLING.asItem(),
-			TFBlocks.CANOPY_SAPLING.asItem(),
-			TFBlocks.MANGROVE_SAPLING.asItem(),
-			TFBlocks.DARKWOOD_SAPLING.asItem(),
-			TFBlocks.TIME_SAPLING.asItem(),
-			TFBlocks.TRANSFORMATION_SAPLING.asItem(),
-			TFBlocks.MINING_SAPLING.asItem(),
-			TFBlocks.SORTING_SAPLING.asItem(),
-			TFBlocks.HOLLOW_OAK_SAPLING.asItem(),
-			TFBlocks.RAINBOW_OAK_SAPLING.asItem()
-		);
-
-		this.tag(ItemTags.LOGS_THAT_BURN)
-			.addTag(TFItemTags.TWILIGHT_OAK_LOGS)
-			.addTag(TFItemTags.CANOPY_LOGS)
-			.addTag(TFItemTags.MANGROVE_LOGS)
-			.addTag(TFItemTags.DARKWOOD_LOGS)
-			.addTag(TFItemTags.TIME_LOGS)
-			.addTag(TFItemTags.TRANSFORMATION_LOGS)
-			.addTag(TFItemTags.MINING_LOGS)
-			.addTag(TFItemTags.SORTING_LOGS);
-
 		this.tag(ItemTags.BOATS).twilightforest$add(
 			TFItems.TWILIGHT_OAK_BOAT, TFItems.CANOPY_BOAT,
 			TFItems.MANGROVE_BOAT, TFItems.DARK_BOAT,
