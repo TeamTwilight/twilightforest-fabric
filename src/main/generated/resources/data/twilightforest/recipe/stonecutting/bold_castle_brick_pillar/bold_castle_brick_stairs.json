@@ -1,7 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": "twilightforest:bold_castle_brick_pillar",
-  "result": {
-    "id": "twilightforest:bold_castle_brick_stairs"
-  }
-}

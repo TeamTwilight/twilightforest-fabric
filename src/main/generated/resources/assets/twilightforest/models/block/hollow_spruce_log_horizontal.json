@@ -1,8 +1,0 @@
-{
-  "parent": "twilightforest:block/horizontal_hollow_log",
-  "textures": {
-    "end": "minecraft:block/spruce_log_top",
-    "inside": "minecraft:block/stripped_spruce_log",
-    "side": "minecraft:block/spruce_log"
-  }
-}

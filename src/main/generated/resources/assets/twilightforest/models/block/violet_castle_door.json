@@ -1,7 +1,0 @@
-{
-  "parent": "twilightforest:block/util/two_layer_block_tinted_15",
-  "textures": {
-    "all": "twilightforest:block/castle_door",
-    "all2": "twilightforest:block/castle_door_rune_corners"
-  }
-}

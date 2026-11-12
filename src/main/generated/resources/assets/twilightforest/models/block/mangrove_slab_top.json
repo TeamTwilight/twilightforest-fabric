@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab_top",
-  "textures": {
-    "bottom": "twilightforest:block/mangrove_planks",
-    "side": "twilightforest:block/mangrove_planks",
-    "top": "twilightforest:block/mangrove_planks"
-  }
-}

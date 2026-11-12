@@ -14,13 +14,14 @@ import twilightforest.tags.TFItemTags;
 
 public abstract class BlockItemTagGenerator {
 
+	@SuppressWarnings("unchecked")
 	protected void run() {
 
 		//------------
 		//VANILLA TAGS
 		//------------
 
-		this.tag(BlockTags.PLANKS, ItemTags.PLANKS).add(
+		this.tag(BlockTags.PLANKS, ItemTags.PLANKS).twilightforest$add(
 				TFBlocks.TWILIGHT_OAK_PLANKS,
 				TFBlocks.CANOPY_PLANKS,
 				TFBlocks.MANGROVE_PLANKS,
@@ -31,7 +32,7 @@ public abstract class BlockItemTagGenerator {
 				TFBlocks.SORTING_PLANKS)
 			.addTag(TFBlockTags.TOWERWOOD);
 
-		this.tag(BlockTags.WOODEN_BUTTONS, ItemTags.WOODEN_BUTTONS).add(
+		this.tag(BlockTags.WOODEN_BUTTONS, ItemTags.WOODEN_BUTTONS).twilightforest$add(
 			TFBlocks.TWILIGHT_OAK_BUTTON,
 			TFBlocks.CANOPY_BUTTON,
 			TFBlocks.MANGROVE_BUTTON,
@@ -41,8 +42,8 @@ public abstract class BlockItemTagGenerator {
 			TFBlocks.MINING_BUTTON,
 			TFBlocks.SORTING_BUTTON);
 
-		this.tag(BlockTags.WOOL_CARPETS, ItemTags.WOOL_CARPETS).add(TFBlocks.CORONATION_CARPET);
-		this.tag(BlockTags.WOODEN_DOORS, ItemTags.WOODEN_DOORS).add(
+		this.tag(BlockTags.WOOL_CARPETS, ItemTags.WOOL_CARPETS).twilightforest$add(TFBlocks.CORONATION_CARPET);
+		this.tag(BlockTags.WOODEN_DOORS, ItemTags.WOODEN_DOORS).twilightforest$add(
 			TFBlocks.TWILIGHT_OAK_DOOR,
 			TFBlocks.CANOPY_DOOR,
 			TFBlocks.MANGROVE_DOOR,
@@ -52,7 +53,7 @@ public abstract class BlockItemTagGenerator {
 			TFBlocks.MINING_DOOR,
 			TFBlocks.SORTING_DOOR);
 
-		this.tag(BlockTags.WOODEN_STAIRS, ItemTags.WOODEN_STAIRS).add(
+		this.tag(BlockTags.WOODEN_STAIRS, ItemTags.WOODEN_STAIRS).twilightforest$add(
 			TFBlocks.TWILIGHT_OAK_STAIRS,
 			TFBlocks.CANOPY_STAIRS,
 			TFBlocks.MANGROVE_STAIRS,
@@ -62,7 +63,7 @@ public abstract class BlockItemTagGenerator {
 			TFBlocks.MINING_STAIRS,
 			TFBlocks.SORTING_STAIRS);
 
-		this.tag(BlockTags.WOODEN_SLABS, ItemTags.WOODEN_SLABS).add(
+		this.tag(BlockTags.WOODEN_SLABS, ItemTags.WOODEN_SLABS).twilightforest$add(
 			TFBlocks.TWILIGHT_OAK_SLAB,
 			TFBlocks.CANOPY_SLAB,
 			TFBlocks.MANGROVE_SLAB,
@@ -72,7 +73,7 @@ public abstract class BlockItemTagGenerator {
 			TFBlocks.MINING_SLAB,
 			TFBlocks.SORTING_SLAB);
 
-		this.tag(BlockTags.WOODEN_FENCES, ItemTags.WOODEN_FENCES).add(
+		this.tag(BlockTags.WOODEN_FENCES, ItemTags.WOODEN_FENCES).twilightforest$add(
 			TFBlocks.TWILIGHT_OAK_FENCE,
 			TFBlocks.CANOPY_FENCE,
 			TFBlocks.MANGROVE_FENCE,
@@ -82,7 +83,7 @@ public abstract class BlockItemTagGenerator {
 			TFBlocks.MINING_FENCE,
 			TFBlocks.SORTING_FENCE);
 
-		this.tag(BlockTags.FENCE_GATES, ItemTags.FENCE_GATES).add(
+		this.tag(BlockTags.FENCE_GATES, ItemTags.FENCE_GATES).twilightforest$add(
 			TFBlocks.TWILIGHT_OAK_GATE,
 			TFBlocks.CANOPY_GATE,
 			TFBlocks.MANGROVE_GATE,
@@ -92,7 +93,7 @@ public abstract class BlockItemTagGenerator {
 			TFBlocks.MINING_GATE,
 			TFBlocks.SORTING_GATE);
 
-		this.tag(BlockTags.WOODEN_PRESSURE_PLATES, ItemTags.WOODEN_PRESSURE_PLATES).add(
+		this.tag(BlockTags.WOODEN_PRESSURE_PLATES, ItemTags.WOODEN_PRESSURE_PLATES).twilightforest$add(
 			TFBlocks.TWILIGHT_OAK_PLATE,
 			TFBlocks.CANOPY_PLATE,
 			TFBlocks.MANGROVE_PLATE,
@@ -102,46 +103,9 @@ public abstract class BlockItemTagGenerator {
 			TFBlocks.MINING_PLATE,
 			TFBlocks.SORTING_PLATE);
 
-		this.tag(BlockTags.SAPLINGS, ItemTags.SAPLINGS).add(
-			TFBlocks.TWILIGHT_OAK_SAPLING,
-			TFBlocks.CANOPY_SAPLING,
-			TFBlocks.MANGROVE_SAPLING,
-			TFBlocks.DARKWOOD_SAPLING,
-			TFBlocks.TIME_SAPLING,
-			TFBlocks.TRANSFORMATION_SAPLING,
-			TFBlocks.MINING_SAPLING,
-			TFBlocks.SORTING_SAPLING,
-			TFBlocks.HOLLOW_OAK_SAPLING,
-			TFBlocks.RAINBOW_OAK_SAPLING);
+		this.tag(BlockTags.WALLS, ItemTags.WALLS).twilightforest$add(TFBlocks.WROUGHT_IRON_FENCE);
 
-
-		this.tag(BlockTags.LOGS_THAT_BURN, ItemTags.LOGS_THAT_BURN)
-			.addTag(TFBlockTags.TWILIGHT_OAK_LOGS)
-			.addTag(TFBlockTags.CANOPY_LOGS)
-			.addTag(TFBlockTags.MANGROVE_LOGS)
-			.addTag(TFBlockTags.DARKWOOD_LOGS)
-			.addTag(TFBlockTags.TIME_LOGS)
-			.addTag(TFBlockTags.TRANSFORMATION_LOGS)
-			.addTag(TFBlockTags.MINING_LOGS)
-			.addTag(TFBlockTags.SORTING_LOGS);
-
-		this.tag(BlockTags.SLABS, ItemTags.SLABS).add(TFBlocks.AURORA_SLAB);
-		this.tag(BlockTags.WALLS, ItemTags.WALLS).add(TFBlocks.WROUGHT_IRON_FENCE);
-		this.tag(BlockTags.STAIRS, ItemTags.STAIRS).add(
-			TFBlocks.CASTLE_BRICK_STAIRS,
-			TFBlocks.WORN_CASTLE_BRICK_STAIRS,
-			TFBlocks.CRACKED_CASTLE_BRICK_STAIRS,
-			TFBlocks.MOSSY_CASTLE_BRICK_STAIRS,
-			TFBlocks.ENCASED_CASTLE_BRICK_STAIRS,
-			TFBlocks.BOLD_CASTLE_BRICK_STAIRS,
-			TFBlocks.NAGASTONE_STAIRS_LEFT,
-			TFBlocks.NAGASTONE_STAIRS_RIGHT,
-			TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT,
-			TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT,
-			TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT,
-			TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT);
-
-		this.tag(BlockTags.LEAVES, ItemTags.LEAVES).add(
+		this.tag(BlockTags.LEAVES, ItemTags.LEAVES).twilightforest$add(
 			TFBlocks.RAINBOW_OAK_LEAVES,
 			TFBlocks.TWILIGHT_OAK_LEAVES,
 			TFBlocks.CANOPY_LEAVES,
@@ -154,7 +118,7 @@ public abstract class BlockItemTagGenerator {
 			TFBlocks.THORN_LEAVES,
 			TFBlocks.BEANSTALK_LEAVES);
 
-		this.tag(BlockTags.WOODEN_TRAPDOORS, ItemTags.WOODEN_TRAPDOORS).add(
+		this.tag(BlockTags.WOODEN_TRAPDOORS, ItemTags.WOODEN_TRAPDOORS).twilightforest$add(
 			TFBlocks.TWILIGHT_OAK_TRAPDOOR,
 			TFBlocks.CANOPY_TRAPDOOR,
 			TFBlocks.MANGROVE_TRAPDOOR,
@@ -164,10 +128,9 @@ public abstract class BlockItemTagGenerator {
 			TFBlocks.MINING_TRAPDOOR,
 			TFBlocks.SORTING_TRAPDOOR);
 
-		this.tag(BlockTags.SMALL_FLOWERS, ItemTags.SMALL_FLOWERS).add(TFBlocks.THORN_ROSE);
-		this.tag(BlockTags.DAMPENS_VIBRATIONS, ItemTags.DAMPENS_VIBRATIONS).addTag(TFBlockTags.CLOUDS).add(TFBlocks.ARCTIC_FUR_BLOCK);
-		this.tag(BlockTags.DIRT, ItemTags.DIRT).add(TFBlocks.UBEROUS_SOIL);
-		this.tag(BlockTags.STANDING_SIGNS, ItemTags.SIGNS).add(
+		this.tag(BlockTags.DAMPENS_VIBRATIONS, ItemTags.DAMPENS_VIBRATIONS).addTag(TFBlockTags.CLOUDS).twilightforest$add(TFBlocks.ARCTIC_FUR_BLOCK);
+		this.tag(BlockTags.DIRT, ItemTags.DIRT).twilightforest$add(TFBlocks.UBEROUS_SOIL);
+		this.tag(BlockTags.STANDING_SIGNS, ItemTags.SIGNS).twilightforest$add(
 			TFBlocks.TWILIGHT_OAK_SIGN,
 			TFBlocks.CANOPY_SIGN,
 			TFBlocks.MANGROVE_SIGN,
@@ -177,7 +140,7 @@ public abstract class BlockItemTagGenerator {
 			TFBlocks.MINING_SIGN,
 			TFBlocks.SORTING_SIGN);
 
-		this.tag(BlockTags.CEILING_HANGING_SIGNS, ItemTags.HANGING_SIGNS).add(
+		this.tag(BlockTags.CEILING_HANGING_SIGNS, ItemTags.HANGING_SIGNS).twilightforest$add(
 			TFBlocks.TWILIGHT_OAK_HANGING_SIGN,
 			TFBlocks.CANOPY_HANGING_SIGN,
 			TFBlocks.MANGROVE_HANGING_SIGN,
@@ -191,7 +154,7 @@ public abstract class BlockItemTagGenerator {
 		// COMMON TAGS
 		//------------
 
-		this.tag(ConventionalBlockTags.WOODEN_FENCE_GATES, ConventionalItemTags.WOODEN_FENCE_GATES).add(
+		this.tag(ConventionalBlockTags.WOODEN_FENCE_GATES, ConventionalItemTags.WOODEN_FENCE_GATES).twilightforest$add(
 			TFBlocks.TWILIGHT_OAK_GATE,
 			TFBlocks.CANOPY_GATE,
 			TFBlocks.MANGROVE_GATE,
@@ -201,7 +164,7 @@ public abstract class BlockItemTagGenerator {
 			TFBlocks.MINING_GATE,
 			TFBlocks.SORTING_GATE);
 
-		this.tag(ConventionalBlockTags.WOODEN_CHESTS, ConventionalItemTags.WOODEN_CHESTS).add(
+		this.tag(ConventionalBlockTags.WOODEN_CHESTS, ConventionalItemTags.WOODEN_CHESTS).twilightforest$add(
 				TFBlocks.TWILIGHT_OAK_CHEST,
 				TFBlocks.CANOPY_CHEST,
 				TFBlocks.MANGROVE_CHEST,
@@ -210,7 +173,7 @@ public abstract class BlockItemTagGenerator {
 				TFBlocks.TRANSFORMATION_CHEST,
 				TFBlocks.MINING_CHEST,
 				TFBlocks.SORTING_CHEST)
-			.add(TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST,
+			.twilightforest$add(TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST,
 				TFBlocks.CANOPY_TRAPPED_CHEST,
 				TFBlocks.MANGROVE_TRAPPED_CHEST,
 				TFBlocks.DARK_TRAPPED_CHEST,
@@ -219,7 +182,7 @@ public abstract class BlockItemTagGenerator {
 				TFBlocks.MINING_TRAPPED_CHEST,
 				TFBlocks.SORTING_TRAPPED_CHEST);
 
-		this.tag(ConventionalBlockTags.TRAPPED_CHESTS, ConventionalItemTags.TRAPPED_CHESTS).add(
+		this.tag(ConventionalBlockTags.TRAPPED_CHESTS, ConventionalItemTags.TRAPPED_CHESTS).twilightforest$add(
 			TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST,
 			TFBlocks.CANOPY_TRAPPED_CHEST,
 			TFBlocks.MANGROVE_TRAPPED_CHEST,
@@ -238,8 +201,8 @@ public abstract class BlockItemTagGenerator {
 			.addTag(TFBlockTags.STORAGE_BLOCKS_STEELEAF)
 			.addTag(TFBlockTags.STORAGE_BLOCKS_MAZE_SLIME);
 
-		this.tag(ConventionalBlockTags.STORAGE_BLOCKS_SLIME, ConventionalItemTags.STORAGE_BLOCKS_SLIME).add(TFBlocks.MAZE_SLIME_BLOCK);
-		this.tag(ConventionalBlockTags.NATURAL_LOGS, ConventionalItemTags.NATURAL_LOGS).add(
+		this.tag(ConventionalBlockTags.STORAGE_BLOCKS_SLIME, ConventionalItemTags.STORAGE_BLOCKS_SLIME).twilightforest$add(TFBlocks.MAZE_SLIME_BLOCK);
+		this.tag(ConventionalBlockTags.NATURAL_LOGS, ConventionalItemTags.NATURAL_LOGS).twilightforest$add(
 			TFBlocks.TWILIGHT_OAK_LOG,
 			TFBlocks.CANOPY_LOG,
 			TFBlocks.MANGROVE_LOG,
@@ -248,7 +211,7 @@ public abstract class BlockItemTagGenerator {
 			TFBlocks.TRANSFORMATION_LOG,
 			TFBlocks.MINING_LOG,
 			TFBlocks.SORTING_LOG);
-		this.tag(ConventionalBlockTags.NATURAL_WOODS, ConventionalItemTags.NATURAL_WOODS).add(
+		this.tag(ConventionalBlockTags.NATURAL_WOODS, ConventionalItemTags.NATURAL_WOODS).twilightforest$add(
 			TFBlocks.TWILIGHT_OAK_WOOD,
 			TFBlocks.CANOPY_WOOD,
 			TFBlocks.MANGROVE_WOOD,
@@ -258,7 +221,7 @@ public abstract class BlockItemTagGenerator {
 			TFBlocks.MINING_WOOD,
 			TFBlocks.SORTING_WOOD);
 
-		this.tag(ConventionalBlockTags.STRIPPED_LOGS, ConventionalItemTags.STRIPPED_LOGS).add(
+		this.tag(ConventionalBlockTags.STRIPPED_LOGS, ConventionalItemTags.STRIPPED_LOGS).twilightforest$add(
 			TFBlocks.STRIPPED_TWILIGHT_OAK_LOG,
 			TFBlocks.STRIPPED_CANOPY_LOG,
 			TFBlocks.STRIPPED_MANGROVE_LOG,
@@ -268,7 +231,7 @@ public abstract class BlockItemTagGenerator {
 			TFBlocks.STRIPPED_MINING_LOG,
 			TFBlocks.STRIPPED_SORTING_LOG);
 
-		this.tag(ConventionalBlockTags.STRIPPED_WOODS, ConventionalItemTags.STRIPPED_WOODS).add(
+		this.tag(ConventionalBlockTags.STRIPPED_WOODS, ConventionalItemTags.STRIPPED_WOODS).twilightforest$add(
 			TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD,
 			TFBlocks.STRIPPED_CANOPY_WOOD,
 			TFBlocks.STRIPPED_MANGROVE_WOOD,
@@ -278,25 +241,25 @@ public abstract class BlockItemTagGenerator {
 			TFBlocks.STRIPPED_MINING_WOOD,
 			TFBlocks.STRIPPED_SORTING_WOOD);
 
-		this.tag(ConventionalBlockTags.BOOKSHELVES, ConventionalItemTags.BOOKSHELVES).add(TFBlocks.CANOPY_BOOKSHELF);
-		this.tag(ConventionalBlockTags.GLASS_BLOCKS, ConventionalItemTags.GLASS_BLOCKS).add(TFBlocks.AURORALIZED_GLASS);
-		this.tag(ConventionalBlockTags.PLAYER_WORKSTATIONS_CRAFTING_TABLES, ConventionalItemTags.PLAYER_WORKSTATIONS_CRAFTING_TABLES).add(TFBlocks.UNCRAFTING_TABLE);
-		this.tag(ConventionalBlockTags.ROPES, ConventionalItemTags.ROPES).add(TFBlocks.ROPE);
+		this.tag(ConventionalBlockTags.BOOKSHELVES, ConventionalItemTags.BOOKSHELVES).twilightforest$add(TFBlocks.CANOPY_BOOKSHELF);
+		this.tag(ConventionalBlockTags.GLASS_BLOCKS, ConventionalItemTags.GLASS_BLOCKS).twilightforest$add(TFBlocks.AURORALIZED_GLASS);
+		this.tag(ConventionalBlockTags.PLAYER_WORKSTATIONS_CRAFTING_TABLES, ConventionalItemTags.PLAYER_WORKSTATIONS_CRAFTING_TABLES).twilightforest$add(TFBlocks.UNCRAFTING_TABLE);
+		this.tag(ConventionalBlockTags.ROPES, ConventionalItemTags.ROPES).twilightforest$add(TFBlocks.ROPE);
 
 		//-----------
 		//  TF TAGS
 		//-----------
 
-		this.tag(TFBlockTags.TWILIGHT_OAK_LOGS, TFItemTags.TWILIGHT_OAK_LOGS).add(TFBlocks.TWILIGHT_OAK_LOG, TFBlocks.STRIPPED_TWILIGHT_OAK_LOG, TFBlocks.TWILIGHT_OAK_WOOD, TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD);
-		this.tag(TFBlockTags.CANOPY_LOGS, TFItemTags.CANOPY_LOGS).add(TFBlocks.CANOPY_LOG, TFBlocks.STRIPPED_CANOPY_LOG, TFBlocks.CANOPY_WOOD, TFBlocks.STRIPPED_CANOPY_WOOD);
-		this.tag(TFBlockTags.MANGROVE_LOGS, TFItemTags.MANGROVE_LOGS).add(TFBlocks.MANGROVE_LOG, TFBlocks.STRIPPED_MANGROVE_LOG, TFBlocks.MANGROVE_WOOD, TFBlocks.STRIPPED_MANGROVE_WOOD);
-		this.tag(TFBlockTags.DARKWOOD_LOGS, TFItemTags.DARKWOOD_LOGS).add(TFBlocks.DARK_LOG, TFBlocks.STRIPPED_DARK_LOG, TFBlocks.DARK_WOOD, TFBlocks.STRIPPED_DARK_WOOD);
-		this.tag(TFBlockTags.TIME_LOGS, TFItemTags.TIME_LOGS).add(TFBlocks.TIME_LOG, TFBlocks.STRIPPED_TIME_LOG, TFBlocks.TIME_WOOD, TFBlocks.STRIPPED_TIME_WOOD);
-		this.tag(TFBlockTags.TRANSFORMATION_LOGS, TFItemTags.TRANSFORMATION_LOGS).add(TFBlocks.TRANSFORMATION_LOG, TFBlocks.STRIPPED_TRANSFORMATION_LOG, TFBlocks.TRANSFORMATION_WOOD, TFBlocks.STRIPPED_TRANSFORMATION_WOOD);
-		this.tag(TFBlockTags.MINING_LOGS, TFItemTags.MINING_LOGS).add(TFBlocks.MINING_LOG, TFBlocks.STRIPPED_MINING_LOG, TFBlocks.MINING_WOOD, TFBlocks.STRIPPED_MINING_WOOD);
-		this.tag(TFBlockTags.SORTING_LOGS, TFItemTags.SORTING_LOGS).add(TFBlocks.SORTING_LOG, TFBlocks.STRIPPED_SORTING_LOG, TFBlocks.SORTING_WOOD, TFBlocks.STRIPPED_SORTING_WOOD);
+		this.tag(TFBlockTags.TWILIGHT_OAK_LOGS, TFItemTags.TWILIGHT_OAK_LOGS).twilightforest$add(TFBlocks.TWILIGHT_OAK_LOG, TFBlocks.STRIPPED_TWILIGHT_OAK_LOG, TFBlocks.TWILIGHT_OAK_WOOD, TFBlocks.STRIPPED_TWILIGHT_OAK_WOOD);
+		this.tag(TFBlockTags.CANOPY_LOGS, TFItemTags.CANOPY_LOGS).twilightforest$add(TFBlocks.CANOPY_LOG, TFBlocks.STRIPPED_CANOPY_LOG, TFBlocks.CANOPY_WOOD, TFBlocks.STRIPPED_CANOPY_WOOD);
+		this.tag(TFBlockTags.MANGROVE_LOGS, TFItemTags.MANGROVE_LOGS).twilightforest$add(TFBlocks.MANGROVE_LOG, TFBlocks.STRIPPED_MANGROVE_LOG, TFBlocks.MANGROVE_WOOD, TFBlocks.STRIPPED_MANGROVE_WOOD);
+		this.tag(TFBlockTags.DARKWOOD_LOGS, TFItemTags.DARKWOOD_LOGS).twilightforest$add(TFBlocks.DARK_LOG, TFBlocks.STRIPPED_DARK_LOG, TFBlocks.DARK_WOOD, TFBlocks.STRIPPED_DARK_WOOD);
+		this.tag(TFBlockTags.TIME_LOGS, TFItemTags.TIME_LOGS).twilightforest$add(TFBlocks.TIME_LOG, TFBlocks.STRIPPED_TIME_LOG, TFBlocks.TIME_WOOD, TFBlocks.STRIPPED_TIME_WOOD);
+		this.tag(TFBlockTags.TRANSFORMATION_LOGS, TFItemTags.TRANSFORMATION_LOGS).twilightforest$add(TFBlocks.TRANSFORMATION_LOG, TFBlocks.STRIPPED_TRANSFORMATION_LOG, TFBlocks.TRANSFORMATION_WOOD, TFBlocks.STRIPPED_TRANSFORMATION_WOOD);
+		this.tag(TFBlockTags.MINING_LOGS, TFItemTags.MINING_LOGS).twilightforest$add(TFBlocks.MINING_LOG, TFBlocks.STRIPPED_MINING_LOG, TFBlocks.MINING_WOOD, TFBlocks.STRIPPED_MINING_WOOD);
+		this.tag(TFBlockTags.SORTING_LOGS, TFItemTags.SORTING_LOGS).twilightforest$add(TFBlocks.SORTING_LOG, TFBlocks.STRIPPED_SORTING_LOG, TFBlocks.SORTING_WOOD, TFBlocks.STRIPPED_SORTING_WOOD);
 
-		this.tag(TFBlockTags.BANISTERS, TFItemTags.BANISTERS).add(
+		this.tag(TFBlockTags.BANISTERS, TFItemTags.BANISTERS).twilightforest$add(
 			TFBlocks.OAK_BANISTER,
 			TFBlocks.SPRUCE_BANISTER,
 			TFBlocks.BIRCH_BANISTER,
@@ -320,14 +283,14 @@ public abstract class BlockItemTagGenerator {
 			TFBlocks.SORTING_BANISTER
 		);
 
-		this.tag(TFBlockTags.STORAGE_BLOCKS_ARCTIC_FUR, TFItemTags.STORAGE_BLOCKS_ARCTIC_FUR).add(TFBlocks.ARCTIC_FUR_BLOCK);
-		this.tag(TFBlockTags.STORAGE_BLOCKS_CARMINITE, TFItemTags.STORAGE_BLOCKS_CARMINITE).add(TFBlocks.CARMINITE_BLOCK);
-		this.tag(TFBlockTags.STORAGE_BLOCKS_FIERY, TFItemTags.STORAGE_BLOCKS_FIERY).add(TFBlocks.FIERY_BLOCK);
-		this.tag(TFBlockTags.STORAGE_BLOCKS_IRONWOOD, TFItemTags.STORAGE_BLOCKS_IRONWOOD).add(TFBlocks.IRONWOOD_BLOCK);
-		this.tag(TFBlockTags.STORAGE_BLOCKS_KNIGHTMETAL, TFItemTags.STORAGE_BLOCKS_KNIGHTMETAL).add(TFBlocks.KNIGHTMETAL_BLOCK);
-		this.tag(TFBlockTags.STORAGE_BLOCKS_STEELEAF, TFItemTags.STORAGE_BLOCKS_STEELEAF).add(TFBlocks.STEELEAF_BLOCK);
+		this.tag(TFBlockTags.STORAGE_BLOCKS_ARCTIC_FUR, TFItemTags.STORAGE_BLOCKS_ARCTIC_FUR).twilightforest$add(TFBlocks.ARCTIC_FUR_BLOCK);
+		this.tag(TFBlockTags.STORAGE_BLOCKS_CARMINITE, TFItemTags.STORAGE_BLOCKS_CARMINITE).twilightforest$add(TFBlocks.CARMINITE_BLOCK);
+		this.tag(TFBlockTags.STORAGE_BLOCKS_FIERY, TFItemTags.STORAGE_BLOCKS_FIERY).twilightforest$add(TFBlocks.FIERY_BLOCK);
+		this.tag(TFBlockTags.STORAGE_BLOCKS_IRONWOOD, TFItemTags.STORAGE_BLOCKS_IRONWOOD).twilightforest$add(TFBlocks.IRONWOOD_BLOCK);
+		this.tag(TFBlockTags.STORAGE_BLOCKS_KNIGHTMETAL, TFItemTags.STORAGE_BLOCKS_KNIGHTMETAL).twilightforest$add(TFBlocks.KNIGHTMETAL_BLOCK);
+		this.tag(TFBlockTags.STORAGE_BLOCKS_STEELEAF, TFItemTags.STORAGE_BLOCKS_STEELEAF).twilightforest$add(TFBlocks.STEELEAF_BLOCK);
 
-		this.tag(TFBlockTags.DRYING_RACKS, TFItemTags.DRYING_RACKS).add(
+		this.tag(TFBlockTags.DRYING_RACKS, TFItemTags.DRYING_RACKS).twilightforest$add(
 			TFBlocks.OAK_DRYING_RACK, TFBlocks.SPRUCE_DRYING_RACK,
 			TFBlocks.BIRCH_DRYING_RACK, TFBlocks.JUNGLE_DRYING_RACK,
 			TFBlocks.ACACIA_DRYING_RACK, TFBlocks.DARK_OAK_DRYING_RACK,
@@ -340,20 +303,20 @@ public abstract class BlockItemTagGenerator {
 			TFBlocks.MINING_DRYING_RACK, TFBlocks.SORTING_DRYING_RACK
 		);
 
-		this.tag(TFBlockTags.TOWERWOOD, TFItemTags.TOWERWOOD).add(
+		this.tag(TFBlockTags.TOWERWOOD, TFItemTags.TOWERWOOD).twilightforest$add(
 			TFBlocks.TOWERWOOD,
 			TFBlocks.MOSSY_TOWERWOOD,
 			TFBlocks.CRACKED_TOWERWOOD,
 			TFBlocks.INFESTED_TOWERWOOD);
 
-		this.tag(TFBlockTags.STORAGE_BLOCKS_MAZE_SLIME, TFItemTags.STORAGE_BLOCKS_MAZE_SLIME).add(TFBlocks.MAZE_SLIME_BLOCK);
+		this.tag(TFBlockTags.STORAGE_BLOCKS_MAZE_SLIME, TFItemTags.STORAGE_BLOCKS_MAZE_SLIME).twilightforest$add(TFBlocks.MAZE_SLIME_BLOCK);
 
-		this.tag(TFBlockTags.CLOUDS, TFItemTags.CLOUDS).add(
+		this.tag(TFBlockTags.CLOUDS, TFItemTags.CLOUDS).twilightforest$add(
 			TFBlocks.FLUFFY_CLOUD,
 			TFBlocks.WISPY_CLOUD,
 			TFBlocks.RAINY_CLOUD,
 			TFBlocks.SNOWY_CLOUD);
 	}
 
-	protected abstract TagAppender<Block, Block> tag(TagKey<Block> blockTag, TagKey<Item> itemTag);
+	protected abstract TagAppender<Block> tag(TagKey<Block> blockTag, TagKey<Item> itemTag);
 }

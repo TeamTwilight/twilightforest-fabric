@@ -1,7 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": "twilightforest:dark_wood",
-  "result": {
-    "id": "twilightforest:towerwood"
-  }
-}

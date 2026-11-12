@@ -1,7 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": "twilightforest:underbrick",
-  "result": {
-    "id": "twilightforest:underbrick_floor"
-  }
-}
