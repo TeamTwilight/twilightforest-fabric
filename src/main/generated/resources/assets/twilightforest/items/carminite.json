@@ -1,0 +1,10 @@
+{
+  "model": {
+    "type": "twilightforest:emissive_item_model",
+    "base_model": {
+      "type": "minecraft:model",
+      "model": "twilightforest:item/carminite"
+    },
+    "light_emission": 7
+  }
+}

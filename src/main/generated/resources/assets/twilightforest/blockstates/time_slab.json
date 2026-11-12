@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "twilightforest:block/time_slab"
+    },
+    "type=double": {
+      "model": "twilightforest:block/time_planks"
+    },
+    "type=top": {
+      "model": "twilightforest:block/time_slab_top"
+    }
+  }
+}

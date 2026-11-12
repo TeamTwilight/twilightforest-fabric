@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "category": "blocks",
+  "experience": 0.1,
+  "ingredient": "twilightforest:castle_brick",
+  "result": {
+    "id": "twilightforest:cracked_castle_brick"
+  }
+}

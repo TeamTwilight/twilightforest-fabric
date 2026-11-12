@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "twilightforest:block/sorting_slab"
+    },
+    "type=double": {
+      "model": "twilightforest:block/sorting_planks"
+    },
+    "type=top": {
+      "model": "twilightforest:block/sorting_slab_top"
+    }
+  }
+}

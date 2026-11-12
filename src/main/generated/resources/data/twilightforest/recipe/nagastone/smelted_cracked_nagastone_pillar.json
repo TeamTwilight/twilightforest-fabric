@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "category": "blocks",
+  "experience": 0.1,
+  "ingredient": "twilightforest:nagastone_pillar",
+  "result": {
+    "id": "twilightforest:cracked_nagastone_pillar"
+  }
+}

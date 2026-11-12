@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "group": "fiery_chestplate",
+  "ingredients": [
+    "minecraft:iron_chestplate",
+    "#twilightforest:fiery_vial",
+    "#twilightforest:fiery_vial",
+    "#twilightforest:fiery_vial",
+    "#twilightforest:fiery_vial",
+    "#twilightforest:fiery_vial",
+    "#twilightforest:fiery_vial",
+    "#twilightforest:fiery_vial",
+    "#twilightforest:fiery_vial"
+  ],
+  "result": {
+    "id": "twilightforest:fiery_chestplate"
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "attributes": {
+    "minecraft:gameplay/snow_golem_melts": true,
+    "minecraft:visual/ambient_particles": [
+      {
+        "particle": {
+          "type": "minecraft:white_ash"
+        },
+        "probability": 0.015
+      }
+    ],
+    "minecraft:visual/fog_color": "#380a00",
+    "minecraft:visual/sky_color": "#002112",
+    "minecraft:visual/water_fog_color": "#6c2c2c"
+  },
+  "carvers": "twilightforest:tf_caves",
+  "downfall": 0.4,
+  "effects": {
+    "foliage_color": "#64260f",
+    "grass_color": "#572e23",
+    "water_color": "#2d0700"
+  },
+  "features": [
+    [],
+    [
+      "twilightforest:lava_lake"
+    ],
+    [],
+    [],
+    [],
+    [],
+    [
+      "minecraft:disk_sand",
+      "minecraft:disk_clay",
+      "minecraft:disk_gravel",
+      "twilightforest:wood_roots",
+      "twilightforest:legacy_coal_ore",
+      "twilightforest:legacy_iron_ore",
+      "twilightforest:legacy_gold_ore",
+      "twilightforest:legacy_redstone_ore",
+      "twilightforest:legacy_diamond_ore",
+      "twilightforest:legacy_lapis_ore",
+      "twilightforest:legacy_copper_ore",
+      "twilightforest:small_andesite",
+      "twilightforest:small_diorite",
+      "twilightforest:small_granite"
+    ],
+    [
+      "twilightforest:plant_roots",
+      "twilightforest:torch_berries"
+    ],
+    [],
+    [
+      "twilightforest:patch_tall_grass",
+      "twilightforest:patch_grass_badlands",
+      "twilightforest:patch_grass_savanna",
+      "minecraft:patch_sugar_cane",
+      "minecraft:patch_grass_taiga_2",
+      "twilightforest:stone_circle",
+      "twilightforest:outside_stalagmite",
+      "twilightforest:monolith",
+      "twilightforest:hollow_stump",
+      "twilightforest:hollow_log",
+      "twilightforest:tree/swampy_oak_tree",
+      "twilightforest:tree/oak_bush",
+      "twilightforest:fire_jet",
+      "twilightforest:smoker",
+      "minecraft:patch_sugar_cane_swamp",
+      "minecraft:vines",
+      "minecraft:brown_mushroom_swamp"
+    ],
+    [
+      "minecraft:freeze_top_layer"
+    ]
+  ],
+  "has_precipitation": false,
+  "spawn_costs": {},
+  "spawners": {
+    "ambient": [],
+    "axolotls": [],
+    "creature": [],
+    "misc": [],
+    "monster": [],
+    "underground_water_creature": [],
+    "water_ambient": [],
+    "water_creature": []
+  },
+  "temperature": 1.0
+}

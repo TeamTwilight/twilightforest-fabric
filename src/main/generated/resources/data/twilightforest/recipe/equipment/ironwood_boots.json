@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": "#c:ingots/ironwood"
+  },
+  "pattern": [
+    "# #",
+    "# #"
+  ],
+  "result": {
+    "components": {
+      "minecraft:enchantments": {
+        "minecraft:feather_falling": 1
+      }
+    },
+    "id": "twilightforest:ironwood_boots"
+  }
+}

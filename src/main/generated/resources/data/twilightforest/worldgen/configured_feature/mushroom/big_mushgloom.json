@@ -1,0 +1,38 @@
+{
+  "type": "twilightforest:big_mushgloom",
+  "config": {
+    "can_place_on": {
+      "type": "minecraft:matching_block_tag",
+      "tag": "twilightforest:huge_mushgloom_placeable"
+    },
+    "cap_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "twilightforest:huge_mushgloom",
+        "Properties": {
+          "down": "false",
+          "east": "true",
+          "north": "true",
+          "south": "true",
+          "up": "true",
+          "west": "true"
+        }
+      }
+    },
+    "foliage_radius": 1,
+    "stem_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "twilightforest:huge_mushgloom_stem",
+        "Properties": {
+          "down": "false",
+          "east": "true",
+          "north": "true",
+          "south": "true",
+          "up": "false",
+          "west": "true"
+        }
+      }
+    }
+  }
+}

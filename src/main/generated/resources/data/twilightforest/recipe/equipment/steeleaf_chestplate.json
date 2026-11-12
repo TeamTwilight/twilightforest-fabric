@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": "#c:ingots/steeleaf"
+  },
+  "pattern": [
+    "# #",
+    "###",
+    "###"
+  ],
+  "result": {
+    "components": {
+      "minecraft:enchantments": {
+        "minecraft:blast_protection": 2
+      }
+    },
+    "id": "twilightforest:steeleaf_chestplate"
+  }
+}

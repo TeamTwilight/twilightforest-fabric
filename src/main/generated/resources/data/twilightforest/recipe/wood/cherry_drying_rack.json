@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "drying_rack",
+  "key": {
+    "-": "minecraft:cherry_slab"
+  },
+  "pattern": [
+    "---"
+  ],
+  "result": {
+    "id": "twilightforest:cherry_drying_rack"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "placement": {
+    "type": "twilightforest:landmark_grid",
+    "structure_grid_lock": "twilightforest:naga_courtyard"
+  },
+  "structures": [
+    {
+      "structure": "twilightforest:naga_courtyard",
+      "weight": 1
+    }
+  ]
+}

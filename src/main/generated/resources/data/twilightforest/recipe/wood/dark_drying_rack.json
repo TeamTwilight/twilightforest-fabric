@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "drying_rack",
+  "key": {
+    "-": "twilightforest:dark_slab"
+  },
+  "pattern": [
+    "---"
+  ],
+  "result": {
+    "id": "twilightforest:dark_drying_rack"
+  }
+}

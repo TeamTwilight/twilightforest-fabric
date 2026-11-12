@@ -1,0 +1,23 @@
+{
+  "clock": "twilightforest:twilight_forest",
+  "tracks": {
+    "minecraft:visual/fog_color": {
+      "keyframes": [
+        {
+          "ticks": 0,
+          "value": "#6b6b71"
+        }
+      ],
+      "modifier": "multiply"
+    },
+    "minecraft:visual/sky_color": {
+      "keyframes": [
+        {
+          "ticks": 0,
+          "value": "#3f3f5f"
+        }
+      ],
+      "modifier": "multiply"
+    }
+  }
+}

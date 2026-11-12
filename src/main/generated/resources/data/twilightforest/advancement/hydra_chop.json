@@ -1,0 +1,30 @@
+{
+  "parent": "twilightforest:progress_hydra",
+  "criteria": {
+    "hydra_chop": {
+      "trigger": "twilightforest:consume_hydra_chop_on_low_hunger"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.twilightforest.hydra_chop.desc",
+      "with": [
+        {
+          "translate": "entity.twilightforest.hydra"
+        }
+      ]
+    },
+    "icon": {
+      "id": "twilightforest:hydra_chop"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.hydra_chop"
+    }
+  },
+  "requirements": [
+    [
+      "hydra_chop"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

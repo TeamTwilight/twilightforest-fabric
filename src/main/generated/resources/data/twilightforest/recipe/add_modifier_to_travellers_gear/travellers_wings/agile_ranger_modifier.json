@@ -1,0 +1,48 @@
+{
+  "type": "twilightforest:travellers_gear_modifier_shaped_recipe",
+  "is_rotated": false,
+  "modifier_key": "twilightforest:agile_ranger",
+  "pattern": {
+    "key": {
+      "F": "twilightforest:raven_feather",
+      "H": "minecraft:rabbit_hide",
+      "P": {
+        "fabric:type": "fabric:any",
+        "ingredients": [
+          {
+            "fabric:type": "fabric:components",
+            "base": "minecraft:potion",
+            "components": {
+              "minecraft:potion_contents": {
+                "potion": "minecraft:swiftness"
+              }
+            }
+          },
+          {
+            "fabric:type": "fabric:components",
+            "base": "minecraft:potion",
+            "components": {
+              "minecraft:potion_contents": {
+                "potion": "minecraft:long_swiftness"
+              }
+            }
+          },
+          {
+            "fabric:type": "fabric:components",
+            "base": "minecraft:potion",
+            "components": {
+              "minecraft:potion_contents": {
+                "potion": "minecraft:strong_swiftness"
+              }
+            }
+          }
+        ]
+      },
+      "W": "twilightforest:travellers_wings"
+    },
+    "pattern": [
+      "FPF",
+      "HWH"
+    ]
+  }
+}

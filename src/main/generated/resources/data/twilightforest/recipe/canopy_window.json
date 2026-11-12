@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": "#c:glass_blocks",
+    "P": "twilightforest:canopy_planks"
+  },
+  "pattern": [
+    "GPG",
+    "PPP",
+    "GPG"
+  ],
+  "result": {
+    "count": 4,
+    "id": "twilightforest:canopy_window"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "wooden_sign",
+  "key": {
+    "#": "twilightforest:mining_planks",
+    "-": "#c:rods/wooden"
+  },
+  "pattern": [
+    "###",
+    "###",
+    " - "
+  ],
+  "result": {
+    "count": 3,
+    "id": "twilightforest:mining_sign"
+  }
+}

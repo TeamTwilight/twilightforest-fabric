@@ -1,0 +1,8 @@
+{
+  "type": "twilightforest:complex_repair",
+  "durability": 9,
+  "input": "twilightforest:fortification_scepter",
+  "repair_ingredients": [
+    "minecraft:golden_apple"
+  ]
+}

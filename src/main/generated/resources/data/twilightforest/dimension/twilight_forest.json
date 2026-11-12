@@ -1,0 +1,11 @@
+{
+  "type": "twilightforest:twilight_forest_type",
+  "generator": {
+    "type": "minecraft:noise",
+    "biome_source": {
+      "type": "twilightforest:twilight_biomes",
+      "terrain_data": "twilightforest:biome_grid"
+    },
+    "settings": "twilightforest:twilight_noise_gen"
+  }
+}

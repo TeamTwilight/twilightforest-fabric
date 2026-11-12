@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "experience": 1.0,
+  "group": "ironwood_ingot",
+  "ingredient": "twilightforest:raw_ironwood",
+  "result": {
+    "id": "twilightforest:ironwood_ingot"
+  }
+}

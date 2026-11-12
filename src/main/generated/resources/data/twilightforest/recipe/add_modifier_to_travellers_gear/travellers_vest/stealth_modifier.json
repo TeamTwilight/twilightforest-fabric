@@ -1,0 +1,33 @@
+{
+  "type": "twilightforest:travellers_gear_modifier_shapeless_recipe",
+  "ingredients": [
+    {
+      "fabric:type": "fabric:any",
+      "ingredients": [
+        {
+          "fabric:type": "fabric:components",
+          "base": "minecraft:potion",
+          "components": {
+            "minecraft:potion_contents": {
+              "potion": "minecraft:invisibility"
+            }
+          }
+        },
+        {
+          "fabric:type": "fabric:components",
+          "base": "minecraft:potion",
+          "components": {
+            "minecraft:potion_contents": {
+              "potion": "minecraft:long_invisibility"
+            }
+          }
+        }
+      ]
+    },
+    "minecraft:ender_eye",
+    "minecraft:spider_eye",
+    "minecraft:golden_carrot",
+    "twilightforest:travellers_vest"
+  ],
+  "modifier_key": "twilightforest:stealth"
+}

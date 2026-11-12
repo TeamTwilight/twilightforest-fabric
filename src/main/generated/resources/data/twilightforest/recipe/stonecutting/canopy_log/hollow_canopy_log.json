@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "twilightforest:canopy_log",
+  "result": {
+    "id": "twilightforest:hollow_canopy_log"
+  }
+}

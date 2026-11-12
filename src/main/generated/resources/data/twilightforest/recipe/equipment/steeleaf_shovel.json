@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": "#c:ingots/steeleaf",
+    "X": "#c:rods/wooden"
+  },
+  "pattern": [
+    "#",
+    "X",
+    "X"
+  ],
+  "result": {
+    "components": {
+      "minecraft:enchantments": {
+        "minecraft:efficiency": 2
+      }
+    },
+    "id": "twilightforest:steeleaf_shovel"
+  }
+}

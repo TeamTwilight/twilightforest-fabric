@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:paper",
+    "twilightforest:snow_queen_trophy"
+  ],
+  "result": {
+    "id": "twilightforest:snow_queen_banner_pattern"
+  }
+}

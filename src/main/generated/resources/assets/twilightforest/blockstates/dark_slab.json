@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "twilightforest:block/dark_slab"
+    },
+    "type=double": {
+      "model": "twilightforest:block/dark_planks"
+    },
+    "type=top": {
+      "model": "twilightforest:block/dark_slab_top"
+    }
+  }
+}

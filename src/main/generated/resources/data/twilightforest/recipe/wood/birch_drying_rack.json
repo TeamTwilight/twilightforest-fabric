@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "drying_rack",
+  "key": {
+    "-": "minecraft:birch_slab"
+  },
+  "pattern": [
+    "---"
+  ],
+  "result": {
+    "id": "twilightforest:birch_drying_rack"
+  }
+}

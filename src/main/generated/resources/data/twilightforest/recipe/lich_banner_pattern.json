@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:paper",
+    "twilightforest:lich_trophy"
+  ],
+  "result": {
+    "id": "twilightforest:lich_banner_pattern"
+  }
+}

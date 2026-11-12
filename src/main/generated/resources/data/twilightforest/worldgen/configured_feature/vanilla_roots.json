@@ -1,0 +1,11 @@
+{
+  "type": "twilightforest:underground_plants",
+  "config": {
+    "state": {
+      "Name": "minecraft:hanging_roots",
+      "Properties": {
+        "waterlogged": "false"
+      }
+    }
+  }
+}

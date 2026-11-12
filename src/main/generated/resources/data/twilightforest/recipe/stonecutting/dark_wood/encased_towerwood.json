@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "twilightforest:dark_wood",
+  "result": {
+    "id": "twilightforest:encased_towerwood"
+  }
+}

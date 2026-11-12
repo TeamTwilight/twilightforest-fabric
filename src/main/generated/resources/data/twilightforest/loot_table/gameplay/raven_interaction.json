@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:entity_interact",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "twilightforest:raven_feather"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "twilightforest:gameplay/raven_interaction"
+}

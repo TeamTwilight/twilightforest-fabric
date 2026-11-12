@@ -1,0 +1,7 @@
+{
+  "fabric:remove": [
+    "twilightforest:phantom_helmet",
+    "twilightforest:phantom_chestplate"
+  ],
+  "values": []
+}

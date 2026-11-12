@@ -1,0 +1,1011 @@
+{
+  "parent": "twilightforest:root",
+  "criteria": {
+    "adherent": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:adherent",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "alpha_yeti": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:alpha_yeti",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "armored_giant": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:armored_giant",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "bighorn_sheep": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:bighorn_sheep",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "block_and_chain_goblin": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:block_and_chain_goblin",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "boar": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:boar",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "carminite_broodling": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:carminite_broodling",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "carminite_ghastguard": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:carminite_ghastguard",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "carminite_ghastling": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:carminite_ghastling",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "carminite_golem": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:carminite_golem",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "death_tome": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:death_tome",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "deer": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:deer",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "dwarf_rabbit": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:dwarf_rabbit",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "fire_beetle": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:fire_beetle",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "giant_miner": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:giant_miner",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "harbinger_cube": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:harbinger_cube",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "hedge_spider": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:hedge_spider",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "helmet_crab": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:helmet_crab",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "hostile_wolf": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:hostile_wolf",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "hydra": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:hydra",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "king_spider": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:king_spider",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "knight_phantom": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:knight_phantom",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "kobold": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:kobold",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "lich": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:lich",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "lich_minion": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:lich_minion",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "lower_goblin_knight": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:lower_goblin_knight",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "maze_slime": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:maze_slime",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "minoshroom": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:minoshroom",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "minotaur": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:minotaur",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "mist_wolf": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:mist_wolf",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "mosquito_swarm": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:mosquito_swarm",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "naga": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:naga",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "penguin": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:penguin",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "pinch_beetle": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:pinch_beetle",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "plateau_boss": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:plateau_boss",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "quest_ram": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:quest_ram",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "raven": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:raven",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "redcap": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:redcap",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "redcap_sapper": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:redcap_sapper",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "skeleton_druid": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:skeleton_druid",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "slime_beetle": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:slime_beetle",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "snow_guardian": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:snow_guardian",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "snow_queen": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:snow_queen",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "squirrel": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:squirrel",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "stable_ice_core": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:stable_ice_core",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "swarm_spider": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:swarm_spider",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "tiny_bird": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:tiny_bird",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "towerwood_borer": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:towerwood_borer",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "troll": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:troll",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "unstable_ice_core": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:unstable_ice_core",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "upper_goblin_knight": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:upper_goblin_knight",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "ur_ghast": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:ur_ghast",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "winter_wolf": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:winter_wolf",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "wraith": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:wraith",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "yeti": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "minecraft:entity_type": "twilightforest:yeti",
+              "minecraft:location": {
+                "dimension": "twilightforest:twilight_forest"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.twilightforest.twilight_hunter.desc"
+    },
+    "icon": {
+      "id": "twilightforest:raven_feather"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.twilight_hunter"
+    }
+  },
+  "requirements": [
+    [
+      "adherent",
+      "armored_giant",
+      "bighorn_sheep",
+      "block_and_chain_goblin",
+      "dwarf_rabbit",
+      "death_tome",
+      "deer",
+      "fire_beetle",
+      "giant_miner",
+      "lower_goblin_knight",
+      "upper_goblin_knight",
+      "harbinger_cube",
+      "hedge_spider",
+      "helmet_crab",
+      "hostile_wolf",
+      "hydra",
+      "king_spider",
+      "knight_phantom",
+      "kobold",
+      "lich",
+      "lich_minion",
+      "maze_slime",
+      "carminite_ghastling",
+      "minoshroom",
+      "minotaur",
+      "mist_wolf",
+      "mosquito_swarm",
+      "naga",
+      "penguin",
+      "pinch_beetle",
+      "plateau_boss",
+      "quest_ram",
+      "raven",
+      "redcap",
+      "redcap_sapper",
+      "skeleton_druid",
+      "slime_beetle",
+      "snow_guardian",
+      "snow_queen",
+      "squirrel",
+      "stable_ice_core",
+      "swarm_spider",
+      "tiny_bird",
+      "carminite_broodling",
+      "carminite_ghastguard",
+      "carminite_golem",
+      "towerwood_borer",
+      "troll",
+      "unstable_ice_core",
+      "ur_ghast",
+      "boar",
+      "winter_wolf",
+      "wraith",
+      "yeti",
+      "alpha_yeti"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

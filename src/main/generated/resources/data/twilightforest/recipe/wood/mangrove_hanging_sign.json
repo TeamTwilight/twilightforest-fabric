@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "hanging_sign",
+  "key": {
+    "#": "twilightforest:stripped_mangrove_log",
+    "|": "minecraft:iron_chain"
+  },
+  "pattern": [
+    "| |",
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "id": "twilightforest:mangrove_hanging_sign"
+  }
+}

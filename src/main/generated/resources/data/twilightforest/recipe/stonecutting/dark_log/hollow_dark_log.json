@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "twilightforest:dark_log",
+  "result": {
+    "id": "twilightforest:hollow_dark_log"
+  }
+}

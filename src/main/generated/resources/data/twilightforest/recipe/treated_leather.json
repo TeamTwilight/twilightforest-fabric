@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "twilightforest:tannin",
+    "#c:leathers"
+  ],
+  "result": {
+    "id": "twilightforest:treated_leather"
+  }
+}

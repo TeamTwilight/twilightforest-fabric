@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "minecraft:entities/rabbit"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

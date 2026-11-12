@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    "twilightforest:towerwood",
+    [
+      "minecraft:vine",
+      "minecraft:moss_block"
+    ]
+  ],
+  "result": {
+    "id": "twilightforest:mossy_towerwood"
+  }
+}

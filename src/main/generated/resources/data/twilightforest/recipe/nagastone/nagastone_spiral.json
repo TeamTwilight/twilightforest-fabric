@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "B": [
+      "minecraft:stone_bricks",
+      "minecraft:mossy_stone_bricks",
+      "minecraft:cracked_stone_bricks",
+      "minecraft:chiseled_stone_bricks"
+    ],
+    "S": [
+      "minecraft:stone_slab",
+      "minecraft:stone_brick_slab"
+    ]
+  },
+  "pattern": [
+    "BSS",
+    "BSS",
+    "BBB"
+  ],
+  "result": {
+    "count": 8,
+    "id": "twilightforest:spiral_bricks"
+  }
+}

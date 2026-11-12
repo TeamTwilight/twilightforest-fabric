@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": "minecraft:glass",
+    "L": "twilightforest:twilight_oak_log"
+  },
+  "pattern": [
+    "GLG",
+    "G G",
+    "GGG"
+  ],
+  "result": {
+    "count": 4,
+    "id": "twilightforest:mason_jar"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "twilightforest:mangrove_log",
+  "result": {
+    "id": "twilightforest:hollow_mangrove_log"
+  }
+}

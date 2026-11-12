@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:paper",
+    "twilightforest:minoshroom_trophy"
+  ],
+  "result": {
+    "id": "twilightforest:minoshroom_banner_pattern"
+  }
+}

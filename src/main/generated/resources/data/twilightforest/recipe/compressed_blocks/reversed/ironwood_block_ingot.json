@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:storage_blocks/ironwood"
+  ],
+  "result": {
+    "count": 9,
+    "id": "twilightforest:ironwood_ingot"
+  }
+}

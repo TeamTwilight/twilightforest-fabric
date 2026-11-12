@@ -1,0 +1,12 @@
+{
+  "placement": {
+    "type": "twilightforest:landmark_grid",
+    "structure_grid_lock": "twilightforest:medium_hollow_hill"
+  },
+  "structures": [
+    {
+      "structure": "twilightforest:medium_hollow_hill",
+      "weight": 1
+    }
+  ]
+}

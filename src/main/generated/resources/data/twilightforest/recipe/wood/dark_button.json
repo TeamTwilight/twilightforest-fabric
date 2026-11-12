@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "group": "wooden_button",
+  "ingredients": [
+    "twilightforest:dark_planks"
+  ],
+  "result": {
+    "id": "twilightforest:dark_button"
+  }
+}

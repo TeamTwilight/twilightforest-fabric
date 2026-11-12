@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "drying_rack",
+  "key": {
+    "-": "minecraft:acacia_slab"
+  },
+  "pattern": [
+    "---"
+  ],
+  "result": {
+    "id": "twilightforest:acacia_drying_rack"
+  }
+}

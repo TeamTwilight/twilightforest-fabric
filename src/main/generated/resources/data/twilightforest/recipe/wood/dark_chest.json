@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "chest",
+  "key": {
+    "#": "twilightforest:dark_planks"
+  },
+  "pattern": [
+    "###",
+    "# #",
+    "###"
+  ],
+  "result": {
+    "id": "twilightforest:dark_chest"
+  }
+}

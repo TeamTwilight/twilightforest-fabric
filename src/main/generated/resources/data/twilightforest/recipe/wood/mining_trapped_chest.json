@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "group": "trapped_chest",
+  "ingredients": [
+    "twilightforest:mining_chest",
+    "minecraft:tripwire_hook"
+  ],
+  "result": {
+    "id": "twilightforest:mining_trapped_chest"
+  }
+}

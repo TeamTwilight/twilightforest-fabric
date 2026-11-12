@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "conditions": [
+        {
+          "condition": "twilightforest:is_minion",
+          "inverse": true
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "twilightforest:entities/carminite_ghastguard"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}
