@@ -24,7 +24,7 @@ public class SmartGrassProcessor implements StructureProcessor {
 
 	@Override
 	public StructureTemplate.@Nullable StructureBlockInfo processBlock(LevelReader level, BlockPos targetPosition, BlockPos referencePos, BlockPos templateRelativePos, StructureTemplate.StructureBlockInfo processedBlockInfo, StructurePlaceSettings settings) {
-		if (level.getBlockState(templateRelativePos).getBlock() != Blocks.GRASS_BLOCK)
+		if (processedBlockInfo.state().getBlock() != Blocks.GRASS_BLOCK)
 			return processedBlockInfo;
 
 		if (level.getBlockState(processedBlockInfo.pos()).is(BlockTags.SUBSTRATE_OVERWORLD) || !level.isEmptyBlock(processedBlockInfo.pos().above()))
