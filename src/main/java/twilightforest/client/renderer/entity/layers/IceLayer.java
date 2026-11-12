@@ -38,7 +38,7 @@ public class IceLayer<S extends LivingEntityRenderState, M extends EntityModel<?
 		if (id == null)
 			return;
 
-		Minecraft.getInstance().blockModelResolver.update(iceModel, Blocks.ICE.defaultBlockState(), displayContext);
+		Minecraft.getInstance().carminite$getBlockModelResolver().update(iceModel, Blocks.ICE.defaultBlockState(), displayContext);
 
 		random.setSeed(id * id * 3121L + id * 45238971L);
 

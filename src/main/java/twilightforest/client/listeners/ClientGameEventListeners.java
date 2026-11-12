@@ -4,6 +4,7 @@ import carminite.events.api.ClientEvents;
 import carminite.events.modified.CarminiteRenderLevelStageEvent;
 import carminite.events.neoforge.*;
 import com.ibm.icu.text.RuleBasedNumberFormat;
+import com.mojang.blaze3d.PrimitiveTopology;
 import com.mojang.blaze3d.vertex.*;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
@@ -21,7 +22,6 @@ import net.minecraft.client.gui.components.SplashRenderer;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.ShapeRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.BlockOutlineRenderState;
 import net.minecraft.core.BlockPos;
@@ -126,25 +126,27 @@ public final class ClientGameEventListeners {
 			return;
 
 		if (aurora > 0 || lastAurora > 0) {
-			BufferBuilder buffer = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+			try (ByteBufferBuilder builder = ByteBufferBuilder.exactlySized(DefaultVertexFormat.POSITION_COLOR.getVertexSize() * 4)) {
+				BufferBuilder buffer = new BufferBuilder(builder, PrimitiveTopology.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
-			final float scale = 2048F * (mc.options.getEffectiveRenderDistance() * 16F / 32F);
-			Vec3 pos = event.getLevelRenderState().cameraRenderState.pos;
-			float y = (float) (256F - pos.y());
-			buffer.addVertex(-scale, y, scale).setColor(1F, 1F, 1F, 1F);
-			buffer.addVertex(-scale, y, -scale).setColor(1F, 1F, 1F, 1F);
-			buffer.addVertex(scale, y, -scale).setColor(1F, 1F, 1F, 1F);
-			buffer.addVertex(scale, y, scale).setColor(1F, 1F, 1F, 1F);
+				final float scale = 2048F * (mc.options.getEffectiveRenderDistance() * 16F / 32F);
+				Vec3 pos = event.getLevelRenderState().cameraRenderState.pos;
+				float y = (float) (256F - pos.y());
+				buffer.addVertex(-scale, y, scale).setColor(1F, 1F, 1F, 1F);
+				buffer.addVertex(-scale, y, -scale).setColor(1F, 1F, 1F, 1F);
+				buffer.addVertex(scale, y, -scale).setColor(1F, 1F, 1F, 1F);
+				buffer.addVertex(scale, y, scale).setColor(1F, 1F, 1F, 1F);
 
-			float alpha = Mth.lerp(mc.getDeltaTracker().getGameTimeDeltaTicks(), lastAurora, aurora) / 60F * 0.5F;
-			auroraRenderer.draw(
-				buffer.buildOrThrow(),
-				alpha,
-				Mth.abs((int) mc.level.getBiomeManager().biomeZoomSeed),
-				(float) pos.x(),
-				(float) pos.y(),
-				(float) pos.z()
-			);
+				float alpha = Mth.lerp(mc.getDeltaTracker().getGameTimeDeltaTicks(), lastAurora, aurora) / 60F * 0.5F;
+				auroraRenderer.draw(
+					buffer.buildOrThrow(),
+					alpha,
+					Mth.abs((int) mc.level.getBiomeManager().biomeZoomSeed),
+					(float) pos.x(),
+					(float) pos.y(),
+					(float) pos.z()
+				);
+			}
 		}
 	}
 
@@ -156,11 +158,11 @@ public final class ClientGameEventListeners {
 		Minecraft minecraft = Minecraft.getInstance();
 		// only fire if we're in the twilight forest
 		if (minecraft.level != null && TFDimension.DIMENSION_KEY.equals(minecraft.level.dimension())) {
-			minecraft.gui.vignetteBrightness = 0.0F;
+			minecraft.gui.hud.vignetteBrightness = 0.0F;
 		}
 
 		if (minecraft.player != null && HostileMountEventListeners.isRidingUnfriendly(minecraft.player)) {
-			minecraft.gui.setOverlayMessage(Component.empty(), false);
+			minecraft.gui.hud.setOverlayMessage(Component.empty(), false);
 		}
 	}
 
@@ -267,8 +269,8 @@ public final class ClientGameEventListeners {
 		}
 	}
 
-	public static boolean renderGiantBlockOutlines(LevelRenderContext context, BlockOutlineRenderState outlineState) {
-		BlockPos pos = outlineState.pos();
+	public static boolean renderGiantBlockOutlines(LevelRenderContext context, BlockOutlineRenderState blockOutlineRenderState) {
+		BlockPos pos = blockOutlineRenderState.pos();
 		BlockState state = Minecraft.getInstance().level.getBlockState(pos);
 
 		if (state.getBlock() instanceof MiniatureStructureBlock) {
@@ -279,10 +281,19 @@ public final class ClientGameEventListeners {
 		if (player != null && (player.getMainHandItem().getItem() instanceof GiantPickItem || (player.getMainHandItem().getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof GiantBlock))) {
 			if (!state.isAir() && player.level().getWorldBorder().isWithinBounds(pos)) {
 				BlockPos offsetPos = new BlockPos(pos.getX() & ~0b11, pos.getY() & ~0b11, pos.getZ() & ~0b11);
-				VertexConsumer consumer = context.bufferSource().getBuffer(RenderTypes.lines());
-				Vec3 xyz = Vec3.atLowerCornerOf(offsetPos).subtract(context.gameRenderer().getMainCamera().position());
-				int outlineColor = outlineState.highContrast() ? 0xff_57_ff_e1 : 0x66_00_00_00;
-				ShapeRenderer.renderShape(context.poseStack(), consumer, GIANT_BLOCK, xyz.x(), xyz.y(), xyz.z(), outlineColor, Minecraft.getInstance().gameRenderer.getGameRenderState().windowRenderState.appropriateLineWidth);
+				Vec3 xyz = Vec3.atLowerCornerOf(offsetPos).subtract(context.levelState().cameraRenderState.pos);
+				int outlineColor = blockOutlineRenderState.highContrast() ? 0xff_57_ff_e1 : 0x66_00_00_00;
+				context.poseStack().pushPose();
+				context.poseStack().translate(xyz.x(), xyz.y(), xyz.z());
+				context.submitNodeCollector().submitShapeOutline(
+					context.poseStack(),
+					GIANT_BLOCK,
+					RenderTypes.lines(),
+					outlineColor,
+					Minecraft.getInstance().gameRenderer.gameRenderState().windowRenderState.appropriateLineWidth,
+					blockOutlineRenderState.isTranslucent()
+				);
+				context.poseStack().popPose();
 			}
 			return false;
 		}

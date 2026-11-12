@@ -24,8 +24,12 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import twilightforest.asm.hooks.AddBreakingBlockEffectDuck;
 import twilightforest.asm.hooks.ClientBlockExtensionHooks;
+import twilightforest.client.TwilightForestRenderInfo;
+import twilightforest.tags.TFDimensionTypeTags;
 
 @Mixin(ClientLevel.class)
 public abstract class ClientLevelMixin extends Level implements AddBreakingBlockEffectDuck {
@@ -36,6 +40,18 @@ public abstract class ClientLevelMixin extends Level implements AddBreakingBlock
 	@Shadow
 	@Final
 	private Minecraft minecraft;
+
+	@Inject(
+		method = "tickWeatherEffects()V",
+		at = @At("HEAD"),
+		cancellable = true
+	)
+	private void twilightforest$tickRain(CallbackInfo ci) {
+		ClientLevel level = (ClientLevel) (Object) this;
+		if (level.dimensionTypeRegistration().is(TFDimensionTypeTags.TF_WEATHER_RENDERER) && TwilightForestRenderInfo.INSTANCE.tickRain(level, this.getGameTime(), this.minecraft.gameRenderer.mainCamera())) {
+			ci.cancel();
+		}
+	}
 
 	@ModifyExpressionValue(
 		method = "addDestroyBlockEffect(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)V",

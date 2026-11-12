@@ -11,6 +11,8 @@ import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.attribute.*;
 import net.minecraft.world.clock.WorldClock;
 import net.minecraft.world.level.CardinalLighting;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
@@ -31,6 +33,7 @@ import java.util.Optional;
 public class TFDimensionGenerator {
 	public static void bootstrapType(BootstrapContext<DimensionType> context) {
 		TFCommon.LOGGER.info("Bootstrap called for dimension type...");
+		HolderGetter<Block> blocks = context.lookup(Registries.BLOCK);
 		HolderGetter<Timeline> timelines = context.lookup(Registries.TIMELINE);
 		HolderGetter<WorldClock> clocks = context.lookup(Registries.WORLD_CLOCK);
 		context.register(TFDimension.TWILIGHT_DIM_TYPE, new DimensionType(
@@ -42,7 +45,7 @@ public class TFDimensionGenerator {
 			-32, // Minimum Y Level
 			32 + 256, // Height + Min Y = Max Y
 			32 + 256, // Logical Height
-			BlockTags.INFINIBURN_OVERWORLD, //infiburn tag
+			blocks.getOrThrow(BlockTags.INFINIBURN_OVERWORLD), //infiburn tag
 			0.01F, //ambient light
 			new DimensionType.MonsterSettings(UniformInt.of(0, 7), 7), //monster settings
 			DimensionType.Skybox.OVERWORLD, //skybox
@@ -71,6 +74,7 @@ public class TFDimensionGenerator {
 	}
 
 	public static NoiseGeneratorSettings makeNoiseSettings(BootstrapContext<NoiseGeneratorSettings> context, boolean skylight) {
+		HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
 		HolderGetter<DensityFunction> densityFunctions = context.lookup(Registries.DENSITY_FUNCTION);
 		DensityFunction finalDensity = new DensityFunctions.HolderHolder(densityFunctions.getOrThrow(skylight ? TFDensityFunctions.SKYLIGHT_TERRAIN : TFDensityFunctions.FORESTED_TERRAIN));
 
@@ -102,7 +106,7 @@ public class TFDimensionGenerator {
 				DensityFunctions.zero(),
 				DensityFunctions.zero()
 			),
-			TFSurfaceRules.tfSurface(),
+			TFSurfaceRules.tfSurface(biomes),
 			List.of(),
 			TFDimension.SEALEVEL,
 			false,

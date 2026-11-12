@@ -8,13 +8,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFStructureProcessors;
 import twilightforest.util.features.FeaturePlacers;
 
-public final class NagastoneVariants extends StructureProcessor {
+public final class NagastoneVariants implements StructureProcessor {
 	public static final NagastoneVariants INSTANCE = new NagastoneVariants();
 	public static final MapCodec<NagastoneVariants> CODEC = MapCodec.unit(() -> INSTANCE);
 
@@ -22,7 +21,7 @@ public final class NagastoneVariants extends StructureProcessor {
 	}
 
 	@Override
-	public StructureTemplate.StructureBlockInfo processBlock(LevelReader level, BlockPos targetPosition, BlockPos referencePos, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo processedBlockInfo, StructurePlaceSettings settings) {
+	public StructureTemplate.StructureBlockInfo processBlock(LevelReader level, BlockPos targetPosition, BlockPos referencePos, BlockPos templateRelativePos, StructureTemplate.StructureBlockInfo processedBlockInfo, StructurePlaceSettings settings) {
 		RandomSource random = settings.getRandom(processedBlockInfo.pos());
 
 		// We use nextBoolean in other processors so this lets us re-seed deterministically
@@ -47,7 +46,7 @@ public final class NagastoneVariants extends StructureProcessor {
 	}
 
 	@Override
-	public StructureProcessorType<?> getType() {
+	public MapCodec<? extends StructureProcessor> codec() {
 		return TFStructureProcessors.NAGASTONE_VARIANTS;
 	}
 }

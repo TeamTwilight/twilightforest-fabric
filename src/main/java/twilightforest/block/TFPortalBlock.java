@@ -67,7 +67,7 @@ public class TFPortalBlock extends HalfTransparentBlock implements LiquidBlockCo
 	}
 
 	private static void causeLightning(Level level, BlockPos pos, boolean destructive) {
-		LightningBolt bolt = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
+		LightningBolt bolt = new LightningBolt(EntityTypes.LIGHTNING_BOLT, level);
 		bolt.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
 		bolt.setVisualOnly(destructive);
 		level.addFreshEntity(bolt);

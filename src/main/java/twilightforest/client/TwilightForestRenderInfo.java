@@ -3,13 +3,11 @@ package twilightforest.client;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.state.level.LevelRenderState;
 import net.minecraft.client.renderer.state.level.SkyRenderState;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Matrix4fc;
 import twilightforest.TFCommon;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
@@ -23,41 +21,22 @@ public class TwilightForestRenderInfo {
 	@Nullable
 	private TFSkyRenderer skyRenderer;
 
-	// FIXME rewrite method under using new Effect System
-//	@Override
-//	public boolean isFoggyAt(int x, int y) { // true = nearFog
-//		Player player = Minecraft.getInstance().player;
-//
-//		if (player != null) {
-//			Optional<ResourceKey<Biome>> biome = player.level().getBiome(player.blockPosition()).unwrapKey();
-//			if (biome.isPresent()) {
-//				boolean spooky = biome.get() == TFBiomes.SPOOKY_FOREST;
-//
-//				if (player.position().y > 20 && !spooky) {
-//					return false; // If player is above the dark forest then no need to make it so spooky. The darkwood leaves cover everything as low as y42.
-//				}
-//
-//				return spooky || biome.get() == TFBiomes.DARK_FOREST || biome.get() == TFBiomes.DARK_FOREST_CENTER;
-//			}
-//		}
-//
-//		return false;
-//
-//		//Make the fog on these biomes much much darker, maybe pitch black even. Do we keep this harsher fog underground too?
-//	}
-
-	public boolean renderSky(LevelRenderState levelRenderState, SkyRenderState skyRenderState, Matrix4fc modelViewMatrix, Runnable setupFog) {
+	public boolean renderSky(LevelRenderState levelRenderState, SkyRenderState skyRenderState, Runnable setupFog) {
 		if (this.skyRenderer == null) {
 			this.skyRenderer = new TFSkyRenderer();
 		}
-		return skyRenderer.renderSky(levelRenderState, skyRenderState, modelViewMatrix, setupFog);
+		return skyRenderer.renderSky(levelRenderState, skyRenderState, setupFog);
 	}
 
-	public boolean renderSnowAndRain(MultiBufferSource bufferSource, Vec3 camPos) {
-		return TFWeatherRenderer.renderSnowAndRain(Minecraft.getInstance().level, Minecraft.getInstance().levelRenderer.ticks, Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false), camPos, bufferSource);
+	public boolean renderSnowAndRain(LevelRenderState levelRenderState, Vec3 camPos) {
+		ClientLevel level = Minecraft.getInstance().level;
+		if (level == null)
+			return false;
+
+		return TFWeatherRenderer.renderSnowAndRain(level, (int) (levelRenderState.gameTime & 131071L), Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false), camPos);
 	}
 
-	public boolean tickRain(ClientLevel level, int ticks, Camera camera) {
+	public boolean tickRain(ClientLevel level, long ticks, Camera camera) {
 		return TFWeatherRenderer.tickRain(level, ticks, camera.blockPosition());
 	}
 }

@@ -3,7 +3,7 @@ package twilightforest.datagen.data.tags;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.tags.KeyTagProvider;
+import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.TagKey;
@@ -14,7 +14,7 @@ import twilightforest.tags.TFDamageTypeTags;
 
 import java.util.concurrent.CompletableFuture;
 
-public class DamageTypeTagGenerator extends KeyTagProvider<DamageType> {
+public class DamageTypeTagGenerator extends TagsProvider<DamageType> {
 
 	public DamageTypeTagGenerator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> future) {
 		super(output, Registries.DAMAGE_TYPE, future);

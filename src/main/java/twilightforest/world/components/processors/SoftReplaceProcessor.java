@@ -7,13 +7,12 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFStructureProcessors;
 import twilightforest.tags.TFBlockTags;
 
-public final class SoftReplaceProcessor extends StructureProcessor {
+public final class SoftReplaceProcessor implements StructureProcessor {
 	public static final SoftReplaceProcessor INSTANCE = new SoftReplaceProcessor();
 	public static final MapCodec<SoftReplaceProcessor> CODEC = MapCodec.unit(INSTANCE);
 
@@ -21,7 +20,7 @@ public final class SoftReplaceProcessor extends StructureProcessor {
 	}
 
 	@Override
-	public StructureTemplate.@Nullable StructureBlockInfo processBlock(LevelReader level, BlockPos targetPosition, BlockPos referencePos, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo processedBlockInfo, StructurePlaceSettings settings) {
+	public StructureTemplate.@Nullable StructureBlockInfo processBlock(LevelReader level, BlockPos targetPosition, BlockPos referencePos, BlockPos templateRelativePos, StructureTemplate.StructureBlockInfo processedBlockInfo, StructurePlaceSettings settings) {
 		BlockState blockAt = level.getBlockState(processedBlockInfo.pos());
 
 		boolean isReplaceableAt = blockAt.canBeReplaced() || blockAt.is(TFBlockTags.WORLDGEN_REPLACEABLES);
@@ -45,7 +44,7 @@ public final class SoftReplaceProcessor extends StructureProcessor {
 	}
 
 	@Override
-	protected StructureProcessorType<?> getType() {
+	public MapCodec<? extends StructureProcessor> codec() {
 		return TFStructureProcessors.SOFT_REPLACE;
 	}
 }

@@ -4,7 +4,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.util.random.WeightedList;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
@@ -32,10 +32,10 @@ public class LabyrinthStructureGenerator {
         return new LabyrinthStructure(
             ControlledSpawns.ControlledSpawningConfig.firstIndexMonsters(WeightedList.<MobSpawnSettings.SpawnerData>builder()
                 .add(new MobSpawnSettings.SpawnerData(TFEntities.MINOTAUR, 2, 3), 20)
-                .add(new MobSpawnSettings.SpawnerData(EntityType.CAVE_SPIDER, 1, 2), 10)
-                .add(new MobSpawnSettings.SpawnerData(EntityType.CREEPER, 1, 2), 10)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.CAVE_SPIDER, 1, 2), 10)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.CREEPER, 1, 2), 10)
                 .add(new MobSpawnSettings.SpawnerData(TFEntities.MAZE_SLIME, 2, 4), 10)
-                .add(new MobSpawnSettings.SpawnerData(EntityType.ENDERMAN, 1, 2), 1)
+                .add(new MobSpawnSettings.SpawnerData(EntityTypes.ENDERMAN, 1, 2), 1)
                 .add(new MobSpawnSettings.SpawnerData(TFEntities.FIRE_BEETLE, 1, 2), 10)
                 .add(new MobSpawnSettings.SpawnerData(TFEntities.SLIME_BEETLE, 1, 2), 10)
                 .add(new MobSpawnSettings.SpawnerData(TFEntities.PINCH_BEETLE, 1, 1), 10)
@@ -47,7 +47,7 @@ public class LabyrinthStructureGenerator {
             true, Optional.of(BuiltInRegistries.MAP_DECORATION_TYPE.wrapAsHolder(TFMapDecorations.LABYRINTH)),
             new Structure.StructureSettings(
                 context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_LABYRINTH_BIOMES),
-                Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning
+                Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, _ -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder().build()))), // Landmarks have Controlled Mob spawning
                 GenerationStep.Decoration.UNDERGROUND_STRUCTURES,
                 TerrainAdjustment.BURY
             )

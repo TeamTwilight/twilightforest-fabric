@@ -63,19 +63,19 @@ public final class OverlayEventListeners {
 	}
 
 	private static boolean shouldRenderHostileMountHunger(Player player, Minecraft minecraft) {
-		return !minecraft.options.hideGui && minecraft.gameMode.canHurtPlayer() && player != null && HostileMountEventListeners.isRidingUnfriendly(player);
+		return !minecraft.gui.hud.isHidden() && minecraft.gameMode.canHurtPlayer() && player != null && HostileMountEventListeners.isRidingUnfriendly(player);
 	}
 
 	private static boolean shouldRenderShields(Player player, Minecraft minecraft) {
-		return player != null && !minecraft.options.hideGui && (minecraft.gameMode.canHurtPlayer() || TFConfig.showFortificationShieldIndicatorInCreative) && player.hasAttached(TFDataAttachments.FORTIFICATION_SHIELDS) && player.getAttachedOrCreate(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft() > 0 && TFConfig.showFortificationShieldIndicator;
+		return player != null && !minecraft.gui.hud.isHidden() && (minecraft.gameMode.canHurtPlayer() || TFConfig.showFortificationShieldIndicatorInCreative) && player.hasAttached(TFDataAttachments.FORTIFICATION_SHIELDS) && player.getAttachedOrCreate(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft() > 0 && TFConfig.showFortificationShieldIndicator;
 	}
 
 	public static void renderIndicator(GuiGraphicsExtractor graphics, int screenWidth, int screenHeight) {
 		Minecraft minecraft = Minecraft.getInstance();
 		LocalPlayer player = minecraft.player;
 		Gui gui = minecraft.gui;
-		if (player != null && !minecraft.options.hideGui && TFConfig.showQuestRamCrosshairIndicator) {
-			if (minecraft.options.getCameraType().isFirstPerson() && (minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || gui.canRenderCrosshairForSpectator(minecraft.hitResult)) && minecraft.crosshairPickEntity instanceof QuestRam ram) {
+		if (player != null && !minecraft.gui.hud.isHidden() && TFConfig.showQuestRamCrosshairIndicator) {
+			if (minecraft.options.getCameraType().isFirstPerson() && (minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || gui.hud.canRenderCrosshairForSpectator(minecraft.hitResult)) && minecraft.crosshairPickEntity instanceof QuestRam ram) {
 				ItemStack stack = player.getInventory().getItem(player.getInventory().getSelectedSlot());
 				if (!stack.isEmpty()) {
 					for (var questEntry : questingRamCurrentContext.getContext().questItems().entrySet()) {
@@ -102,7 +102,7 @@ public final class OverlayEventListeners {
 		if (shouldRenderHostileMountHunger(player, minecraft)) {
 			int xPos = graphics.guiWidth() / 2 + 91;
 			int yPos = graphics.guiHeight() - HudStatusBarHeightRegistry.getHeight(HOSTILE_MOUNT_HUNGER_BAR);
-			gui.extractFood(graphics, player, yPos, xPos);
+			gui.hud.extractFood(graphics, player, yPos, xPos);
 		}
 	}
 
@@ -121,7 +121,7 @@ public final class OverlayEventListeners {
 		Minecraft minecraft = Minecraft.getInstance();
 		LocalPlayer player = minecraft.player;
 		Gui gui = minecraft.gui;
-		if (player != null && !minecraft.options.hideGui && !minecraft.debugEntries.isOverlayVisible()) {
+		if (player != null && !minecraft.gui.hud.isHidden() && !minecraft.debugEntries.isOverlayVisible()) {
 			if (player.isHolding(TFItems.ORE_METER)) {
 				InteractionHand handToUse = player.getItemInHand(InteractionHand.MAIN_HAND).is(TFItems.ORE_METER) ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
 				ItemStack selectedMeter = player.getItemInHand(handToUse);

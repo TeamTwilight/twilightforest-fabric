@@ -3,30 +3,32 @@ package twilightforest.datagen.data.tags;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalEntityTypeTags;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.data.tags.EntityTypeTagsProvider;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import twilightforest.tags.TFEntityTypeTags;
 import twilightforest.init.TFEntities;
 
 import java.util.concurrent.CompletableFuture;
 
-public class EntityTypeTagGenerator extends EntityTypeTagsProvider {
+public class EntityTypeTagGenerator extends TagsProvider<EntityType<?>> {
 
 	public EntityTypeTagGenerator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
-		super(output, provider);
+		super(output, Registries.ENTITY_TYPE, provider);
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	protected void addTags(HolderLookup.Provider provider) {
-		super.addTags(provider);
-		this.tag(EntityTypeTags.SKELETONS).add(TFEntities.SKELETON_DRUID, TFEntities.LICH, TFEntities.KNIGHT_PHANTOM);
-		this.tag(EntityTypeTags.ZOMBIES).add(TFEntities.LICH_MINION, TFEntities.LOYAL_ZOMBIE, TFEntities.RISING_ZOMBIE);
-		this.tag(EntityTypeTags.UNDEAD).add(TFEntities.WRAITH);
-		this.tag(EntityTypeTags.BURN_IN_DAYLIGHT).add(TFEntities.SKELETON_DRUID);
-		this.tag(EntityTypeTags.ARROWS).add(TFEntities.ICE_ARROW, TFEntities.SEEKER_ARROW);
+		this.tag(EntityTypeTags.SKELETONS).twilightforest$add(TFEntities.SKELETON_DRUID, TFEntities.LICH, TFEntities.KNIGHT_PHANTOM);
+		this.tag(EntityTypeTags.ZOMBIES).twilightforest$add(TFEntities.LICH_MINION, TFEntities.LOYAL_ZOMBIE, TFEntities.RISING_ZOMBIE);
+		this.tag(EntityTypeTags.UNDEAD).twilightforest$add(TFEntities.WRAITH);
+		this.tag(EntityTypeTags.BURN_IN_DAYLIGHT).twilightforest$add(TFEntities.SKELETON_DRUID);
+		this.tag(EntityTypeTags.ARROWS).twilightforest$add(TFEntities.ICE_ARROW, TFEntities.SEEKER_ARROW);
 
-		this.tag(EntityTypeTags.IMPACT_PROJECTILES).add(
+		this.tag(EntityTypeTags.IMPACT_PROJECTILES).twilightforest$add(
 			TFEntities.NATURE_BOLT,
 			TFEntities.LICH_BOLT,
 			TFEntities.WAND_BOLT,
@@ -39,7 +41,7 @@ public class EntityTypeTagGenerator extends EntityTypeTagsProvider {
 			TFEntities.ICE_SNOWBALL,
 			TFEntities.CHAIN_BLOCK);
 
-		this.tag(EntityTypeTags.POWDER_SNOW_WALKABLE_MOBS).add(
+		this.tag(EntityTypeTags.POWDER_SNOW_WALKABLE_MOBS).twilightforest$add(
 			TFEntities.PENGUIN,
 			TFEntities.STABLE_ICE_CORE,
 			TFEntities.UNSTABLE_ICE_CORE,
@@ -54,7 +56,7 @@ public class EntityTypeTagGenerator extends EntityTypeTagsProvider {
 			TFEntities.MOSQUITO_SWARM,
 			TFEntities.TOWERWOOD_BORER);
 
-		this.tag(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES).add(
+		this.tag(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES).twilightforest$add(
 			TFEntities.PENGUIN,
 			TFEntities.STABLE_ICE_CORE,
 			TFEntities.UNSTABLE_ICE_CORE,
@@ -66,10 +68,10 @@ public class EntityTypeTagGenerator extends EntityTypeTagsProvider {
 			TFEntities.YETI
 		).addTag(TFEntityTypeTags.BOSSES);
 
-		this.tag(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES).add(TFEntities.FIRE_BEETLE);
+		this.tag(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES).twilightforest$add(TFEntities.FIRE_BEETLE);
 		this.tag(EntityTypeTags.CAN_BREATHE_UNDER_WATER).addTag(TFEntityTypeTags.BOSSES);
-		this.tag(EntityTypeTags.FROG_FOOD).add(TFEntities.MAZE_SLIME);
-		this.tag(EntityTypeTags.FALL_DAMAGE_IMMUNE).add(
+		this.tag(EntityTypeTags.FROG_FOOD).twilightforest$add(TFEntities.MAZE_SLIME);
+		this.tag(EntityTypeTags.FALL_DAMAGE_IMMUNE).twilightforest$add(
 			TFEntities.NAGA,
 			TFEntities.SQUIRREL,
 			TFEntities.WRAITH,
@@ -89,8 +91,8 @@ public class EntityTypeTagGenerator extends EntityTypeTagsProvider {
 			TFEntities.CARMINITE_GHASTGUARD,
 			TFEntities.TINY_BIRD);
 
-		this.tag(EntityTypeTags.NON_CONTROLLING_RIDER).add(TFEntities.MAZE_SLIME);
-		this.tag(EntityTypeTags.ARTHROPOD).add(
+		this.tag(EntityTypeTags.NON_CONTROLLING_RIDER).twilightforest$add(TFEntities.MAZE_SLIME);
+		this.tag(EntityTypeTags.ARTHROPOD).twilightforest$add(
 			TFEntities.CARMINITE_BROODLING,
 			TFEntities.FIRE_BEETLE,
 			TFEntities.HEDGE_SPIDER,
@@ -102,10 +104,10 @@ public class EntityTypeTagGenerator extends EntityTypeTagsProvider {
 			TFEntities.TOWERWOOD_BORER,
 			TFEntities.MOSQUITO_SWARM);
 
-		this.tag(EntityTypeTags.REDIRECTABLE_PROJECTILE).add(TFEntities.HYDRA_MORTAR, TFEntities.LICH_BOLT);
-		this.tag(EntityTypeTags.IMMUNE_TO_INFESTED).add(TFEntities.TOWERWOOD_BORER);
-		this.tag(EntityTypeTags.IMMUNE_TO_OOZING).add(TFEntities.MAZE_SLIME);
-		this.tag(EntityTypeTags.BOAT).add(
+		this.tag(EntityTypeTags.REDIRECTABLE_PROJECTILE).twilightforest$add(TFEntities.HYDRA_MORTAR, TFEntities.LICH_BOLT);
+		this.tag(EntityTypeTags.IMMUNE_TO_INFESTED).twilightforest$add(TFEntities.TOWERWOOD_BORER);
+		this.tag(EntityTypeTags.IMMUNE_TO_OOZING).twilightforest$add(TFEntities.MAZE_SLIME);
+		this.tag(EntityTypeTags.BOAT).twilightforest$add(
 			TFEntities.TWILIGHT_OAK_BOAT,
 			TFEntities.CANOPY_BOAT,
 			TFEntities.MANGROVE_BOAT,
@@ -115,7 +117,7 @@ public class EntityTypeTagGenerator extends EntityTypeTagsProvider {
 			TFEntities.MINING_BOAT,
 			TFEntities.SORTING_BOAT);
 
-		this.tag(EntityTypeTags.FOLLOWABLE_FRIENDLY_MOBS).add(
+		this.tag(EntityTypeTags.FOLLOWABLE_FRIENDLY_MOBS).twilightforest$add(
 			TFEntities.DEER,
 			TFEntities.TINY_BIRD,
 			TFEntities.RAVEN,
@@ -126,7 +128,7 @@ public class EntityTypeTagGenerator extends EntityTypeTagsProvider {
 			TFEntities.SQUIRREL
 		);
 
-		this.tag(EntityTypeTags.CANNOT_BE_PUSHED_ONTO_BOATS).add(
+		this.tag(EntityTypeTags.CANNOT_BE_PUSHED_ONTO_BOATS).twilightforest$add(
 			TFEntities.ADHERENT,
 			TFEntities.CARMINITE_GHASTLING,
 			TFEntities.CARMINITE_GHASTGUARD,
@@ -138,7 +140,7 @@ public class EntityTypeTagGenerator extends EntityTypeTagsProvider {
 			TFEntities.WRAITH
 		).addTag(TFEntityTypeTags.BOSSES);
 
-		this.tag(TFEntityTypeTags.BOSSES).add(
+		this.tag(TFEntityTypeTags.BOSSES).twilightforest$add(
 			TFEntities.NAGA,
 			TFEntities.LICH,
 			TFEntities.MINOSHROOM,
@@ -152,19 +154,19 @@ public class EntityTypeTagGenerator extends EntityTypeTagsProvider {
 
 		this.tag(TFEntityTypeTags.LICH_POPPABLES)
 			.addTag(EntityTypeTags.SKELETONS)
-			.add(EntityType.ZOMBIE, EntityType.ENDERMAN, EntityType.SPIDER, EntityType.CREEPER, TFEntities.SWARM_SPIDER)
+			.twilightforest$add(EntityTypes.ZOMBIE, EntityTypes.ENDERMAN, EntityTypes.SPIDER, EntityTypes.CREEPER, TFEntities.SWARM_SPIDER)
 			.removeTag(ConventionalEntityTypeTags.BOSSES);
 
-		this.tag(TFEntityTypeTags.LIFEDRAIN_DROPS_NO_FLESH).addTag(EntityTypeTags.SKELETONS).addTag(EntityTypeTags.FROG_FOOD).add(
-			EntityType.BLAZE,
-			EntityType.BREEZE,
-			EntityType.IRON_GOLEM,
-			EntityType.PHANTOM,
-			EntityType.SHULKER,
-			EntityType.SKELETON_HORSE,
-			EntityType.SNOW_GOLEM,
-			EntityType.VEX,
-			EntityType.WITHER,
+		this.tag(TFEntityTypeTags.LIFEDRAIN_DROPS_NO_FLESH).addTag(EntityTypeTags.SKELETONS).addTag(EntityTypeTags.FROG_FOOD).twilightforest$add(
+			EntityTypes.BLAZE,
+			EntityTypes.BREEZE,
+			EntityTypes.IRON_GOLEM,
+			EntityTypes.PHANTOM,
+			EntityTypes.SHULKER,
+			EntityTypes.SKELETON_HORSE,
+			EntityTypes.SNOW_GOLEM,
+			EntityTypes.VEX,
+			EntityTypes.WITHER,
 			TFEntities.CARMINITE_GOLEM,
 			TFEntities.DEATH_TOME,
 			TFEntities.ICE_CRYSTAL,
@@ -177,17 +179,17 @@ public class EntityTypeTagGenerator extends EntityTypeTagsProvider {
 			TFEntities.WRAITH);
 
 		// These entities forcefully take players from the entity they're riding
-		this.tag(TFEntityTypeTags.RIDES_OBSTRUCT_SNATCHING).add(TFEntities.PINCH_BEETLE, TFEntities.YETI, TFEntities.ALPHA_YETI);
-		this.tag(TFEntityTypeTags.DONT_KILL_BUGS).add(TFEntities.MOONWORM_SHOT);
-		this.tag(TFEntityTypeTags.SORTABLE_ENTITIES).add(
-			EntityType.CHEST_MINECART,
-			EntityType.HOPPER_MINECART,
-			EntityType.LLAMA,
-			EntityType.TRADER_LLAMA,
-			EntityType.DONKEY,
-			EntityType.MULE);
+		this.tag(TFEntityTypeTags.RIDES_OBSTRUCT_SNATCHING).twilightforest$add(TFEntities.PINCH_BEETLE, TFEntities.YETI, TFEntities.ALPHA_YETI);
+		this.tag(TFEntityTypeTags.DONT_KILL_BUGS).twilightforest$add(TFEntities.MOONWORM_SHOT);
+		this.tag(TFEntityTypeTags.SORTABLE_ENTITIES).twilightforest$add(
+			EntityTypes.CHEST_MINECART,
+			EntityTypes.HOPPER_MINECART,
+			EntityTypes.LLAMA,
+			EntityTypes.TRADER_LLAMA,
+			EntityTypes.DONKEY,
+			EntityTypes.MULE);
 
-		this.tag(TFEntityTypeTags.MULTIPLAYER_INCLUSIVE_ENTITIES).add(
+		this.tag(TFEntityTypeTags.MULTIPLAYER_INCLUSIVE_ENTITIES).twilightforest$add(
 			TFEntities.NAGA,
 			TFEntities.LICH,
 			TFEntities.MINOSHROOM,
@@ -199,35 +201,35 @@ public class EntityTypeTagGenerator extends EntityTypeTagsProvider {
 		);
 
 		this.tag(ConventionalEntityTypeTags.BOSSES).addTag(TFEntityTypeTags.BOSSES);
-		this.tag(TFEntityTypeTags.LICH_DEFLECTS_PHASE_2).add(TFEntities.WAND_BOLT, TFEntities.LICH_BOLT, TFEntities.LICH_BOMB);
+		this.tag(TFEntityTypeTags.LICH_DEFLECTS_PHASE_2).twilightforest$add(TFEntities.WAND_BOLT, TFEntities.LICH_BOLT, TFEntities.LICH_BOMB);
 
-		this.tag(TFEntityTypeTags.HEDGE_DAMAGE_IMMUNE).add(
-			EntityType.SPIDER,
-			EntityType.CAVE_SPIDER,
+		this.tag(TFEntityTypeTags.HEDGE_DAMAGE_IMMUNE).twilightforest$add(
+			EntityTypes.SPIDER,
+			EntityTypes.CAVE_SPIDER,
 			TFEntities.HEDGE_SPIDER,
 			TFEntities.SWARM_SPIDER,
 			TFEntities.KING_SPIDER,
 			TFEntities.CARMINITE_BROODLING,
-			EntityType.ITEM
+			EntityTypes.ITEM
 		);
 
-		this.tag(TFEntityTypeTags.PROGRESSION_LOCK_VULNERABLE).add(TFEntities.KOBOLD);
+		this.tag(TFEntityTypeTags.PROGRESSION_LOCK_VULNERABLE).twilightforest$add(TFEntities.KOBOLD);
 
 		// Mod Compatibility Tags
 
-		this.tag(TFEntityTypeTags.AC_RESISTS_ACID).add(TFEntities.HYDRA, TFEntities.NAGA);
+		this.tag(TFEntityTypeTags.AC_RESISTS_ACID).twilightforest$add(TFEntities.HYDRA, TFEntities.NAGA);
 		this.tag(TFEntityTypeTags.AC_RESISTS_MAGNETS).addTag(TFEntityTypeTags.BOSSES);
-		this.tag(TFEntityTypeTags.AC_RESISTS_TREMORSAURUS_ROAR).add(TFEntities.HYDRA, TFEntities.UR_GHAST);
+		this.tag(TFEntityTypeTags.AC_RESISTS_TREMORSAURUS_ROAR).twilightforest$add(TFEntities.HYDRA, TFEntities.UR_GHAST);
 
-		this.tag(TFEntityTypeTags.AETHER_DEFLECTABLE_PROJECTILES).add(
+		this.tag(TFEntityTypeTags.AETHER_DEFLECTABLE_PROJECTILES).twilightforest$add(
 			TFEntities.NATURE_BOLT,
 			TFEntities.LICH_BOLT,
 			TFEntities.WAND_BOLT,
 			TFEntities.SLIME_BLOB,
 			TFEntities.ICE_SNOWBALL);
 
-		this.tag(TFEntityTypeTags.AETHER_FIRE_MOB).add(TFEntities.FIRE_BEETLE);
-		this.tag(TFEntityTypeTags.AETHER_PIGS).add(TFEntities.BOAR);
+		this.tag(TFEntityTypeTags.AETHER_FIRE_MOB).twilightforest$add(TFEntities.FIRE_BEETLE);
+		this.tag(TFEntityTypeTags.AETHER_PIGS).twilightforest$add(TFEntities.BOAR);
 
 		this.tag(TFEntityTypeTags.AN_JAR_BLACKLIST).addTag(TFEntityTypeTags.BOSSES);
 		this.tag(TFEntityTypeTags.AN_JAR_RELEASE_BLACKLIST).addTag(TFEntityTypeTags.BOSSES);

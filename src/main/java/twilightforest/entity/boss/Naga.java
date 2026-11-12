@@ -554,7 +554,7 @@ public class Naga extends BaseTFBoss implements IMultiPartEntity {
 	public void tickDeathAnimation() {
 		if (this.deathTime >= DEATH_ANIMATION_DURATION) {
             Vec3 start = this.position().add(0.0D, this.getBbHeight() * 0.5D, 0.0D);
-            Vec3 end = EntityUtil.bossChestLocation(this).getCenter();
+            Vec3 end = Vec3.atCenterOf(EntityUtil.bossChestLocation(this));
             Vec3 diff = end.subtract(start);
 
             double angle = Math.atan2(end.z - start.z, end.x - start.x) * Mth.RAD_TO_DEG + 180D;

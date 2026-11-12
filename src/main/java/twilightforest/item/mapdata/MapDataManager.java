@@ -3,6 +3,7 @@ package twilightforest.item.mapdata;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
@@ -47,13 +48,13 @@ public final class MapDataManager {
 
 	public static final Map<Either<TagKey<Block>, Block>, MapColor> ORE_MAP_ORE_COLOR = Map.ofEntries(
 		Map.entry(Either.left(BlockTags.COPPER_ORES), MapColor.COLOR_ORANGE),
-		Map.entry(Either.left(BlockTags.COAL_ORES), MapColor.COLOR_BLACK),
+		Map.entry(Either.left(ConventionalBlockTags.COAL_ORES), MapColor.COLOR_BLACK),
 		Map.entry(Either.left(BlockTags.IRON_ORES),MapColor.RAW_IRON),
-		Map.entry(Either.left(BlockTags.LAPIS_ORES), MapColor.LAPIS),
+		Map.entry(Either.left(ConventionalBlockTags.LAPIS_ORES), MapColor.LAPIS),
 		Map.entry(Either.left(BlockTags.GOLD_ORES), MapColor.GOLD),
-		Map.entry(Either.left(BlockTags.REDSTONE_ORES), MapColor.COLOR_RED),
-		Map.entry(Either.left(BlockTags.DIAMOND_ORES), MapColor.DIAMOND),
-		Map.entry(Either.left(BlockTags.EMERALD_ORES), MapColor.EMERALD),
+		Map.entry(Either.left(ConventionalBlockTags.REDSTONE_ORES), MapColor.COLOR_RED),
+		Map.entry(Either.left(ConventionalBlockTags.DIAMOND_ORES), MapColor.DIAMOND),
+		Map.entry(Either.left(ConventionalBlockTags.EMERALD_ORES), MapColor.EMERALD),
 		Map.entry(Either.right(Blocks.ANCIENT_DEBRIS), MapColor.TERRACOTTA_BROWN)
 	);
 

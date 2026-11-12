@@ -32,7 +32,7 @@ public final class LockedBiomeToastEventListeners {
 			if (restriction.isPresent() && restriction.get().lockedBiomeToast() != null) {
 				timeUntilToast--;
 				if (!shownToast && timeUntilToast <= 0) {
-					Minecraft.getInstance().getToastManager().addToast(new LockedBiomeToast(restriction.get().lockedBiomeToast().create()));
+					Minecraft.getInstance().gui.toastManager().addToast(new LockedBiomeToast(restriction.get().lockedBiomeToast().create()));
 					shownToast = true;
 				}
 			} else {

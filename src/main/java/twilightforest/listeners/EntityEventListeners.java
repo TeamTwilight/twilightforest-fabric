@@ -105,7 +105,7 @@ public final class EntityEventListeners {
 	public static void ominousFireConversion(LivingDeathEvent event) {
 		if (!event.isCanceled() && event.getSource().is(TFDamageTypes.OMINOUS_FIRE)) {
 			if (event.getEntity() instanceof ServerPlayer player) {
-				var zombie = EntityType.ZOMBIE.create(player.level(), EntitySpawnReason.CONVERSION);
+				var zombie = EntityTypes.ZOMBIE.create(player.level(), EntitySpawnReason.CONVERSION);
 				if (zombie != null) {
 					zombie.setAttached(TFDataAttachments.ZOMBIFIED_PLAYER, player.getGameProfile());
 					zombie.setCustomName(player.getName());

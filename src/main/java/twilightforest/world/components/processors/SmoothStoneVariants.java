@@ -7,13 +7,12 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFStructureProcessors;
 import twilightforest.util.features.FeaturePlacers;
 
-public class SmoothStoneVariants extends StructureProcessor {
+public class SmoothStoneVariants implements StructureProcessor {
 	public static final SmoothStoneVariants INSTANCE = new SmoothStoneVariants();
 	public static final MapCodec<SmoothStoneVariants> CODEC = MapCodec.unit(() -> INSTANCE);
 
@@ -21,7 +20,7 @@ public class SmoothStoneVariants extends StructureProcessor {
 	}
 
 	@Override
-	public StructureTemplate.@Nullable StructureBlockInfo processBlock(LevelReader level, BlockPos targetPosition, BlockPos referencePos, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo processedBlockInfo, StructurePlaceSettings settings) {
+	public StructureTemplate.@Nullable StructureBlockInfo processBlock(LevelReader level, BlockPos targetPosition, BlockPos referencePos, BlockPos templateRelativePos, StructureTemplate.StructureBlockInfo processedBlockInfo, StructurePlaceSettings settings) {
 		RandomSource random = settings.getRandom(processedBlockInfo.pos());
 
 		// We use nextBoolean in other processors so this lets us re-seed deterministically
@@ -37,7 +36,7 @@ public class SmoothStoneVariants extends StructureProcessor {
 	}
 
 	@Override
-	protected StructureProcessorType<?> getType() {
+	public MapCodec<? extends StructureProcessor> codec() {
 		return TFStructureProcessors.SMOOTH_STONE_VARIANTS;
 	}
 }

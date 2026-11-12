@@ -13,10 +13,7 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LightningBolt;
-import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -72,7 +69,7 @@ public class UrGhast extends BaseTFBoss {
 		this.noPhysics = true;
 		this.setInTantrum(false);
 		this.xpReward = 317;
-		this.moveControl = new NoClipMoveControl(this);
+		this.moveControl = new NoClipMoveControl<>(this);
 	}
 
 	public void setInTrap() {
@@ -153,7 +150,7 @@ public class UrGhast extends BaseTFBoss {
 	}
 
 	@Override
-	public void knockback(double strength, double xRatio, double zRatio) {
+	public void knockback(double power, double xd, double zd, DamageSource source, float damage) {
 		// Don't take knockback
 	}
 
@@ -198,7 +195,7 @@ public class UrGhast extends BaseTFBoss {
 	private void startTantrum() {
 		this.setInTantrum(true);
 		if (this.level() instanceof ServerLevel serverLevel) {
-			LightningBolt lightningbolt = EntityType.LIGHTNING_BOLT.create(serverLevel, EntitySpawnReason.MOB_SUMMONED);
+			LightningBolt lightningbolt = EntityTypes.LIGHTNING_BOLT.create(serverLevel, EntitySpawnReason.MOB_SUMMONED);
 			if (lightningbolt != null) {
 				BlockPos blockpos = serverLevel.findLightningTargetAround(BlockPos.containing(this.position().add(new Vec3(18.0D, 0.0D, 0.0D).yRot((float) Math.toRadians(this.getRandom().nextInt(360))))));
 				lightningbolt.snapTo(Vec3.atBottomCenterOf(blockpos));
@@ -243,7 +240,7 @@ public class UrGhast extends BaseTFBoss {
 		int rangeY = 8;
 
 		// lightning strike
-		LightningBolt bolt = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
+		LightningBolt bolt = new LightningBolt(EntityTypes.LIGHTNING_BOLT, level);
 		bolt.setPos(x, y + 4, z);
 		bolt.setVisualOnly(true);
 		level.addFreshEntity(bolt);
@@ -381,7 +378,7 @@ public class UrGhast extends BaseTFBoss {
 		int trapsWithEnoughGhasts = 0;
 
 		for (BlockPos trap : this.getTrapLocations()) {
-			AABB aabb = new AABB(trap.getCenter(), trap.offset(1, 1, 1).getCenter()).inflate(8D, 16D, 8D);
+			AABB aabb = new AABB(Vec3.atCenterOf(trap), Vec3.atCenterOf(trap.offset(1, 1, 1))).inflate(8D, 16D, 8D);
 
 			List<CarminiteGhastling> nearbyGhasts = this.level().getEntitiesOfClass(CarminiteGhastling.class, aabb);
 
@@ -439,7 +436,7 @@ public class UrGhast extends BaseTFBoss {
 		super.die(cause);
 		// mark the tower as defeated
 		if (this.level() instanceof ServerLevel serverLevel) {
-			LightningBolt lightningbolt = EntityType.LIGHTNING_BOLT.create(serverLevel, EntitySpawnReason.MOB_SUMMONED);
+			LightningBolt lightningbolt = EntityTypes.LIGHTNING_BOLT.create(serverLevel, EntitySpawnReason.MOB_SUMMONED);
 			if (lightningbolt != null) {
 				lightningbolt.snapTo(this.position().add(0.0D, this.getBbHeight() * 0.5F, 0.0D));
 				lightningbolt.setVisualOnly(true);

@@ -1,6 +1,5 @@
 package twilightforest.client.overlay;
 
-import com.mojang.blaze3d.platform.Window;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -25,7 +24,7 @@ public class ItemDisplayOverlay {
 		Minecraft minecraft = Minecraft.getInstance();
 		Gui gui = minecraft.gui;
 
-		if (player == null || gui.getDebugOverlay().showDebugScreen() || minecraft.options.hideGui)
+		if (player == null || gui.hud.getDebugOverlay().showDebugScreen() || minecraft.gui.hud.isHidden())
 			return;
 
 		ItemStack goggles = player.getItemBySlot(EquipmentSlot.HEAD);

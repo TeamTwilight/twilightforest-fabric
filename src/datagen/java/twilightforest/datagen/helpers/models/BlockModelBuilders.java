@@ -286,7 +286,7 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		Identifier basalt = TFModelTemplates.CASKET_SOLID.create(TFCommon.prefix("block/casket_basalt"), new TextureMapping().put(TextureSlot.TOP, new Material(Identifier.withDefaultNamespace("block/basalt_top"))).put(TextureSlot.SIDE, new Material(Identifier.withDefaultNamespace("block/basalt_side"))), this.modelOutput);
 
 		this.casketBlockAndItemModels(TFBlocks.KEEPSAKE_CASKET, _ -> ItemModelUtils.specialModel(TFCommon.prefix("item/keepsake_casket"), new KeepsakeCasketSpecialRenderer.Unbaked()), this.createParticleOnlyBlockModel(TFBlocks.KEEPSAKE_CASKET, Blocks.NETHERITE_BLOCK), obsidian, stone, basalt);
-		this.casketBlockAndItemModels(TFBlocks.SKULL_CHEST, _ -> ItemModelUtils.specialModel(TFCommon.prefix("item/skull_chest"), new SkullChestSpecialRenderer.Unbaked()), this.createParticleOnlyBlockModel(TFBlocks.SKULL_CHEST, Blocks.LIGHT_GRAY_CONCRETE_POWDER), obsidian, stone, basalt);
+		this.casketBlockAndItemModels(TFBlocks.SKULL_CHEST, _ -> ItemModelUtils.specialModel(TFCommon.prefix("item/skull_chest"), new SkullChestSpecialRenderer.Unbaked()), this.createParticleOnlyBlockModel(TFBlocks.SKULL_CHEST, Blocks.CONCRETE_POWDER.lightGray()), obsidian, stone, basalt);
 	}
 
 	private <B extends Block> void casketBlockAndItemModels(B block, Function<B, ItemModel.Unbaked> itemModel, MultiVariant particleOnlyBlockModel, Identifier obsidian, Identifier stone, Identifier basalt) {
@@ -847,7 +847,7 @@ public abstract class BlockModelBuilders extends WoodBlockBuilders {
 		this.registerSimpleTintedItemModel(base, auroras[0], ItemModelUtils.constantTint(-16711758));
 
 		Block pillar = TFBlocks.AURORA_PILLAR;
-		this.wrapTintedBlockItem(pillar, ItemModelUtils.constantTint(-9181501), block -> this.blockStateOutput.accept(createAxisAlignedPillarBlock(block, plainVariant(TexturedModel.createDefault(block1 -> new TextureMapping()
+		this.wrapTintedBlockItem(pillar, ItemModelUtils.constantTint(-9181501), block -> this.blockStateOutput.accept(createAxisAlignedPillarBlock(block, plainVariant(TexturedModel.createDefault(_ -> new TextureMapping()
 				.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block))
 				.put(TextureSlot.TOP, TextureMapping.getBlockTexture(block, "_top"))
 				.put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(block, "_top")), TFModelTemplates.TINTED_CUBE_BOTTOM_TOP)

@@ -1,9 +1,5 @@
 {
   "values": [
-    "minecraft:stray",
-    "minecraft:polar_bear",
-    "minecraft:snow_golem",
-    "minecraft:wither",
     "twilightforest:penguin",
     "twilightforest:stable_ice_core",
     "twilightforest:unstable_ice_core",

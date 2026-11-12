@@ -5,8 +5,8 @@ import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.data.tags.TagAppender;
+import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -18,22 +18,41 @@ import twilightforest.tags.TFBlockTags;
 
 import java.util.concurrent.CompletableFuture;
 
-public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
+public class BlockTagGenerator extends TagsProvider<Block> {
 
 	public BlockTagGenerator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> future) {
-		super(output, Registries.BLOCK, future, block -> block.builtInRegistryHolder().key());
+		super(output, Registries.BLOCK, future);
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	protected void addTags(HolderLookup.Provider provider) {
 		new BlockItemTagGenerator() {
 			@Override
-			protected TagAppender<Block, Block> tag(TagKey<Block> blockTag, TagKey<Item> itemTag) {
+			protected TagAppender<Block> tag(TagKey<Block> blockTag, TagKey<Item> itemTag) {
 				return BlockTagGenerator.this.tag(blockTag);
 			}
 		}.run();
 
-		this.tag(BlockTags.FLOWER_POTS).add(
+		this.tag(BlockTags.SLABS).twilightforest$add(TFBlocks.AURORA_SLAB);
+
+		this.tag(BlockTags.STAIRS).twilightforest$add(
+			TFBlocks.CASTLE_BRICK_STAIRS,
+			TFBlocks.WORN_CASTLE_BRICK_STAIRS,
+			TFBlocks.CRACKED_CASTLE_BRICK_STAIRS,
+			TFBlocks.MOSSY_CASTLE_BRICK_STAIRS,
+			TFBlocks.ENCASED_CASTLE_BRICK_STAIRS,
+			TFBlocks.BOLD_CASTLE_BRICK_STAIRS,
+			TFBlocks.NAGASTONE_STAIRS_LEFT,
+			TFBlocks.NAGASTONE_STAIRS_RIGHT,
+			TFBlocks.MOSSY_NAGASTONE_STAIRS_LEFT,
+			TFBlocks.MOSSY_NAGASTONE_STAIRS_RIGHT,
+			TFBlocks.CRACKED_NAGASTONE_STAIRS_LEFT,
+			TFBlocks.CRACKED_NAGASTONE_STAIRS_RIGHT);
+
+		this.tag(BlockTags.SMALL_FLOWERS).twilightforest$add(TFBlocks.THORN_ROSE);
+
+		this.tag(BlockTags.FLOWER_POTS).twilightforest$add(
 			TFBlocks.POTTED_TWILIGHT_OAK_SAPLING,
 			TFBlocks.POTTED_CANOPY_SAPLING,
 			TFBlocks.POTTED_MANGROVE_SAPLING,
@@ -51,7 +70,7 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 			TFBlocks.POTTED_GREEN_THORN,
 			TFBlocks.POTTED_DEAD_THORN);
 
-		this.tag(BlockTags.WALL_SIGNS).add(
+		this.tag(BlockTags.WALL_SIGNS).twilightforest$add(
 			TFBlocks.TWILIGHT_WALL_SIGN,
 			TFBlocks.CANOPY_WALL_SIGN,
 			TFBlocks.MANGROVE_WALL_SIGN,
@@ -61,7 +80,7 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 			TFBlocks.MINING_WALL_SIGN,
 			TFBlocks.SORTING_WALL_SIGN);
 
-		this.tag(BlockTags.WALL_HANGING_SIGNS).add(
+		this.tag(BlockTags.WALL_HANGING_SIGNS).twilightforest$add(
 			TFBlocks.TWILIGHT_OAK_WALL_HANGING_SIGN,
 			TFBlocks.CANOPY_WALL_HANGING_SIGN,
 			TFBlocks.MANGROVE_WALL_HANGING_SIGN,
@@ -71,28 +90,28 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 			TFBlocks.MINING_WALL_HANGING_SIGN,
 			TFBlocks.SORTING_WALL_HANGING_SIGN);
 
-		this.tag(BlockTags.DRAGON_IMMUNE).addTag(TFBlockTags.COMMON_PROTECTIONS).add(TFBlocks.GIANT_OBSIDIAN, TFBlocks.FAKE_DIAMOND, TFBlocks.FAKE_GOLD);
-		this.tag(BlockTags.WITHER_IMMUNE).addTag(TFBlockTags.COMMON_PROTECTIONS).add(TFBlocks.FAKE_DIAMOND, TFBlocks.FAKE_GOLD);
-		this.tag(BlockTags.PORTALS).add(TFBlocks.TWILIGHT_PORTAL);
-		this.tag(BlockTags.FIRE).add(TFBlocks.OMINOUS_FIRE);
+		this.tag(BlockTags.DRAGON_IMMUNE).addTag(TFBlockTags.COMMON_PROTECTIONS).twilightforest$add(TFBlocks.GIANT_OBSIDIAN, TFBlocks.FAKE_DIAMOND, TFBlocks.FAKE_GOLD);
+		this.tag(BlockTags.WITHER_IMMUNE).addTag(TFBlockTags.COMMON_PROTECTIONS).twilightforest$add(TFBlocks.FAKE_DIAMOND, TFBlocks.FAKE_GOLD);
+		this.tag(BlockTags.PORTALS).twilightforest$add(TFBlocks.TWILIGHT_PORTAL);
+		this.tag(BlockTags.FIRE).twilightforest$add(TFBlocks.OMINOUS_FIRE);
 		this.tag(BlockTags.BEACON_BASE_BLOCKS).addTag(TFBlockTags.STORAGE_BLOCKS_FIERY).addTag(TFBlockTags.STORAGE_BLOCKS_IRONWOOD).addTag(TFBlockTags.STORAGE_BLOCKS_KNIGHTMETAL).addTag(TFBlockTags.STORAGE_BLOCKS_STEELEAF);
-		this.tag(BlockTags.CLIMBABLE).add(TFBlocks.IRON_LADDER, TFBlocks.ROPE, TFBlocks.ROOT_STRAND).addTag(TFBlockTags.HOLLOW_LOGS_CLIMBABLE);
-		this.tag(BlockTags.STRIDER_WARM_BLOCKS).add(TFBlocks.FIERY_BLOCK);
+		this.tag(BlockTags.CLIMBABLE).twilightforest$add(TFBlocks.IRON_LADDER, TFBlocks.ROPE, TFBlocks.ROOT_STRAND).addTag(TFBlockTags.HOLLOW_LOGS_CLIMBABLE);
+		this.tag(BlockTags.STRIDER_WARM_BLOCKS).twilightforest$add(TFBlocks.FIERY_BLOCK);
 		this.tag(BlockTags.GUARDED_BY_PIGLINS).addTag(TFBlockTags.TF_CHESTS);
-		this.tag(BlockTags.EDIBLE_FOR_SHEEP).add(TFBlocks.MAYAPPLE, TFBlocks.FIDDLEHEAD);
-		this.tag(BlockTags.CAN_GLIDE_THROUGH).add(TFBlocks.ROOT_STRAND);
-		this.tag(BlockTags.OVERWORLD_CARVER_REPLACEABLES).add(TFBlocks.TROLLSTEINN);
-		this.tag(BlockTags.INSIDE_STEP_SOUND_BLOCKS).add(TFBlocks.HUGE_LILY_PAD, TFBlocks.FALLEN_LEAVES, TFBlocks.ROOT_STRAND);
-		this.tag(BlockTags.DRIPSTONE_REPLACEABLE).add(TFBlocks.TROLLSTEINN, TFBlocks.ROOT_BLOCK, TFBlocks.LIVEROOT_BLOCK);
-		this.tag(BlockTags.MOSS_REPLACEABLE).add(TFBlocks.TROLLSTEINN, TFBlocks.ROOT_BLOCK, TFBlocks.LIVEROOT_BLOCK);
-		this.tag(BlockTags.AZALEA_ROOT_REPLACEABLE).add(TFBlocks.TROLLSTEINN, TFBlocks.ROOT_BLOCK, TFBlocks.LIVEROOT_BLOCK);
-		this.tag(BlockTags.FOREST_ROCK_CAN_PLACE_ON).add(TFBlocks.TROLLSTEINN, TFBlocks.ROOT_BLOCK, TFBlocks.LIVEROOT_BLOCK);
-		this.tag(BlockTags.OCCLUDES_VIBRATION_SIGNALS).add(TFBlocks.ARCTIC_FUR_BLOCK);
+		this.tag(BlockTags.EDIBLE_FOR_SHEEP).twilightforest$add(TFBlocks.MAYAPPLE, TFBlocks.FIDDLEHEAD);
+		this.tag(BlockTags.CAN_GLIDE_THROUGH).twilightforest$add(TFBlocks.ROOT_STRAND);
+		this.tag(BlockTags.OVERWORLD_CARVER_REPLACEABLES).twilightforest$add(TFBlocks.TROLLSTEINN);
+		this.tag(BlockTags.INSIDE_STEP_SOUND_BLOCKS).twilightforest$add(TFBlocks.HUGE_LILY_PAD, TFBlocks.FALLEN_LEAVES, TFBlocks.ROOT_STRAND);
+		this.tag(BlockTags.DRIPSTONE_REPLACEABLE).twilightforest$add(TFBlocks.TROLLSTEINN, TFBlocks.ROOT_BLOCK, TFBlocks.LIVEROOT_BLOCK);
+		this.tag(BlockTags.MOSS_REPLACEABLE).twilightforest$add(TFBlocks.TROLLSTEINN, TFBlocks.ROOT_BLOCK, TFBlocks.LIVEROOT_BLOCK);
+		this.tag(BlockTags.AZALEA_ROOT_REPLACEABLE).twilightforest$add(TFBlocks.TROLLSTEINN, TFBlocks.ROOT_BLOCK, TFBlocks.LIVEROOT_BLOCK);
+		this.tag(BlockTags.FOREST_ROCK_CAN_PLACE_ON).twilightforest$add(TFBlocks.TROLLSTEINN, TFBlocks.ROOT_BLOCK, TFBlocks.LIVEROOT_BLOCK);
+		this.tag(BlockTags.OCCLUDES_VIBRATION_SIGNALS).twilightforest$add(TFBlocks.ARCTIC_FUR_BLOCK);
 		this.toolTierTags();
-		this.tag(BlockTags.FEATURES_CANNOT_REPLACE).addTag(TFBlockTags.COMMON_PROTECTIONS).add(TFBlocks.LIVEROOT_BLOCK, TFBlocks.MANGROVE_ROOT, TFBlocks.SINISTER_SPAWNER);
-		this.tag(BlockTags.FROG_PREFER_JUMP_TO).add(TFBlocks.HUGE_LILY_PAD);
-		this.tag(BlockTags.SCULK_REPLACEABLE).add(TFBlocks.TROLLSTEINN);
-		this.tag(BlockTags.REPLACEABLE_BY_TREES).add(
+		this.tag(BlockTags.FEATURES_CANNOT_REPLACE).addTag(TFBlockTags.COMMON_PROTECTIONS).twilightforest$add(TFBlocks.LIVEROOT_BLOCK, TFBlocks.MANGROVE_ROOT, TFBlocks.SINISTER_SPAWNER);
+		this.tag(BlockTags.FROG_PREFER_JUMP_TO).twilightforest$add(TFBlocks.HUGE_LILY_PAD);
+		this.tag(BlockTags.SCULK_REPLACEABLE).twilightforest$add(TFBlocks.TROLLSTEINN);
+		this.tag(BlockTags.REPLACEABLE_BY_TREES).twilightforest$add(
 			TFBlocks.HARDENED_DARK_LEAVES,
 			TFBlocks.MAYAPPLE,
 			TFBlocks.FIDDLEHEAD,
@@ -110,21 +129,22 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 			TFBlocks.BLACKBERRY_BUSH,
 			TFBlocks.MALOBERRY_BUSH
 		);
-		this.tag(BlockTags.REPLACEABLE_BY_MUSHROOMS).add(TFBlocks.MAYAPPLE, TFBlocks.FIDDLEHEAD, TFBlocks.FALLEN_LEAVES);
-		this.tag(BlockTags.PREVENTS_NEARBY_LEAF_DECAY).add(TFBlocks.HUGE_STALK, TFBlocks.BROWN_THORNS, TFBlocks.GREEN_THORNS);
-		this.tag(BlockTags.SUPPORTS_CROPS).add(TFBlocks.UBEROUS_SOIL);
-		this.tag(BlockTags.SUPPORTS_BIG_DRIPLEAF).add(TFBlocks.UBEROUS_SOIL);
-		this.tag(BlockTags.OVERRIDES_MUSHROOM_LIGHT_REQUIREMENT).add(TFBlocks.UBEROUS_SOIL);
-		this.tag(BlockTags.INVALID_SPAWN_INSIDE).add(TFBlocks.TWILIGHT_PORTAL);
+		this.tag(BlockTags.REPLACEABLE_BY_MUSHROOMS).twilightforest$add(TFBlocks.MAYAPPLE, TFBlocks.FIDDLEHEAD, TFBlocks.FALLEN_LEAVES);
+		this.tag(BlockTags.PREVENTS_NEARBY_LEAF_DECAY).twilightforest$add(TFBlocks.HUGE_STALK, TFBlocks.BROWN_THORNS, TFBlocks.GREEN_THORNS);
+		this.tag(BlockTags.SUPPORTS_CROPS).twilightforest$add(TFBlocks.UBEROUS_SOIL);
+		this.tag(BlockTags.SUPPORTS_BIG_DRIPLEAF).twilightforest$add(TFBlocks.UBEROUS_SOIL);
+		this.tag(BlockTags.OVERRIDES_MUSHROOM_LIGHT_REQUIREMENT).twilightforest$add(TFBlocks.UBEROUS_SOIL);
+		this.tag(BlockTags.INVALID_SPAWN_INSIDE).twilightforest$add(TFBlocks.TWILIGHT_PORTAL);
 		this.tag(BlockTags.REPLACEABLE).addAll(
 			BuiltInRegistries.BLOCK.stream()
 				.filter(b -> BuiltInRegistries.BLOCK.getKey(b).getNamespace().equals(TFCommon.ID))
 				.filter(b -> b.defaultBlockState().canBeReplaced())
+				.map(b -> BuiltInRegistries.BLOCK.getResourceKey(b).orElseThrow())
 				.toList()
 		);
-		this.tag(BlockTags.ENCHANTMENT_POWER_PROVIDER).add(TFBlocks.CANOPY_BOOKSHELF);
+		this.tag(BlockTags.ENCHANTMENT_POWER_PROVIDER).twilightforest$add(TFBlocks.CANOPY_BOOKSHELF);
 
-		this.tag(ConventionalBlockTags.RELOCATION_NOT_SUPPORTED).add(TFBlocks.TWILIGHT_PORTAL, TFBlocks.STRONGHOLD_SHIELD,
+		this.tag(ConventionalBlockTags.RELOCATION_NOT_SUPPORTED).twilightforest$add(TFBlocks.TWILIGHT_PORTAL, TFBlocks.STRONGHOLD_SHIELD,
 			TFBlocks.TIME_LOG_CORE, TFBlocks.TRANSFORMATION_LOG_CORE,
 			TFBlocks.MINING_LOG_CORE, TFBlocks.SORTING_LOG_CORE,
 			TFBlocks.ANTIBUILDER, TFBlocks.BUILT_BLOCK,
@@ -142,7 +162,7 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 			TFBlocks.MINOSHROOM_BOSS_SPAWNER, TFBlocks.HYDRA_BOSS_SPAWNER,
 			TFBlocks.KNIGHT_PHANTOM_BOSS_SPAWNER, TFBlocks.UR_GHAST_BOSS_SPAWNER,
 			TFBlocks.ALPHA_YETI_BOSS_SPAWNER, TFBlocks.SNOW_QUEEN_BOSS_SPAWNER);
-		this.tag(ConventionalBlockTags.SKULLS).add(
+		this.tag(ConventionalBlockTags.SKULLS).twilightforest$add(
 			TFBlocks.SKELETON_SKULL_CANDLE,
 			TFBlocks.SKELETON_WALL_SKULL_CANDLE,
 			TFBlocks.WITHER_SKELE_SKULL_CANDLE,
@@ -156,7 +176,7 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 			TFBlocks.PIGLIN_SKULL_CANDLE,
 			TFBlocks.PIGLIN_WALL_SKULL_CANDLE);
 
-		this.tag(TFBlockTags.HOLLOW_LOGS_HORIZONTAL).add(
+		this.tag(TFBlockTags.HOLLOW_LOGS_HORIZONTAL).twilightforest$add(
 			TFBlocks.HOLLOW_OAK_LOG_HORIZONTAL,
 			TFBlocks.HOLLOW_SPRUCE_LOG_HORIZONTAL,
 			TFBlocks.HOLLOW_BIRCH_LOG_HORIZONTAL,
@@ -178,7 +198,7 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 			TFBlocks.HOLLOW_SORTING_LOG_HORIZONTAL
 		);
 
-		this.tag(TFBlockTags.HOLLOW_LOGS_VERTICAL).add(
+		this.tag(TFBlockTags.HOLLOW_LOGS_VERTICAL).twilightforest$add(
 			TFBlocks.HOLLOW_OAK_LOG_VERTICAL,
 			TFBlocks.HOLLOW_SPRUCE_LOG_VERTICAL,
 			TFBlocks.HOLLOW_BIRCH_LOG_VERTICAL,
@@ -200,7 +220,7 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 			TFBlocks.HOLLOW_SORTING_LOG_VERTICAL
 		);
 
-		this.tag(TFBlockTags.HOLLOW_LOGS_CLIMBABLE).add(
+		this.tag(TFBlockTags.HOLLOW_LOGS_CLIMBABLE).twilightforest$add(
 			TFBlocks.HOLLOW_OAK_LOG_CLIMBABLE,
 			TFBlocks.HOLLOW_SPRUCE_LOG_CLIMBABLE,
 			TFBlocks.HOLLOW_BIRCH_LOG_CLIMBABLE,
@@ -227,13 +247,13 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 			.addTag(TFBlockTags.HOLLOW_LOGS_VERTICAL)
 			.addTag(TFBlockTags.HOLLOW_LOGS_CLIMBABLE);
 
-		this.tag(TFBlockTags.MAZESTONE).add(
+		this.tag(TFBlockTags.MAZESTONE).twilightforest$add(
 			TFBlocks.MAZESTONE, TFBlocks.MAZESTONE_BRICK,
 			TFBlocks.CRACKED_MAZESTONE, TFBlocks.MOSSY_MAZESTONE,
 			TFBlocks.CUT_MAZESTONE, TFBlocks.DECORATIVE_MAZESTONE,
 			TFBlocks.MAZESTONE_MOSAIC, TFBlocks.MAZESTONE_BORDER);
 
-		this.tag(TFBlockTags.CASTLE_BLOCKS).add(
+		this.tag(TFBlockTags.CASTLE_BLOCKS).twilightforest$add(
 			TFBlocks.CASTLE_BRICK, TFBlocks.WORN_CASTLE_BRICK,
 			TFBlocks.CRACKED_CASTLE_BRICK, TFBlocks.MOSSY_CASTLE_BRICK,
 			TFBlocks.CASTLE_ROOF_TILE, TFBlocks.THICK_CASTLE_BRICK,
@@ -250,15 +270,15 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 
 		this.tag(TFBlockTags.MAZEBREAKER_ACCELERATED).addTag(TFBlockTags.MAZESTONE).addTag(TFBlockTags.CASTLE_BLOCKS);
 
-		this.tag(TFBlockTags.PORTAL_POOL).add(Blocks.WATER);
+		this.tag(TFBlockTags.PORTAL_POOL).twilightforest$add(Blocks.WATER);
 
 		//GUIDELINE: The portal frame requires dirt. The blocks we use are all essentially that with their nature unchanged (e.g unlike Mud) and remain similar-looking.
-		this.tag(TFBlockTags.PORTAL_EDGE).add(Blocks.FARMLAND).forceAddTag(BlockTags.DIRT).forceAddTag(BlockTags.GRASS_BLOCKS);
+		this.tag(TFBlockTags.PORTAL_EDGE).twilightforest$add(Blocks.FARMLAND).forceAddTag(BlockTags.DIRT).forceAddTag(BlockTags.GRASS_BLOCKS);
 
 		//GUIDELINE: Organic vegetation. No vegetation from alien, hostile worlds like the Nether or End.
 		//Vegetation from dimensions more similar to the Overworld (e.g. The Aether, Tropics, etc.) would logically work.
 		//Must be placed on top of the frame blocks and/or supported by them (e.g. no Cocoa Beans that float above it/are grown from another block).
-		this.tag(TFBlockTags.PORTAL_DECO).add(
+		this.tag(TFBlockTags.PORTAL_DECO).twilightforest$add(
 				Blocks.BAMBOO, Blocks.BAMBOO_SAPLING,
 				Blocks.SHORT_GRASS, Blocks.TALL_GRASS,
 				Blocks.FERN, Blocks.LARGE_FERN,
@@ -288,11 +308,30 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 				TFBlocks.COPPER_OREBERRY_BUSH,
 				TFBlocks.IRON_OREBERRY_BUSH,
 				TFBlocks.GOLD_OREBERRY_BUSH,
-				TFBlocks.ESSENCE_OREBERRY_BUSH)
-			.forceAddTag(BlockTags.FLOWERS).forceAddTag(BlockTags.LEAVES).forceAddTag(BlockTags.SAPLINGS).forceAddTag(BlockTags.CROPS);
+				TFBlocks.ESSENCE_OREBERRY_BUSH,
+				Blocks.ACACIA_SAPLING,
+				Blocks.BIRCH_SAPLING,
+				Blocks.CHERRY_SAPLING,
+				Blocks.DARK_OAK_SAPLING,
+				Blocks.JUNGLE_SAPLING,
+				Blocks.OAK_SAPLING,
+				Blocks.PALE_OAK_SAPLING,
+				Blocks.SPRUCE_SAPLING,
+				TFBlocks.TWILIGHT_OAK_SAPLING,
+				TFBlocks.CANOPY_SAPLING,
+				TFBlocks.MANGROVE_SAPLING,
+				TFBlocks.DARKWOOD_SAPLING,
+				TFBlocks.TIME_SAPLING,
+				TFBlocks.TRANSFORMATION_SAPLING,
+				TFBlocks.MINING_SAPLING,
+				TFBlocks.SORTING_SAPLING,
+				TFBlocks.HOLLOW_OAK_SAPLING,
+				TFBlocks.RAINBOW_OAK_SAPLING
+			)
+			.forceAddTag(BlockTags.FLOWERS).forceAddTag(BlockTags.LEAVES).forceAddTag(BlockTags.CROPS);
 
 		this.tag(TFBlockTags.GENERATED_PORTAL_DECO)
-			.add(Blocks.BROWN_MUSHROOM, Blocks.RED_MUSHROOM,
+			.twilightforest$add(Blocks.BROWN_MUSHROOM, Blocks.RED_MUSHROOM,
 				Blocks.SHORT_GRASS, Blocks.FERN,
 				Blocks.BLUE_ORCHID, Blocks.AZURE_BLUET,
 				Blocks.LILY_OF_THE_VALLEY, Blocks.OXEYE_DAISY,
@@ -304,10 +343,10 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 				TFBlocks.FIDDLEHEAD);
 
 		this.tag(TFBlockTags.DARK_TOWER_ALLOWED_POTS)
-			.add(TFBlocks.POTTED_TWILIGHT_OAK_SAPLING, TFBlocks.POTTED_CANOPY_SAPLING, TFBlocks.POTTED_MANGROVE_SAPLING,
+			.twilightforest$add(TFBlocks.POTTED_TWILIGHT_OAK_SAPLING, TFBlocks.POTTED_CANOPY_SAPLING, TFBlocks.POTTED_MANGROVE_SAPLING,
 				TFBlocks.POTTED_DARKWOOD_SAPLING, TFBlocks.POTTED_RAINBOW_OAK_SAPLING, TFBlocks.POTTED_MAYAPPLE,
 				TFBlocks.POTTED_FIDDLEHEAD, TFBlocks.POTTED_MUSHGLOOM)
-			.add(Blocks.FLOWER_POT, Blocks.POTTED_POPPY, Blocks.POTTED_BLUE_ORCHID, Blocks.POTTED_ALLIUM, Blocks.POTTED_AZURE_BLUET,
+			.twilightforest$add(Blocks.FLOWER_POT, Blocks.POTTED_POPPY, Blocks.POTTED_BLUE_ORCHID, Blocks.POTTED_ALLIUM, Blocks.POTTED_AZURE_BLUET,
 				Blocks.POTTED_RED_TULIP, Blocks.POTTED_ORANGE_TULIP, Blocks.POTTED_WHITE_TULIP, Blocks.POTTED_PINK_TULIP,
 				Blocks.POTTED_OXEYE_DAISY, Blocks.POTTED_DANDELION, Blocks.POTTED_OAK_SAPLING, Blocks.POTTED_SPRUCE_SAPLING,
 				Blocks.POTTED_BIRCH_SAPLING, Blocks.POTTED_JUNGLE_SAPLING, Blocks.POTTED_ACACIA_SAPLING, Blocks.POTTED_DARK_OAK_SAPLING,
@@ -318,24 +357,24 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 				Blocks.POTTED_CHERRY_SAPLING, Blocks.POTTED_TORCHFLOWER);
 
 		this.tag(TFBlockTags.TROPHY_PEDESTAL_ACTIVATION_BLOCKS)
-			.add(TFBlocks.NAGA_TROPHY, TFBlocks.NAGA_WALL_TROPHY)
-			.add(TFBlocks.LICH_TROPHY, TFBlocks.LICH_WALL_TROPHY)
-			.add(TFBlocks.MINOSHROOM_TROPHY, TFBlocks.MINOSHROOM_WALL_TROPHY)
-			.add(TFBlocks.HYDRA_TROPHY, TFBlocks.HYDRA_WALL_TROPHY)
-			.add(TFBlocks.KNIGHT_PHANTOM_TROPHY, TFBlocks.KNIGHT_PHANTOM_WALL_TROPHY)
-			.add(TFBlocks.UR_GHAST_TROPHY, TFBlocks.UR_GHAST_WALL_TROPHY)
-			.add(TFBlocks.ALPHA_YETI_TROPHY, TFBlocks.ALPHA_YETI_WALL_TROPHY)
-			.add(TFBlocks.SNOW_QUEEN_TROPHY, TFBlocks.SNOW_QUEEN_WALL_TROPHY)
-			.add(TFBlocks.QUEST_RAM_TROPHY, TFBlocks.QUEST_RAM_WALL_TROPHY);
+			.twilightforest$add(TFBlocks.NAGA_TROPHY, TFBlocks.NAGA_WALL_TROPHY)
+			.twilightforest$add(TFBlocks.LICH_TROPHY, TFBlocks.LICH_WALL_TROPHY)
+			.twilightforest$add(TFBlocks.MINOSHROOM_TROPHY, TFBlocks.MINOSHROOM_WALL_TROPHY)
+			.twilightforest$add(TFBlocks.HYDRA_TROPHY, TFBlocks.HYDRA_WALL_TROPHY)
+			.twilightforest$add(TFBlocks.KNIGHT_PHANTOM_TROPHY, TFBlocks.KNIGHT_PHANTOM_WALL_TROPHY)
+			.twilightforest$add(TFBlocks.UR_GHAST_TROPHY, TFBlocks.UR_GHAST_WALL_TROPHY)
+			.twilightforest$add(TFBlocks.ALPHA_YETI_TROPHY, TFBlocks.ALPHA_YETI_WALL_TROPHY)
+			.twilightforest$add(TFBlocks.SNOW_QUEEN_TROPHY, TFBlocks.SNOW_QUEEN_WALL_TROPHY)
+			.twilightforest$add(TFBlocks.QUEST_RAM_TROPHY, TFBlocks.QUEST_RAM_WALL_TROPHY);
 
-		this.tag(TFBlockTags.FIRE_JET_FUEL).add(Blocks.LAVA);
+		this.tag(TFBlockTags.FIRE_JET_FUEL).twilightforest$add(Blocks.LAVA);
 		this.tag(TFBlockTags.ICE_BOMB_REPLACEABLES)
-			.add(TFBlocks.MAYAPPLE, TFBlocks.FIDDLEHEAD, Blocks.SHORT_GRASS, Blocks.TALL_GRASS, Blocks.FERN, Blocks.LARGE_FERN)
+			.twilightforest$add(TFBlocks.MAYAPPLE, TFBlocks.FIDDLEHEAD, Blocks.SHORT_GRASS, Blocks.TALL_GRASS, Blocks.FERN, Blocks.LARGE_FERN)
 			.forceAddTag(BlockTags.FLOWERS);
 
 		this.tag(TFBlockTags.PLANTS_HANG_ON)
 			.forceAddTag(BlockTags.SUBSTRATE_OVERWORLD)
-			.add(Blocks.MOSS_BLOCK, TFBlocks.MANGROVE_ROOT, TFBlocks.ROOT_BLOCK, TFBlocks.LIVEROOT_BLOCK);
+			.twilightforest$add(Blocks.MOSS_BLOCK, TFBlocks.MANGROVE_ROOT, TFBlocks.ROOT_BLOCK, TFBlocks.LIVEROOT_BLOCK);
 
 		this.tag(TFBlockTags.OREBERRY_BUSHES_SURVIVE)
 			.forceAddTag(ConventionalBlockTags.STONES)
@@ -345,36 +384,36 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 			.forceAddTag(ConventionalBlockTags.ORES_IN_GROUND_NETHERRACK)
 			.forceAddTag(ConventionalBlockTags.COBBLESTONES)
 			.forceAddTag(ConventionalBlockTags.NETHERRACKS)
-			.add(TFBlocks.GIANT_COBBLESTONE)
-			.add(Blocks.POLISHED_ANDESITE)
-			.add(Blocks.POLISHED_DIORITE)
-			.add(Blocks.POLISHED_GRANITE)
-			.add(Blocks.SMOOTH_STONE)
-			.add(Blocks.INFESTED_CHISELED_STONE_BRICKS)
-			.add(Blocks.INFESTED_CRACKED_STONE_BRICKS)
-			.add(Blocks.INFESTED_MOSSY_STONE_BRICKS)
-			.add(Blocks.INFESTED_STONE_BRICKS);
+			.twilightforest$add(TFBlocks.GIANT_COBBLESTONE)
+			.twilightforest$add(Blocks.POLISHED_ANDESITE)
+			.twilightforest$add(Blocks.POLISHED_DIORITE)
+			.twilightforest$add(Blocks.POLISHED_GRANITE)
+			.twilightforest$add(Blocks.SMOOTH_STONE)
+			.twilightforest$add(Blocks.INFESTED_CHISELED_STONE_BRICKS)
+			.twilightforest$add(Blocks.INFESTED_CRACKED_STONE_BRICKS)
+			.twilightforest$add(Blocks.INFESTED_MOSSY_STONE_BRICKS)
+			.twilightforest$add(Blocks.INFESTED_STONE_BRICKS);
 
 		this.tag(TFBlockTags.TF_BERRY_BUSHES_REPLACE)
 			.forceAddTag(BlockTags.REPLACEABLE)
 			.forceAddTag(BlockTags.FLOWERS)
-			.add(TFBlocks.MAYAPPLE);
+			.twilightforest$add(TFBlocks.MAYAPPLE);
 
 		this.tag(TFBlockTags.TF_BERRY_BUSHES_SURVIVE)
 			.forceAddTag(BlockTags.SUBSTRATE_OVERWORLD)
-			.add(Blocks.SNOW_BLOCK);
+			.twilightforest$add(Blocks.SNOW_BLOCK);
 
 		this.tag(TFBlockTags.DARK_TOWER_BERRY_BUSHES_SURVIVE)
 			.forceAddTag(ConventionalBlockTags.NETHERRACKS)
 			.forceAddTag(ConventionalBlockTags.ORES_IN_GROUND_NETHERRACK)
-			.add(Blocks.BLACKSTONE)
-			.add(Blocks.SOUL_SAND)
-			.add(Blocks.SOUL_SOIL);
+			.twilightforest$add(Blocks.BLACKSTONE)
+			.twilightforest$add(Blocks.SOUL_SAND)
+			.twilightforest$add(Blocks.SOUL_SOIL);
 
 		this.tag(TFBlockTags.DARK_TOWER_BERRY_BUSHES_DIE)
 			.forceAddTag(BlockTags.NYLIUM);
 
-		this.tag(TFBlockTags.COMMON_PROTECTIONS).add( // For any blocks that absolutely should not be meddled with
+		this.tag(TFBlockTags.COMMON_PROTECTIONS).twilightforest$add( // For any blocks that absolutely should not be meddled with
 			TFBlocks.NAGA_BOSS_SPAWNER,
 			TFBlocks.LICH_BOSS_SPAWNER,
 			TFBlocks.MINOSHROOM_BOSS_SPAWNER,
@@ -395,7 +434,7 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 			TFBlocks.SKULL_CHEST,
 			TFBlocks.KEEPSAKE_CASKET,
 			TFBlocks.TROPHY_PEDESTAL
-		).add( // [VanillaCopy] WITHER_IMMUNE - Do NOT include that tag in this tag
+		).twilightforest$add( // [VanillaCopy] WITHER_IMMUNE - Do NOT include that tag in this tag
 			Blocks.BARRIER,
 			Blocks.BEDROCK,
 			Blocks.END_PORTAL,
@@ -412,17 +451,17 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 		);
 
 		this.tag(TFBlockTags.CARMINITE_REACTOR_IMMUNE).addTag(TFBlockTags.COMMON_PROTECTIONS);
-		this.tag(TFBlockTags.CARMINITE_REACTOR_ORES).add(Blocks.NETHER_QUARTZ_ORE, Blocks.NETHER_GOLD_ORE);
-		this.tag(TFBlockTags.DEADROCK).add(TFBlocks.DEADROCK, TFBlocks.CRACKED_DEADROCK, TFBlocks.WEATHERED_DEADROCK);
+		this.tag(TFBlockTags.CARMINITE_REACTOR_ORES).twilightforest$add(Blocks.NETHER_QUARTZ_ORE, Blocks.NETHER_GOLD_ORE);
+		this.tag(TFBlockTags.DEADROCK).twilightforest$add(TFBlocks.DEADROCK, TFBlocks.CRACKED_DEADROCK, TFBlocks.WEATHERED_DEADROCK);
 		this.tag(TFBlockTags.ANNIHILATION_INCLUSIONS) // This is NOT a blacklist! This is a whitelist
-			.add(Blocks.NETHER_PORTAL)
+			.twilightforest$add(Blocks.NETHER_PORTAL)
 			.addTag(TFBlockTags.DEADROCK)
-			.add(TFBlocks.CASTLE_BRICK, TFBlocks.THICK_CASTLE_BRICK, TFBlocks.MOSSY_CASTLE_BRICK, TFBlocks.CASTLE_ROOF_TILE, TFBlocks.WORN_CASTLE_BRICK)
-			.add(TFBlocks.BLUE_CASTLE_RUNE_BRICK, TFBlocks.VIOLET_CASTLE_RUNE_BRICK, TFBlocks.YELLOW_CASTLE_RUNE_BRICK, TFBlocks.PINK_CASTLE_RUNE_BRICK)
-			.add(TFBlocks.PINK_FORCE_FIELD, TFBlocks.ORANGE_FORCE_FIELD, TFBlocks.GREEN_FORCE_FIELD, TFBlocks.BLUE_FORCE_FIELD, TFBlocks.VIOLET_FORCE_FIELD)
-			.add(TFBlocks.BROWN_THORNS, TFBlocks.GREEN_THORNS);
+			.twilightforest$add(TFBlocks.CASTLE_BRICK, TFBlocks.THICK_CASTLE_BRICK, TFBlocks.MOSSY_CASTLE_BRICK, TFBlocks.CASTLE_ROOF_TILE, TFBlocks.WORN_CASTLE_BRICK)
+			.twilightforest$add(TFBlocks.BLUE_CASTLE_RUNE_BRICK, TFBlocks.VIOLET_CASTLE_RUNE_BRICK, TFBlocks.YELLOW_CASTLE_RUNE_BRICK, TFBlocks.PINK_CASTLE_RUNE_BRICK)
+			.twilightforest$add(TFBlocks.PINK_FORCE_FIELD, TFBlocks.ORANGE_FORCE_FIELD, TFBlocks.GREEN_FORCE_FIELD, TFBlocks.BLUE_FORCE_FIELD, TFBlocks.VIOLET_FORCE_FIELD)
+			.twilightforest$add(TFBlocks.BROWN_THORNS, TFBlocks.GREEN_THORNS);
 
-		this.tag(TFBlockTags.ANTIBUILDER_IGNORES).add(
+		this.tag(TFBlockTags.ANTIBUILDER_IGNORES).twilightforest$add(
 			Blocks.REDSTONE_LAMP,
 			Blocks.TNT,
 			Blocks.WATER,
@@ -437,18 +476,18 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 			TFBlocks.FAKE_GOLD
 		).addTag(TFBlockTags.COMMON_PROTECTIONS)/*.addOptional(Identifier.parse("gravestone:gravestone"))*/; //TODO: Restore
 
-		this.tag(TFBlockTags.STRUCTURE_BANNED_INTERACTIONS).add(Blocks.LEVER).add(TFBlocks.ANTIBUILDER).forceAddTag(BlockTags.BUTTONS).forceAddTag(ConventionalBlockTags.CHESTS);
+		this.tag(TFBlockTags.STRUCTURE_BANNED_INTERACTIONS).twilightforest$add(Blocks.LEVER).twilightforest$add(TFBlocks.ANTIBUILDER).forceAddTag(BlockTags.BUTTONS).forceAddTag(ConventionalBlockTags.CHESTS);
 
 		// TODO add more grave mods to this list
 		this.tag(TFBlockTags.PROGRESSION_ALLOW_BREAKING)
-			.add(TFBlocks.SKULL_CHEST)
-			.add(TFBlocks.KEEPSAKE_CASKET)
+			.twilightforest$add(TFBlocks.SKULL_CHEST)
+			.twilightforest$add(TFBlocks.KEEPSAKE_CASKET)
 		/*.addOptional(Identifier.fromNamespaceAndPath("gravestone", "gravestone"))*/;
 
 		this.tag(TFBlockTags.CANNOT_TROLL_CAVE_HOLLOW)
-			.add(Blocks.RED_MUSHROOM_BLOCK)
-			.add(Blocks.BROWN_MUSHROOM_BLOCK)
-			.add(TFBlocks.HUGE_MUSHGLOOM);
+			.twilightforest$add(Blocks.RED_MUSHROOM_BLOCK)
+			.twilightforest$add(Blocks.BROWN_MUSHROOM_BLOCK)
+			.twilightforest$add(TFBlocks.HUGE_MUSHGLOOM);
 
 		this.tag(TFBlockTags.ORE_MAGNET_SAFE_REPLACE_BLOCK)
 			.forceAddTag(BlockTags.SUBSTRATE_OVERWORLD)
@@ -462,11 +501,11 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 			.forceAddTag(BlockTags.STONE_ORE_REPLACEABLES)
 			.addTag(TFBlockTags.ROOT_GROUND);
 
-		this.tag(TFBlockTags.ORE_MAGNET_IGNORE).forceAddTag(BlockTags.COAL_ORES);
-		this.tag(TFBlockTags.MINING_CORE_EXCLUDED).forceAddTag(BlockTags.COAL_ORES);
-		this.tag(TFBlockTags.ROOT_GROUND).add(TFBlocks.ROOT_BLOCK);
-		this.tag(TFBlockTags.ROOT_ORES).add(TFBlocks.LIVEROOT_BLOCK);
-		this.tag(TFBlockTags.TF_CHESTS).add(
+		this.tag(TFBlockTags.ORE_MAGNET_IGNORE).forceAddTag(ConventionalBlockTags.COAL_ORES);
+		this.tag(TFBlockTags.MINING_CORE_EXCLUDED).forceAddTag(ConventionalBlockTags.COAL_ORES);
+		this.tag(TFBlockTags.ROOT_GROUND).twilightforest$add(TFBlocks.ROOT_BLOCK);
+		this.tag(TFBlockTags.ROOT_ORES).twilightforest$add(TFBlocks.LIVEROOT_BLOCK);
+		this.tag(TFBlockTags.TF_CHESTS).twilightforest$add(
 			TFBlocks.TWILIGHT_OAK_CHEST,
 			TFBlocks.CANOPY_CHEST,
 			TFBlocks.MANGROVE_CHEST,
@@ -478,7 +517,7 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 
 		// For anything that permits replacement during Worldgen
 		this.tag(TFBlockTags.WORLDGEN_REPLACEABLES).forceAddTag(BlockTags.LUSH_GROUND_REPLACEABLE).forceAddTag(BlockTags.REPLACEABLE_BY_TREES);
-		this.tag(TFBlockTags.ROOT_TRACE_SKIP).forceAddTag(BlockTags.LOGS).add(TFBlocks.ROOT_BLOCK, TFBlocks.LIVEROOT_BLOCK, TFBlocks.MANGROVE_ROOT, TFBlocks.TIME_WOOD).forceAddTag(BlockTags.FEATURES_CANNOT_REPLACE);
+		this.tag(TFBlockTags.ROOT_TRACE_SKIP).forceAddTag(BlockTags.LOGS).twilightforest$add(TFBlocks.ROOT_BLOCK, TFBlocks.LIVEROOT_BLOCK, TFBlocks.MANGROVE_ROOT, TFBlocks.TIME_WOOD).forceAddTag(BlockTags.FEATURES_CANNOT_REPLACE);
 		this.tag(TFBlockTags.DRUID_PROJECTILE_REPLACEABLE)
 			.forceAddTag(BlockTags.LEAVES)
 			.forceAddTag(BlockTags.LOGS)
@@ -489,9 +528,9 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 			.forceAddTag(BlockTags.LUSH_GROUND_REPLACEABLE)
 			.forceAddTag(BlockTags.SCULK_REPLACEABLE)
 			.forceAddTag(ConventionalBlockTags.ORES);
-		this.tag(TFBlockTags.HUGE_MUSHGLOOM_PLACEABLE).forceAddTag(BlockTags.SUBSTRATE_OVERWORLD).add(Blocks.MYCELIUM).add(Blocks.PODZOL).add(Blocks.CRIMSON_NYLIUM).add(Blocks.WARPED_NYLIUM);
+		this.tag(TFBlockTags.HUGE_MUSHGLOOM_PLACEABLE).forceAddTag(BlockTags.SUBSTRATE_OVERWORLD).twilightforest$add(Blocks.MYCELIUM).twilightforest$add(Blocks.PODZOL).twilightforest$add(Blocks.CRIMSON_NYLIUM).twilightforest$add(Blocks.WARPED_NYLIUM);
 
-		this.tag(TFBlockTags.TIME_CORE_EXCLUDED).add(Blocks.NETHER_PORTAL);
+		this.tag(TFBlockTags.TIME_CORE_EXCLUDED).twilightforest$add(Blocks.NETHER_PORTAL);
 		this.tag(TFBlockTags.ORE_METER_TARGETABLE)
 			.forceAddTag(ConventionalBlockTags.ORES)
 			.forceAddTag(BlockTags.BASE_STONE_OVERWORLD)
@@ -503,27 +542,28 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 			.forceAddTag(ConventionalBlockTags.GRAVELS)
 			.forceAddTag(BlockTags.NYLIUM)
 			.addTag(TFBlockTags.ROOT_ORES)
-			.add(Blocks.BUDDING_AMETHYST)
-			.add(Blocks.CALCITE)
-			.add(Blocks.SOUL_SAND)
-			.add(Blocks.SOUL_SOIL);
+			.twilightforest$add(Blocks.BUDDING_AMETHYST)
+			.twilightforest$add(Blocks.CALCITE)
+			.twilightforest$add(Blocks.SOUL_SAND)
+			.twilightforest$add(Blocks.SOUL_SOIL);
 
 		this.tag(TFBlockTags.PENGUINS_SPAWNABLE_ON).forceAddTag(BlockTags.ICE);
 		this.tag(TFBlockTags.GIANTS_SPAWNABLE_ON).addTag(TFBlockTags.CLOUDS);
 
-		this.tag(TFBlockTags.SUPPORTS_STALAGMITES).addTag(TFBlockTags.DEADROCK).add(Blocks.PACKED_ICE);
-		this.tag(TFBlockTags.CARVER_REPLACEABLES).forceAddTag(BlockTags.OVERWORLD_CARVER_REPLACEABLES).add(Blocks.SNOW_BLOCK);
+		this.tag(TFBlockTags.SUPPORTS_STALAGMITES).addTag(TFBlockTags.DEADROCK).twilightforest$add(Blocks.PACKED_ICE);
+		this.tag(TFBlockTags.CARVER_REPLACEABLES).forceAddTag(BlockTags.OVERWORLD_CARVER_REPLACEABLES).twilightforest$add(Blocks.SNOW_BLOCK);
 		this.tag(TFBlockTags.MINEABLE_WITH_BLOCK_AND_CHAIN).forceAddTag(BlockTags.MINEABLE_WITH_PICKAXE).forceAddTag(BlockTags.MINEABLE_WITH_AXE).forceAddTag(BlockTags.MINEABLE_WITH_SHOVEL).forceAddTag(BlockTags.MINEABLE_WITH_HOE);
 		this.tag(TFBlockTags.BLOCK_AND_CHAIN_NEVER_BREAKS).addTag(TFBlockTags.MAZESTONE).addTag(TFBlockTags.CASTLE_BLOCKS).addTag(TFBlockTags.DEADROCK).forceAddTag(BlockTags.WITHER_IMMUNE)
-			.add(TFBlocks.TIME_LOG_CORE, TFBlocks.TRANSFORMATION_LOG_CORE, TFBlocks.MINING_LOG_CORE, TFBlocks.SORTING_LOG_CORE)
-			.add(TFBlocks.GIANT_OBSIDIAN);
+			.twilightforest$add(TFBlocks.TIME_LOG_CORE, TFBlocks.TRANSFORMATION_LOG_CORE, TFBlocks.MINING_LOG_CORE, TFBlocks.SORTING_LOG_CORE)
+			.twilightforest$add(TFBlocks.GIANT_OBSIDIAN);
 
 		this.tag(TFBlockTags.SMALL_LAKES_DONT_REPLACE).forceAddTag(BlockTags.FEATURES_CANNOT_REPLACE).forceAddTag(BlockTags.LOGS).forceAddTag(BlockTags.LEAVES)
-			.add(TFBlocks.ROOT_BLOCK, TFBlocks.LIVEROOT_BLOCK, Blocks.MUSHROOM_STEM);
+			.twilightforest$add(TFBlocks.ROOT_BLOCK, TFBlocks.LIVEROOT_BLOCK, Blocks.MUSHROOM_STEM);
 	}
 
+	@SuppressWarnings("unchecked")
 	private void toolTierTags() {
-		this.tag(BlockTags.MINEABLE_WITH_AXE).add(
+		this.tag(BlockTags.MINEABLE_WITH_AXE).twilightforest$add(
 			TFBlocks.HEDGE,
 			TFBlocks.ROOT_BLOCK,
 			TFBlocks.LIVEROOT_BLOCK,
@@ -569,7 +609,7 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 			TFBlocks.ENCASED_TOWERWOOD
 		).addTag(TFBlockTags.BANISTERS).addTag(TFBlockTags.HOLLOW_LOGS).addTag(TFBlockTags.TOWERWOOD).addTag(TFBlockTags.DRYING_RACKS);
 
-		this.tag(BlockTags.MINEABLE_WITH_HOE).add(
+		this.tag(BlockTags.MINEABLE_WITH_HOE).twilightforest$add(
 			//vanilla doesnt use the leaves tag
 			TFBlocks.TWILIGHT_OAK_LEAVES,
 			TFBlocks.CANOPY_LEAVES,
@@ -587,7 +627,7 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 			TFBlocks.ARCTIC_FUR_BLOCK
 		);
 
-		this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
+		this.tag(BlockTags.MINEABLE_WITH_PICKAXE).twilightforest$add(
 			TFBlocks.NAGASTONE,
 			TFBlocks.NAGASTONE_HEAD,
 			TFBlocks.STRONGHOLD_SHIELD,
@@ -649,13 +689,13 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 			TFBlocks.SINISTER_SPAWNER
 		).addTag(TFBlockTags.MAZESTONE).addTag(TFBlockTags.CASTLE_BLOCKS).addTag(TFBlockTags.DEADROCK);
 
-		this.tag(BlockTags.MINEABLE_WITH_SHOVEL).add(
+		this.tag(BlockTags.MINEABLE_WITH_SHOVEL).twilightforest$add(
 			TFBlocks.SMOKER,
 			TFBlocks.FIRE_JET,
 			TFBlocks.UBEROUS_SOIL
 		);
 
-		this.tag(BlockTags.NEEDS_STONE_TOOL).add(
+		this.tag(BlockTags.NEEDS_STONE_TOOL).twilightforest$add(
 			TFBlocks.UNDERBRICK,
 			TFBlocks.CRACKED_UNDERBRICK,
 			TFBlocks.MOSSY_UNDERBRICK,
@@ -663,12 +703,12 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 			TFBlocks.IRON_LADDER
 		);
 
-		this.tag(BlockTags.NEEDS_IRON_TOOL).add(
+		this.tag(BlockTags.NEEDS_IRON_TOOL).twilightforest$add(
 			TFBlocks.FIERY_BLOCK,
 			TFBlocks.KNIGHTMETAL_BLOCK
 		);
 
-		this.tag(BlockTags.NEEDS_DIAMOND_TOOL).add(TFBlocks.AURORA_BLOCK).addTag(TFBlockTags.CASTLE_BLOCKS).addTag(TFBlockTags.MAZESTONE).addTag(TFBlockTags.DEADROCK);
+		this.tag(BlockTags.NEEDS_DIAMOND_TOOL).twilightforest$add(TFBlocks.AURORA_BLOCK).addTag(TFBlockTags.CASTLE_BLOCKS).addTag(TFBlockTags.MAZESTONE).addTag(TFBlockTags.DEADROCK);
 
 		// Mod Compatibility Tags
 
@@ -680,13 +720,13 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 		this.tag(TFBlockTags.INCORRECT_FOR_ICE_TOOL).forceAddTag(BlockTags.INCORRECT_FOR_WOODEN_TOOL);
 		this.tag(TFBlockTags.INCORRECT_FOR_GLASS_TOOL).forceAddTag(BlockTags.INCORRECT_FOR_WOODEN_TOOL);
 
-		this.tag(TFBlockTags.AC_FERROMAGNETIC_BLOCKS).addTag(TFBlockTags.STORAGE_BLOCKS_IRONWOOD).addTag(TFBlockTags.STORAGE_BLOCKS_STEELEAF).addTag(TFBlockTags.STORAGE_BLOCKS_KNIGHTMETAL).add(TFBlocks.CANDELABRA).add(TFBlocks.WROUGHT_IRON_FENCE);
-		this.tag(TFBlockTags.AC_GLOOMOTH_LIGHT_SOURCES).add(TFBlocks.FIREFLY_SPAWNER, TFBlocks.FIREFLY_JAR);
-		this.tag(TFBlockTags.AC_UNDERZEALOT_LIGHT_SOURCES).add(TFBlocks.FIREFLY, TFBlocks.MOONWORM);
+		this.tag(TFBlockTags.AC_FERROMAGNETIC_BLOCKS).addTag(TFBlockTags.STORAGE_BLOCKS_IRONWOOD).addTag(TFBlockTags.STORAGE_BLOCKS_STEELEAF).addTag(TFBlockTags.STORAGE_BLOCKS_KNIGHTMETAL).twilightforest$add(TFBlocks.CANDELABRA).twilightforest$add(TFBlocks.WROUGHT_IRON_FENCE);
+		this.tag(TFBlockTags.AC_GLOOMOTH_LIGHT_SOURCES).twilightforest$add(TFBlocks.FIREFLY_SPAWNER, TFBlocks.FIREFLY_JAR);
+		this.tag(TFBlockTags.AC_UNDERZEALOT_LIGHT_SOURCES).twilightforest$add(TFBlocks.FIREFLY, TFBlocks.MOONWORM);
 
 		this.tag(TFBlockTags.ARTIFACTS_CAMPSITE_CHESTS).addTag(TFBlockTags.TF_CHESTS);
 
-		this.tag(TFBlockTags.CHEST_MOUNTED_STORAGE).addTag(TFBlockTags.TF_CHESTS).add(
+		this.tag(TFBlockTags.CHEST_MOUNTED_STORAGE).addTag(TFBlockTags.TF_CHESTS).twilightforest$add(
 			TFBlocks.TWILIGHT_OAK_TRAPPED_CHEST,
 			TFBlocks.CANOPY_TRAPPED_CHEST,
 			TFBlocks.MANGROVE_TRAPPED_CHEST,
@@ -696,17 +736,17 @@ public class BlockTagGenerator extends IntrinsicHolderTagsProvider<Block> {
 			TFBlocks.MINING_TRAPPED_CHEST,
 			TFBlocks.SORTING_TRAPPED_CHEST);
 		this.tag(TFBlockTags.PASSIVE_BOILER_HEATERS).addTag(TFBlockTags.STORAGE_BLOCKS_FIERY);
-		this.tag(TFBlockTags.TREE_ATTACHMENTS).add(
+		this.tag(TFBlockTags.TREE_ATTACHMENTS).twilightforest$add(
 			TFBlocks.TIME_LOG_CORE, TFBlocks.TRANSFORMATION_LOG_CORE,
 			TFBlocks.MINING_LOG_CORE, TFBlocks.SORTING_LOG_CORE,
 			TFBlocks.ROOT_BLOCK, TFBlocks.LIVEROOT_BLOCK,
 			TFBlocks.MANGROVE_ROOT, TFBlocks.FIREFLY, TFBlocks.CICADA);
 
-		this.tag(TFBlockTags.FD_COMPOST_ACTIVATORS).add(TFBlocks.UBEROUS_SOIL, TFBlocks.MUSHGLOOM);
+		this.tag(TFBlockTags.FD_COMPOST_ACTIVATORS).twilightforest$add(TFBlocks.UBEROUS_SOIL, TFBlocks.MUSHGLOOM);
 		this.tag(TFBlockTags.FD_HEAT_SOURCES).addTag(TFBlockTags.STORAGE_BLOCKS_FIERY);
 
-		this.tag(TFBlockTags.SUPPLEMENTARIES_MAP_FOLIAGE).add(TFBlocks.TWILIGHT_OAK_LEAVES, TFBlocks.DARK_LEAVES, TFBlocks.HARDENED_DARK_LEAVES, TFBlocks.GIANT_LEAVES, TFBlocks.FALLEN_LEAVES);
-		this.tag(TFBlockTags.SUPPLEMENTARIES_MAP_GRASS).add(TFBlocks.FIDDLEHEAD);
+		this.tag(TFBlockTags.SUPPLEMENTARIES_MAP_FOLIAGE).twilightforest$add(TFBlocks.TWILIGHT_OAK_LEAVES, TFBlocks.DARK_LEAVES, TFBlocks.HARDENED_DARK_LEAVES, TFBlocks.GIANT_LEAVES, TFBlocks.FALLEN_LEAVES);
+		this.tag(TFBlockTags.SUPPLEMENTARIES_MAP_GRASS).twilightforest$add(TFBlocks.FIDDLEHEAD);
 	}
 
 	@Override

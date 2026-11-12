@@ -19,7 +19,6 @@ import net.minecraft.world.level.SpawnData;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import org.jspecify.annotations.Nullable;
 import twilightforest.init.TFBlocks;
@@ -29,7 +28,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @SuppressWarnings("OptionalIsPresent")
-public class SpawnerProcessor extends StructureProcessor {
+public class SpawnerProcessor implements StructureProcessor {
 	public static final MapCodec<SpawnerProcessor> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
 		Codec.SHORT.optionalFieldOf("range").forGetter(SpawnerProcessor::serializeRange),
 		Codec.FLOAT.optionalFieldOf("start_delay_factor").forGetter(SpawnerProcessor::getDelayFactor),
@@ -68,7 +67,7 @@ public class SpawnerProcessor extends StructureProcessor {
 	}
 
 	@Override
-	public StructureTemplate.@Nullable StructureBlockInfo processBlock(LevelReader level, BlockPos targetPosition, BlockPos referencePos, StructureTemplate.StructureBlockInfo originalBlockInfo, StructureTemplate.StructureBlockInfo processedBlockInfo, StructurePlaceSettings settings) {
+	public StructureTemplate.@Nullable StructureBlockInfo processBlock(LevelReader level, BlockPos targetPosition, BlockPos referencePos, BlockPos templateRelativePos, StructureTemplate.StructureBlockInfo processedBlockInfo, StructurePlaceSettings settings) {
 		CompoundTag nbtInfo = processedBlockInfo.nbt();
 
 		if (nbtInfo != null && (processedBlockInfo.state().is(Blocks.SPAWNER) || processedBlockInfo.state().is(TFBlocks.SINISTER_SPAWNER))) {
@@ -127,7 +126,7 @@ public class SpawnerProcessor extends StructureProcessor {
 	}
 
 	@Override
-	protected StructureProcessorType<?> getType() {
+	public MapCodec<? extends StructureProcessor> codec() {
 		return TFStructureProcessors.SPAWNER_PROCESSOR;
 	}
 

@@ -41,7 +41,7 @@ public class AuroraPalaceStructureGenerator {
             true, Optional.of(BuiltInRegistries.MAP_DECORATION_TYPE.wrapAsHolder(TFMapDecorations.AURORA_PALACE)),
             new Structure.StructureSettings(
                 context.lookup(Registries.BIOME).getOrThrow(TFBiomeTags.VALID_AURORA_PALACE_BIOMES),
-                Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.of()))), // Landmarks have Controlled Mob spawning
+                Arrays.stream(MobCategory.values()).collect(Collectors.<MobCategory, MobCategory, StructureSpawnOverride>toMap(category -> category, _ -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.of()))), // Landmarks have Controlled Mob spawning
                 GenerationStep.Decoration.SURFACE_STRUCTURES,
                 TerrainAdjustment.NONE
             )
