@@ -129,7 +129,7 @@ public final class CharmEventListeners {
 			}
 
 			if (player instanceof ServerPlayer serverPlayer) {
-				ServerPlayNetworking.send(serverPlayer, new SpawnCharmPacket(new ItemStack(charm1 ? TFItems.CHARM_OF_LIFE_1 : TFItems.CHARM_OF_LIFE_2), TFSounds.CHARM_LIFE.unwrapKey().orElseThrow()));
+				ServerPlayNetworking.send(serverPlayer, new SpawnCharmPacket(new ItemStack(charm1 ? TFItems.CHARM_OF_LIFE_1 : TFItems.CHARM_OF_LIFE_2), TFSounds.CHARM_LIFE.unwrapKey().orElseThrow(), serverPlayer.level().getNextEntityId()));
 				serverPlayer.awardStat(TFStats.LIFE_CHARMS_ACTIVATED);
 			}
 
@@ -351,7 +351,7 @@ public final class CharmEventListeners {
 					.resultOrPartial(TFCommon.LOGGER::error)
 					.orElse(ItemStack.EMPTY);
 				if (!charm.isEmpty()) {
-					ServerPlayNetworking.send(serverPlayer, new SpawnCharmPacket(charm, TFSounds.CHARM_KEEP.unwrapKey().orElseThrow()));
+					ServerPlayNetworking.send(serverPlayer, new SpawnCharmPacket(charm, TFSounds.CHARM_KEEP.unwrapKey().orElseThrow(), serverPlayer.level().getNextEntityId()));
 				}
 				serverPlayer.awardStat(TFStats.KEEPING_CHARMS_ACTIVATED);
 			}

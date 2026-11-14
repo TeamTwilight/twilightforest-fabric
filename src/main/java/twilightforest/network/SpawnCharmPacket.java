@@ -9,18 +9,19 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.ItemStack;
 import twilightforest.TFCommon;
 
-public record SpawnCharmPacket(ItemStack charm, ResourceKey<SoundEvent> event) implements CustomPacketPayload {
+public record SpawnCharmPacket(ItemStack charm, ResourceKey<SoundEvent> event, int entityId) implements CustomPacketPayload {
 
 	public static final Type<SpawnCharmPacket> TYPE = new Type<>(TFCommon.prefix("spawn_charm"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, SpawnCharmPacket> STREAM_CODEC = CustomPacketPayload.codec(SpawnCharmPacket::write, SpawnCharmPacket::new);
 
 	public SpawnCharmPacket(RegistryFriendlyByteBuf buf) {
-		this(ItemStack.STREAM_CODEC.decode(buf), buf.readResourceKey(Registries.SOUND_EVENT));
+		this(ItemStack.STREAM_CODEC.decode(buf), buf.readResourceKey(Registries.SOUND_EVENT), buf.readVarInt());
 	}
 
 	public void write(RegistryFriendlyByteBuf buf) {
 		ItemStack.STREAM_CODEC.encode(buf, this.charm());
 		buf.writeResourceKey(this.event());
+		buf.writeVarInt(this.entityId());
 	}
 
 	@Override

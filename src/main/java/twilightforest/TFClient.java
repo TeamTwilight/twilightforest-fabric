@@ -317,6 +317,7 @@ public final class TFClient implements ClientModInitializer {
 						context.client().particleEngine.createTrackingEmitter(camera != null ? camera : player, new ItemParticleOption(ParticleTypes.ITEM, payload.charm().getItem()), 20);
 					} else {
 						CharmEffect effect = new CharmEffect(TFEntities.CHARM_EFFECT, player.level(), player, payload.charm());
+						effect.setId(payload.entityId());
 						effect.offset = (float) Math.PI;
 						level.addEntity(effect);
 					}
