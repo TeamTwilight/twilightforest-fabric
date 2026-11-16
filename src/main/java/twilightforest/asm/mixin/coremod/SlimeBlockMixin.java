@@ -11,18 +11,6 @@ import twilightforest.asm.hooks.coremod.BlockHooks;
 @Mixin(SlimeBlock.class)
 public class SlimeBlockMixin {
 
-	// FIXME: Disabled until ported on NeoForge
-	/*@Inject(
-		method = "bounceUp(Lnet/minecraft/world/entity/Entity;)V",
-		at = @At("HEAD")
-	)
-	private void twilightforest$stopBouncing(
-		Entity entity,
-		CallbackInfo ci
-	) {
-		BlockHooks.stopBouncing(entity);
-	}*/
-
 	@ModifyExpressionValue(
 		method = "stepOn(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/entity/Entity;)V",
 		at = @At(
