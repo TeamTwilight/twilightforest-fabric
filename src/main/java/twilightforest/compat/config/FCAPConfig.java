@@ -23,7 +23,6 @@ import java.util.Locale;
 import java.util.Optional;
 
 public final class FCAPConfig implements TFConfigAccess {
-	public static final String CONFIG_ID = "config." + TFCommon.ID + ".";
 
 	@Nullable
 	public static Identifier portalLockingAdvancement;
@@ -433,7 +432,7 @@ public final class FCAPConfig implements TFConfigAccess {
 
 		@Override
 		public Component getTranslatedName() {
-			return Component.translatable(CONFIG_ID + "multiplayer_fight_adjuster." + this.name().toLowerCase(Locale.ROOT));
+			return Component.translatable(TFCommon.CONFIG_ID + "multiplayer_fight_adjuster." + this.name().toLowerCase(Locale.ROOT));
 		}
 	}
 }

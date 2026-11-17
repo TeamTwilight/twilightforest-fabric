@@ -2,6 +2,7 @@ package twilightforest.compat.config;
 
 import net.minecraft.server.permissions.PermissionLevel;
 import net.neoforged.neoforge.common.ModConfigSpec;
+import twilightforest.TFCommon;
 import twilightforest.config.ConfigComments;
 
 public class TFCommonConfig {
@@ -19,55 +20,55 @@ public class TFCommonConfig {
 	final ModConfigSpec.EnumValue<FCAPConfig.MultiplayerFightAdjuster> multiplayerFightAdjuster;
 
 	public TFCommonConfig(ModConfigSpec.Builder builder) {
-		builder.comment(ConfigComments.DIMENSION).translation(FCAPConfig.CONFIG_ID + "dim_settings").push("Dimension Settings");
+		builder.comment(ConfigComments.DIMENSION).translation(TFCommon.CONFIG_ID + "dim_settings").push("Dimension Settings");
 		{
 			DIMENSION.newPlayersSpawnInTF = builder
-				.translation(FCAPConfig.CONFIG_ID + "spawn_in_tf")
+				.translation(TFCommon.CONFIG_ID + "spawn_in_tf")
 				.comment(ConfigComments.SPAWN_IN_TF)
 				.define("newPlayersSpawnInTF", false);
 			DIMENSION.portalForNewPlayerSpawn = builder
-				.translation(FCAPConfig.CONFIG_ID + "portal_for_new_player")
+				.translation(TFCommon.CONFIG_ID + "portal_for_new_player")
 				.comment(ConfigComments.NEW_PORTAL)
 				.define("portalForNewPlayer", false);
 		}
 		builder.pop();
 
-		builder.comment(ConfigComments.PORTAL).translation(FCAPConfig.CONFIG_ID + "portal_settings").push("Portal Settings");
+		builder.comment(ConfigComments.PORTAL).translation(TFCommon.CONFIG_ID + "portal_settings").push("Portal Settings");
 		{
 			PORTAL.originDimension = builder
-				.translation(FCAPConfig.CONFIG_ID + "origin_dimension")
+				.translation(TFCommon.CONFIG_ID + "origin_dimension")
 				.comment(ConfigComments.ORIGIN_DIMENSION)
 				.define("originDimension", "minecraft:overworld");
 			PORTAL.allowPortalsInOtherDimensions = builder
-				.translation(FCAPConfig.CONFIG_ID + "portals_in_other_dimensions")
+				.translation(TFCommon.CONFIG_ID + "portals_in_other_dimensions")
 				.comment(ConfigComments.OTHER_DIMENSION_PORTALS)
 				.define("allowPortalsInOtherDimensions", false);
 			PORTAL.portalCreationPermission = builder
-				.translation(FCAPConfig.CONFIG_ID + "portal_permission")
+				.translation(TFCommon.CONFIG_ID + "portal_permission")
 				.comment(ConfigComments.PORTAL_PERMISSION)
 				.defineEnum("portalCreationPermission", PermissionLevel.ALL);
 			PORTAL.disablePortalCreation = builder
-				.translation(FCAPConfig.CONFIG_ID + "disable_portal")
+				.translation(TFCommon.CONFIG_ID + "disable_portal")
 				.comment(ConfigComments.DISABLE_PORTAL)
 				.define("disablePortalCreation", false);
 			PORTAL.checkPortalPlacement = builder
-				.translation(FCAPConfig.CONFIG_ID + "check_portal_placement")
+				.translation(TFCommon.CONFIG_ID + "check_portal_placement")
 				.comment(ConfigComments.CHECK_PORTAL)
 				.define("checkPortalPlacement", true);
 			PORTAL.destructivePortalLightning = builder
-				.translation(FCAPConfig.CONFIG_ID + "destructive_portal_lighting")
+				.translation(TFCommon.CONFIG_ID + "destructive_portal_lighting")
 				.comment(ConfigComments.PORTAL_LIGHTNING)
 				.define("destructivePortalLightning", true);
 			PORTAL.shouldReturnPortalBeUsable = builder
-				.translation(FCAPConfig.CONFIG_ID + "portal_return")
+				.translation(TFCommon.CONFIG_ID + "portal_return")
 				.comment(ConfigComments.RETURN_PORTAL)
 				.define("shouldReturnPortalBeUsable", true);
 			PORTAL.portalAdvancementLock = builder
-				.translation(FCAPConfig.CONFIG_ID + "portal_unlocked_by_advancement")
+				.translation(TFCommon.CONFIG_ID + "portal_unlocked_by_advancement")
 				.comment(ConfigComments.PORTAL_ADVANCEMENT)
 				.define("portalUnlockedByAdvancement", "");
 			PORTAL.maxPortalSize = builder
-				.translation(FCAPConfig.CONFIG_ID + "max_portal_size")
+				.translation(TFCommon.CONFIG_ID + "max_portal_size")
 				.comment(ConfigComments.PORTAL_SIZE)
 				.defineInRange("maxPortalSize", 64, 4, Integer.MAX_VALUE);
 		}
@@ -75,73 +76,73 @@ public class TFCommonConfig {
 
 		casketUUIDLocking = builder
 			.worldRestart()
-			.translation(FCAPConfig.CONFIG_ID + "casket_uuid_locking")
+			.translation(TFCommon.CONFIG_ID + "casket_uuid_locking")
 			.comment(ConfigComments.CASKET_UUID_LOCKING)
 			.define("casketUUIDLocking", false);
 
 		disableSkullCandles = builder
-			.translation(FCAPConfig.CONFIG_ID + "disable_skull_candles")
+			.translation(TFCommon.CONFIG_ID + "disable_skull_candles")
 			.comment(ConfigComments.DISABLE_SKULL_CANDLES)
 			.define("disableSkullCandleCreation", false);
 
 		defaultItemEnchants = builder
 			.worldRestart()
-			.translation(FCAPConfig.CONFIG_ID + "default_item_enchantments")
+			.translation(TFCommon.CONFIG_ID + "default_item_enchantments")
 			.comment(ConfigComments.DEFAULT_ENCHANTS)
 			.define("showEnchantmentsOnItems", true);
 
 		bossDropChests = builder
-			.translation(FCAPConfig.CONFIG_ID + "boss_drop_chests")
+			.translation(TFCommon.CONFIG_ID + "boss_drop_chests")
 			.comment(ConfigComments.BOSS_CHESTS)
 			.define("bossesSpawnDropChests", true);
 
 		cloudBlockPrecipitationDistance = builder
-			.translation(FCAPConfig.CONFIG_ID + "cloud_precipitation")
+			.translation(TFCommon.CONFIG_ID + "cloud_precipitation")
 			.comment(ConfigComments.CLOUD_PRECIP_SERVER)
 			.defineInRange("cloudBlockPrecipitationDistance", 32, 0, Integer.MAX_VALUE);
 
 		multiplayerFightAdjuster = builder
 			.worldRestart()
-			.translation(FCAPConfig.CONFIG_ID + "multiplayer_fight_adjuster")
+			.translation(TFCommon.CONFIG_ID + "multiplayer_fight_adjuster")
 			.comment(ConfigComments.MULTIPLAYER_ADJUSTER)
 			.defineEnum("multiplayerFightAdjuster", FCAPConfig.MultiplayerFightAdjuster.NONE);
 
-		builder.comment(ConfigComments.MAGIC_TREES).translation(FCAPConfig.CONFIG_ID + "magic_trees").push("Magic Trees");
+		builder.comment(ConfigComments.MAGIC_TREES).translation(TFCommon.CONFIG_ID + "magic_trees").push("Magic Trees");
 		{
 			MAGIC_TREES.timeRange = builder
 				.worldRestart()
-				.translation(FCAPConfig.CONFIG_ID + "time_range")
+				.translation(TFCommon.CONFIG_ID + "time_range")
 				.comment(ConfigComments.TIME_CORE)
 				.defineInRange("timeCoreRange", 16, 0, 128);
 
 			MAGIC_TREES.transformationRange = builder
 				.worldRestart()
-				.translation(FCAPConfig.CONFIG_ID + "transformation_range")
+				.translation(TFCommon.CONFIG_ID + "transformation_range")
 				.comment(ConfigComments.TRANSFORMATION_CORE)
 				.defineInRange("transformationCoreRange", 16, 0, 128);
 
 			MAGIC_TREES.miningRange = builder
 				.worldRestart()
-				.translation(FCAPConfig.CONFIG_ID + "mining_range")
+				.translation(TFCommon.CONFIG_ID + "mining_range")
 				.comment(ConfigComments.MINING_CORE)
 				.defineInRange("miningCoreRange", 16, 0, 128);
 
 			MAGIC_TREES.sortingRange = builder
 				.worldRestart()
-				.translation(FCAPConfig.CONFIG_ID + "sorting_range")
+				.translation(TFCommon.CONFIG_ID + "sorting_range")
 				.comment(ConfigComments.SORTING_CORE)
 				.defineInRange("sortingCoreRange", 16, 0, 128);
 		}
 		builder.pop();
 
-		builder.comment(ConfigComments.SHIELD_PARRYING).translation(FCAPConfig.CONFIG_ID + "shield").push("Shield Parrying");
+		builder.comment(ConfigComments.SHIELD_PARRYING).translation(TFCommon.CONFIG_ID + "shield").push("Shield Parrying");
 		{
 			SHIELD_INTERACTIONS.parryNonTwilightAttacks = builder
-				.translation(FCAPConfig.CONFIG_ID + "parry_non_twilight")
+				.translation(TFCommon.CONFIG_ID + "parry_non_twilight")
 				.comment(ConfigComments.PARRY_NON_TF)
 				.define("parryNonTwilightAttacks", false);
 			SHIELD_INTERACTIONS.shieldParryTicks = builder
-				.translation(FCAPConfig.CONFIG_ID + "parry_window")
+				.translation(TFCommon.CONFIG_ID + "parry_window")
 				.comment(ConfigComments.PARRY_WINDOW)
 				.defineInRange("shieldParryTicksArrow", 40, 0, Integer.MAX_VALUE);
 		}

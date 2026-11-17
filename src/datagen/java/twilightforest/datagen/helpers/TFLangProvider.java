@@ -231,13 +231,13 @@ public abstract class TFLangProvider extends LanguageProvider {
 	}
 
 	public void configEntry(String key, String name, String description) {
-		this.add(TFConfig.CONFIG_ID + key, name);
-		this.add(TFConfig.CONFIG_ID + key + ".tooltip", description);
+		this.add(TFCommon.CONFIG_ID + key, name);
+		this.add(TFCommon.CONFIG_ID + key + ".tooltip", description);
 	}
 
 	public void configCategory(String key, String name, String description) {
-		this.add(TFConfig.CONFIG_ID + key, name);
-		this.add(TFConfig.CONFIG_ID + key + ".tooltip", description);
+		this.add(TFCommon.CONFIG_ID + key, name);
+		this.add(TFCommon.CONFIG_ID + key + ".tooltip", description);
 		this.add(name + ".button", "Edit");
 	}
 

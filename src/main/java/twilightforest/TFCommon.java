@@ -85,6 +85,7 @@ import java.util.Locale;
 
 public final class TFCommon implements ModInitializer {
 	public static final String ID = "twilightforest";
+	public static final String CONFIG_ID = "config." + ID + ".";
 	public static final Logger LOGGER = LoggerFactory.getLogger(ID);
 
 	private static final String MODEL_DIR = "textures/entity/";
