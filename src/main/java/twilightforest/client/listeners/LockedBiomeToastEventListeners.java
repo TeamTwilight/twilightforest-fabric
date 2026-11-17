@@ -4,8 +4,8 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.entity.player.Player;
+import twilightforest.TFCommon;
 import twilightforest.client.LockedBiomeToast;
-import twilightforest.config.TFConfig;
 import twilightforest.util.Restriction;
 
 import java.util.Optional;
@@ -27,7 +27,7 @@ public final class LockedBiomeToastEventListeners {
 		//attempt to send a biome locked toast if our player is in a locked biome, only every 5 ticks
 		if (level.isClientSide() && player.tickCount % 5 == 0
 			&& progressionEnforced
-			&& !player.isCreative() && !player.isSpectator() && !TFConfig.disableLockedBiomeToasts) {
+			&& !player.isCreative() && !player.isSpectator() && !TFCommon.config.getDisableLockedBiomeToasts()) {
 			Optional<Restriction> restriction = Restriction.getRestrictionForBiome(level.getBiome(player.blockPosition()).value(), player);
 			if (restriction.isPresent() && restriction.get().lockedBiomeToast() != null) {
 				timeUntilToast--;

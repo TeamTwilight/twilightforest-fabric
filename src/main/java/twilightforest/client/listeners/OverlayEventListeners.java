@@ -24,7 +24,6 @@ import twilightforest.TFCommon;
 import twilightforest.client.overlay.ItemDisplayOverlay;
 import twilightforest.client.overlay.PortalOverlay;
 import twilightforest.components.item.OreScannerData;
-import twilightforest.config.TFConfig;
 import twilightforest.entity.passive.QuestRam;
 import twilightforest.entity.passive.quest.ram.QuestingRamCurrentContext;
 import twilightforest.listeners.HostileMountEventListeners;
@@ -67,14 +66,14 @@ public final class OverlayEventListeners {
 	}
 
 	private static boolean shouldRenderShields(Player player, Minecraft minecraft) {
-		return player != null && !minecraft.gui.hud.isHidden() && (minecraft.gameMode.canHurtPlayer() || TFConfig.showFortificationShieldIndicatorInCreative) && player.hasAttached(TFDataAttachments.FORTIFICATION_SHIELDS) && player.getAttachedOrCreate(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft() > 0 && TFConfig.showFortificationShieldIndicator;
+		return player != null && !minecraft.gui.hud.isHidden() && (minecraft.gameMode.canHurtPlayer() || TFCommon.config.getShowFortificationShieldIndicatorInCreative()) && player.hasAttached(TFDataAttachments.FORTIFICATION_SHIELDS) && player.getAttachedOrCreate(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft() > 0 && TFCommon.config.getShowFortificationShieldIndicator();
 	}
 
 	public static void renderIndicator(GuiGraphicsExtractor graphics, int screenWidth, int screenHeight) {
 		Minecraft minecraft = Minecraft.getInstance();
 		LocalPlayer player = minecraft.player;
 		Gui gui = minecraft.gui;
-		if (player != null && !minecraft.gui.hud.isHidden() && TFConfig.showQuestRamCrosshairIndicator) {
+		if (player != null && !minecraft.gui.hud.isHidden() && TFCommon.config.getShowQuestRamCrosshairIndicator()) {
 			if (minecraft.options.getCameraType().isFirstPerson() && (minecraft.gameMode.getPlayerMode() != GameType.SPECTATOR || gui.hud.canRenderCrosshairForSpectator(minecraft.hitResult)) && minecraft.crosshairPickEntity instanceof QuestRam ram) {
 				ItemStack stack = player.getInventory().getItem(player.getInventory().getSelectedSlot());
 				if (!stack.isEmpty()) {
@@ -178,7 +177,7 @@ public final class OverlayEventListeners {
 			.sorted(Comparator.comparing(Pair::getSecond)) // Sort Pairs by second element (quantity)
 			.toList(); // Make sorted immutable list
 
-		if (TFConfig.prettifyOreMeterGui) {
+		if (TFCommon.config.getPrettifyOreMeterGui()) {
 			ComponentColumn padding = ComponentColumn.padding(1);
 			List<Integer> counts = scanData.stream().map(Pair::getSecond).toList();
 

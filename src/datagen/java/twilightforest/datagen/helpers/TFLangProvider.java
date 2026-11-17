@@ -25,7 +25,6 @@ import net.minecraft.world.level.gamerules.GameRule;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import org.apache.commons.lang3.text.WordUtils;
 import twilightforest.TFCommon;
-import twilightforest.config.TFConfig;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 
 import java.nio.file.Path;

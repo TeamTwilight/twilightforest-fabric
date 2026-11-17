@@ -6,7 +6,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.DirectionalBlock;
-import twilightforest.config.TFConfig;
+import twilightforest.TFCommon;
 import twilightforest.init.TFSounds;
 import twilightforest.item.OreMagnetItem;
 import twilightforest.util.WorldUtil;
@@ -26,7 +26,7 @@ public class MineLogCoreBlock extends SpecialMagicLogBlock {
 
 	@Override
 	public boolean doesCoreFunction() {
-		return !TFConfig.disableMiningCore;
+		return !TFCommon.config.getDisableMiningCore();
 	}
 
 	/**
@@ -34,7 +34,7 @@ public class MineLogCoreBlock extends SpecialMagicLogBlock {
 	 */
 	@Override
 	void performTreeEffect(ServerLevel level, BlockPos pos, RandomSource rand) {
-		BlockPos dPos = WorldUtil.randomOffset(rand, pos, TFConfig.miningCoreRange);
+		BlockPos dPos = WorldUtil.randomOffset(rand, pos, TFCommon.config.getMiningCoreRange());
 		int moved = OreMagnetItem.doMagnet(level, pos, dPos, true);
 
 		if (moved > 0) {

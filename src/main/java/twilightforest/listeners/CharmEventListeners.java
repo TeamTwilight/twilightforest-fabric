@@ -31,7 +31,6 @@ import twilightforest.TFCommon;
 import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.block.entity.SkullChestBlockEntity;
 import twilightforest.components.entity.CharmAttachment;
-import twilightforest.config.TFConfig;
 import twilightforest.init.*;
 import twilightforest.tags.TFItemTags;
 import twilightforest.enums.BlockLoggingEnum;
@@ -282,7 +281,7 @@ public final class CharmEventListeners {
 				return;
 			}
 
-			if (TFConfig.casketUUIDLocking) {
+			if (TFCommon.config.getCasketUUIDLocking()) {
 				// Make it so only the player who died can open the chest if our config allows us
 				casket.owner = ResolvableProfile.createResolved(player.getGameProfile());
 			} else {

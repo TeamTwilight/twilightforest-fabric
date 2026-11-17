@@ -5,7 +5,7 @@ import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditionType;
 import net.minecraft.resources.RegistryOps;
 import org.jspecify.annotations.Nullable;
-import twilightforest.config.TFConfig;
+import twilightforest.TFCommon;
 import twilightforest.init.TFResourceConditionTypes;
 
 public record UncraftingTableCondition() implements ResourceCondition {
@@ -18,6 +18,6 @@ public record UncraftingTableCondition() implements ResourceCondition {
 
 	@Override
 	public boolean test(RegistryOps.@Nullable RegistryInfoLookup registryInfo) {
-		return !TFConfig.disableEntireTable;
+		return !TFCommon.config.getDisableEntireTable();
 	}
 }

@@ -1,6 +1,5 @@
 package twilightforest;
 
-import com.google.common.reflect.Reflection;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
@@ -14,6 +13,7 @@ import net.fabricmc.fabric.api.registry.FuelValueEvents;
 import net.fabricmc.fabric.api.registry.StrippableBlockRegistry;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
 import net.minecraft.core.Registry;
@@ -42,7 +42,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.DispenserBlock;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.BlockEntityTypes;
 import net.minecraft.world.level.levelgen.Heightmap;
 import org.slf4j.Logger;
@@ -53,7 +52,8 @@ import twilightforest.block.SortLogCoreBlock;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.block.entity.TFChestBlockEntity;
 import twilightforest.command.TFCommand;
-import twilightforest.config.ConfigSetup;
+import twilightforest.compat.config.FCAPCompat;
+import twilightforest.config.TFConfigAccess;
 import twilightforest.dispenser.*;
 import twilightforest.entity.MagicPaintingVariant;
 import twilightforest.entity.RovingCube;
@@ -91,9 +91,14 @@ public final class TFCommon implements ModInitializer {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(ID);
 
+	public static TFConfigAccess config = new TFConfigAccess() {
+	};
+
 	@Override
 	public void onInitialize() {
-		Reflection.initialize(ConfigSetup.class);
+		if (FabricLoader.getInstance().isModLoaded("forgeconfigapiport")) {
+			FCAPCompat.setup();
+		}
 
 		TFRegistries.init();
 		TFItems.init();

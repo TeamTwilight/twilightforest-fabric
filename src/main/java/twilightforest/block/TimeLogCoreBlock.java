@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.config.TFConfig;
+import twilightforest.TFCommon;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
 import twilightforest.network.ParticlePacket;
@@ -39,7 +39,7 @@ public class TimeLogCoreBlock extends SpecialMagicLogBlock {
 
 	@Override
 	public boolean doesCoreFunction() {
-		return !TFConfig.disableTimeCore;
+		return !TFCommon.config.getDisableTimeCore();
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class TimeLogCoreBlock extends SpecialMagicLogBlock {
 
 		for (int i = 0; i < numticks; i++) {
 
-			BlockPos dPos = WorldUtil.randomOffset(rand, pos, TFConfig.timeCoreRange);
+			BlockPos dPos = WorldUtil.randomOffset(rand, pos, TFCommon.config.getTimeCoreRange());
 
 			BlockState state = level.getBlockState(dPos);
 

@@ -8,7 +8,7 @@ import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import twilightforest.config.TFConfig;
+import twilightforest.TFCommon;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -72,7 +72,7 @@ public class ClockDisplay implements ItemDisplay {
 	}
 
 	private Component getText(Minecraft minecraft) {
-		return getGameTime(minecraft.level, TFConfig.clock24HourFormat);
+		return getGameTime(minecraft.level, TFCommon.config.getClock24HourFormat());
 	}
 
 	private enum TimeFrame {

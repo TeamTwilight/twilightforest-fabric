@@ -14,7 +14,6 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import twilightforest.TFCommon;
-import twilightforest.config.TFConfig;
 import twilightforest.init.TFMobEffects;
 import twilightforest.tags.TFEntityTypeTags;
 
@@ -47,7 +46,7 @@ public final class EntityEventHooks {
 
 	public static void adjustEntityHealthInMultiplayerFights(ServerLevel level, Mob mob, DifficultyInstance difficulty) {
 		if (mob.is(TFEntityTypeTags.MULTIPLAYER_INCLUSIVE_ENTITIES)) {
-			if (TFConfig.multiplayerFightAdjuster.adjustsHealth()) {
+			if (TFCommon.config.getMultiplayerAdjustHealth()) {
 				List<ServerPlayer> nearbyPlayers = level.getEntitiesOfClass(ServerPlayer.class, mob.getBoundingBox().inflate(32, 10, 32), player -> EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.ENTITY_STILL_ALIVE).test(player));
 				if (nearbyPlayers.size() > 1 && mob.getAttribute(Attributes.MAX_HEALTH) != null) {
 					mob.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(TFCommon.prefix("group_health_boost"), getHealthBasedOnDifficulty(difficulty.getDifficulty()) * (nearbyPlayers.size() - 1), AttributeModifier.Operation.ADD_VALUE));

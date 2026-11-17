@@ -6,7 +6,7 @@ import net.minecraft.world.entity.ContainerUser;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
-import twilightforest.config.TFConfig;
+import twilightforest.TFCommon;
 
 public class UncraftingContainer implements Container, ContainerData {
 
@@ -83,7 +83,7 @@ public class UncraftingContainer implements Container, ContainerData {
 
 	@Override
 	public boolean stillValid(Player player) {
-		return !TFConfig.disableEntireTable;
+		return !TFCommon.config.getDisableEntireTable();
 	}
 
 	@Override

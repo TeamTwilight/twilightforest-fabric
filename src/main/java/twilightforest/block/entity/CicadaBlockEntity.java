@@ -7,7 +7,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import twilightforest.config.TFConfig;
+import twilightforest.TFCommon;
 import twilightforest.init.TFBlockEntities;
 import twilightforest.init.TFSounds;
 
@@ -78,7 +78,7 @@ public class CicadaBlockEntity extends BlockEntity {
 	}
 
 	private void playSong() {
-		if (!TFConfig.silentCicadas) {
+		if (!TFCommon.config.getSilentCicadas()) {
 			this.getLevel().playLocalSound(this.getBlockPos().getX(), this.getBlockPos().getY(), this.getBlockPos().getZ(), TFSounds.CICADA.value(), SoundSource.NEUTRAL, 1.0f, (this.getLevel().getRandom().nextFloat() - this.getLevel().getRandom().nextFloat()) * 0.2F + 1.0F, false);
 		}
 	}

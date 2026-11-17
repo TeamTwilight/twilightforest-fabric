@@ -20,7 +20,7 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.PalettedContainer;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.config.TFConfig;
+import twilightforest.TFCommon;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFParticleType;
 import twilightforest.init.TFSounds;
@@ -44,7 +44,7 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 
 	@Override
 	public boolean doesCoreFunction() {
-		return !TFConfig.disableTransformationCore;
+		return !TFCommon.config.getDisableTransformationCore();
 	}
 
 	/**
@@ -54,7 +54,7 @@ public class TransLogCoreBlock extends SpecialMagicLogBlock {
 	void performTreeEffect(ServerLevel level, BlockPos pos, RandomSource rand) {
 		ResourceKey<Biome> target = TFBiomes.ENCHANTED_FOREST;
 		Holder<Biome> biome = level.registryAccess().carminite$holderOrThrow(target);
-		int range = TFConfig.transformationCoreRange;
+		int range = TFCommon.config.getTransformationCoreRange();
 		for (int i = 0; i < 16; i++) {
 			BlockPos dPos = WorldUtil.randomOffset(rand, pos, range, 0, range);
 			if (dPos.distSqr(pos) > 256.0)

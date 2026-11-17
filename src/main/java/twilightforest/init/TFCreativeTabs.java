@@ -22,7 +22,6 @@ import net.minecraft.world.level.ItemLike;
 import twilightforest.TFCommon;
 import twilightforest.block.AbstractSkullCandleBlock;
 import twilightforest.components.item.SkullCandles;
-import twilightforest.config.TFConfig;
 import twilightforest.entity.MagicPaintingVariant;
 
 import java.util.Comparator;
@@ -36,7 +35,7 @@ public class TFCreativeTabs {
 
 	private static void generateGearWithEnchants(CreativeModeTab.Output output, ItemLike item, EnchantmentInstance... instances) {
 		ItemStack stack = new ItemStack(item);
-		if (TFConfig.defaultItemEnchants) {
+		if (TFCommon.config.getDefaultItemEnchants()) {
 			for (EnchantmentInstance enchant : instances) {
 				stack.enchant(enchant.enchantment(), enchant.level());
 			}

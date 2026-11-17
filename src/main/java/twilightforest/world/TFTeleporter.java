@@ -29,8 +29,8 @@ import org.apache.commons.lang3.mutable.MutableInt;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jspecify.annotations.Nullable;
+import twilightforest.TFCommon;
 import twilightforest.block.TFPortalBlock;
-import twilightforest.config.TFConfig;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDimension;
 import twilightforest.init.TFPOITypes;
@@ -492,7 +492,7 @@ public class TFTeleporter {
 		}
 
 		// portal in it
-		BlockState portal = TFBlocks.TWILIGHT_PORTAL.defaultBlockState().setValue(TFPortalBlock.DISALLOW_RETURN, (locked || !TFConfig.shouldReturnPortalBeUsable));
+		BlockState portal = TFBlocks.TWILIGHT_PORTAL.defaultBlockState().setValue(TFPortalBlock.DISALLOW_RETURN, (locked || !TFCommon.config.getShouldReturnPortalBeUsable()));
 
 		world.setBlock(pos, portal, Block.UPDATE_CLIENTS);
 		world.setBlock(pos.east(), portal, Block.UPDATE_CLIENTS);

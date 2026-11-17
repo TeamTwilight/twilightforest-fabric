@@ -7,7 +7,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import twilightforest.TFCommon;
-import twilightforest.config.TFConfig;
 import twilightforest.inventory.UncraftingMenu;
 
 public record UncraftingGuiPacket(int operationType) implements CustomPacketPayload {
@@ -36,12 +35,12 @@ public record UncraftingGuiPacket(int operationType) implements CustomPacketPayl
 					case 0 -> uncrafting.unrecipeInCycle++;
 					case 1 -> uncrafting.unrecipeInCycle--;
 					case 2 -> {
-						if (!TFConfig.disableIngredientSwitching) {
+						if (!TFCommon.config.getDisableIngredientSwitching()) {
 							uncrafting.ingredientsInCycle++;
 						}
 					}
 					case 3 -> {
-						if (!TFConfig.disableIngredientSwitching) {
+						if (!TFCommon.config.getDisableIngredientSwitching()) {
 							uncrafting.ingredientsInCycle--;
 						}
 					}
