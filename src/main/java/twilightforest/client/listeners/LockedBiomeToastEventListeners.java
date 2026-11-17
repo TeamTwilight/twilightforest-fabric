@@ -27,7 +27,7 @@ public final class LockedBiomeToastEventListeners {
 		//attempt to send a biome locked toast if our player is in a locked biome, only every 5 ticks
 		if (level.isClientSide() && player.tickCount % 5 == 0
 			&& progressionEnforced
-			&& !player.isCreative() && !player.isSpectator() && !TFCommon.config.getDisableLockedBiomeToasts()) {
+			&& !player.isCreative() && !player.isSpectator() && !TFCommon.config().getDisableLockedBiomeToasts()) {
 			Optional<Restriction> restriction = Restriction.getRestrictionForBiome(level.getBiome(player.blockPosition()).value(), player);
 			if (restriction.isPresent() && restriction.get().lockedBiomeToast() != null) {
 				timeUntilToast--;

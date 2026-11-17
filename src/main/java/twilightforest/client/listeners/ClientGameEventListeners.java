@@ -170,10 +170,10 @@ public final class ClientGameEventListeners {
 			time++;
 
 			lastAurora = aurora;
-			if (mc.level != null && mc.getCameraEntity() != null && !TFCommon.config.getValidAuroraBiomes(mc.level.registryAccess()).isEmpty()) {
+			if (mc.level != null && mc.getCameraEntity() != null && !TFCommon.config().getValidAuroraBiomes(mc.level.registryAccess()).isEmpty()) {
 				RegistryAccess access = mc.level.registryAccess();
 				Holder<Biome> biome = mc.level.getBiome(mc.getCameraEntity().blockPosition());
-				if (TFCommon.config.getValidAuroraBiomes(access).stream().anyMatch(c -> HolderMatcher.INSTANCE.match(c, biome)))
+				if (TFCommon.config().getValidAuroraBiomes(access).stream().anyMatch(c -> HolderMatcher.INSTANCE.match(c, biome)))
 					aurora++;
 				else
 					aurora--;
@@ -189,7 +189,7 @@ public final class ClientGameEventListeners {
 					MagicPaintingRenderer.lastLightning = mc.level.getGameTime();
 				}
 
-				if (TFCommon.config.getFirstPersonEffects() && mc.player != null) {
+				if (TFCommon.config().getFirstPersonEffects() && mc.player != null) {
 					HashSet<ChunkPos> chunksInRange = new HashSet<>();
 					for (int x = -16; x <= 16; x += 16) {
 						for (int z = -16; z <= 16; z += 16) {
@@ -221,7 +221,7 @@ public final class ClientGameEventListeners {
 	}
 
 	public static void shakeCamera(ViewportEvent.ComputeCameraAngles event) {
-		if (TFCommon.config.getFirstPersonEffects() && !Minecraft.getInstance().isPaused() && shakeIntensity > 0 && Minecraft.getInstance().player != null) {
+		if (TFCommon.config().getFirstPersonEffects() && !Minecraft.getInstance().isPaused() && shakeIntensity > 0 && Minecraft.getInstance().player != null) {
 			event.setYaw((float) Mth.lerp(event.getPartialTick(), event.getYaw(), event.getYaw() + (Minecraft.getInstance().player.getRandom().nextFloat() * 2F - 1F) * shakeIntensity));
 			event.setPitch((float) Mth.lerp(event.getPartialTick(), event.getPitch(), event.getPitch() + (Minecraft.getInstance().player.getRandom().nextFloat() * 2F - 1F) * shakeIntensity));
 			event.setRoll((float) Mth.lerp(event.getPartialTick(), event.getRoll(), event.getRoll() + (Minecraft.getInstance().player.getRandom().nextFloat() * 2F - 1F) * shakeIntensity));

@@ -78,7 +78,7 @@ public final class CapabilityEventListeners {
 	}
 
 	public static void newSpawnInTwilightForest(ServerPlayer player) {
-		if (!TFCommon.config.getNewPlayersSpawnInTF())
+		if (!TFCommon.config().getNewPlayersSpawnInTF())
 			return;
 		ServerLevel level = player.level().getServer().getLevel(TFDimension.DIMENSION_KEY);
 		if (level == null)
@@ -86,7 +86,7 @@ public final class CapabilityEventListeners {
 
 		BlockPos newDefaultSpawn = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, player.blockPosition());
 
-		player.teleport(TFCommon.config.getPortalForNewPlayerSpawn() ? TFTeleporter.createTransition(player, level, newDefaultSpawn, true) : NoReturnTeleporter.createNoPortalTransition(level, player, newDefaultSpawn));
+		player.teleport(TFCommon.config().getPortalForNewPlayerSpawn() ? TFTeleporter.createTransition(player, level, newDefaultSpawn, true) : NoReturnTeleporter.createNoPortalTransition(level, player, newDefaultSpawn));
 		ServerPlayer.RespawnConfig newSpawn = new ServerPlayer.RespawnConfig(LevelData.RespawnData.of(TFDimension.DIMENSION_KEY, newDefaultSpawn, player.getYRot(), player.getXRot()), true);
 		player.setRespawnPosition(newSpawn, false);
 

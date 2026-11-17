@@ -72,7 +72,7 @@ public class ClockDisplay implements ItemDisplay {
 	}
 
 	private Component getText(Minecraft minecraft) {
-		return getGameTime(minecraft.level, TFCommon.config.getClock24HourFormat());
+		return getGameTime(minecraft.level, TFCommon.config().getClock24HourFormat());
 	}
 
 	private enum TimeFrame {

@@ -13,6 +13,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.neoforged.neoforge.common.TranslatableEnum;
 import org.jspecify.annotations.Nullable;
 import twilightforest.TFCommon;
+import twilightforest.config.DefaultConfig;
 import twilightforest.config.TFConfigAccess;
 import twilightforest.util.PlayerHelper;
 
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
-public class FCAPConfig implements TFConfigAccess {
+public final class FCAPConfig implements TFConfigAccess {
 	public static final String CONFIG_ID = "config." + TFCommon.ID + ".";
 
 	@Nullable
@@ -48,7 +49,7 @@ public class FCAPConfig implements TFConfigAccess {
 	public static int itemDisplayXOffs = 4;
 	public static int itemDisplayYOffs = 4;
 	public static double itemDisplayScale = 1.0D;
-	public static boolean clock24HourFormat = TFConfigAccess.use24HourTimeDefault();
+	public static boolean clock24HourFormat = DefaultConfig.use24HourTimeDefault();
 
 	// --- COMMON ---
 	public static boolean casketUUIDLocking = false;
@@ -101,15 +102,15 @@ public class FCAPConfig implements TFConfigAccess {
 	@Override
 	public @Nullable Identifier getPortalLockingAdvancement(Player player) {
 		//only run assigning logic if the config has an advancement set and the RL is null
-		if (portalLockingAdvancement == null && !ConfigSetup.COMMON_CONFIG.PORTAL.portalAdvancementLock.get().isEmpty()) {
+		if (portalLockingAdvancement == null && !FCAPCompat.COMMON_CONFIG.PORTAL.portalAdvancementLock.get().isEmpty()) {
 
-			Identifier lock = Identifier.tryParse(ConfigSetup.COMMON_CONFIG.PORTAL.portalAdvancementLock.get());
+			Identifier lock = Identifier.tryParse(FCAPCompat.COMMON_CONFIG.PORTAL.portalAdvancementLock.get());
 			if (lock == null || PlayerHelper.getAdvancement(player, lock) == null) {
 				//if the RL is not a valid advancement fail us
 				TFCommon.LOGGER.error("The portal locking advancement is not a valid advancement! Setting to null!");
-				ConfigSetup.COMMON_CONFIG.PORTAL.portalAdvancementLock.set("");
+				FCAPCompat.COMMON_CONFIG.PORTAL.portalAdvancementLock.set("");
 			} else {
-				portalLockingAdvancement = Identifier.tryParse(ConfigSetup.COMMON_CONFIG.PORTAL.portalAdvancementLock.get());
+				portalLockingAdvancement = Identifier.tryParse(FCAPCompat.COMMON_CONFIG.PORTAL.portalAdvancementLock.get());
 				TFCommon.LOGGER.debug("Portal locking advancement reloaded. Current advancement to check for is: {}", portalLockingAdvancement);
 			}
 		}
@@ -120,8 +121,8 @@ public class FCAPConfig implements TFConfigAccess {
 	//Forge's biome registry doesn't contain biomes done via datapacks, so we have to use registryaccess
 	@Override
 	public List<Holder<Biome>> getValidAuroraBiomes(RegistryAccess access) {
-		if (VALID_AURORA_BIOMES.isEmpty() && !ConfigSetup.CLIENT_CONFIG.auroraBiomes.get().isEmpty()) {
-			ConfigSetup.CLIENT_CONFIG.auroraBiomes.get().forEach(s -> {
+		if (VALID_AURORA_BIOMES.isEmpty() && !FCAPCompat.CLIENT_CONFIG.auroraBiomes.get().isEmpty()) {
+			FCAPCompat.CLIENT_CONFIG.auroraBiomes.get().forEach(s -> {
 				Optional<Holder<Biome>> holder = Optional.ofNullable(Identifier.tryParse(s)).flatMap(key -> access.lookupOrThrow(Registries.BIOME).get(key));
 				if (holder.isEmpty()) {
 					TFCommon.LOGGER.warn("Biome {} in Twilight Forest's validAuroraBiomes config option is not a valid biome. Skipping!", s);

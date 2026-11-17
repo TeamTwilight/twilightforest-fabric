@@ -54,7 +54,7 @@ public interface IBossLootBuffer {
 	}
 
 	static <T extends LivingEntity & IBossLootBuffer> void saveDropsIntoBoss(T boss, LootParams params, ServerLevel serverLevel) {
-		if (!TFCommon.config.getBossDropChests() || boss.getLootTable().isEmpty())
+		if (!TFCommon.config().getBossDropChests() || boss.getLootTable().isEmpty())
 			return;
 		LootTable table = serverLevel.getServer().reloadableRegistries().getLootTable(boss.getLootTable().get());
 		ObjectArrayList<ItemStack> stacks = table.getRandomItems(params);
@@ -72,7 +72,7 @@ public interface IBossLootBuffer {
 	}
 
 	static <T extends LivingEntity & IBossLootBuffer> void depositDropsIntoChest(T boss, BlockState chest, BlockPos pos, ServerLevel serverLevel) {
-		if (TFCommon.config.getBossDropChests() && !boss.getItemStacks().isEmpty()) {
+		if (TFCommon.config().getBossDropChests() && !boss.getItemStacks().isEmpty()) {
 			if (!tryDeposit(boss, chest, pos, serverLevel)) {
 				BlockPos.MutableBlockPos chestPos = pos.mutable();
 				for (int y = pos.getY(); y < serverLevel.getMaxY(); y++) {

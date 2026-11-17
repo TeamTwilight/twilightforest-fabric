@@ -7,8 +7,8 @@ plugins {
 }
 
 wrapper {
-	gradleVersion = '9.8.2'
-	distributionType = Wrapper.DistributionType.ALL
+	gradleVersion = '9.9.1'
+	distributionType = Wrapper.DistributionType.BIN
 }
 
 def secrets = new Properties()
@@ -81,13 +81,11 @@ dependencies {
 	implementation "net.fabricmc:fabric-loader:${loader_version}"
 	implementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
 
-	// NeoForge Config API
-	include(implementation "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forge_config_api_port_version}")
-
 	// Built-in library
 	implementation(include(project(":carminite-lib")))
 
 	// Compatibility
+	implementation "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forge_config_api_port_version}"
 	implementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
 	implementation "maven.modrinth:jade:${project.jade_version}"
 	implementation "mezz.jei:jei-${minecraft_version}-fabric:${jei_version}"

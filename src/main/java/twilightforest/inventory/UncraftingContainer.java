@@ -83,7 +83,7 @@ public class UncraftingContainer implements Container, ContainerData {
 
 	@Override
 	public boolean stillValid(Player player) {
-		return !TFCommon.config.getDisableEntireTable();
+		return !TFCommon.config().getDisableEntireTable();
 	}
 
 	@Override

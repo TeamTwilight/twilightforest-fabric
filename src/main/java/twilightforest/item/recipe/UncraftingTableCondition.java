@@ -18,6 +18,6 @@ public record UncraftingTableCondition() implements ResourceCondition {
 
 	@Override
 	public boolean test(RegistryOps.@Nullable RegistryInfoLookup registryInfo) {
-		return !TFCommon.config.getDisableEntireTable();
+		return !TFCommon.config().getDisableEntireTable();
 	}
 }

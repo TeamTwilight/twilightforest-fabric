@@ -3,7 +3,7 @@ package twilightforest.compat.config;
 import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import twilightforest.config.ConfigComments;
-import twilightforest.config.TFConfigAccess;
+import twilightforest.config.DefaultConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -122,7 +122,7 @@ public class TFClientConfig {
 			ITEM_DISPLAY.twentyFourHourFormat = builder
 				.translation(FCAPConfig.CONFIG_ID + "twenty_four_hour_format")
 				.comment(ConfigComments.TWENTY_FOUR_HOUR_FORMAT)
-				.define("twentyFourHourFormat", TFConfigAccess.use24HourTimeDefault());
+				.define("twentyFourHourFormat", DefaultConfig.use24HourTimeDefault());
 		}
 		builder.pop();
 	}

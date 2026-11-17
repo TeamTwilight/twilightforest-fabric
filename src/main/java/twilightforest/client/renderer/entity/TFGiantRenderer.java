@@ -50,7 +50,7 @@ public class TFGiantRenderer<T extends GiantMiner> extends HumanoidMobRenderer<T
 		Identifier texture = DefaultPlayerSkin.getDefaultTexture();
 		this.model = this.normalModel;
 
-		GameProfile profile = TFCommon.config.getGameProfiles().isEmpty() ? null : TFCommon.config.getGameProfiles().get(Math.abs((int) state.uuid.getMostSignificantBits()) % TFCommon.config.getGameProfiles().size());
+		GameProfile profile = TFCommon.config().getGameProfiles().isEmpty() ? null : TFCommon.config().getGameProfiles().get(Math.abs((int) state.uuid.getMostSignificantBits()) % TFCommon.config().getGameProfiles().size());
 
 		if (profile != null) {
 			PlayerSkin skin = mc.getSkinManager().createLookup(profile, false).get();

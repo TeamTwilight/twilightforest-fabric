@@ -44,7 +44,7 @@ public class UncraftingScreen extends AbstractRecipeBookScreen<UncraftingMenu> {
 			ClientPlayNetworking.send(new UncraftingGuiPacket(1)),
 			Component.translatable("container.twilightforest.uncrafting_table.cycle_back_uncraft")));
 
-		if (!TFCommon.config.getDisableIngredientSwitching()) {
+		if (!TFCommon.config().getDisableIngredientSwitching()) {
 			this.addRenderableWidget(new CycleButtonMini(this.leftPos + 27, this.topPos + 56, true, button ->
 				ClientPlayNetworking.send(new UncraftingGuiPacket(2)),
 				Component.translatable("container.twilightforest.uncrafting_table.cycle_next_ingredient")));
@@ -66,7 +66,7 @@ public class UncraftingScreen extends AbstractRecipeBookScreen<UncraftingMenu> {
 		boolean scrolled = super.mouseScrolled(x, y, vertScroll, horizScroll);
 
 		//ingredient buttons
-		if (!TFCommon.config.getDisableIngredientSwitching()) {
+		if (!TFCommon.config().getDisableIngredientSwitching()) {
 			if (x > this.leftPos + 27 && x < this.leftPos + 33 && y > this.topPos + 56 && y < this.topPos + 69) {
 				ClientPlayNetworking.send(new UncraftingGuiPacket(vertScroll > 0 ? 2 : 3));
 			}
@@ -99,7 +99,7 @@ public class UncraftingScreen extends AbstractRecipeBookScreen<UncraftingMenu> {
 	@Override
 	protected void extractLabels(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
 		graphics.text(this.font, this.title, 6, 6, 0xFF404040, false);
-		if (TFCommon.config.getDisableUncraftingOnly()) {
+		if (TFCommon.config().getDisableUncraftingOnly()) {
 			graphics.text(this.font, Component.translatable("container.twilightforest.uncrafting_table.uncrafting_disabled").withStyle(ChatFormatting.DARK_RED), 6, this.imageHeight - 96 + 2, 0xFF404040, false);
 		} else {
 			graphics.text(this.font, I18n.get("container.inventory"), 7, this.imageHeight - 96 + 2, 0xFF404040, false);

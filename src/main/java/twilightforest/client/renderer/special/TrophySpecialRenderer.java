@@ -34,7 +34,7 @@ public record TrophySpecialRenderer(Function<BossVariant, TrophyBlockModel> trop
 			stack.translate(0.5F, 0.5F, 0.5F);
 			if (this.fixedRotation().isPresent()) {
 				stack.mulPose(Axis.YN.rotationDegrees(this.fixedRotation().get()));
-			} else if (TFCommon.config.getRotateTrophyHeadsGui() && !minecraft.isPaused()) {
+			} else if (TFCommon.config().getRotateTrophyHeadsGui() && !minecraft.isPaused()) {
 				stack.mulPose(Axis.YN.rotationDegrees(45.0F + (int) (Util.getMillis() / 35) % 360));
 			}
 			stack.translate(0.0F, -0.25F, 0.0F);

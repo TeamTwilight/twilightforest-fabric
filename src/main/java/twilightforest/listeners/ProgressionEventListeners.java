@@ -187,12 +187,12 @@ public final class ProgressionEventListeners {
 		ServerLevel level = player.level();
 
 		// check for portal creation, at least if it's not disabled
-		int portalCheckInterval = !TFCommon.config.getCheckPortalPlacement() ? 100 : 20;
-		if (!TFCommon.config.getDisablePortalCreation() && player.tickCount % portalCheckInterval == 0) {
+		int portalCheckInterval = !TFCommon.config().getCheckPortalPlacement() ? 100 : 20;
+		if (!TFCommon.config().getDisablePortalCreation() && player.tickCount % portalCheckInterval == 0) {
 			// skip non admin players when the option is on
-			if (level.getServer().getProfilePermissions(player.nameAndId()).level().isEqualOrHigherThan(TFCommon.config.getPortalCreationPermission())) {
+			if (level.getServer().getProfilePermissions(player.nameAndId()).level().isEqualOrHigherThan(TFCommon.config().getPortalCreationPermission())) {
 				// reduce range to 4.0 if config is set to admins/owners only
-				checkForPortalCreation(player, level, TFCommon.config.getPortalCreationPermission().isEqualOrHigherThan(PermissionLevel.ADMINS)  ? 4.0F : 32.0F, portalCheckInterval);
+				checkForPortalCreation(player, level, TFCommon.config().getPortalCreationPermission().isEqualOrHigherThan(PermissionLevel.ADMINS)  ? 4.0F : 32.0F, portalCheckInterval);
 			}
 		}
 
@@ -212,9 +212,9 @@ public final class ProgressionEventListeners {
 	}
 
 	private static void checkForPortalCreation(ServerPlayer player, ServerLevel level, float rangeToCheck, int checkInterval) {
-		if (level.dimension().identifier().equals(Identifier.parse(TFCommon.config.getOriginDimension()))
+		if (level.dimension().identifier().equals(Identifier.parse(TFCommon.config().getOriginDimension()))
 			|| TFDimension.isTwilightPortalDestination(level)
-			|| TFCommon.config.getAllowPortalsInOtherDimensions()) {
+			|| TFCommon.config().getAllowPortalsInOtherDimensions()) {
 
 			List<ItemEntity> itemList = level.getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(rangeToCheck));
 			ItemEntity qualified = null;
@@ -231,8 +231,8 @@ public final class ProgressionEventListeners {
 
 			if (qualified == null) return;
 
-			if (!player.isCreative() && !player.isSpectator() && TFCommon.config.getPortalLockingAdvancement(player) != null) {
-				AdvancementHolder requirement = PlayerHelper.getAdvancement(player, Objects.requireNonNull(TFCommon.config.getPortalLockingAdvancement(player)));
+			if (!player.isCreative() && !player.isSpectator() && TFCommon.config().getPortalLockingAdvancement(player) != null) {
+				AdvancementHolder requirement = PlayerHelper.getAdvancement(player, Objects.requireNonNull(TFCommon.config().getPortalLockingAdvancement(player)));
 				if (requirement != null && !PlayerHelper.doesPlayerHaveRequiredAdvancement(player, requirement)) {
 					player.sendOverlayMessage(TFPortalBlock.PORTAL_UNWORTHY);
 

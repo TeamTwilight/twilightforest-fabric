@@ -66,7 +66,7 @@ public class CloudEventListeners {
 
 	private void tickWeatherEffects(Minecraft mc) {
 		if (!mc.isPaused()) {
-			if (mc.level != null && TFCommon.config.getClientCloudBlockPrecipitationDistance() > 0) { // Semi vanilla copy of the weather tick, but made to work with cloud blocks instead
+			if (mc.level != null && TFCommon.config().getClientCloudBlockPrecipitationDistance() > 0) { // Semi vanilla copy of the weather tick, but made to work with cloud blocks instead
 				Vec3 vec3 = mc.gameRenderer.mainCamera().position();
 				if (mc.level.getGameTime() % 10L == 0L) {
 					RENDER_HELPER.clear();
@@ -80,7 +80,7 @@ public class CloudEventListeners {
 					int floorZ = Mth.floor(camZ);
 
 					int renderDistance = mc.options.weatherRadius().get();
-					int precipitationDistance = TFCommon.config.getClientCloudBlockPrecipitationDistance();
+					int precipitationDistance = TFCommon.config().getClientCloudBlockPrecipitationDistance();
 					BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 
 					for (int roofZ = floorZ - renderDistance; roofZ <= floorZ + renderDistance; ++roofZ) {
@@ -173,7 +173,7 @@ public class CloudEventListeners {
 	}
 
 	private void renderPrecipitation(LevelRenderContext context) {
-		if (TFCommon.config.getClientCloudBlockPrecipitationDistance() > 0 && !RENDER_HELPER.isEmpty()) {
+		if (TFCommon.config().getClientCloudBlockPrecipitationDistance() > 0 && !RENDER_HELPER.isEmpty()) {
 			Minecraft minecraft = Minecraft.getInstance();
 			if (minecraft.level == null) return;
 			float partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(false);

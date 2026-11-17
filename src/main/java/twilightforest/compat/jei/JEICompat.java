@@ -62,7 +62,7 @@ public class JEICompat implements IModPlugin {
 	@Override
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
 		if (isEmiInstalled()) return;
-		if (!TFCommon.config.getDisableEntireTable()) {
+		if (!TFCommon.config().getDisableEntireTable()) {
 			registration.addCraftingStation(RecipeTypes.CRAFTING, new ItemStack(TFBlocks.UNCRAFTING_TABLE));
 			registration.addCraftingStation(JEIUncraftingCategory.UNCRAFTING, new ItemStack(TFBlocks.UNCRAFTING_TABLE));
 		}
@@ -122,7 +122,7 @@ public class JEICompat implements IModPlugin {
 		if (isEmiInstalled()) return;
 		RecipeAccess recipes = Minecraft.getInstance().level.recipeAccess();
 		ContextMap context = registration.getContextMap();
-		if (!TFCommon.config.getDisableEntireTable()) {
+		if (!TFCommon.config().getDisableEntireTable()) {
 			registration.addRecipes(JEIUncraftingCategory.UNCRAFTING, RecipeViewerConstants.getAllUncraftingRecipes(recipes, context));
 		}
 		registration.addRecipes(TransformationPowderCategory.TRANSFORMATION, RecipeViewerConstants.getTransformationPowderRecipes().stream().map(info -> new TransformationRecipe(new FakeEntityType(info.input()), new FakeEntityType(info.output()), info.reversible())).toList());

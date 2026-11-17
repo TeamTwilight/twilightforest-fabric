@@ -36,6 +36,6 @@ public class MovingCicadaSoundInstance extends AbstractTickableSoundInstance {
 
 	@Override
 	public boolean canPlaySound() {
-		return !TFCommon.config.getSilentCicadas() && !TFCommon.config.getSilentCicadasOnHead();
+		return !TFCommon.config().getSilentCicadas() && !TFCommon.config().getSilentCicadasOnHead();
 	}
 }

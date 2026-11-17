@@ -39,7 +39,7 @@ public class TimeLogCoreBlock extends SpecialMagicLogBlock {
 
 	@Override
 	public boolean doesCoreFunction() {
-		return !TFCommon.config.getDisableTimeCore();
+		return !TFCommon.config().getDisableTimeCore();
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class TimeLogCoreBlock extends SpecialMagicLogBlock {
 
 		for (int i = 0; i < numticks; i++) {
 
-			BlockPos dPos = WorldUtil.randomOffset(rand, pos, TFCommon.config.getTimeCoreRange());
+			BlockPos dPos = WorldUtil.randomOffset(rand, pos, TFCommon.config().getTimeCoreRange());
 
 			BlockState state = level.getBlockState(dPos);
 

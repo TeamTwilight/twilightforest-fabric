@@ -209,12 +209,12 @@ public final class EntityEventListeners {
 	public static void onParryProjectile(ProjectileImpactEvent event) {
 		final Projectile projectile = event.getProjectile();
 
-		if (!projectile.level().isClientSide() && !SHIELD_PARRY_MOD_LOADED && (TFCommon.config.getParryNonTwilightAttacks() || projectile instanceof ITFProjectile)) {
+		if (!projectile.level().isClientSide() && !SHIELD_PARRY_MOD_LOADED && (TFCommon.config().getParryNonTwilightAttacks() || projectile instanceof ITFProjectile)) {
 			if (event.getRayTraceResult() instanceof EntityHitResult result) {
 				Entity entity = result.getEntity();
 
 				if (entity instanceof LivingEntity entityBlocking) {
-					if (entityBlocking.isBlocking() && entityBlocking.getUseItem().getUseDuration(entityBlocking) - entityBlocking.getUseItemRemainingTicks() <= TFCommon.config.getShieldParryTicks()) {
+					if (entityBlocking.isBlocking() && entityBlocking.getUseItem().getUseDuration(entityBlocking) - entityBlocking.getUseItemRemainingTicks() <= TFCommon.config().getShieldParryTicks()) {
 						projectile.deflect(ProjectileDeflection.AIM_DEFLECT, entityBlocking, EntityReference.of(entityBlocking), true);
 						event.setCanceled(true);
 					}
@@ -233,7 +233,7 @@ public final class EntityEventListeners {
 		Level level = event.getLevel();
 		BlockPos pos = event.getPos();
 		BlockState state = level.getBlockState(pos);
-		if (!TFCommon.config.getDisableSkullCandles()) {
+		if (!TFCommon.config().getDisableSkullCandles()) {
 			if (stack.is(ItemTags.CANDLES) && BuiltInRegistries.ITEM.getKey(stack.getItem()).getNamespace().equals("minecraft") && !event.getEntity().isShiftKeyDown()) {
 				if (state.getBlock() instanceof AbstractSkullBlock skull && BuiltInRegistries.BLOCK.getKey(state.getBlock()).getNamespace().equals("minecraft")) {
 					SkullBlock.Types type = (SkullBlock.Types) skull.getType();

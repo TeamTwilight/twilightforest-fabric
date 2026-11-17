@@ -61,7 +61,7 @@ public class CicadaJarBlock extends JarBlock {
 		double dy = pos.getY() + 0.4F + ((random.nextFloat() - random.nextFloat()) * 0.2F);
 		double dz = pos.getZ() + ((random.nextFloat() - random.nextFloat()) * 0.2F + 0.5F);
 		level.addParticle(ParticleTypes.NOTE, dx, dy, dz, 0, 0, 0);
-		if (level.getRandom().nextInt(75) == 0 && !TFCommon.config.getSilentCicadas()) {
+		if (level.getRandom().nextInt(75) == 0 && !TFCommon.config().getSilentCicadas()) {
 			level.playLocalSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, TFSounds.CICADA.value(), SoundSource.BLOCKS, 1.0F, 1.0F, false);
 		}
 	}

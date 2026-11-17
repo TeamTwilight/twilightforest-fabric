@@ -281,7 +281,7 @@ public final class CharmEventListeners {
 				return;
 			}
 
-			if (TFCommon.config.getCasketUUIDLocking()) {
+			if (TFCommon.config().getCasketUUIDLocking()) {
 				// Make it so only the player who died can open the chest if our config allows us
 				casket.owner = ResolvableProfile.createResolved(player.getGameProfile());
 			} else {

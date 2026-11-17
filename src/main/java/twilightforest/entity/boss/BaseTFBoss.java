@@ -162,7 +162,7 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 
 	@Override
 	protected boolean shouldDropLoot(ServerLevel server) {
-		return !TFCommon.config.getBossDropChests();
+		return !TFCommon.config().getBossDropChests();
 	}
 
 	@Override

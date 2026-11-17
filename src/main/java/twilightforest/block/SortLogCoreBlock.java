@@ -58,7 +58,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
 	@Override
 	public boolean doesCoreFunction() {
-		return !TFCommon.config.getDisableSortingCore();
+		return !TFCommon.config().getDisableSortingCore();
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class SortLogCoreBlock extends SpecialMagicLogBlock {
 
 		BlockCapabilityDirectionalCache<Storage<ItemVariant>> capabilityCache = level.getAttachedOrCreate(TFDataAttachments.SORTING_CORE_CAPABILITY_CACHE);
 
-		for (BlockEntity blockEntity : WorldUtil.getLoadedBlockEntitiesInRange(level, pos, TFCommon.config.getSortingCoreRange())) {
+		for (BlockEntity blockEntity : WorldUtil.getLoadedBlockEntitiesInRange(level, pos, TFCommon.config().getSortingCoreRange())) {
 			BlockPos blockPos = blockEntity.getBlockPos();
 			if (!blockPos.equals(pos)) {
 				List<Storage<ItemVariant>> handlers = capabilityCache.getAllSides(level, blockPos);

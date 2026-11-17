@@ -192,7 +192,7 @@ public final class TravellersClientEventListeners {
 		if (player == null) return;
 		boolean wasGraduallyGliding = player.getAttachedOrCreate(TFDataAttachments.IS_GRADUALLY_GLIDING);
 		boolean shiftHeld = player.isShiftKeyDown();
-		boolean isGraduallyGliding = TFCommon.config.getManualTravellersWingsGradualGlideDefault() == shiftHeld && player.getKnownMovement().y() < 0 && !player.onGround();
+		boolean isGraduallyGliding = TFCommon.config().getManualTravellersWingsGradualGlideDefault() == shiftHeld && player.getKnownMovement().y() < 0 && !player.onGround();
 		if (isGraduallyGliding == wasGraduallyGliding)
 			return;
 
@@ -259,7 +259,7 @@ public final class TravellersClientEventListeners {
 	}
 
 	public static void renderGlovesInFirstPerson(RenderArmEvent<?> event) {
-		if (!TFCommon.config.getFirstPersonGloveOverlay())
+		if (!TFCommon.config().getFirstPersonGloveOverlay())
 			return;
 
 		Avatar avatar = event.getAvatar();

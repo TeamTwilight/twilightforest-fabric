@@ -43,17 +43,17 @@ public class RecipeViewerConstants {
 		new ItemStack(TFItems.MOONWORM_QUEEN));
 
 	public static List<RecipeHolder<CraftingRecipe>> getAllUncraftingRecipes(RecipeAccess recipes, ContextMap context) {
-		if (!TFCommon.config.getDisableUncraftingOnly()) { //we only do this if uncrafting is not disabled
+		if (!TFCommon.config().getDisableUncraftingOnly()) { //we only do this if uncrafting is not disabled
 			List<RecipeHolder<CraftingRecipe>> filtered = recipes.getSynchronizedRecipes().getAllOfType(RecipeType.CRAFTING).stream()
 				.filter(recipe -> {
 					ItemStack result = getDisplayResult(recipe.value(), context);
 					return !result.isEmpty() && //get rid of empty items
 						!result.is(TFItemTags.BANNED_UNCRAFTABLES) && //Prevents things that are tagged as banned from showing up
-						TFCommon.config.getReverseRecipeBlacklist() == TFCommon.config.getDisableUncraftingRecipes().contains(recipe.id().identifier().toString()) && //remove disabled recipes
-						TFCommon.config.getFlipUncraftingModIdList() == TFCommon.config.getBlacklistedUncraftingModIds().contains(recipe.id().identifier().getNamespace()); //remove blacklisted mod ids
+						TFCommon.config().getReverseRecipeBlacklist() == TFCommon.config().getDisableUncraftingRecipes().contains(recipe.id().identifier().toString()) && //remove disabled recipes
+						TFCommon.config().getFlipUncraftingModIdList() == TFCommon.config().getBlacklistedUncraftingModIds().contains(recipe.id().identifier().getNamespace()); //remove blacklisted mod ids
 				})
 				.collect(Collectors.toCollection(ArrayList::new));
-			filtered.removeIf(recipe -> (recipe.value() instanceof ShapelessRecipe && !TFCommon.config.getAllowShapelessUncrafting()));
+			filtered.removeIf(recipe -> (recipe.value() instanceof ShapelessRecipe && !TFCommon.config().getAllowShapelessUncrafting()));
 			filtered.addAll(getUncraftingOnly(recipes));
 			return filtered;
 		} else {

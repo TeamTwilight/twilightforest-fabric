@@ -17,7 +17,7 @@ public class UncraftingTableEnabledCondition implements LootItemCondition {
 
 	@Override
 	public boolean test(LootContext context) {
-		return !TFCommon.config.getDisableEntireTable();
+		return !TFCommon.config().getDisableEntireTable();
 	}
 
 	public static LootItemCondition.Builder uncraftingTableEnabled() {

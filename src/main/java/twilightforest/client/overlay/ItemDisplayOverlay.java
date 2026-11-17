@@ -45,8 +45,8 @@ public class ItemDisplayOverlay {
 
 	private static void renderHolders(GuiGraphicsExtractor graphics, Minecraft minecraft, Gui gui, Player player, List<DisplayHolder> typesToRender, int widest) {
 		graphics.pose().pushMatrix();
-		graphics.pose().translate(TFCommon.config.getItemDisplayXOffs(), TFCommon.config.getItemDisplayYOffs());
-		graphics.pose().scale((float) TFCommon.config.getItemDisplayScale(), (float) TFCommon.config.getItemDisplayScale());
+		graphics.pose().translate(TFCommon.config().getItemDisplayXOffs(), TFCommon.config().getItemDisplayYOffs());
+		graphics.pose().scale((float) TFCommon.config().getItemDisplayScale(), (float) TFCommon.config().getItemDisplayScale());
 		typesToRender.sort(Comparator.comparing(holder -> holder.display().displayPosition()));
 		for (DisplayHolder holder : typesToRender) {
 			graphics.pose().pushMatrix();

@@ -16,7 +16,7 @@ public class ShieldOverlay {
 	private static final Identifier FORTIFICATION_SHIELD_SPRITE = TFCommon.prefix("fortification_shield");
 
 	public static void render(GuiGraphicsExtractor graphics, Minecraft minecraft, Gui gui, @Nullable Player player) {
-		if (player != null && !minecraft.gui.hud.isHidden() && (minecraft.gameMode.canHurtPlayer() || TFCommon.config.getShowFortificationShieldIndicatorInCreative()) && player.hasAttached(TFDataAttachments.FORTIFICATION_SHIELDS) && player.getAttachedOrCreate(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft() > 0 && TFCommon.config.getShowFortificationShieldIndicator()) {
+		if (player != null && !minecraft.gui.hud.isHidden() && (minecraft.gameMode.canHurtPlayer() || TFCommon.config().getShowFortificationShieldIndicatorInCreative()) && player.hasAttached(TFDataAttachments.FORTIFICATION_SHIELDS) && player.getAttachedOrCreate(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft() > 0 && TFCommon.config().getShowFortificationShieldIndicator()) {
 			int shieldCount = player.getAttachedOrCreate(TFDataAttachments.FORTIFICATION_SHIELDS).shieldsLeft();
 			for (int i = 0; i < Math.min(shieldCount, 10); i++) {
 				graphics.blitSprite(RenderPipelines.GUI_TEXTURED, FORTIFICATION_SHIELD_SPRITE, graphics.guiWidth() / 2 - 91 + (i * 8), graphics.guiHeight() - HudStatusBarHeightRegistry.getHeight(OverlayEventListeners.FORTIFICATION_SHIELD_COUNT), 9, 9);

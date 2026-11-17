@@ -54,7 +54,7 @@ public class UncraftingSlot extends Slot {
 		}
 
 		// if uncrafting is disabled, no!
-		if (TFCommon.config.getDisableUncraftingOnly() && !(this.uncraftingMatrix.menu.storedGhostRecipe instanceof UncraftingRecipe)) {
+		if (TFCommon.config().getDisableUncraftingOnly() && !(this.uncraftingMatrix.menu.storedGhostRecipe instanceof UncraftingRecipe)) {
 			return false;
 		}
 

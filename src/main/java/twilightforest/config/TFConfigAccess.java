@@ -6,254 +6,237 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.permissions.PermissionLevel;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import org.jspecify.annotations.Nullable;
-import twilightforest.init.TFBiomes;
 
-import java.time.chrono.IsoChronology;
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.format.FormatStyle;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
-// FIXME: Inheritance instead?
 public interface TFConfigAccess {
 	default @Nullable Identifier getPortalLockingAdvancement(Player player) {
-		return null;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default List<Holder<Biome>> getValidAuroraBiomes(RegistryAccess access) {
-		return List.of(access.carminite$holderOrThrow(TFBiomes.GLACIER));
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default List<GameProfile> getGameProfiles() {
-		return new ArrayList<>();
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getSilentCicadas() {
-		return false;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getSilentCicadasOnHead() {
-		return false;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getFirstPersonEffects() {
-		return true;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getRotateTrophyHeadsGui() {
-		return true;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getDisableLockedBiomeToasts() {
-		return false;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getShowQuestRamCrosshairIndicator() {
-		return true;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getShowFortificationShieldIndicator() {
-		return true;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getShowFortificationShieldIndicatorInCreative() {
-		return false;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default int getClientCloudBlockPrecipitationDistance() {
-		return 32;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getPrettifyOreMeterGui() {
-		return true;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getSpawnCharmAnimationAsTotem() {
-		return false;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getManualTravellersWingsGradualGlideDefault() {
-		return true;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getFirstPersonGloveOverlay() {
-		return true;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default int getItemDisplayXOffs() {
-		return 4;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default int getItemDisplayYOffs() {
-		return 4;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default double getItemDisplayScale() {
-		return 1.0D;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getClock24HourFormat() {
-		return use24HourTimeDefault();
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getCasketUUIDLocking() {
-		return false;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getDisableSkullCandles() {
-		return false;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getDefaultItemEnchants() {
-		return true;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getBossDropChests() {
-		return true;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default int getCommonCloudBlockPrecipitationDistance() {
-		return 32;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getNewPlayersSpawnInTF() {
-		return false;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getPortalForNewPlayerSpawn() {
-		return true;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default String getOriginDimension() {
-		return Level.OVERWORLD.identifier().toString();
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getAllowPortalsInOtherDimensions() {
-		return false;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default PermissionLevel getPortalCreationPermission() {
-		return PermissionLevel.ALL;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getDisablePortalCreation() {
-		return false;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getCheckPortalPlacement() {
-		return true;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getDestructivePortalLightning() {
-		return true;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getShouldReturnPortalBeUsable() {
-		return true;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default int getMaxPortalSize() {
-		return 64;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default double getUncraftingXpCostMultiplier() {
-		return 1.0D;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default double getRepairingXpCostMultiplier() {
-		return 1.0D;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getAllowShapelessUncrafting() {
-		return false;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getDisableIngredientSwitching() {
-		return false;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default List<? extends String> getDisableUncraftingRecipes() {
-		return List.of();
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getReverseRecipeBlacklist() {
-		return false;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default List<? extends String> getBlacklistedUncraftingModIds() {
-		return List.of();
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getFlipUncraftingModIdList() {
-		return false;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getDisableUncraftingOnly() {
-		return false;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getDisableEntireTable() {
-		return false;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default int getTimeCoreRange() {
-		return 16;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default int getTransformationCoreRange() {
-		return 16;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default int getMiningCoreRange() {
-		return 16;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default int getSortingCoreRange() {
-		return 16;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getDisableTimeCore() {
-		return false;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getDisableTransformationCore() {
-		return false;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getDisableMiningCore() {
-		return false;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getDisableSortingCore() {
-		return false;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getParryNonTwilightAttacks() {
-		return false;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default int getShieldParryTicks() {
-		return 40;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getMultiplayerAdjustHealth() {
-		return false;
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
 	default boolean getMultiplayerAdjustLootRolls() {
-		return false;
-	}
-
-	static boolean use24HourTimeDefault() {
-		try {
-			String pattern = DateTimeFormatterBuilder.getLocalizedDateTimePattern(FormatStyle.SHORT, FormatStyle.SHORT, IsoChronology.INSTANCE, Locale.getDefault());
-			return !pattern.contains("a");  // "a" is used to display AM / PM.
-		} catch (Throwable throwable) {
-			return true;
-		}
+		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 }

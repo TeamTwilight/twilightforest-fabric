@@ -42,7 +42,7 @@ public class UncraftingTableBlock extends Block implements TooltipBlock {
 
 	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult result) {
-		if (TFCommon.config.getDisableEntireTable()) {
+		if (TFCommon.config().getDisableEntireTable()) {
 			player.sendOverlayMessage(Component.translatable("block.twilightforest.uncrafting_table.disabled"));
 			return InteractionResult.PASS;
 		}
@@ -83,7 +83,7 @@ public class UncraftingTableBlock extends Block implements TooltipBlock {
 
 	@Override
 	public void addTooltip(ItemStack itemStack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag flag) {
-		if (TFCommon.config.getDisableEntireTable()) {
+		if (TFCommon.config().getDisableEntireTable()) {
 			tooltip.accept(Component.translatable("block.twilightforest.uncrafting_table.disabled").withStyle(ChatFormatting.RED));
 		}
 	}

@@ -53,6 +53,7 @@ import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.block.entity.TFChestBlockEntity;
 import twilightforest.command.TFCommand;
 import twilightforest.compat.config.FCAPCompat;
+import twilightforest.config.DefaultConfig;
 import twilightforest.config.TFConfigAccess;
 import twilightforest.dispenser.*;
 import twilightforest.entity.MagicPaintingVariant;
@@ -84,15 +85,13 @@ import java.util.Locale;
 
 public final class TFCommon implements ModInitializer {
 	public static final String ID = "twilightforest";
+	public static final Logger LOGGER = LoggerFactory.getLogger(ID);
 
 	private static final String MODEL_DIR = "textures/entity/";
 	private static final String GUI_DIR = "textures/gui/";
 	private static final String ENVIRO_DIR = "textures/environment/";
 
-	public static final Logger LOGGER = LoggerFactory.getLogger(ID);
-
-	public static TFConfigAccess config = new TFConfigAccess() {
-	};
+	private static TFConfigAccess config = new DefaultConfig();
 
 	@Override
 	public void onInitialize() {
@@ -934,5 +933,13 @@ public final class TFCommon implements ModInitializer {
 
 	public static Identifier getEnvTexture(String name) {
 		return Identifier.fromNamespaceAndPath(ID, ENVIRO_DIR + name);
+	}
+
+	public static TFConfigAccess config() {
+		return config;
+	}
+
+	public static void setConfig(TFConfigAccess config) {
+		TFCommon.config = config;
 	}
 }

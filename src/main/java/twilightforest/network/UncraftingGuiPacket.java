@@ -35,12 +35,12 @@ public record UncraftingGuiPacket(int operationType) implements CustomPacketPayl
 					case 0 -> uncrafting.unrecipeInCycle++;
 					case 1 -> uncrafting.unrecipeInCycle--;
 					case 2 -> {
-						if (!TFCommon.config.getDisableIngredientSwitching()) {
+						if (!TFCommon.config().getDisableIngredientSwitching()) {
 							uncrafting.ingredientsInCycle++;
 						}
 					}
 					case 3 -> {
-						if (!TFCommon.config.getDisableIngredientSwitching()) {
+						if (!TFCommon.config().getDisableIngredientSwitching()) {
 							uncrafting.ingredientsInCycle--;
 						}
 					}

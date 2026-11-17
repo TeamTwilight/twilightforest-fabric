@@ -32,10 +32,10 @@ public final class BlockHooks {
 	}
 
 	public static boolean isRainingAt(boolean isRaining, Level level, BlockPos pos) {
-		if (!isRaining && TFCommon.config.getCommonCloudBlockPrecipitationDistance() > 0) {
+		if (!isRaining && TFCommon.config().getCommonCloudBlockPrecipitationDistance() > 0) {
 			if (!level.hasChunkAt(pos)) return false;
 			LevelChunk chunk = level.getChunkAt(pos);
-			for (int y = pos.getY(); y < pos.getY() + TFCommon.config.getCommonCloudBlockPrecipitationDistance(); y++) {
+			for (int y = pos.getY(); y < pos.getY() + TFCommon.config().getCommonCloudBlockPrecipitationDistance(); y++) {
 				BlockPos newPos = pos.atY(y);
 				BlockState state = chunk.getBlockState(newPos);
 				if (state.getBlock() instanceof CloudBlock cloudBlock && cloudBlock.getCurrentPrecipitation(newPos, level, level.getRainLevel(1.0F)).getLeft() == Biome.Precipitation.RAIN) {
