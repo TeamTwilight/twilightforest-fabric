@@ -29,7 +29,7 @@
     "main": ["twilightforest.TFCommon"],
     "client": ["twilightforest.TFClient"],
     "fabric-datagen": ["twilightforest.datagen.TFData"],
-    "modmenu": ["twilightforest.compat.modmenu.ModMenuCompat"],
+    "modmenu": ["twilightforest.compat.config.screen.ModMenuCompat"],
     "jei_mod_plugin": ["twilightforest.compat.jei.JEICompat"],
     "jade": ["twilightforest.compat.jade.JadeCompat"]
   },
@@ -42,6 +42,7 @@
     "fabric-api": ">=${fabric_api_version}"
   },
   "suggests": {
+    "forgeconfigapiport": "*",
     "modmenu": "*",
     "jei": "*",
     "jade": "*"

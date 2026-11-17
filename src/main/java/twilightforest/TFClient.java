@@ -89,7 +89,6 @@ import twilightforest.client.renderer.tooltip.ItemDisplayTooltipComponent;
 import twilightforest.client.renderer.tooltip.PotionFlaskTooltipComponent;
 import twilightforest.client.renderer.tooltip.TravellersBeltTooltipComponent;
 import twilightforest.components.entity.TravellersWingsAttachment;
-import twilightforest.config.TFConfig;
 import twilightforest.entity.CharmEffect;
 import twilightforest.entity.ProtectionBox;
 import twilightforest.entity.TFPart;
@@ -311,7 +310,7 @@ public final class TFClient implements ClientModInitializer {
 					Player player = context.player();
 					ClientLevel level = context.client().level;
 					Entity camera = context.client().getCameraEntity();
-					if (TFConfig.spawnCharmAnimationAsTotem) {
+					if (TFCommon.config().getSpawnCharmAnimationAsTotem()) {
 						context.client().gameRenderer.displayItemActivation(payload.charm());
 						//prefer the camera pos over the player as the player position isnt quite synced to the client yet
 						context.client().particleEngine.createTrackingEmitter(camera != null ? camera : player, new ItemParticleOption(ParticleTypes.ITEM, payload.charm().getItem()), 20);

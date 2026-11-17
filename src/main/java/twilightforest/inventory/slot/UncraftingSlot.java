@@ -6,7 +6,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import twilightforest.config.TFConfig;
+import twilightforest.TFCommon;
 import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFDataComponents;
 import twilightforest.inventory.UncraftingContainer;
@@ -54,7 +54,7 @@ public class UncraftingSlot extends Slot {
 		}
 
 		// if uncrafting is disabled, no!
-		if (TFConfig.disableUncraftingOnly && !(this.uncraftingMatrix.menu.storedGhostRecipe instanceof UncraftingRecipe)) {
+		if (TFCommon.config().getDisableUncraftingOnly() && !(this.uncraftingMatrix.menu.storedGhostRecipe instanceof UncraftingRecipe)) {
 			return false;
 		}
 

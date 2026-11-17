@@ -26,7 +26,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gamerules.GameRules;
 import org.jetbrains.annotations.Nullable;
 import twilightforest.TFCommon;
-import twilightforest.config.TFConfig;
 import twilightforest.tags.TFItemTags;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFMenuTypes;
@@ -295,8 +294,8 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 		if (!inputStack.isEmpty() && world instanceof ServerLevel server) {
 			for (RecipeHolder<?> holder : server.recipeAccess().getRecipes()) {
 				if (holder.value() instanceof CraftingRecipe recipe) {
-					if (isRecipeSupported(inputStack, recipe) && TFConfig.reverseRecipeBlacklist == TFConfig.disableUncraftingRecipes.contains(holder.id().toString())) {
-						if (TFConfig.flipUncraftingModIdList == TFConfig.blacklistedUncraftingModIds.contains(holder.id().identifier().getNamespace())) {
+					if (isRecipeSupported(inputStack, recipe) && TFCommon.config().getReverseRecipeBlacklist() == TFCommon.config().getDisableUncraftingRecipes().contains(holder.id().toString())) {
+						if (TFCommon.config().getFlipUncraftingModIdList() == TFCommon.config().getBlacklistedUncraftingModIds().contains(holder.id().identifier().getNamespace())) {
 							recipes.add(recipe);
 						}
 					}
@@ -313,13 +312,13 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 			return isComplete(shapedRecipe.placementInfo().ingredients()) &&
 				shapedRecipe.pattern.width() <= 3 && shapedRecipe.pattern.height() <= 3 &&
 				matches(inputStack, shapedRecipe.result);
-		} else if (TFConfig.allowShapelessUncrafting && recipe instanceof ShapelessRecipe shapelessRecipe) {
+		} else if (TFCommon.config().getAllowShapelessUncrafting() && recipe instanceof ShapelessRecipe shapelessRecipe) {
 			return isComplete(shapelessRecipe.placementInfo().ingredients()) &&
 				shapelessRecipe.placementInfo().ingredients().size() <= 9 &&
 				matches(inputStack, shapelessRecipe.result);
 		}
 
-		return TFConfig.allowShapelessUncrafting ? recipe instanceof CraftingRecipe : recipe instanceof ShapedRecipe;
+		return TFCommon.config().getAllowShapelessUncrafting() ? recipe instanceof CraftingRecipe : recipe instanceof ShapedRecipe;
 	}
 
 	protected static boolean isComplete(List<Ingredient> list) { //TODO: check if properly ported
@@ -407,8 +406,8 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 	 */
 	private int calculateUncraftingCost() {
 		// we don't want to display anything if there is anything in the assembly grid
-		if ((!TFConfig.disableUncraftingOnly || this.storedGhostRecipe instanceof UncraftingRecipe) && this.craftSlots.isEmpty()) {
-			return this.storedGhostRecipe instanceof UncraftingRecipe recipe ? recipe.getCost() : (int) Math.round(countDamageableParts(this.uncraftingMatrix) * TFConfig.uncraftingXpCostMultiplier);
+		if ((!TFCommon.config().getDisableUncraftingOnly() || this.storedGhostRecipe instanceof UncraftingRecipe) && this.craftSlots.isEmpty()) {
+			return this.storedGhostRecipe instanceof UncraftingRecipe recipe ? recipe.getCost() : (int) Math.round(countDamageableParts(this.uncraftingMatrix) * TFCommon.config().getUncraftingXpCostMultiplier());
 		}
 		return 0;
 	}
@@ -443,7 +442,7 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 		// minimum cost of 1 if we're even calling this part
 		cost = Math.max(1, cost);
 
-		return (int) Math.round(cost * TFConfig.repairingXpCostMultiplier);
+		return (int) Math.round(cost * TFCommon.config().getRepairingXpCostMultiplier());
 	}
 
 	private static int countTotalEnchantmentCost(ItemStack stack) {
@@ -493,7 +492,7 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 		if (slotNum > 0 && this.getSlotContainer(slotNum) == this.uncraftingMatrix) {
 
 			// don't allow uncrafting normal recipes if the server option is turned off
-			if (TFConfig.disableUncraftingOnly && !(this.storedGhostRecipe instanceof UncraftingRecipe)) {
+			if (TFCommon.config().getDisableUncraftingOnly() && !(this.storedGhostRecipe instanceof UncraftingRecipe)) {
 				return;
 			}
 
@@ -645,7 +644,7 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 
 	@Override
 	public boolean stillValid(Player player) {
-		return !TFConfig.disableEntireTable && stillValid(this.positionData, player, TFBlocks.UNCRAFTING_TABLE);
+		return !TFCommon.config().getDisableEntireTable() && stillValid(this.positionData, player, TFBlocks.UNCRAFTING_TABLE);
 	}
 
 	@Override

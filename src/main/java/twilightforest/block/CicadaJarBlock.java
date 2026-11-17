@@ -18,9 +18,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
+import twilightforest.TFCommon;
 import twilightforest.block.entity.JarBlockEntity;
 import twilightforest.components.item.JarLid;
-import twilightforest.config.TFConfig;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDataComponents;
 import twilightforest.init.TFSounds;
@@ -61,7 +61,7 @@ public class CicadaJarBlock extends JarBlock {
 		double dy = pos.getY() + 0.4F + ((random.nextFloat() - random.nextFloat()) * 0.2F);
 		double dz = pos.getZ() + ((random.nextFloat() - random.nextFloat()) * 0.2F + 0.5F);
 		level.addParticle(ParticleTypes.NOTE, dx, dy, dz, 0, 0, 0);
-		if (level.getRandom().nextInt(75) == 0 && !TFConfig.silentCicadas) {
+		if (level.getRandom().nextInt(75) == 0 && !TFCommon.config().getSilentCicadas()) {
 			level.playLocalSound(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, TFSounds.CICADA.value(), SoundSource.BLOCKS, 1.0F, 1.0F, false);
 		}
 	}

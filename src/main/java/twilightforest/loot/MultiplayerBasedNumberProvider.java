@@ -8,7 +8,7 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
 import net.minecraft.world.level.storage.loot.providers.number.NumberProviders;
-import twilightforest.config.TFConfig;
+import twilightforest.TFCommon;
 import twilightforest.init.TFDataAttachments;
 
 import java.util.Set;
@@ -31,7 +31,7 @@ public record MultiplayerBasedNumberProvider(NumberProvider rollsPerPlayer, Numb
 
 	@Override
 	public float getFloat(LootContext context) {
-		if (TFConfig.multiplayerFightAdjuster.adjustsLootRolls()) {
+		if (TFCommon.config().getMultiplayerAdjustsLootRolls()) {
 			if (context.hasParameter(LootContextParams.THIS_ENTITY) && context.getParameter(LootContextParams.THIS_ENTITY).hasAttached(TFDataAttachments.MULTIPLAYER_FIGHT)) {
 				int qualifiedPlayers = context.getParameter(LootContextParams.THIS_ENTITY).getAttachedOrCreate(TFDataAttachments.MULTIPLAYER_FIGHT).getQualifiedPlayers().size();
 				float total = this.defaultRolls.getFloat(context);

@@ -24,7 +24,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.Vec3;
-import twilightforest.config.TFConfig;
+import twilightforest.TFCommon;
 import twilightforest.init.TFSounds;
 import twilightforest.loot.TFLootTables;
 import twilightforest.network.ParticlePacket;
@@ -54,7 +54,7 @@ public interface IBossLootBuffer {
 	}
 
 	static <T extends LivingEntity & IBossLootBuffer> void saveDropsIntoBoss(T boss, LootParams params, ServerLevel serverLevel) {
-		if (!TFConfig.bossDropChests || boss.getLootTable().isEmpty())
+		if (!TFCommon.config().getBossDropChests() || boss.getLootTable().isEmpty())
 			return;
 		LootTable table = serverLevel.getServer().reloadableRegistries().getLootTable(boss.getLootTable().get());
 		ObjectArrayList<ItemStack> stacks = table.getRandomItems(params);
@@ -72,7 +72,7 @@ public interface IBossLootBuffer {
 	}
 
 	static <T extends LivingEntity & IBossLootBuffer> void depositDropsIntoChest(T boss, BlockState chest, BlockPos pos, ServerLevel serverLevel) {
-		if (TFConfig.bossDropChests && !boss.getItemStacks().isEmpty()) {
+		if (TFCommon.config().getBossDropChests() && !boss.getItemStacks().isEmpty()) {
 			if (!tryDeposit(boss, chest, pos, serverLevel)) {
 				BlockPos.MutableBlockPos chestPos = pos.mutable();
 				for (int y = pos.getY(); y < serverLevel.getMaxY(); y++) {

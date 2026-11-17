@@ -14,8 +14,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.storage.LevelData;
+import twilightforest.TFCommon;
 import twilightforest.components.entity.FortificationShieldAttachment;
-import twilightforest.config.TFConfig;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFDimension;
 import twilightforest.world.NoReturnTeleporter;
@@ -78,7 +78,7 @@ public final class CapabilityEventListeners {
 	}
 
 	public static void newSpawnInTwilightForest(ServerPlayer player) {
-		if (!TFConfig.newPlayersSpawnInTF)
+		if (!TFCommon.config().getNewPlayersSpawnInTF())
 			return;
 		ServerLevel level = player.level().getServer().getLevel(TFDimension.DIMENSION_KEY);
 		if (level == null)
@@ -86,7 +86,7 @@ public final class CapabilityEventListeners {
 
 		BlockPos newDefaultSpawn = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, player.blockPosition());
 
-		player.teleport(TFConfig.portalForNewPlayerSpawn ? TFTeleporter.createTransition(player, level, newDefaultSpawn, true) : NoReturnTeleporter.createNoPortalTransition(level, player, newDefaultSpawn));
+		player.teleport(TFCommon.config().getPortalForNewPlayerSpawn() ? TFTeleporter.createTransition(player, level, newDefaultSpawn, true) : NoReturnTeleporter.createNoPortalTransition(level, player, newDefaultSpawn));
 		ServerPlayer.RespawnConfig newSpawn = new ServerPlayer.RespawnConfig(LevelData.RespawnData.of(TFDimension.DIMENSION_KEY, newDefaultSpawn, player.getYRot(), player.getXRot()), true);
 		player.setRespawnPosition(newSpawn, false);
 

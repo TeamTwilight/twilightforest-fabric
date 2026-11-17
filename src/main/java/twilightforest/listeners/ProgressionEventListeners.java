@@ -19,8 +19,6 @@ import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.Vec3i;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.particles.SpellParticleOption;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -39,8 +37,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
+import twilightforest.TFCommon;
 import twilightforest.block.TFPortalBlock;
-import twilightforest.config.TFConfig;
 import twilightforest.init.TFAdvancements;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFDimension;
@@ -189,12 +187,12 @@ public final class ProgressionEventListeners {
 		ServerLevel level = player.level();
 
 		// check for portal creation, at least if it's not disabled
-		int portalCheckInterval = !TFConfig.checkPortalPlacement ? 100 : 20;
-		if (!TFConfig.disablePortalCreation && player.tickCount % portalCheckInterval == 0) {
+		int portalCheckInterval = !TFCommon.config().getCheckPortalPlacement() ? 100 : 20;
+		if (!TFCommon.config().getDisablePortalCreation() && player.tickCount % portalCheckInterval == 0) {
 			// skip non admin players when the option is on
-			if (level.getServer().getProfilePermissions(player.nameAndId()).level().isEqualOrHigherThan(TFConfig.portalCreationPermission)) {
+			if (level.getServer().getProfilePermissions(player.nameAndId()).level().isEqualOrHigherThan(TFCommon.config().getPortalCreationPermission())) {
 				// reduce range to 4.0 if config is set to admins/owners only
-				checkForPortalCreation(player, level, TFConfig.portalCreationPermission.isEqualOrHigherThan(PermissionLevel.ADMINS)  ? 4.0F : 32.0F, portalCheckInterval);
+				checkForPortalCreation(player, level, TFCommon.config().getPortalCreationPermission().isEqualOrHigherThan(PermissionLevel.ADMINS)  ? 4.0F : 32.0F, portalCheckInterval);
 			}
 		}
 
@@ -214,9 +212,9 @@ public final class ProgressionEventListeners {
 	}
 
 	private static void checkForPortalCreation(ServerPlayer player, ServerLevel level, float rangeToCheck, int checkInterval) {
-		if (level.dimension().identifier().equals(Identifier.parse(TFConfig.originDimension))
+		if (level.dimension().identifier().equals(Identifier.parse(TFCommon.config().getOriginDimension()))
 			|| TFDimension.isTwilightPortalDestination(level)
-			|| TFConfig.allowPortalsInOtherDimensions) {
+			|| TFCommon.config().getAllowPortalsInOtherDimensions()) {
 
 			List<ItemEntity> itemList = level.getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(rangeToCheck));
 			ItemEntity qualified = null;
@@ -233,8 +231,8 @@ public final class ProgressionEventListeners {
 
 			if (qualified == null) return;
 
-			if (!player.isCreative() && !player.isSpectator() && TFConfig.getPortalLockingAdvancement(player) != null) {
-				AdvancementHolder requirement = PlayerHelper.getAdvancement(player, Objects.requireNonNull(TFConfig.getPortalLockingAdvancement(player)));
+			if (!player.isCreative() && !player.isSpectator() && TFCommon.config().getPortalLockingAdvancement(player) != null) {
+				AdvancementHolder requirement = PlayerHelper.getAdvancement(player, Objects.requireNonNull(TFCommon.config().getPortalLockingAdvancement(player)));
 				if (requirement != null && !PlayerHelper.doesPlayerHaveRequiredAdvancement(player, requirement)) {
 					player.sendOverlayMessage(TFPortalBlock.PORTAL_UNWORTHY);
 

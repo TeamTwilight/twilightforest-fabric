@@ -24,7 +24,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
-import twilightforest.config.TFConfig;
+import twilightforest.TFCommon;
 import twilightforest.init.TFSounds;
 import twilightforest.init.TFStats;
 import twilightforest.inventory.UncraftingMenu;
@@ -42,7 +42,7 @@ public class UncraftingTableBlock extends Block implements TooltipBlock {
 
 	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult result) {
-		if (TFConfig.disableEntireTable) {
+		if (TFCommon.config().getDisableEntireTable()) {
 			player.sendOverlayMessage(Component.translatable("block.twilightforest.uncrafting_table.disabled"));
 			return InteractionResult.PASS;
 		}
@@ -83,7 +83,7 @@ public class UncraftingTableBlock extends Block implements TooltipBlock {
 
 	@Override
 	public void addTooltip(ItemStack itemStack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag flag) {
-		if (TFConfig.disableEntireTable) {
+		if (TFCommon.config().getDisableEntireTable()) {
 			tooltip.accept(Component.translatable("block.twilightforest.uncrafting_table.disabled").withStyle(ChatFormatting.RED));
 		}
 	}

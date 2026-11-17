@@ -31,7 +31,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import org.jetbrains.annotations.Nullable;
-import twilightforest.config.TFConfig;
+import twilightforest.TFCommon;
 import twilightforest.entity.EnforcedHomePoint;
 import twilightforest.entity.boss.bar.ServerTFBossBar;
 import twilightforest.loot.TFLootTables;
@@ -162,7 +162,7 @@ public abstract class BaseTFBoss extends Monster implements IBossLootBuffer, Enf
 
 	@Override
 	protected boolean shouldDropLoot(ServerLevel server) {
-		return !TFConfig.bossDropChests;
+		return !TFCommon.config().getBossDropChests();
 	}
 
 	@Override

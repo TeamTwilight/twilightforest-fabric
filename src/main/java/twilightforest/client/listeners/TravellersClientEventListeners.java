@@ -34,7 +34,6 @@ import net.minecraft.world.item.component.UseEffects;
 import net.minecraft.world.phys.Vec2;
 import twilightforest.TFCommon;
 import twilightforest.client.renderer.armor.TravellersArmorRenderer;
-import twilightforest.config.TFConfig;
 import twilightforest.init.*;
 import twilightforest.init.custom.TravellersModifiersManager;
 import twilightforest.item.travellers_gear.TravellersArmorBeltItem;
@@ -193,7 +192,7 @@ public final class TravellersClientEventListeners {
 		if (player == null) return;
 		boolean wasGraduallyGliding = player.getAttachedOrCreate(TFDataAttachments.IS_GRADUALLY_GLIDING);
 		boolean shiftHeld = player.isShiftKeyDown();
-		boolean isGraduallyGliding = TFConfig.manualTravellersWingsGradualGlideDefault == shiftHeld && player.getKnownMovement().y() < 0 && !player.onGround();
+		boolean isGraduallyGliding = TFCommon.config().getManualTravellersWingsGradualGlideDefault() == shiftHeld && player.getKnownMovement().y() < 0 && !player.onGround();
 		if (isGraduallyGliding == wasGraduallyGliding)
 			return;
 
@@ -260,7 +259,7 @@ public final class TravellersClientEventListeners {
 	}
 
 	public static void renderGlovesInFirstPerson(RenderArmEvent<?> event) {
-		if (!TFConfig.firstPersonGloveOverlay)
+		if (!TFCommon.config().getFirstPersonGloveOverlay())
 			return;
 
 		Avatar avatar = event.getAvatar();

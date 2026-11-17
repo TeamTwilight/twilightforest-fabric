@@ -3,7 +3,7 @@ package twilightforest.loot.conditions;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import twilightforest.config.TFConfig;
+import twilightforest.TFCommon;
 
 public class UncraftingTableEnabledCondition implements LootItemCondition {
 
@@ -17,7 +17,7 @@ public class UncraftingTableEnabledCondition implements LootItemCondition {
 
 	@Override
 	public boolean test(LootContext context) {
-		return !TFConfig.disableEntireTable;
+		return !TFCommon.config().getDisableEntireTable();
 	}
 
 	public static LootItemCondition.Builder uncraftingTableEnabled() {

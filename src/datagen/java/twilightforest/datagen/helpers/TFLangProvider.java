@@ -25,7 +25,6 @@ import net.minecraft.world.level.gamerules.GameRule;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import org.apache.commons.lang3.text.WordUtils;
 import twilightforest.TFCommon;
-import twilightforest.config.TFConfig;
 import twilightforest.item.travellers_gear.modifiers.TravellersModifier;
 
 import java.nio.file.Path;
@@ -232,13 +231,13 @@ public abstract class TFLangProvider extends LanguageProvider {
 	}
 
 	public void configEntry(String key, String name, String description) {
-		this.add(TFConfig.CONFIG_ID + key, name);
-		this.add(TFConfig.CONFIG_ID + key + ".tooltip", description);
+		this.add(TFCommon.CONFIG_ID + key, name);
+		this.add(TFCommon.CONFIG_ID + key + ".tooltip", description);
 	}
 
 	public void configCategory(String key, String name, String description) {
-		this.add(TFConfig.CONFIG_ID + key, name);
-		this.add(TFConfig.CONFIG_ID + key + ".tooltip", description);
+		this.add(TFCommon.CONFIG_ID + key, name);
+		this.add(TFCommon.CONFIG_ID + key + ".tooltip", description);
 		this.add(name + ".button", "Edit");
 	}
 
