@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+// FIXME: Inheritance instead?
 public interface TFConfigAccess {
 	default @Nullable Identifier getPortalLockingAdvancement(Player player) {
 		return null;
