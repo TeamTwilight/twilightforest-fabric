@@ -40,7 +40,7 @@ public class MultiplayerBasedAdditionLootFunction extends LootItemConditionalFun
 
 	@Override
 	protected ItemStack run(ItemStack stack, LootContext context) {
-		if (TFCommon.config().getMultiplayerAdjustLootRolls()) {
+		if (TFCommon.config().getMultiplayerAdjustsLootRolls()) {
 			if (context.hasParameter(LootContextParams.THIS_ENTITY) && context.getParameter(LootContextParams.THIS_ENTITY).hasAttached(TFDataAttachments.MULTIPLAYER_FIGHT)) {
 				int qualifiedPlayers = context.getParameter(LootContextParams.THIS_ENTITY).getAttachedOrCreate(TFDataAttachments.MULTIPLAYER_FIGHT).getQualifiedPlayers().size();
 				if (qualifiedPlayers > 1) {

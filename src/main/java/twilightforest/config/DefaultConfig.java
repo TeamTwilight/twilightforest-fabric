@@ -295,12 +295,12 @@ public final class DefaultConfig implements TFConfigAccess {
 	}
 
 	@Override
-	public boolean getMultiplayerAdjustHealth() {
+	public boolean getMultiplayerAdjustsHealth() {
 		return false;
 	}
 
 	@Override
-	public boolean getMultiplayerAdjustLootRolls() {
+	public boolean getMultiplayerAdjustsLootRolls() {
 		return false;
 	}
 

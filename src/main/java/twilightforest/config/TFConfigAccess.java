@@ -232,11 +232,11 @@ public interface TFConfigAccess {
 		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
-	default boolean getMultiplayerAdjustHealth() {
+	default boolean getMultiplayerAdjustsHealth() {
 		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 
-	default boolean getMultiplayerAdjustLootRolls() {
+	default boolean getMultiplayerAdjustsLootRolls() {
 		throw new AssertionError("Must be implemented in a subclass of TFConfigAccess");
 	}
 }

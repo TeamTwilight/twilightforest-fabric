@@ -25,78 +25,78 @@ import java.util.Optional;
 public final class FCAPConfig implements TFConfigAccess {
 
 	@Nullable
-	public static Identifier portalLockingAdvancement;
-	public static final List<Holder<Biome>> VALID_AURORA_BIOMES = new ArrayList<>();
-	public static final List<GameProfile> GAME_PROFILES = new ArrayList<>();
+	static Identifier portalLockingAdvancement;
+	static final List<Holder<Biome>> VALID_AURORA_BIOMES = new ArrayList<>();
+	static final List<GameProfile> GAME_PROFILES = new ArrayList<>();
 
 	// --- CLIENT ---
-	public static boolean silentCicadas = false;
-	public static boolean silentCicadasOnHead = false;
-	public static boolean firstPersonEffects = true;
-	public static boolean rotateTrophyHeadsGui = true;
-	public static boolean disableLockedBiomeToasts = false;
-	public static boolean showQuestRamCrosshairIndicator = true;
-	public static boolean showFortificationShieldIndicator = true;
-	public static boolean showFortificationShieldIndicatorInCreative = false;
-	public static int clientCloudBlockPrecipitationDistance = 32;
-	public static boolean prettifyOreMeterGui = true;
-	public static boolean spawnCharmAnimationAsTotem = false;
-	public static boolean manualTravellersWingsGradualGlideDefault = true;
-	public static boolean firstPersonGloveOverlay = true;
+	static boolean silentCicadas = false;
+	static boolean silentCicadasOnHead = false;
+	static boolean firstPersonEffects = true;
+	static boolean rotateTrophyHeadsGui = true;
+	static boolean disableLockedBiomeToasts = false;
+	static boolean showQuestRamCrosshairIndicator = true;
+	static boolean showFortificationShieldIndicator = true;
+	static boolean showFortificationShieldIndicatorInCreative = false;
+	static int clientCloudBlockPrecipitationDistance = 32;
+	static boolean prettifyOreMeterGui = true;
+	static boolean spawnCharmAnimationAsTotem = false;
+	static boolean manualTravellersWingsGradualGlideDefault = true;
+	static boolean firstPersonGloveOverlay = true;
 
 	// --- Item Display ---
-	public static int itemDisplayXOffs = 4;
-	public static int itemDisplayYOffs = 4;
-	public static double itemDisplayScale = 1.0D;
-	public static boolean clock24HourFormat = DefaultConfig.use24HourTimeDefault();
+	static int itemDisplayXOffs = 4;
+	static int itemDisplayYOffs = 4;
+	static double itemDisplayScale = 1.0D;
+	static boolean clock24HourFormat = DefaultConfig.use24HourTimeDefault();
 
 	// --- COMMON ---
-	public static boolean casketUUIDLocking = false;
-	public static boolean disableSkullCandles = false;
-	public static boolean defaultItemEnchants = true;
-	public static boolean bossDropChests = true;
-	public static MultiplayerFightAdjuster multiplayerFightAdjuster = MultiplayerFightAdjuster.NONE;
-	public static int commonCloudBlockPrecipitationDistance = 32;
+	static boolean casketUUIDLocking = false;
+	static boolean disableSkullCandles = false;
+	static boolean defaultItemEnchants = true;
+	static boolean bossDropChests = true;
+	static MultiplayerFightAdjuster multiplayerFightAdjuster = MultiplayerFightAdjuster.NONE;
+	static int commonCloudBlockPrecipitationDistance = 32;
 
 	// -- Dimension --
-	public static boolean newPlayersSpawnInTF = false;
-	public static boolean portalForNewPlayerSpawn = true;
+	static boolean newPlayersSpawnInTF = false;
+	static boolean portalForNewPlayerSpawn = true;
 
 	// -- Portal --
-	public static String originDimension = Level.OVERWORLD.identifier().toString();
-	public static boolean allowPortalsInOtherDimensions = false;
-	public static PermissionLevel portalCreationPermission = PermissionLevel.ALL;
-	public static boolean disablePortalCreation = false;
-	public static boolean checkPortalPlacement = true;
-	public static boolean destructivePortalLightning = true;
-	public static boolean shouldReturnPortalBeUsable = true;
-	public static int maxPortalSize = 64;
+	static String originDimension = Level.OVERWORLD.identifier().toString();
+	static boolean allowPortalsInOtherDimensions = false;
+	static PermissionLevel portalCreationPermission = PermissionLevel.ALL;
+	static boolean disablePortalCreation = false;
+	static boolean checkPortalPlacement = true;
+	static boolean destructivePortalLightning = true;
+	static boolean shouldReturnPortalBeUsable = true;
+	static int maxPortalSize = 64;
 
 	// -- Uncrafting Table --
-	public static double uncraftingXpCostMultiplier = 1.0D;
-	public static double repairingXpCostMultiplier = 1.0D;
-	public static boolean allowShapelessUncrafting = false;
-	public static boolean disableIngredientSwitching = false;
-	public static List<? extends String> disableUncraftingRecipes = new ArrayList<>();
-	public static boolean reverseRecipeBlacklist = false;
-	public static List<? extends String> blacklistedUncraftingModIds = new ArrayList<>();
-	public static boolean flipUncraftingModIdList = false;
-	public static boolean disableUncraftingOnly = false;
-	public static boolean disableEntireTable = false;
+	static double uncraftingXpCostMultiplier = 1.0D;
+	static double repairingXpCostMultiplier = 1.0D;
+	static boolean allowShapelessUncrafting = false;
+	static boolean disableIngredientSwitching = false;
+	static List<? extends String> disableUncraftingRecipes = new ArrayList<>();
+	static boolean reverseRecipeBlacklist = false;
+	static List<? extends String> blacklistedUncraftingModIds = new ArrayList<>();
+	static boolean flipUncraftingModIdList = false;
+	static boolean disableUncraftingOnly = false;
+	static boolean disableEntireTable = false;
 
 	// -- Magic Trees --
-	public static boolean disableTimeCore = false;
-	public static int timeCoreRange = 16;
-	public static boolean disableTransformationCore = false;
-	public static int transformationCoreRange = 16;
-	public static boolean disableMiningCore = false;
-	public static int miningCoreRange = 16;
-	public static boolean disableSortingCore = false;
-	public static int sortingCoreRange = 16;
+	static boolean disableTimeCore = false;
+	static int timeCoreRange = 16;
+	static boolean disableTransformationCore = false;
+	static int transformationCoreRange = 16;
+	static boolean disableMiningCore = false;
+	static int miningCoreRange = 16;
+	static boolean disableSortingCore = false;
+	static int sortingCoreRange = 16;
 
 	// -- Shield Parrying --
-	public static boolean parryNonTwilightAttacks = false;
-	public static int shieldParryTicks = 40;
+	static boolean parryNonTwilightAttacks = false;
+	static int shieldParryTicks = 40;
 
 	@Override
 	public @Nullable Identifier getPortalLockingAdvancement(Player player) {
@@ -399,12 +399,12 @@ public final class FCAPConfig implements TFConfigAccess {
 	}
 
 	@Override
-	public boolean getMultiplayerAdjustHealth() {
+	public boolean getMultiplayerAdjustsHealth() {
 		return multiplayerFightAdjuster.adjustsHealth();
 	}
 
 	@Override
-	public boolean getMultiplayerAdjustLootRolls() {
+	public boolean getMultiplayerAdjustsLootRolls() {
 		return multiplayerFightAdjuster.adjustsLootRolls();
 	}
 
