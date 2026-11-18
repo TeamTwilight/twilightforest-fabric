@@ -18,6 +18,5 @@ public class PartEntityState extends EntityRenderState {
 	public boolean hasRedOverlay;
 	public boolean isInvisibleToPlayer;
 	public boolean appearsGlowing;
-	@Nullable
-	public Component customName;
+	public 	@Nullable Component customName;
 }
