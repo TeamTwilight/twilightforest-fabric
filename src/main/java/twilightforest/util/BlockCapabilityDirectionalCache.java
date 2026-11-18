@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.lookup.v1.block.BlockApiLookup;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -14,16 +15,16 @@ import java.util.Map;
 
 public class BlockCapabilityDirectionalCache<R> {
 
-	private final BlockApiLookup<R, Direction> capability;
+	private final BlockApiLookup<R, @Nullable Direction> capability;
 
-	private final Map<BlockPos, Map<Direction, BlockApiCache<R, Direction>>> data = new HashMap<>();
+	private final Map<BlockPos, Map<Direction, BlockApiCache<R, @Nullable Direction>>> data = new HashMap<>();
 
-	public BlockCapabilityDirectionalCache(BlockApiLookup<R, Direction> capability) {
+	public BlockCapabilityDirectionalCache(BlockApiLookup<R, @Nullable Direction> capability) {
 		this.capability = capability;
 	}
 
 	public List<R> getAllSides(ServerLevel level, BlockPos pos) {
-		Map<Direction, BlockApiCache<R, Direction>> caches = data.get(pos);
+		Map<Direction, BlockApiCache<R, @Nullable Direction>> caches = data.get(pos);
 		if (caches == null) {
 			BlockPos key = pos.immutable();
 			caches = new EnumMap<>(Direction.class);
@@ -34,7 +35,7 @@ public class BlockCapabilityDirectionalCache<R> {
 		}
 
 		List<R> handlers = new ArrayList<>();
-		for (Map.Entry<Direction, BlockApiCache<R, Direction>> entry : caches.entrySet()) {
+		for (Map.Entry<Direction, BlockApiCache<R, @Nullable Direction>> entry : caches.entrySet()) {
 			R handler = entry.getValue().find(entry.getKey());
 			if (handler != null) {
 				handlers.add(handler);

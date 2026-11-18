@@ -24,8 +24,7 @@ import java.util.Optional;
 
 public final class FCAPConfig implements TFConfigAccess {
 
-	@Nullable
-	static Identifier portalLockingAdvancement;
+	static @Nullable Identifier portalLockingAdvancement;
 	static final List<Holder<Biome>> VALID_AURORA_BIOMES = new ArrayList<>();
 	static final List<GameProfile> GAME_PROFILES = new ArrayList<>();
 
