@@ -41,7 +41,7 @@ public class TFTintSources {
 		}
 	};
 
-	private static final BlockTintSource AURORA_STRUCTURE = state -> {
+	private static final BlockTintSource AURORA_STRUCTURE = _ -> {
 		// TODO: Verify this. It's kind of how you get the color
 		BlockColors blockColors = Minecraft.getInstance().getBlockColors();
 

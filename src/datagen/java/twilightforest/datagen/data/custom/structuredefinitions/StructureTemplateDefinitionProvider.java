@@ -85,7 +85,7 @@ public abstract class StructureTemplateDefinitionProvider extends FabricCodecDat
 	}
 
 	protected void add(Identifier templateId, Identifier poolId, TemplatePoolInstance poolData) {
-		Map<Identifier, TemplatePoolInstance> poolWeightsForTemplate = this.poolsForTemplateWeights.computeIfAbsent(templateId, k -> new HashMap<>());
+		Map<Identifier, TemplatePoolInstance> poolWeightsForTemplate = this.poolsForTemplateWeights.computeIfAbsent(templateId, _ -> new HashMap<>());
 
 		poolWeightsForTemplate.put(poolId, poolData);
 	}

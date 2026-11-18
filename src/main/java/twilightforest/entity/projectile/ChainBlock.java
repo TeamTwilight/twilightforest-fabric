@@ -173,7 +173,7 @@ public class ChainBlock extends ThrowableProjectile {
 					null,
 					vec3,
 					level.getBlockState(result.getBlockPos()),
-					item -> this.kill(level)
+					_ -> this.kill(level)
 				);
 			}
 		}
