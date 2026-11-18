@@ -57,7 +57,7 @@ public record TravellersEntryModifier(EquipmentSlotGroup group, List<ItemAttribu
 	public void removeModifier(ItemStack stack) {
 		if (!this.builtin()) {
 			List<ItemAttributeModifiers.Entry> newEntries = new ArrayList<>();
-			var modifiers = stack.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY);
+			ItemAttributeModifiers modifiers = stack.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY);
 			modifiers.modifiers().forEach(entry -> {
 				if (!this.modifiers().contains(entry)) {
 					newEntries.add(entry);

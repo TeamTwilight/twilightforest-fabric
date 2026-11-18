@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import org.apache.commons.lang3.tuple.Pair;
+import twilightforest.components.entity.GiantPickaxeMiningAttachment;
 import twilightforest.init.TFDataAttachments;
 import twilightforest.init.TFItems;
 import twilightforest.loot.conditions.GiantPickUsedCondition;
@@ -69,7 +70,7 @@ public final class LootEventListeners {
 		if (context.getParameter(LootContextParams.THIS_ENTITY) instanceof Player player) {
 			if (!drops.isEmpty() && drops.getFirst().getItem() instanceof BlockItem block) {
 				if (GIANT_BLOCK_CONVERSIONS.containsKey(block.getBlock())) {
-					var attachment = player.getAttachedOrCreate(TFDataAttachments.GIANT_PICKAXE_MINING);
+					GiantPickaxeMiningAttachment attachment = player.getAttachedOrCreate(TFDataAttachments.GIANT_PICKAXE_MINING);
 					int blockConversion = attachment.getGiantBlockConversion();
 					attachment.setGiantBlockConversion(blockConversion - 1);
 					drops.clear();

@@ -253,7 +253,7 @@ public final class OverlayEventListeners {
 		toList.add(Component.translatable("misc.twilightforest.ore_meter_header_ratio").withStyle(ChatFormatting.GRAY));
 
 		for (int count : oreCounts) {
-			var percentage = FORMAT.format(count * 100.0F / totalScanned);
+			String percentage = FORMAT.format(count * 100.0F / totalScanned);
 			toList.add(Component.translatable("misc.twilightforest.ore_meter_ratio", percentage));
 		}
 

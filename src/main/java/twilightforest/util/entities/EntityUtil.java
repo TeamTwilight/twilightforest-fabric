@@ -255,7 +255,7 @@ public class EntityUtil {
 	@SuppressWarnings("unchecked")
 	public static boolean convertEntity(LivingEntity oldEntity, EntityType<?> newType) {
 		if (!(oldEntity.level() instanceof ServerLevel level)) return false;
-		var newEntity = newType.create(level, EntitySpawnReason.CONVERSION);
+		Entity newEntity = newType.create(level, EntitySpawnReason.CONVERSION);
 		if (newEntity == null) return false;
 		var passengerSave = oldEntity.getPassengers();
 		if (oldEntity instanceof Mob mob && newEntity instanceof Mob newMob) {

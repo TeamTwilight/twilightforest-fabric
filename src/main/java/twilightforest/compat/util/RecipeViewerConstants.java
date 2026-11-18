@@ -96,7 +96,7 @@ public class RecipeViewerConstants {
 		List<TransformationPowderInfo> info = new ArrayList<>();
 		List<EntityType<?>> inputs = new ArrayList<>(TransformPowderItem.TRANSFORMATION_POWDER.keySet());
 		for (EntityType<?> input : new ArrayList<>(inputs)) {
-			var output = TransformPowderItem.TRANSFORMATION_POWDER.get(input);
+			EntityType<?> output = TransformPowderItem.TRANSFORMATION_POWDER.get(input);
 			if (output != null) {
 				TransformationPowderInfo dummy = new TransformationPowderInfo(output, input, true);
 				if (!info.contains(dummy)) {
@@ -116,7 +116,7 @@ public class RecipeViewerConstants {
 		List<OminousFireInfo> info = new ArrayList<>();
 		List<EntityType<?>> inputs = new ArrayList<>(OminousFireBlock.OMINOUS_FIRE.keySet());
 		for (EntityType<?> input : new ArrayList<>(inputs)) {
-			var output = OminousFireBlock.OMINOUS_FIRE.get(input);
+			EntityType<?> output = OminousFireBlock.OMINOUS_FIRE.get(input);
 			if (output != null) {
 				OminousFireInfo dummy = new OminousFireInfo(output, input);
 				if (!info.contains(dummy)) {

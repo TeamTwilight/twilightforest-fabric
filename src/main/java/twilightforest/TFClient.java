@@ -89,6 +89,7 @@ import twilightforest.client.renderer.tooltip.ItemDisplayTooltipComponent;
 import twilightforest.client.renderer.tooltip.PotionFlaskTooltipComponent;
 import twilightforest.client.renderer.tooltip.TravellersBeltTooltipComponent;
 import twilightforest.components.entity.TravellersWingsAttachment;
+import twilightforest.components.entity.YetiThrowAttachment;
 import twilightforest.entity.CharmEffect;
 import twilightforest.entity.ProtectionBox;
 import twilightforest.entity.TFPart;
@@ -372,7 +373,7 @@ public final class TFClient implements ClientModInitializer {
 				ClientLevel level = context.client().level;
 				Entity entity = level.getEntity(payload.entityID());
 				if (entity instanceof Player player) {
-					var attachment = player.getAttachedOrCreate(TFDataAttachments.YETI_THROWING);
+					YetiThrowAttachment attachment = player.getAttachedOrCreate(TFDataAttachments.YETI_THROWING);
 					LivingEntity thrower = payload.thrower() != 0 ? (LivingEntity) level.getEntity(payload.thrower()) : null;
 					attachment.setThrown(player, payload.thrown(), thrower);
 				}

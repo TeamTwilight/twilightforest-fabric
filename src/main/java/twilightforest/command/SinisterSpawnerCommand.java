@@ -13,6 +13,7 @@ import net.minecraft.commands.arguments.ResourceOrIdArgument;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -22,7 +23,7 @@ public class SinisterSpawnerCommand {
 	public static final SinisterSpawnerCommand INSTANCE = new SinisterSpawnerCommand();
 
 	public static final SuggestionProvider<CommandSourceStack> SUGGEST_LOOT_TABLE = (context, builder) -> {
-		var registryAccess = context.getSource().getServer().registryAccess();
+		RegistryAccess.Frozen registryAccess = context.getSource().getServer().registryAccess();
 
 		var lootTables = registryAccess.lookupOrThrow(Registries.LOOT_TABLE).listElements().map(holder -> holder.key().identifier());
 

@@ -6,6 +6,7 @@ import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.*;
 import net.minecraft.client.data.models.model.*;
 import net.minecraft.client.renderer.block.dispatch.multipart.CombinedCondition;
+import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
@@ -294,9 +295,9 @@ public class BlockModelGenerator extends BlockModelBuilders {
 		this.generateSkullCandle(TFBlocks.PLAYER_SKULL_CANDLE, TFBlocks.PLAYER_WALL_SKULL_CANDLE);
 		this.generateSkullCandle(TFBlocks.PIGLIN_SKULL_CANDLE, TFBlocks.PIGLIN_WALL_SKULL_CANDLE);
 
-		var major = ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(TFCommon.prefix("item/major_boss_trophy"), TextureMapping.layer0(new Material(TFCommon.prefix("item/trophy"))), this.modelOutput));
-		var minor = ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(TFCommon.prefix("item/minor_boss_trophy"), TextureMapping.layer0(new Material(TFCommon.prefix("item/trophy_minor"))), this.modelOutput));
-		var quest = ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(TFCommon.prefix("item/quest_trophy"), TextureMapping.layer0(new Material(TFCommon.prefix("item/trophy_quest"))), this.modelOutput));
+		ItemModel.Unbaked major = ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(TFCommon.prefix("item/major_boss_trophy"), TextureMapping.layer0(new Material(TFCommon.prefix("item/trophy"))), this.modelOutput));
+		ItemModel.Unbaked minor = ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(TFCommon.prefix("item/minor_boss_trophy"), TextureMapping.layer0(new Material(TFCommon.prefix("item/trophy_minor"))), this.modelOutput));
+		ItemModel.Unbaked quest = ItemModelUtils.plainModel(ModelTemplates.FLAT_ITEM.create(TFCommon.prefix("item/quest_trophy"), TextureMapping.layer0(new Material(TFCommon.prefix("item/trophy_quest"))), this.modelOutput));
 
 		this.generateTrophy(TFBlocks.NAGA_TROPHY, TFBlocks.NAGA_WALL_TROPHY, major);
 		this.generateTrophy(TFBlocks.LICH_TROPHY, TFBlocks.LICH_WALL_TROPHY, major);

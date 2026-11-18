@@ -5,6 +5,7 @@ import com.google.common.collect.Streams;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.FrontAndTop;
+import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
@@ -15,6 +16,8 @@ import net.minecraft.util.Unit;
 import net.minecraft.util.Util;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityTypes;
+import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
+import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
@@ -256,7 +259,7 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements IPieceBea
 
 				BlockPos directionOffset = destPos.subtract(checkPos);
 				// Rotate to test for orthogonality via dot product (to check if dot() == 0)
-				var targetDirecton = turn.rotate(first.orientation().top()).getUnitVec3i();
+				Vec3i targetDirecton = turn.rotate(first.orientation().top()).getUnitVec3i();
 
 				// 0 from (horizontal) dot product means orthogonal, can approach from a right-angle turn now
 				if (directionOffset.getX() * targetDirecton.getX() + directionOffset.getZ() * targetDirecton.getZ() == 0)
@@ -350,8 +353,8 @@ public class LichPerimeterFence extends TwilightJigsawPiece implements IPieceBea
 		if (!chunkBounds.isInside(zombiePos))
 			return;
 
-		var knot = EntityUtil.createEntityIgnoreException(level, EntityTypes.LEASH_KNOT);
-		var boundedEntity = EntityUtil.createEntityIgnoreException(level, EntityTypes.ZOMBIE);
+		LeashFenceKnotEntity knot = EntityUtil.createEntityIgnoreException(level, EntityTypes.LEASH_KNOT);
+		Zombie boundedEntity = EntityUtil.createEntityIgnoreException(level, EntityTypes.ZOMBIE);
 		if (knot == null || boundedEntity == null)
 			return;
 

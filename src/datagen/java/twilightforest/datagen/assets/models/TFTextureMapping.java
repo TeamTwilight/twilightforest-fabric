@@ -67,7 +67,7 @@ public class TFTextureMapping {
 	}
 
 	public static TextureMapping trophyPedestal(Block block, boolean active, BossVariant north, BossVariant south, BossVariant east, BossVariant west) {
-		var mapping = new TextureMapping()
+		TextureMapping mapping = new TextureMapping()
 			.put(TextureSlot.NORTH, TextureMapping.getBlockTexture(block, "_" + north.getSerializedName() + "_latent"))
 			.put(TextureSlot.SOUTH, TextureMapping.getBlockTexture(block, "_" + south.getSerializedName() + "_latent"))
 			.put(TextureSlot.EAST, TextureMapping.getBlockTexture(block, "_" + east.getSerializedName() + "_latent"))

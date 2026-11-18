@@ -52,6 +52,7 @@ import twilightforest.advancements.DrinkFromFlaskTrigger;
 import twilightforest.block.*;
 import twilightforest.block.entity.SkullCandleBlockEntity;
 import twilightforest.block.entity.SkullChestBlockEntity;
+import twilightforest.components.entity.MultiplayerInclusivityAttachment;
 import twilightforest.components.item.SkullCandles;
 import twilightforest.entity.projectile.ITFProjectile;
 import twilightforest.item.FieryArmorItem;
@@ -104,7 +105,7 @@ public final class EntityEventListeners {
 	public static void ominousFireConversion(LivingDeathEvent event) {
 		if (!event.isCanceled() && event.getSource().is(TFDamageTypes.OMINOUS_FIRE)) {
 			if (event.getEntity() instanceof ServerPlayer player) {
-				var zombie = EntityTypes.ZOMBIE.create(player.level(), EntitySpawnReason.CONVERSION);
+				Zombie zombie = EntityTypes.ZOMBIE.create(player.level(), EntitySpawnReason.CONVERSION);
 				if (zombie != null) {
 					zombie.setAttached(TFDataAttachments.ZOMBIFIED_PLAYER, player.getGameProfile());
 					zombie.setCustomName(player.getName());
@@ -397,7 +398,7 @@ public final class EntityEventListeners {
 
 	public static void addQualifiedGroupPlayerIfNeeded(LivingEntity entity, DamageSource source, float baseDamageTaken, float damageTaken, boolean blocked) {
 		if (entity.is(TFEntityTypeTags.MULTIPLAYER_INCLUSIVE_ENTITIES)) {
-			var data = entity.getAttachedOrCreate(TFDataAttachments.MULTIPLAYER_FIGHT);
+			MultiplayerInclusivityAttachment data = entity.getAttachedOrCreate(TFDataAttachments.MULTIPLAYER_FIGHT);
 			if (source.getEntity() != null) {
 				data.maybeAddQualifiedPlayer(source.getEntity());
 			}
