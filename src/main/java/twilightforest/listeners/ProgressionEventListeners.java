@@ -271,9 +271,11 @@ public final class ProgressionEventListeners {
 	}
 
 	private static void sendAreaProtectionPacket(ServerLevel level, BlockPos pos, List<BoundingBox> sbb) {
-		for (ServerPlayer player : PlayerLookup.around(level, new Vec3i(pos.getX(), pos.getY(), pos.getZ()), 64)) {
-			ServerPlayNetworking.send(player, new AreaProtectionPacket(sbb, pos));
-		}
+		int[] entityIds = new int[sbb.size()];
+		for (int i = 0; i < entityIds.length; i++)
+			entityIds[i] = level.getNextEntityId();
+		for (ServerPlayer player : PlayerLookup.around(level, new Vec3i(pos.getX(), pos.getY(), pos.getZ()), 64))
+			ServerPlayNetworking.send(player, new AreaProtectionPacket(sbb, pos, entityIds));
 	}
 
 	private static void sendStructureProtectionPacket(Player player, List<Pair<BoundingBox, Boolean>> sbbData) {

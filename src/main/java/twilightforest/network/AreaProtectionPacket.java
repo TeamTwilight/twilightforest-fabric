@@ -18,10 +18,12 @@ public class AreaProtectionPacket implements CustomPacketPayload {
 
 	public final List<BoundingBox> sbb;
 	public final BlockPos pos;
+	public final int[] entityIds;
 
-	public AreaProtectionPacket(List<BoundingBox> sbb, BlockPos pos) {
+	public AreaProtectionPacket(List<BoundingBox> sbb, BlockPos pos, int[] entityIds) {
 		this.sbb = sbb;
 		this.pos = pos;
+		this.entityIds = entityIds;
 	}
 
 	public AreaProtectionPacket(FriendlyByteBuf buf) {
@@ -31,6 +33,7 @@ public class AreaProtectionPacket implements CustomPacketPayload {
 			this.sbb.add(new BoundingBox(buf.readInt(), buf.readInt(), buf.readInt(), buf.readInt(), buf.readInt(), buf.readInt()));
 		}
 		this.pos = buf.readBlockPos();
+		this.entityIds = buf.readVarIntArray();
 	}
 
 	public void write(RegistryFriendlyByteBuf buf) {
@@ -44,6 +47,7 @@ public class AreaProtectionPacket implements CustomPacketPayload {
 			buf.writeInt(box.maxZ());
 		});
 		buf.writeBlockPos(this.pos);
+		buf.writeVarIntArray(this.entityIds);
 	}
 
 	@Override

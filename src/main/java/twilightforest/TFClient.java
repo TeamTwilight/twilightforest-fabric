@@ -47,6 +47,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
 import net.minecraft.world.level.saveddata.maps.MapId;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
@@ -163,19 +164,23 @@ public final class TFClient implements ClientModInitializer {
 				@Override
 				public void run() {
 					ClientLevel level = context.client().level;
-					payload.sbb.forEach(box -> {
+					int idIndex = 0;
+					for (BoundingBox box : payload.sbb) {
+						boolean found = false;
 						for (Entity entity : level.entitiesForRendering()) {
-							if (entity instanceof ProtectionBox prot) {
-								if (prot.lifeTime > 0 && prot.matches(box)) {
-									prot.resetLifetime();
-									return;
-								}
+							if (entity instanceof ProtectionBox prot && prot.lifeTime > 0 && prot.matches(box)) {
+								prot.resetLifetime();
+								found = true;
+								break;
 							}
 						}
 
-						level.addEntity(new ProtectionBox(level, box));
-					});
-
+						if (!found) {
+							ProtectionBox protectionBox = new ProtectionBox(level, box);
+							protectionBox.setId(payload.entityIds[idIndex++]);
+							level.addEntity(protectionBox);
+						}
+					}
 					for (int i = 0; i < 20; i++) {
 						double vx = level.getRandom().nextGaussian() * 0.02D;
 						double vy = level.getRandom().nextGaussian() * 0.02D;
