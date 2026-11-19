@@ -100,7 +100,8 @@ public class LichTowerUtil {
 			default -> null;
 		};
 
-		if (pool == null) return null;
+		if (pool == null)
+			return null;
 
 		return structureTemplateDefinitions.getRandomTemplate(randomSource, pool);
 	}
@@ -152,7 +153,8 @@ public class LichTowerUtil {
 			default -> null;
 		};
 
-		if (pool == null) return List.of();
+		if (pool == null)
+			return List.of();
 
 		return this.structureTemplateDefinitions.getShuffledSequence(randomSource, pool);
 	}
@@ -165,7 +167,8 @@ public class LichTowerUtil {
 			default -> null;
 		};
 
-		if (pool == null) return List.of();
+		if (pool == null)
+			return List.of();
 
 		return this.structureTemplateDefinitions.getShuffledSequence(randomSource, pool);
 	}
@@ -179,7 +182,8 @@ public class LichTowerUtil {
 			default -> null;
 		};
 
-		if (pool == null) return null;
+		if (pool == null)
+			return null;
 
 		return structureTemplateDefinitions.getRandomTemplate(randomSource, pool);
 	}
@@ -214,7 +218,8 @@ public class LichTowerUtil {
 			default -> null;
 		};
 
-		if (pool == null) return null;
+		if (pool == null)
+			return null;
 
 		return structureTemplateDefinitions.getRandomTemplate(random, pool);
 	}
@@ -228,7 +233,8 @@ public class LichTowerUtil {
 			default -> null;
 		};
 
-		if (pool == null) return null;
+		if (pool == null)
+			return null;
 
 		return structureTemplateDefinitions.getRandomTemplate(random, pool);
 	}

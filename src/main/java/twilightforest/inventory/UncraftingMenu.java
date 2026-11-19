@@ -154,7 +154,8 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 						for (int invX = 0; invX < recipeWidth; invX++) {
 
 							int index = invX + invY * recipeWidth;
-							if (index >= recipeItems.length) continue;
+							if (index >= recipeItems.length)
+								continue;
 
 							ItemStack ingredient = normalizeIngredient(recipeItems[index]);
 							this.uncraftingMatrix.setItem(invX + invY * 3, ingredient);
@@ -299,7 +300,8 @@ public class UncraftingMenu extends AbstractCraftingMenu {
 							recipes.add(recipe);
 						}
 					}
-					if (recipe instanceof UncraftingRecipe uncraftingRecipe && uncraftingRecipe.isItemStackAnIngredient(inputStack)) recipes.add(uncraftingRecipe);
+					if (recipe instanceof UncraftingRecipe uncraftingRecipe && uncraftingRecipe.isItemStackAnIngredient(inputStack))
+						recipes.add(uncraftingRecipe);
 				}
 			}
 		}

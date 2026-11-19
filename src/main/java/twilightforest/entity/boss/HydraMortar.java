@@ -107,7 +107,8 @@ public class HydraMortar extends ThrowableProjectile {
 		super.onHitBlock(result);
 		if (!this.megaBlast) {
 			//if we hit a wall, explode
-			if (result.getDirection() != Direction.UP) this.detonate();
+			if (result.getDirection() != Direction.UP)
+				this.detonate();
 			// we hit the ground
 			this.setDeltaMovement(this.getDeltaMovement().x(), 0.0D, this.getDeltaMovement().z());
 			this.setOnGround(true);
@@ -159,7 +160,8 @@ public class HydraMortar extends ThrowableProjectile {
 	}
 
 	private void detonate() {
-		if (!(this.level() instanceof ServerLevel serverLevel)) return;
+		if (!(this.level() instanceof ServerLevel serverLevel))
+			return;
 		float explosionPower = megaBlast ? 4.0F : 0.1F;
 		boolean flag = serverLevel.getGameRules().get(GameRules.MOB_GRIEFING);
 		this.level().explode(this, this.getX(), this.getY(), this.getZ(), explosionPower, flag, Level.ExplosionInteraction.MOB);

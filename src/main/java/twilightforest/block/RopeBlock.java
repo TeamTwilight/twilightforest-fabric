@@ -43,7 +43,8 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock, ISpecial
 	}
 
 	public static boolean canConnectTo(BlockState state, Direction dir, LevelReader level, BlockPos pos) {
-		if (dir == Direction.DOWN) return false;
+		if (dir == Direction.DOWN)
+			return false;
 		return state.getBlock() instanceof LeavesBlock || (state.getBlock() instanceof RopeBlock && hasAxis(state, dir.getAxis())) || state.isFaceSturdy(level, pos, dir.getOpposite(), SupportType.CENTER);
 	}
 
@@ -74,9 +75,12 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock, ISpecial
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		VoxelShape shape = Shapes.empty();
 
-		if (state.getValue(X)) shape = Shapes.or(shape, X_SHAPE);
-		if (state.getValue(Y)) shape = Shapes.or(shape, Y_SHAPE);
-		if (state.getValue(Z)) shape = Shapes.or(shape, Z_SHAPE);
+		if (state.getValue(X))
+			shape = Shapes.or(shape, X_SHAPE);
+		if (state.getValue(Y))
+			shape = Shapes.or(shape, Y_SHAPE);
+		if (state.getValue(Z))
+			shape = Shapes.or(shape, Z_SHAPE);
 
 		return shape;
 	}
@@ -84,8 +88,10 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock, ISpecial
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
 		VoxelShape shape = Shapes.empty();
-		if (state.getValue(X) && context.isAbove(X_SHAPE, pos, false) && !context.isDescending()) shape = Shapes.or(shape, X_SHAPE);
-		if (state.getValue(Z) && context.isAbove(Z_SHAPE, pos, false) && !context.isDescending()) shape = Shapes.or(shape, Z_SHAPE);
+		if (state.getValue(X) && context.isAbove(X_SHAPE, pos, false) && !context.isDescending())
+			shape = Shapes.or(shape, X_SHAPE);
+		if (state.getValue(Z) && context.isAbove(Z_SHAPE, pos, false) && !context.isDescending())
+			shape = Shapes.or(shape, Z_SHAPE);
 		return shape;
 	}
 
@@ -113,13 +119,16 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock, ISpecial
 
 	@Override
 	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState otherState, boolean isMoving) {
-		if (!level.isClientSide()) level.scheduleTick(pos, this, 1);
+		if (!level.isClientSide())
+			level.scheduleTick(pos, this, 1);
 	}
 
 	@Override
 	protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction directionToNeighbor, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
-		if (state.getValue(WATERLOGGED)) ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
-		if (!level.isClientSide()) ticks.scheduleTick(pos, this, 1);
+		if (state.getValue(WATERLOGGED))
+			ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+		if (!level.isClientSide())
+			ticks.scheduleTick(pos, this, 1);
 		return state;
 	}
 
@@ -132,40 +141,51 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock, ISpecial
 			if (!this.checkConnection(level, pos, Direction.WEST) && !this.checkConnection(level, pos, Direction.EAST)) {
 				newState = newState.setValue(X, false);
 				drops++;
-			} else flag = false;
+			} else {
+				flag = false;
+			}
 		}
 		if (state.getValue(Y)) {
 			if (!this.checkConnection(level, pos, Direction.UP)) {
 				newState = newState.setValue(Y, false);
 				drops++;
-			} else flag = false;
+			} else {
+				flag = false;
+			}
 		}
 		if (state.getValue(Z)) {
 			if (!this.checkConnection(level, pos, Direction.NORTH) && !this.checkConnection(level, pos, Direction.SOUTH)) {
 				newState = newState.setValue(Z, false);
 				drops++;
-			} else flag = false;
+			} else {
+				flag = false;
+			}
 		}
 
 		if (flag) {
 			level.destroyBlock(pos, true);
 		} else if (drops > 0) {
 			level.setBlockAndUpdate(pos, newState);
-			for (int i = 0; i < drops; i++) dropResources(this.defaultBlockState(), level, pos);
+			for (int i = 0; i < drops; i++)
+				dropResources(this.defaultBlockState(), level, pos);
 		}
 	}
 
 	@Override
 	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
 		if (state.getValue(X)) {
-			if (canConnectTo(level.getBlockState(pos.relative(Direction.WEST)), Direction.WEST, level, pos)) return true;
-			if (canConnectTo(level.getBlockState(pos.relative(Direction.EAST)), Direction.EAST, level, pos)) return true;
+			if (canConnectTo(level.getBlockState(pos.relative(Direction.WEST)), Direction.WEST, level, pos))
+				return true;
+			if (canConnectTo(level.getBlockState(pos.relative(Direction.EAST)), Direction.EAST, level, pos))
+				return true;
 		}
 		if (state.getValue(Y)) {
-			if (canConnectTo(level.getBlockState(pos.relative(Direction.UP)), Direction.UP, level, pos)) return true;
+			if (canConnectTo(level.getBlockState(pos.relative(Direction.UP)), Direction.UP, level, pos))
+				return true;
 		}
 		if (state.getValue(Z)) {
-			if (canConnectTo(level.getBlockState(pos.relative(Direction.NORTH)), Direction.NORTH, level, pos)) return true;
+			if (canConnectTo(level.getBlockState(pos.relative(Direction.NORTH)), Direction.NORTH, level, pos))
+				return true;
 			return canConnectTo(level.getBlockState(pos.relative(Direction.SOUTH)), Direction.SOUTH, level, pos);
 		}
 		return false;
@@ -174,9 +194,11 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock, ISpecial
 	protected boolean checkConnection(LevelReader level, BlockPos pos, Direction dir) {
 		BlockPos.MutableBlockPos mutable = pos.mutable();
 		while (true) {
-			if (!level.getBlockState(mutable).is(this)) return true;
+			if (!level.getBlockState(mutable).is(this))
+				return true;
 			mutable.move(dir);
-			if (!canConnectTo(level.getBlockState(mutable), dir, level, mutable)) return false;
+			if (!canConnectTo(level.getBlockState(mutable), dir, level, mutable))
+				return false;
 		}
 	}
 

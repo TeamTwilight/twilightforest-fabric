@@ -131,7 +131,8 @@ public class ClimbableHollowLogBlock extends HorizontalDirectionalBlock implemen
 
 	@Override
 	protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (!isInside(hit, pos)) return super.useItemOn(stack, state, level, pos, player, hand, hit);
+		if (!isInside(hit, pos))
+			return super.useItemOn(stack, state, level, pos, player, hand, hit);
 
 		if (stack.is(Items.SHEARS)) {
 			HollowLogVariants.Climbable variant = state.getValue(VARIANT);

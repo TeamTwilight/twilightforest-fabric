@@ -120,7 +120,8 @@ public class Kobold extends Monster {
 		//bread munching
 		if (!this.level().isClientSide() && this.isAlive() && this.getItemBySlot(EquipmentSlot.MAINHAND).is(TFItemTags.KOBOLD_PACIFICATION_BREADS)) {
 			++this.lastEatenBreadTicks;
-			if (this.eatingTime > 0) this.eatingTime--;
+			if (this.eatingTime > 0)
+				this.eatingTime--;
 			ItemStack itemstack = this.getItemBySlot(EquipmentSlot.MAINHAND);
 			if (this.canEat(itemstack)) {
 				if (this.eatingTime <= 0) {

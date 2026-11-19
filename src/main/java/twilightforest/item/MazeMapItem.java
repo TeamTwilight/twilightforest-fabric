@@ -261,7 +261,9 @@ public class MazeMapItem extends MapItem implements ICustomMapItem {
 				} else {
 					builder.accept(Component.translatable("filled_map.unknown").withStyle(ChatFormatting.GRAY));
 				}
-			} else builder.accept(Component.translatable("filled_map.id", mapId.id()).withStyle(ChatFormatting.GRAY));
+			} else {
+				builder.accept(Component.translatable("filled_map.id", mapId.id()).withStyle(ChatFormatting.GRAY));
+			}
 		}
 	}
 }

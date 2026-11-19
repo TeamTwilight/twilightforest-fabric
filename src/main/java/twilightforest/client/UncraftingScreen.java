@@ -220,10 +220,12 @@ public class UncraftingScreen extends AbstractRecipeBookScreen<UncraftingMenu> {
 				int textureX = 176;
 				int textureY = 0;
 
-				if (this.isHovered) textureX += this.width;
+				if (this.isHovered)
+					textureX += this.width;
 
 				// what's up
-				if (!this.up) textureY += this.height;
+				if (!this.up)
+					textureY += this.height;
 
 				graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, this.getX(), this.getY(), textureX, textureY, this.width, this.height, 256, 256);
 			}
@@ -247,10 +249,12 @@ public class UncraftingScreen extends AbstractRecipeBookScreen<UncraftingMenu> {
 				int textureX = 176;
 				int textureY = 41;
 
-				if (this.isHovered) textureX += this.width;
+				if (this.isHovered)
+					textureX += this.width;
 
 				// what's up
-				if (!this.up) textureY += this.height;
+				if (!this.up)
+					textureY += this.height;
 
 				graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, this.getX(), this.getY(), textureX, textureY, this.width, this.height, 256, 256);
 			}

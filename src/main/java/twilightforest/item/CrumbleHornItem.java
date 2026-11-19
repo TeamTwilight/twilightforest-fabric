@@ -156,7 +156,8 @@ public class CrumbleHornItem extends Item implements IContinuousUseItem {
 					player.awardStat(TFStats.BLOCKS_CRUMBLED);
 				}
 				stack.hurtAndBreak(1, living,living.getUsedItemHand());
-				if (stack.getDamageValue() >= stack.getMaxDamage()) break;
+				if (stack.getDamageValue() >= stack.getMaxDamage())
+					break;
 			}
 		}
 	}
@@ -166,7 +167,8 @@ public class CrumbleHornItem extends Item implements IContinuousUseItem {
 		Block block = state.getBlock();
 		Pair<Block, Float> crumbleMap = CRUMBLE_HORN.get(block);
 
-		if (state.isAir() || crumbleMap == null) return false;
+		if (state.isAir() || crumbleMap == null)
+			return false;
 
 		if (living instanceof Player) {
 			if (new BreakBlockEvent(serverLevel, pos, state, (Player) living).post().isCanceled())

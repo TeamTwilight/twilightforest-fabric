@@ -91,7 +91,8 @@ public class CloudEventListeners {
 								pos.set(roofX, roofY, roofZ);
 								if (Heightmap.Types.MOTION_BLOCKING.isOpaque().test(mc.level.getBlockState(pos)))
 									lastBadYLevel = roofY; // Check if we skip next loop
-								if (skipLoop) continue;
+								if (skipLoop)
+									continue;
 
 								if (mc.level.getBlockState(pos).getBlock() instanceof CloudBlock cloudBlock) {
 									Pair<Biome.Precipitation, Float> precipitationRainLevelPair = cloudBlock.getCurrentPrecipitation(pos, mc.level, mc.level.getRainLevel(1.0F));
@@ -102,9 +103,11 @@ public class CloudEventListeners {
 									for (int y = roofY - 1; y > roofY - precipitationDistance; y--) {
 										if (!Heightmap.Types.MOTION_BLOCKING.isOpaque().test(mc.level.getBlockState(pos.atY(y))))
 											highestRainyBlock = y;
-										else break;
+										else
+											break;
 									}
-									if (highestRainyBlock == roofY) continue;
+									if (highestRainyBlock == roofY)
+										continue;
 
 									RENDER_HELPER.add(new PrecipitationRenderHelper(pos.immutable(), precipitationRainLevelPair.getLeft(), precipitationRainLevelPair.getRight(), highestRainyBlock));
 								}
@@ -150,7 +153,8 @@ public class CloudEventListeners {
 
 									if (highestRainyPos.getY() > mc.level.getMinY() && highestRainyPos.getY() <= camPos.getY() + 10 && highestRainyPos.getY() >= camPos.getY() - 10) {
 										particlePos = highestRainyPos.below();
-										if (mc.options.particles().get() == ParticleStatus.MINIMAL) break;
+										if (mc.options.particles().get() == ParticleStatus.MINIMAL)
+											break;
 
 										double particleX = randomsource.nextDouble();
 										double particleZ = randomsource.nextDouble();
@@ -175,7 +179,8 @@ public class CloudEventListeners {
 	private void renderPrecipitation(LevelRenderContext context) {
 		if (TFCommon.config().getClientCloudBlockPrecipitationDistance() > 0 && !RENDER_HELPER.isEmpty()) {
 			Minecraft minecraft = Minecraft.getInstance();
-			if (minecraft.level == null) return;
+			if (minecraft.level == null)
+				return;
 			float partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(false);
 			int ticks = (int) (minecraft.level.getGameTime() & 131071L);
 
@@ -202,7 +207,8 @@ public class CloudEventListeners {
 
 				int botY = Math.max(helper.rainOnY(), floorY - renderDistance);
 				int topY = Math.min(pos.getY(), floorY + renderDistance);
-				if (topY - botY <= 0) continue;
+				if (topY - botY <= 0)
+					continue;
 
 				double xDiff = (double) roofX + 0.5D - camX;
 				double zDiff = (double) roofZ + 0.5D - camZ;

@@ -88,7 +88,8 @@ public class TransformPowderItem extends Item {
 
 	public static boolean transformEntityIfPossible(LivingEntity target, @Nullable Player user, ItemStack powder, boolean shrinkStack) {
 		//dont transform tamed animals that have other owners
-		if (target instanceof OwnableEntity ownable && ownable.getOwner() != user) return false;
+		if (target instanceof OwnableEntity ownable && ownable.getOwner() != user)
+			return false;
 
 		EntityType<?> result = TRANSFORMATION_POWDER.get(target.getType());
 

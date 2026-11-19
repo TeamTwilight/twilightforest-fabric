@@ -32,10 +32,13 @@ public class LichSpawnerBlockEntity extends BossSpawnerBlockEntity<Lich> {
 
 		BlockPos.MutableBlockPos mutableBlockPos = this.getBlockPos().mutable();
 		while (true) {
-			if (level.getMinY() >= mutableBlockPos.getY()) break;
+			if (level.getMinY() >= mutableBlockPos.getY())
+				break;
 			if (level.getBlockState(mutableBlockPos.below()).isAir()) {
 				mutableBlockPos.move(Direction.DOWN);
-			} else break;
+			} else {
+				break;
+			}
 		}
 
 		mutableBlockPos.move(Direction.UP);
