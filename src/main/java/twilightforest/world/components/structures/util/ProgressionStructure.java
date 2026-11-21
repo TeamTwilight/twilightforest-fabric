@@ -81,8 +81,7 @@ public abstract class ProgressionStructure extends ConquerableStructure implemen
 	}
 
 	@Override
-	@Nullable
-	public Mob createHintMonster(Level world) {
+	public @Nullable Mob createHintMonster(Level world) {
 		return this.hintConfig.map(config -> config.hintMob().create(world, EntitySpawnReason.STRUCTURE)).orElse(null);
 	}
 }
