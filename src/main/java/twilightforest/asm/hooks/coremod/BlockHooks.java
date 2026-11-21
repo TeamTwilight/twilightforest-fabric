@@ -31,22 +31,23 @@ public final class BlockHooks {
 		return TravellersModifiersManager.isModifierActive(entity, TravellersModifiersManager.UNRESTRAINED_MODIFIER) ? 0.6F : o;
 	}
 
-	public static boolean isRainingAt(boolean isRaining, Level level, BlockPos pos) {
-		if (!isRaining && TFCommon.config().getCommonCloudBlockPrecipitationDistance() > 0) {
-			if (!level.hasChunkAt(pos)) return false;
+	public static Biome.Precipitation precipitationAt(Biome.Precipitation o, Level level, BlockPos pos) {
+		if (o != Biome.Precipitation.RAIN && TFCommon.config().getCommonCloudBlockPrecipitationDistance() > 0) {
+			if (!level.hasChunkAt(pos))
+				return o; //do NOT try to load new chunks when checking for rain. This can cause deadlocks if mobs ry to spawn in unloaded areas and check for rain
 			LevelChunk chunk = level.getChunkAt(pos);
-			for (int y = pos.getY(); y < pos.getY() + TFCommon.config().getCommonCloudBlockPrecipitationDistance(); y++) {
+			for (int y = pos.getY(); y < pos.getY() +TFCommon.config().getCommonCloudBlockPrecipitationDistance(); y++) {
 				BlockPos newPos = pos.atY(y);
 				BlockState state = chunk.getBlockState(newPos);
-				if (state.getBlock() instanceof CloudBlock cloudBlock && cloudBlock.getCurrentPrecipitation(newPos, level, level.getRainLevel(1.0F)).getLeft() == Biome.Precipitation.RAIN) {
-					return true;
+				if (state.getBlock() instanceof CloudBlock cloudBlock) {
+					return cloudBlock.getCurrentPrecipitation(newPos, level, level.getRainLevel(1.0F)).getLeft();
 				}
 				if (Heightmap.Types.MOTION_BLOCKING.isOpaque().test(state)) {
-					return false;
+					return o;
 				}
 			}
 		}
-		return isRaining;
+		return o;
 	}
 
 	public static int resolveFoliageColor(int o, Biome biome, double x, double z) {
