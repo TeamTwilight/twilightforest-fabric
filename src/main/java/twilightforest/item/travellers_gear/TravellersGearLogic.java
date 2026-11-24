@@ -408,6 +408,9 @@ public class TravellersGearLogic {
 	}
 
 	public static void determineWingState(LivingEntity livingEntity) {
+		if (!livingEntity.getItemBySlot(EquipmentSlot.LEGS).is(TFItems.TRAVELLERS_WINGS))
+			return;
+
 		TravellersWingsAttachment attachment = livingEntity.getAttachedOrCreate(TFDataAttachments.TRAVELLERS_WINGS);
 		TravellersWingsAttachment.WingState newState = TravellersWingsAttachment.WingState.IDLE;
 
