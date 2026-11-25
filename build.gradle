@@ -34,6 +34,10 @@ repositories {
 		url = "https://maven.shedaniel.me"
 	}
 	maven {
+		name = "DevOS Maven" // Porting Lib
+		url = "https://mvn.devos.one/snapshots/"
+	}
+	maven {
 		name = "Ladysnake" // EMI, Trinkets
 		url = "https://maven.ladysnake.org/releases"
 	}
@@ -43,10 +47,6 @@ repositories {
 		content {
 			includeGroup "maven.modrinth"
 		}
-	}
-	maven {
-		name = "DevOS Maven" // Porting Lib
-		url = "https://mvn.devos.one/snapshots/"
 	}
 	maven {
 		name = "TerraformersMC" // ModMenu
